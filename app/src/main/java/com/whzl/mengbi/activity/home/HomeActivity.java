@@ -2,15 +2,19 @@ package com.whzl.mengbi.activity.home;
 
 
 import android.os.Bundle;
-import android.view.View;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 
-import com.hjm.bottomtabbar.BottomTabBar;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.activity.BaseAtivity;
 import com.whzl.mengbi.fragemengt.follow.FollowFragment;
 import com.whzl.mengbi.fragemengt.home.HomeFragment;
 import com.whzl.mengbi.fragemengt.my.MyFragment;
+import com.whzl.mengbi.view.BottomNavigationViewHelper;
 import com.whzl.mengbi.view.GlideImageLoader;
+import com.whzl.mengbi.view.ViewPagerAdapter;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -26,7 +30,9 @@ public class HomeActivity extends BaseAtivity {
     /**
      * 底部导航栏相关
      */
-    private BottomTabBar mBottomTabBar;
+    private ViewPager viewPager;
+    private MenuItem menuItem;
+    private BottomNavigationView bottomNavigationView;
 
     /**
      * 顶部轮番图
@@ -52,32 +58,9 @@ public class HomeActivity extends BaseAtivity {
 
 
     private void initView(){
-        mBottomTabBar = (BottomTabBar)findViewById(R.id.home_bottom_tab_bar);
-        mBottomTabBar.init(getSupportFragmentManager(), 720, 1280)//初始化方法，必须第一个调用；传入参数为V4包下的FragmentManager
-//                .setImgSize(70, 70)//设置ICON图片的尺寸
-//                .setFontSize(14)//设置文字的尺寸
-//                .setTabPadding(5, 0, 5)//设置ICON图片与上部分割线的间隔、图片与文字的间隔、文字与底部的间隔
-//                  .setChangeColor(Color.parseColor(""),Color.parseColor(""))//设置选中的颜色、未选中的颜色
-                  .addTabItem("首页", R.mipmap.home_gray, HomeFragment.class)//设置文字、一张图片、fragment
-                  .addTabItem("关注", R.mipmap.follow_white, FollowFragment.class)//设置文字、两张图片、fragment
-                  .addTabItem("我的", R.mipmap.my_white, MyFragment.class)
-//                .isShowDivider(true)//设置是否显示分割线
-//                .setDividerColor(Color.parseColor("#FF0000"))
-//                .setTabBarBackgroundColor(Color.parseColor("#00FF0000"))//设置底部导航栏颜色
-                .setOnTabChangeListener(new BottomTabBar.OnTabChangeListener() {
-                    @Override
-                    public void onTabChange(int position, String name, View view) {
-                        if (position == 1)
-                            mBottomTabBar.setSpot(1, false);
-                    }
-                })
-                .setSpot(1, false)
-                .setSpot(2, false);
-
 
         //资源文件
-
-        Integer[] images={R.mipmap.home_gray,R.mipmap.follow_white,R.mipmap.my_white};
+        Integer[] images={R.mipmap.ic_home_gray,R.mipmap.ic_follow_white,R.mipmap.ic_my_white};
         List<Integer> stringA = Arrays.asList(images);
         String[] str={"a","b","c"};
         List<String> titles = Arrays.asList(str);
@@ -101,7 +84,63 @@ public class HomeActivity extends BaseAtivity {
         //banner设置方法全部调用完毕时最后调用
         mBanner.start();
 
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        //默认 >3 的选中效果会影响ViewPager的滑动切换时的效果，故利用反射去掉
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.item_home:
+                                viewPager.setCurrentItem(0);
+                                break;
+                            case R.id.item_follow:
+                                viewPager.setCurrentItem(1);
+                                break;
+                            case R.id.item_my:
+                                viewPager.setCurrentItem(2);
+                                break;
+                        }
+                        return false;
+                    }
+                });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (menuItem != null) {
+                    menuItem.setChecked(false);
+                } else {
+                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                }
+                menuItem = bottomNavigationView.getMenu().getItem(position);
+                menuItem.setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        setupViewPager(viewPager);
     }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter.addFragment(HomeFragment.newInstance("首页"));
+        adapter.addFragment(FollowFragment.newInstance("图书"));
+        adapter.addFragment(MyFragment.newInstance("发现"));
+        viewPager.setAdapter(adapter);
+    }
+
 
     private  void initData(){
 
