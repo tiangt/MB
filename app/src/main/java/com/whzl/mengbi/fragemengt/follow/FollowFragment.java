@@ -12,8 +12,12 @@ import com.whzl.mengbi.fragemengt.BaseFragement;
 public class FollowFragment extends BaseFragement {
 
 
-    public FollowFragment() {
-        // Required empty public constructor
+    public static FollowFragment newInstance(String info) {
+        Bundle args = new Bundle();
+        FollowFragment fragment = new FollowFragment();
+        args.putString("info", info);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -25,7 +29,7 @@ public class FollowFragment extends BaseFragement {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_follow_layout, container, false);
+        View mView = inflater.inflate(R.layout.fragment_follow_layout,null);
+        return mView;
     }
 }

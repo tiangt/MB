@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,36 +9,33 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/fm_home_tv"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="小编推荐"
-        android:textSize="16dp"/>
+        android:textSize="16dp"
+        android:textStyle="bold"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/home_recycler_view"
-        android:layout_width="43dp"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="34dp">
+        android:id="@+id/fm_home_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="精彩直播"
         android:textSize="16dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="234dp" />
+        android:textStyle="bold"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/home_live_recycler_view"
-        android:layout_width="43dp"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="271dp">
+        android:id="@+id/fm_home_live_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

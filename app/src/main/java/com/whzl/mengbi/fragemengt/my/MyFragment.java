@@ -11,8 +11,12 @@ import com.whzl.mengbi.fragemengt.BaseFragement;
 
 public class MyFragment extends BaseFragement {
 
-    public MyFragment() {
-        // Required empty public constructor
+    public static MyFragment newInstance(String info) {
+        Bundle args = new Bundle();
+        MyFragment fragment = new MyFragment();
+        args.putString("info", info);
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
@@ -31,7 +35,8 @@ public class MyFragment extends BaseFragement {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_layout, container, false);
+        View mView = inflater.inflate(R.layout.fragment_my_layout,null);
+        return mView;
     }
 
 }

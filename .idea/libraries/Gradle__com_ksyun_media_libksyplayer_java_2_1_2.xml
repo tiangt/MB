@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.ksyun.media:libksyplayer-java-2.1.2">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.AndroidStudio3.1/caches/transforms-1/files-1.1/libksyplayer-java-2.1.2.aar/bc0f3f4b308233aa89943021ba5ad858/res" />
+      <root url="jar://$USER_HOME$/.AndroidStudio3.1/caches/transforms-1/files-1.1/libksyplayer-java-2.1.2.aar/bc0f3f4b308233aa89943021ba5ad858/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.AndroidStudio3.1/caches/modules-2/files-2.1/com.ksyun.media/libksyplayer-java/2.1.2/dff7f69a73a4dacb7d36b1ba26b8ea4fe98559fa/libksyplayer-java-2.1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

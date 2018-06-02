@@ -41,26 +41,39 @@ public class HomeFragment extends BaseFragement {
      */
     private Handler mWonderfulLiveHandler;
 
+    /**
+     * 全局获取fragment控件
+     */
+    private View mView;
+
+    public static HomeFragment newInstance(String info) {
+        Bundle args = new Bundle();
+        HomeFragment fragment = new HomeFragment();
+        args.putString("info", info);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRecommendHandler = new RecommendHandler(HomeFragment.this);
         initData();
-        initView();
+
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_layout, container, false);
-
+        mView = inflater.inflate(R.layout.fragment_home_layout,null);
+        initView(mView);
+        return mView;
     }
 
 
-    private void initView() {
-
+    private void initView(View mView) {
+        wonderful_live_rv = (RecyclerView) mView.findViewById(R.id.fm_home_live_recycler_view);
     }
 
     private void initData(){

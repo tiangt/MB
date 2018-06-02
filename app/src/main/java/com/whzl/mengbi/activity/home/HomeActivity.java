@@ -62,7 +62,7 @@ public class HomeActivity extends BaseAtivity {
         //资源文件
         Integer[] images={R.mipmap.ic_home_gray,R.mipmap.ic_follow_white,R.mipmap.ic_my_white};
         List<Integer> stringA = Arrays.asList(images);
-        String[] str={"a","b","c"};
+        String[] str={"首页","关注","我的"};
         List<String> titles = Arrays.asList(str);
         mBanner = (Banner) findViewById(R.id.home_banner);
         //设置banner样式
@@ -129,6 +129,15 @@ public class HomeActivity extends BaseAtivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+        //禁止ViewPager滑动
+//        viewPager.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return true;
+//            }
+//        });
+
         setupViewPager(viewPager);
     }
 
