@@ -136,8 +136,8 @@ public class HomeActivity extends BaseAtivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.addFragment(HomeFragment.newInstance("首页"));
-        adapter.addFragment(FollowFragment.newInstance("图书"));
-        adapter.addFragment(MyFragment.newInstance("发现"));
+        adapter.addFragment(FollowFragment.newInstance("关注"));
+        adapter.addFragment(MyFragment.newInstance("我的"));
         viewPager.setAdapter(adapter);
     }
 
