@@ -16,7 +16,8 @@ import com.whzl.mengbi.handler.BaseHandler;
 import com.whzl.mengbi.network.RequestManager;
 
 import java.util.HashMap;
-
+import java.util.List;
+import com.alibaba.fastjson.JSON;
 
 public class HomeFragment extends BaseFragement {
 
@@ -34,15 +35,15 @@ public class HomeFragment extends BaseFragement {
     /**
      *小编推荐 消息处理
      */
-    private RecommendHandler mRecommendHandler;
+    //private RecommendHandler mRecommendHandler;
 
     /**
      *精彩直播 消息处理
      */
-    private Handler mWonderfulLiveHandler;
+    private WonderfulLiveHandler mWonderfulLiveHandler;
 
     /**
-     * 全局获取fragment控件
+     * 全局获取fragment组件
      */
     private View mView;
 
@@ -57,7 +58,7 @@ public class HomeFragment extends BaseFragement {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRecommendHandler = new RecommendHandler(HomeFragment.this);
+        mWonderfulLiveHandler = new WonderfulLiveHandler(HomeFragment.this);
         initData();
 
 
@@ -85,10 +86,10 @@ public class HomeFragment extends BaseFragement {
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
-                        Message mMessage = mRecommendHandler.obtainMessage();
+                        Message mMessage = mWonderfulLiveHandler.obtainMessage();
                         mMessage.arg1=1;
                         mMessage.obj=result;
-                        mRecommendHandler.sendMessage(mMessage);
+                        mWonderfulLiveHandler.sendMessage(mMessage);
                     }
 
                     @Override
@@ -98,14 +99,18 @@ public class HomeFragment extends BaseFragement {
                 });
     }
 
-    private class RecommendHandler extends BaseHandler {
-        public RecommendHandler(Fragment fragment) {
+    /**
+    *精彩直播handler消息处理，更新UI组件
+    */
+    private class WonderfulLiveHandler extends BaseHandler {
+        public WonderfulLiveHandler(Fragment fragment) {
             super(fragment);
         }
 
         @Override
         public void handleMessage(Message msg, int what) {
-
+            List liveList = JSON.parseArray(msg+"");
+            
         }
     }
 

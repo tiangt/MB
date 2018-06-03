@@ -84,7 +84,7 @@ public class HomeActivity extends BaseAtivity {
         //banner设置方法全部调用完毕时最后调用
         mBanner.start();
 
-
+        //底部导航切换，滑动
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         //默认 >3 的选中效果会影响ViewPager的滑动切换时的效果，故利用反射去掉
