@@ -35,7 +35,7 @@ public class RequestManager {
     private static final String TAG = RequestManager.class.getSimpleName();
 
     //测试
-    private static final String BASE_URL = "https://test-api.mengbitv.com";//请求接口根地址
+    private static final String BASE_URL = "https://t2-api.mengbitv.com/";//请求接口根地址
     private static final String APPKEY ="mb_client";
     private static final String APPSECRET ="dw602yw1um9yrosi0t5gd03tuzsymnv2";
 

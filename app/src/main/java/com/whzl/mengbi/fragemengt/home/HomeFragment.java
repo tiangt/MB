@@ -2,22 +2,27 @@ package com.whzl.mengbi.fragemengt.home;
 
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.adapter.HomeLiveAdapter;
+import com.whzl.mengbi.bean.ResultBean;
 import com.whzl.mengbi.fragemengt.BaseFragement;
-import com.whzl.mengbi.handler.BaseHandler;
 import com.whzl.mengbi.network.RequestManager;
+import com.whzl.mengbi.network.RequestManager.ReqCallBack;
+import com.whzl.mengbi.util.LogUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import com.alibaba.fastjson.JSON;
 
 public class HomeFragment extends BaseFragement {
 
@@ -31,21 +36,13 @@ public class HomeFragment extends BaseFragement {
      */
     private RecyclerView wonderful_live_rv;
 
-
-    /**
-     *小编推荐 消息处理
-     */
-    //private RecommendHandler mRecommendHandler;
-
-    /**
-     *精彩直播 消息处理
-     */
-    private WonderfulLiveHandler mWonderfulLiveHandler;
-
     /**
      * 全局获取fragment组件
      */
     private View mView;
+
+    private RecyclerView.Adapter mAdapter;
+    private List<ResultBean.LiveBean> arrayList;
 
     public static HomeFragment newInstance(String info) {
         Bundle args = new Bundle();
@@ -58,10 +55,7 @@ public class HomeFragment extends BaseFragement {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mWonderfulLiveHandler = new WonderfulLiveHandler(HomeFragment.this);
         initData();
-
-
     }
 
     @Override
@@ -72,47 +66,29 @@ public class HomeFragment extends BaseFragement {
         return mView;
     }
 
-
-    private void initView(View mView) {
-        wonderful_live_rv = (RecyclerView) mView.findViewById(R.id.fm_home_live_recycler_view);
-    }
-
     private void initData(){
         //首页主播展示
         HashMap paramsMap = new HashMap();
         paramsMap.put("page","1");
 
-        RequestManager.getInstance(getContext()).requestAsyn("/v1/anchor/show-anchor", RequestManager.TYPE_POST_JSON, paramsMap,
-                new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(getContext()).requestAsyn("v1/anchor/show-anchor", RequestManager.TYPE_POST_JSON, paramsMap,
+                new ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
-                        Message mMessage = mWonderfulLiveHandler.obtainMessage();
-                        mMessage.arg1=1;
-                        mMessage.obj=result;
-                        mWonderfulLiveHandler.sendMessage(mMessage);
+                        arrayList = new ArrayList<ResultBean.LiveBean>();
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-
+                        LogUtils.e(errorMsg);
                     }
                 });
     }
 
-    /**
-    *精彩直播handler消息处理，更新UI组件
-    */
-    private class WonderfulLiveHandler extends BaseHandler {
-        public WonderfulLiveHandler(Fragment fragment) {
-            super(fragment);
-        }
-
-        @Override
-        public void handleMessage(Message msg, int what) {
-            List liveList = JSON.parseArray(msg+"");
-            
-        }
+    private void initView(View mView) {
+        wonderful_live_rv = (RecyclerView) mView.findViewById(R.id.fm_home_live_recycler_view);
+        wonderful_live_rv.setLayoutManager(new GridLayoutManager(getContext(),2));
+        mAdapter = new HomeLiveAdapter(arrayList);
+        wonderful_live_rv.setAdapter(mAdapter);
     }
-
-
 }

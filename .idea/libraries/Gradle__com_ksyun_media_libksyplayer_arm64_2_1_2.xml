@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.ksyun.media:libksyplayer-arm64-2.1.2">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.AndroidStudio3.1/caches/transforms-1/files-1.1/libksyplayer-arm64-2.1.2.aar/bd6bdc0f6ddfacb5b23e29ccbfb8df24/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.AndroidStudio3.1/caches/transforms-1/files-1.1/libksyplayer-arm64-2.1.2.aar/bd6bdc0f6ddfacb5b23e29ccbfb8df24/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/libksyplayer-arm64-2.1.2.aar/e9de49f1cdbfd435487d3aa51453286d/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/libksyplayer-arm64-2.1.2.aar/e9de49f1cdbfd435487d3aa51453286d/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.AndroidStudio3.1/caches/modules-2/files-2.1/com.ksyun.media/libksyplayer-arm64/2.1.2/eea779243609b2f0f5700271bed2534624d75d05/libksyplayer-arm64-2.1.2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ksyun.media/libksyplayer-arm64/2.1.2/eea779243609b2f0f5700271bed2534624d75d05/libksyplayer-arm64-2.1.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

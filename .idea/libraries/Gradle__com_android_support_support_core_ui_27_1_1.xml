@@ -1,12 +1,12 @@
 <component name="libraryTable">
   <library name="Gradle: com.android.support:support-core-ui-27.1.1">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.AndroidStudio3.1/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/463014410273f285c060cc07e8e3d51d/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.AndroidStudio3.1/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/463014410273f285c060cc07e8e3d51d/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/75f6bfa21a0149333f01d93cce319a4c/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/support-core-ui-27.1.1.aar/75f6bfa21a0149333f01d93cce319a4c/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.AndroidStudio3.1/caches/modules-2/files-2.1/com.android.support/support-core-ui/27.1.1/266c369a3227be5afec33e11c964472269ff2a7c/support-core-ui-27.1.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/support-core-ui/27.1.1/266c369a3227be5afec33e11c964472269ff2a7c/support-core-ui-27.1.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
