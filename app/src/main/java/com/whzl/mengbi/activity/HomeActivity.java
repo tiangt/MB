@@ -1,0 +1,134 @@
+package com.whzl.mengbi.activity;
+
+
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+
+import com.google.gson.Gson;
+import com.whzl.mengbi.R;
+import com.whzl.mengbi.activity.base.BaseAtivity;
+import com.whzl.mengbi.bean.BannerBean;
+import com.whzl.mengbi.network.RequestManager;
+import com.whzl.mengbi.network.URLContentUtils;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.view.fragemengt.home.FollowFragment;
+import com.whzl.mengbi.view.fragemengt.home.HomeFragment;
+import com.whzl.mengbi.view.fragemengt.home.MyFragment;
+import com.whzl.mengbi.widget.BottomNavigationViewHelper;
+import com.whzl.mengbi.glide.GlideImageLoader;
+import com.whzl.mengbi.adapter.ViewPagerAdapter;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * funcciton 创建首页所有的fragment,以及fragment
+ */
+public class HomeActivity extends BaseAtivity {
+
+    /**
+     * 底部导航栏相关
+     */
+    private ViewPager viewPager;
+    private MenuItem menuItem;
+    private BottomNavigationView bottomNavigationView;
+
+    /**
+     * fragment相关
+     */
+    private HomeFragment mHomeFragment ;
+    private FollowFragment mFollowFragment ;
+    private MyFragment mMyFragment ;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home_layout);
+        //实例化控件
+        initView();
+
+        Toolbar mToolbar = (Toolbar)findViewById(R.id.home_toolbar);
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+    }
+
+
+    private void initView(){
+        //底部导航切换，滑动
+        viewPager = (ViewPager) findViewById(R.id.home_viewpager);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.home_bottom_navigation);
+        //默认 >3 的选中效果会影响ViewPager的滑动切换时的效果，故利用反射去掉
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.item_home:
+                                item.setIcon(R.mipmap.ic_home_bottom_checked);
+                                viewPager.setCurrentItem(0);
+                                break;
+                            case R.id.item_follow:
+                                viewPager.setCurrentItem(1);
+                                break;
+                            case R.id.item_my:
+                                viewPager.setCurrentItem(2);
+                                break;
+                        }
+                        return false;
+                    }
+                });
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (menuItem != null) {
+                    menuItem.setChecked(false);
+                } else {
+                    bottomNavigationView.getMenu().getItem(0).setChecked(false);
+                }
+                menuItem = bottomNavigationView.getMenu().getItem(position);
+                menuItem.setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        //禁止ViewPager滑动
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+        setupViewPager(viewPager);
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        adapter.addFragment(HomeFragment.newInstance("首页"));
+        adapter.addFragment(FollowFragment.newInstance("关注"));
+        adapter.addFragment(MyFragment.newInstance("我的"));
+        viewPager.setAdapter(adapter);
+    }
+}

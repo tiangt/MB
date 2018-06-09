@@ -9,6 +9,16 @@ public class BaseAppliaction extends Application{
 
     private static BaseAppliaction instace = null;
 
+    private int userId = 0;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();

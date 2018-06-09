@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#21D996</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#B9B9B9</color>
 
-    <color name="tab_checked">#3F51B5</color>
-    <color name="tab_unchecked">#757575</color>
+    <color name="tab_checked">#21D996</color>
+    <color name="tab_unchecked">#B9B9B9</color>
+
+    <color name="text_view">#323232</color>
+    //主页精彩直播
+    <color name="rv_item_nickname">#FFFFFF</color>
+    <color name="textview">#FFFFFF</color>
+    <color name="register_user_service_agreement">#FF611B</color>
+
 </resources>

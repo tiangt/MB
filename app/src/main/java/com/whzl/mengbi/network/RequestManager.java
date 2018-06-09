@@ -8,6 +8,7 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.BuildConfig;
 import com.whzl.mengbi.util.EncryptUtil;
+import com.whzl.mengbi.util.LogUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,9 +34,6 @@ public class RequestManager {
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final String TAG = RequestManager.class.getSimpleName();
-
-    //测试
-    private static final String BASE_URL = "https://t2-api.mengbitv.com/";//请求接口根地址
     private static final String APPKEY ="mb_client";
     private static final String APPSECRET ="dw602yw1um9yrosi0t5gd03tuzsymnv2";
 
@@ -43,6 +41,7 @@ public class RequestManager {
     public static final int TYPE_GET = 0;//get请求
     public static final int TYPE_POST_JSON = 1;//post请求参数为json
     public static final int TYPE_POST_FORM = 2;//post请求参数为表单
+    public static final int RESULT_CODE=200;//响应成功标识码
     private OkHttpClient mOkHttpClient;//okHttpClient 实例
     private Handler okHttpHandler;//全局处理子线程和M主线程通信
 
@@ -149,7 +148,7 @@ public class RequestManager {
 
 
             //补全请求地址
-            String requestUrl = String.format("%s/%s?%s", BASE_URL, actionUrl, tempParams.toString());
+            String requestUrl = String.format("%s/%s?%s", URLContentUtils.BASE_URL, actionUrl, tempParams.toString());
             //创建一个请求
             Request request = addHeaders().url(requestUrl).build();
             //创建一个Call
@@ -158,7 +157,7 @@ public class RequestManager {
             final Response response = call.execute();
             response.body().string();
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            LogUtils.e(e.toString());
         }
     }
 
@@ -191,11 +190,11 @@ public class RequestManager {
             String sign = getSign(paramsMap);
             paramsMap.put("sign",sign);
             paramsMap.remove("appSecret");
+            String params = JSON.toJSONString(paramsMap);
             //补全请求地址
-            String requestUrl = String.format("%s/%s", BASE_URL, actionUrl);
+            String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
             //生成参数
-            String params = paramsMap.toString();
-            Log.e(TAG, "params ----->" + params);
+            //String params = paramsMap.toString();
             //创建一个请求实体对象 RequestBody
             RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, params);
             //创建一个请求
@@ -207,10 +206,10 @@ public class RequestManager {
             //请求执行成功
             if (response.isSuccessful()) {
                 //获取返回数据 可以是String，bytes ,byteStream
-                Log.e(TAG, "response ----->" + response.body().string());
+                LogUtils.e("response ----->" + response.body().string());
             }
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            LogUtils.e(e.toString());
         }
     }
 
@@ -230,7 +229,7 @@ public class RequestManager {
             //生成表单实体对象
             RequestBody formBody = builder.build();
             //补全请求地址
-            String requestUrl = String.format("%s/%s", BASE_URL, actionUrl);
+            String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
             //创建一个请求
             final Request request = addHeaders().url(requestUrl).post(formBody).build();
             //创建一个Call
@@ -238,10 +237,10 @@ public class RequestManager {
             //执行请求
             Response response = call.execute();
             if (response.isSuccessful()) {
-                Log.e(TAG, "response ----->" + response.body().string());
+                LogUtils.e("response ----->" + response.body().string());
             }
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            LogUtils.e(e.toString());
         }
     }
 
@@ -287,21 +286,21 @@ public class RequestManager {
                 tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
                 pos++;
             }
-            String requestUrl = String.format("%s/%s?%s", BASE_URL, actionUrl, tempParams.toString());
+            String requestUrl = String.format("%s/%s?%s", URLContentUtils.BASE_URL, actionUrl, tempParams.toString());
             final Request request = addHeaders().url(requestUrl).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     failedCallBack("访问失败", callBack);
-                    Log.e(TAG, e.toString());
+                    LogUtils.e(e.toString());
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
                         String string = response.body().string();
-                        Log.e(TAG, "response ----->" + string);
+                        LogUtils.e("response ----->" + string);
                         successCallBack((T) string, callBack);
                     } else {
                         failedCallBack("服务器错误", callBack);
@@ -310,7 +309,7 @@ public class RequestManager {
             });
             return call;
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            LogUtils.e(e.toString());
         }
         return null;
     }
@@ -347,7 +346,7 @@ public class RequestManager {
             String params = JSON.toJSONString(paramsMap);
 
             RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, params);
-            String requestUrl = String.format("%s/%s", BASE_URL, actionUrl);
+            String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
 
             final Request request = addHeaders().url(requestUrl).post(body).build();
             final Call call = mOkHttpClient.newCall(request);
@@ -355,14 +354,14 @@ public class RequestManager {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     failedCallBack("访问失败", callBack);
-                    Log.e(TAG, e.toString());
+                    LogUtils.e(e.toString());
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
                         String string = response.body().string();
-                        Log.e(TAG, "response ----->" + string);
+                        LogUtils.e("response ----->" + string);
                         successCallBack((T) string, callBack);
                     } else {
                         failedCallBack("服务器错误", callBack);
@@ -371,7 +370,7 @@ public class RequestManager {
             });
             return call;
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            LogUtils.e(e.toString());
         }
         return null;
     }
@@ -391,21 +390,21 @@ public class RequestManager {
                 builder.add(key, paramsMap.get(key));
             }
             RequestBody formBody = builder.build();
-            String requestUrl = String.format("%s/%s", BASE_URL, actionUrl);
+            String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
             final Request request = addHeaders().url(requestUrl).post(formBody).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     failedCallBack("访问失败", callBack);
-                    Log.e(TAG, e.toString());
+                    LogUtils.e(e.toString());
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
                         String string = response.body().string();
-                        Log.e(TAG, "response ----->" + string);
+                        LogUtils.e("response ----->" + string);
                         successCallBack((T) string, callBack);
                     } else {
                         failedCallBack("服务器错误", callBack);
@@ -414,7 +413,7 @@ public class RequestManager {
             });
             return call;
         } catch (Exception e) {
-            Log.e(TAG, e.toString());
+            LogUtils.e(e.toString());
         }
         return null;
     }
