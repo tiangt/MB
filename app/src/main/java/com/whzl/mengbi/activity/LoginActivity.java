@@ -68,7 +68,7 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
         setContentView(R.layout.activity_login_layout);
         initView();
         initToolBar();
-       if(BaseAppliaction.getInstance().isIslogin()){
+       if(!BaseAppliaction.getInstance().isIslogin()){
            visitorLogin();
        }
     }
