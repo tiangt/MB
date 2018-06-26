@@ -3,12 +3,13 @@ package com.whzl.mengbi.network;
 import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.BuildConfig;
-import com.whzl.mengbi.util.EncryptUtil;
+import com.whzl.mengbi.application.BaseAppliaction;
+import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -34,8 +35,8 @@ public class RequestManager {
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final String TAG = RequestManager.class.getSimpleName();
-    private static final String APPKEY ="mb_client";
-    private static final String APPSECRET ="dw602yw1um9yrosi0t5gd03tuzsymnv2";
+    private static final String APPKEY ="mb_android";
+    private static final String APPSECRET ="3b2d8c0d1d88d44f1ef99b015caa5fe4";
 
     private static volatile RequestManager mInstance;//单利引用
     public static final int TYPE_GET = 0;//get请求
@@ -58,7 +59,7 @@ public class RequestManager {
 
         for (int i = 0; i < key_array.size(); i++) {
             String this_key = key_array.get(i);
-            String this_value = params_map.get(this_key);
+            String this_value = String.valueOf(params_map.get(this_key));
             String sub_param = this_key + "=" + this_value;
             if (i != key_array.size() - 1) {
                 sub_param = sub_param + "&";
@@ -66,7 +67,7 @@ public class RequestManager {
             params = params + sub_param;
         }
         try {
-            sign =EncryptUtil.md5Hex(URLEncoder.encode(params, "UTF-8"));
+            sign = EncryptUtils.md5Hex(URLEncoder.encode(params, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -172,7 +173,6 @@ public class RequestManager {
             paramsMap.put("appKey",APPKEY);
             paramsMap.put("timestamp", new Date().getTime() / 1000 + "");
             paramsMap.put("appSecret",APPSECRET);
-            paramsMap.put("sessionId","");
             paramsMap.put("clientType","mb_client");
             paramsMap.put("clientVersion", BuildConfig.VERSION_CODE+"");
 
@@ -182,7 +182,7 @@ public class RequestManager {
 //                if (pos > 0) {
 //                    tempParams.append("&");
 //                }
-//                tempParams.append(String.format("%s=%s", key, EncryptUtil.md5Hex(URLEncoder.encode(paramsMap.get(key), "utf-8"))));
+//                tempParams.append(String.format("%s=%s", key, EncryptUtils.md5Hex(URLEncoder.encode(paramsMap.get(key), "utf-8"))));
 //                pos++;
 //            }
 //
@@ -328,7 +328,11 @@ public class RequestManager {
             paramsMap.put("appKey",APPKEY);
             paramsMap.put("timestamp", new Date().getTime() / 1000 + "");
             paramsMap.put("appSecret",APPSECRET);
-            paramsMap.put("sessionId","");
+            if(paramsMap.get("sessionId")!=null){
+                paramsMap.put("sessionId", BaseAppliaction.getInstance().getSessionId());
+            }else{
+                paramsMap.put("sessionId", "");
+            }
             paramsMap.put("clientType","mb_client");
             paramsMap.put("clientVersion", BuildConfig.VERSION_CODE+"");
 //            StringBuilder tempParams = new StringBuilder();

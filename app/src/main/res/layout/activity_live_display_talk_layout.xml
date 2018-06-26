@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/font_color_white">
+
+    <EditText
+        android:id="@+id/live_display_talk_message"
+        android:layout_width="@dimen/x242"
+        android:layout_height="@dimen/y18"
+        android:layout_marginTop="@dimen/x5"
+        android:hint=""
+        android:background="@drawable/live_display_talk_rounded_edittextt"/>
+    <ImageView
+        android:id="@+id/live_display_talk_face"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y18"
+        android:layout_marginTop="@dimen/x5"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/live_display_talk_brow"
+        android:background="@drawable/live_display_talk_face_imageview"
+        android:layout_toRightOf="@id/live_display_talk_message"/>
+    <Button
+        android:id="@+id/live_display_talk_send_message"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y18"
+        android:layout_marginTop="@dimen/x5"
+        android:text="@string/live_display_talk_send"
+        android:textColor="@color/textview"
+        android:layout_toRightOf="@id/live_display_talk_face"
+        android:background="@drawable/live_display_talk_rounded_button"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/live_display_talk_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/x5"
+        android:layout_below="@id/live_display_talk_message">
+    </android.support.v7.widget.RecyclerView>
+</RelativeLayout>

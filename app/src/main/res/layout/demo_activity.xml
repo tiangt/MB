@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="18dp">
+
+    <LinearLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Demo类型："
+                android:textColor="@color/at_message_readed"
+                android:background="@color/addMore_bg_color"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/demo_type"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:text="none"
+                android:textSize="14sp"></Spinner>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/rtmpTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:text="RTMP服务器地址："
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/rtmpUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rtmp://hostForStreamPush/live/mystream?preset=mypreset" />
+
+        <Button
+            android:id="@+id/connectBT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="准备直播" />
+
+        <LinearLayout
+            android:id="@+id/fragment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -3,10 +3,7 @@ package com.whzl.mengbi.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,10 +18,11 @@ import com.whzl.mengbi.activity.base.BaseAtivity;
 import com.whzl.mengbi.bean.ResultBean;
 import com.whzl.mengbi.network.RequestManager;
 import com.whzl.mengbi.network.URLContentUtils;
-import com.whzl.mengbi.util.EncryptUtil;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.RegexUtil;
+import com.whzl.mengbi.util.RegexUtils;
 import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.widget.view.GenericToolbar;
 
 import java.util.HashMap;
 
@@ -73,14 +71,10 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_layoyut);
         mContext = this;
-        Toolbar mLoginToolbar = (Toolbar) findViewById(R.id.register_toolbar);
-        mLoginToolbar.setTitle("");
-        mLoginToolbar.setNavigationIcon(R.mipmap.ic_login_return);
-        setSupportActionBar(mLoginToolbar);
-        ActionBar actionBar=getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
         initView();
+        initToolBar();
     }
+
 
     private void initView() {
         regexUserNameEt = (EditText) findViewById(R.id.register_user_name);
@@ -100,7 +94,26 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
         regexUserBut.setOnClickListener(this);
     }
 
-
+    public void  initToolBar(){
+        new GenericToolbar.Builder(this)
+                .addTitleText("注册",22f)// 标题文本
+                .setBackgroundColorResource(R.color.colorPrimary)// 背景颜色
+                .addLeftIcon(1, R.mipmap.ic_login_return, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                })// 响应左部图标的点击事件
+                .addRightText(3, "登录", 22f, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent mIntent = new Intent(RegisterActivity.this,LoginActivity.class);
+                        startActivity(mIntent);
+                    }
+                })// 响应右部文本的点击事件
+                .setTextColor(getResources().getColor(R.color.colorPrimaryDark))// 会全局设置字体的颜色, 自定义标题除外
+                .apply();
+    }
 
     @Override
     public void onClick(View v) {
@@ -116,7 +129,7 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
                         new RequestManager.ReqCallBack<Object>() {
                             @Override
                             public void onReqSuccess(Object result) {
-                                ResultBean resultBean=  new Gson().fromJson(result.toString(),ResultBean.class);
+                                ResultBean resultBean=  GsonUtils.GsonToBean(result.toString(),ResultBean.class);
                                 if(resultBean.getCode()!=200){
                                     ToastUtils.showToast(resultBean.getMsg());
                                 }
@@ -127,7 +140,7 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
                                 LogUtils.d("errorMsg"+errorMsg.toString());
                             }
                         });
-                if(!TextUtils.isEmpty(userName)|| RegexUtil.isMobile(userName)){
+                if(!TextUtils.isEmpty(userName)|| RegexUtils.isMobile(userName)){
                     cdt = new CountDownTimer(60000,1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
@@ -154,7 +167,7 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
                             new RequestManager.ReqCallBack<Object>() {
                                 @Override
                                 public void onReqSuccess(Object result) {
-                                    ResultBean resultBean=  new Gson().fromJson(result.toString(),ResultBean.class);
+                                    ResultBean resultBean=  GsonUtils.GsonToBean(result.toString(),ResultBean.class);
                                     if(resultBean.getCode()==RequestManager.RESULT_CODE){
                                         ToastUtils.showToast(resultBean.getMsg());
                                         Intent mIntent = new Intent(mContext,LoginActivity.class);
@@ -174,7 +187,6 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
                 break;
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -7,22 +7,6 @@
     android:orientation="vertical"
     tools:context=".activity.LoginActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/login_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/user_longin_textview"
-            android:textColor="@color/rv_item_nickname"
-            android:textSize="24sp" />
-    </android.support.v7.widget.Toolbar>
-
     <ImageView
         android:id="@+id/login_mengbi_logo"
         android:layout_width="wrap_content"
@@ -30,8 +14,7 @@
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@mipmap/ic_footer_logo"
-        app:layout_constraintTop_toBottomOf="@id/login_toolbar"/>
+        android:background="@mipmap/ic_footer_logo"/>
 
     <EditText
         android:id="@+id/login_user_name"
@@ -39,7 +22,7 @@
         android:layout_height="54dp"
         android:layout_marginTop="83dp"
         android:textSize="22sp"
-        android:background="@drawable/rounded_edittext"
+        android:background="@drawable/home_rounded_edittext"
         android:hint="@string/user_phone_editetxt"
         android:drawableLeft="@mipmap/ic_login_phone"
         android:drawablePadding="10dp"
@@ -53,7 +36,7 @@
         android:layout_height="54dp"
         android:layout_marginTop="21dp"
         android:textSize="22sp"
-        android:background="@drawable/rounded_edittext"
+        android:background="@drawable/home_rounded_edittext"
         android:hint="@string/user_password_editetxt"
         android:inputType="textPassword"
         android:drawableLeft="@mipmap/ic_login_lock"
@@ -69,7 +52,7 @@
         android:layout_marginTop="44dp"
         android:text="@string/user_longin_button"
         android:textColor="@color/rv_item_nickname"
-        android:background="@drawable/rounded_button"
+        android:background="@drawable/home_rounded_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_user_password"/>

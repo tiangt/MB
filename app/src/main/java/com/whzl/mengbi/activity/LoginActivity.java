@@ -3,13 +3,10 @@ package com.whzl.mengbi.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -18,16 +15,17 @@ import com.google.gson.Gson;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.activity.base.BaseAtivity;
 import com.whzl.mengbi.application.BaseAppliaction;
-import com.whzl.mengbi.bean.ResultBean;
+import com.whzl.mengbi.bean.UserBean;
 import com.whzl.mengbi.bean.VisitorUserBean;
 import com.whzl.mengbi.network.RequestManager;
 import com.whzl.mengbi.network.URLContentUtils;
 import com.whzl.mengbi.util.DeviceUtils;
-import com.whzl.mengbi.util.EncryptUtil;
+import com.whzl.mengbi.util.EncryptUtils;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.RegexUtil;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.widget.view.GenericToolbar;
 
 import java.util.HashMap;
 
@@ -46,6 +44,7 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
      */
     private EditText longinUserPassword;
     private String userPassword;
+
     /**
      * 登录按钮
      */
@@ -62,19 +61,16 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
      * 匿名用户信息
      */
     private VisitorUserBean visitorUserBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_layout);
         initView();
-        Toolbar mLoginToolbar = (Toolbar) findViewById(R.id.login_toolbar);
-        mLoginToolbar.setTitle("");
-        mLoginToolbar.setNavigationIcon(R.mipmap.ic_login_return);
-        setSupportActionBar(mLoginToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if(BaseAppliaction.getInstance().getUserId()==0){
-            //visitorLogin();
-        }
+        initToolBar();
+       if(BaseAppliaction.getInstance().isIslogin()){
+           visitorLogin();
+       }
     }
 
     private void initView(){
@@ -88,6 +84,27 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
         weixinUserLoginIv.setOnClickListener(this);
     }
 
+    public void  initToolBar(){
+        new GenericToolbar.Builder(this)
+                .addTitleText("登录",22f)// 标题文本
+                .setBackgroundColorResource(R.color.colorPrimary)// 背景颜色
+                .addLeftIcon(1, R.mipmap.ic_login_return, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                })// 响应左部图标的点击事件
+                .addRightText(3, "注册", 22f, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent mTntent = new Intent(LoginActivity.this,RegisterActivity.class);
+                        startActivityForResult(mTntent,0);
+                    }
+                })// 响应右部文本的点击事件
+                .setTextColor(getResources().getColor(R.color.colorPrimaryDark))// 会全局设置字体的颜色, 自定义标题除外
+                .apply();
+    }
+
     @Override
     public void onClick(View v) {
         userName = longinUserName.getText().toString().trim();
@@ -97,19 +114,21 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
                 //用户登录
                 HashMap paramsMap = new HashMap();
                 paramsMap.put("username",userName);
-                String pass= EncryptUtil.md5Hex(userPassword);
+                String pass= EncryptUtils.md5Hex(userPassword);
                 paramsMap.put("password",pass);
                 paramsMap.put("platform","ANDROID");
                 RequestManager.getInstance(this).requestAsyn(URLContentUtils.USER_NORMAL_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
                         new RequestManager.ReqCallBack<Object>() {
                             @Override
                             public void onReqSuccess(Object result) {
-                                ResultBean resultBean=  new Gson().fromJson(result.toString(),ResultBean.class);
-                                if (resultBean.getCode()==200){
+                                UserBean userBean=  GsonUtils.GsonToBean(result.toString(),UserBean.class);
+                                if (userBean.getCode()==200){
+                                    BaseAppliaction.getInstance().setUserId(userBean.getData().getUserId());
+                                    BaseAppliaction.getInstance().setSessionId(userBean.getData().getSessionId());
                                     Intent mIntent = new Intent(LoginActivity.this,HomeActivity.class);
                                     startActivity(mIntent);
                                 }else{
-                                    ToastUtils.showToast(resultBean.getMsg());
+                                    ToastUtils.showToast(userBean.getMsg());
                                 }
                             }
 
@@ -124,6 +143,9 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
                 break;
             case R.id.login_weixin_login:
                 ToastUtils.showToast("暂未开放");
+            case 3://标题注册跳转
+                Intent mTntent = new Intent(this,RegisterActivity.class);
+                startActivityForResult(mTntent,0);
                 break;
              default:
                  break;
@@ -144,9 +166,18 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
                         String strJson = result.toString();
                         visitorUserBean = new Gson().fromJson(strJson,VisitorUserBean.class);
                         if(visitorUserBean.getCode()==200){
+                            //保存匿名登录用户信息
+                            BaseAppliaction.getInstance().setUserId(visitorUserBean.getData().getUserId());
+                            BaseAppliaction.getInstance().setSessionId(visitorUserBean.getData().getSessionId());
+                            BaseAppliaction.getInstance().setIslogin(false);
+                            SPUtils.put(LoginActivity.this,"sessionId",visitorUserBean.getData().getSessionId());
+                            SPUtils.put(LoginActivity.this,"userId",visitorUserBean.getData().getUserId());
+                            SPUtils.put(LoginActivity.this,"nickname",visitorUserBean.getData().getNickname());
+                            if(userPassword!=null){
+                                SPUtils.put(LoginActivity.this,"password",userPassword);
+                            }
                             Intent mIntent = new Intent(LoginActivity.this,HomeActivity.class);
                             startActivity(mIntent);
-                            saveUserInfo(visitorUserBean);
                         }
                     }
 
@@ -155,14 +186,6 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
                         LogUtils.e("onReqFailed"+errorMsg.toString());
                     }
                 });
-    }
-
-    /**
-     * 保存用户名
-     * @param visitorUser
-     */
-    private void saveUserInfo(VisitorUserBean visitorUser){
-        SPUtils.put(this,"username",visitorUser.getData().getNickname()+"");
     }
 
     @Override

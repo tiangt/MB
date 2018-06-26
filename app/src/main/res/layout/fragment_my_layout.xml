@@ -1,10 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragemengt.home.MyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:id="@+id/account_center_head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y94"
+        android:background="@color/font_color_46">
 
-</FrameLayout>
+        <com.whzl.mengbi.widget.view.CircleImageView
+            android:id="@+id/account_center_usereditor"
+            android:layout_width="@dimen/x16"
+            android:layout_height="@dimen/y12"
+            android:layout_marginRight="@dimen/x16"
+            android:background="@color/font_color_12"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"/>
+
+        <com.whzl.mengbi.widget.view.CircleImageView
+            android:id="@+id/account_center_user_img"
+            android:layout_width="@dimen/x59"
+            android:layout_height="@dimen/y42"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/account_center_usereditor"
+            android:background="@color/font_color_28"/>
+
+        <TextView
+            android:id="@+id/account_center_user_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/textview"
+            android:layout_below="@id/account_center_user_img"
+            android:text="用户昵称用户昵称"/>
+
+        <ImageView
+            android:layout_width="@dimen/x17"
+            android:layout_height="@dimen/y7"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/account_center_user_img"
+            android:layout_toRightOf="@id/account_center_user_nickname"
+            android:background="@mipmap/usergrade1"/>
+
+        <TextView
+            android:id="@+id/account_center_sprout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/textview"
+            android:layout_below="@id/account_center_user_nickname"
+            android:text="萌号：17236623"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/account_center_body_layout"
+        android:layout_width="match_parent"
+        android:layout_height="116dp"
+        android:background="@color/font_color_white"
+        android:layout_below="@id/account_center_head_layout">
+
+        <ImageView
+            android:id="@+id/account_center_gold_img"
+            android:layout_width="@dimen/x20"
+            android:layout_height="@dimen/y15"
+            android:layout_marginTop="@dimen/y3"
+            android:layout_marginLeft="@dimen/x46"
+            android:layout_marginBottom="@dimen/y3"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/ic_live_display_gift_gold"/>
+
+        <TextView
+            android:id="@+id/account_center_gold_count"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y10"
+            android:layout_marginLeft="@dimen/x40"
+            android:layout_centerVertical="true"
+            android:text="90000"
+            android:textColor="@color/font_color_20"
+            android:layout_below="@id/account_center_gold_img"/>
+
+        <View
+            android:id="@+id/account_center_view1"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/y25"
+            android:layout_marginTop="@dimen/y3"
+            android:layout_marginLeft="@dimen/x46"
+            android:layout_marginBottom="@dimen/y3"
+            android:layout_centerVertical="true"
+            android:background="@color/font_color_12"
+            android:layout_gravity="center_horizontal"
+            android:layout_toRightOf="@id/account_center_gold_img"/>
+
+        <ImageView
+            android:id="@+id/account_center_goldbean_img"
+            android:layout_width="@dimen/x20"
+            android:layout_height="@dimen/y15"
+            android:layout_marginTop="@dimen/y3"
+            android:layout_marginLeft="@dimen/x46"
+            android:layout_marginBottom="@dimen/y3"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/account_center_view1"
+            android:background="@mipmap/ic_live_display_gift_gold" />
+
+        <TextView
+            android:id="@+id/account_center_goldbean_count"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y10"
+            android:layout_marginLeft="@dimen/x46"
+            android:layout_centerVertical="true"
+            android:text="0"
+            android:textColor="@color/font_color_20"
+            android:layout_toRightOf="@id/account_center_view1"
+            android:layout_below="@id/account_center_goldbean_img"/>
+
+        <View
+            android:id="@+id/account_center_view2"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/y25"
+            android:layout_marginTop="@dimen/y3"
+            android:layout_marginLeft="@dimen/x46"
+            android:layout_marginBottom="@dimen/y3"
+            android:layout_centerVertical="true"
+            android:background="@color/font_color_12"
+            android:layout_gravity="center_horizontal"
+            android:layout_toRightOf="@id/account_center_goldbean_img"/>
+
+        <Button
+            android:id="@+id/account_center_recharge_but"
+            android:layout_width="@dimen/x62"
+            android:layout_height="@dimen/y18"
+            android:layout_marginTop="@dimen/y9"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginRight="@dimen/x24"
+            android:layout_marginBottom="@dimen/y9"
+            android:layout_centerVertical="true"
+            android:textColor="@color/textview"
+            android:layout_toRightOf="@id/account_center_view2"
+            android:background="@drawable/account_center_recharge_button"
+            android:text="@string/account_center_recharge"/>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/account_center_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y5"
+        android:layout_below="@id/account_center_body_layout"
+        android:background="@color/font_color_12"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/font_color_white"
+        android:layout_below="@id/account_center_line">
+
+        <Button
+            android:id="@+id/account_center_myfollow_but"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y28"
+            android:layout_marginLeft="@dimen/x16"
+            android:gravity="center_vertical"
+            android:text="@string/account_center_myfollow"
+            android:background="@color/font_color_white"/>
+
+        <Button
+            android:id="@+id/account_center_watchrecord_but"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y28"
+            android:layout_marginLeft="@dimen/x16"
+            android:gravity="center_vertical"
+            android:text="@string/account_center_watchrecord"
+            android:background="@color/font_color_white"
+            android:layout_below="@id/account_center_myfollow_but"/>
+
+        <Button
+            android:id="@+id/account_center_settings_but"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y28"
+            android:layout_marginLeft="@dimen/x16"
+            android:gravity="center_vertical"
+            android:text="@string/account_center_settings"
+            android:background="@color/font_color_white"
+            android:layout_below="@id/account_center_watchrecord_but"/>
+
+    </RelativeLayout>
+</RelativeLayout>

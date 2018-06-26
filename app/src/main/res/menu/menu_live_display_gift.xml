@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_live_display_gfit_recommend"
+        android:title="@string/live_display_gfit_recommend"
+
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_ive_display_gift_lucky"
+        android:title="@string/live_display_gift_lucky"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/item_live_display_gift_normal"
+        android:title="@string/live_display_gift_normal"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/item_live_display_gift_luxuryn"
+        android:title="@string/live_display_gift_luxury"
+        app:showAsAction="always"/>
+</menu>

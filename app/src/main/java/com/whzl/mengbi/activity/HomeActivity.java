@@ -5,32 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.google.gson.Gson;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.activity.base.BaseAtivity;
-import com.whzl.mengbi.bean.BannerBean;
-import com.whzl.mengbi.network.RequestManager;
-import com.whzl.mengbi.network.URLContentUtils;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.view.fragemengt.home.FollowFragment;
 import com.whzl.mengbi.view.fragemengt.home.HomeFragment;
 import com.whzl.mengbi.view.fragemengt.home.MyFragment;
 import com.whzl.mengbi.widget.BottomNavigationViewHelper;
-import com.whzl.mengbi.glide.GlideImageLoader;
 import com.whzl.mengbi.adapter.ViewPagerAdapter;
-import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * funcciton 创建首页所有的fragment,以及fragment
@@ -43,24 +28,13 @@ public class HomeActivity extends BaseAtivity {
     private ViewPager viewPager;
     private MenuItem menuItem;
     private BottomNavigationView bottomNavigationView;
-
-    /**
-     * fragment相关
-     */
-    private HomeFragment mHomeFragment ;
-    private FollowFragment mFollowFragment ;
-    private MyFragment mMyFragment ;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_layout);
         //实例化控件
         initView();
-
-        Toolbar mToolbar = (Toolbar)findViewById(R.id.home_toolbar);
-        mToolbar.setTitle("");
-        setSupportActionBar(mToolbar);
     }
 
 
@@ -119,13 +93,11 @@ public class HomeActivity extends BaseAtivity {
                 return true;
             }
         });
-
         setupViewPager(viewPager);
     }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
         adapter.addFragment(HomeFragment.newInstance("首页"));
         adapter.addFragment(FollowFragment.newInstance("关注"));
         adapter.addFragment(MyFragment.newInstance("我的"));

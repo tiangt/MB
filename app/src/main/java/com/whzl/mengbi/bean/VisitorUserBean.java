@@ -2,6 +2,16 @@ package com.whzl.mengbi.bean;
 
 public class VisitorUserBean {
 
+    private static VisitorUserBean instace = null;
+
+    public VisitorUserBean(){
+        instace = this;
+    }
+
+    public static VisitorUserBean getInstace(){
+        return instace;
+    }
+
     private int code;
     private String msg;
     private DataBean data;

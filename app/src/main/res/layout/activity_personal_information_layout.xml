@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.PersonalInformationActivity">
+
+    <RelativeLayout
+        android:id="@+id/personal_information_head_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y36"
+        android:background="@color/font_color_white">
+        <com.whzl.mengbi.widget.view.CircleImageView
+            android:id="@+id/personal_information_head_img"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/y28"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="36dp"/>
+
+        <Button
+            android:id="@+id/personal_information_head_but"
+            android:layout_width="@dimen/x26"
+            android:layout_height="@dimen/y9"
+            android:layout_alignParentRight="true"
+            android:text="@string/personal_information_profile_photo" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/personal_information_sprount_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y29"
+        android:layout_below="@id/personal_information_head_layout">
+        <TextView
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/y9"
+            android:layout_marginLeft="@dimen/x16"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:text="@string/personal_information_sprout"/>
+        <TextView
+            android:layout_width="57dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="36dp"
+            android:layout_alignParentRight="true"
+            android:text=""/>
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/personal_information_nickname_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y29"
+        android:layout_below="@id/personal_information_sprount_layout">
+        <TextView
+            android:id="@+id/personal_information_nickname_text"
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/y9"
+            android:layout_marginLeft="@dimen/x16"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:text="@string/personal_information_nickname"/>
+
+        <TextView
+            android:id="@+id/personal_information_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:text="萌友13023332" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/personal_information_sex_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y29"
+        android:layout_below="@id/personal_information_nickname_layout">
+        <TextView
+            android:id="@+id/personal_information_sex_text"
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/y9"
+            android:layout_marginLeft="@dimen/x16"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:text="@string/personal_information_sex"/>
+
+        <TextView
+            android:id="@+id/personal_information_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:text="女" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/personal_information_address_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y29"
+        android:layout_below="@id/personal_information_sex_layout">
+        <TextView
+            android:id="@+id/personal_information_address_text"
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/y9"
+            android:layout_marginLeft="@dimen/x16"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:text="@string/personal_information_address"/>
+
+        <TextView
+            android:id="@+id/personal_information_address"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:text="女" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/personal_information_birthday_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y29"
+        android:layout_below="@id/personal_information_address_layout">
+        <TextView
+            android:id="@+id/personal_information_birthday_text"
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/y9"
+            android:layout_marginLeft="@dimen/x16"
+            android:layout_alignParentLeft="true"
+            android:textStyle="bold"
+            android:text="@string/personal_information_birthday"/>
+
+        <TextView
+            android:id="@+id/personal_information_birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_alignParentRight="true"
+            android:text="女" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/personal_information_userlevel_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y29"
+        android:layout_below="@id/personal_information_birthday_layout">
+        <TextView
+            android:id="@+id/personal_information_userlevel_text"
+            android:layout_width="@dimen/x52"
+            android:layout_height="@dimen/y9"
+            android:layout_marginLeft="@dimen/x16"
+            android:textStyle="bold"
+            android:text="@string/personal_information_anchorlevel"/>
+        <TextView
+            android:id="@+id/personal_information_userlevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x16"
+            android:layout_below="@id/personal_information_userlevel_text"
+            android:text="离升级还差232323主播经验"/>
+        <ImageView
+            android:id="@+id/personal_information_userleve_img"
+            android:layout_width="@dimen/x20"
+            android:layout_height="@dimen/y10"
+            android:layout_marginRight="@dimen/x14"
+            android:background="@color/font_color_28"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/personal_information_anchorlevel_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/y29"
+        android:layout_below="@id/personal_information_userlevel_layout">
+        <TextView
+            android:id="@+id/personal_information_anchorlevel_text"
+            android:layout_width="@dimen/x52"
+            android:layout_height="@dimen/y9"
+            android:layout_marginLeft="@dimen/x16"
+            android:textStyle="bold"
+            android:text="@string/personal_information_anchorlevel"/>
+        <TextView
+            android:id="@+id/personal_information_anchorlevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x16"
+            android:layout_below="@id/personal_information_anchorlevel_text"
+            android:text="离升级还差232323富豪经验"/>
+        <ImageView
+            android:id="@+id/personal_information_anchorlevel_img"
+            android:layout_width="@dimen/x20"
+            android:layout_height="@dimen/y10"
+            android:layout_marginRight="@dimen/x14"
+            android:background="@color/font_color_28"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>

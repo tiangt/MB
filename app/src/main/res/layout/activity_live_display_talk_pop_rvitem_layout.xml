@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y19"
+    android:background="@color/font_color_white">
+
+    <ImageView
+        android:id="@+id/live_display_talk_rvitme_face"
+        android:layout_width="@dimen/x36"
+        android:layout_height="@dimen/y19"/>
+
+</RelativeLayout>
