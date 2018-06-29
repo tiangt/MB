@@ -17,7 +17,7 @@
         android:layout_height="@dimen/y18"
         android:layout_marginTop="@dimen/x5"
         android:adjustViewBounds="true"
-        android:src="@mipmap/live_display_talk_brow"
+        android:src="@drawable/live_display_talk_brow"
         android:background="@drawable/live_display_talk_face_imageview"
         android:layout_toRightOf="@id/live_display_talk_message"/>
     <Button

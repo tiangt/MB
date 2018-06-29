@@ -34,7 +34,7 @@
                     android:layout_height="23dp"
                     android:layout_alignBottom="@+id/home_rvitem_cover"
                     android:layout_toRightOf="@+id/home_rvitem_anchorNickname"
-                    android:background="@mipmap/ic_home_watch_status"
+                    android:background="@drawable/ic_home_watch_status"
                     android:textColor="@color/rv_item_nickname" />
 
                 <TextView

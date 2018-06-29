@@ -1,18 +1,12 @@
 package com.whzl.mengbi.chat.room;
 
-import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.whzl.mengbi.R;
 import com.whzl.mengbi.application.BaseAppliaction;
 
-import com.whzl.mengbi.bean.VisitorUserBean;
+import com.whzl.mengbi.bean.LiveRoomTokenBean;
 import com.whzl.mengbi.chat.client.ErrorCallback;
 import com.whzl.mengbi.chat.client.IConnectCallback;
 import com.whzl.mengbi.chat.client.MbChatClient;
@@ -24,8 +18,6 @@ import com.whzl.mengbi.chat.room.message.ChatOutMsg;
 import com.whzl.mengbi.chat.room.message.LoginMessage;
 
 import com.whzl.mengbi.chat.room.message.MessageRouter;
-import com.whzl.mengbi.chat.room.responses.EnterUserInfo;
-import com.whzl.mengbi.chat.room.responses.GuardInfo;
 import com.whzl.mengbi.util.SPUtils;
 
 import java.util.ArrayList;
@@ -38,23 +30,10 @@ public class ChatRoomPresenterImpl{
     private IConnectCallback connectCallback;
     private ErrorCallback errorCallback;
     private MessageCallback messageCallback;
-    //private IChatRoom iChatRoom;
     private Gson gson;
-    //private ChatToStatus chatToStatus;
-    private List<GuardInfo> guardInfoList;
-    private boolean canIPriChat;
+    private LiveRoomTokenBean liveRoomTokenBean;
 
-    //private String token = ChatRoomInfo.getCheckEnterData() == null ? "" : ChatRoomInfo.getCheckEnterData().getToken();
-
-//    public ChatRoomPresenterImpl(IChatRoom iChatRoom) {
-//        this.iChatRoom = iChatRoom;
-//        gson = new MbJsonParserImpl();
-//        chatToStatus = new ChatToStatus(iChatRoom);
-//
-//        EventBus.getDefault().register(this);
-//    }
-
-    public boolean canIprivateChat(EnterUserInfo userInfo) {
+//    public boolean canIprivateChat(EnterUserInfo userInfo) {
 //        if (!EnvironmentBridge.getUserInfoBridge().isLogin()) {
 //            return false;
 //        }
@@ -63,39 +42,39 @@ public class ChatRoomPresenterImpl{
 //            return true;
 //        }
 
-        if (userInfo.getData().getIsGuard() == 1) {
-            return true;
-        }
-
-        for (EnterUserInfo.DataEntity.LevelListEntity item : userInfo.getData().getLevelList()) {
-            if (item.getLevelType().equals("ROYAL_LEVEL")) {
-                return true;
-            }
-        }
-
-        for (EnterUserInfo.DataEntity.LevelListEntity item : userInfo.getData().getLevelList()) {
-            if (item.getLevelType().equals("USER_LEVEL")) {
-                int levelValue = item.getLevelValue();
-                if (levelValue > 5) {
-                    return true;
-                }
-            }
-        }
+//        if (userInfo.getData().getIsGuard() == 1) {
+//            return true;
+//        }
+//
+//        for (EnterUserInfo.DataEntity.LevelListEntity item : userInfo.getData().getLevelList()) {
+//            if (item.getLevelType().equals("ROYAL_LEVEL")) {
+//                return true;
+//            }
+//        }
+//
+//        for (EnterUserInfo.DataEntity.LevelListEntity item : userInfo.getData().getLevelList()) {
+//            if (item.getLevelType().equals("USER_LEVEL")) {
+//                int levelValue = item.getLevelValue();
+//                if (levelValue > 5) {
+//                    return true;
+//                }
+//            }
+//        }
 
 //        if (AudienceView.identity == 40 || AudienceView.identity == 41) {
 //            return true;
 //        }
-        return false;
-    }
+//        return false;
+//  }
 
-    public void setupConnection(int programId,String token,List<ServerAddr> serverAddrList) {
+    public void setupConnection() {
         MbSocketFactory socketFactory = new MbSocketFactory();
         connectCallback = new IConnectCallback() {
             @Override
             public void onConnectSuccess(String domain) {
                 Log.d(TAG, "连接成功");
                 if(domain!=null){
-                    chatLogin(domain,programId,token);
+                    chatLogin(domain);
                     Log.d(TAG,"chatLogin");
                 }
 
@@ -121,7 +100,7 @@ public class ChatRoomPresenterImpl{
         client.setConnectCallback(connectCallback);
         client.setmMessageCallback(messageCallback);
 
-        client.connectWithServerList(serverAddrList);
+        client.connectWithServerList(getServerList());
     }
 
     /**
@@ -129,24 +108,32 @@ public class ChatRoomPresenterImpl{
      *
      * @param domain
      */
-    public void chatLogin(String domain,int programId,String token) {
+    public void chatLogin(String domain) {
         LoginMessage message;
-        message = new LoginMessage(programId+"",
-                domain, BaseAppliaction.getInstance().getUserId(),token);
+        boolean islogin = (Boolean) SPUtils.get(BaseAppliaction.getInstance(),"islogin",false);
+        if(islogin){
+            message = new LoginMessage(liveRoomTokenBean.getData().getProgramId()+"",
+                    domain,liveRoomTokenBean.getData().getUserId(),liveRoomTokenBean.getData().getToken());
+        }else{
+            String programId = SPUtils.get(BaseAppliaction.getInstance(),"programId","0").toString();
+            int userId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"userId",0).toString());
+            String nickname = SPUtils.get(BaseAppliaction.getInstance(),"nickname","0").toString();
+            message = new LoginMessage(programId,domain,userId,nickname);
+        }
         client.send(message);
     }
 
     private List<ServerAddr> getServerList() {
         List<ServerAddr> list = new ArrayList<>();
-//        if (ChatRoomInfo.getCheckEnterData() == null) {
-//            Log.e(TAG, "CheckEnterRoom getServerList getCheckEnterData=null");
-//        }else {
-//            Log.e(TAG, "CheckEnterRoom getServerList getCheckEnterData!=null");
-//            for (CheckEnterRoom.RoomServerListItem item : ChatRoomInfo.getCheckEnterData().getRoomServerList()) {
-//                ServerAddr addr = new ServerAddr(item.getServerDomain(), item.getDataPort());
-//                list.add(addr);
-//            }
-//        }
+        if (liveRoomTokenBean.getData().getRoomServerList() == null) {
+            Log.e(TAG, "CheckEnterRoom getServerList getRoomServerList=null");
+        }else {
+            Log.e(TAG, "CheckEnterRoom getServerList getRoomServerList!=null");
+            for (LiveRoomTokenBean.DataBean.RoomServerListBean lrtb:liveRoomTokenBean.getData().getRoomServerList()) {
+                ServerAddr addr = new ServerAddr(lrtb.getServerDomain(),lrtb.getDataPort());
+                list.add(addr);
+            }
+        }
         return list;
     }
 
@@ -156,7 +143,8 @@ public class ChatRoomPresenterImpl{
     }
 
 
-    public void sendMessage(String message,int ProgramId ) {
+    public void sendMessage(String message) {
+
 //        if (!EnvironmentBridge.getUserInfoBridge().isLogin()) {
 //            if (message.length() > 5) {
 //                iChatRoom.showWarning("游客最多发言5个字");
@@ -182,20 +170,19 @@ public class ChatRoomPresenterImpl{
 //        if (toNickname.equals("所有人")) {
 //            toNickname = "";
 //        }
-
 //        int toId = chatToStatus.getToUser().getUid();
-//        if (chatToStatus.getChatType() == ChatToStatus.ChatType.PRIVATE_CHAT) {
-//            msg = new ChatOutMsg(message, ChatRoomInfo.getProgramId() + "",
-//                    client.getCurrentDomain(), EnvironmentBridge.getUserInfoBridge().getUserId() + "",
-//                    EnvironmentBridge.getUserInfoBridge().getNickName(), toId + "", toNickname, "private");
-//        } else {
-//            msg = new ChatOutMsg(message, ChatRoomInfo.getProgramId() + "",
-//                    client.getCurrentDomain(), EnvironmentBridge.getUserInfoBridge().getUserId() + "",
-//                    EnvironmentBridge.getUserInfoBridge().getNickName(), toId + "", toNickname, "common");
-//        }
-
-        msg = new ChatOutMsg(message,ProgramId+"",client.getCurrentDomain(),VisitorUserBean.getInstace().getData().getUserId()+"",
-                VisitorUserBean.getInstace().getData().getNickname(),"0","0","common");
+        boolean islogin = (Boolean) SPUtils.get(BaseAppliaction.getInstance(),"islogin",false);
+        if(islogin){
+            msg = new ChatOutMsg(message,liveRoomTokenBean.getData().getProgramId()+"",client.getCurrentDomain(),
+                    liveRoomTokenBean.getData().getUserId()+"",liveRoomTokenBean.getData().getToken()
+                    ,"0","0","common");
+        }else{
+            int programId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"programId",0).toString());
+            int userId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"userId",0).toString());
+            String nickname = SPUtils.get(BaseAppliaction.getInstance(),"nickname","0").toString();
+            msg = new ChatOutMsg(message,programId+"",client.getCurrentDomain(),userId+"",nickname
+                    ,"0","0","common");
+        }
         client.send(msg);
     }
 
@@ -244,6 +231,4 @@ public class ChatRoomPresenterImpl{
 //    public ChatToStatus getChatToStatus() {
 //        return chatToStatus;
 //    }
-
-    
 }

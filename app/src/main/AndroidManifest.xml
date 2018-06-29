@@ -26,11 +26,14 @@
     <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" />
     <uses-permission android:name="android.permission.INSTALL_FAILED_USER_RESTRICTED" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".application.BaseAppliaction"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_footer_logo"
+        android:icon="@drawable/ic_footer_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -38,7 +41,7 @@
         <activity
             android:name=".activity.HomeActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTop"
@@ -54,7 +57,7 @@
             android:launchMode="singleTop" />
         <activity
             android:name=".activity.LiveDisplayActivity"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop" />
 
         <!-- 金山云直播 -->
         <activity
@@ -127,7 +130,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
             android:theme="@style/Theme.RiseAnimation" />
-        <activity android:name=".activity.PersonalInformationActivity"></activity>
+        <activity android:name=".activity.PersonalInformationActivity" />
+        <activity android:name=".activity.camera.CameraActivity"></activity>
     </application>
 
 </manifest>

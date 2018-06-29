@@ -49,7 +49,8 @@ public abstract class BaseHandler extends Handler {
      * 抽象方法用户实现,用来处理具体的业务逻辑
      *
      * @param msg
-     * @param what {@link BaseHandler}
+     * @param what
+     * {@link BaseHandler}
      */
     public abstract void handleMessage(Message msg, int what);
 

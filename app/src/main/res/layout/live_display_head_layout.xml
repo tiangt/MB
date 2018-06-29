@@ -43,7 +43,7 @@
                 android:layout_width="@dimen/x29"
                 android:layout_height="@dimen/y20"
                 android:layout_alignParentRight="true"
-                android:background="@mipmap/ic_live_follow"/>
+                android:background="@drawable/ic_live_follow"/>
 
         </RelativeLayout>
 
@@ -65,7 +65,7 @@
             android:layout_marginLeft="@dimen/x14"
             android:layout_marginTop="@dimen/y5"
             android:textColor="@color/textview"
-            android:drawableRight="@mipmap/live_display_arrow"
+            android:drawableRight="@drawable/live_display_arrow"
             android:layout_below="@id/live_display_head2_layout"
             android:background="@drawable/live_display_rounded_button"
             android:text="@string/live_display_contribution" />
@@ -78,6 +78,6 @@
             android:layout_marginBottom="@dimen/y2"
             android:layout_below="@id/live_display_head2_layout"
             android:layout_alignParentRight="true"
-            android:background="@mipmap/ic_live_display_close"/>
+            android:background="@drawable/ic_live_display_close"/>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

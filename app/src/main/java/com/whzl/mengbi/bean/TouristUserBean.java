@@ -1,36 +1,8 @@
 package com.whzl.mengbi.bean;
 
-public class VisitorUserBean {
+public class TouristUserBean extends ResponseBean{
 
-    private static VisitorUserBean instace = null;
-
-    public VisitorUserBean(){
-        instace = this;
-    }
-
-    public static VisitorUserBean getInstace(){
-        return instace;
-    }
-
-    private int code;
-    private String msg;
     private DataBean data;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 
     public DataBean getData() {
         return data;
@@ -72,9 +44,7 @@ public class VisitorUserBean {
 
     @Override
     public String toString() {
-        return "VisitorUserBean{" +
-                "code=" + code +
-                ", msg='" + msg + '\'' +
+        return "TouristUserBean{" +
                 ", data=" + data +
                 '}';
     }

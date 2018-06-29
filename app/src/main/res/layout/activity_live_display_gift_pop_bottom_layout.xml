@@ -20,12 +20,6 @@
         android:layout_height="2dp"
         android:layout_below="@id/live_display_bottom_navigation"/>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/live_display_gift_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        android:layout_below="@id/live_display_gift_view"
-    </android.support.v4.view.ViewPager>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/live_display_gift_rv"
@@ -38,7 +32,7 @@
         android:id="@+id/live_display_gift_view2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y1"
-        android:layout_below="@id/live_display_gift_viewpager"/>
+        android:layout_below="@id/live_display_gift_rv"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -50,7 +44,7 @@
             android:layout_width="@dimen/x16"
             android:layout_height="@dimen/y18"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_live_display_gift_gold"/>
+            android:src="@drawable/ic_live_display_gift_gold"/>
         <TextView
             android:id="@+id/live_display_gift_count"
             android:layout_width="@dimen/x50"

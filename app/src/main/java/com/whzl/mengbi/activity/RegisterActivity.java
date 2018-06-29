@@ -1,9 +1,12 @@
 package com.whzl.mengbi.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,18 +15,22 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.activity.base.BaseAtivity;
-import com.whzl.mengbi.bean.ResultBean;
+import com.whzl.mengbi.bean.RegisterBean;
 import com.whzl.mengbi.network.RequestManager;
 import com.whzl.mengbi.network.URLContentUtils;
+import com.whzl.mengbi.thread.RegisterRegexCodeThread;
+import com.whzl.mengbi.thread.RegisterThread;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.RegexUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.widget.view.GenericToolbar;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 /**
@@ -56,11 +63,16 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
      * 注册
      */
     private Button regexUserBut;
+    private RegisterBean registerBean;
+    private RegisterThread registerThread;
+    private RegisterHandler registerHandler = new RegisterHandler(this);
 
     /**
      * 获取验证码定时器
      */
     private CountDownTimer cdt;
+    private RegisterRegexCodeThread regexCodeThread;
+    private RegisterRegexCodeHandler regexCodeHandler = new RegisterRegexCodeHandler(this);
 
     private String userName;
     private String valiDataCode;
@@ -98,7 +110,7 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
         new GenericToolbar.Builder(this)
                 .addTitleText("注册",22f)// 标题文本
                 .setBackgroundColorResource(R.color.colorPrimary)// 背景颜色
-                .addLeftIcon(1, R.mipmap.ic_login_return, new View.OnClickListener() {
+                .addLeftIcon(1, R.drawable.ic_login_return, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         finish();
@@ -125,36 +137,8 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
             case R.id.register_identifying_code:
                 HashMap paramsMapMobile = new HashMap();
                 paramsMapMobile.put("mobile",userName);
-                RequestManager.getInstance(mContext).requestAsyn(URLContentUtils.SEND_CODE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
-                        new RequestManager.ReqCallBack<Object>() {
-                            @Override
-                            public void onReqSuccess(Object result) {
-                                ResultBean resultBean=  GsonUtils.GsonToBean(result.toString(),ResultBean.class);
-                                if(resultBean.getCode()!=200){
-                                    ToastUtils.showToast(resultBean.getMsg());
-                                }
-                            }
-
-                            @Override
-                            public void onReqFailed(String errorMsg) {
-                                LogUtils.d("errorMsg"+errorMsg.toString());
-                            }
-                        });
-                if(!TextUtils.isEmpty(userName)|| RegexUtils.isMobile(userName)){
-                    cdt = new CountDownTimer(60000,1000) {
-                        @Override
-                        public void onTick(long millisUntilFinished) {
-                            regexCodeBut.setText(millisUntilFinished/1000+"秒");
-                        }
-                        @Override
-                        public void onFinish() {
-                            regexCodeBut.setEnabled(true);
-                            regexCodeBut.setText("获取验证码");
-                        }
-                    };
-                    cdt.start();
-                    regexCodeBut.setEnabled(false);
-                }
+                regexCodeThread = new RegisterRegexCodeThread(this,paramsMapMobile,regexCodeHandler);
+                regexCodeThread.start();
                 break;
             //注册登录
             case R.id.register_user:
@@ -163,28 +147,77 @@ public class RegisterActivity extends BaseAtivity implements View.OnClickListene
                     paramsMap.put("password",userPassWord);
                     paramsMap.put("code",valiDataCode);
                     paramsMap.put("username",userName);
-                    RequestManager.getInstance(this).requestAsyn(URLContentUtils.REGISTER, RequestManager.TYPE_POST_JSON, paramsMap,
-                            new RequestManager.ReqCallBack<Object>() {
-                                @Override
-                                public void onReqSuccess(Object result) {
-                                    ResultBean resultBean=  GsonUtils.GsonToBean(result.toString(),ResultBean.class);
-                                    if(resultBean.getCode()==RequestManager.RESULT_CODE){
-                                        ToastUtils.showToast(resultBean.getMsg());
-                                        Intent mIntent = new Intent(mContext,LoginActivity.class);
-                                        mIntent.putExtra("userName",userName);
-                                        setResult(1,mIntent);
-                                        finish();
-                                    }else{
-                                        ToastUtils.showToast(resultBean.getMsg());
-                                    }
-                                }
-
-                                @Override
-                                public void onReqFailed(String errorMsg) {
-
-                                }
-                            });
+                    registerThread = new RegisterThread(this,paramsMap,registerHandler);
+                    registerThread.start();
                 break;
+        }
+    }
+
+    /**
+     * 获取短信验证码
+     */
+    private static class RegisterRegexCodeHandler extends Handler{
+
+        private final WeakReference<Activity> activityWeakReference;
+
+        RegisterRegexCodeHandler(Activity activity){
+            activityWeakReference = new WeakReference<Activity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            RegisterActivity registerActivity = (RegisterActivity) activityWeakReference.get();
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    if(!TextUtils.isEmpty(registerActivity.userName)|| RegexUtils.isMobile(registerActivity.userName)){
+                        registerActivity.cdt = new CountDownTimer(60000,1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                registerActivity.regexCodeBut.setText(millisUntilFinished/1000+"秒");
+                            }
+                            @Override
+                            public void onFinish() {
+                                registerActivity.regexCodeBut.setEnabled(true);
+                                registerActivity.regexCodeBut.setText("获取验证码");
+                            }
+                        };
+                        registerActivity.cdt.start();
+                        registerActivity.regexCodeBut.setEnabled(false);
+                    }
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 注册
+     */
+    private static class RegisterHandler extends Handler{
+
+        private final WeakReference<Activity> activityWeakReference;
+
+        RegisterHandler(Activity activity){
+            activityWeakReference = new WeakReference<Activity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            RegisterActivity registerActivity = (RegisterActivity)activityWeakReference.get();
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    if(registerActivity.registerBean.getCode()==RequestManager.RESPONSE_CODE){
+                        ToastUtils.showToast(registerActivity.registerBean.getMsg());
+                        Intent mIntent = new Intent(registerActivity.mContext,LoginActivity.class);
+                        mIntent.putExtra("userName",registerActivity.userName);
+                        registerActivity.setResult(1,mIntent);
+                        registerActivity.finish();
+                    }else{
+                        ToastUtils.showToast(registerActivity.registerBean.getMsg());
+                    }
+                    break;
+            }
         }
     }
 

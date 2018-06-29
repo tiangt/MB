@@ -42,7 +42,7 @@ public class RequestManager {
     public static final int TYPE_GET = 0;//get请求
     public static final int TYPE_POST_JSON = 1;//post请求参数为json
     public static final int TYPE_POST_FORM = 2;//post请求参数为表单
-    public static final int RESULT_CODE=200;//响应成功标识码
+    public static final int RESPONSE_CODE=200;//响应成功标识码
     private OkHttpClient mOkHttpClient;//okHttpClient 实例
     private Handler okHttpHandler;//全局处理子线程和M主线程通信
 
@@ -325,11 +325,13 @@ public class RequestManager {
     private <T> Call requestPostByAsyn(String actionUrl, HashMap<String, String> paramsMap, final ReqCallBack<T> callBack) {
         try {
 
+
+
             paramsMap.put("appKey",APPKEY);
             paramsMap.put("timestamp", new Date().getTime() / 1000 + "");
             paramsMap.put("appSecret",APPSECRET);
             if(paramsMap.get("sessionId")!=null){
-                paramsMap.put("sessionId", BaseAppliaction.getInstance().getSessionId());
+                paramsMap.put("sessionId","");
             }else{
                 paramsMap.put("sessionId", "");
             }

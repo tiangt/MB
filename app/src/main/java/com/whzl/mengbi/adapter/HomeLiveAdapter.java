@@ -11,21 +11,22 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.bean.LiveShowBean;
+import com.whzl.mengbi.bean.LiveShowListBean;
 import com.whzl.mengbi.glide.GlideImageLoader;
 
 import java.util.List;
 
 public class HomeLiveAdapter extends RecyclerView.Adapter<HomeLiveAdapter.ViewHolder>{
 
-        private List<LiveShowBean.DataBean.ListBean> mData;
+        private List<LiveShowListBean> mData;
         private Context mContext;
 
-        public HomeLiveAdapter ( Context mContext,List<LiveShowBean.DataBean.ListBean> mData){
+        public HomeLiveAdapter ( Context mContext,List<LiveShowListBean> mData){
             this.mContext = mContext;
             this.mData = mData;
         }
 
-        public void updateData(List<LiveShowBean.DataBean.ListBean> data) {
+        public void updateData(List<LiveShowListBean> data) {
                 this.mData = data;
             notifyDataSetChanged();
         }
@@ -43,7 +44,7 @@ public class HomeLiveAdapter extends RecyclerView.Adapter<HomeLiveAdapter.ViewHo
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             if (mData.get(position).getStatus().equals("T")){
-                GlideImageLoader.getInstace().displayImage(mContext,R.mipmap.ic_home_live_middle,holder.item_status_iv);
+                GlideImageLoader.getInstace().displayImage(mContext,R.drawable.ic_home_live_middle,holder.item_status_iv);
             }
              GlideImageLoader.getInstace().displayImage(mContext,mData.get(position).getCover(),holder.item_cover_iv);
              holder.item_anchorNickname_tv.setText(mData.get(position).getAnchorLevelName());

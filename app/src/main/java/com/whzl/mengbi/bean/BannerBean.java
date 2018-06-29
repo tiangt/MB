@@ -2,27 +2,9 @@ package com.whzl.mengbi.bean;
 
 import java.util.List;
 
-public class BannerBean {
+public class BannerBean extends ResponseBean{
 
-    private int code;
-    private String msg;
     private DataBean data;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 
     public DataBean getData() {
         return data;
@@ -114,8 +96,6 @@ public class BannerBean {
     @Override
     public String toString() {
         return "BannerBean{" +
-                "code=" + code +
-                ", msg='" + msg + '\'' +
                 ", data=" + data +
                 '}';
     }

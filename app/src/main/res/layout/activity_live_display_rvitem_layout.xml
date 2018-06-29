@@ -27,5 +27,5 @@
         android:layout_height="@dimen/y9"
         android:layout_below="@id/live_display_rvitem_gift_name"
         android:layout_toRightOf="@id/live_display_rvitem_gift_rent"
-        android:src="@mipmap/ic_live_display_gift_gold"/>
+        android:src="@drawable/ic_live_display_gift_gold"/>
 </RelativeLayout>

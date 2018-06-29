@@ -1,6 +1,7 @@
 package com.whzl.mengbi.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +12,8 @@ import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.activity.base.BaseAtivity;
+import com.whzl.mengbi.application.BaseAppliaction;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.view.fragemengt.home.FollowFragment;
 import com.whzl.mengbi.view.fragemengt.home.HomeFragment;
 import com.whzl.mengbi.view.fragemengt.home.MyFragment;
@@ -48,16 +51,32 @@ public class HomeActivity extends BaseAtivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        boolean islogin = (boolean)SPUtils.get(HomeActivity.this,"islogin",false);
                         switch (item.getItemId()) {
                             case R.id.item_home:
-                                item.setIcon(R.mipmap.ic_home_bottom_checked);
+                                item.setIcon(R.drawable.ic_home_bottom_checked);
                                 viewPager.setCurrentItem(0);
                                 break;
                             case R.id.item_follow:
-                                viewPager.setCurrentItem(1);
+                                if(islogin){
+                                    viewPager.setCurrentItem(1);
+                                }else{
+                                    Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
+                                    mIntent.putExtra("touristFlag","0");
+                                    finish();
+                                    startActivity(mIntent);
+                                }
                                 break;
                             case R.id.item_my:
-                                viewPager.setCurrentItem(2);
+                                if(islogin){
+                                    item.setIcon(R.drawable.mechance);
+                                    viewPager.setCurrentItem(2);
+                                }else{
+                                    Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
+                                    mIntent.putExtra("touristFlag","0");
+                                    finish();
+                                    startActivity(mIntent);
+                                }
                                 break;
                         }
                         return false;

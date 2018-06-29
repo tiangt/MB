@@ -1,9 +1,12 @@
 package com.whzl.mengbi.activity;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -45,7 +48,9 @@ import com.whzl.mengbi.eventbus.EventCode;
 import com.whzl.mengbi.glide.GlideImageLoader;
 import com.whzl.mengbi.network.RequestManager;
 import com.whzl.mengbi.network.URLContentUtils;
+import com.whzl.mengbi.thread.LiveChatRoomTokenThread;
 import com.whzl.mengbi.util.FileUtils;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
 
 import com.whzl.mengbi.widget.BottomNavigationViewHelper;
@@ -56,6 +61,7 @@ import com.whzl.mengbi.widget.view.CircleImageView;
 import com.whzl.mengbi.widget.view.CustomPopWindow;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,7 +87,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
     /**
      *
      */
-    private int mProgramId=0;
+    private int mProgramId;
     private String mAnchorNickName;
     private int mRoomUserCount;
     private String mCover;
@@ -124,13 +130,14 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
     private Button sendMessageBut;
     private RecyclerView mTalkRecyclerView;
     private CommonAdapter mTalkCommonAdapter;
+
     private EditText talkEditText;
-    private List<ServerAddr> serverAddrList = new ArrayList<>();
     private ChatRoomPresenterImpl chatRoomPresenter;
-    private LiveRoomTokenBean liveRoomTokenBean;
     private CommonAdapter mMessageAdapter;
     private RecyclerView mMessageRecyclerView;
     private List mMessageData = new ArrayList();
+    private LiveChatRoomTokenThread liveChatRoomTokenThread;
+    private LiveChatRoomTokenHandler liveChatRoomTokenHandler = new LiveChatRoomTokenHandler(this);
 
 
     @Override
@@ -141,6 +148,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
         mContext = this;
         if(getIntent()!=null){
             mProgramId = getIntent().getIntExtra("ProgramId",-1);
+            SPUtils.put(mContext,"programId",mProgramId);
             mAnchorNickName = getIntent().getStringExtra("AnchorNickname");
             mRoomUserCount = getIntent().getIntExtra("RoomUserCount",-1);
             mCover = getIntent().getStringExtra("Cover");
@@ -248,7 +256,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
             @Override
             public void onReqSuccess(Object result) {
                 String strJson = result.toString();
-                GiftBean giftBean = new Gson().fromJson(strJson,GiftBean.class);
+                GiftBean giftBean = GsonUtils.GsonToBean(strJson,GiftBean.class);
                 if(giftBean.getCode()==200){
                     giftRecommendList.addAll(giftBean.getData().get推荐());
                     giftLuckyList.addAll(giftBean.getData().get幸运());
@@ -398,7 +406,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 String mes = talkEditText.getEditableText().toString().trim();
-                chatRoomPresenter.sendMessage(mes,mProgramId);
+                chatRoomPresenter.sendMessage(mes);
                 talkEditText.setText("");
             }
         });
@@ -410,7 +418,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
     public void readFaceData(){
         String fileName = "images/face/face.json";
         String strJson= FileUtils.getJson(fileName,mContext);
-        EmjoyBean emjoyBean = new Gson().fromJson(strJson,EmjoyBean.class);
+        EmjoyBean emjoyBean = GsonUtils.GsonToBean(strJson,EmjoyBean.class);
         mFaceData.addAll(emjoyBean.getFace().getPublicX());
     }
 
@@ -418,44 +426,18 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
      * 获取直播间token
      */
     public void getLiveRoomToken(){
-
-        Object userId = SPUtils.get(mContext,"userId",0);
+        int userId = (Integer) SPUtils.get(mContext,"userId",0);
+        String sessionId = SPUtils.get(mContext,"sessionId","0").toString();
         HashMap map = new HashMap();
         map.put("userId",userId);
         map.put("programId",mProgramId);
-        map.put("sessionId", BaseAppliaction.getInstance().getSessionId());
-        RequestManager.getInstance(mContext).requestAsyn(URLContentUtils.CHECK_ENTERR_ROOM, RequestManager.TYPE_POST_JSON, map, new RequestManager.ReqCallBack<Object>() {
-            @Override
-            public void onReqSuccess(Object result) {
-                liveRoomTokenBean = new Gson().fromJson(result.toString(),LiveRoomTokenBean.class);
-                if(liveRoomTokenBean.getCode()==200){
-                    for (LiveRoomTokenBean.DataBean.RoomServerListBean l:liveRoomTokenBean.getData().getRoomServerList()){
-                        ServerAddr sa= new ServerAddr(l.getServerDomain(),l.getDataPort());
-                        serverAddrList.add(sa);
-                    }
-                    new Thread(new LiveRoomTalk()).start();
-                }
-            }
-
-            @Override
-            public void onReqFailed(String errorMsg) {
-
-            }
-        });
+        map.put("sessionId", sessionId);
+        liveChatRoomTokenThread = new LiveChatRoomTokenThread(this,map,liveChatRoomTokenHandler);
+        liveChatRoomTokenThread.start();
     }
 
-   public  class LiveRoomTalk implements Runnable{
-        @Override
-        public void run() {
-            if(BaseAppliaction.getInstance().isIslogin()){
-                String token = liveRoomTokenBean.getData().getToken();
-                chatRoomPresenter.setupConnection(mProgramId,token,serverAddrList);
-            }else{
-                Object nickname = SPUtils.get(mContext,"nickname","");
-                chatRoomPresenter.setupConnection(mProgramId,nickname.toString(),serverAddrList);
-            }
-        }
-    }
+
+
 
     @Override
     protected void receiveEvent(EventBusBean event) {
@@ -563,6 +545,33 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
         return spannableString;
     }
 
+    /**
+     * 获取直播间TokenHandler
+     */
+    private static class LiveChatRoomTokenHandler extends Handler{
+
+        private final WeakReference<Activity> activityWeakReference;
+
+        LiveChatRoomTokenHandler(Activity activity){
+            activityWeakReference = new WeakReference<Activity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            LiveDisplayActivity liveDisplayActivity = (LiveDisplayActivity) activityWeakReference.get();
+            switch (msg.what){
+                case 1:
+                    //LiveRoomTokenBean liveRoomTokenBean = (LiveRoomTokenBean) msg.obj;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            liveDisplayActivity.chatRoomPresenter.setupConnection();
+                        }
+                    }).start();
+            }
+        }
+    }
+
     @Override
     protected boolean isRegisterEventBus() {
         return true;
@@ -571,11 +580,14 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        if(chatRoomPresenter!=null){
+            //chatRoomPresenter.disconnectChat();
+        }
+
         if (mMasterPlayer != null)
             mMasterPlayer.release();
             mMasterPlayer = null;
-          if(chatRoomPresenter!=null){
-              chatRoomPresenter.disconnectChat();
-          }
         }
+
 }

@@ -17,7 +17,7 @@
             android:layout_width="@dimen/x16"
             android:layout_height="@dimen/y12"
             android:layout_marginRight="@dimen/x16"
-            android:background="@color/font_color_12"
+            android:background="@drawable/edit"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"/>
 
@@ -26,8 +26,7 @@
             android:layout_width="@dimen/x59"
             android:layout_height="@dimen/y42"
             android:layout_centerInParent="true"
-            android:layout_below="@id/account_center_usereditor"
-            android:background="@color/font_color_28"/>
+            android:layout_below="@id/account_center_usereditor"/>
 
         <TextView
             android:id="@+id/account_center_user_nickname"
@@ -35,16 +34,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/textview"
-            android:layout_below="@id/account_center_user_img"
-            android:text="用户昵称用户昵称"/>
+            android:layout_below="@id/account_center_user_img"/>
 
         <ImageView
             android:layout_width="@dimen/x17"
             android:layout_height="@dimen/y7"
             android:layout_centerInParent="true"
             android:layout_below="@id/account_center_user_img"
-            android:layout_toRightOf="@id/account_center_user_nickname"
-            android:background="@mipmap/usergrade1"/>
+            android:layout_toRightOf="@id/account_center_user_nickname"/>
 
         <TextView
             android:id="@+id/account_center_sprout"
@@ -52,8 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/textview"
-            android:layout_below="@id/account_center_user_nickname"
-            android:text="萌号：17236623"/>
+            android:layout_below="@id/account_center_user_nickname"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -71,7 +67,7 @@
             android:layout_marginLeft="@dimen/x46"
             android:layout_marginBottom="@dimen/y3"
             android:layout_centerVertical="true"
-            android:background="@mipmap/ic_live_display_gift_gold"/>
+            android:background="@drawable/mengbi"/>
 
         <TextView
             android:id="@+id/account_center_gold_count"
@@ -79,7 +75,6 @@
             android:layout_height="@dimen/y10"
             android:layout_marginLeft="@dimen/x40"
             android:layout_centerVertical="true"
-            android:text="90000"
             android:textColor="@color/font_color_20"
             android:layout_below="@id/account_center_gold_img"/>
 
@@ -104,7 +99,7 @@
             android:layout_marginBottom="@dimen/y3"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/account_center_view1"
-            android:background="@mipmap/ic_live_display_gift_gold" />
+            android:background="@drawable/mengdian"/>
 
         <TextView
             android:id="@+id/account_center_goldbean_count"
@@ -112,7 +107,6 @@
             android:layout_height="@dimen/y10"
             android:layout_marginLeft="@dimen/x46"
             android:layout_centerVertical="true"
-            android:text="0"
             android:textColor="@color/font_color_20"
             android:layout_toRightOf="@id/account_center_view1"
             android:layout_below="@id/account_center_goldbean_img"/>
@@ -152,9 +146,10 @@
         android:layout_below="@id/account_center_body_layout"
         android:background="@color/font_color_12"/>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:background="@color/font_color_white"
         android:layout_below="@id/account_center_line">
 
@@ -163,29 +158,49 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/y28"
             android:layout_marginLeft="@dimen/x16"
+            android:drawablePadding="@dimen/x10"
+            android:paddingRight="@dimen/x15"
+            android:drawableLeft="@drawable/mefollow"
+            android:drawableRight="@drawable/arrowright"
             android:gravity="center_vertical"
             android:text="@string/account_center_myfollow"
             android:background="@color/font_color_white"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y1"
+            android:background="@color/font_color_12"/>
         <Button
             android:id="@+id/account_center_watchrecord_but"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y28"
             android:layout_marginLeft="@dimen/x16"
+            android:drawablePadding="@dimen/y10"
+            android:paddingRight="@dimen/x15"
+            android:drawableLeft="@drawable/watchrecord"
+            android:drawableRight="@drawable/arrowright"
             android:gravity="center_vertical"
             android:text="@string/account_center_watchrecord"
-            android:background="@color/font_color_white"
-            android:layout_below="@id/account_center_myfollow_but"/>
-
+            android:background="@color/font_color_white"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y1"
+            android:background="@color/font_color_12"/>
         <Button
             android:id="@+id/account_center_settings_but"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y28"
             android:layout_marginLeft="@dimen/x16"
+            android:drawablePadding="@dimen/y10"
+            android:paddingRight="@dimen/x15"
+            android:drawableLeft="@drawable/settings"
+            android:drawableRight="@drawable/arrowright"
             android:gravity="center_vertical"
             android:text="@string/account_center_settings"
-            android:background="@color/font_color_white"
-            android:layout_below="@id/account_center_watchrecord_but"/>
-
-    </RelativeLayout>
+            android:background="@color/font_color_white"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y1"
+            android:background="@color/font_color_12"/>
+    </LinearLayout>
 </RelativeLayout>

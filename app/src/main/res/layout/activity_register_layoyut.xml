@@ -13,7 +13,7 @@
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@mipmap/ic_footer_logo"/>
+        android:background="@drawable/ic_footer_logo"/>
 
     <EditText
         android:id="@+id/register_user_name"
@@ -22,7 +22,7 @@
         android:layout_marginTop="34dp"
         android:textSize="22sp"
         android:background="@drawable/home_rounded_edittext"
-        android:drawableLeft="@mipmap/ic_login_phone"
+        android:drawableLeft="@drawable/ic_login_phone"
         android:drawablePadding="10dp"
         android:hint="@string/register_phone_editetxt"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
         android:layout_height="54dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/home_rounded_edittext"
-        android:drawableLeft="@mipmap/ic_register_email"
+        android:drawableLeft="@drawable/ic_register_email"
         android:drawablePadding="10dp"
         android:hint="@string/register_identifying_code_editext"
         android:textSize="22sp"
@@ -63,7 +63,7 @@
         android:textSize="22sp"
         android:inputType="textPassword"
         android:background="@drawable/home_rounded_edittext"
-        android:drawableLeft="@mipmap/ic_login_lock"
+        android:drawableLeft="@drawable/ic_login_lock"
         android:drawablePadding="10dp"
         android:hint="@string/register_password_editetxt"
         app:layout_constraintStart_toStartOf="parent"

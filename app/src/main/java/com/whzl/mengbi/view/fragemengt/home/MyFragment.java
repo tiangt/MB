@@ -1,10 +1,10 @@
 package com.whzl.mengbi.view.fragemengt.home;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.activity.LoginActivity;
 import com.whzl.mengbi.activity.PersonalInformationActivity;
-import com.whzl.mengbi.activity.RegisterActivity;
 import com.whzl.mengbi.application.BaseAppliaction;
 import com.whzl.mengbi.bean.UserBean;
 import com.whzl.mengbi.glide.GlideImageLoader;
-import com.whzl.mengbi.network.RequestManager;
-import com.whzl.mengbi.network.URLContentUtils;
-import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.thread.MeThread;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.view.fragemengt.BaseFragement;
 import com.whzl.mengbi.widget.view.CircleImageView;
-import com.whzl.mengbi.widget.view.GenericToolbar;
 
-import org.w3c.dom.Text;
-
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
 
@@ -44,9 +38,10 @@ public class MyFragment extends BaseFragement implements View.OnClickListener{
     private Button mMyFollowBut;
     private Button mWatchRecordBut;
     private Button mSettingsBut;
+    public  UserBean mUserBean;
 
-    private UserBean mUserBean;
-
+    private MeThread meThread;
+    private final MeHandler meHandler = new MeHandler(this);
 
     public static MyFragment newInstance(String info) {
         Bundle args = new Bundle();
@@ -66,28 +61,9 @@ public class MyFragment extends BaseFragement implements View.OnClickListener{
                              Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.fragment_my_layout,null);
         initData();
-        initToolBar();
         initView(mView);
         return mView;
     }
-
-    /**
-     * 实例化标题栏
-     */
-    public void  initToolBar(){
-        new GenericToolbar.Builder(mContext)
-                .addTitleText("账户中心",22f)// 标题文本
-                .setBackgroundColorResource(R.color.colorPrimary)// 背景颜色
-                .addLeftIcon(1, R.mipmap.ic_login_return, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        getFragmentManager().popBackStack();
-                    }
-                })// 响应左部图标的点击事件
-                .setTextColor(getResources().getColor(R.color.colorPrimaryDark))// 会全局设置字体的颜色, 自定义标题除外
-                .apply();
-    }
-
 
     /**
      *实例化控件
@@ -105,11 +81,6 @@ public class MyFragment extends BaseFragement implements View.OnClickListener{
         mSettingsBut = (Button) contentView.findViewById(R.id.account_center_settings_but);
 
         mUserEditorImg.setOnClickListener(this);
-        GlideImageLoader.getInstace().displayImage(mContext,mUserBean.getData().getAvatar(),mUserCircleImageView);
-        mNickNameText.setText(mUserBean.getData().getNickname());
-        mSproutText.setText(mUserBean.getData().getUserId());
-        mGoldText.setText(mUserBean.getData().getWealth().getCoin());
-        mGoldBeanText.setText(mUserBean.getData().getWealth().getChengPonit());
     }
 
     /**
@@ -117,28 +88,54 @@ public class MyFragment extends BaseFragement implements View.OnClickListener{
      */
     public  void  initData(){
         HashMap paramsMap = new HashMap();
-        paramsMap.put("userId", BaseAppliaction.getInstance().getUserId());
-        RequestManager.getInstance(mContext).requestAsyn(URLContentUtils.GET_USER_INFO,RequestManager.TYPE_POST_JSON,paramsMap,
-                new RequestManager.ReqCallBack(){
-            @Override
-            public void onReqSuccess(Object result) {
-                mUserBean = GsonUtils.GsonToBean(result.toString(),UserBean.class);
-            }
-
-            @Override
-            public void onReqFailed(String errorMsg) {
-                LogUtils.d("onReqFailed"+errorMsg);
-            }
-        });
+        int userId = (Integer) SPUtils.get(mContext,"userId",0);
+        paramsMap.put("userId",userId);
+        meThread = new MeThread(mContext,paramsMap,meHandler);
+        meThread.start();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.account_center_usereditor:
+            case R.id.account_center_usereditor://编辑
                 Intent mUserEditorIntent = new Intent(mContext, PersonalInformationActivity.class);
                 startActivity(mUserEditorIntent);
                 break;
         }
+    }
+
+
+    /**
+     为避免handler造成的内存泄漏
+     1、使用静态的handler，对外部类不保持对象的引用
+     2、但Handler需要与Activity通信，所以需要增加一个对Activity的弱引用
+     */
+    private static class MeHandler extends Handler{
+        private final WeakReference<Fragment> mFragmentWeakReference;
+        MeHandler(Fragment fragment) {
+            this.mFragmentWeakReference = new WeakReference<Fragment>(fragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            MyFragment myFragment = (MyFragment)mFragmentWeakReference.get();
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 1:
+                    UserBean mUserBean = (UserBean)msg.obj;
+                    if(mUserBean!=null){
+                        GlideImageLoader.getInstace().displayImage(myFragment.mContext,mUserBean.getData().getAvatar(),myFragment.mUserCircleImageView);
+                        myFragment.mNickNameText.setText(mUserBean.getData().getNickname());
+                        myFragment.mSproutText.setText(mUserBean.getData().getUserId()+"");
+                        myFragment.mGoldText.setText(mUserBean.getData().getWealth().getCoin()+"");
+                        myFragment.mGoldBeanText.setText(mUserBean.getData().getWealth().getChengPonit()+"");
+                    }
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -1,12 +1,9 @@
 package com.whzl.mengbi.bean;
 
-public class ResultBean {
+public class ResponseBean {
 
     private int code;
     private String msg;
-    private DataBean data;
-
-
 
     public int getCode() {
         return code;
@@ -24,23 +21,11 @@ public class ResultBean {
         this.msg = msg;
     }
 
-    public DataBean getData() {
-        return data;
-    }
-
-    public void setData(DataBean data) {
-        this.data = data;
-    }
-
-    public static class DataBean {
-    }
-
     @Override
     public String toString() {
         return "ResultBean{" +
                 "code=" + code +
                 ", msg='" + msg + '\'' +
-                ", data=" + data +
                 '}';
     }
 }

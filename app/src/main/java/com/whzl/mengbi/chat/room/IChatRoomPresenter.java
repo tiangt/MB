@@ -2,8 +2,6 @@ package com.whzl.mengbi.chat.room;
 
 import android.widget.LinearLayout;
 
-import com.whzl.mengbi.chat.room.responses.EnterUserInfo;
-
 
 /**
  * Created by qishui on 15/5/25.
@@ -12,7 +10,7 @@ public interface IChatRoomPresenter {
     /**
      * 设置聊天连接
      */
-    void setupConnection(int programId,String token);
+    void setupConnection(String token);
 
     /**
      * 断开聊天服务器
@@ -51,7 +49,7 @@ public interface IChatRoomPresenter {
      * 查询自己是否能私聊
      * @return 是否能私聊
      */
-    boolean canIprivateChat(EnterUserInfo userInfo);
+    //boolean canIprivateChat(EnterUserInfo userInfo);
 
     void sendBroadCast(String content);
 

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/toolbar_action1"
-        android:icon="@mipmap/ic_login_return"
+        android:icon="@drawable/ic_login_return"
         android:title="Action"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/toolbar_action2"
-        android:icon="@mipmap/ic_login_return"
+        android:icon="@drawable/ic_login_return"
         android:title="Action"
         app:showAsAction="never"/>
 

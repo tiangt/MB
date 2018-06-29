@@ -13,14 +13,6 @@ public class BaseAppliaction extends Application{
 
     private static BaseAppliaction instace = null;
 
-    private int userId = 0;
-
-    private  String sessionId;
-
-    private String token;
-
-    private boolean islogin = false;
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -37,33 +29,4 @@ public class BaseAppliaction extends Application{
         return instace;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public String getToken() {
-        return token;
-    }
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public boolean isIslogin() {
-        return islogin;
-    }
-    public void setIslogin(boolean islogin) {
-        this.islogin = islogin;
-    }
 }

@@ -2,25 +2,17 @@ package com.whzl.mengbi.bean;
 
 import java.util.List;
 
-public class LiveRoomTokenBean {
+public class LiveRoomTokenBean extends ResponseBean{
 
-    private int code;
-    private String msg;
-
-    public String getMsg() {
-        return msg;
+    private LiveRoomTokenBean() {
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public static LiveRoomTokenBean getInstance() {
+        return LiveRoomTokenBeanHolder.instance;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
+    private static class LiveRoomTokenBeanHolder {
+        private static final LiveRoomTokenBean instance = new LiveRoomTokenBean();
     }
 
     private DataBean data;

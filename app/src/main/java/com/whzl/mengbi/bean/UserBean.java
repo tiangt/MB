@@ -1,28 +1,12 @@
 package com.whzl.mengbi.bean;
 
+
+import java.io.Serializable;
 import java.util.List;
 
-public class UserBean {
+public class UserBean extends ResponseBean implements Serializable{
 
-    private int code;
-    private String msg;
     private DataBean data;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 
     public DataBean getData() {
         return data;
@@ -31,6 +15,7 @@ public class UserBean {
     public void setData(DataBean data) {
         this.data = data;
     }
+
 
     public static class DataBean {
 

@@ -14,40 +14,42 @@
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@mipmap/ic_footer_logo"/>
+        android:background="@drawable/ic_footer_logo"/>
 
     <EditText
         android:id="@+id/login_user_name"
-        android:layout_width="388dp"
+        android:layout_width="@dimen/x17"
         android:layout_height="54dp"
         android:layout_marginTop="83dp"
+        android:layout_marginLeft="16dp"
         android:textSize="22sp"
         android:background="@drawable/home_rounded_edittext"
         android:hint="@string/user_phone_editetxt"
-        android:drawableLeft="@mipmap/ic_login_phone"
-        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/ic_login_phone"
+        android:drawablePadding="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_mengbi_logo"/>
 
     <EditText
         android:id="@+id/login_user_password"
-        android:layout_width="388dp"
+        android:layout_width="288dp"
         android:layout_height="54dp"
         android:layout_marginTop="21dp"
-        android:textSize="22sp"
+        android:layout_marginLeft="16dp"
         android:background="@drawable/home_rounded_edittext"
+        android:drawableLeft="@drawable/ic_login_lock"
+        android:drawablePadding="20dp"
         android:hint="@string/user_password_editetxt"
         android:inputType="textPassword"
-        android:drawableLeft="@mipmap/ic_login_lock"
-        android:drawablePadding="10dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_user_name"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login_user_name" />
 
     <Button
         android:id="@+id/login_user_login"
-        android:layout_width="388dp"
+        android:layout_width="288dp"
         android:layout_height="51dp"
         android:layout_marginTop="44dp"
         android:text="@string/user_longin_button"
@@ -56,25 +58,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_user_password"/>
+
+    <View
+        android:id="@+id/login_view_left"
+        android:layout_width="119dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="260dp"
+        android:textColor="@color/font_color_1"
+        app:layout_constraintTop_toBottomOf="@id/login_user_login"/>
+
     <TextView
         android:id="@+id/login_third_party"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="260dp"
         android:textColor="@color/colorAccent"
         android:text="@string/user_other_textview"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_user_login"/>
+        app:layout_constraintTop_toBottomOf="@id/login_user_login"
+        app:layout_constraintLeft_toRightOf="@id/login_view_left"/>
+
+    <View
+        android:id="@+id/login_view_right"
+        android:layout_width="119dp"
+        android:layout_height="10dp"
+        android:textColor="@color/font_color_1"
+        android:layout_marginTop="260dp"
+        app:layout_constraintTop_toBottomOf="@id/login_user_login"
+        app:layout_constraintLeft_toRightOf="@id/login_third_party"/>
 
     <ImageView
         android:id="@+id/login_qq_login"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginTop="28dp"
-        android:layout_marginStart="80dp"
-        android:background="@mipmap/ic_login_qq"
+        android:layout_marginLeft="80dp"
+        android:background="@drawable/ic_login_qq"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_third_party"/>
 
@@ -83,8 +104,8 @@
         android:layout_width="74dp"
         android:layout_height="70dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="80dp"
-        android:background="@mipmap/ic_login_weixin"
+        android:layout_marginRight="80dp"
+        android:background="@drawable/ic_login_weixin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_third_party" />
 

@@ -45,7 +45,7 @@ public class RecommendAdapter extends RecyclerView.Adapter<RecommendAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (mData.get(position).getStatus().equals("T")){
-            GlideImageLoader.getInstace().displayImage(mContext,R.mipmap.ic_home_live_middle,holder.item_status_iv);
+            GlideImageLoader.getInstace().displayImage(mContext,R.drawable.ic_home_live_middle,holder.item_status_iv);
         }
         GlideImageLoader.getInstace().displayImage(mContext,mData.get(position).getCover(),holder.item_cover_iv);
         holder.item_anchorNickname_tv.setText(mData.get(position).getAnchorNickname());
