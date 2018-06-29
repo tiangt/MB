@@ -138,7 +138,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
     private List mMessageData = new ArrayList();
     private LiveChatRoomTokenThread liveChatRoomTokenThread;
     private LiveChatRoomTokenHandler liveChatRoomTokenHandler = new LiveChatRoomTokenHandler(this);
-
+    private LiveRoomTokenBean liveRoomTokenBean;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,15 +154,16 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
             mCover = getIntent().getStringExtra("Cover");
             mStream = getIntent().getStringExtra("Stream");
         }
-        if(chatRoomPresenter==null){
-            chatRoomPresenter = new ChatRoomPresenterImpl();
-        }
+
         giftData();
         readFaceData();
         getLiveRoomToken();
         initPlayers();
         initViews();
 
+        if(chatRoomPresenter==null){
+            chatRoomPresenter = new ChatRoomPresenterImpl();
+        }
     }
 
     private void initViews() {
@@ -561,13 +562,14 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
             LiveDisplayActivity liveDisplayActivity = (LiveDisplayActivity) activityWeakReference.get();
             switch (msg.what){
                 case 1:
-                    //LiveRoomTokenBean liveRoomTokenBean = (LiveRoomTokenBean) msg.obj;
+                    liveDisplayActivity.liveRoomTokenBean = (LiveRoomTokenBean) msg.obj;
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            liveDisplayActivity.chatRoomPresenter.setupConnection();
+                            liveDisplayActivity.chatRoomPresenter.setupConnection(liveDisplayActivity.liveRoomTokenBean);
                         }
                     }).start();
+                    break;
             }
         }
     }

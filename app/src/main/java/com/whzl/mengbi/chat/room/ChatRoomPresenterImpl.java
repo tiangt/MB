@@ -32,7 +32,6 @@ public class ChatRoomPresenterImpl{
     private MessageCallback messageCallback;
     private Gson gson;
     private LiveRoomTokenBean liveRoomTokenBean;
-
 //    public boolean canIprivateChat(EnterUserInfo userInfo) {
 //        if (!EnvironmentBridge.getUserInfoBridge().isLogin()) {
 //            return false;
@@ -67,7 +66,8 @@ public class ChatRoomPresenterImpl{
 //        return false;
 //  }
 
-    public void setupConnection() {
+    public void setupConnection(LiveRoomTokenBean liveRoomTokenBean) {
+        this.liveRoomTokenBean = liveRoomTokenBean;
         MbSocketFactory socketFactory = new MbSocketFactory();
         connectCallback = new IConnectCallback() {
             @Override
@@ -115,10 +115,10 @@ public class ChatRoomPresenterImpl{
             message = new LoginMessage(liveRoomTokenBean.getData().getProgramId()+"",
                     domain,liveRoomTokenBean.getData().getUserId(),liveRoomTokenBean.getData().getToken());
         }else{
-            String programId = SPUtils.get(BaseAppliaction.getInstance(),"programId","0").toString();
+            int programId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"programId",0).toString());
             int userId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"userId",0).toString());
             String nickname = SPUtils.get(BaseAppliaction.getInstance(),"nickname","0").toString();
-            message = new LoginMessage(programId,domain,userId,nickname);
+            message = new LoginMessage(programId+"",domain,userId,nickname);
         }
         client.send(message);
     }
@@ -126,9 +126,9 @@ public class ChatRoomPresenterImpl{
     private List<ServerAddr> getServerList() {
         List<ServerAddr> list = new ArrayList<>();
         if (liveRoomTokenBean.getData().getRoomServerList() == null) {
-            Log.e(TAG, "CheckEnterRoom getServerList getRoomServerList=null");
+            Log.e(TAG, "LiveRoomTokenBean getData getRoomServerList=null");
         }else {
-            Log.e(TAG, "CheckEnterRoom getServerList getRoomServerList!=null");
+            Log.e(TAG, "LiveRoomTokenBean getData getRoomServerList!=null");
             for (LiveRoomTokenBean.DataBean.RoomServerListBean lrtb:liveRoomTokenBean.getData().getRoomServerList()) {
                 ServerAddr addr = new ServerAddr(lrtb.getServerDomain(),lrtb.getDataPort());
                 list.add(addr);

@@ -18,7 +18,7 @@
 
     <EditText
         android:id="@+id/login_user_name"
-        android:layout_width="@dimen/x17"
+        android:layout_width="@dimen/x259"
         android:layout_height="54dp"
         android:layout_marginTop="83dp"
         android:layout_marginLeft="16dp"
@@ -33,7 +33,7 @@
 
     <EditText
         android:id="@+id/login_user_password"
-        android:layout_width="288dp"
+        android:layout_width="@dimen/x259"
         android:layout_height="54dp"
         android:layout_marginTop="21dp"
         android:layout_marginLeft="16dp"
@@ -49,7 +49,7 @@
 
     <Button
         android:id="@+id/login_user_login"
-        android:layout_width="288dp"
+        android:layout_width="@dimen/x259"
         android:layout_height="51dp"
         android:layout_marginTop="44dp"
         android:text="@string/user_longin_button"
@@ -95,7 +95,7 @@
         android:layout_height="70dp"
         android:layout_marginTop="28dp"
         android:layout_marginLeft="80dp"
-        android:background="@drawable/ic_login_qq"
+        android:background="@drawable/ic_login_weixin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_third_party"/>
 
@@ -105,7 +105,7 @@
         android:layout_height="70dp"
         android:layout_marginTop="28dp"
         android:layout_marginRight="80dp"
-        android:background="@drawable/ic_login_weixin"
+        android:background="@drawable/ic_login_qq"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/login_third_party" />
 

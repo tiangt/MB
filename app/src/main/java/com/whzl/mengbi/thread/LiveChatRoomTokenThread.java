@@ -9,6 +9,8 @@ import com.whzl.mengbi.network.RequestManager;
 import com.whzl.mengbi.network.URLContentUtils;
 import com.whzl.mengbi.util.GsonUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
 
 public class LiveChatRoomTokenThread extends Thread{

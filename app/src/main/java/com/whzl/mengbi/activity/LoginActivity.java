@@ -91,8 +91,7 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
         if(getIntent()!=null){
             touristFlag  = getIntent().getStringExtra("touristFlag") ;
         }
-        int px = DensityUtil.dp2px(388);
-        System.out.println("px>>>>>>>>>>>>>"+px);
+
         initView();
         initToolBar();
         touristLogin();

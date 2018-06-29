@@ -4,17 +4,6 @@ import java.util.List;
 
 public class LiveRoomTokenBean extends ResponseBean{
 
-    private LiveRoomTokenBean() {
-    }
-
-    public static LiveRoomTokenBean getInstance() {
-        return LiveRoomTokenBeanHolder.instance;
-    }
-
-    private static class LiveRoomTokenBeanHolder {
-        private static final LiveRoomTokenBean instance = new LiveRoomTokenBean();
-    }
-
     private DataBean data;
 
     public DataBean getData() {
