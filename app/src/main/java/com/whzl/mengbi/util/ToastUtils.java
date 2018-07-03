@@ -1,9 +1,8 @@
 package com.whzl.mengbi.util;
 
-import android.app.Application;
 import android.widget.Toast;
 
-import com.whzl.mengbi.application.BaseAppliaction;
+import com.whzl.mengbi.ui.common.BaseAppliaction;
 
 public class ToastUtils {
     private static Toast toast;

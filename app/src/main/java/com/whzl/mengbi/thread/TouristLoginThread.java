@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
-import com.whzl.mengbi.bean.TouristUserBean;
-import com.whzl.mengbi.network.RequestManager;
-import com.whzl.mengbi.network.URLContentUtils;
+import com.whzl.mengbi.model.entity.TouristUserBean;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 

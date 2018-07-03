@@ -1,16 +1,13 @@
 package com.whzl.mengbi.thread;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 
-import com.whzl.mengbi.activity.LoginActivity;
-import com.whzl.mengbi.bean.RegisterBean;
-import com.whzl.mengbi.network.RequestManager;
-import com.whzl.mengbi.network.URLContentUtils;
+import com.whzl.mengbi.model.entity.RegisterBean;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.ToastUtils;
 
 import java.util.HashMap;
 

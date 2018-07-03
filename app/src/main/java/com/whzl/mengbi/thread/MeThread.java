@@ -4,10 +4,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
-import com.whzl.mengbi.application.BaseAppliaction;
-import com.whzl.mengbi.bean.UserBean;
-import com.whzl.mengbi.network.RequestManager;
-import com.whzl.mengbi.network.URLContentUtils;
+import com.whzl.mengbi.model.entity.UserInfo;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 
@@ -32,9 +31,9 @@ public class MeThread extends Thread{
                     new RequestManager.ReqCallBack(){
                         @Override
                         public void onReqSuccess(Object result) {
-                            UserBean mUserBean = GsonUtils.GsonToBean(result.toString(),UserBean.class);
-                            if(mUserBean.getCode()==200){
-                                doTask(mUserBean);
+                            UserInfo userInfo = GsonUtils.GsonToBean(result.toString(),UserInfo.class);
+                            if(userInfo.getCode()==200){
+                                doTask(userInfo);
                             }
                         }
 
@@ -49,7 +48,7 @@ public class MeThread extends Thread{
      通过handler返回消息
      @param data
      */
-    private void doTask(UserBean data) {
+    private void doTask(UserInfo data) {
         Message msg = Message.obtain();  //从全局池中返回一个message实例，避免多次创建message（如new Message）
         msg.obj = data;
         msg.what=1;   //标志消息的标志

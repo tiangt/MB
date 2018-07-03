@@ -4,9 +4,9 @@ import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
-import com.whzl.mengbi.application.BaseAppliaction;
+import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.ui.common.BaseAppliaction;
 
-import com.whzl.mengbi.bean.LiveRoomTokenBean;
 import com.whzl.mengbi.chat.client.ErrorCallback;
 import com.whzl.mengbi.chat.client.IConnectCallback;
 import com.whzl.mengbi.chat.client.MbChatClient;
@@ -31,7 +31,7 @@ public class ChatRoomPresenterImpl{
     private ErrorCallback errorCallback;
     private MessageCallback messageCallback;
     private Gson gson;
-    private LiveRoomTokenBean liveRoomTokenBean;
+    private LiveRoomTokenInfo liveRoomTokenInfo;
 //    public boolean canIprivateChat(EnterUserInfo userInfo) {
 //        if (!EnvironmentBridge.getUserInfoBridge().isLogin()) {
 //            return false;
@@ -66,8 +66,8 @@ public class ChatRoomPresenterImpl{
 //        return false;
 //  }
 
-    public void setupConnection(LiveRoomTokenBean liveRoomTokenBean) {
-        this.liveRoomTokenBean = liveRoomTokenBean;
+    public void setupConnection(LiveRoomTokenInfo liveRoomTokenInfo) {
+        this.liveRoomTokenInfo = liveRoomTokenInfo;
         MbSocketFactory socketFactory = new MbSocketFactory();
         connectCallback = new IConnectCallback() {
             @Override
@@ -112,8 +112,8 @@ public class ChatRoomPresenterImpl{
         LoginMessage message;
         boolean islogin = (Boolean) SPUtils.get(BaseAppliaction.getInstance(),"islogin",false);
         if(islogin){
-            message = new LoginMessage(liveRoomTokenBean.getData().getProgramId()+"",
-                    domain,liveRoomTokenBean.getData().getUserId(),liveRoomTokenBean.getData().getToken());
+            message = new LoginMessage(liveRoomTokenInfo.getData().getProgramId()+"",
+                    domain, liveRoomTokenInfo.getData().getUserId(), liveRoomTokenInfo.getData().getToken());
         }else{
             int programId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"programId",0).toString());
             int userId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"userId",0).toString());
@@ -125,11 +125,11 @@ public class ChatRoomPresenterImpl{
 
     private List<ServerAddr> getServerList() {
         List<ServerAddr> list = new ArrayList<>();
-        if (liveRoomTokenBean.getData().getRoomServerList() == null) {
-            Log.e(TAG, "LiveRoomTokenBean getData getRoomServerList=null");
+        if (liveRoomTokenInfo.getData().getRoomServerList() == null) {
+            Log.e(TAG, "LiveRoomTokenInfo getData getRoomServerList=null");
         }else {
-            Log.e(TAG, "LiveRoomTokenBean getData getRoomServerList!=null");
-            for (LiveRoomTokenBean.DataBean.RoomServerListBean lrtb:liveRoomTokenBean.getData().getRoomServerList()) {
+            Log.e(TAG, "LiveRoomTokenInfo getData getRoomServerList!=null");
+            for (LiveRoomTokenInfo.DataBean.RoomServerListBean lrtb: liveRoomTokenInfo.getData().getRoomServerList()) {
                 ServerAddr addr = new ServerAddr(lrtb.getServerDomain(),lrtb.getDataPort());
                 list.add(addr);
             }
@@ -173,8 +173,8 @@ public class ChatRoomPresenterImpl{
 //        int toId = chatToStatus.getToUser().getUid();
         boolean islogin = (Boolean) SPUtils.get(BaseAppliaction.getInstance(),"islogin",false);
         if(islogin){
-            msg = new ChatOutMsg(message,liveRoomTokenBean.getData().getProgramId()+"",client.getCurrentDomain(),
-                    liveRoomTokenBean.getData().getUserId()+"",liveRoomTokenBean.getData().getToken()
+            msg = new ChatOutMsg(message, liveRoomTokenInfo.getData().getProgramId()+"",client.getCurrentDomain(),
+                    liveRoomTokenInfo.getData().getUserId()+"", liveRoomTokenInfo.getData().getToken()
                     ,"0","0","common");
         }else{
             int programId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"programId",0).toString());

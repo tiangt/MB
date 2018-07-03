@@ -4,11 +4,12 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
-import com.whzl.mengbi.bean.BannerBean;
-import com.whzl.mengbi.network.RequestManager;
-import com.whzl.mengbi.network.URLContentUtils;
+
+import com.whzl.mengbi.model.entity.BannerInfo;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
 
@@ -31,9 +32,9 @@ public class HomeBannerThread extends Thread{
                     new RequestManager.ReqCallBack<Object>() {
                         @Override
                         public void onReqSuccess(Object result) {
-                            BannerBean bannerBean = GsonUtils.GsonToBean(result.toString(), BannerBean.class);
-                            if(bannerBean.getCode()==200){
-                                doTask(bannerBean);
+                            BannerInfo bannerInfo = GsonUtils.GsonToBean(result.toString(), BannerInfo.class);
+                            if(bannerInfo.getCode()==200){
+                                doTask(bannerInfo);
                             }
                         }
 
@@ -48,7 +49,7 @@ public class HomeBannerThread extends Thread{
      通过handler返回消息
      @param data
      */
-    public void doTask(BannerBean data){
+    public void doTask(BannerInfo data){
         Message msg = Message.obtain();//从全局池中返回一个message实例，避免多次创建message（如new Message）
         msg.obj = data;
         msg.what = 1;//标志消息的标志

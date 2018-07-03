@@ -5,9 +5,9 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
-import com.whzl.mengbi.bean.RecommendBean;
-import com.whzl.mengbi.network.RequestManager;
-import com.whzl.mengbi.network.URLContentUtils;
+import com.whzl.mengbi.model.entity.RecommendBean;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.LogUtils;
 
 import java.util.HashMap;

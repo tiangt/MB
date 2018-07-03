@@ -5,9 +5,9 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.alibaba.fastjson.JSON;
-import com.whzl.mengbi.bean.LiveShowBean;
-import com.whzl.mengbi.network.RequestManager;
-import com.whzl.mengbi.network.URLContentUtils;
+import com.whzl.mengbi.model.entity.LiveShowInfo;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.LogUtils;
 
 import java.util.HashMap;
@@ -31,8 +31,8 @@ public class HomeLiveShowThread extends Thread{
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
-                      LiveShowBean  liveShowBean = JSON.parseObject(result.toString(), LiveShowBean.class);
-                       doTask(liveShowBean);
+                      LiveShowInfo liveShowInfo = JSON.parseObject(result.toString(), LiveShowInfo.class);
+                       doTask(liveShowInfo);
                     }
 
                     @Override
@@ -46,7 +46,7 @@ public class HomeLiveShowThread extends Thread{
      通过handler返回消息
      @param data
      */
-    public void doTask(LiveShowBean data){
+    public void doTask(LiveShowInfo data){
         Message msg = Message.obtain();//从全局池中返回一个message实例，避免多次创建message（如new Message）
         msg.obj = data;
         msg.what = 1;//标志消息的标志

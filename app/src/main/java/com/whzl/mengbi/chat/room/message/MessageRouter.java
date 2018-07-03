@@ -8,16 +8,14 @@ import android.util.Log;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
-import com.whzl.mengbi.bean.message.ChatCommonMesBean;
-import com.whzl.mengbi.bean.message.UserMesBean;
+import com.whzl.mengbi.model.entity.message.ChatCommonMesBean;
+import com.whzl.mengbi.model.entity.message.UserMesBean;
 import com.whzl.mengbi.chat.ProtoStringAvg;
 import com.whzl.mengbi.chat.client.MessageCallback;
 import com.whzl.mengbi.eventbus.EventBusBean;
 import com.whzl.mengbi.eventbus.EventBusUtils;
 import com.whzl.mengbi.eventbus.EventCode;
 import com.whzl.mengbi.util.GsonUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

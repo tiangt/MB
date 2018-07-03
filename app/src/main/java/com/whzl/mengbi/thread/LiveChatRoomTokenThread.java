@@ -4,12 +4,11 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
-import com.whzl.mengbi.bean.LiveRoomTokenBean;
-import com.whzl.mengbi.network.RequestManager;
-import com.whzl.mengbi.network.URLContentUtils;
-import com.whzl.mengbi.util.GsonUtils;
 
-import org.greenrobot.eventbus.EventBus;
+import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
 
@@ -31,9 +30,9 @@ public class LiveChatRoomTokenThread extends Thread{
         RequestManager.getInstance(mContext).requestAsyn(URLContentUtils.CHECK_ENTERR_ROOM, RequestManager.TYPE_POST_JSON, mHashMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
-                LiveRoomTokenBean liveRoomTokenBean = GsonUtils.GsonToBean(result.toString(),LiveRoomTokenBean.class);
-                if(liveRoomTokenBean.getCode()==200){
-                    doTask(liveRoomTokenBean);
+                LiveRoomTokenInfo liveRoomTokenInfo = GsonUtils.GsonToBean(result.toString(),LiveRoomTokenInfo.class);
+                if(liveRoomTokenInfo.getCode()==200){
+                    doTask(liveRoomTokenInfo);
                 }
             }
 
@@ -44,7 +43,7 @@ public class LiveChatRoomTokenThread extends Thread{
         });
     }
 
-    public void doTask(LiveRoomTokenBean data){
+    public void doTask(LiveRoomTokenInfo data){
         Message msg = Message.obtain();
         msg.obj = data;
         msg.what = 1;
