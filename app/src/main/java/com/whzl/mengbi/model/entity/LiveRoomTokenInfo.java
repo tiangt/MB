@@ -2,7 +2,7 @@ package com.whzl.mengbi.model.entity;
 
 import java.util.List;
 
-public class LiveRoomTokenInfo extends ResponseBean{
+public class LiveRoomTokenInfo extends ResponseInfo {
 
     private DataBean data;
 

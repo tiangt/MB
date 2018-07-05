@@ -1,19 +1,23 @@
 package com.whzl.mengbi.ui.activity.base;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.EventBusBean;
 import com.whzl.mengbi.eventbus.EventBusUtils;
+import com.whzl.mengbi.ui.widget.view.GenericToolbar;
+import com.whzl.mengbi.ui.widget.view.Style;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.widget.view.GenericToolbar;
-import com.whzl.mengbi.widget.view.Style;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -30,7 +34,7 @@ public abstract class BaseAtivity extends AppCompatActivity{
      */
 
     private String TAG;
-
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,23 +45,6 @@ public abstract class BaseAtivity extends AppCompatActivity{
         }
     }
 
-    /**
-     * 实例化toolbar标题
-     */
-    protected void  initToolBar(String title){
-        new GenericToolbar.Builder(this)
-                .setStatusBarStyle(Style.TRANSPARENT)
-                .addTitleText(title)// 标题文本
-                .setBackgroundColorResource(R.color.colorPrimary)// 背景颜色
-                .addLeftIcon(1, R.drawable.ic_login_return,new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                })// 响应左部图标的点击事件
-                .setTextColor(getResources().getColor(R.color.colorPrimaryDark))// 会全局设置字体的颜色, 自定义标题除外
-                .apply();
-    }
 
     /**
      * 是否注册事件分发
@@ -99,31 +86,6 @@ public abstract class BaseAtivity extends AppCompatActivity{
      */
     protected void receiveStickyEvent(EventBusBean event) {
 
-    }
-
-    /**
-     * 申请权限
-     * @param activity
-     * @param requestCode
-     */
-    protected void requstRxPermissions(Activity activity,String requestCode){
-            RxPermissions rxPermissions = new RxPermissions(activity);
-            rxPermissions.requestEach(requestCode)
-                    .subscribe(new Consumer<Permission>() {
-                        @Override
-                        public void accept(Permission permission) throws Exception {
-                            if(permission.granted){
-                                //用户已同意该权限
-                                LogUtils.d("用户已同意该权限");
-                            }else if(permission.shouldShowRequestPermissionRationale){
-                                // 用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
-                                LogUtils.d("用户拒绝了该权限，没有选中『不再询问』");
-                            }else {
-                                //用户拒绝了该权限，并且选中『不再询问』
-                                LogUtils.d("用户拒绝了该权限，并且选中『不再询问』");
-                            }
-                        }
-                    });
     }
 
     @Override

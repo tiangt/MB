@@ -4,7 +4,7 @@ package com.whzl.mengbi.model.entity;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserInfo extends ResponseBean implements Serializable{
+public class UserInfo extends ResponseInfo implements Serializable{
 
     private DataBean data;
 

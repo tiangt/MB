@@ -51,4 +51,8 @@
 
     <dimen name="player_panel_start_btn">50dp</dimen>
     <dimen name="popup_gap">8dp</dimen>
+
+    <!--展示相册图片大小-->
+    <dimen name="grid_expected_size">120dp</dimen>
+
 </resources>

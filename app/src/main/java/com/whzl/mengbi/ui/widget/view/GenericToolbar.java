@@ -1,4 +1,4 @@
-package com.whzl.mengbi.widget.view;
+package com.whzl.mengbi.ui.widget.view;
 
 
 import android.annotation.TargetApi;
@@ -24,6 +24,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 
 import java.lang.ref.WeakReference;
 
@@ -572,7 +573,7 @@ public class GenericToolbar extends Toolbar {
 
         public Builder setStatusBarStyle(Style statusBarStyle) {
             if (mContext instanceof Activity) {
-                AppBarHelper.with(mContext).setStatusBarStyle(statusBarStyle).apply();
+               AppBarHelper.with(mContext).setStatusBarStyle(statusBarStyle).apply();
             }
             mStyle = statusBarStyle;
             return this;

@@ -1,4 +1,4 @@
-package com.whzl.mengbi.widget.view;
+package com.whzl.mengbi.ui.widget.view;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

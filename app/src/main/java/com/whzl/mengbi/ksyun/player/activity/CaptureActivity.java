@@ -21,10 +21,10 @@ import android.widget.Toast;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.zxing.camera.CameraManager;
-import com.whzl.mengbi.zxing.decoding.CaptureActivityHandler;
-import com.whzl.mengbi.zxing.decoding.InactivityTimer;
-import com.whzl.mengbi.zxing.view.ViewfinderView;
+import com.whzl.mengbi.util.zxing.camera.CameraManager;
+import com.whzl.mengbi.util.zxing.decoding.CaptureActivityHandler;
+import com.whzl.mengbi.util.zxing.decoding.InactivityTimer;
+import com.whzl.mengbi.util.zxing.view.ViewfinderView;
 
 import java.io.IOException;
 import java.util.Vector;

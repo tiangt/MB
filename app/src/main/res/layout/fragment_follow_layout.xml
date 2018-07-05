@@ -3,12 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragemengt.home.FollowFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="关注" />
+    tools:context=".ui.fragemengt.home.FollowFragment">
+    <include layout="@layout/activity_base_toolbar"/>
 
 </FrameLayout>

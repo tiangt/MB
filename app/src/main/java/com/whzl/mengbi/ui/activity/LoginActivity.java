@@ -1,12 +1,9 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.os.Handler;
-import android.os.Message;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,26 +13,34 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.model.entity.UserInfo;
+import com.whzl.mengbi.presenter.LoginPresenter;
+import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
-import com.whzl.mengbi.model.entity.TouristUserBean;
-import com.whzl.mengbi.thread.LoginThread;
-import com.whzl.mengbi.thread.TouristLoginThread;
+import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.view.LoginView;
+import com.whzl.mengbi.ui.widget.view.GenericToolbar;
 import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.EncryptUtils;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
-import com.whzl.mengbi.widget.view.GenericToolbar;
+import com.whzl.mengbi.util.network.URLContentUtils;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
  * 登录页面
  */
-public class LoginActivity extends BaseAtivity implements View.OnClickListener{
+public class LoginActivity extends BaseAtivity implements LoginView,View.OnClickListener{
     /**
      *用户名，手机号
      */
@@ -61,29 +66,27 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
      */
     private ImageView weixinUserLoginIv;
 
-    private UserInfo mUserInfo;
     /**
-     * 匿名用户信息
+     * 游客身份标识
      */
-    private TouristUserBean mTouristUserBean;
-    private TouristLoginThread mTouristLoginThread;
-    private TouristHandler mTouristHandler = new TouristHandler(this);
+    private String visitorFlag ;
 
-    private LoginThread mLoginThread;
-    private LoginHandler mLoginHandler = new LoginHandler(this);
-    private String touristFlag ;
-
+    private LoginPresenter loginPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_layout);
-        requstRxPermissions(this, Manifest.permission.READ_PHONE_STATE);
         if(getIntent()!=null){
-            touristFlag  = getIntent().getStringExtra("touristFlag") ;
+            visitorFlag  = getIntent().getStringExtra("touristFlag") ;
         }
+        loginPresenter = new LoginPresenterImpl(this);
+        //手机设备ID
+        String deviceid = RxPermisssionsUitls.getDevice(this);
+        //游客登录
+        loginPresenter.visitorValidateCredentials(deviceid);
+        //自动登录
+        autoLogin();
         initView();
-        initToolBar();
-        touristLogin();
     }
 
     private void initView(){
@@ -97,40 +100,33 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
         weixinUserLoginIv.setOnClickListener(this);
     }
 
-    public void  initToolBar(){
-        new GenericToolbar.Builder(this)
-                .addTitleText("登录",22f)// 标题文本
-                .setBackgroundColorResource(R.color.colorPrimary)// 背景颜色
-                .addLeftIcon(1, R.drawable.ic_login_return, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                })// 响应左部图标的点击事件
-                .addRightText(3, "注册", 22f, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent mTntent = new Intent(LoginActivity.this,RegisterActivity.class);
-                        startActivityForResult(mTntent,0);
-                    }
-                })// 响应右部文本的点击事件
-                .setTextColor(getResources().getColor(R.color.colorPrimaryDark))// 会全局设置字体的颜色, 自定义标题除外
-                .apply();
-    }
 
     @Override
     public void onClick(View v) {
         mUserName = longinUserName.getText().toString().trim();
         mUserPassword = longinUserPassword.getText().toString().trim();
         switch (v.getId()){
-            case R.id.login_user_login:
-                autoLogin();
+            case R.id.login_user_login://登录
+                HashMap paramsMap = new HashMap();
+                paramsMap.put("username",mUserName);
+                String pass= EncryptUtils.md5Hex(mUserPassword);
+                paramsMap.put("password",pass);
+                paramsMap.put("platform","ANDROID");
+                loginPresenter.validateCredentials(paramsMap,URLContentUtils.USER_NORMAL_LOGIN);
+                SPUtils.put(BaseAppliaction.getInstance(),"username",mUserName);
+                SPUtils.put(BaseAppliaction.getInstance(),"password",mUserPassword);
                 break;
-            case R.id.login_qq_login:
-                ToastUtils.showToast("暂未开放");
+            case R.id.login_qq_login://QQ第三方登录
+                UMShareConfig qqConfig = new UMShareConfig();
+                qqConfig.isNeedAuthOnGetUserInfo(true);
+                UMShareAPI.get(this).setShareConfig(qqConfig);
+                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, umAuthListener);
                 break;
-            case R.id.login_weixin_login:
-                ToastUtils.showToast("暂未开放");
+            case R.id.login_weixin_login://微信第三方登录
+                UMShareConfig weixinConfig = new UMShareConfig();
+                weixinConfig.isNeedAuthOnGetUserInfo(true);
+                UMShareAPI.get(this).setShareConfig(weixinConfig);
+                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN,umAuthListener);
                 break;
             case 3://标题注册跳转
                 Intent mTntent = new Intent(this,RegisterActivity.class);
@@ -141,112 +137,125 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
             }
         }
 
+
     /**
-     * 匿名登录
+     * 游客登录成功回调
      */
-    public void touristLogin(){
+    @Override
+    public void visitorNavigateToHome() {
         int userId = (Integer) SPUtils.get(this,"userId",0);
         if(userId==0){
-            if (!TextUtils.isEmpty(touristFlag)&&touristFlag.equals("0")) {
+            if (visitorFlag!=null&&visitorFlag.equals("0")) {
                 return;
             }else {
-                HashMap paramsMap = new HashMap();
+                Intent mIntent = new Intent(this,HomeActivity.class);
+                startActivity(mIntent);
+                finish();
+            }
+        }
+    }
+
+    /**
+     * 用户登录成功回调
+     */
+    @Override
+    public void navigateToHome() {
+        Intent mIntent = new Intent(this,HomeActivity.class);
+        startActivity(mIntent);
+        finish();
+    }
+
+    /**
+     *用户自动登录
+     */
+    private void autoLogin(){
+        boolean islogin = (boolean)SPUtils.get(this,"islogin",false);
+        if(islogin){
+            HashMap paramsMap = new HashMap();
+            String userName = SPUtils.get(this,"username","").toString();
+            String passWord = SPUtils.get(this,"password","").toString();
+            if(!TextUtils.isEmpty(userName)||!TextUtils.isEmpty(passWord)){
+                paramsMap.put("username",userName);
+                String pass= EncryptUtils.md5Hex(passWord);
+                paramsMap.put("password",pass);
                 paramsMap.put("platform","ANDROID");
-                paramsMap.put("deviceNumber", DeviceUtils.getDeviceId(this));
-                mTouristLoginThread = new TouristLoginThread(this,paramsMap,mTouristHandler);
-                mTouristLoginThread.start();
+                loginPresenter.validateCredentials(paramsMap,URLContentUtils.USER_NORMAL_LOGIN);
             }
-        }else{
-            autoLogin();
         }
     }
 
     /**
-     * 自动登录
+     * 登录失败回调消息提示
+     * @param msg
      */
-    public void autoLogin(){
-        String userName = SPUtils.get(this,"username","").toString();
-        String passWord = SPUtils.get(this,"password","").toString();
-        HashMap paramsMap = new HashMap();
-        if(!TextUtils.isEmpty(userName)||!TextUtils.isEmpty(passWord)){
-            paramsMap.put("username",userName);
-            String pass= EncryptUtils.md5Hex(passWord);
-            paramsMap.put("password",pass);
-            paramsMap.put("platform","ANDROID");
-        }else{
-            paramsMap.put("username",mUserName);
-            String pass= EncryptUtils.md5Hex(mUserPassword);
-            paramsMap.put("password",pass);
-            paramsMap.put("platform","ANDROID");
-        }
-        mLoginThread = new LoginThread(this,paramsMap,mLoginHandler);
-        mLoginThread.start();
+    @Override
+    public void showError(String msg) {
+        ToastUtils.showToast(msg);
     }
 
-    /**
-     * 用户登录Handler
-     为避免handler造成的内存泄漏
-     1、使用静态的handler，对外部类不保持对象的引用
-     2、但Handler需要与Activity通信，所以需要增加一个对Activity的弱引用
-     */
-    private static class LoginHandler extends Handler{
-        private final WeakReference<Activity> activityWeakReference;
-        LoginHandler(Activity activity){
-            this.activityWeakReference = new WeakReference<Activity>(activity);
-        }
 
+    /**
+     * 友盟第三方登录回调监听
+     */
+    UMAuthListener umAuthListener = new UMAuthListener() {
+        /**
+         * @desc 授权开始的回调
+         * @param platform 平台名称
+         */
         @Override
-        public void handleMessage(Message msg) {
-            LoginActivity loginActivity = (LoginActivity)activityWeakReference.get();
-            switch (msg.what){
-                case 1:
-                    loginActivity.mUserInfo = (UserInfo) msg.obj;
-                     //保存登录用户信息
-                    if(!TextUtils.isEmpty(loginActivity.mUserName)||!TextUtils.isEmpty(loginActivity.mUserPassword)){
-                        SPUtils.put(loginActivity,"username",loginActivity.mUserName);
-                        SPUtils.put(loginActivity,"password",loginActivity.mUserPassword);
-                    }
-                    SPUtils.put(loginActivity,"userId",loginActivity.mUserInfo.getData().getUserId());
-                    SPUtils.put(loginActivity,"sessionId",loginActivity.mUserInfo.getData().getSessionId());
-                    SPUtils.put(loginActivity,"islogin",true);
-                    SPUtils.put(loginActivity,"isautologin",true);
-                    Intent mIntent = new Intent(loginActivity,HomeActivity.class);
-                    loginActivity.startActivity(mIntent);
-                    break;
-            }
-        }
-    }
+        public void onStart(SHARE_MEDIA platform) {
 
-    /**
-     * 游客登录Handler
-     为避免handler造成的内存泄漏
-     1、使用静态的handler，对外部类不保持对象的引用
-     2、但Handler需要与Activity通信，所以需要增加一个对Activity的弱引用
-     */
-    private static class TouristHandler extends Handler{
-        private final WeakReference<Activity> activityWeakReference;
-        TouristHandler(Activity activity) {
-            this.activityWeakReference = new WeakReference<Activity>(activity);
         }
 
+        /**
+         * @desc 授权成功的回调
+         * @param platform 平台名称
+         * @param action 行为序号，开发者用不上
+         * @param data 用户资料返回
+         */
         @Override
-        public void handleMessage(Message msg) {
-            LoginActivity loginActivity = (LoginActivity)activityWeakReference.get();
-            super.handleMessage(msg);
-            switch (msg.what){
-                case 1:
-                    //保存匿名登录用户信息
-                    loginActivity.mTouristUserBean = (TouristUserBean) msg.obj;
-                    SPUtils.put(loginActivity,"userId",loginActivity.mTouristUserBean.getData().getUserId());
-                    SPUtils.put(loginActivity,"nickname",loginActivity.mTouristUserBean.getData().getNickname());
-                    SPUtils.put(loginActivity,"sessionId",loginActivity.mTouristUserBean.getData().getSessionId());
-                    SPUtils.put(loginActivity,"islogin",false);
-                    Intent mIntent = new Intent(loginActivity,HomeActivity.class);
-                    loginActivity.startActivity(mIntent);
-                    break;
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            HashMap hashMap = new HashMap();
+            if(SHARE_MEDIA.QQ.equals(platform)){
+                String openid =  data.get("openid");
+                String access_token =  data.get("access_token");
+                LogUtils.d("QQ>>>>>openid>>>>>>>>>>>>"+openid+"access_token>>>>>>>>>"+access_token);
+                hashMap.put("type",SHARE_MEDIA.QQ);
+                hashMap.put("token",access_token);
+                hashMap.put("openid",openid);
+            }else if(SHARE_MEDIA.WEIXIN.equals(platform)){
+                String openid =  data.get("openid");
+                String access_token =  data.get("access_token");
+                LogUtils.d("WEIXIN>>>>>>>openid>>>>>>>>>>>>"+openid+"access_token>>>>>>>>>"+access_token);
+                hashMap.put("type",SHARE_MEDIA.WEIXIN);
+                hashMap.put("token",access_token);
+                hashMap.put("openid",openid);
             }
+            LogUtils.d("onComplete>>>>>>>>>>>>>platform>>>>>>>>>>>>"+platform+"data>>>>>>>>>>>>"+data);
+            loginPresenter.validateCredentials(hashMap, URLContentUtils.OPEN_LOGIN);
         }
-    }
+
+        /**
+         * @desc 授权失败的回调
+         * @param platform 平台名称
+         * @param action 行为序号，开发者用不上
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+
+        }
+
+        /**
+         * @desc 授权取消的回调
+         * @param platform 平台名称
+         * @param action 行为序号，开发者用不上
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -271,14 +280,15 @@ public class LoginActivity extends BaseAtivity implements View.OnClickListener{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data);
         if(requestCode==1){
             String result = data.getStringExtra("userName");
             longinUserName.setText(result);
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        loginPresenter.onDestroy();
     }
 }

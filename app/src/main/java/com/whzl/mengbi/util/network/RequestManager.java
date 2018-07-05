@@ -322,9 +322,6 @@ public class RequestManager {
      */
     private <T> Call requestPostByAsyn(String actionUrl, HashMap<String, String> paramsMap, final ReqCallBack<T> callBack) {
         try {
-
-
-
             paramsMap.put("appKey",APPKEY);
             paramsMap.put("timestamp", new Date().getTime() / 1000 + "");
             paramsMap.put("appSecret",APPSECRET);
