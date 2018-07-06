@@ -16,34 +16,44 @@
 
                 <ImageView
                     android:id="@+id/home_rvitem_status"
-                    android:layout_width="24dp"
-                    android:layout_height="22dp"
-                    android:layout_alignRight="@id/home_rvitem_cover"/>
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="7dp"
+                    android:layout_alignRight="@id/home_rvitem_cover"
+                    android:background="@drawable/ic_home_watch_status"/>
 
                 <TextView
                     android:id="@+id/home_rvitem_anchorNickname"
                     android:layout_width="wrap_content"
-                    android:layout_height="23dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_alignBottom="@+id/home_rvitem_cover"
-                    android:text="主播昵称"
-                    android:textColor="@color/rv_item_nickname" />
+                    android:layout_alignLeft="@id/home_rvitem_cover"
+                    android:textColor="@color/rv_item_nickname"
+                    android:textStyle="bold"/>
 
                 <ImageView
                     android:id="@+id/home_rvitem_roomUserCount_iv"
-                    android:layout_width="18dp"
-                    android:layout_height="23dp"
+                    android:layout_width="32dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="41dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_alignBottom="@+id/home_rvitem_cover"
-                    android:layout_toRightOf="@+id/home_rvitem_anchorNickname"
+                    android:layout_alignRight="@id/home_rvitem_cover"
                     android:background="@drawable/ic_home_watch_status"
                     android:textColor="@color/rv_item_nickname" />
 
                 <TextView
                     android:id="@+id/home_rvitem_roomUserCount"
                     android:layout_width="wrap_content"
-                    android:layout_height="23dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="11dp"
+                    android:layout_marginBottom="5dp"
                     android:layout_alignBottom="@+id/home_rvitem_cover"
-                    android:layout_toRightOf="@+id/home_rvitem_roomUserCount_iv"
-                    android:text="1699"
+                    android:layout_alignRight="@+id/home_rvitem_cover"
                     android:textStyle="bold"
                     android:textColor="@color/rv_item_nickname" />
         </RelativeLayout>

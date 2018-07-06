@@ -1,14 +1,14 @@
 package com.whzl.mengbi.model.entity;
 
-public class LiveShowInfo extends ResponseBean{
+public class LiveShowInfo extends ResponseInfo {
 
-    private LiveShowDataBean data;
+    private LiveShowDataInfo data;
 
-    public LiveShowDataBean getData() {
+    public LiveShowDataInfo getData() {
         return data;
     }
 
-    public void setData(LiveShowDataBean data) {
+    public void setData(LiveShowDataInfo data) {
         this.data = data;
     }
 }

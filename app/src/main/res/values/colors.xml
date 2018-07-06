@@ -92,8 +92,8 @@
     <color name="font_color_44">#f2a93f</color>
     <color name="font_color_45">#f1275b</color>
     <color name="font_color_46">#21D996</color>
-    <color name="trans_parent">#00000000</color>
-
+    <color name="trans_parent">#000000</color>
+    <color name="font_color_47">#323232</color>
 
     <color name="colorblack">#000000</color>
 

@@ -2,7 +2,7 @@ package com.whzl.mengbi.model.entity;
 
 import java.util.List;
 
-public class GiftInfo extends ResponseBean{
+public class GiftInfo extends ResponseInfo {
 
     private DataBean data;
 

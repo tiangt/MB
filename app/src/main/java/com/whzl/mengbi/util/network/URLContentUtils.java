@@ -82,4 +82,8 @@ public class URLContentUtils{
      */
     public static final String MODIFY_AVATAR="v1/user/modify-avatar";
 
+    /**
+     * 第三方登陆
+     */
+    public static final String OPEN_LOGIN="v1/user/open-login";
 }

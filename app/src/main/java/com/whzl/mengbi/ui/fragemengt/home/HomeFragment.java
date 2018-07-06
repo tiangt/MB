@@ -4,10 +4,7 @@ package com.whzl.mengbi.ui.fragemengt.home;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,29 +19,29 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.BannerInfo;
+import com.whzl.mengbi.presenter.HomePresenter;
+import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
-import com.whzl.mengbi.model.entity.LiveShowListBean;
-import com.whzl.mengbi.model.entity.RecommendBean;
-import com.whzl.mengbi.model.entity.RecommendListBean;
+import com.whzl.mengbi.model.entity.LiveShowListInfo;
+import com.whzl.mengbi.model.entity.RecommendInfo;
+import com.whzl.mengbi.model.entity.RecommendListInfo;
+import com.whzl.mengbi.ui.adapter.HomeLiveAdapter;
+import com.whzl.mengbi.ui.adapter.RecommendAdapter;
+import com.whzl.mengbi.ui.view.HomeView;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.thread.HomeBannerThread;
-import com.whzl.mengbi.thread.HomeLiveShowThread;
-import com.whzl.mengbi.thread.HomeRecommendThread;
 import com.whzl.mengbi.ui.fragemengt.BaseFragement;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class HomeFragment extends BaseFragement {
+public class HomeFragment extends BaseFragement implements HomeView{
 
     /**
      * 首页轮番图组件
@@ -55,27 +52,18 @@ public class HomeFragment extends BaseFragement {
      */
     private List<BannerInfo.DataBean.ListBean> bannerBeanList;
 
-    private HomeBannerThread mHomeBannerThread;
-    private HomeBannerHandler mHomeBannerHandler = new HomeBannerHandler(this);
-
     /**
      * 小编推荐
      */
     private TextView liveShowTv;
     private RecyclerView recommendLiveRv;
-    private RecommendBean recommendBean;
-    private CommonAdapter<RecommendListBean> mRecommendCommonAdapter;
-    private HomeRecommendThread mHomeRecommendThread;
-    private HomeRecommendHandler mHomeRecommendHandler = new HomeRecommendHandler(this);
+    private RecommendAdapter<RecommendListInfo> mRecommendAdapter;
     /**
      *精彩直播
      */
     private TextView recommend_tv;
     private RecyclerView wonderfulLiveRv;
-    private LiveShowInfo liveShowInfo;
-    private CommonAdapter<LiveShowListBean> mWonderfulCommonAdapter;
-    private HomeLiveShowThread mHomeLiveShowThread;
-    private HomeLiveShowHandler mHomeLiveShowHandler = new HomeLiveShowHandler(this);
+    private HomeLiveAdapter<LiveShowListInfo> mWonderfulAdapter;
 
 
     /**
@@ -87,9 +75,10 @@ public class HomeFragment extends BaseFragement {
     private  RecyclerView.LayoutManager mRecommendLayoutManager;
 
 
-    private List<LiveShowListBean> wonderfulList = new ArrayList<>();
-    private List<RecommendListBean> recommendList = new ArrayList<>();
+    private List<LiveShowListInfo> wonderfulList = new ArrayList<>();
+    private List<RecommendListInfo> recommendList = new ArrayList<>();
 
+    private HomePresenter homePresenter;
 
     public static HomeFragment newInstance(String info) {
         Bundle args = new Bundle();
@@ -111,8 +100,8 @@ public class HomeFragment extends BaseFragement {
         mView = inflater.inflate(R.layout.fragment_home_layout,null);
         Toolbar mToolbar = (Toolbar)mView.findViewById(R.id.fragment_home_toolbar);
         mToolbar.setTitle("");
-
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        homePresenter = new HomePresenterImpl(this);
         initData();
         initView();
         return mView;
@@ -153,21 +142,9 @@ public class HomeFragment extends BaseFragement {
     }
 
     public void initData() {
-        HashMap hashMap = new HashMap();
-        //首页轮番图
-        mHomeBannerThread = new HomeBannerThread(mContext,hashMap,mHomeBannerHandler);
-        mHomeBannerThread.start();
-
-        //首页推荐主播
-        HashMap recommendMap = new HashMap();
-        mHomeRecommendThread = new HomeRecommendThread(mContext,recommendMap,mHomeRecommendHandler);
-        mHomeRecommendThread.start();
-
-        //首页主播展示
-        HashMap liveMap = new HashMap();
-        liveMap.put("page",1);
-        mHomeLiveShowThread = new HomeLiveShowThread(mContext,liveMap,mHomeLiveShowHandler);
-        mHomeLiveShowThread.start();
+        homePresenter.getBanner();
+        homePresenter.getRecommend();
+        homePresenter.getLiveShow();
     }
 
      //绑定首页推荐主播数据
@@ -175,18 +152,10 @@ public class HomeFragment extends BaseFragement {
          // 设置布局管理器
          mRecommendLayoutManager = new GridLayoutManager(mContext,2);
          recommendLiveRv.setLayoutManager(mRecommendLayoutManager);
-         recommendLiveRv.setAdapter(mRecommendCommonAdapter = new CommonAdapter<RecommendListBean>(mContext,R.layout.fragment_home_recommend_rvitem_layout,recommendList) {
-             @Override
-             protected void convert(ViewHolder holder, RecommendListBean mData, int position) {
-                 if (mData.getStatus().equals("T")){
-                     GlideImageLoader.getInstace().displayImage(mContext,R.drawable.ic_home_live_middle,holder.getView(R.id.home_recommend_rvitem_status));
-                 }
-                 GlideImageLoader.getInstace().displayImage(mContext,mData.getCover(),holder.getView(R.id.home_recommend_rvitem_cover));
-                 holder.setText(R.id.home_recommend_rvitem_anchorNickname,mData.getAnchorLevelName());
-                 holder.setText(R.id.home_recommend_rvitem_roomUserCount,mData.getRoomUserCount()+"");
-             }
-         });
-        mRecommendCommonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+         //设置Adapter
+         mRecommendAdapter = new RecommendAdapter<RecommendListInfo>(mContext,R.layout.fragment_home_recommend_rvitem_layout,recommendList);
+         recommendLiveRv.setAdapter(mRecommendAdapter);
+         mRecommendAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 Intent mIntent = new Intent(mContext, LiveDisplayActivity.class);
@@ -215,19 +184,9 @@ public class HomeFragment extends BaseFragement {
          mWonderfulLayoutManager = new GridLayoutManager(mContext,2);
          wonderfulLiveRv.setLayoutManager(mWonderfulLayoutManager);
          // 设置adapter
-         wonderfulLiveRv.setAdapter(mWonderfulCommonAdapter = new CommonAdapter<LiveShowListBean>(mContext,R.layout.fragment_home_show_rvitem_layout,wonderfulList) {
-             @Override
-             protected void convert(ViewHolder holder, LiveShowListBean mData, int position) {
-                 if (mData.getStatus().equals("T")){
-                     GlideImageLoader.getInstace().displayImage(mContext,R.drawable.ic_home_live_middle,holder.getView(R.id.home_rvitem_status));
-                 }
-                 GlideImageLoader.getInstace().displayImage(mContext,mData.getCover(),holder.getView(R.id.home_rvitem_cover));
-                 holder.setText(R.id.home_rvitem_anchorNickname,mData.getAnchorLevelName());
-                 holder.setText(R.id.home_rvitem_roomUserCount,mData.getRoomUserCount()+"");
-             }
-         });
-
-         mWonderfulCommonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+         mWonderfulAdapter = new HomeLiveAdapter(mContext,R.layout.fragment_home_show_rvitem_layout,wonderfulList);
+         wonderfulLiveRv.setAdapter(mWonderfulAdapter);
+         mWonderfulAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
              @Override
              public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                  Intent mIntent = new Intent(mContext, LiveDisplayActivity.class);
@@ -250,100 +209,34 @@ public class HomeFragment extends BaseFragement {
          });
      }
 
-
-
-    /**
-     * 首页轮番图Handler
-     为避免handler造成的内存泄漏
-     1、使用静态的handler，对外部类不保持对象的引用
-     2、但Handler需要与Activity通信，所以需要增加一个对Activity的弱引用
-     */
-     private static class HomeBannerHandler extends Handler{
-        private final WeakReference<Fragment> mFragmentWeakReference;
-         HomeBannerHandler(Fragment fragment){
-            this.mFragmentWeakReference = new WeakReference<Fragment>(fragment);
+    @Override
+    public void showBanner(BannerInfo bannerInfo) {
+        //首页轮番图图片集合
+        List bannerImages=new ArrayList();
+        //首页轮番图标题集合
+        List  bannerTitles=new ArrayList();
+        for (BannerInfo.DataBean.ListBean listBean: bannerInfo.getData().getList()){
+            bannerImages.add(listBean.getPiclink());
+            bannerTitles.add(listBean.getSubject());
         }
+        //设置图片集合
+        mBanner.setImages(bannerImages);
+        //设置标题集合（当banner样式有显示title时）
+        mBanner.setBannerTitles(bannerTitles);
+        //banner设置方法全部调用完毕时最后调用
+        mBanner.start();
+    }
 
-         @Override
-         public void handleMessage(Message msg) {
-             HomeFragment homeFragment = (HomeFragment)mFragmentWeakReference.get();
-             super.handleMessage(msg);
-             switch (msg.what){
-                 case 1:
-                     //绑定首页轮番图数据
-                     BannerInfo bannerInfo =(BannerInfo) msg.obj;
-                     //首页轮番图图片集合
-                     List bannerImages=new ArrayList();
-                     //首页轮番图标题集合
-                     List  bannerTitles=new ArrayList();
-                     for (BannerInfo.DataBean.ListBean listBean: bannerInfo.getData().getList()){
-                         bannerImages.add(listBean.getPiclink());
-                         bannerTitles.add(listBean.getSubject());
-                     }
-                     //设置图片集合
-                     homeFragment.mBanner.setImages(bannerImages);
-                     //设置标题集合（当banner样式有显示title时）
-                     homeFragment.mBanner.setBannerTitles(bannerTitles);
-                     //banner设置方法全部调用完毕时最后调用
-                     homeFragment.mBanner.start();
-                     break;
-             }
-         }
-     }
+    @Override
+    public void showRecommend(RecommendInfo recommendInfo) {
+        recommendList.addAll(recommendInfo.getData().getList());
+        initRecommendViewAndData();
+    }
 
-    /**
-     * 主播推荐Handler
-     为避免handler造成的内存泄漏
-     1、使用静态的handler，对外部类不保持对象的引用
-     2、但Handler需要与Activity通信，所以需要增加一个对Activity的弱引用
-     */
-     public static class HomeRecommendHandler extends Handler{
-         private final WeakReference<Fragment> mFragmentWeakReference;
-         HomeRecommendHandler(Fragment fragment){
-             this.mFragmentWeakReference = new WeakReference<Fragment>(fragment);
-         }
-
-         @Override
-         public void handleMessage(Message msg) {
-             super.handleMessage(msg);
-             HomeFragment homeFragment = (HomeFragment)mFragmentWeakReference.get();
-             switch (msg.what){
-                 case 1:
-                     RecommendBean recommendBean = (RecommendBean) msg.obj;
-                     homeFragment.recommendList.addAll(recommendBean.getData().getList());
-                     homeFragment.initRecommendViewAndData();
-                     break;
-             }
-         }
-
-
-
-     }
-
-    /**
-     * 精彩主播Handler
-     为避免handler造成的内存泄漏
-     1、使用静态的handler，对外部类不保持对象的引用
-     2、但Handler需要与Activity通信，所以需要增加一个对Activity的弱引用
-     */
-    public static class HomeLiveShowHandler extends Handler{
-        private final WeakReference<Fragment> mFragmentWeakReference;
-        HomeLiveShowHandler(Fragment fragment){
-            this.mFragmentWeakReference = new WeakReference<Fragment>(fragment);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            HomeFragment homeFragment = (HomeFragment)mFragmentWeakReference.get();
-            switch (msg.what){
-                case 1:
-                    LiveShowInfo liveShowInfo = (LiveShowInfo) msg.obj;
-                    homeFragment.wonderfulList.addAll(liveShowInfo.getData().getList());
-                    homeFragment.initLiveViewAndData();
-                    break;
-            }
-        }
+    @Override
+    public void showLiveShow(LiveShowInfo liveShowInfo) {
+        wonderfulList.addAll(liveShowInfo.getData().getList());
+        initLiveViewAndData();
     }
 
     @Override
@@ -363,5 +256,6 @@ public class HomeFragment extends BaseFragement {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        homePresenter.onDestroy();
     }
 }

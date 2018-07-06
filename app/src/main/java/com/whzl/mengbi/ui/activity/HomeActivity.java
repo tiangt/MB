@@ -16,7 +16,7 @@ import com.whzl.mengbi.ui.widget.BottomNavigationViewHelper;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.ui.fragemengt.home.FollowFragment;
 import com.whzl.mengbi.ui.fragemengt.home.HomeFragment;
-import com.whzl.mengbi.ui.fragemengt.home.MyFragment;
+import com.whzl.mengbi.ui.fragemengt.home.MeFragment;
 import com.whzl.mengbi.ui.adapter.ViewPagerAdapter;
 
 /**
@@ -118,7 +118,7 @@ public class HomeActivity extends BaseAtivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(HomeFragment.newInstance("首页"));
         adapter.addFragment(FollowFragment.newInstance("关注"));
-        adapter.addFragment(MyFragment.newInstance("我的"));
+        adapter.addFragment(MeFragment.newInstance("我的"));
         viewPager.setAdapter(adapter);
     }
 }

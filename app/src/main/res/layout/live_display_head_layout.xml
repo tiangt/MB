@@ -14,11 +14,11 @@
             android:layout_height="@dimen/y22"
             android:layout_marginLeft="@dimen/x14"
             android:background="@drawable/rounded_layout">
-            <com.whzl.mengbi.widget.view.CircleImageView
+            <com.whzl.mengbi.ui.widget.view.CircleImageView
                 android:id="@+id/live_display_profile_photo"
                 android:layout_width="@dimen/x29"
                 android:layout_height="@dimen/y20">
-            </com.whzl.mengbi.widget.view.CircleImageView>
+            </com.whzl.mengbi.ui.widget.view.CircleImageView>
 
             <TextView
                 android:id="@+id/live_display_anchornickname"
@@ -48,7 +48,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/live_display_user_count"
+            android:id="@+id/live_display_popularity"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/y13"
             android:layout_marginRight="@dimen/x9"
