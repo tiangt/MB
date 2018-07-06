@@ -4,18 +4,10 @@ import android.content.Context;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
-import com.whzl.mengbi.model.entity.message.ChatCommonMesBean;
-import com.whzl.mengbi.model.entity.message.UserMesBean;
 import com.whzl.mengbi.chat.ProtoStringAvg;
 import com.whzl.mengbi.chat.client.MessageCallback;
-import com.whzl.mengbi.eventbus.EventBusBean;
-import com.whzl.mengbi.eventbus.EventBusUtils;
-import com.whzl.mengbi.eventbus.EventCode;
-import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -27,28 +19,18 @@ import java.util.Map;
  * Created by qishui on 15/5/20.
  */
 public class MessageRouter implements MessageCallback {
-    //private Wire wire;
     String tag = "parser";
     private Gson mGson;
     private Context mContext;
-    //private SmileyParser smileyParser;
     Map<String, PlaybackStateCompat.Actions> actionsMap = new HashMap<>();
     //Map<Integer, OptAction> optActionMap = new HashMap<>();
-    //ResourceMap resourceMap;
-    //private ChatAction chatAction;
+    private ChatAction chatAction;
     //private PrivateChatAction privateChatAction;
 
     public MessageRouter(Gson gson, Context context) {
         this.mGson = gson;
         this.mContext = context;
-        //todo 可能有问题
-//        SmileyParser.init(context.getApplicationContext());
-//        smileyParser = SmileyParser.getInstance();
-//
-//        resourceMap = new ResourceMap();
-
         //initActionMap();
-        initOptMap();
         initChatAction();
     }
 
@@ -65,12 +47,8 @@ public class MessageRouter implements MessageCallback {
 //        actionsMap.put("ANIMATION", new AnimAction());
     }
 
-    private void initOptMap() {
-
-    }
-
     private void initChatAction() {
-
+        chatAction = new ChatAction();
     }
 
     @Override
@@ -130,44 +108,44 @@ public class MessageRouter implements MessageCallback {
         if (type == null || msgInfo == null) {
             return;
         } else if (type.equals("common")) {
-            System.out.println("common>>>>>"+msgInfo);
-            ChatCommonMesBean chatMessageBean = GsonUtils.GsonToBean(msgInfo,ChatCommonMesBean.class);
-            EventBusBean<ChatCommonMesBean> event = new EventBusBean<>(EventCode.CHAT_COMMON,chatMessageBean);
-            EventBusUtils.sendEvent(event);
+//            ChatCommonMesBean chatMessageBean = GsonUtils.GsonToBean(msgInfo,ChatCommonMesBean.class);
+//            EventBusBean<ChatCommonMesBean> event = new EventBusBean<>(EventCode.CHAT_COMMON,chatMessageBean);
+//            EventBusUtils.sendEvent(event);
+            chatAction.performAction(msgInfo, mContext);
         } else if (type.equals("private")) {
-            System.out.println("private>>>>>"+msgInfo);
-        } else if (type.equals("localroom") || type.equals("broadcast")) {
-            System.out.println("localroom>>>>>"+msgInfo);
-            JSONObject jsonobj = JSON.parseObject(msgInfo);
-            Object eventCode = jsonobj.get("eventCode");
-            Object msgType = jsonobj.get("msgType");
-            if(eventCode!=null){
-                if(eventCode.equals("WELCOME")){
-                    Object userId = jsonobj.getJSONObject("context").getJSONObject("info").get("userId");
-                    if(userId.equals(0)){
-                        Object nickname = jsonobj.getJSONObject("context").getJSONObject("info").get("nickname");
-                        EventBusBean<Object> event = new EventBusBean<>(EventCode.TOURIST,nickname.toString());
-                        EventBusUtils.sendEvent(event);
-                    }else{
-                        UserMesBean userMesBean = GsonUtils.GsonToBean(msgInfo,UserMesBean.class);
-                        EventBusBean<UserMesBean> event = new EventBusBean<>(EventCode.LOGIN_USER,userMesBean);
-                        EventBusUtils.sendEvent(event);
-                    }
-                }else if(eventCode.equals("SEND_SYSTEM_MESSAGE")){
-//                    Object  sysmes =  jsonobj.getJSONObject("context").get(message);
-//                    System.out.println(">>>>>>>>>>>>SEND_SYSTEM_MESSAGE"+sysmes);
-//                    EventBusBean<Object> event = new EventBusBean<>(EventCode.SEND_SYSTEM_MESSAGE,sysmes);
-//                    EventBusUtils.sendEvent(event);
-                }else{
 
-                }
-            }else if (msgType!=null){
-                if(msgType.equals("ANIMATION")){
-                    System.out.println("ANIMATION>>>>>>>>>>>>"+msgInfo);
-                }else{
-                      
-                }
-            }
+        } else if (type.equals("localroom") || type.equals("broadcast")) {
+//            System.out.println("localroom>>>>>"+msgInfo);
+//            JSONObject jsonobj = JSON.parseObject(msgInfo);
+//            Object eventCode = jsonobj.get("eventCode");
+//            Object msgType = jsonobj.get("msgType");
+//            if(eventCode!=null){
+//                if(eventCode.equals("WELCOME")){
+//                    Object userId = jsonobj.getJSONObject("context").getJSONObject("info").get("userId");
+//                    if(userId.equals(0)){
+//                        Object nickname = jsonobj.getJSONObject("context").getJSONObject("info").get("nickname");
+//                        EventBusBean<Object> event = new EventBusBean<>(EventCode.TOURIST,nickname.toString());
+//                        EventBusUtils.sendEvent(event);
+//                    }else{
+//                        UserMesBean userMesBean = GsonUtils.GsonToBean(msgInfo,UserMesBean.class);
+//                        EventBusBean<UserMesBean> event = new EventBusBean<>(EventCode.LOGIN_USER,userMesBean);
+//                        EventBusUtils.sendEvent(event);
+//                    }
+//                }else if(eventCode.equals("SEND_SYSTEM_MESSAGE")){
+////                    Object  sysmes =  jsonobj.getJSONObject("context").get(message);
+////                    System.out.println(">>>>>>>>>>>>SEND_SYSTEM_MESSAGE"+sysmes);
+////                    EventBusBean<Object> event = new EventBusBean<>(EventCode.SEND_SYSTEM_MESSAGE,sysmes);
+////                    EventBusUtils.sendEvent(event);
+//                }else{
+//
+//                }
+//            }else if (msgType!=null){
+//                if(msgType.equals("ANIMATION")){
+//                    System.out.println("ANIMATION>>>>>>>>>>>>"+msgInfo);
+//                }else{
+//
+//                }
+//            }
         }
     }
 

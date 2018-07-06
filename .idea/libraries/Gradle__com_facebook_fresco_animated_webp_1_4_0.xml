@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.facebook.fresco:animated-webp-1.4.0">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/animated-webp-1.4.0.aar/ace8d77830d17fee98dedf61c588831c/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/animated-webp-1.4.0.aar/ace8d77830d17fee98dedf61c588831c/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/animated-webp-1.4.0.aar/8b9f0a02ee63422ae88fb7dbbc601233/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/animated-webp-1.4.0.aar/8b9f0a02ee63422ae88fb7dbbc601233/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

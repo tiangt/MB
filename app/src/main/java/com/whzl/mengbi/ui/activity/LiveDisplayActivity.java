@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -28,29 +27,28 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
-import com.whzl.mengbi.model.entity.message.ChatCommonMesBean;
-import com.whzl.mengbi.model.entity.message.UserMesBean;
-import com.whzl.mengbi.ui.activity.base.BaseAtivity;
-import com.whzl.mengbi.model.entity.EmjoyInfo;
-import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.eventbus.EventBusBean;
 import com.whzl.mengbi.eventbus.EventCode;
+import com.whzl.mengbi.model.entity.EmjoyInfo;
+import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.message.ChatCommonMesBean;
+import com.whzl.mengbi.model.entity.message.UserMesBean;
 import com.whzl.mengbi.thread.LiveChatRoomTokenThread;
+import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.ui.widget.BottomNavigationViewHelper;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
+import com.whzl.mengbi.ui.widget.view.PubChatView;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
-
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -77,7 +75,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
     private View mView;
     private RecyclerView.LayoutManager mGiftLayoutManager;
     private RecyclerView.LayoutManager mTalkLayoutManager;
-    private RecyclerView.LayoutManager mMessageLayoutManager;
+    //private RecyclerView.LayoutManager mMessageLayoutManager;
     private ViewPager  mGiftViewPager;
     private MenuItem mMenuItem;
     /**
@@ -130,7 +128,8 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
     private EditText talkEditText;
     private ChatRoomPresenterImpl chatRoomPresenter;
     private CommonAdapter mMessageAdapter;
-    private RecyclerView mMessageRecyclerView;
+    //private RecyclerView mMessageRecyclerView;
+    private PubChatView chatView;
     private List mMessageData = new ArrayList();
     private LiveChatRoomTokenThread liveChatRoomTokenThread;
     private LiveChatRoomTokenHandler liveChatRoomTokenHandler = new LiveChatRoomTokenHandler(this);
@@ -164,9 +163,10 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
 
     private void initViews() {
         mMasterSurfaceView = (SurfaceView) findViewById(R.id.player_master);
-        mMessageLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
-        mMessageRecyclerView = findViewById(R.id.live_display_message_recyclerview);
-        mMessageRecyclerView.setLayoutManager(mMessageLayoutManager);
+        chatView = (PubChatView)findViewById(R.id.pub_chat_view);
+//        mMessageLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+//        mMessageRecyclerView = findViewById(R.id.live_display_message_recyclerview);
+//        mMessageRecyclerView.setLayoutManager(mMessageLayoutManager);
         mMasterSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -416,7 +416,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
         String fileName = "images/face/face.json";
         String strJson= FileUtils.getJson(fileName,mContext);
         EmjoyInfo emjoyInfo = GsonUtils.GsonToBean(strJson,EmjoyInfo.class);
-        mFaceData.addAll(emjoyInfo.getFace().getPublicX());
+        mFaceData.addAll(emjoyInfo.getFace().getFaceList());
     }
 
     /**
@@ -446,7 +446,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
             case EventCode.CHAT_COMMON:
                 ChatCommonMesBean commonMesBean = (ChatCommonMesBean)event.getData();
                 SpannableStringBuilder spannableStringBuilder = faceReplace(commonMesBean);
-                mMessageRecyclerView.setAdapter(mMessageAdapter = new CommonAdapter(mContext,R.layout.live_display_message_item_layout,mMessageData) {
+                /*mMessageRecyclerView.setAdapter(mMessageAdapter = new CommonAdapter(mContext,R.layout.live_display_message_item_layout,mMessageData) {
                     @Override
                     protected void convert(ViewHolder holder, Object obj, int position) {
                         if(mMessageData!=null){
@@ -470,6 +470,7 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
                     }
                 });
                 mMessageAdapter.notifyDataSetChanged();
+                */
                 break;
             case EventCode.CHAT_PRIVATE:
                 break;
@@ -578,7 +579,9 @@ public class LiveDisplayActivity extends BaseAtivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        if (chatView != null) {
+            chatView.unregister();
+        }
         if(chatRoomPresenter!=null){
             chatRoomPresenter.disconnectChat();
         }

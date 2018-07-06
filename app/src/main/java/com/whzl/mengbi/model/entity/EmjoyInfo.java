@@ -18,14 +18,14 @@ public class EmjoyInfo {
 
     public static class FaceBean {
         @SerializedName("public")
-        private List<PublicBean> publicX;
+        private List<PublicBean> faceList;
 
-        public List<PublicBean> getPublicX() {
-            return publicX;
+        public List<PublicBean> getFaceList() {
+            return faceList;
         }
 
         public void setPublicX(List<PublicBean> publicX) {
-            this.publicX = publicX;
+            this.faceList = publicX;
         }
 
         public static class PublicBean {

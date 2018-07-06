@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.sendtion:XRichText-1.3">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/XRichText-1.3.aar/c1b5bf40098ffe808ae18adb8f58b87d/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/XRichText-1.3.aar/c1b5bf40098ffe808ae18adb8f58b87d/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/XRichText-1.3.aar/131cc430423d10215800db556c105d93/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/XRichText-1.3.aar/131cc430423d10215800db556c105d93/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
