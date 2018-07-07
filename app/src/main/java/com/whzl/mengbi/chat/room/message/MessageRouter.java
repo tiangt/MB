@@ -1,13 +1,23 @@
 package com.whzl.mengbi.chat.room.message;
 
 import android.content.Context;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.whzl.mengbi.chat.ProtoStringAvg;
 import com.whzl.mengbi.chat.client.MessageCallback;
+import com.whzl.mengbi.chat.room.message.messageJson.ChatRoomEventJson;
+import com.whzl.mengbi.chat.room.message.messagesActions.Actions;
+import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.SetManagerAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.ZhongjiangAction;
+import com.whzl.mengbi.util.GsonUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -22,9 +32,10 @@ public class MessageRouter implements MessageCallback {
     String tag = "parser";
     private Gson mGson;
     private Context mContext;
-    Map<String, PlaybackStateCompat.Actions> actionsMap = new HashMap<>();
+    Map<String, Actions> actionsMap = new HashMap<>();
     //Map<Integer, OptAction> optActionMap = new HashMap<>();
     private ChatAction chatAction;
+    private PrivateChatAction privateChatAction;
     //private PrivateChatAction privateChatAction;
 
     public MessageRouter(Gson gson, Context context) {
@@ -35,20 +46,19 @@ public class MessageRouter implements MessageCallback {
     }
 
     private void initActionMap() {
-//        actionsMap.put("start_live", new StartPlayAction());
-//        actionsMap.put("stop_live", new StopPlayAction());
-//        actionsMap.put("WELCOME", new WelComeAction());
-//        actionsMap.put("SEND_GIFT", new GiftAction());
-//        actionsMap.put("ANCHOR_EXP", new ExpAction());
-//        actionsMap.put("LUCK_GIFT", new ZhongjiangAction());
-//        actionsMap.put("BROADCAST", new BroadcastAction());
-//        actionsMap.put("RUNWAY", new RunWayAction());
-//        actionsMap.put("SET_MANAGER", new SetManagerAction());
-//        actionsMap.put("ANIMATION", new AnimAction());
+        actionsMap.put("start_live", new StartPlayAction());
+        actionsMap.put("stop_live", new StopPlayAction());
+        actionsMap.put("WELCOME", new WelComeAction());
+        actionsMap.put("SEND_GIFT", new GiftAction());
+        actionsMap.put("LUCK_GIFT", new ZhongjiangAction());
+        //actionsMap.put("BROADCAST", new BroadcastAction());
+        actionsMap.put("SET_MANAGER", new SetManagerAction());
+        actionsMap.put("ANIMATION", new AnimAction());
     }
 
     private void initChatAction() {
         chatAction = new ChatAction();
+        privateChatAction = new PrivateChatAction();
     }
 
     @Override
@@ -108,45 +118,38 @@ public class MessageRouter implements MessageCallback {
         if (type == null || msgInfo == null) {
             return;
         } else if (type.equals("common")) {
-//            ChatCommonMesBean chatMessageBean = GsonUtils.GsonToBean(msgInfo,ChatCommonMesBean.class);
-//            EventBusBean<ChatCommonMesBean> event = new EventBusBean<>(EventCode.CHAT_COMMON,chatMessageBean);
-//            EventBusUtils.sendEvent(event);
             chatAction.performAction(msgInfo, mContext);
         } else if (type.equals("private")) {
-
+            privateChatAction.performAction(msgInfo, mContext);
         } else if (type.equals("localroom") || type.equals("broadcast")) {
-//            System.out.println("localroom>>>>>"+msgInfo);
-//            JSONObject jsonobj = JSON.parseObject(msgInfo);
-//            Object eventCode = jsonobj.get("eventCode");
-//            Object msgType = jsonobj.get("msgType");
-//            if(eventCode!=null){
-//                if(eventCode.equals("WELCOME")){
-//                    Object userId = jsonobj.getJSONObject("context").getJSONObject("info").get("userId");
-//                    if(userId.equals(0)){
-//                        Object nickname = jsonobj.getJSONObject("context").getJSONObject("info").get("nickname");
-//                        EventBusBean<Object> event = new EventBusBean<>(EventCode.TOURIST,nickname.toString());
-//                        EventBusUtils.sendEvent(event);
-//                    }else{
-//                        UserMesBean userMesBean = GsonUtils.GsonToBean(msgInfo,UserMesBean.class);
-//                        EventBusBean<UserMesBean> event = new EventBusBean<>(EventCode.LOGIN_USER,userMesBean);
-//                        EventBusUtils.sendEvent(event);
-//                    }
-//                }else if(eventCode.equals("SEND_SYSTEM_MESSAGE")){
-////                    Object  sysmes =  jsonobj.getJSONObject("context").get(message);
-////                    System.out.println(">>>>>>>>>>>>SEND_SYSTEM_MESSAGE"+sysmes);
-////                    EventBusBean<Object> event = new EventBusBean<>(EventCode.SEND_SYSTEM_MESSAGE,sysmes);
-////                    EventBusUtils.sendEvent(event);
-//                }else{
-//
-//                }
-//            }else if (msgType!=null){
-//                if(msgType.equals("ANIMATION")){
-//                    System.out.println("ANIMATION>>>>>>>>>>>>"+msgInfo);
-//                }else{
-//
-//                }
-//            }
+            ChatRoomEventJson eventJson = GsonUtils.GsonToBean(msgInfo, ChatRoomEventJson.class);
+            if (null == eventJson) {
+                return;
+            }
+            if (eventJson.getMsgType() != null) {
+                handleMsgTypeAction(eventJson.getMsgType(), msgInfo);
+            }else if (eventJson.getEventCode() != null) {
+                handleEventAction(eventJson.getEventCode(), msgInfo);
+            }
         }
+    }
+
+    private void handleEventAction(String eventCode, String msgInfo) {
+        Actions action = actionsMap.get(eventCode);
+        if (null == action) {
+            Log.e("chatMsg", "eventCode has no action");
+            return;
+        }
+        action.performAction(msgInfo, mContext);
+    }
+
+    private void handleMsgTypeAction(String msgType, String msgInfo) {
+        Actions action = actionsMap.get(msgType);
+        if (null == action) {
+            Log.e("chatMsg", "msgType has no action");
+            return;
+        }
+        action.performAction(msgInfo, mContext);
     }
 
     private void parseOptMsg(ProtoStringAvg.strAvg  message) {

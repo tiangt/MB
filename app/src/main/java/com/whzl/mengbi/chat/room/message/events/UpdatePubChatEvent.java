@@ -2,9 +2,7 @@ package com.whzl.mengbi.chat.room.message.events;
 
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 
-/**
- * Created by qishui on 15/5/26.
- */
+
 public class UpdatePubChatEvent {
     private FillHolderMessage message;
 

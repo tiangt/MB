@@ -9,12 +9,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,40 +28,22 @@ import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
-<<<<<<< HEAD
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.eventbus.EventBusBean;
 import com.whzl.mengbi.eventbus.EventCode;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
-import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
-import com.whzl.mengbi.model.entity.message.ChatCommonMesBean;
-import com.whzl.mengbi.model.entity.message.UserMesBean;
-import com.whzl.mengbi.thread.LiveChatRoomTokenThread;
-import com.whzl.mengbi.ui.activity.base.BaseAtivity;
-import com.whzl.mengbi.ui.widget.BottomNavigationViewHelper;
-import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
-import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
-import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
-import com.whzl.mengbi.ui.widget.view.PubChatView;
-=======
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.message.ChatCommonMesBean;
 import com.whzl.mengbi.model.entity.message.UserMesBean;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
-import com.whzl.mengbi.model.entity.EmjoyInfo;
-import com.whzl.mengbi.model.entity.GiftInfo;
-import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
-import com.whzl.mengbi.eventbus.EventBusBean;
-import com.whzl.mengbi.eventbus.EventCode;
 import com.whzl.mengbi.ui.adapter.LiveChatFaceAdapter;
 import com.whzl.mengbi.ui.adapter.LiveGiftLuckyAdapter;
 import com.whzl.mengbi.ui.adapter.LiveGiftLuxuryAdapter;
 import com.whzl.mengbi.ui.adapter.LiveGiftNormalAdapter;
 import com.whzl.mengbi.ui.adapter.LiveGiftRecommendAdapter;
-import com.whzl.mengbi.ui.adapter.LiveMessageAdapter;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.BottomNavigationViewHelper;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
@@ -69,14 +51,8 @@ import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
 import com.whzl.mengbi.util.CustomPopWindowUtils;
->>>>>>> b3735764531344faa4f06f02fa0e00a252f6d862
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.SPUtils;
-<<<<<<< HEAD
-=======
-
-import com.whzl.mengbi.util.SpannableStringUitls;
->>>>>>> b3735764531344faa4f06f02fa0e00a252f6d862
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.io.IOException;
@@ -84,21 +60,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 /**
  * 直播间
  */
 public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.OnClickListener{
-
     private SurfaceView mMasterSurfaceView;
     private KSYMediaPlayer mMasterPlayer;
     private Context  mContext;
     private View mView;
     private RecyclerView.LayoutManager mGiftLayoutManager;
     private RecyclerView.LayoutManager mTalkLayoutManager;
-    //private RecyclerView.LayoutManager mMessageLayoutManager;
+    private RecyclerView.LayoutManager mMessageLayoutManager;
     private ViewPager  mGiftViewPager;
     private MenuItem mMenuItem;
 
@@ -144,8 +116,7 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
     private EditText talkEditText;
     private ChatRoomPresenterImpl chatRoomPresenter;
     private CommonAdapter mMessageAdapter;
-    //private RecyclerView mMessageRecyclerView;
-    private PubChatView chatView;
+    private RecyclerView mMessageRecyclerView;
     private List mMessageData = new ArrayList();
     private LiveRoomTokenInfo liveRoomTokenInfo;
 
@@ -185,19 +156,12 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
         mContribution = (Button) findViewById(R.id.live_display_contribution);
         mPopularity = (TextView) findViewById(R.id.live_display_popularity);
         mClose = (ImageView)findViewById(R.id.live_display_close);
-        mMasterSurfaceView = (SurfaceView) findViewById(R.id.player_master);
-<<<<<<< HEAD
-        chatView = (PubChatView)findViewById(R.id.pub_chat_view);
-//        mMessageLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
-//        mMessageRecyclerView = findViewById(R.id.live_display_message_recyclerview);
-//        mMessageRecyclerView.setLayoutManager(mMessageLayoutManager);
-=======
-        mMessageRecyclerView =(RecyclerView) findViewById(R.id.live_display_message_recyclerview);
+        mMasterSurfaceView = (SurfaceView)findViewById(R.id.player_master);
+        mMessageLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+        mMessageRecyclerView = findViewById(R.id.live_display_message_recyclerview);
+        mMessageRecyclerView.setLayoutManager(mMessageLayoutManager);
         mCircleImageViewTalk = (CircleImageView) findViewById(R.id.live_display_talk);
         mCircleImageViewGift = (CircleImageView) findViewById(R.id.live_display_gift);
-        mMessageLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
-        mMessageRecyclerView.setLayoutManager(mMessageLayoutManager);
->>>>>>> b3735764531344faa4f06f02fa0e00a252f6d862
         mMasterSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -370,13 +334,7 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
      */
     public void readFaceData(){
         String fileName = "images/face/face.json";
-<<<<<<< HEAD
-        String strJson= FileUtils.getJson(fileName,mContext);
-        EmjoyInfo emjoyInfo = GsonUtils.GsonToBean(strJson,EmjoyInfo.class);
-        mFaceData.addAll(emjoyInfo.getFace().getFaceList());
-=======
         livePresenter.getLiveFace(fileName);
->>>>>>> b3735764531344faa4f06f02fa0e00a252f6d862
     }
 
     /**
@@ -401,8 +359,7 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
                 break;
             case EventCode.CHAT_COMMON:
                 ChatCommonMesBean commonMesBean = (ChatCommonMesBean)event.getData();
-<<<<<<< HEAD
-                SpannableStringBuilder spannableStringBuilder = faceReplace(commonMesBean);
+                //SpannableStringBuilder spannableStringBuilder = faceReplace(commonMesBean);
                 /*mMessageRecyclerView.setAdapter(mMessageAdapter = new CommonAdapter(mContext,R.layout.live_display_message_item_layout,mMessageData) {
                     @Override
                     protected void convert(ViewHolder holder, Object obj, int position) {
@@ -426,13 +383,6 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
                         //mMessageAdapter.notifyItemInserted(position);
                     }
                 });
-=======
-                SpannableStringBuilder spannableStringBuilder = SpannableStringUitls.faceReplace(mContext,commonMesBean,mFaceData);
-                mMessageRecyclerView.setAdapter(new LiveMessageAdapter(mContext,R.layout.live_display_message_item_layout,mMessageData));
-                TextView mesage= (TextView)findViewById(R.id.live_display_message_item_text);
-                mesage.append(commonMesBean.getFrom_nickname());
-                mesage.append(spannableStringBuilder);
->>>>>>> b3735764531344faa4f06f02fa0e00a252f6d862
                 mMessageAdapter.notifyDataSetChanged();
                 */
                 break;
@@ -460,7 +410,7 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
 
     @Override
     public void onLiveFaceSuccess(EmjoyInfo emjoyInfo) {
-        mFaceData.addAll(emjoyInfo.getFace().getPublicX());
+        mFaceData.addAll(emjoyInfo.getFace().getFaceList());
     }
 
     @Override
@@ -479,13 +429,7 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
-<<<<<<< HEAD
-        if (chatView != null) {
-            chatView.unregister();
-        }
-=======
         livePresenter.onDestory();
->>>>>>> b3735764531344faa4f06f02fa0e00a252f6d862
         if(chatRoomPresenter!=null){
             chatRoomPresenter.disconnectChat();
         }
