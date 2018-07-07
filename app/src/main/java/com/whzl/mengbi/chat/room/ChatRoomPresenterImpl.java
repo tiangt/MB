@@ -188,7 +188,8 @@ public class ChatRoomPresenterImpl{
 
 
     public void onChatRoomDestroy() {
-
+        client.closeSocket();
+        messageCallback.unregister();
     }
 
 

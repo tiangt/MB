@@ -19,15 +19,14 @@ import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ZhongjiangAction;
 import com.whzl.mengbi.util.GsonUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
 
-/**
- * Created by qishui on 15/5/20.
- */
 public class MessageRouter implements MessageCallback {
     String tag = "parser";
     private Gson mGson;
@@ -43,6 +42,11 @@ public class MessageRouter implements MessageCallback {
         this.mContext = context;
         //initActionMap();
         initChatAction();
+        EventBus.getDefault().register(context);
+    }
+
+    public void unregister() {
+        EventBus.getDefault().unregister(mContext);
     }
 
     private void initActionMap() {

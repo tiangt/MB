@@ -431,7 +431,7 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
         super.onDestroy();
         livePresenter.onDestory();
         if(chatRoomPresenter!=null){
-            chatRoomPresenter.disconnectChat();
+            chatRoomPresenter.onChatRoomDestroy();
         }
         if (mMasterPlayer != null)
             mMasterPlayer.release();
