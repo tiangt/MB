@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 
-public class MbChatClient {
+public class  MbChatClient {
     private ISocket socket;
     private IConnectCallback mConnectCallback;
     private MessageCallback mMessageCallback;

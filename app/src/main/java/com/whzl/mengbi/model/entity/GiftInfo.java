@@ -1,6 +1,9 @@
 package com.whzl.mengbi.model.entity;
 
-import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 
 public class GiftInfo extends ResponseInfo {
 
@@ -14,453 +17,194 @@ public class GiftInfo extends ResponseInfo {
         this.data = data;
     }
 
-    public static class DataBean {
-        private List<推荐Bean> 推荐;
-        private List<豪华Bean> 豪华;
-        private List<幸运Bean> 幸运;
-        private List<普通Bean> 普通;
+    public class DataBean {
+        private ArrayList<GiftDetailInfoBean> 推荐;
+        private ArrayList<GiftDetailInfoBean> 豪华;
+        private ArrayList<GiftDetailInfoBean> 幸运;
+        private ArrayList<GiftDetailInfoBean> 普通;
 
-        public List<推荐Bean> get推荐() {
+        public ArrayList<GiftDetailInfoBean> get推荐() {
             return 推荐;
         }
 
-        public void set推荐(List<推荐Bean> 推荐) {
+        public void set推荐(ArrayList<GiftDetailInfoBean> 推荐) {
             this.推荐 = 推荐;
         }
 
-        public List<豪华Bean> get豪华() {
+        public ArrayList<GiftDetailInfoBean> get豪华() {
             return 豪华;
         }
 
-        public void set豪华(List<豪华Bean> 豪华) {
+        public void set豪华(ArrayList<GiftDetailInfoBean> 豪华) {
             this.豪华 = 豪华;
         }
 
-        public List<幸运Bean> get幸运() {
+        public ArrayList<GiftDetailInfoBean> get幸运() {
             return 幸运;
         }
 
-        public void set幸运(List<幸运Bean> 幸运) {
+        public void set幸运(ArrayList<GiftDetailInfoBean> 幸运) {
             this.幸运 = 幸运;
         }
 
-        public List<普通Bean> get普通() {
+        public ArrayList<GiftDetailInfoBean> get普通() {
             return 普通;
         }
 
-        public void set普通(List<普通Bean> 普通) {
+        public void set普通(ArrayList<GiftDetailInfoBean> 普通) {
             this.普通 = 普通;
         }
 
-        public static class 推荐Bean {
-            private int goodsId;
-            private String goodsName;
-            private Object goodsEngName;
-            private Object sortNum;
-            private int picId;
-            private String goodsTypeName;
-            private int rent;
-            private String feeType;
-            private Object tagId;
-            private Object tagName;
-            private String goodPic;
 
-            public int getGoodsId() {
-                return goodsId;
-            }
+    }
 
-            public void setGoodsId(int goodsId) {
-                this.goodsId = goodsId;
-            }
+    public class GiftDetailInfoBean implements Parcelable{
+        private int goodsId;
+        private String goodsName;
+        private Object goodsEngName;
+        private Object sortNum;
+        private int picId;
+        private String goodsTypeName;
+        private int rent;
+        private String feeType;
+        private Object tagId;
+        private Object tagName;
+        private String goodPic;
+        private boolean selected;
 
-            public String getGoodsName() {
-                return goodsName;
-            }
-
-            public void setGoodsName(String goodsName) {
-                this.goodsName = goodsName;
-            }
-
-            public Object getGoodsEngName() {
-                return goodsEngName;
-            }
-
-            public void setGoodsEngName(Object goodsEngName) {
-                this.goodsEngName = goodsEngName;
-            }
-
-            public Object getSortNum() {
-                return sortNum;
-            }
-
-            public void setSortNum(Object sortNum) {
-                this.sortNum = sortNum;
-            }
-
-            public int getPicId() {
-                return picId;
-            }
-
-            public void setPicId(int picId) {
-                this.picId = picId;
-            }
-
-            public String getGoodsTypeName() {
-                return goodsTypeName;
-            }
-
-            public void setGoodsTypeName(String goodsTypeName) {
-                this.goodsTypeName = goodsTypeName;
-            }
-
-            public int getRent() {
-                return rent;
-            }
-
-            public void setRent(int rent) {
-                this.rent = rent;
-            }
-
-            public String getFeeType() {
-                return feeType;
-            }
-
-            public void setFeeType(String feeType) {
-                this.feeType = feeType;
-            }
-
-            public Object getTagId() {
-                return tagId;
-            }
-
-            public void setTagId(Object tagId) {
-                this.tagId = tagId;
-            }
-
-            public Object getTagName() {
-                return tagName;
-            }
-
-            public void setTagName(Object tagName) {
-                this.tagName = tagName;
-            }
-
-            public String getGoodPic() {
-                return goodPic;
-            }
-
-            public void setGoodPic(String goodPic) {
-                this.goodPic = goodPic;
-            }
+        public boolean isSelected() {
+            return selected;
         }
 
-        public static class 豪华Bean {
-
-            private int goodsId;
-            private String goodsName;
-            private Object goodsEngName;
-            private Object sortNum;
-            private int picId;
-            private String goodsTypeName;
-            private int rent;
-            private String feeType;
-            private Object tagId;
-            private Object tagName;
-            private String goodPic;
-
-            public int getGoodsId() {
-                return goodsId;
-            }
-
-            public void setGoodsId(int goodsId) {
-                this.goodsId = goodsId;
-            }
-
-            public String getGoodsName() {
-                return goodsName;
-            }
-
-            public void setGoodsName(String goodsName) {
-                this.goodsName = goodsName;
-            }
-
-            public Object getGoodsEngName() {
-                return goodsEngName;
-            }
-
-            public void setGoodsEngName(Object goodsEngName) {
-                this.goodsEngName = goodsEngName;
-            }
-
-            public Object getSortNum() {
-                return sortNum;
-            }
-
-            public void setSortNum(Object sortNum) {
-                this.sortNum = sortNum;
-            }
-
-            public int getPicId() {
-                return picId;
-            }
-
-            public void setPicId(int picId) {
-                this.picId = picId;
-            }
-
-            public String getGoodsTypeName() {
-                return goodsTypeName;
-            }
-
-            public void setGoodsTypeName(String goodsTypeName) {
-                this.goodsTypeName = goodsTypeName;
-            }
-
-            public int getRent() {
-                return rent;
-            }
-
-            public void setRent(int rent) {
-                this.rent = rent;
-            }
-
-            public String getFeeType() {
-                return feeType;
-            }
-
-            public void setFeeType(String feeType) {
-                this.feeType = feeType;
-            }
-
-            public Object getTagId() {
-                return tagId;
-            }
-
-            public void setTagId(Object tagId) {
-                this.tagId = tagId;
-            }
-
-            public Object getTagName() {
-                return tagName;
-            }
-
-            public void setTagName(Object tagName) {
-                this.tagName = tagName;
-            }
-
-            public String getGoodPic() {
-                return goodPic;
-            }
-
-            public void setGoodPic(String goodPic) {
-                this.goodPic = goodPic;
-            }
+        public void setSelected(boolean selected) {
+            this.selected = selected;
         }
 
-        public static class 幸运Bean {
 
-            private int goodsId;
-            private String goodsName;
-            private Object goodsEngName;
-            private Object sortNum;
-            private int picId;
-            private String goodsTypeName;
-            private int rent;
-            private String feeType;
-            private Object tagId;
-            private Object tagName;
-            private String goodPic;
-
-            public int getGoodsId() {
-                return goodsId;
-            }
-
-            public void setGoodsId(int goodsId) {
-                this.goodsId = goodsId;
-            }
-
-            public String getGoodsName() {
-                return goodsName;
-            }
-
-            public void setGoodsName(String goodsName) {
-                this.goodsName = goodsName;
-            }
-
-            public Object getGoodsEngName() {
-                return goodsEngName;
-            }
-
-            public void setGoodsEngName(Object goodsEngName) {
-                this.goodsEngName = goodsEngName;
-            }
-
-            public Object getSortNum() {
-                return sortNum;
-            }
-
-            public void setSortNum(Object sortNum) {
-                this.sortNum = sortNum;
-            }
-
-            public int getPicId() {
-                return picId;
-            }
-
-            public void setPicId(int picId) {
-                this.picId = picId;
-            }
-
-            public String getGoodsTypeName() {
-                return goodsTypeName;
-            }
-
-            public void setGoodsTypeName(String goodsTypeName) {
-                this.goodsTypeName = goodsTypeName;
-            }
-
-            public int getRent() {
-                return rent;
-            }
-
-            public void setRent(int rent) {
-                this.rent = rent;
-            }
-
-            public String getFeeType() {
-                return feeType;
-            }
-
-            public void setFeeType(String feeType) {
-                this.feeType = feeType;
-            }
-
-            public Object getTagId() {
-                return tagId;
-            }
-
-            public void setTagId(Object tagId) {
-                this.tagId = tagId;
-            }
-
-            public Object getTagName() {
-                return tagName;
-            }
-
-            public void setTagName(Object tagName) {
-                this.tagName = tagName;
-            }
-
-            public String getGoodPic() {
-                return goodPic;
-            }
-
-            public void setGoodPic(String goodPic) {
-                this.goodPic = goodPic;
-            }
+        protected GiftDetailInfoBean(Parcel in) {
+            goodsId = in.readInt();
+            goodsName = in.readString();
+            picId = in.readInt();
+            goodsTypeName = in.readString();
+            rent = in.readInt();
+            feeType = in.readString();
+            goodPic = in.readString();
         }
 
-        public static class 普通Bean {
-
-            private int goodsId;
-            private String goodsName;
-            private Object goodsEngName;
-            private Object sortNum;
-            private int picId;
-            private String goodsTypeName;
-            private int rent;
-            private String feeType;
-            private Object tagId;
-            private Object tagName;
-            private String goodPic;
-
-            public int getGoodsId() {
-                return goodsId;
+        public final Creator<GiftDetailInfoBean> CREATOR = new Creator<GiftDetailInfoBean>() {
+            @Override
+            public GiftDetailInfoBean createFromParcel(Parcel in) {
+                return new GiftDetailInfoBean(in);
             }
 
-            public void setGoodsId(int goodsId) {
-                this.goodsId = goodsId;
+            @Override
+            public GiftDetailInfoBean[] newArray(int size) {
+                return new GiftDetailInfoBean[size];
             }
+        };
 
-            public String getGoodsName() {
-                return goodsName;
-            }
+        public int getGoodsId() {
+            return goodsId;
+        }
 
-            public void setGoodsName(String goodsName) {
-                this.goodsName = goodsName;
-            }
+        public void setGoodsId(int goodsId) {
+            this.goodsId = goodsId;
+        }
 
-            public Object getGoodsEngName() {
-                return goodsEngName;
-            }
+        public String getGoodsName() {
+            return goodsName;
+        }
 
-            public void setGoodsEngName(Object goodsEngName) {
-                this.goodsEngName = goodsEngName;
-            }
+        public void setGoodsName(String goodsName) {
+            this.goodsName = goodsName;
+        }
 
-            public Object getSortNum() {
-                return sortNum;
-            }
+        public Object getGoodsEngName() {
+            return goodsEngName;
+        }
 
-            public void setSortNum(Object sortNum) {
-                this.sortNum = sortNum;
-            }
+        public void setGoodsEngName(Object goodsEngName) {
+            this.goodsEngName = goodsEngName;
+        }
 
-            public int getPicId() {
-                return picId;
-            }
+        public Object getSortNum() {
+            return sortNum;
+        }
 
-            public void setPicId(int picId) {
-                this.picId = picId;
-            }
+        public void setSortNum(Object sortNum) {
+            this.sortNum = sortNum;
+        }
 
-            public String getGoodsTypeName() {
-                return goodsTypeName;
-            }
+        public int getPicId() {
+            return picId;
+        }
 
-            public void setGoodsTypeName(String goodsTypeName) {
-                this.goodsTypeName = goodsTypeName;
-            }
+        public void setPicId(int picId) {
+            this.picId = picId;
+        }
 
-            public int getRent() {
-                return rent;
-            }
+        public String getGoodsTypeName() {
+            return goodsTypeName;
+        }
 
-            public void setRent(int rent) {
-                this.rent = rent;
-            }
+        public void setGoodsTypeName(String goodsTypeName) {
+            this.goodsTypeName = goodsTypeName;
+        }
 
-            public String getFeeType() {
-                return feeType;
-            }
+        public int getRent() {
+            return rent;
+        }
 
-            public void setFeeType(String feeType) {
-                this.feeType = feeType;
-            }
+        public void setRent(int rent) {
+            this.rent = rent;
+        }
 
-            public Object getTagId() {
-                return tagId;
-            }
+        public String getFeeType() {
+            return feeType;
+        }
 
-            public void setTagId(Object tagId) {
-                this.tagId = tagId;
-            }
+        public void setFeeType(String feeType) {
+            this.feeType = feeType;
+        }
 
-            public Object getTagName() {
-                return tagName;
-            }
+        public Object getTagId() {
+            return tagId;
+        }
 
-            public void setTagName(Object tagName) {
-                this.tagName = tagName;
-            }
+        public void setTagId(Object tagId) {
+            this.tagId = tagId;
+        }
 
-            public String getGoodPic() {
-                return goodPic;
-            }
+        public Object getTagName() {
+            return tagName;
+        }
 
-            public void setGoodPic(String goodPic) {
-                this.goodPic = goodPic;
-            }
+        public void setTagName(Object tagName) {
+            this.tagName = tagName;
+        }
+
+        public String getGoodPic() {
+            return goodPic;
+        }
+
+        public void setGoodPic(String goodPic) {
+            this.goodPic = goodPic;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(goodsId);
+            dest.writeString(goodsName);
+            dest.writeInt(picId);
+            dest.writeString(goodsTypeName);
+            dest.writeInt(rent);
+            dest.writeString(feeType);
+            dest.writeString(goodPic);
         }
     }
 }

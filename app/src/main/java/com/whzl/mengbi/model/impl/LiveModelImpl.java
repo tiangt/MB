@@ -8,6 +8,7 @@ import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.common.BaseAppliaction;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
@@ -49,7 +50,7 @@ public class LiveModelImpl implements LiveModel {
                     }
                     @Override
                     public void onReqFailed(String errorMsg) {
-
+                        LogUtils.d(errorMsg);
                     }
                 });
     }

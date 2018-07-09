@@ -2,7 +2,6 @@ package com.whzl.mengbi.ui.activity;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,10 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -24,35 +20,33 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
-import com.whzl.mengbi.eventbus.EventBusBean;
-import com.whzl.mengbi.eventbus.EventCode;
-import com.whzl.mengbi.model.entity.EmjoyInfo;
-import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.message.ChatCommonMesBean;
 import com.whzl.mengbi.model.entity.message.UserMesBean;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
+import com.whzl.mengbi.model.entity.EmjoyInfo;
+import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
+import com.whzl.mengbi.eventbus.EventBusBean;
+import com.whzl.mengbi.eventbus.EventCode;
 import com.whzl.mengbi.ui.adapter.LiveChatFaceAdapter;
-import com.whzl.mengbi.ui.adapter.LiveGiftLuckyAdapter;
-import com.whzl.mengbi.ui.adapter.LiveGiftLuxuryAdapter;
-import com.whzl.mengbi.ui.adapter.LiveGiftNormalAdapter;
-import com.whzl.mengbi.ui.adapter.LiveGiftRecommendAdapter;
+import com.whzl.mengbi.ui.adapter.LiveMessageAdapter;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.BottomNavigationViewHelper;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
-import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
 import com.whzl.mengbi.util.CustomPopWindowUtils;
-import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.SPUtils;
+
+import com.whzl.mengbi.util.SpannableStringUitls;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.io.IOException;
@@ -64,6 +58,7 @@ import java.util.List;
  * 直播间
  */
 public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.OnClickListener{
+
     private SurfaceView mMasterSurfaceView;
     private KSYMediaPlayer mMasterPlayer;
     private Context  mContext;
@@ -97,10 +92,10 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
     private CustomPopWindow mGiftPopWindow;
     private RecyclerView mGiftRecyclerView;
     private CommonAdapter mGiftCommonAdapter;
-    private List<GiftInfo.DataBean.推荐Bean> giftRecommendList = new ArrayList<>();
-    private List<GiftInfo.DataBean.幸运Bean> giftLuckyList = new ArrayList<>();
-    private List<GiftInfo.DataBean.普通Bean> giftNormalList = new ArrayList<>();
-    private List<GiftInfo.DataBean.豪华Bean> giftLuxuryList = new ArrayList<>();
+//    private List<GiftInfo.DataBean.推荐Bean> giftRecommendList = new ArrayList<>();
+//    private List<GiftInfo.DataBean.幸运Bean> giftLuckyList = new ArrayList<>();
+//    private List<GiftInfo.DataBean.普通Bean> giftNormalList = new ArrayList<>();
+//    private List<GiftInfo.DataBean.豪华Bean> giftLuxuryList = new ArrayList<>();
     private List<EmjoyInfo.FaceBean.PublicBean> mFaceData = new ArrayList();
 
     /**
@@ -156,12 +151,12 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
         mContribution = (Button) findViewById(R.id.live_display_contribution);
         mPopularity = (TextView) findViewById(R.id.live_display_popularity);
         mClose = (ImageView)findViewById(R.id.live_display_close);
-        mMasterSurfaceView = (SurfaceView)findViewById(R.id.player_master);
-        mMessageLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
-        mMessageRecyclerView = findViewById(R.id.live_display_message_recyclerview);
-        mMessageRecyclerView.setLayoutManager(mMessageLayoutManager);
+        mMasterSurfaceView = (SurfaceView) findViewById(R.id.player_master);
+        mMessageRecyclerView =(RecyclerView) findViewById(R.id.live_display_message_recyclerview);
         mCircleImageViewTalk = (CircleImageView) findViewById(R.id.live_display_talk);
         mCircleImageViewGift = (CircleImageView) findViewById(R.id.live_display_gift);
+        mMessageLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+        mMessageRecyclerView.setLayoutManager(mMessageLayoutManager);
         mMasterSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -261,18 +256,18 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
-                            case R.id.item_live_display_gfit_recommend:
-                                mGiftRecyclerView.setAdapter(new LiveGiftRecommendAdapter<GiftInfo.DataBean.推荐Bean>(mContext,R.layout.activity_live_display_rvitem_layout,giftRecommendList));
-                                break;
-                            case R.id.item_ive_display_gift_lucky:
-                                mGiftRecyclerView.setAdapter(new LiveGiftLuckyAdapter<GiftInfo.DataBean.幸运Bean>(mContext,R.layout.activity_live_display_rvitem_layout,giftLuckyList));
-                                break;
-                            case R.id.item_live_display_gift_normal:
-                                mGiftRecyclerView.setAdapter(new LiveGiftNormalAdapter<GiftInfo.DataBean.普通Bean>(mContext,R.layout.activity_live_display_rvitem_layout,giftNormalList));
-                                break;
-                            case R.id.item_live_display_gift_luxuryn:
-                                mGiftRecyclerView.setAdapter(new LiveGiftLuxuryAdapter<GiftInfo.DataBean.豪华Bean>(mContext,R.layout.activity_live_display_rvitem_layout,giftLuxuryList));
-                                break;
+//                            case R.id.item_live_display_gfit_recommend:
+//                                mGiftRecyclerView.setAdapter(new LiveGiftRecommendAdapter<GiftInfo.DataBean.推荐Bean>(mContext,R.layout.activity_live_display_rvitem_layout,giftRecommendList));
+//                                break;
+//                            case R.id.item_ive_display_gift_lucky:
+//                                mGiftRecyclerView.setAdapter(new LiveGiftLuckyAdapter<GiftInfo.DataBean.幸运Bean>(mContext,R.layout.activity_live_display_rvitem_layout,giftLuckyList));
+//                                break;
+//                            case R.id.item_live_display_gift_normal:
+//                                mGiftRecyclerView.setAdapter(new LiveGiftNormalAdapter<GiftInfo.DataBean.普通Bean>(mContext,R.layout.activity_live_display_rvitem_layout,giftNormalList));
+//                                break;
+//                            case R.id.item_live_display_gift_luxuryn:
+//                                mGiftRecyclerView.setAdapter(new LiveGiftLuxuryAdapter<GiftInfo.DataBean.豪华Bean>(mContext,R.layout.activity_live_display_rvitem_layout,giftLuxuryList));
+//                                break;
                         }
                         return false;
                     }
@@ -296,25 +291,25 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
                 mTalkLayoutManager = new GridLayoutManager(mContext,7);
                 mTalkRecyclerView = contentView.findViewById(R.id.live_display_talk_rv);
                 mTalkRecyclerView.setLayoutManager(mTalkLayoutManager);
-                mLiveChatFaceAdapter = new LiveChatFaceAdapter(mContext,R.layout.activity_live_display_talk_pop_rvitem_layout,mFaceData);
-                mTalkRecyclerView.setAdapter(mLiveChatFaceAdapter);
-                mLiveChatFaceAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                        String faceIcon = mFaceData.get(position).getIcon();
-                        String faceVal= mFaceData.get(position).getValue();
-                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(faceIcon,mContext);
-                        ImageSpan imageSpan = new ImageSpan(mContext,bitmap);
-                        SpannableString spannableString=new SpannableString(faceVal);
-                        spannableString.setSpan(imageSpan,0,faceVal.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        talkEditText.append(spannableString);
-                    }
-
-                    @Override
-                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                        return false;
-                    }
-                });
+//                mLiveChatFaceAdapter = new LiveChatFaceAdapter(mContext,R.layout.activity_live_display_talk_pop_rvitem_layout,mFaceData);
+//                mTalkRecyclerView.setAdapter(mLiveChatFaceAdapter);
+//                mLiveChatFaceAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                        String faceIcon = mFaceData.get(position).getIcon();
+//                        String faceVal= mFaceData.get(position).getValue();
+//                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(faceIcon,mContext);
+//                        ImageSpan imageSpan = new ImageSpan(mContext,bitmap);
+//                        SpannableString spannableString=new SpannableString(faceVal);
+//                        spannableString.setSpan(imageSpan,0,faceVal.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                        talkEditText.append(spannableString);
+//                    }
+//
+//                    @Override
+//                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+//                        return false;
+//                    }
+//                });
             }
         });
 
@@ -341,7 +336,8 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
      * 获取直播间token
      */
     public void getLiveRoomToken(){
-        int userId = (Integer) SPUtils.get(mContext,"userId",0);
+        int userId = (Integer) SPUtils.
+                get(mContext,"userId",0);
         String sessionId = SPUtils.get(mContext,"sessionId","0").toString();
         HashMap map = new HashMap();
         map.put("userId",userId);
@@ -359,32 +355,12 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
                 break;
             case EventCode.CHAT_COMMON:
                 ChatCommonMesBean commonMesBean = (ChatCommonMesBean)event.getData();
-                //SpannableStringBuilder spannableStringBuilder = faceReplace(commonMesBean);
-                /*mMessageRecyclerView.setAdapter(mMessageAdapter = new CommonAdapter(mContext,R.layout.live_display_message_item_layout,mMessageData) {
-                    @Override
-                    protected void convert(ViewHolder holder, Object obj, int position) {
-                        if(mMessageData!=null){
-                                GlideImageLoader.getInstace().displayImage(mContext,mMessageData.get(position),holder.getView(R.id.live_display_message_item_userlevel_img));
-                                GlideImageLoader.getInstace().displayImage(mContext,mMessageData.get(position),holder.getView(R.id.live_display_message_item_usermedal_img));
-                                GlideImageLoader.getInstace().displayImage(mContext,mMessageData.get(position),holder.getView(R.id.live_display_message_item_usermedal2_img));
-                                GlideImageLoader.getInstace().displayImage(mContext,mMessageData.get(position),holder.getView(R.id.live_display_message_item_usermedal3_img));
-                                holder.getView(R.id.live_display_message_item_usermedal_img).setVisibility(View.VISIBLE);
-                                holder.getView(R.id.live_display_message_item_usermedal2_img).setVisibility(View.VISIBLE);
-                                holder.getView(R.id.live_display_message_item_usermedal3_img).setVisibility(View.VISIBLE);
-                        }else{
-                            holder.getView(R.id.live_display_message_item_usermedal_img).setVisibility(View.GONE);
-                            holder.getView(R.id.live_display_message_item_usermedal2_img).setVisibility(View.GONE);
-                            holder.getView(R.id.live_display_message_item_usermedal3_img).setVisibility(View.GONE);
-                        }
-
-                        TextView mesage= (TextView)holder.getView(R.id.live_display_message_item_text);
-                        mesage.append(commonMesBean.getFrom_nickname());
-                        mesage.append(spannableStringBuilder);
-                        //mMessageAdapter.notifyItemInserted(position);
-                    }
-                });
+                SpannableStringBuilder spannableStringBuilder = SpannableStringUitls.faceReplace(mContext,commonMesBean,mFaceData);
+                mMessageRecyclerView.setAdapter(new LiveMessageAdapter(mContext,R.layout.live_display_message_item_layout,mMessageData));
+                TextView mesage= (TextView)findViewById(R.id.live_display_message_item_text);
+                mesage.append(commonMesBean.getFrom_nickname());
+                mesage.append(spannableStringBuilder);
                 mMessageAdapter.notifyDataSetChanged();
-                */
                 break;
             case EventCode.CHAT_PRIVATE:
                 break;
@@ -410,15 +386,15 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
 
     @Override
     public void onLiveFaceSuccess(EmjoyInfo emjoyInfo) {
-        mFaceData.addAll(emjoyInfo.getFace().getFaceList());
+        mFaceData.addAll(emjoyInfo.getFace().getPublicX());
     }
 
     @Override
     public void onLiveGiftSuccess(GiftInfo giftInfo) {
-        giftRecommendList.addAll(giftInfo.getData().get推荐());
-        giftLuckyList.addAll(giftInfo.getData().get幸运());
-        giftNormalList.addAll(giftInfo.getData().get普通());
-        giftLuxuryList.addAll(giftInfo.getData().get豪华());
+//        giftRecommendList.addAll(giftInfo.getData().get推荐());
+//        giftLuckyList.addAll(giftInfo.getData().get幸运());
+//        giftNormalList.addAll(giftInfo.getData().get普通());
+//        giftLuxuryList.addAll(giftInfo.getData().get豪华());
     }
 
     @Override
@@ -431,7 +407,7 @@ public class LiveDisplayActivity extends BaseAtivity implements LiveView, View.O
         super.onDestroy();
         livePresenter.onDestory();
         if(chatRoomPresenter!=null){
-            chatRoomPresenter.onChatRoomDestroy();
+            chatRoomPresenter.disconnectChat();
         }
         if (mMasterPlayer != null)
             mMasterPlayer.release();

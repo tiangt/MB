@@ -40,15 +40,15 @@ import java.util.Set;
 /**
  * 登录页面
  */
-public class LoginActivity extends BaseAtivity implements LoginView,View.OnClickListener{
+public class LoginActivity extends BaseAtivity implements LoginView, View.OnClickListener {
     /**
-     *用户名，手机号
+     * 用户名，手机号
      */
     private EditText longinUserName;
     private String mUserName;
 
     /**
-     *用户密码
+     * 用户密码
      */
     private EditText longinUserPassword;
     private String mUserPassword;
@@ -69,15 +69,16 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
     /**
      * 游客身份标识
      */
-    private String visitorFlag ;
+    private String visitorFlag;
 
     private LoginPresenter loginPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_layout);
-        if(getIntent()!=null){
-            visitorFlag  = getIntent().getStringExtra("touristFlag") ;
+        if (getIntent() != null) {
+            visitorFlag = getIntent().getStringExtra("touristFlag");
         }
         loginPresenter = new LoginPresenterImpl(this);
         //手机设备ID
@@ -89,10 +90,10 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
         initView();
     }
 
-    private void initView(){
-        longinUserName = (EditText)findViewById(R.id.login_user_name);
-        longinUserPassword = (EditText)findViewById(R.id.login_user_password);
-        login =(Button) findViewById(R.id.login_user_login);
+    private void initView() {
+        longinUserName = (EditText) findViewById(R.id.login_user_name);
+        longinUserPassword = (EditText) findViewById(R.id.login_user_password);
+        login = (Button) findViewById(R.id.login_user_login);
         qqUserLoginIv = (ImageView) findViewById(R.id.login_qq_login);
         weixinUserLoginIv = (ImageView) findViewById(R.id.login_weixin_login);
         login.setOnClickListener(this);
@@ -105,16 +106,16 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
     public void onClick(View v) {
         mUserName = longinUserName.getText().toString().trim();
         mUserPassword = longinUserPassword.getText().toString().trim();
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.login_user_login://登录
                 HashMap paramsMap = new HashMap();
-                paramsMap.put("username",mUserName);
-                String pass= EncryptUtils.md5Hex(mUserPassword);
-                paramsMap.put("password",pass);
-                paramsMap.put("platform","ANDROID");
-                loginPresenter.validateCredentials(paramsMap,URLContentUtils.USER_NORMAL_LOGIN);
-                SPUtils.put(BaseAppliaction.getInstance(),"username",mUserName);
-                SPUtils.put(BaseAppliaction.getInstance(),"password",mUserPassword);
+                paramsMap.put("username", mUserName);
+                String pass = EncryptUtils.md5Hex(mUserPassword);
+                paramsMap.put("password", pass);
+                paramsMap.put("platform", "ANDROID");
+                loginPresenter.validateCredentials(paramsMap, URLContentUtils.USER_NORMAL_LOGIN);
+                SPUtils.put(BaseAppliaction.getInstance(), "username", mUserName);
+                SPUtils.put(BaseAppliaction.getInstance(), "password", mUserPassword);
                 break;
             case R.id.login_qq_login://QQ第三方登录
                 UMShareConfig qqConfig = new UMShareConfig();
@@ -126,16 +127,16 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
                 UMShareConfig weixinConfig = new UMShareConfig();
                 weixinConfig.isNeedAuthOnGetUserInfo(true);
                 UMShareAPI.get(this).setShareConfig(weixinConfig);
-                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN,umAuthListener);
+                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, umAuthListener);
                 break;
             case 3://标题注册跳转
-                Intent mTntent = new Intent(this,RegisterActivity.class);
-                startActivityForResult(mTntent,0);
+                Intent mTntent = new Intent(this, RegisterActivity.class);
+                startActivityForResult(mTntent, 0);
                 break;
-             default:
-                 break;
-            }
+            default:
+                break;
         }
+    }
 
 
     /**
@@ -143,12 +144,12 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
      */
     @Override
     public void visitorNavigateToHome() {
-        int userId = (Integer) SPUtils.get(this,"userId",0);
-        if(userId==0){
-            if (visitorFlag!=null&&visitorFlag.equals("0")) {
+        int userId = (Integer) SPUtils.get(this, "userId", 0);
+        if (userId == 0) {
+            if (visitorFlag != null && visitorFlag.equals("0")) {
                 return;
-            }else {
-                Intent mIntent = new Intent(this,HomeActivity.class);
+            } else {
+                Intent mIntent = new Intent(this, HomeActivity.class);
                 startActivity(mIntent);
                 finish();
             }
@@ -160,32 +161,33 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
      */
     @Override
     public void navigateToHome() {
-        Intent mIntent = new Intent(this,HomeActivity.class);
+        Intent mIntent = new Intent(this, HomeActivity.class);
         startActivity(mIntent);
         finish();
     }
 
     /**
-     *用户自动登录
+     * 用户自动登录
      */
-    private void autoLogin(){
-        boolean islogin = (boolean)SPUtils.get(this,"islogin",false);
-        if(islogin){
+    private void autoLogin() {
+        boolean islogin = (boolean) SPUtils.get(this, "islogin", false);
+        if (islogin) {
             HashMap paramsMap = new HashMap();
-            String userName = SPUtils.get(this,"username","").toString();
-            String passWord = SPUtils.get(this,"password","").toString();
-            if(!TextUtils.isEmpty(userName)||!TextUtils.isEmpty(passWord)){
-                paramsMap.put("username",userName);
-                String pass= EncryptUtils.md5Hex(passWord);
-                paramsMap.put("password",pass);
-                paramsMap.put("platform","ANDROID");
-                loginPresenter.validateCredentials(paramsMap,URLContentUtils.USER_NORMAL_LOGIN);
+            String userName = SPUtils.get(this, "username", "").toString();
+            String passWord = SPUtils.get(this, "password", "").toString();
+            if (!TextUtils.isEmpty(userName) || !TextUtils.isEmpty(passWord)) {
+                paramsMap.put("username", userName);
+                String pass = EncryptUtils.md5Hex(passWord);
+                paramsMap.put("password", pass);
+                paramsMap.put("platform", "ANDROID");
+                loginPresenter.validateCredentials(paramsMap, URLContentUtils.USER_NORMAL_LOGIN);
             }
         }
     }
 
     /**
      * 登录失败回调消息提示
+     *
      * @param msg
      */
     @Override
@@ -216,22 +218,22 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             HashMap hashMap = new HashMap();
-            if(SHARE_MEDIA.QQ.equals(platform)){
-                String openid =  data.get("openid");
-                String access_token =  data.get("access_token");
-                LogUtils.d("QQ>>>>>openid>>>>>>>>>>>>"+openid+"access_token>>>>>>>>>"+access_token);
-                hashMap.put("type",SHARE_MEDIA.QQ);
-                hashMap.put("token",access_token);
-                hashMap.put("openid",openid);
-            }else if(SHARE_MEDIA.WEIXIN.equals(platform)){
-                String openid =  data.get("openid");
-                String access_token =  data.get("access_token");
-                LogUtils.d("WEIXIN>>>>>>>openid>>>>>>>>>>>>"+openid+"access_token>>>>>>>>>"+access_token);
-                hashMap.put("type",SHARE_MEDIA.WEIXIN);
-                hashMap.put("token",access_token);
-                hashMap.put("openid",openid);
+            if (SHARE_MEDIA.QQ.equals(platform)) {
+                String openid = data.get("openid");
+                String access_token = data.get("access_token");
+                LogUtils.d("QQ>>>>>openid>>>>>>>>>>>>" + openid + "access_token>>>>>>>>>" + access_token);
+                hashMap.put("type", SHARE_MEDIA.QQ);
+                hashMap.put("token", access_token);
+                hashMap.put("openid", openid);
+            } else if (SHARE_MEDIA.WEIXIN.equals(platform)) {
+                String openid = data.get("openid");
+                String access_token = data.get("access_token");
+                LogUtils.d("WEIXIN>>>>>>>openid>>>>>>>>>>>>" + openid + "access_token>>>>>>>>>" + access_token);
+                hashMap.put("type", SHARE_MEDIA.WEIXIN);
+                hashMap.put("token", access_token);
+                hashMap.put("openid", openid);
             }
-            LogUtils.d("onComplete>>>>>>>>>>>>>platform>>>>>>>>>>>>"+platform+"data>>>>>>>>>>>>"+data);
+            LogUtils.d("onComplete>>>>>>>>>>>>>platform>>>>>>>>>>>>" + platform + "data>>>>>>>>>>>>" + data);
             loginPresenter.validateCredentials(hashMap, URLContentUtils.OPEN_LOGIN);
         }
 
@@ -265,13 +267,13 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 break;
             case R.id.item_user_register:
-                Intent mTntent = new Intent(this,RegisterActivity.class);
-                startActivityForResult(mTntent,0);
+                Intent mTntent = new Intent(this, RegisterActivity.class);
+                startActivityForResult(mTntent, 0);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -280,12 +282,13 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data);
-        if(requestCode==1){
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
             String result = data.getStringExtra("userName");
             longinUserName.setText(result);
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

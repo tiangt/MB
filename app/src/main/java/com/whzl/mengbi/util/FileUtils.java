@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FileUtils {
-    static HashMap<String,Integer> hashMap = new HashMap();
+    static HashMap<String, Integer> hashMap = new HashMap();
+
     static {
         hashMap.put("0", R.drawable.usergrade);
         hashMap.put("1", R.drawable.usergrade1);
@@ -61,11 +62,12 @@ public class FileUtils {
 
     /**
      * 读取Assets文件夹中的json
+     *
      * @param fileName
      * @param context
      * @return
      */
-    public static String getJson(String fileName,Context context) {
+    public static String getJson(String fileName, Context context) {
         //将json数据变成字符串
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -84,22 +86,21 @@ public class FileUtils {
         return stringBuilder.toString();
     }
 
-    /** 读取Assets文件夹中的图片资源
+    /**
+     * 读取Assets文件夹中的图片资源
+     *
      * @param fileName 图片名称
      * @param context
      * @return
      */
-    public static Bitmap readBitmapFromAssetsFile(String fileName,Context context)
-    {
+    public static Bitmap readBitmapFromAssetsFile(String fileName, Context context) {
         Bitmap image = null;
         AssetManager am = context.getResources().getAssets();
-        try
-        {
+        try {
             InputStream is = am.open(fileName);
             image = BitmapFactory.decodeStream(is);
             is.close();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return image;
@@ -107,16 +108,17 @@ public class FileUtils {
 
     /**
      * 用户等级图片
+     *
      * @param levelVal 等级名称
      */
 
-    public static int userLevelDrawable(String levelVal){
-            int resId=-1;
-            for (Map.Entry<String,Integer> entry:hashMap.entrySet()){
-                if(entry.getKey().equals(levelVal)){
-                    resId = entry.getValue();
-                }
+    public static int userLevelDrawable(String levelVal) {
+        int resId = -1;
+        for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+            if (entry.getKey().equals(levelVal)) {
+                resId = entry.getValue();
             }
-            return resId;
         }
+        return resId;
+    }
 }

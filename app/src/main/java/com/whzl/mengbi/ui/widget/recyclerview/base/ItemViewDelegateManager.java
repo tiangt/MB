@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.widget.recyclerview.base;
 import android.support.v4.util.SparseArrayCompat;
 
 import com.whzl.mengbi.ui.widget.recyclerview.base.ItemViewDelegate;
+import com.whzl.mengbi.util.LogUtils;
 
 public class ItemViewDelegateManager<T> {
     SparseArrayCompat<ItemViewDelegate<T>> delegates = new SparseArrayCompat();
@@ -84,6 +85,9 @@ public class ItemViewDelegateManager<T> {
         for (int i = 0; i < delegatesCount; i++)
         {
             ItemViewDelegate<T> delegate = delegates.valueAt(i);
+            if(!delegate.isForViewType( item, position)){
+                LogUtils.d("++++++++++++++" + position);
+            }
 
             if (delegate.isForViewType( item, position))
             {

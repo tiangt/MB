@@ -21,6 +21,6 @@ public class LiveChatFaceAdapter<T> extends CommonAdapter<EmjoyInfo.FaceBean.Pub
     @Override
     protected void convert(ViewHolder holder, EmjoyInfo.FaceBean.PublicBean publicBean, int position) {
         Bitmap path = FileUtils.readBitmapFromAssetsFile(publicBean.getIcon(),mContext);
-        GlideImageLoader.getInstace().displayImage(mContext,path,holder.getView(R.id.live_display_talk_rvitme_face));
+        GlideImageLoader.getInstace().displayImage(mContext,path,holder.getView(R.id.iv_emoji));
     }
 }
