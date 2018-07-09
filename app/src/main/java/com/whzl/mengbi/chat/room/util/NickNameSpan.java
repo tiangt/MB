@@ -20,4 +20,6 @@ public abstract class NickNameSpan extends ClickableSpan {
         ds.setColor(Color.RED); //红色
         ds.setUnderlineText(false);
     }
+
+
 }

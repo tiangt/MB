@@ -11,12 +11,12 @@ import com.whzl.mengbi.chat.room.message.messagesActions.Actions;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
-import com.whzl.mengbi.chat.room.message.messagesActions.SetManagerAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.SubProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
-import com.whzl.mengbi.chat.room.message.messagesActions.ZhongjiangAction;
 import com.whzl.mengbi.util.GsonUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,10 +54,11 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("stop_live", new StopPlayAction());
         actionsMap.put("WELCOME", new WelComeAction());
         actionsMap.put("SEND_GIFT", new GiftAction());
-        actionsMap.put("LUCK_GIFT", new ZhongjiangAction());
+        actionsMap.put("LUCK_GIFT", new LuckGiftAction());
         //actionsMap.put("BROADCAST", new BroadcastAction());
-        actionsMap.put("SET_MANAGER", new SetManagerAction());
+        //actionsMap.put("SET_MANAGER", new SetManagerAction());
         actionsMap.put("ANIMATION", new AnimAction());
+        actionsMap.put("SubscribeProgram", new SubProgramAction());
     }
 
     private void initChatAction() {

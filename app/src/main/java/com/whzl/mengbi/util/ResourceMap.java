@@ -79,4 +79,7 @@ public class ResourceMap {
         return levelIcon;
     }
 
+    public int getAnchorLevelIcon(int anchorLevel) {
+        return 0;
+    }
 }
