@@ -4,15 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
@@ -20,15 +15,20 @@ import com.whzl.mengbi.chat.room.message.messageJson.FromJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.network.RequestManager;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class ChatAction implements Actions{
     private int finishedImageCount;
+    private final static ReentrantLock lock = new ReentrantLock();
+
     @Override
     public void performAction(String msgStr, Context context) {
         ChatCommonJson chatJson = GsonUtils.GsonToBean(msgStr,ChatCommonJson.class);
@@ -46,10 +46,11 @@ public class ChatAction implements Actions{
         SpannableString spanString = new SpannableString("0123456789");
         finishedImageCount = 0;
         for (String url:fromGoodsList) {
-            Glide.with(context).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+            RequestManager.getInstance(context).getImage(url, new RequestManager.ReqCallBack<Object>() {
                 @Override
-                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                    ++finishedImageCount;
+                public void onReqSuccess(Object result) {
+                    addFinishedCount();
+                    Bitmap resource = (Bitmap)result;
                     Drawable bitmapDrable = new BitmapDrawable(resource);
                     int width = resource.getWidth();
                     int height = resource.getHeight();
@@ -66,9 +67,9 @@ public class ChatAction implements Actions{
                 }
 
                 @Override
-                public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                    super.onLoadFailed(errorDrawable);
-                    ++finishedImageCount;
+                public void onReqFailed(String errorMsg) {
+                    addFinishedCount();
+                    LogUtils.e("onReqFailed"+errorMsg);
                     if (finishedImageCount >= fromGoodsList.size()) {
                         ChatMessage chatMsg = new ChatMessage(chatJson, context, null);
                         UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(chatMsg);
@@ -92,5 +93,11 @@ public class ChatAction implements Actions{
             goodsUrlList.add(ImageUrl.getImageUrl(good.getGoodsIcon(), "jpp"));
         }
         return goodsUrlList;
+    }
+
+    private void addFinishedCount() {
+        lock.lock();
+        ++finishedImageCount;
+        lock.unlock();
     }
 }
