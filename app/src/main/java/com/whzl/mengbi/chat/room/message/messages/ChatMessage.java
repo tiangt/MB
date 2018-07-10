@@ -6,15 +6,19 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 
+import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.NickNameSpan;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
+
+import java.util.List;
 
 
 public class ChatMessage implements FillHolderMessage{
@@ -30,12 +34,12 @@ public class ChatMessage implements FillHolderMessage{
     private int to_uid;
 
     private SingleTextViewHolder mholder;
-    private SpannableString fromSpanString;
+    private List<SpannableString> fromSpanList;
 
-    public ChatMessage(ChatCommonJson msgJson, Context context, SpannableString fromSpanString) {
+    public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList) {
         this.mContext = context;
         from_nickname = msgJson.getFrom_nickname();
-        this.fromSpanString = fromSpanString;
+        this.fromSpanList = fromSpanList;
 
         to_nickName = msgJson.getTo_nickname();
         contentString = msgJson.getContent();
@@ -69,13 +73,15 @@ public class ChatMessage implements FillHolderMessage{
         //非游客发言
         if(from_uid != 0){
             mholder.textView.append(LevelUtil.getLevelSpan(from_level, mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
+            mholder.textView.append(" ");
         }
-        if (fromSpanString != null) {
-            mholder.textView.append(fromSpanString);
+        if (fromSpanList != null) {
+            for(SpannableString spanString:fromSpanList) {
+                mholder.textView.append(spanString);
+                mholder.textView.append(" ");
+            }
         }
-        //mholder.textView.append(getLightStr(from_nickname + ":", Color.WHITE));
-        mholder.textView.append(getNickNameSpan(from_nickname,from_uid));
-        mholder.textView.append(":");
+        mholder.textView.append(getNickNameSpan(from_nickname + ":  ",from_uid));
         //TODO:表情替换
         mholder.textView.append(getLightStr(contentString, Color.WHITE));
         //mholder.textView.append(SmileyParser.getInstance().addSmileySpans(contentString));
@@ -85,14 +91,17 @@ public class ChatMessage implements FillHolderMessage{
         if(from_uid != 0){
             mholder.textView.append(LevelUtil.getLevelSpan(from_level, mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
         }
-        if (fromSpanString != null) {
-            mholder.textView.append(fromSpanString);
+        if (fromSpanList != null) {
+            for(SpannableString spanString:fromSpanList) {
+                mholder.textView.append(spanString);
+                mholder.textView.append("  ");
+            }
         }
         mholder.textView.append(getNickNameSpan(from_nickname,from_uid));
         mholder.textView.append("对");
         mholder.textView.append(LevelUtil.getLevelSpan(to_level, mContext, ResourceMap.getResourceMap().getUserLevelIcon(to_level)));
         mholder.textView.append(getNickNameSpan(to_nickName,to_uid));
-        mholder.textView.append("：");
+        mholder.textView.append("： ");
         //TODO:表情替换
         mholder.textView.append(getLightStr(contentString, Color.WHITE));
         //mholder.textView.append(SmileyParser.getInstance().addSmileySpans(contentString));
@@ -131,6 +140,7 @@ public class ChatMessage implements FillHolderMessage{
         SpannableString ss = new SpannableString(content);
         //设置字符颜色
         ss.setSpan(new ForegroundColorSpan(color), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(new AbsoluteSizeSpan(DensityUtil.dp2px(15)), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;
     }
 }
