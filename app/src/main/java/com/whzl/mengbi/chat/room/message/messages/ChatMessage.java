@@ -1,10 +1,12 @@
 package com.whzl.mengbi.chat.room.message.messages;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 
@@ -91,7 +93,7 @@ public class ChatMessage implements FillHolderMessage{
         mholder.textView.append(getNickNameSpan(to_nickName,to_uid));
         mholder.textView.append("：");
         //TODO:表情替换
-        mholder.textView.append(contentString);
+        mholder.textView.append(getLightStr(contentString, Color.WHITE));
         //mholder.textView.append(SmileyParser.getInstance().addSmileySpans(contentString));
     }
 
@@ -121,5 +123,13 @@ public class ChatMessage implements FillHolderMessage{
 
     public String getContentString() {
         return contentString;
+    }
+
+    private SpannableString getLightStr(String content, int color) {
+        //文本内容
+        SpannableString ss = new SpannableString(content);
+        //设置字符颜色
+        ss.setSpan(new ForegroundColorSpan(color), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ss;
     }
 }

@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 
+import com.scwang.smartrefresh.layout.util.DensityUtil;
+
 
 public abstract class NickNameSpan extends ClickableSpan {
     private Context context;
@@ -20,6 +22,8 @@ public abstract class NickNameSpan extends ClickableSpan {
         //ds.setColor(context.getResources().getColor(0));
         ds.setColor(Color.RED); //红色
         ds.setUnderlineText(false);
+        float textSize = DensityUtil.dp2px(15);
+        ds.setTextSize(textSize);
     }
 
 

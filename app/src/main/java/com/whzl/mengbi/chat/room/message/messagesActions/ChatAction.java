@@ -40,6 +40,7 @@ public class ChatAction implements Actions{
         if (fromGoodsList.isEmpty())  {
             ChatMessage chatMsg = new ChatMessage(chatJson, context, null);
             UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(chatMsg);
+
             EventBus.getDefault().post(chatEvent);
             return;
         }
@@ -90,7 +91,7 @@ public class ChatAction implements Actions{
         }
         List<String> goodsUrlList = new ArrayList<>();
         for (FromJson.Good good :goodsList) {
-            goodsUrlList.add(ImageUrl.getImageUrl(good.getGoodsIcon(), "jpp"));
+            goodsUrlList.add(ImageUrl.getImageUrl(good.getGoodsIcon(), "jpg"));
         }
         return goodsUrlList;
     }
