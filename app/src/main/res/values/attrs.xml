@@ -30,11 +30,5 @@
         <attr name="civ_circle_background_color" format="color" />
     </declare-styleable>
 
-    <!--比例控件-->
-    <declare-styleable name="RatioLayout">
-        <attr name="ratio" format="float"></attr>
-        <attr name="relative" format="integer"></attr>
-    </declare-styleable>
-
 </resources>
 
