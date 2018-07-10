@@ -5,6 +5,7 @@ import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.impl.LiveModelImpl;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
@@ -24,11 +25,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     @Override
     public void getLiveToken(HashMap hashMap) {
         liveModel.doLiveRoomToken(hashMap, this);
-    }
-
-    @Override
-    public void getLiveFace(String filename) {
-        liveModel.doLiveFace(filename, this);
     }
 
     @Override
@@ -104,7 +100,20 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
 
     }
 
+    @Override
+    public void onGetRoomUserInfoSuccess(RoomUserInfo.DataBean data) {
+        if (liveView != null) {
+            liveView.onGetRoomUserInFoSuccess(data);
+        }
+    }
+
+    @Override
     public void followHost(int userId, int mProgramId) {
         liveModel.doFollowHost(userId, mProgramId, this);
+    }
+
+    @Override
+    public void getRoomUserInfo(int userId, int programId) {
+        liveModel.doRoomUserInfo(userId, programId, this);
     }
 }

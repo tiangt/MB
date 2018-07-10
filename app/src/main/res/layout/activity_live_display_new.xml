@@ -57,7 +57,6 @@
                         android:layout_marginLeft="6dp"
                         android:layout_marginRight="6dp"
                         android:layout_marginTop="6.5dp"
-                        android:layout_toRightOf="@id/iv_host_avatar"
                         android:singleLine="true"
                         android:textColor="#e5e5e5"
                         android:textSize="10sp" />
@@ -124,6 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
+            android:background="@color/colorblack"
             app:ratio="1.33">
 
             <SurfaceView

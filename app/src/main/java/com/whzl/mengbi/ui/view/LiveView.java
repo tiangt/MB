@@ -4,6 +4,7 @@ import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomUserInfo;
 
 public interface LiveView {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -17,4 +18,6 @@ public interface LiveView {
     void onAudienceSuccess(long count);
 
     void onFollowHostSuccess();
+
+    void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data);
 }

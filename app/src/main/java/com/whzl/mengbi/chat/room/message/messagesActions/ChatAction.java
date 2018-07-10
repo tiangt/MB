@@ -38,7 +38,7 @@ public class ChatAction implements Actions{
         }
         List<String> fromGoodsList = getGoodsUrlList(chatJson.getFrom_json());
         //List<String> toGoodsList = getGoodsUrlList(chatJson.getTo_json());
-        if (fromGoodsList.isEmpty())  {
+        if (fromGoodsList == null || fromGoodsList.isEmpty()) {
             ChatMessage chatMsg = new ChatMessage(chatJson, context, null);
             UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(chatMsg);
             EventBus.getDefault().post(chatEvent);

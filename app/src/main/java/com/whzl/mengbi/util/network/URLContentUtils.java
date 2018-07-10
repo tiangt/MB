@@ -102,4 +102,9 @@ public class URLContentUtils{
      * 关注主播
      */
     public static final String FELLOW_HOST = "v1/room/add-sub";
+
+    /**
+     * 直播间用户信息
+     */
+    public static final String ROOM_USER_INFO = "v1/room/get-enter-user-info";
 }
