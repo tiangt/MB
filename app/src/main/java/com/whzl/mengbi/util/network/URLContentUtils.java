@@ -87,22 +87,6 @@ public class URLContentUtils{
      */
     public static final String OPEN_LOGIN="v1/user/open-login";
 
-
-    /**
-     * 获取房间信息
-     */
-    public static final String ROOM_INFO="v1/room/get-room-info";
-
-    /**
-     * 获取房间观看人数
-     */
-    public static final String AUDIENCE_COUNT="v1/room/total-audience";
-
-    /**
-     * 关注主播
-     */
-    public static final String FELLOW_HOST="v1/room/add-sub";
-
     /**
      * 移动端充值规则接口
      */
