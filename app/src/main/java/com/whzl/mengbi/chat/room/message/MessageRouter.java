@@ -33,7 +33,6 @@ public class MessageRouter implements MessageCallback {
     private Gson mGson;
     private Context mContext;
     Map<String, Actions> actionsMap = new HashMap<>();
-    //Map<Integer, OptAction> optActionMap = new HashMap<>();
     private ChatAction chatAction;
     private PrivateChatAction privateChatAction;
     private NoChatAction noChatAction;
@@ -57,7 +56,6 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("SEND_GIFT", new GiftAction());
         actionsMap.put("LUCK_GIFT", new LuckGiftAction());
         //actionsMap.put("BROADCAST", new BroadcastAction());
-        //actionsMap.put("SET_MANAGER", new SetManagerAction());
         actionsMap.put("SubscribeProgram", new SubProgramAction());
         actionsMap.put("ANIMATION", new AnimAction());
     }
@@ -93,14 +91,6 @@ public class MessageRouter implements MessageCallback {
         ProtoStringAvg.strAvg message = null;
         try {
             message = ProtoStringAvg.strAvg.parseFrom(messageBytes);
-
-            Log.i("Message", "===========");
-//            for (ByteString byteString : message.) {
-//                String str = new String(byteString.toByteArray(), "UTF-8");
-//                Log.i("Message", str);
-//            }
-            Log.i("Message", "===========");
-
             return message;
         } catch (IOException e) {
             e.printStackTrace();
