@@ -20,6 +20,7 @@ public class LuckGiftEvent {
         return totalMengBi;
     }
 
+    //获取中奖的昵称
     public String getNickname() {
         return luckGiftJson.getContext().getNickname();
     }
