@@ -49,6 +49,7 @@ public class LevelUtil {
         return -1;
     }
 
+    //根据levelicon资源获取spanableString
     public static SpannableString getLevelSpan(int level, Context context, int resourceId) {
         SpannableString levelIcon = new SpannableString("levelIcon");
         Resources res = context.getResources();

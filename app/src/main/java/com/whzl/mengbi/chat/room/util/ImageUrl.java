@@ -4,6 +4,7 @@ import com.whzl.mengbi.util.network.URLContentUtils;
 
 public class ImageUrl {
     //imageType: gif, jpg
+    //根据时间戳获取url
     public static String getImageUrl(int imageId, String imageType, long timestamp) {
         String strImageId = String.format("%09d", imageId);
         String url = URLContentUtils.BASE_IMAGE_URL +strImageId.substring(0, 3) + "/" +
