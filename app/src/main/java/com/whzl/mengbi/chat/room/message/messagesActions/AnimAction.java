@@ -2,9 +2,12 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
 
+import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 public class AnimAction implements Actions {
@@ -15,50 +18,16 @@ public class AnimAction implements Actions {
             return;
         }
 
-        final String giftUrl = ImageUrl.getImageUrl(animJson.getContext().getGoodsPicId(), ".jpg");
-        final int giftCount = animJson.getContext().getCount();
-        //TODO: dwownload the anim as bitmap
-//        ImageRequest request = new ImageRequest(giftUrl, new Response.Listener<Bitmap>() {
-//
-//            @Override
-//            public void onResponse(Bitmap response) {
-//                Drawable picDrawable = new BitmapDrawable(response);
-//
-//                if (animJson.getAnimType().equals("PARABOLA")) {
-//                    boolean isMyself = false;
-//                    if (animJson.getContext().getUserId() == EnvironmentBridge.getUserInfoBridge().getUserId()) {//自己送的
-//                        isMyself = true;
-//                    }
-//                    StarGiftEvent starGiftEvent = new StarGiftEvent(isMyself, picDrawable);
-//                    EventBus.getDefault().post(starGiftEvent);
-//                }
-//
-//                if (animJson.getAnimType().equals("PNG")) {
-//                    String plistUrl = null;
-//                    int plistRedId = -1;
-//                    String pngUrl = null;
-//                    int pngResId = -1;
-//
-//                    for (AnimJson.ResourcesEntity res : animJson.getResources()) {
-//                        if (res.getResType().equals("PLIST")) {
-//                            plistUrl = GiftPicUrlUtil.getPlistUrl(Integer.valueOf(res.getResValue()));
-//                            plistRedId = res.getAnimationResId();
-//                        } else if (res.getResType().equals("PNG")) {
-//                            pngUrl = GiftPicUrlUtil.getPngUrl(Integer.valueOf(res.getResValue()));
-//                            pngResId = res.getAnimationResId();
-//                        }
-//                    }
-//
-//                    EventBus.getDefault().post(new TexturePackerEvent(plistUrl, pngUrl, plistRedId, pngResId));
-//                }
-//
-//                if (animJson.getAnimType().equals("DIFFUS")) {
-//                    NormalGiftEvent normalGiftEvent = new NormalGiftEvent(giftCount, picDrawable);
-//                    EventBus.getDefault().post(normalGiftEvent);
-//                }
-//            }
-//        }, 0, 0, null, null);
-//
-//        VolleySingleton.getInstance(context).request(request);
+        String imageType;
+        String aniType = animJson.getAnimType();
+        if (aniType.equals("MOBILE_GIFT_GIF") || aniType.equals("MOBILE_CAR_GIF")) {
+            imageType = ".gif";
+        }else if (aniType.equals("TOTAl")) {
+            imageType = ".jpg";
+        }else {
+            return;
+        }
+        String animUrl = ImageUrl.getImageUrl(animJson.getContext().getGoodsPicId(), imageType);
+        EventBus.getDefault().post(new AnimEvent(animJson, animUrl));
     }
 }
