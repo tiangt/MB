@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#21D996</color>
+    <color name="colorPrimary">#21d790</color>
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#B9B9B9</color>
 
-    <color name="tab_checked">#21D996</color>
+    <color name="tab_checked">#21d790</color>
     <color name="tab_unchecked">#B9B9B9</color>
 
     <color name="text_view">#323232</color>
@@ -94,9 +94,15 @@
     <color name="font_color_46">#21D996</color>
     <color name="trans_parent">#000000</color>
     <color name="font_color_47">#323232</color>
+    <color name="font_color_48">#21d790</color>
+    <color name="font_color_49">#d9d9d9</color>
+    <color name="font_color_50">#07808d</color>
+    <color name="font_color_51">#f9f9f9</color>
+    <color name="font_color_52">#646464</color>
+    <color name="font_color_53">#c7c7c7</color>
+    <color name="font_color_54">#ffa800</color>
 
     <color name="colorblack">#000000</color>
-
     <color name="player_black">#000000</color>
     <color name="player_white">#FFFFFF</color>
     <color name="player_panel">#696969</color>
