@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResourceMap {
-    private Map<Integer,Integer> usersLevelMap = new HashMap<>();
-    private Map<Integer,Integer> anchorLevelMap = new HashMap<>();
+    private Map<Integer,Integer> usersLevelMap = new HashMap<>(); //用户等级
+    private Map<Integer,Integer> anchorLevelMap = new HashMap<>(); //主播等级
 
     private static class ResourceMapHolder {
         private static final ResourceMap instance = new ResourceMap();
