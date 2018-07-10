@@ -39,6 +39,7 @@ import java.io.File;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -126,9 +127,14 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
         }else{
             mSex.setText("保密");
         }
-        if(mUserInfo.getData().getProvince()!=null||mUserInfo.getData().getCity()!=null){
-            mAddress.setText(mUserInfo.getData().getProvince()+"-"+mUserInfo.getData().getCity());
+        StringBuilder stringBuilder = new StringBuilder();
+        if(mUserInfo.getData().getProvince()!=null){
+            stringBuilder.append(mUserInfo.getData().getProvince());
         }
+        if(mUserInfo.getData().getCity()!=null){
+            stringBuilder.append("-"+mUserInfo.getData().getCity());
+        }
+        mAddress.setText(stringBuilder);
         mBirthday.setText(mUserInfo.getData().getBirthday());
         for (UserInfo.DataBean.LevelListBean levelList:mUserInfo.getData().getLevelList()){
             if(levelList.getLevelType().equals("ROYAL_LEVEL")){
@@ -167,17 +173,19 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
         Calendar calendar = Calendar.getInstance();
         int userId = mUserInfo.getData().getUserId();
         switch (v.getId()){
-            case R.id.user_info_head_text:
+            case R.id.user_info_head_text://修改头像
                 View view = getLayoutInflater().inflate(R.layout.activity_user_info_photo_pop_layout,null);
                 mCustomPopWindow = CustomPopWindowUtils.profile(this,view,mCircleImageView,width,height);
                 //初始化CustomPopWindow控件
                 initPopView(view);
                 break;
             case R.id.user_info_nickname://修改昵称
-
+                 Intent nicknameIntent = new Intent(UserInfoActivity.this,UserInfoNickNameActivity.class);
+                 startActivityForResult(nicknameIntent,3);
                  break;
             case R.id.user_info_sex://修改性别
-
+                Intent sexIntent = new Intent(UserInfoActivity.this,UserInfoSexActivity.class);
+                startActivityForResult(sexIntent,4);
                  break;
             case R.id.user_info_birthday://修改生日
                 String  strDate = mUserInfo.getData().getBirthday();
@@ -194,7 +202,10 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
                     public void onTimeSelect(Date date, View v) {
                         String time1 = DateUtils.getTime(date);
                         String time2 = DateUtils.getTime2(date);
-                        userInfoPresenter.onUpdataBirthday(userId+"",time2);
+                        HashMap hashMap = new HashMap();
+                        hashMap.put("userId",userId);
+                        hashMap.put("birthday",time2);
+                        userInfoPresenter.onUpdataUserInfo(hashMap);
                     }
                 })
                         .setType(type)
@@ -232,7 +243,11 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
                                 mAddress.setText(strBuilder);
                                 String provinceStr = province.getName();
                                 String cityStr = city.getName();
-                                userInfoPresenter.onUpdataAddress(userId+"",provinceStr,cityStr);
+                                HashMap hashMap = new HashMap();
+                                hashMap.put("userId",userId);
+                                hashMap.put("province",provinceStr);
+                                hashMap.put("city",cityStr);
+                                userInfoPresenter.onUpdataUserInfo(hashMap);
                             }
                             @Override
                             public void onCancel() {
@@ -241,12 +256,20 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
                         });
                         cityPickerView.showCityPicker();
                 break;
-            case R.id.user_info_quit_but:
+            case R.id.user_info_quit_but://退出登录
                 Intent mIntent = new Intent(UserInfoActivity.this,LoginActivity.class);
-                mIntent.putExtra("touristFlag","0");
+                mIntent.putExtra("visitor",true);
                 startActivity(mIntent);
+                SPUtils.remove(this,"islogin");//清除用户登录状态
+                SPUtils.remove(this,"visitor");//清除游客登录状态
+                SPUtils.remove(this,"username");//清除用户用户名
+                SPUtils.remove(this,"password");//清除用户密码
+                SPUtils.remove(this,"third_party");//清除第三方登录名称
+                SPUtils.remove(this,"qq_openid");//清除第QQ登录openid
+                SPUtils.remove(this,"qq_access_token");//清除QQ登录access_token
+                SPUtils.remove(this,"weixin_openid");//清除微信登录openid
+                SPUtils.remove(this,"weixin_access_token");//清除微信登录access_token
                 finish();
-                SPUtils.clear(this);
                 break;
         }
     }
