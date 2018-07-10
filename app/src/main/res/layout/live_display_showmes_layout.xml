@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/font_color_24">
-    <!--<android.support.v7.widget.RecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/live_display_message_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView> -->
-
-    <com.whzl.mengbi.ui.widget.view.PubChatView
-        android:id="@+id/pub_chat_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </com.whzl.mengbi.ui.widget.view.PubChatView>
-</LinearLayout>
+    </android.support.v7.widget.RecyclerView>
+</android.support.constraint.ConstraintLayout>

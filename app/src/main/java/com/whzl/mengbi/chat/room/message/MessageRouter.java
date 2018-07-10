@@ -109,6 +109,7 @@ public class MessageRouter implements MessageCallback {
     }
 
     private void parseChatMsg(ProtoStringAvg.strAvg  message) {
+
         String type = getStrAvgString(message, 2);
         String msgInfo = getStrAvgString(message, 3);
 

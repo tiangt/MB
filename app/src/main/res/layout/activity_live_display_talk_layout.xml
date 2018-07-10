@@ -37,5 +37,4 @@
         android:layout_margin="@dimen/x5"
         android:layout_below="@id/live_display_talk_message">
     </android.support.v7.widget.RecyclerView>
-
 </RelativeLayout>

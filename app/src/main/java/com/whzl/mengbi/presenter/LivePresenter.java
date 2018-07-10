@@ -9,6 +9,10 @@ public interface LivePresenter {
 
     void getLiveGift();
 
+    void getRoomInfo(int programId);
+
+    void getAudienceAccount(int programId);
+
     void onDestory();
 
 }

@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -115,4 +116,27 @@ public abstract class BaseAtivity extends AppCompatActivity{
             EventBusUtils.unregister(this);
         }
     }
+
+    public boolean isActivityFinished() {
+        if (Build.VERSION.SDK_INT >= 17) {
+            return isFinishing() || isDestroyed();
+        } else {
+            return isFinishing();
+        }
+    }
+
+    protected void showToast(String msg){
+        if(isActivityFinished()){
+            return;
+        }
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+    }
+
+    protected void showToast(int msgRes){
+        if(isActivityFinished()){
+            return;
+        }
+        Toast.makeText(this, msgRes, Toast.LENGTH_SHORT);
+    }
+
 }

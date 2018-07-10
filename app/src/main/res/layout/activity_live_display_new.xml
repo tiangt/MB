@@ -34,8 +34,8 @@
                     android:id="@+id/rl_host_info"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_toRightOf="@id/iv_host_avatar">
+                    android:layout_toRightOf="@id/iv_host_avatar"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_host_name"
@@ -119,20 +119,19 @@
 
         </RelativeLayout>
 
-        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/constraintLayout"
+        <com.whzl.mengbi.ui.widget.view.RatioRelativeLayout
+            android:id="@+id/ratio_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp">
+            android:layout_marginTop="7dp"
+            app:ratio="1.33">
 
             <SurfaceView
                 android:id="@+id/player_master"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintDimensionRatio="H,4:3"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-        </android.support.constraint.ConstraintLayout>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"

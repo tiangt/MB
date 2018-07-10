@@ -160,14 +160,14 @@ public class HomeFragment extends BaseFragement implements HomeView{
                 Intent mIntent = new Intent(mContext, LiveDisplayActivityNew.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("ProgramId",recommendList.get(position).getProgramId());
-                bundle.putString("AnchorNickname",recommendList.get(position).getAnchorNickname());
-                bundle.putInt("RoomUserCount",recommendList.get(position).getRoomUserCount());
-                bundle.putString("Cover",recommendList.get(position).getCover());
-                if(recommendList.get(position).getShowStreamData()!=null){
-                    bundle.putString("Stream",recommendList.get(position).getShowStreamData().getFlv());
-                    bundle.putInt("displayWidth", recommendList.get(position).getShowStreamData().getWidth());
-                    bundle.putInt("displayHeight", recommendList.get(position).getShowStreamData().getHeight());
-                }
+//                bundle.putString("AnchorNickname",recommendList.get(position).getAnchorNickname());
+//                bundle.putInt("RoomUserCount",recommendList.get(position).getRoomUserCount());
+//                bundle.putString("Cover",recommendList.get(position).getCover());
+//                if(recommendList.get(position).getShowStreamData()!=null){
+//                    bundle.putString("Stream",recommendList.get(position).getShowStreamData().getFlv());
+//                    bundle.putInt("displayWidth", recommendList.get(position).getShowStreamData().getWidth());
+//                    bundle.putInt("displayHeight", recommendList.get(position).getShowStreamData().getHeight());
+//                }
                 mIntent.putExtras(bundle);
                 startActivity(mIntent);
             }
@@ -194,12 +194,12 @@ public class HomeFragment extends BaseFragement implements HomeView{
                  Intent mIntent = new Intent(mContext, LiveDisplayActivityNew.class);
                  Bundle bundle = new Bundle();
                  bundle.putInt("ProgramId",wonderfulList.get(position).getProgramId());
-                 bundle.putString("AnchorNickname",wonderfulList.get(position).getAnchorNickname());
-                 bundle.putInt("RoomUserCount",wonderfulList.get(position).getRoomUserCount());
-                 bundle.putString("Cover",wonderfulList.get(position).getCover());
-                 if(wonderfulList.get(position).getShowStreamData()!=null){
-                     bundle.putString("Stream",wonderfulList.get(position).getShowStreamData().getFlv());
-                 }
+//                 bundle.putString("AnchorNickname",wonderfulList.get(position).getAnchorNickname());
+//                 bundle.putInt("RoomUserCount",wonderfulList.get(position).getRoomUserCount());
+//                 bundle.putString("Cover",wonderfulList.get(position).getCover());
+//                 if(wonderfulList.get(position).getShowStreamData()!=null){
+//                     bundle.putString("Stream",wonderfulList.get(position).getShowStreamData().getFlv());
+//                 }
                  mIntent.putExtras(bundle);
                  startActivity(mIntent);
              }

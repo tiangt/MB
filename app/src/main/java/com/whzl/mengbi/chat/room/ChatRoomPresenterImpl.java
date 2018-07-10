@@ -1,9 +1,11 @@
 package com.whzl.mengbi.chat.room;
 
+import android.content.Context;
 import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
+import com.whzl.mengbi.chat.room.message.messageJson.SubProgramJson;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.ui.common.BaseAppliaction;
 
@@ -66,7 +68,7 @@ public class ChatRoomPresenterImpl{
 //        return false;
 //  }
 
-    public void setupConnection(LiveRoomTokenInfo liveRoomTokenInfo) {
+    public void setupConnection(LiveRoomTokenInfo liveRoomTokenInfo, Context context) {
         this.liveRoomTokenInfo = liveRoomTokenInfo;
         MbSocketFactory socketFactory = new MbSocketFactory();
         connectCallback = new IConnectCallback() {
@@ -93,7 +95,7 @@ public class ChatRoomPresenterImpl{
             }
         };
 
-        messageCallback = new MessageRouter(gson,BaseAppliaction.getInstance().getApplicationContext());
+        messageCallback = new MessageRouter(gson,context);
 
         client = new MbChatClient(socketFactory);
         client.setErrorCallback(errorCallback);

@@ -91,10 +91,6 @@
             android:name=".ui.activity.RegisterActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.activity.LiveDisplayActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
 
         <!-- 金山云直播 -->
         <activity

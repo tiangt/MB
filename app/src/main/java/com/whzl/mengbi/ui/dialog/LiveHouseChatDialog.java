@@ -84,14 +84,14 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
 
     @Override
     public void onGlobalLayout() {
-        if(height == 0){
+        if (height == 0) {
             height = dialogOut.getHeight();
             return;
         }
         if (dialogOut.getHeight() - height > 100 && !btnInputChange.isSelected() && isShowSoftInput) {
             dismiss();
         }
-        if(dialogOut.getHeight() - height < -100 && !btnInputChange.isSelected()){
+        if (dialogOut.getHeight() - height < -100 && !btnInputChange.isSelected()) {
             isShowSoftInput = true;
         }
         height = dialogOut.getHeight();

@@ -32,3 +32,4 @@ proguard/
 # Android Studio captures folder
 captures/
 
+src/main/java/com/whzl/mengbi/ui/common/base/

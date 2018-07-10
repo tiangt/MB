@@ -1,6 +1,5 @@
-<!--<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -42,20 +41,4 @@
         android:textColor="@color/textview"
         app:layout_constraintLeft_toRightOf="@id/live_display_message_item_usermedal3_img"
         android:text=""/>
-
 </android.support.constraint.ConstraintLayout>
--->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="2dp">
-
-    <TextView
-        android:id="@+id/chat_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="14.4dp"
-        android:layout_marginRight="14.4dp"
-        android:textSize="14.4dp" />
-</RelativeLayout>
