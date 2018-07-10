@@ -3,13 +3,21 @@ package com.whzl.mengbi.ui.adapter;
 
 
 import android.content.Context;
-import com.zhy.adapter.recyclerview.CommonAdapter;
-import com.zhy.adapter.recyclerview.base.ViewHolder;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+
+import com.whzl.mengbi.R;
+import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
+import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
+import com.whzl.mengbi.ui.widget.recyclerview.base.ItemViewDelegate;
+import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.List;
 
 
-public  class LiveMessageAdapter extends CommonAdapter<List> {
+public class LiveMessageAdapter extends CommonAdapter<List> {
 
 
     public LiveMessageAdapter(Context context, int layoutId, List datas) {
@@ -18,19 +26,19 @@ public  class LiveMessageAdapter extends CommonAdapter<List> {
 
     @Override
     protected void convert(ViewHolder holder, List data, int position) {
-//        if(data!=null){
-//            GlideImageLoader.getInstace().displayImage(mContext,data.get(position),holder.getView(R.id.live_display_message_item_userlevel_img));
-//            GlideImageLoader.getInstace().displayImage(mContext,data.get(position),holder.getView(R.id.live_display_message_item_usermedal_img));
-//            GlideImageLoader.getInstace().displayImage(mContext,data.get(position),holder.getView(R.id.live_display_message_item_usermedal2_img));
-//            GlideImageLoader.getInstace().displayImage(mContext,data.get(position),holder.getView(R.id.live_display_message_item_usermedal3_img));
-//            holder.getView(R.id.live_display_message_item_usermedal_img).setVisibility(View.VISIBLE);
-//            holder.getView(R.id.live_display_message_item_usermedal2_img).setVisibility(View.VISIBLE);
-//            holder.getView(R.id.live_display_message_item_usermedal3_img).setVisibility(View.VISIBLE);
-//        }else{
-//            holder.getView(R.id.live_display_message_item_usermedal_img).setVisibility(View.GONE);
-//            holder.getView(R.id.live_display_message_item_usermedal2_img).setVisibility(View.GONE);
-//            holder.getView(R.id.live_display_message_item_usermedal3_img).setVisibility(View.GONE);
-//        }
+        if (data != null) {
+            GlideImageLoader.getInstace().displayImage(mContext, data.get(position), holder.getView(R.id.live_display_message_item_userlevel_img));
+            GlideImageLoader.getInstace().displayImage(mContext, data.get(position), holder.getView(R.id.live_display_message_item_usermedal_img));
+            GlideImageLoader.getInstace().displayImage(mContext, data.get(position), holder.getView(R.id.live_display_message_item_usermedal2_img));
+            GlideImageLoader.getInstace().displayImage(mContext, data.get(position), holder.getView(R.id.live_display_message_item_usermedal3_img));
+            holder.getView(R.id.live_display_message_item_usermedal_img).setVisibility(View.VISIBLE);
+            holder.getView(R.id.live_display_message_item_usermedal2_img).setVisibility(View.VISIBLE);
+            holder.getView(R.id.live_display_message_item_usermedal3_img).setVisibility(View.VISIBLE);
+        } else {
+            holder.getView(R.id.live_display_message_item_usermedal_img).setVisibility(View.GONE);
+            holder.getView(R.id.live_display_message_item_usermedal2_img).setVisibility(View.GONE);
+            holder.getView(R.id.live_display_message_item_usermedal3_img).setVisibility(View.GONE);
+        }
     }
 
 }

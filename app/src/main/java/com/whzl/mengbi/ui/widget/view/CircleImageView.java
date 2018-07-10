@@ -88,6 +88,7 @@ public class CircleImageView extends ImageView{
         mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
         //调用 recycle() 回收TypedArray,以便后面重用
         a.recycle();
+        System.out.println("CircleImageView -- 构造函数");
         init();
     }
     /**
@@ -208,6 +209,7 @@ public class CircleImageView extends ImageView{
     public void setImageDrawable(Drawable drawable) {
         super.setImageDrawable(drawable);
         mBitmap = getBitmapFromDrawable(drawable);
+        System.out.println("setImageDrawable -- setup");
         setup();
     }
 

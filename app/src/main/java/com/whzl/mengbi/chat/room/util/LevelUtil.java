@@ -61,7 +61,7 @@ public class LevelUtil {
         int originWidth = levelIconDrawable.getIntrinsicWidth();
         int originHeight = levelIconDrawable.getIntrinsicHeight();
 
-        levelIconDrawable.setBounds(0,0,DensityUtil.dp2px(originWidth),DensityUtil.dp2px(originHeight));
+        levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(35.5F), DensityUtil.dp2px(15));
         levelIcon.setSpan(new ImageSpan(levelIconDrawable),0,levelIcon.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return levelIcon;

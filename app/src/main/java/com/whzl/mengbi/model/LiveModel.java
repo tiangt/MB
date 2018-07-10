@@ -10,5 +10,6 @@ public interface LiveModel {
     void doLiveFace(String fileName, OnLiveFinishedListener listener);
     void doRoomInfo(int programId, OnLiveFinishedListener listener);
     void doAudienceAccount(int programId, OnLiveFinishedListener listener);
-    void doFellowHost(int userId, int programId, OnLiveFinishedListener listener);
+
+    void doFollowHost(int userId, int programId, OnLiveFinishedListener listener);
 }

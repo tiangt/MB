@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="123dp"
+    android:layout_height="175dp"
+    android:background="@drawable/shape_git_count_select_pop_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_custom"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:text="@string/gift_count_custom"
+        android:textColor="#323232"
+        android:textSize="14sp" />
+
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="6.5dp"
+        android:layout_marginRight="6.5dp"
+        android:background="@color/divider_color" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="123dp"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

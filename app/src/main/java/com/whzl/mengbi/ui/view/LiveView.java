@@ -16,5 +16,5 @@ public interface LiveView {
 
     void onAudienceSuccess(long count);
 
-    void onFellowHostSuccess();
+    void onFollowHostSuccess();
 }

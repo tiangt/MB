@@ -24,7 +24,7 @@ public class MeModelImpl implements MeModel{
                     @Override
                     public void onReqSuccess(Object result) {
                         UserInfo userInfo = GsonUtils.GsonToBean(result.toString(),UserInfo.class);
-                        if(userInfo.getCode()==RequestManager.RESPONSE_CODE){
+                        if (userInfo.getCode() == 200) {
                             listener.onSuccess(userInfo);
                         }
                     }

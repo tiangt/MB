@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,9 +31,7 @@ import com.whzl.mengbi.util.UIUtil;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * @author shaw
@@ -79,20 +76,20 @@ public class GiftDialog extends BaseAwesomeDialog {
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         ArrayList<Fragment> fragments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
-        if (mGiftInfo.getData().get推荐() != null) {
-            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().get推荐()));
+        if (mGiftInfo.getData().getRecommend() != null) {
+            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getRecommend()));
             titles.add("推荐");
         }
-        if (mGiftInfo.getData().get幸运() != null) {
-            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().get幸运()));
+        if (mGiftInfo.getData().getLucky() != null) {
+            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLucky()));
             titles.add("幸运");
         }
-        if (mGiftInfo.getData().get普通() != null) {
-            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().get普通()));
+        if (mGiftInfo.getData().getCommon() != null) {
+            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getCommon()));
             titles.add("普通");
         }
-        if (mGiftInfo.getData().get豪华() != null) {
-            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().get豪华()));
+        if (mGiftInfo.getData().getLuxury() != null) {
+            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLuxury()));
             titles.add("豪华");
         }
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
@@ -154,6 +151,9 @@ public class GiftDialog extends BaseAwesomeDialog {
                 protected void convert(com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder holder, GiftCountInfoBean giftCountInfoBean, int position) {
                     holder.setText(R.id.tv_count, giftCountInfoBean.count + "");
                     holder.setText(R.id.tv_count_desc, giftCountInfoBean.countDesc);
+                    if (position == giftCountInfoList.size() - 1) {
+                        holder.setVisible(R.id.view_divider, false);
+                    }
                 }
             };
             adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {

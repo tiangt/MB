@@ -38,7 +38,6 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -154,13 +153,8 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                TextView textView = new TextView(LiveDisplayActivityNew.this);
+                View textView = getLayoutInflater().inflate(R.layout.chat_text, null);
                 textView.setId(R.id.chat_text);
-                int paddingTop = UIUtil.dip2px(LiveDisplayActivityNew.this, 10);
-                int paddingLeft = UIUtil.dip2px(LiveDisplayActivityNew.this, 15);
-                int paddingRight = UIUtil.dip2px(LiveDisplayActivityNew.this, 60);
-                textView.setPadding(paddingLeft, paddingTop, paddingRight, paddingTop);
-                textView.setTextSize(UIUtil.sp2px(LiveDisplayActivityNew.this, 15));
                 return new SingleTextViewHolder(textView);
             }
 
@@ -172,7 +166,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
             @Override
             public int getItemCount() {
-                return chatList == null ? 0 : chatList.size();
+                return chatList == null ? 23 : chatList.size();
             }
         };
         recycler.setAdapter(chatAdapter);
@@ -229,7 +223,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         switch (view.getId()) {
             case R.id.btn_follow:
                 int userId = (int) SPUtils.get(this, "userId", -1);
-                mLivePresenter.fellowHost(userId, mProgramId);
+                mLivePresenter.followHost(userId, mProgramId);
                 break;
             case R.id.btn_contribution_dismiss:
                 break;
@@ -322,7 +316,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     @Override
-    public void onFellowHostSuccess() {
+    public void onFollowHostSuccess() {
         btnFollow.setVisibility(View.GONE);
     }
 

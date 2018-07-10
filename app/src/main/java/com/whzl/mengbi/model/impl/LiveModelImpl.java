@@ -111,7 +111,7 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void doFellowHost(int userId, int programId, OnLiveFinishedListener listener) {
+    public void doFollowHost(int userId, int programId, OnLiveFinishedListener listener) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
         paramsMap.put("userId", userId + "");

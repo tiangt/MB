@@ -7,7 +7,6 @@ import com.whzl.mengbi.presenter.MePresenter;
 import com.whzl.mengbi.presenter.OnMeFinishedListener;
 import com.whzl.mengbi.ui.view.MeView;
 
-
 public class MePresenterImpl implements MePresenter,OnMeFinishedListener{
     private MeView meView;
     private MeModel meModel;
@@ -28,7 +27,6 @@ public class MePresenterImpl implements MePresenter,OnMeFinishedListener{
             meView.showUserInfo(userInfo);
         }
     }
-
 
     @Override
     public void onDestroy() {

@@ -12,15 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.lljjcoder.style.citylist.utils.CityListLoader;
-import com.lljjcoder.style.citypickerview.CityPickerView;
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
-import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
-import com.scwang.smartrefresh.layout.api.RefreshFooter;
-import com.scwang.smartrefresh.layout.api.RefreshHeader;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
@@ -31,25 +22,7 @@ import com.whzl.mengbi.R;
  *@function 1.他是整个程序的入口，2初始化工作，3为整个应用的其他模块提供上下文
  */
 public class BaseAppliaction extends Application{
-    //static 代码段可以防止内存泄露
-    static {
-        //设置全局的Header构建器
-        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
-            @Override
-            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                layout.setPrimaryColorsId(R.color.colorAccent, android.R.color.white);//全局设置主题颜色
-                return new ClassicsHeader(context);//.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
-            }
-        });
-        //设置全局的Footer构建器
-        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
-            @Override
-            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
-                //指定为经典Footer，默认是 BallPulseFooter
-                return new ClassicsFooter(context).setDrawableSize(20);
-            }
-        });
-    }
+
     private static BaseAppliaction instace = null;
 
     @Override
@@ -67,8 +40,6 @@ public class BaseAppliaction extends Application{
          * 预先加载一级列表显示 全国所有城市市的数据
          */
         CityListLoader.getInstance().loadCityData(this);
-
-
     }
 
     public static BaseAppliaction getInstance(){
