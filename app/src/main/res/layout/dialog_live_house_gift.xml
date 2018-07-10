@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_dialog_top_corner_bg"
+    android:orientation="vertical">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        style="@style/LiveHouseGiftDialogTab"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginLeft="10dp" />
+
+
+    <include layout="@layout/common_divider" />
+
+    <com.whzl.mengbi.ui.widget.view.NoScrollViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:layout_marginTop="8dp">
+
+    </com.whzl.mengbi.ui.widget.view.NoScrollViewPager>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#d9d9d9" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rl_send_container">
+
+            <TextView
+                android:id="@+id/tv_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:drawableLeft="@drawable/mengbi_big_icon"
+                android:drawablePadding="15dp"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="#fd9f0a"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/view_divider"
+                android:layout_width="0.5dp"
+                android:layout_height="14dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/tv_amount"
+                android:background="#f1275b" />
+
+            <TextView
+                android:id="@+id/tv_top_up"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="7.5dp"
+                android:layout_toRightOf="@id/view_divider"
+                android:gravity="center_vertical"
+                android:text="充值>"
+                android:textColor="#f1275b"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="29dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="25dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_live_house_dialog_gift_count_bg"
+                    android:drawablePadding="7dp"
+                    android:drawableRight="@drawable/gift_count_select_icon"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:minWidth="57dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="5dp"
+                    android:textColor="#323232"
+                    android:textSize="12dp" />
+
+                <Button
+                    android:id="@+id/btn_send_gift"
+                    android:layout_width="57dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_live_house_dialog_gift_send_btn_bg"
+                    android:text="赠送"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:id="@+id/ll_count_custom_container"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/et_count"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="29dp"
+                android:background="@drawable/shape_chat_dialog_edit_bg"
+                android:layout_marginLeft="11dp"
+                android:layout_marginRight="9dp"
+                android:inputType="number"
+                android:hint="@string/gift_custom_hint"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp" />
+
+            <Button
+                android:id="@+id/btn_count_confirm"
+                android:layout_width="57dp"
+                android:layout_height="29dp"
+                android:background="@drawable/shape_dialog_chat_send_btn_bg"
+                android:text="@string/confirm"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:layout_marginRight="25dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="3dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingTop="3dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/view_select_mark"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/selector_live_house_gift_bg" />
+
+        <ImageView
+            android:id="@+id/iv_gift"
+            android:layout_width="63.5dp"
+            android:layout_height="69dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_gift_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="#323232"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:drawablePadding="4dp"
+        android:drawableRight="@drawable/mengbi_icon"
+        android:gravity="center_vertical"
+        android:textColor="#fdc80a"
+        android:textSize="13sp" />
+
+</LinearLayout>
