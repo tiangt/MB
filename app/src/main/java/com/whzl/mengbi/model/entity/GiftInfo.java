@@ -23,42 +23,42 @@ public class GiftInfo extends ResponseInfo {
         private ArrayList<GiftDetailInfoBean> 幸运;
         private ArrayList<GiftDetailInfoBean> 普通;
 
-        public ArrayList<GiftDetailInfoBean> get推荐() {
+        public ArrayList<GiftDetailInfoBean> getRecommend() {
             return 推荐;
         }
 
-        public void set推荐(ArrayList<GiftDetailInfoBean> 推荐) {
+        public void setRecommend(ArrayList<GiftDetailInfoBean> recommend) {
             this.推荐 = 推荐;
         }
 
-        public ArrayList<GiftDetailInfoBean> get豪华() {
+        public ArrayList<GiftDetailInfoBean> getLuxury() {
             return 豪华;
         }
 
-        public void set豪华(ArrayList<GiftDetailInfoBean> 豪华) {
+        public void setLuxury(ArrayList<GiftDetailInfoBean> 豪华) {
             this.豪华 = 豪华;
         }
 
-        public ArrayList<GiftDetailInfoBean> get幸运() {
+        public ArrayList<GiftDetailInfoBean> getLucky() {
             return 幸运;
         }
 
-        public void set幸运(ArrayList<GiftDetailInfoBean> 幸运) {
+        public void setLucky(ArrayList<GiftDetailInfoBean> 幸运) {
             this.幸运 = 幸运;
         }
 
-        public ArrayList<GiftDetailInfoBean> get普通() {
+        public ArrayList<GiftDetailInfoBean> getCommon() {
             return 普通;
         }
 
-        public void set普通(ArrayList<GiftDetailInfoBean> 普通) {
+        public void setCommon(ArrayList<GiftDetailInfoBean> 普通) {
             this.普通 = 普通;
         }
 
 
     }
 
-    public class GiftDetailInfoBean implements Parcelable{
+    public class GiftDetailInfoBean implements Parcelable {
         private int goodsId;
         private String goodsName;
         private Object goodsEngName;
