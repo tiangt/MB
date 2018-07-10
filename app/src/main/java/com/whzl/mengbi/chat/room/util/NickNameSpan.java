@@ -9,6 +9,7 @@ import android.text.style.ClickableSpan;
 public abstract class NickNameSpan extends ClickableSpan {
     private Context context;
 
+    //TODO:add color
     public NickNameSpan(Context mContext) {
         this.context = mContext;
     }
