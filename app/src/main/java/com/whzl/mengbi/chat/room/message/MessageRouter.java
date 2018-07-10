@@ -12,6 +12,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
@@ -35,7 +36,7 @@ public class MessageRouter implements MessageCallback {
     //Map<Integer, OptAction> optActionMap = new HashMap<>();
     private ChatAction chatAction;
     private PrivateChatAction privateChatAction;
-    //private PrivateChatAction privateChatAction;
+    private NoChatAction noChatAction;
 
     public MessageRouter(Gson gson, Context context) {
         this.mGson = gson;
@@ -57,13 +58,14 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("LUCK_GIFT", new LuckGiftAction());
         //actionsMap.put("BROADCAST", new BroadcastAction());
         //actionsMap.put("SET_MANAGER", new SetManagerAction());
-        actionsMap.put("ANIMATION", new AnimAction());
         actionsMap.put("SubscribeProgram", new SubProgramAction());
+        actionsMap.put("ANIMATION", new AnimAction());
     }
 
     private void initChatAction() {
         chatAction = new ChatAction();
         privateChatAction = new PrivateChatAction();
+        noChatAction = new NoChatAction();
     }
 
     @Override
@@ -78,8 +80,8 @@ public class MessageRouter implements MessageCallback {
             case 1102:
                 parseChatMsg(message);
                 break;
-            case 1107:
-                parseOptMsg(message);
+            case 1107: //禁言消息
+                parseNoChatMsg(message);
                 break;
             default:
                 Log.e(tag, "unknown message!!!!!!");
@@ -157,27 +159,31 @@ public class MessageRouter implements MessageCallback {
         action.performAction(msgInfo, mContext);
     }
 
-    private void parseOptMsg(ProtoStringAvg.strAvg  message) {
-        String toUidStr = getStrAvgString(message, 4);
+    private void parseNoChatMsg(ProtoStringAvg.strAvg  message) {
+        if (message.getStrsList().size() < 8) {
+            return;
+        }
+        String fromUidStr = getStrAvgString(message, 2);
         String nickName = getStrAvgString(message, 3);
+        String toUidStr = getStrAvgString(message, 4);
         String toNickName = getStrAvgString(message, 5);
         String typeStr = getStrAvgString(message, 6);
+        String periodStr = getStrAvgString(message, 7);
         int type = -1;
+        int fromUid = -1;
         int toUid = -1;
+        int iPeriod = 0;
 
         try {
+            fromUid = Integer.valueOf(fromUidStr);
             toUid = Integer.valueOf(toUidStr);
             type = Integer.valueOf(typeStr);
+            iPeriod = Integer.valueOf(periodStr);
         } catch (NumberFormatException e) {
             e.printStackTrace();
             return;
         }
 
-        /*//OptAction actions = optActionMap.get(type);
-        if (actions == null) {
-            Log.e("test", "不支持的操作格式");
-            return;
-        }
-        actions.performOpt(toUid, nickName, toNickName, mContext);*/
+
     }
 }

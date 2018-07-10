@@ -28,6 +28,7 @@ public class SubProgramMsg implements FillHolderMessage{
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mholder = (SingleTextViewHolder) holder;
+        mholder.textView.setText("");
         int levelIcon = ResourceMap.getResourceMap().getUserLevelIcon(subProJson.getContext().getLevelValue());
         mholder.textView.append(LevelUtil.getLevelSpan(subProJson.getContext().getLevelValue(), mContext, levelIcon));
         mholder.textView.append(getNickNameSpan(subProJson.getContext().getNickname(), subProJson.getContext().getUserId()));
