@@ -27,68 +27,50 @@ public class BannerInfo extends ResponseInfo {
 
         public static class ListBean {
 
-            private String subject;
-            private int category;
-            private int subCategory;
-            private String piclink;
-            private int sort;
-            private String content;
-            private String textlink;
+            private String type;
+            private int target;
+            private String title;
+            private String image;
+            private String url;
 
-            public String getSubject() {
-                return subject;
+            public String getType() {
+                return type;
             }
 
-            public void setSubject(String subject) {
-                this.subject = subject;
+            public void setType(String type) {
+                this.type = type;
             }
 
-            public int getCategory() {
-                return category;
+            public int getTarget() {
+                return target;
             }
 
-            public void setCategory(int category) {
-                this.category = category;
+            public void setTarget(int target) {
+                this.target = target;
             }
 
-            public int getSubCategory() {
-                return subCategory;
+            public String getTitle() {
+                return title;
             }
 
-            public void setSubCategory(int subCategory) {
-                this.subCategory = subCategory;
+            public void setTitle(String title) {
+                this.title = title;
             }
 
-            public String getPiclink() {
-                return piclink;
+            public String getImage() {
+                return image;
             }
 
-            public void setPiclink(String piclink) {
-                this.piclink = piclink;
+            public void setImage(String image) {
+                this.image = image;
             }
 
-            public int getSort() {
-                return sort;
+            public String getUrl() {
+                return url;
             }
 
-            public void setSort(int sort) {
-                this.sort = sort;
-            }
-
-            public String getContent() {
-                return content;
-            }
-
-            public void setContent(String content) {
-                this.content = content;
-            }
-
-            public String getTextlink() {
-                return textlink;
-            }
-
-            public void setTextlink(String textlink) {
-                this.textlink = textlink;
+            public void setUrl(String url) {
+                this.url = url;
             }
         }
     }
