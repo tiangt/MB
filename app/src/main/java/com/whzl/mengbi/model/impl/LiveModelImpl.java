@@ -7,6 +7,7 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.common.BaseAppliaction;
 import com.whzl.mengbi.util.FileUtils;
@@ -121,6 +122,28 @@ public class LiveModelImpl implements LiveModel {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
                     listener.onFellowHostSuccess();
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+    }
+
+    @Override
+    public void doRoomUserInfo(int userId, int programId, OnLiveFinishedListener listener) {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("programId", programId + "");
+        paramsMap.put("userId", userId + "");
+        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                RoomUserInfo roomUserInfo = GsonUtils.GsonToBean(result.toString(), RoomUserInfo.class);
+                if (roomUserInfo.getCode() == 200) {
+                    if (roomUserInfo.getData() != null)
+                        listener.onGetRoomUserInfoSuccess(roomUserInfo.getData());
                 }
             }
 

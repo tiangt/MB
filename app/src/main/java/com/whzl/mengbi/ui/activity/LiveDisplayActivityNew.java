@@ -29,6 +29,7 @@ import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
@@ -51,6 +52,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
@@ -94,6 +99,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private ArrayList<ChatMessage> chatList = new ArrayList<>();
     private RecyclerView.Adapter chatAdapter;
     private boolean isRecyclerScrolling;
+    private int userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,6 +116,8 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
         mLivePresenter.getAudienceAccount(mProgramId);
+        mLivePresenter.getRoomUserInfo(userId, mProgramId
+        );
     }
 
     private void initEnv() {
@@ -126,6 +134,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 //            mDisplayHeight = getIntent().getIntExtra("displayHeight", 3);
 //            mStream = getIntent().getStringExtra("Stream");
         }
+        userId = (Integer) SPUtils.get(this, "userId", 0);
         mLivePresenter.getLiveGift();
     }
 
@@ -153,9 +162,8 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View textView = getLayoutInflater().inflate(R.layout.chat_text, null);
-                textView.setId(R.id.chat_text);
-                return new SingleTextViewHolder(textView);
+                View item = getLayoutInflater().inflate(R.layout.chat_text, null);
+                return new SingleTextViewHolder(item);
             }
 
             @Override
@@ -191,7 +199,6 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     private void getRoomToken() {
-        int userId = (Integer) SPUtils.get(this, "userId", 0);
         String sessionId = SPUtils.get(this, "sessionId", "0").toString();
         HashMap map = new HashMap();
         map.put("userId", userId);
@@ -222,7 +229,6 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_follow:
-                int userId = (int) SPUtils.get(this, "userId", -1);
                 mLivePresenter.followHost(userId, mProgramId);
                 break;
             case R.id.btn_contribution_dismiss:
@@ -320,6 +326,11 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         btnFollow.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data) {
+        btnFollow.setVisibility(data.isIsSubs() ? View.GONE : View.VISIBLE);
+    }
+
     private void setupPlayerSize(int height, int width) {
         ratioLayout.setPicRatio(width / (float) height);
         ratioLayout.post(new Runnable() {
@@ -338,5 +349,14 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @Override
     public void onLiveGiftSuccess(GiftInfo giftInfo) {
         mGiftInfo = giftInfo;
+    }
+
+    public void sendMeeage(String message) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                chatRoomPresenter.sendMessage(message);
+            }
+        }).start();
     }
 }

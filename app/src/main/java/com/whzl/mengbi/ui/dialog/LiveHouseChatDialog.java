@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -149,6 +151,11 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_send:
+                String message = etContent.getText().toString().trim();
+                if (!TextUtils.isEmpty(message)) {
+                    ((LiveDisplayActivityNew) getActivity()).sendMeeage(message);
+                    etContent.getText().clear();
+                }
                 break;
             case R.id.btn_input_change:
                 btnInputChange.setSelected(!btnInputChange.isSelected());

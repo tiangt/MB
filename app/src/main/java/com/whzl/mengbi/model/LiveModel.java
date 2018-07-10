@@ -12,4 +12,6 @@ public interface LiveModel {
     void doAudienceAccount(int programId, OnLiveFinishedListener listener);
 
     void doFollowHost(int userId, int programId, OnLiveFinishedListener listener);
+
+    void doRoomUserInfo(int userId, int programId, OnLiveFinishedListener listener);
 }
