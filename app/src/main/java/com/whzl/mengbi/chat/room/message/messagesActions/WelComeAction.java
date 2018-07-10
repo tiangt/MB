@@ -25,10 +25,12 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class WelComeAction implements Actions{
-    private int finishedImageCount;
+    private int finishedImageCount = 0;
+    private final static ReentrantLock lock = new ReentrantLock();
     @Override
     public void performAction(String msgStr, final Context context) {
         WelcomeJson welcomeJson = GsonUtils.GsonToBean(msgStr, WelcomeJson.class);
@@ -41,13 +43,12 @@ public class WelComeAction implements Actions{
             EventBus.getDefault().post(new UpdatePubChatEvent(welMsg));
             return;
         }
-        finishedImageCount = 0;
         SpannableString spanString = new SpannableString("0123456789");
         for (String url:goodsUrlList) {
             Glide.with(context).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                    ++finishedImageCount;
+                    addFinishedCount();
                     Drawable bitmapDrable = new BitmapDrawable(resource);
                     int width = resource.getWidth();
                     int height = resource.getHeight();
@@ -66,7 +67,7 @@ public class WelComeAction implements Actions{
                 @Override
                 public void onLoadFailed(@Nullable Drawable errorDrawable) {
                     super.onLoadFailed(errorDrawable);
-                    ++finishedImageCount;
+                    addFinishedCount();
                     if (finishedImageCount >= goodsUrlList.size()) {
                         WelcomeMsg welcomeMsg = new WelcomeMsg(welcomeJson, context, null);
                         UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(welcomeMsg);
@@ -131,5 +132,11 @@ public class WelComeAction implements Actions{
             }
         }
         return goodsUrlList;
+    }
+
+    private void addFinishedCount() {
+        lock.lock();
+        ++finishedImageCount;
+        lock.unlock();
     }
 }

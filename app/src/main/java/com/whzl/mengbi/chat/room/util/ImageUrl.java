@@ -11,7 +11,8 @@ public class ImageUrl {
                 strImageId.substring(3,5) + "/" + strImageId.substring(5, 7) +
                 "/" + strImageId.substring(7, 9) + "." + imageType;
         if (timestamp >= 0) {
-            url += Long.toString(timestamp);
+            url += "?";
+            url += Long.toString(timestamp/1000);
         }
         return url;
     }
