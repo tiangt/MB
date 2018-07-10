@@ -7,7 +7,7 @@ public class ImageUrl {
     //根据时间戳获取url
     public static String getImageUrl(int imageId, String imageType, long timestamp) {
         String strImageId = String.format("%09d", imageId);
-        String url = URLContentUtils.BASE_IMAGE_URL +strImageId.substring(0, 3) + "/" +
+        String url = URLContentUtils.BASE_IMAGE_URL + "default/" + strImageId.substring(0, 3) + "/" +
                 strImageId.substring(3,5) + "/" + strImageId.substring(5, 7) +
                 "/" + strImageId.substring(7, 9) + "." + imageType;
         if (timestamp >= 0) {
