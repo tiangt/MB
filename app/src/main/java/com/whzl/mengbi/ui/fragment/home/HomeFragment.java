@@ -17,24 +17,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.BannerInfo;
 import com.whzl.mengbi.presenter.HomePresenter;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
 import com.whzl.mengbi.model.entity.LiveShowListInfo;
 import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.model.entity.RecommendListInfo;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
 import com.whzl.mengbi.ui.adapter.HomeLiveAdapter;
 import com.whzl.mengbi.ui.adapter.RecommendAdapter;
-import com.whzl.mengbi.ui.view.HomeView;
-import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
-import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.ui.fragment.BaseFragement;
+import com.whzl.mengbi.ui.view.HomeView;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,12 +123,24 @@ public class HomeFragment extends BaseFragement implements HomeView{
         //设置指示器位置（当banner模式中有指示器时）
         mBanner.setIndicatorGravity(BannerConfig.CENTER);
 
-
         recommend_tv = mView.findViewById(R.id.fm_home_recommend_tv);
         liveShowTv = mView.findViewById(R.id.fm_home_show_live_tv);
         recommendLiveRv = mView.findViewById(R.id.fm_home_recommend_recycler_view);
         wonderfulLiveRv =  mView.findViewById(R.id.fm_home_show_live_recycler_view);
+        RefreshLayout refreshLayout = (RefreshLayout)mView.findViewById(R.id.fm_home_refreshLayout);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh();
 
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadMore();
+            }
+        });
         //首页小编推荐字体加粗
         SpannableString spanString = new SpannableString("小编推荐");
         StyleSpan span = new StyleSpan(Typeface.BOLD_ITALIC);//加粗
@@ -145,72 +160,6 @@ public class HomeFragment extends BaseFragement implements HomeView{
         homePresenter.getLiveShow();
     }
 
-     //绑定首页推荐主播数据
-     public void initRecommendViewAndData(){
-         // 设置布局管理器
-         mRecommendLayoutManager = new GridLayoutManager(mContext,2);
-         recommendLiveRv.setLayoutManager(mRecommendLayoutManager);
-         //设置Adapter
-         mRecommendAdapter = new RecommendAdapter<RecommendListInfo>(mContext,R.layout.fragment_home_recommend_rvitem_layout,recommendList);
-         recommendLiveRv.setAdapter(mRecommendAdapter);
-         mRecommendAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                Intent mIntent = new Intent(mContext, LiveDisplayActivity.class);
-                Intent mIntent = new Intent(mContext, LiveDisplayActivityNew.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("ProgramId",recommendList.get(position).getProgramId());
-//                bundle.putString("AnchorNickname",recommendList.get(position).getAnchorNickname());
-//                bundle.putInt("RoomUserCount",recommendList.get(position).getRoomUserCount());
-//                bundle.putString("Cover",recommendList.get(position).getCover());
-//                if(recommendList.get(position).getShowStreamData()!=null){
-//                    bundle.putString("Stream",recommendList.get(position).getShowStreamData().getFlv());
-//                    bundle.putInt("displayWidth", recommendList.get(position).getShowStreamData().getWidth());
-//                    bundle.putInt("displayHeight", recommendList.get(position).getShowStreamData().getHeight());
-//                }
-                mIntent.putExtras(bundle);
-                startActivity(mIntent);
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
-     }
-
-     //绑定首页精彩主播数据
-     public void initLiveViewAndData(){
-         // 设置布局管理器
-         mWonderfulLayoutManager = new GridLayoutManager(mContext,2);
-         wonderfulLiveRv.setLayoutManager(mWonderfulLayoutManager);
-         // 设置adapter
-         mWonderfulAdapter = new HomeLiveAdapter(mContext,R.layout.fragment_home_show_rvitem_layout,wonderfulList);
-         wonderfulLiveRv.setAdapter(mWonderfulAdapter);
-         mWonderfulAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-             @Override
-             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-//                 Intent mIntent = new Intent(mContext, LiveDisplayActivity.class);
-                 Intent mIntent = new Intent(mContext, LiveDisplayActivityNew.class);
-                 Bundle bundle = new Bundle();
-                 bundle.putInt("ProgramId",wonderfulList.get(position).getProgramId());
-//                 bundle.putString("AnchorNickname",wonderfulList.get(position).getAnchorNickname());
-//                 bundle.putInt("RoomUserCount",wonderfulList.get(position).getRoomUserCount());
-//                 bundle.putString("Cover",wonderfulList.get(position).getCover());
-//                 if(wonderfulList.get(position).getShowStreamData()!=null){
-//                     bundle.putString("Stream",wonderfulList.get(position).getShowStreamData().getFlv());
-//                 }
-                 mIntent.putExtras(bundle);
-                 startActivity(mIntent);
-             }
-
-             @Override
-             public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                 return false;
-             }
-         });
-     }
-
     @Override
     public void showBanner(BannerInfo bannerInfo) {
         //首页轮番图图片集合
@@ -218,8 +167,8 @@ public class HomeFragment extends BaseFragement implements HomeView{
         //首页轮番图标题集合
         List  bannerTitles=new ArrayList();
         for (BannerInfo.DataBean.ListBean listBean: bannerInfo.getData().getList()){
-            bannerImages.add(listBean.getPiclink());
-            bannerTitles.add(listBean.getSubject());
+            bannerImages.add(listBean.getImage());
+            bannerTitles.add(listBean.getTitle());
         }
         //设置图片集合
         mBanner.setImages(bannerImages);
@@ -232,13 +181,68 @@ public class HomeFragment extends BaseFragement implements HomeView{
     @Override
     public void showRecommend(RecommendInfo recommendInfo) {
         recommendList.addAll(recommendInfo.getData().getList());
-        initRecommendViewAndData();
+        //绑定首页推荐主播数据
+        // 设置布局管理器
+        mRecommendLayoutManager = new GridLayoutManager(mContext,2);
+        recommendLiveRv.setLayoutManager(mRecommendLayoutManager);
+        //设置Adapter
+        mRecommendAdapter = new RecommendAdapter<RecommendListInfo>(mContext,R.layout.fragment_home_recommend_rvitem_layout,recommendList);
+        recommendLiveRv.setAdapter(mRecommendAdapter);
+        mRecommendAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent mIntent = new Intent(mContext, LiveDisplayActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("ProgramId",recommendList.get(position).getProgramId());
+                bundle.putString("AnchorNickname",recommendList.get(position).getAnchorNickname());
+                bundle.putInt("RoomUserCount",recommendList.get(position).getRoomUserCount());
+                bundle.putString("Cover",recommendList.get(position).getCover());
+                if(recommendList.get(position).getShowStreamData()!=null){
+                    bundle.putString("Stream",recommendList.get(position).getShowStreamData().getFlv());
+                }
+                mIntent.putExtras(bundle);
+                startActivity(mIntent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
     @Override
     public void showLiveShow(LiveShowInfo liveShowInfo) {
         wonderfulList.addAll(liveShowInfo.getData().getList());
-        initLiveViewAndData();
+        //绑定首页精彩主播数据
+        // 设置布局管理器
+        mWonderfulLayoutManager = new GridLayoutManager(mContext,2);
+        wonderfulLiveRv.setLayoutManager(mWonderfulLayoutManager);
+        // 设置adapter
+        mWonderfulAdapter = new HomeLiveAdapter(mContext,R.layout.fragment_home_show_rvitem_layout,wonderfulList);
+        wonderfulLiveRv.setAdapter(mWonderfulAdapter);
+        mWonderfulAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent mIntent = new Intent(mContext, LiveDisplayActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("ProgramId",wonderfulList.get(position).getProgramId());
+                bundle.putString("AnchorNickname",wonderfulList.get(position).getAnchorNickname());
+                bundle.putInt("RoomUserCount",wonderfulList.get(position).getRoomUserCount());
+                bundle.putString("Cover",wonderfulList.get(position).getCover());
+                if(wonderfulList.get(position).getShowStreamData()!=null){
+                    bundle.putString("Stream",wonderfulList.get(position).getShowStreamData().getFlv());
+                }
+                mIntent.putExtras(bundle);
+                startActivity(mIntent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+
     }
 
     @Override

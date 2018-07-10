@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
+import com.ksy.statlibrary.util.NetworkUtil;
 import com.whzl.mengbi.BuildConfig;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -37,6 +39,7 @@ public class RequestManager {
     private static final String TAG = RequestManager.class.getSimpleName();
     private static final String APPKEY ="mb_android";
     private static final String APPSECRET ="3b2d8c0d1d88d44f1ef99b015caa5fe4";
+    private static final String CLIENTTYPE = "android";
 
     private static volatile RequestManager mInstance;//单利引用
     public static final int TYPE_GET = 0;//get请求
@@ -45,6 +48,7 @@ public class RequestManager {
     public static final int RESPONSE_CODE=200;//响应成功标识码
     private OkHttpClient mOkHttpClient;//okHttpClient 实例
     private Handler okHttpHandler;//全局处理子线程和M主线程通信
+
 
     /**
      * 生成sign
@@ -173,7 +177,7 @@ public class RequestManager {
             paramsMap.put("appKey",APPKEY);
             paramsMap.put("timestamp", new Date().getTime() / 1000 + "");
             paramsMap.put("appSecret",APPSECRET);
-            paramsMap.put("clientType","mb_client");
+            paramsMap.put("clientType",CLIENTTYPE);
             paramsMap.put("clientVersion", BuildConfig.VERSION_CODE+"");
 
 //            StringBuilder tempParams = new StringBuilder();
@@ -332,7 +336,7 @@ public class RequestManager {
             }else{
                 paramsMap.put("sessionId", "");
             }
-            paramsMap.put("clientType","mb_client");
+            paramsMap.put("clientType",CLIENTTYPE);
             paramsMap.put("clientVersion", BuildConfig.VERSION_CODE+"");
 //            StringBuilder tempParams = new StringBuilder();
 //            int pos = 0;
@@ -347,11 +351,12 @@ public class RequestManager {
             paramsMap.put("sign",sign);
             paramsMap.remove("appSecret");
             String params = JSON.toJSONString(paramsMap);
-
             RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, params);
             String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
-
-            final Request request = addHeaders().url(requestUrl).post(body).build();
+            final CacheControl.Builder builder = new CacheControl.Builder();
+            builder.maxAge(10, TimeUnit.MILLISECONDS);
+            CacheControl cache = builder.build();
+            final Request request = addHeaders().cacheControl(cache).url(requestUrl).post(body).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override

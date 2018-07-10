@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <!-- 推荐的权限 -->
     <!-- 添加如下权限，以便使用更多的第三方SDK和更精准的统计数据 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
@@ -91,6 +91,10 @@
             android:name=".ui.activity.RegisterActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.LiveDisplayActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
 
         <!-- 金山云直播 -->
         <activity
@@ -167,9 +171,6 @@
         <activity android:name=".ui.activity.UserInfoActivity"/>
 
         <activity android:name=".ui.activity.camera.Camera2Activity"></activity>
-        <activity android:name=".ui.activity.LiveDisplayActivityNew"
-            android:windowSoftInputMode="adjustNothing">
-        </activity>
 
         <!--Provider组件-->
         <provider

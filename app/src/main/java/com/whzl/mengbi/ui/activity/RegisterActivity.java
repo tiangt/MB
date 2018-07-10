@@ -18,6 +18,7 @@ import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.model.entity.RegisterInfo;
 import com.whzl.mengbi.ui.view.RegisterView;
 import com.whzl.mengbi.ui.widget.view.GenericToolbar;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 
 /**
@@ -167,7 +168,7 @@ public class RegisterActivity extends BaseAtivity implements RegisterView, View.
                 break;
             case R.id.item_user_login:
                 Intent mIntent = new Intent(this,LoginActivity.class);
-                mIntent.putExtra("touristFlag","0");
+                mIntent.putExtra("visitor",true);
                 startActivity(mIntent);
                 break;
         }

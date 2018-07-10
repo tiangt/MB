@@ -12,10 +12,10 @@ import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
+import com.whzl.mengbi.ui.fragment.home.HomeFragment;
 import com.whzl.mengbi.ui.widget.BottomNavigationViewHelper;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.ui.fragment.home.FollowFragment;
-import com.whzl.mengbi.ui.fragment.home.HomeFragment;
 import com.whzl.mengbi.ui.fragment.home.MeFragment;
 import com.whzl.mengbi.ui.adapter.ViewPagerAdapter;
 
@@ -57,24 +57,22 @@ public class HomeActivity extends BaseAtivity {
                                 viewPager.setCurrentItem(0);
                                 break;
                             case R.id.item_follow:
-                                if(islogin){
-                                    viewPager.setCurrentItem(1);
-                                }else{
+                                viewPager.setCurrentItem(1);
+                                if(!islogin){
                                     Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
-                                    mIntent.putExtra("touristFlag","0");
-                                    finish();
+                                    mIntent.putExtra("visitor",true);
                                     startActivity(mIntent);
+                                    finish();
                                 }
                                 break;
                             case R.id.item_my:
-                                if(islogin){
-                                    item.setIcon(R.drawable.mechance);
-                                    viewPager.setCurrentItem(2);
-                                }else{
+                                item.setIcon(R.drawable.mechance);
+                                viewPager.setCurrentItem(2);
+                                if(!islogin){
                                     Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
-                                    mIntent.putExtra("touristFlag","0");
-                                    finish();
+                                    mIntent.putExtra("visitor",true);
                                     startActivity(mIntent);
+                                    finish();
                                 }
                                 break;
                         }

@@ -5,14 +5,14 @@ import android.graphics.Bitmap;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
-import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
-import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
-public class LiveChatFaceAdapter<T> extends CommonAdapter<EmjoyInfo.FaceBean.PublicBean>{
+public class LiveChatFaceAdapter<T> extends CommonAdapter<EmjoyInfo.FaceBean.PublicBean> {
 
     public LiveChatFaceAdapter(Context context, int layoutId, List<EmjoyInfo.FaceBean.PublicBean> datas) {
         super(context, layoutId, datas);

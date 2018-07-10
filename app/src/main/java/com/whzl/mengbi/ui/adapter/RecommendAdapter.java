@@ -4,13 +4,13 @@ import android.content.Context;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.RecommendListInfo;
-import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
-import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.zhy.adapter.recyclerview.CommonAdapter;
+import com.zhy.adapter.recyclerview.base.ViewHolder;
 
 import java.util.List;
 
-public class RecommendAdapter<T> extends CommonAdapter<RecommendListInfo>{
+public class RecommendAdapter<T> extends CommonAdapter<RecommendListInfo> {
 
 
     public RecommendAdapter(Context context, int layoutId, List<RecommendListInfo> datas) {

@@ -102,4 +102,14 @@ public class URLContentUtils{
      * 关注主播
      */
     public static final String FELLOW_HOST="v1/room/add-sub";
+
+    /**
+     * 移动端充值规则接口
+     */
+    public static final String RECHARGE_GET_CHANNEL="v1/recharge/get-channel";
+
+    /**
+     * 支付宝下单接口
+     */
+    public static final String RECHARGE_ORDER="v1/recharge/order";
 }
