@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.whzl.mengbi.chat.room.util.NickNameSpan;
-import com.whzl.mengbi.ui.widget.view.SingleTextViewHolder;
+import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 
 public class NoChatMsg implements FillHolderMessage{
     private int fromUid;

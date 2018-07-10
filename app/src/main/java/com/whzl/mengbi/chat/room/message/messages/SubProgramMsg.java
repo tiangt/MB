@@ -12,7 +12,7 @@ import android.view.View;
 import com.whzl.mengbi.chat.room.message.messageJson.SubProgramJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.NickNameSpan;
-import com.whzl.mengbi.ui.widget.view.SingleTextViewHolder;
+import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
 
 //关注主播消息
