@@ -76,7 +76,7 @@ public class ChatMessage implements FillHolderMessage{
         mholder.textView.append(getNickNameSpan(from_nickname,from_uid));
         mholder.textView.append(":");
         //TODO:表情替换
-        mholder.textView.append(contentString);
+        mholder.textView.append(getLightStr(contentString, Color.WHITE));
         //mholder.textView.append(SmileyParser.getInstance().addSmileySpans(contentString));
     }
 
