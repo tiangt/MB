@@ -107,4 +107,9 @@ public class URLContentUtils{
      * 直播间用户信息
      */
     public static final String ROOM_USER_INFO = "v1/room/get-enter-user-info";
+
+    /**
+     * 直播间的在线观看用户
+     */
+    public static final String ROOM_ONLINE = "v1/room/online";
 }
