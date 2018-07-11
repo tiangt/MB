@@ -6,12 +6,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.ImageSpan;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.GiftJson;
 import com.whzl.mengbi.chat.room.message.messages.GiftMsg;
+import com.whzl.mengbi.chat.room.util.CenterAlignImageSpan;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -38,8 +38,10 @@ public class GiftAction implements Actions {
                 Drawable bitmapDrable = new BitmapDrawable(resource);
                 int width = resource.getWidth();
                 int height = resource.getHeight();
-                bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(width), DensityUtil.dp2px(height));
-                ImageSpan imageSpan = new ImageSpan(bitmapDrable);
+                float dpHeight = 15F;
+                float dpWidth = width * dpHeight / height;
+                bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
+                CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(bitmapDrable);
                 spanString.setSpan(imageSpan, 0, spanString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 GiftMsg giftMsg = new GiftMsg(giftJson, context, spanString);
                 UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(giftMsg);

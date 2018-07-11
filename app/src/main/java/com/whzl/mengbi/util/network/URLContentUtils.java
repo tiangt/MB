@@ -102,4 +102,14 @@ public class URLContentUtils{
      * 直播间用户信息
      */
     public static final String ROOM_USER_INFO = "v1/room/get-enter-user-info";
+
+    /**
+     * 直播间基本信息
+     */
+    public static final String ROOM_INFO = "v1/room/get-room-info";
+
+    /**
+     * 观看人数
+     */
+    public static final String AUDIENCE_COUNT = "v1/room/total-audience";
 }

@@ -24,6 +24,7 @@ import com.whzl.mengbi.util.GsonUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -43,9 +44,15 @@ public class WelComeAction implements Actions{
             EventBus.getDefault().post(new UpdatePubChatEvent(welMsg));
             return;
         }
-        SpannableString spanString = new SpannableString("0123456789");
+        List<SpannableString> spanList = new ArrayList<>();
+        HashMap<String, Integer> imageIndexMap = new HashMap<String, Integer>();
+        for(int i = 0; i < goodsUrlList.size(); ++i) {
+            imageIndexMap.put(goodsUrlList.get(i), i);
+            spanList.add(new SpannableString(Integer.toString(i)));
+        }
         for (String url:goodsUrlList) {
-            Glide.with(context).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+            String imageUrl = url;
+            Glide.with(context).asBitmap().load(imageUrl).into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                     addFinishedCount();
@@ -54,13 +61,14 @@ public class WelComeAction implements Actions{
                     int height = resource.getHeight();
                     bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(width), DensityUtil.dp2px(height));
                     ImageSpan imageSpan = new ImageSpan(bitmapDrable);
+                    SpannableString spanString = new SpannableString(imageUrl);
+                    spanString.setSpan(imageSpan, 0, spanString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    int index = imageIndexMap.get(imageUrl);
+                    spanList.set(index, spanString);
                     if (finishedImageCount >= goodsUrlList.size()) {
-                        spanString.setSpan(imageSpan, finishedImageCount - 1, spanString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                        WelcomeMsg welcomeMsg = new WelcomeMsg(welcomeJson, context, spanString);
+                        WelcomeMsg welcomeMsg = new WelcomeMsg(welcomeJson, context, spanList);
                         UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(welcomeMsg);
                         EventBus.getDefault().post(chatEvent);
-                    } else {
-                        spanString.setSpan(imageSpan, finishedImageCount - 1, finishedImageCount, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                     }
                 }
 

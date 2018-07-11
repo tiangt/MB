@@ -5,13 +5,13 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 
 import com.whzl.mengbi.chat.room.message.messageJson.GiftJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.chat.room.util.NickNameSpan;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
@@ -48,12 +48,15 @@ public class GiftMsg implements FillHolderMessage {
     public void fillHolder(RecyclerView.ViewHolder holder) {
         mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+        //mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         mHolder.textView.append(LevelUtil.getLevelSpan(fromLevel, context, ResourceMap.getResourceMap().getUserLevelIcon(fromLevel)));
+        mHolder.textView.append(" ");
         mHolder.textView.append(getNickNameSpan(fromNickName,fromUid));
-        mHolder.textView.append("送");
-        mHolder.textView.append(getNickNameSpan(toNickName,toUid));
-        mHolder.textView.append(getGiftCountSpan());
+        mHolder.textView.append(" ");
+        mHolder.textView.append(LightSpanString.getLightString("赠送给 主播 ", Color.WHITE));
+        //mHolder.textView.append(getNickNameSpan(toNickName,toUid));
+        mHolder.textView.append(LightSpanString.getLightString(giftCount +"", Color.parseColor("#f1275b")));
+        mHolder.textView.append(LightSpanString.getLightString("个" + giftName, Color.WHITE));
         if (giftPicSpan != null) {
             mHolder.textView.append(giftPicSpan);
         }
@@ -61,7 +64,7 @@ public class GiftMsg implements FillHolderMessage {
 
     private SpannableString getNickNameSpan(final String nickName, final int uid){
         SpannableString nickSpan = new SpannableString(nickName);
-        NickNameSpan clickSpan = new NickNameSpan(context) {
+        NickNameSpan clickSpan = new NickNameSpan(context, Color.parseColor("#f1275b")) {
             @Override
             public void onClick(View widget) {
                 Log.i("chatMsg", "点击了 " + nickName);

@@ -5,12 +5,12 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.chat.room.util.NickNameSpan;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
@@ -18,21 +18,21 @@ import com.whzl.mengbi.util.ResourceMap;
 import java.util.List;
 
 public class WelcomeMsg implements FillHolderMessage {
-    String nickName;
-    int uid;
-    int userLevel;
-    SpannableString userSpanString;
-    Context mContext;
-    boolean isAnchor;
+    private String nickName;
+    private int uid;
+    private int userLevel;
+    private List<SpannableString> userSpanList;
+    private Context mContext;
+    private boolean isAnchor;
 
-    public WelcomeMsg(WelcomeJson welcomeJson, Context context, SpannableString userSpanString) {
+    public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
         this.uid = welcomeJson.getContext().getInfo().getUserId();
         mContext = context;
         //TODO:判断主播or用户
         isAnchor = false;
         this.userLevel = getUserLevel(uid, welcomeJson.getContext().getInfo().getLevelList());
-        this.userSpanString = userSpanString;
+        this.userSpanList = userSpanList;
     }
 
     @Override
@@ -48,12 +48,16 @@ public class WelcomeMsg implements FillHolderMessage {
                 levelIcon = ResourceMap.getResourceMap().getUserLevelIcon(userLevel);
             }
             mHolder.textView.append(LevelUtil.getLevelSpan(levelIcon, mContext, levelIcon));
+            mHolder.textView.append(" ");
         }
-        if (null != userSpanString) {
-            mHolder.textView.append(userSpanString);
+        if (null != userSpanList) {
+            for(SpannableString spanString : userSpanList) {
+                mHolder.textView.append(spanString);
+                mHolder.textView.append(" ");
+            }
         }
         mHolder.textView.append(getNickNameSpan(nickName, uid));
-        mHolder.textView.append("进入直播间");
+        mHolder.textView.append(LightSpanString.getLightString(" 进入直播间",Color.WHITE));
     }
 
     @Override
@@ -80,7 +84,7 @@ public class WelcomeMsg implements FillHolderMessage {
 
     private SpannableString getNickNameSpan(final String nickName, final int uid) {
         SpannableString nickSpan = new SpannableString(nickName);
-        NickNameSpan clickSpan = new NickNameSpan(mContext) {
+        NickNameSpan clickSpan = new NickNameSpan(mContext,  Color.parseColor("#f4be2c")) {
             @Override
             public void onClick(View widget) {
                 Log.i("chatMsg", "点击了 " + nickName);
@@ -91,13 +95,5 @@ public class WelcomeMsg implements FillHolderMessage {
 
         nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return nickSpan;
-    }
-
-    private SpannableString getLightStr(String content) {
-        //文本内容
-        SpannableString ss = new SpannableString(content);
-        //设置字符颜色
-        ss.setSpan(new ForegroundColorSpan(Color.parseColor("#f1275b")), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return ss;
     }
 }

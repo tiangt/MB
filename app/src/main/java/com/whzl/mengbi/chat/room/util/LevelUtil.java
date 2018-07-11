@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.ImageSpan;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.chat.room.message.messageJson.FromJson;
@@ -60,9 +59,11 @@ public class LevelUtil {
         }
         int originWidth = levelIconDrawable.getIntrinsicWidth();
         int originHeight = levelIconDrawable.getIntrinsicHeight();
-
-        levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(35.5F), DensityUtil.dp2px(15));
-        levelIcon.setSpan(new ImageSpan(levelIconDrawable),0,levelIcon.length(),
+        float dpHeight = 15F;
+        float dpWidth = originWidth * dpHeight / originHeight;
+        levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
+        CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
+        levelIcon.setSpan(imageSpan,0,levelIcon.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return levelIcon;
     }

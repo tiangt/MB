@@ -218,8 +218,8 @@ public class HomeFragment extends BaseFragement implements HomeView{
         //首页轮番图标题集合
         List bannerTitles = new ArrayList();
         for (BannerInfo.DataBean.ListBean listBean : bannerInfo.getData().getList()) {
-            bannerImages.add(listBean.getPiclink());
-            bannerTitles.add(listBean.getSubject());
+            bannerImages.add(listBean.getImage());
+            bannerTitles.add(listBean.getTitle());
         }
         //设置图片集合
         mBanner.setImages(bannerImages);

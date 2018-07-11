@@ -1,11 +1,12 @@
 package com.whzl.mengbi.util.network;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
-import com.ksy.statlibrary.util.NetworkUtil;
 import com.whzl.mengbi.BuildConfig;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
@@ -421,6 +422,30 @@ public class RequestManager {
         } catch (Exception e) {
             LogUtils.e(e.toString());
         }
+        return null;
+    }
+
+    public <T> Call getImage(String url, final ReqCallBack<T> reqCallBack) {
+        Request request = new Request.Builder().url(url).build();
+        final Call call = mOkHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                LogUtils.e("url="+url + " getImage error" + e.toString());
+                failedCallBack(e.toString(), reqCallBack);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    byte []body = response.body().bytes();
+                    final Bitmap bitmap = BitmapFactory.decodeByteArray(body, 0, body.length);
+                    successCallBack((T) bitmap, reqCallBack);
+                } else {
+                    failedCallBack("服务器错误", reqCallBack);
+                }
+            }
+        });
         return null;
     }
 

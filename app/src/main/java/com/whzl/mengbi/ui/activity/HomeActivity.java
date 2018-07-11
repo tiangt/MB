@@ -12,12 +12,12 @@ import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
+import com.whzl.mengbi.ui.adapter.ViewPagerAdapter;
+import com.whzl.mengbi.ui.fragment.home.FollowFragment;
+import com.whzl.mengbi.ui.fragment.home.HomeFragment;
+import com.whzl.mengbi.ui.fragment.home.MeFragment;
 import com.whzl.mengbi.ui.widget.BottomNavigationViewHelper;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.ui.fragemengt.home.FollowFragment;
-import com.whzl.mengbi.ui.fragemengt.home.HomeFragment;
-import com.whzl.mengbi.ui.fragemengt.home.MeFragment;
-import com.whzl.mengbi.ui.adapter.ViewPagerAdapter;
 
 /**
  * funcciton 创建首页所有的fragment,以及fragment

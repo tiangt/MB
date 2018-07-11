@@ -6,13 +6,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.ImageSpan;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
 import com.whzl.mengbi.chat.room.message.messageJson.FromJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
+import com.whzl.mengbi.chat.room.util.CenterAlignImageSpan;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
@@ -63,7 +63,7 @@ public class ChatAction implements Actions{
                     int width = resource.getWidth();
                     int height = resource.getHeight();
                     bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(width), DensityUtil.dp2px(height));
-                    ImageSpan imageSpan = new ImageSpan(bitmapDrable);
+                    CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(bitmapDrable);
                     SpannableString spanString = new SpannableString(imageUrl);
                     spanString.setSpan(imageSpan, 0, spanString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                     int index = imageIndexMap.get(imageUrl);

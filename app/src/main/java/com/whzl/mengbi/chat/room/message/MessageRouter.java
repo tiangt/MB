@@ -40,7 +40,7 @@ public class MessageRouter implements MessageCallback {
     public MessageRouter(Gson gson, Context context) {
         this.mGson = gson;
         this.mContext = context;
-        //initActionMap();
+        initActionMap();
         initChatAction();
         EventBus.getDefault().register(context);
     }
@@ -124,10 +124,10 @@ public class MessageRouter implements MessageCallback {
             if (null == eventJson) {
                 return;
             }
-            if (eventJson.getMsgType() != null) {
-                handleMsgTypeAction(eventJson.getMsgType(), msgInfo);
-            }else if (eventJson.getEventCode() != null) {
+            if (eventJson.getEventCode() != null) {
                 handleEventAction(eventJson.getEventCode(), msgInfo);
+            }else if (eventJson.getMsgType() != null) {
+                handleMsgTypeAction(eventJson.getMsgType(), msgInfo);
             }
         }
     }

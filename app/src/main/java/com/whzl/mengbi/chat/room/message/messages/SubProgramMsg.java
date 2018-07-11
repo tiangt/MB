@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.whzl.mengbi.chat.room.message.messageJson.SubProgramJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.chat.room.util.NickNameSpan;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
@@ -31,8 +32,8 @@ public class SubProgramMsg implements FillHolderMessage{
         mholder.textView.setText("");
         int levelIcon = ResourceMap.getResourceMap().getUserLevelIcon(subProJson.getContext().getLevelValue());
         mholder.textView.append(LevelUtil.getLevelSpan(subProJson.getContext().getLevelValue(), mContext, levelIcon));
-        mholder.textView.append(getNickNameSpan(subProJson.getContext().getNickname(), subProJson.getContext().getUserId()));
-        mholder.textView.append(getStringSpan("关注了主播"));
+        mholder.textView.append(getNickNameSpan(" " + subProJson.getContext().getNickname() + " ", subProJson.getContext().getUserId()));
+        mholder.textView.append(LightSpanString.getLightString("关注了主播", Color.parseColor("#f1275b")));
     }
 
     @Override

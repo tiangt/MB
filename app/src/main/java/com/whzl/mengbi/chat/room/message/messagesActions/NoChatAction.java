@@ -10,11 +10,9 @@ import org.greenrobot.eventbus.EventBus;
 
 public class NoChatAction  {
 
-    final int KICKOUT_CODE = 8; //被提出房间
-    final int LOGOUT_CODE = 12; //用多个手机打开同一个直播间，强制退出之前的直播间
     public void performAction(NoChatMsg noChatMsg, Context context) {
-        if (noChatMsg.getNochatType() == KICKOUT_CODE ||
-                noChatMsg.getNochatType() == LOGOUT_CODE) {
+        if (noChatMsg.getNochatType() == KickoutEvent.KICKOUT_CODE ||
+                noChatMsg.getNochatType() == KickoutEvent.LOGOUT_CODE) {
             EventBus.getDefault().post(new KickoutEvent(noChatMsg));
         }else {
             EventBus.getDefault().post(new UpdatePubChatEvent(noChatMsg));

@@ -143,4 +143,10 @@ public class ChatMessage implements FillHolderMessage{
         ss.setSpan(new AbsoluteSizeSpan(DensityUtil.dp2px(15)), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;
     }
+
+    private SpannableString replaceFaceList(SpannableString content) {
+        SpannableString faceContentSpanString = new SpannableString(content);
+        //List<EmjoyInfo.FaceBean> faceList = EmjoyInfo.
+        return faceContentSpanString;
+    }
 }
