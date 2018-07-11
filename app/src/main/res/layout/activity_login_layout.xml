@@ -23,7 +23,7 @@
             android:layout_width="210dp"
             android:layout_height="75dp"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/ic_footer_logo" />
+            android:background="@color/font_color_45"/>
 
         <EditText
             android:id="@+id/login_user_name"
@@ -63,15 +63,14 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/login_party_rela"
+        android:id="@+id/login_third_party_rela"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="195dp"
         android:layout_centerVertical="true"
         android:layout_below="@id/login_head_rela">
 
         <View
-            android:id="@+id/login_third_view_left"
+            android:id="@+id/login_third_party_view_left"
             android:layout_width="80dp"
             android:layout_height="2dp"
             android:layout_alignParentLeft="true"
@@ -80,7 +79,7 @@
             android:background="@color/colorAccent" />
 
         <TextView
-            android:id="@+id/login_third_party"
+            android:id="@+id/login_third_party_text"
             android:layout_width="136dp"
             android:layout_height="28dp"
             android:layout_alignParentTop="true"
@@ -90,7 +89,7 @@
             android:textSize="@dimen/font_size_44px" />
 
         <View
-            android:id="@+id/login_third_view_right"
+            android:id="@+id/login_third_party_view_right"
             android:layout_width="80dp"
             android:layout_height="2dp"
             android:layout_alignParentRight="true"
@@ -103,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/login_party_rela">
+        android:layout_below="@id/login_third_party_rela">
         <ImageView
             android:id="@+id/login_weixin_login"
             android:layout_width="53dp"

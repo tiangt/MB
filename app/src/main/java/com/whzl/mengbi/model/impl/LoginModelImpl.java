@@ -38,7 +38,7 @@ public class LoginModelImpl implements LoginModel{
                     @Override
                     public void onReqSuccess(Object result) {
                         VisitorUserInfo visitorUserInfo = GsonUtils.GsonToBean(result.toString(),VisitorUserInfo.class);
-                        if (visitorUserInfo.getCode() == 200) {
+                        if(visitorUserInfo.getCode()==RequestManager.RESPONSE_CODE){
                             SPUtils.put(BaseAppliaction.getInstance(),"userId",visitorUserInfo.getData().getUserId());
                             SPUtils.put(BaseAppliaction.getInstance(),"nickname",visitorUserInfo.getData().getNickname());
                             SPUtils.put(BaseAppliaction.getInstance(),"sessionId",visitorUserInfo.getData().getSessionId());
@@ -65,7 +65,7 @@ public class LoginModelImpl implements LoginModel{
                     @Override
                     public void onReqSuccess(Object result) {
                         UserInfo userInfo=  GsonUtils.GsonToBean(result.toString(),UserInfo.class);
-                        if (userInfo.getCode() == 200) {
+                        if(userInfo.getCode()==RequestManager.RESPONSE_CODE){
                             //保存登录用户信息
                             SPUtils.put(BaseAppliaction.getInstance(),"userId",userInfo.getData().getUserId());
                             SPUtils.put(BaseAppliaction.getInstance(),"sessionId",userInfo.getData().getSessionId());
