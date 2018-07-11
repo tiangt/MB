@@ -18,6 +18,7 @@ import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.model.entity.RegisterInfo;
 import com.whzl.mengbi.ui.view.RegisterView;
 import com.whzl.mengbi.ui.widget.view.GenericToolbar;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 
 /**
@@ -73,12 +74,12 @@ public class RegisterActivity extends BaseAtivity implements RegisterView, View.
 
 
     private void initView() {
-        regexUserNameEt = findViewById(R.id.register_user_name);
-        regexCodeEt = findViewById(R.id.register_user_email);
-        regexCodeBut = findViewById(R.id.register_identifying_code);
-        regexPasswordEt = findViewById(R.id.register_user_password);
-        regexUserCb = findViewById(R.id.register_user_checked);
-        regexUserBut = findViewById(R.id.register_user);
+        regexUserNameEt = (EditText) findViewById(R.id.register_user_name);
+        regexCodeEt = (EditText) findViewById(R.id.register_user_email);
+        regexCodeBut = (Button) findViewById(R.id.register_identifying_code);
+        regexPasswordEt = (EditText) findViewById(R.id.register_user_password);
+        regexUserCb = (CheckBox) findViewById(R.id.register_user_checked);
+        regexUserBut = (Button) findViewById(R.id.register_user);
 
         registerPresenter = new RegisterPresenterImpl(this);
 
@@ -167,7 +168,7 @@ public class RegisterActivity extends BaseAtivity implements RegisterView, View.
                 break;
             case R.id.item_user_login:
                 Intent mIntent = new Intent(this,LoginActivity.class);
-                mIntent.putExtra("touristFlag", "0");
+                mIntent.putExtra("visitor",true);
                 startActivity(mIntent);
                 break;
         }
