@@ -14,10 +14,22 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_toRightOf="@id/iv_avatar"
         android:layout_marginLeft="15dp"
-        android:textColor="#323232" />
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:textColor="#323232"
+        android:textSize="15sp" />
 
+
+    <LinearLayout
+        android:id="@+id/ll_level_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_name"
+        android:layout_below="@id/tv_name"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" />
 
 </RelativeLayout>
