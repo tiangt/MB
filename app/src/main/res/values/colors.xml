@@ -94,7 +94,13 @@
     <color name="font_color_46">#21D996</color>
     <color name="trans_parent">#000000</color>
     <color name="font_color_47">#323232</color>
-
+    <color name="font_color_48">#21d790</color>
+    <color name="font_color_49">#d9d9d9</color>
+    <color name="font_color_50">#07808d</color>
+    <color name="font_color_51">#f9f9f9</color>
+    <color name="font_color_52">#646464</color>
+    <color name="font_color_53">#c7c7c7</color>
+    <color name="font_color_54">#ffa800</color>
     <color name="colorblack">#000000</color>
 
     <color name="player_black">#000000</color>
