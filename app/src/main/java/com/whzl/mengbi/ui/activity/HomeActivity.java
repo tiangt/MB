@@ -14,9 +14,9 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.ui.widget.BottomNavigationViewHelper;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.ui.fragment.home.FollowFragment;
-import com.whzl.mengbi.ui.fragment.home.HomeFragment;
-import com.whzl.mengbi.ui.fragment.home.MeFragment;
+import com.whzl.mengbi.ui.fragemengt.home.FollowFragment;
+import com.whzl.mengbi.ui.fragemengt.home.HomeFragment;
+import com.whzl.mengbi.ui.fragemengt.home.MeFragment;
 import com.whzl.mengbi.ui.adapter.ViewPagerAdapter;
 
 /**
@@ -42,8 +42,8 @@ public class HomeActivity extends BaseAtivity {
 
     private void initView(){
         //底部导航切换，滑动
-        viewPager = findViewById(R.id.home_viewpager);
-        bottomNavigationView = findViewById(R.id.home_bottom_navigation);
+        viewPager = (ViewPager) findViewById(R.id.home_viewpager);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.home_bottom_navigation);
         //默认 >3 的选中效果会影响ViewPager的滑动切换时的效果，故利用反射去掉
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(
@@ -57,24 +57,22 @@ public class HomeActivity extends BaseAtivity {
                                 viewPager.setCurrentItem(0);
                                 break;
                             case R.id.item_follow:
-                                if (islogin) {
-                                    viewPager.setCurrentItem(1);
-                                } else {
+                                viewPager.setCurrentItem(1);
+                                if(!islogin){
                                     Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
-                                    mIntent.putExtra("touristFlag", "0");
-                                    finish();
+                                    mIntent.putExtra("visitor",true);
                                     startActivity(mIntent);
+                                    finish();
                                 }
                                 break;
                             case R.id.item_my:
-                                if (islogin) {
-                                    item.setIcon(R.drawable.mechance);
-                                    viewPager.setCurrentItem(2);
-                                } else {
+                                item.setIcon(R.drawable.mechance);
+                                viewPager.setCurrentItem(2);
+                                if(!islogin){
                                     Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
-                                    mIntent.putExtra("touristFlag", "0");
-                                    finish();
+                                    mIntent.putExtra("visitor",true);
                                     startActivity(mIntent);
+                                    finish();
                                 }
                                 break;
                         }

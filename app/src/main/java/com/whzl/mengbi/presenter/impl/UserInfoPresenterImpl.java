@@ -6,6 +6,8 @@ import com.whzl.mengbi.presenter.OnUserInfoFInishedListener;
 import com.whzl.mengbi.presenter.UserInfoPresenter;
 import com.whzl.mengbi.ui.view.UserInfoView;
 
+import java.util.HashMap;
+
 public class UserInfoPresenterImpl implements UserInfoPresenter,OnUserInfoFInishedListener {
     private UserInfoView userInfoView;
     private UserInfoModel userInfoModel;
@@ -26,19 +28,11 @@ public class UserInfoPresenterImpl implements UserInfoPresenter,OnUserInfoFInish
     }
 
     @Override
-    public void onUpdataSex(String userId, String sex) {
-        userInfoModel.doUpdataSex(userId, sex, this);
+    public void onUpdataUserInfo(HashMap hashMap) {
+        userInfoModel.doUpdataUserInfo(hashMap,this);
     }
 
-    @Override
-    public void onUpdataAddress(String userId, String province, String city) {
-        userInfoModel.doUpdataAddress(userId, province, city, this);
-    }
 
-    @Override
-    public void onUpdataBirthday(String userId, String birthday) {
-        userInfoModel.doUpdataBirthday(userId, birthday, this);
-    }
     @Override
     public void onPortraitSuccess(String filename) {
         if(userInfoView != null){
