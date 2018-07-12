@@ -25,6 +25,7 @@ public class WelcomeMsg implements FillHolderMessage {
     private List<SpannableString> userSpanList;
     private Context mContext;
     private boolean isAnchor = false;
+    private boolean hasGuard = false;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
@@ -54,6 +55,7 @@ public class WelcomeMsg implements FillHolderMessage {
             mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
             mHolder.textView.append(" ");
         }
+
         if (null != userSpanList) {
             for(SpannableString spanString : userSpanList) {
                 mHolder.textView.append(spanString);
@@ -99,5 +101,17 @@ public class WelcomeMsg implements FillHolderMessage {
 
         nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return nickSpan;
+    }
+
+    private boolean hasGuard(List<WelcomeJson.UserBagItem> goodsList) {
+        int programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
+        boolean hasGuard = false;
+        for(WelcomeJson.UserBagItem bagItem: goodsList) {
+//            if (bagItem.getGoodsType().equals("GUARD") && bagItem. == programId) {
+//                hasGuard = true;
+//                break;
+//            }
+        }
+        return hasGuard;
     }
 }
