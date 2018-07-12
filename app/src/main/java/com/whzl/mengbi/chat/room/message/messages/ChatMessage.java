@@ -89,7 +89,7 @@ public class ChatMessage implements FillHolderMessage{
             }else {
                 mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
             }
-            mholder.textView.append(" ");
+            mholder.textView.append("");
         }
         if (hasGuard) {
             mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.guard));

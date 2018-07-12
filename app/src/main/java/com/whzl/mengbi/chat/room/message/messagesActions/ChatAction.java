@@ -100,7 +100,9 @@ public class ChatAction implements Actions{
         }
         List<String> goodsUrlList = new ArrayList<>();
         for (FromJson.Good good :goodsList) {
-            goodsUrlList.add(ImageUrl.getImageUrl(good.getGoodsIcon(), "jpg"));
+            if(good.getGoodsType().equals("BADGE")) {
+                goodsUrlList.add(ImageUrl.getImageUrl(good.getGoodsIcon(), "jpg"));
+            }
         }
         return goodsUrlList;
     }
