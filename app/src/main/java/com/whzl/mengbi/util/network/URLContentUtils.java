@@ -122,4 +122,9 @@ public class URLContentUtils{
      * 直播间的在线观看用户
      */
     public static final String ROOM_ONLINE = "v1/room/online";
+
+    /**
+     * 直播间贡献排行
+     */
+    public static final String CONTRIBUATION_LIST = "v1/rank/room-rank";
 }

@@ -1,5 +1,8 @@
 package com.whzl.mengbi.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -53,7 +56,7 @@ public class AudienceListBean {
             this.list = list;
         }
 
-        public static class AudienceInfoBean {
+        public class AudienceInfoBean implements Parcelable {
             /**
              * userid : 30000537
              * name : 萌友30000537
@@ -71,6 +74,26 @@ public class AudienceListBean {
             private LevelMapBean levelMap;
             private String platform;
             private List<MedalBean> medal;
+
+            protected AudienceInfoBean(Parcel in) {
+                userid = in.readInt();
+                name = in.readString();
+                identity = in.readInt();
+                avatar = in.readString();
+                platform = in.readString();
+            }
+
+            public final Creator<AudienceInfoBean> CREATOR = new Creator<AudienceInfoBean>() {
+                @Override
+                public AudienceInfoBean createFromParcel(Parcel in) {
+                    return new AudienceInfoBean(in);
+                }
+
+                @Override
+                public AudienceInfoBean[] newArray(int size) {
+                    return new AudienceInfoBean[size];
+                }
+            };
 
             public int getUserid() {
                 return userid;
@@ -128,7 +151,21 @@ public class AudienceListBean {
                 this.medal = medal;
             }
 
-            public static class LevelMapBean {
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(userid);
+                dest.writeString(name);
+                dest.writeInt(identity);
+                dest.writeString(avatar);
+                dest.writeString(platform);
+            }
+
+            public class LevelMapBean {
                 /**
                  * USER_LEVEL : 6
                  * ROYAL_LEVEL : 5
@@ -164,7 +201,7 @@ public class AudienceListBean {
                 }
             }
 
-            public static class MedalBean {
+            public class MedalBean implements Parcelable {
                 /**
                  * goodsId : 300
                  * goodsName : 守护
@@ -178,6 +215,26 @@ public class AudienceListBean {
                 private String goodsType;
                 private String goodsIcon;
                 private int bindProgramId;
+
+                protected MedalBean(Parcel in) {
+                    goodsId = in.readInt();
+                    goodsName = in.readString();
+                    goodsType = in.readString();
+                    goodsIcon = in.readString();
+                    bindProgramId = in.readInt();
+                }
+
+                public final Creator<MedalBean> CREATOR = new Creator<MedalBean>() {
+                    @Override
+                    public MedalBean createFromParcel(Parcel in) {
+                        return new MedalBean(in);
+                    }
+
+                    @Override
+                    public MedalBean[] newArray(int size) {
+                        return new MedalBean[size];
+                    }
+                };
 
                 public int getGoodsId() {
                     return goodsId;
@@ -217,6 +274,20 @@ public class AudienceListBean {
 
                 public void setBindProgramId(int bindProgramId) {
                     this.bindProgramId = bindProgramId;
+                }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+                    dest.writeInt(goodsId);
+                    dest.writeString(goodsName);
+                    dest.writeString(goodsType);
+                    dest.writeString(goodsIcon);
+                    dest.writeInt(bindProgramId);
                 }
             }
         }

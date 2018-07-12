@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="43dp"
+            android:layout_marginTop="25dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="2dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="41dp"
+                    android:textColor="@color/colorblack"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/iv_level_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="7dp"
+                    android:orientation="horizontal"
+                    android:minHeight="10dp">
+
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/tv_user_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_level_icon"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5.5dp"
+                    android:textColor="#b9b9b9"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_user_id"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_age_container">
+
+                    <TextView
+                        android:id="@+id/tv_age"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:drawableLeft="@drawable/user_age_icon"
+                        android:drawablePadding="14dp"
+                        android:textColor="#9c9c9c"
+                        android:textSize="13sp" />
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="16dp"
+                        android:layout_marginLeft="17dp"
+                        android:background="#d2d2d2" />
+
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="17dp"
+                        android:drawableLeft="@drawable/location_icon"
+                        android:drawablePadding="14dp"
+                        android:textColor="#9c9c9c"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_introduce"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:hint="@string/no_motto_hint"
+                    android:layout_below="@id/ll_age_container"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#9e9e9e"
+                    android:layout_marginBottom="30dp" />
+
+                <!--<LinearLayout-->
+                <!--android:id="@+id/ll_option_container"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/tv_ban"-->
+                <!--style="@style/style_audience_info_option_text"-->
+                <!--android:text="@string/ban"-->
+                <!--android:textColor="#f76667"/>-->
+
+                <!--<View style="@style/audience_info_option_divider" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/tv_kick_out"-->
+                <!--style="@style/style_audience_info_option_text"-->
+                <!--android:text="@string/kick_out"-->
+                <!--android:textColor="#e07434"/>-->
+
+                <!--<View style="@style/audience_info_option_divider" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/tv_upgrade"-->
+                <!--style="@style/style_audience_info_option_text"-->
+                <!--android:text="@string/upgrade_room_manager"-->
+                <!--android:textColor="#a96aec"/>-->
+
+                <!--<View style="@style/audience_info_option_divider" />-->
+
+                <!--<TextView-->
+                <!--android:id="@+id/adjust"-->
+                <!--style="@style/style_audience_info_option_text"-->
+                <!--android:text="@string/adjust"-->
+                <!--android:textColor="#337ec1"/>-->
+
+                <!--</LinearLayout>-->
+
+                <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.5dp"-->
+                <!--android:layout_alignTop="@+id/ll_option_container"-->
+                <!--android:background="#d9d9d9" />-->
+
+                <ImageButton
+                    android:id="@+id/btn_dismiss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/close_p"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:padding="10.5dp" />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <com.whzl.mengbi.ui.widget.view.CircleImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:layout_centerHorizontal="true"
+            android:elevation="2dp"
+            app:civ_border_width="1dp"
+            app:civ_border_color="#b9b9b9" />
+
+    </RelativeLayout>
+
+</LinearLayout>

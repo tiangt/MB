@@ -10,7 +10,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,8 +22,8 @@ import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
+import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
-import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -33,7 +32,10 @@ import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
+import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
+import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
@@ -67,7 +69,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @BindView(R.id.tv_host_name)
     TextView tvHostName;
     @BindView(R.id.btn_follow)
-    Button btnFollow;
+    ImageButton btnFollow;
     @BindView(R.id.rl_contribution_container)
     RelativeLayout rlContributionContainer;
     @BindView(R.id.player_master)
@@ -83,7 +85,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @BindView(R.id.ratio_layout)
     RatioRelativeLayout ratioLayout;
     @BindView(R.id.btn_chat)
-    Button btnChat;
+    ImageButton btnChat;
     @BindView(R.id.btn_send_gift)
     ImageButton btnSendGift;
     private Unbinder mBind;
@@ -91,11 +93,17 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private int mProgramId;
     private KSYMediaPlayer mMasterPlayer;
     private ChatRoomPresenterImpl chatRoomPresenter;
-    private GiftInfo mGiftInfo;
-    private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
+    private GiftInfo mGiftData;
+    private ArrayList<ChatMessage> chatList = new ArrayList<>();
     private RecyclerView.Adapter chatAdapter;
     private boolean isRecyclerScrolling;
     private int userId;
+    private BaseAwesomeDialog mGiftDialog;
+    private BaseAwesomeDialog mLiveHouseChatDialog;
+    private final static String TAG_DIALOG_GIFT = "tagGift";
+    private final static String TAG_DIALOG_CHAT = "tagChat";
+    private final static String TAG_DIALOG_AUDIENCE = "tagAudience";
+    private final static String TAG_DIALOG_CONTRIBUTE = "tagContribute";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -164,8 +172,8 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                FillHolderMessage msg = chatList.get(position);
-                msg.fillHolder(holder);
+                ChatMessage chatMessage = chatList.get(position);
+                chatMessage.fillHolder(holder);
             }
 
             @Override
@@ -221,13 +229,13 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         }
     }
 
-    @OnClick({R.id.btn_follow, R.id.btn_contribution_dismiss, R.id.btn_chat, R.id.btn_send_gift})
+    @OnClick({R.id.btn_follow, R.id.btn_close, R.id.btn_chat, R.id.btn_send_gift, R.id.tv_popularity, R.id.btn_contribute})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_follow:
                 mLivePresenter.followHost(userId, mProgramId);
                 break;
-            case R.id.btn_contribution_dismiss:
+            case R.id.btn_close:
                 break;
             case R.id.btn_chat:
                 LiveHouseChatDialog.newInstance()
@@ -236,13 +244,28 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_send_gift:
-                if (mGiftInfo != null) {
-                    GiftDialog.newInstance(mGiftInfo)
-                            .setShowBottom(true)
-                            .setDimAmount(0)
-                            .show(getSupportFragmentManager());
+                if (mGiftData == null) {
+                    mLivePresenter.getLiveGift();
+                    return;
                 }
+                mGiftDialog = GiftDialog.newInstance(mGiftData)
+                        .setShowBottom(true)
+                        .setDimAmount(0)
+                        .show(getSupportFragmentManager());
                 break;
+
+            case R.id.tv_popularity:
+                LiveHouseAudienceListDialog.newInstance(mProgramId)
+                        .setDimAmount(0)
+                        .setShowBottom(true)
+                        .setOutCancel(true)
+                        .show(getSupportFragmentManager());
+                break;
+
+            case R.id.btn_contribute:
+                LiveHouseRankDialog.newInstance(mProgramId).
+                        setShowBottom(true)
+                        .show(getSupportFragmentManager());
             default:
                 break;
         }
@@ -260,12 +283,14 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         if (mMasterPlayer != null)
             mMasterPlayer.release();
         mMasterPlayer = null;
+        mLiveHouseChatDialog = null;
+        mGiftDialog = null;
     }
 
 
     @Override
     public void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo) {
-        new Thread(() -> chatRoomPresenter.setupConnection(liveRoomTokenInfo, LiveDisplayActivityNew.this)).start();
+//        new Thread(() -> chatRoomPresenter.setupConnection(liveRoomTokenInfo, LiveDisplayActivityNew.this)).start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -275,13 +300,13 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LuckGiftEvent luckGiftEvent) {
-        // TODO: 2018/7/10  
+        // TODO: 2018/7/10
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
-        chatList.add(message);
+        chatList.add(((ChatMessage) message));
         if (!isRecyclerScrolling) {
             chatAdapter.notifyDataSetChanged();
             recycler.smoothScrollToPosition(chatList.size() - 1);
@@ -292,7 +317,6 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @Override
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
         if (roomInfoBean.getData() != null) {
-            ChatRoomInfo.getInstance().setRoomInfoBean(roomInfoBean);
             tvFansCount.setText("粉丝：" + roomInfoBean.getData().getSubscriptionNum() + "");
             if (roomInfoBean.getData().getAnchor() != null) {
                 GlideImageLoader.getInstace().circleCropImage(this, roomInfoBean.getData().getAnchor().getAvatar(), ivHostAvatar);
@@ -329,6 +353,9 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     private void setupPlayerSize(int height, int width) {
+        if (height == 0 || width == 0) {
+            return;
+        }
         ratioLayout.setPicRatio(width / (float) height);
         ratioLayout.post(new Runnable() {
             @Override
@@ -345,7 +372,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     @Override
     public void onLiveGiftSuccess(GiftInfo giftInfo) {
-        mGiftInfo = giftInfo;
+        mGiftData = giftInfo;
     }
 
     public void sendMeeage(String message) {

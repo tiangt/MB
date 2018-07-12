@@ -3,9 +3,7 @@ package com.whzl.mengbi.ui.dialog.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
@@ -17,8 +15,6 @@ import com.whzl.mengbi.util.UIUtil;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * @author shaw
@@ -64,6 +60,7 @@ public class GiftSortMotherFragment extends BaseFragment {
             }
             fragments.add(fragment);
         }
+        viewPager.setOffscreenPageLimit(pagers);
         viewPager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

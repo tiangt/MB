@@ -62,14 +62,15 @@
                         android:textSize="10sp" />
                 </RelativeLayout>
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_follow"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="1dp"
                     android:layout_toRightOf="@id/rl_host_info"
-                    android:background="@drawable/ic_live_follow"
+                    android:src="@drawable/ic_live_follow"
+                    android:background="@null"
                     android:scaleType="centerCrop" />
 
             </RelativeLayout>
@@ -95,6 +96,7 @@
             android:layout_marginTop="6.5dp">
 
             <Button
+                android:id="@+id/btn_contribute"
                 android:layout_width="61dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="16dp"
@@ -108,7 +110,7 @@
                 android:textSize="10sp" />
 
             <Button
-                android:id="@+id/btn_contribution_dismiss"
+                android:id="@+id/btn_close"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
                 android:layout_alignParentRight="true"
@@ -144,23 +146,25 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_chat"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="17.5dp"
-            android:background="@drawable/ic_live_display_talk"
-            android:scaleType="centerCrop" />
+            android:src="@drawable/ic_live_display_talk"
+            android:scaleType="centerCrop"
+            android:background="@null" />
 
         <ImageButton
             android:id="@+id/btn_send_gift"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="17.5dp"
-            android:background="@drawable/ic_live_display_gift"
+            android:src="@drawable/ic_live_display_gift"
+            android:background="@null"
             android:scaleType="centerCrop" />
 
     </RelativeLayout>

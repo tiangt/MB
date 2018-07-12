@@ -7,7 +7,7 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
-        style="@style/LiveHouseGiftDialogTab"
+        style="@style/LiveHouseDialogTab"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginLeft="10dp" />
@@ -26,7 +26,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#d9d9d9" />
+        android:background="#d9d9d9"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -121,10 +123,11 @@
                 android:id="@+id/et_count"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="29dp"
+                android:layout_height="28dp"
                 android:background="@drawable/shape_chat_dialog_edit_bg"
-                android:layout_marginLeft="11dp"
-                android:layout_marginRight="9dp"
+                android:layout_marginLeft="22dp"
+                android:layout_marginRight="14dp"
+                android:textSize="14sp"
                 android:inputType="number"
                 android:hint="@string/gift_custom_hint"
                 android:paddingLeft="20dp"
@@ -133,13 +136,13 @@
 
             <Button
                 android:id="@+id/btn_count_confirm"
-                android:layout_width="57dp"
-                android:layout_height="29dp"
+                android:layout_width="80dp"
+                android:layout_height="28dp"
                 android:background="@drawable/shape_dialog_chat_send_btn_bg"
                 android:text="@string/confirm"
                 android:textColor="@color/white"
                 android:textSize="14sp"
-                android:layout_marginRight="25dp" />
+                android:layout_marginRight="11dp" />
 
         </LinearLayout>
 

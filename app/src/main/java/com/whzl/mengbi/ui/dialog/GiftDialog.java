@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
@@ -27,6 +29,10 @@ import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.ui.widget.view.NoScrollViewPager;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.UIUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 
@@ -68,6 +74,18 @@ public class GiftDialog extends BaseAwesomeDialog {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
     public int intLayoutId() {
         return R.layout.dialog_live_house_gift;
     }
@@ -92,6 +110,7 @@ public class GiftDialog extends BaseAwesomeDialog {
             fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLuxury()));
             titles.add("豪华");
         }
+        viewpager.setOffscreenPageLimit(titles.size());
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         tabLayout.setupWithViewPager(viewpager);
     }
@@ -113,6 +132,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
+                etCount.getText().clear();
                 tvCount.setText(count + "");
                 llCountCustomContainer.setVisibility(View.GONE);
                 rlSendContainer.setVisibility(View.VISIBLE);
@@ -175,6 +195,18 @@ public class GiftDialog extends BaseAwesomeDialog {
             popupWindow.setFocusable(true);
         }
         popupWindow.showAtLocation(btnSendGift, Gravity.BOTTOM | Gravity.END, UIUtil.dip2px(getContext(), 28.5f), UIUtil.dip2px(getContext(), 33.5f));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(GiftSelectedEvent event) {
+        String countStr = tvCount.getText().toString().trim();
+        int count = 0;
+        try {
+            count = Integer.parseInt(countStr);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        tvAmount.setText(event.giftDetailInfoBean.getRent() * count + "");
     }
 
 }

@@ -204,4 +204,11 @@
         <item>一心一意</item>
     </array>
 
+    <string name="audience_count">观众（%1$d）</string>
+    <string name="ban">禁言</string>
+    <string name="kick_out">踢出</string>
+    <string name="upgrade_room_manager">升房管</string>
+    <string name="adjust">调音画</string>
+    <string name="no_motto_hint">这家伙很懒，还没有签名~</string>
+
 </resources>

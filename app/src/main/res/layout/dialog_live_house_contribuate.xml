@@ -5,19 +5,17 @@
     android:background="@drawable/shape_dialog_top_corner_bg"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_title"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="12.5dp"
-        android:textColor="@color/colorblack"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+        android:layout_height="30dp"
+        android:layout_marginTop="15dp"
+        style="@style/LiveHouseDialogTab">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    </android.support.design.widget.TabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="290dp" />
 

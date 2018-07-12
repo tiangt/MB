@@ -63,7 +63,7 @@
 
 
     <!--送礼弹窗tab-->
-    <style name="LiveHouseGiftDialogTab" parent="Widget.Design.TabLayout">
+    <style name="LiveHouseDialogTab" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">#20c78a</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="android:textAllCaps">true</item>
@@ -71,16 +71,32 @@
         <!--<item name="tabPaddingStart">15dp</item>-->
         <!--<item name="tabPaddingEnd">15dp</item>-->
         <item name="tabBackground">@color/white</item>
-        <item name="tabTextAppearance">@style/LiveHouseGiftDialogTabText</item>
+        <item name="tabTextAppearance">@style/LiveHouseDialogTabText</item>
         <item name="tabSelectedTextColor">#20c78a</item>
         <item name="tabGravity">fill</item>
     </style>
 
-    <style name="LiveHouseGiftDialogTabText" parent="TextAppearance.Design.Tab">
+    <style name="LiveHouseDialogTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">17sp</item>
         <item name="android:textColor">#646464</item>
         <!--<selectedItem name="android:textColor">@android:color/white</selectedItem>-->
         <item name="textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="audience_info_option_divider">
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#d9d9d9</item>
+        <item name="android:layout_marginTop">2.5dp</item>
+        <item name="android:layout_marginBottom">2.5dp</item>
+    </style>
+
+    <style name="style_audience_info_option_text">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
     </style>
 </resources>
