@@ -31,7 +31,7 @@ public class SubProgramMsg implements FillHolderMessage{
         SingleTextViewHolder mholder = (SingleTextViewHolder) holder;
         mholder.textView.setText("");
         int levelIcon = ResourceMap.getResourceMap().getUserLevelIcon(subProJson.getContext().getLevelValue());
-        mholder.textView.append(LevelUtil.getLevelSpan(subProJson.getContext().getLevelValue(), mContext, levelIcon));
+        mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
         mholder.textView.append(getNickNameSpan(" " + subProJson.getContext().getNickname() + " ", subProJson.getContext().getUserId()));
         mholder.textView.append(LightSpanString.getLightString("关注了主播", Color.parseColor("#f1275b")));
     }

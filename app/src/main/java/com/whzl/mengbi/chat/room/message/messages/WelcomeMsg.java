@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
+import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.chat.room.util.NickNameSpan;
@@ -23,14 +24,17 @@ public class WelcomeMsg implements FillHolderMessage {
     private int userLevel;
     private List<SpannableString> userSpanList;
     private Context mContext;
-    private boolean isAnchor;
+    private boolean isAnchor = false;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
         this.uid = welcomeJson.getContext().getInfo().getUserId();
         mContext = context;
         //TODO:判断主播or用户
-        isAnchor = false;
+        int anchorUid = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getAnchor().getId();
+        if (anchorUid == this.uid) {
+            isAnchor = true;
+        }
         this.userLevel = getUserLevel(uid, welcomeJson.getContext().getInfo().getLevelList());
         this.userSpanList = userSpanList;
     }
@@ -47,7 +51,7 @@ public class WelcomeMsg implements FillHolderMessage {
             }else {
                 levelIcon = ResourceMap.getResourceMap().getUserLevelIcon(userLevel);
             }
-            mHolder.textView.append(LevelUtil.getLevelSpan(levelIcon, mContext, levelIcon));
+            mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
             mHolder.textView.append(" ");
         }
         if (null != userSpanList) {

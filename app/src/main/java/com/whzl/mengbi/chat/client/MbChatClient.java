@@ -157,7 +157,7 @@ public class  MbChatClient {
                     if(headPack != null){
                         int bodyLen = headPack.getBodyLen();
                         if(bodyLen > maxBodyLen){
-                            System.out.println("body too big");
+                            Log.e(tag,"body too big");
                             break;
                         }
                         byte[] bodyBuff = new byte[bodyLen];
@@ -179,12 +179,12 @@ public class  MbChatClient {
             public void run() {
                 try {
                     listenThread.join();
-                    Log.i("client","网络监听线程返回");
+                    Log.i(tag,"网络监听线程返回");
                     if(!isStoped){
                         connectWithServerList(serverList);
-                        Log.i(tag,"重新连接聊天服务器");
+                        Log.e(tag,"重新连接聊天服务器");
                     }
-
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

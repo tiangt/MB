@@ -22,17 +22,19 @@ import pl.droidsonroids.gif.GifDrawable;
 
 
 public class FaceReplace {
-    private List<FacePattern> patternList;
+    private List<FacePattern> patternList = null;
     private static class FaceReplaceHolder {
         private static final FaceReplace instance = new FaceReplace();
     }
 
-    public static final FaceReplace getFaceHolder(){
+    public static final FaceReplace getInstance(){
         return FaceReplaceHolder.instance;
     }
 
     public void init(Context context) {
-
+        if (patternList != null) {
+            return;
+        }
         String strJson = FileUtils.getJson("images/face/face.json", context);
         EmjoyInfo emjoyInfo = GsonUtils.GsonToBean(strJson, EmjoyInfo.class);
         List<EmjoyInfo.FaceBean.PublicBean> faceList = emjoyInfo.getFace().getPublicX();
@@ -43,7 +45,7 @@ public class FaceReplace {
         }
     }
 
-    public SpannableString faceReplace(TextView textView, SpannableString spanString, Context context) {
+    public void faceReplace(TextView textView, SpannableString spanString, Context context) {
         DrawableCallback callback = new DrawableCallback(textView);
         for(FacePattern fp : patternList) {
             Matcher m = fp.getPattern().matcher(spanString);
@@ -66,7 +68,6 @@ public class FaceReplace {
                 spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             }
         }
-        return spanString;
     }
 
     private byte[] getFileContent(Context context, String fileName) {

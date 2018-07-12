@@ -59,6 +59,7 @@ public class FromJson {
         int goodsId;
         String goodsName;
         String goodsType;
+        int bindProgramId;
 
         public int getGoodsIcon() {
             return goodsIcon;
@@ -90,6 +91,14 @@ public class FromJson {
 
         public void setGoodsType(String goodsType) {
             this.goodsType = goodsType;
+        }
+
+        public int getBindProgramId() {
+            return bindProgramId;
+        }
+
+        public void setBindProgramId(int bindProgramId) {
+            this.bindProgramId = bindProgramId;
         }
     }
 }

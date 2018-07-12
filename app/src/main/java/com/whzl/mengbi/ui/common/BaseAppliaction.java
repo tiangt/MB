@@ -1,15 +1,8 @@
 package com.whzl.mengbi.ui.common;
 
-import android.app.Activity;
 import android.app.Application;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
 import android.support.multidex.MultiDex;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
 
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -21,7 +14,6 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.umeng.commonsdk.UMConfigure;
-import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
@@ -37,6 +29,7 @@ public class BaseAppliaction extends Application{
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
+
     }
 
     @Override

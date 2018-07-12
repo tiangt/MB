@@ -110,4 +110,6 @@ public class ChatAction implements Actions{
         ++finishedImageCount;
         lock.unlock();
     }
+
+
 }

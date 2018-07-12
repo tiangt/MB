@@ -133,7 +133,7 @@ public class WelComeAction implements Actions{
             return goodsUrlList;
         }
         for(WelcomeJson.UserBagItem item : bagList) {
-            if (item.getGoodsType().equals("BADGE") && item.getIsEquip().equals("T")) {
+            if (item.getGoodsType().equals("BADGE")) {
                 int goodId = item.getGoodsPicId();
                 goodsUrlList.add(ImageUrl.getImageUrl(goodId, "jpg"));
             }

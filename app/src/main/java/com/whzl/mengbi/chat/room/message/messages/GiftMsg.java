@@ -49,7 +49,7 @@ public class GiftMsg implements FillHolderMessage {
         mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
         //mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
-        mHolder.textView.append(LevelUtil.getLevelSpan(fromLevel, context, ResourceMap.getResourceMap().getUserLevelIcon(fromLevel)));
+        mHolder.textView.append(LevelUtil.getImageResourceSpan(context, ResourceMap.getResourceMap().getUserLevelIcon(fromLevel)));
         mHolder.textView.append(" ");
         mHolder.textView.append(getNickNameSpan(fromNickName,fromUid));
         mHolder.textView.append(" ");

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.BuildConfig;
@@ -70,7 +71,9 @@ public class RequestManager {
             params = params + sub_param;
         }
         try {
-            sign = EncryptUtils.md5Hex(URLEncoder.encode(params, "UTF-8"));
+            String encodeParams = URLEncoder.encode(params, "UTF-8");
+            Log.e("http","params=" + params + ",encodeParams=" + encodeParams);
+            sign = EncryptUtils.md5Hex(encodeParams);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -368,7 +371,7 @@ public class RequestManager {
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
                         String string = response.body().string();
-                        LogUtils.e("response ----->" + string);
+                        LogUtils.e("url=" + actionUrl + ",response ----->" + string);
                         successCallBack((T) string, callBack);
                     } else {
                         failedCallBack("服务器错误", callBack);
@@ -507,28 +510,5 @@ public class RequestManager {
                 }
             }
         });
-    }
-    public <T> Call getImage(String url, final ReqCallBack<T> reqCallBack) {
-        Request request = new Request.Builder().url(url).build();
-        final Call call = mOkHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                LogUtils.e("url="+url + " getImage error" + e.toString());
-                failedCallBack(e.toString(), reqCallBack);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    byte []body = response.body().bytes();
-                    final Bitmap bitmap = BitmapFactory.decodeByteArray(body, 0, body.length);
-                    successCallBack((T) bitmap, reqCallBack);
-                } else {
-                    failedCallBack("服务器错误", reqCallBack);
-                }
-            }
-        });
-        return null;
     }
 }

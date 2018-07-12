@@ -1,17 +1,13 @@
 package com.whzl.mengbi.ui.activity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
 
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -23,8 +19,6 @@ import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.ui.common.BaseAppliaction;
 import com.whzl.mengbi.ui.view.LoginView;
-import com.whzl.mengbi.ui.widget.view.GenericToolbar;
-import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
@@ -34,7 +28,6 @@ import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -133,6 +126,9 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
             }else{
                 //手机设备ID
                 String deviceid = RxPermisssionsUitls.getDevice(this);
+                if (deviceid == null) {
+                    deviceid = "";
+                }
                 //游客登录
                 loginPresenter.visitorValidateCredentials(deviceid);
             }

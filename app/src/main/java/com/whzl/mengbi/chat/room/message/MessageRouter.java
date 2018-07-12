@@ -41,7 +41,7 @@ public class MessageRouter implements MessageCallback {
         initActionMap();
         initChatAction();
         //初始化表情
-        FaceReplace.getFaceHolder().init(context);
+        FaceReplace.getInstance().init(context);
         EventBus.getDefault().register(context);
     }
 

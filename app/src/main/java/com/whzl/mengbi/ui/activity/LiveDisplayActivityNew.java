@@ -24,6 +24,7 @@ import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -291,6 +292,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @Override
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
         if (roomInfoBean.getData() != null) {
+            ChatRoomInfo.getInstance().setRoomInfoBean(roomInfoBean);
             tvFansCount.setText("粉丝：" + roomInfoBean.getData().getSubscriptionNum() + "");
             if (roomInfoBean.getData().getAnchor() != null) {
                 GlideImageLoader.getInstace().circleCropImage(this, roomInfoBean.getData().getAnchor().getAvatar(), ivHostAvatar);

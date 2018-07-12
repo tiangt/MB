@@ -48,18 +48,22 @@ public class LevelUtil {
         return -1;
     }
 
-    //根据levelicon资源获取spanableString
-    public static SpannableString getLevelSpan(int level, Context context, int resourceId) {
-        SpannableString levelIcon = new SpannableString("levelIcon");
+    /**
+     * 根据图片资源获取spanString
+     * @param context
+     * @param resourceId 图片资源
+     * @return
+     */
+    public static SpannableString getImageResourceSpan(Context context, int resourceId) {
+        SpannableString levelIcon = new SpannableString("icon");
         Resources res = context.getResources();
         Drawable levelIconDrawable = res.getDrawable(resourceId);
-
         if(levelIconDrawable == null){
             return levelIcon;
         }
         int originWidth = levelIconDrawable.getIntrinsicWidth();
         int originHeight = levelIconDrawable.getIntrinsicHeight();
-        float dpHeight = 16F;
+        float dpHeight = ImageUrl.IMAGE_HIGHT;
         float dpWidth = originWidth * dpHeight / originHeight;
         levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
         CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
