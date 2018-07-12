@@ -62,7 +62,8 @@ public class ChatAction implements Actions{
                     Drawable bitmapDrable = new BitmapDrawable(resource);
                     int width = resource.getWidth();
                     int height = resource.getHeight();
-                    bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(width), DensityUtil.dp2px(height));
+                    float dpWidth = width * ImageUrl.IMAGE_HIGHT / height;
+                    bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(ImageUrl.IMAGE_HIGHT));
                     CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(bitmapDrable);
                     SpannableString spanString = new SpannableString(imageUrl);
                     spanString.setSpan(imageSpan, 0, spanString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

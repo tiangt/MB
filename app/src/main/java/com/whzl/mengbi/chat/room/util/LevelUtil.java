@@ -59,7 +59,7 @@ public class LevelUtil {
         }
         int originWidth = levelIconDrawable.getIntrinsicWidth();
         int originHeight = levelIconDrawable.getIntrinsicHeight();
-        float dpHeight = 15F;
+        float dpHeight = 16F;
         float dpWidth = originWidth * dpHeight / originHeight;
         levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
         CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);

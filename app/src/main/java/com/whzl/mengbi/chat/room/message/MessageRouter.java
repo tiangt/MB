@@ -3,7 +3,6 @@ package com.whzl.mengbi.chat.room.message;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.whzl.mengbi.chat.ProtoStringAvg;
 import com.whzl.mengbi.chat.client.MessageCallback;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatRoomEventJson;
@@ -18,6 +17,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SubProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
+import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.util.GsonUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,18 +30,18 @@ import java.util.Map;
 
 public class MessageRouter implements MessageCallback {
     String tag = "parser";
-    private Gson mGson;
     private Context mContext;
     Map<String, Actions> actionsMap = new HashMap<>();
     private ChatAction chatAction;
     private PrivateChatAction privateChatAction;
     private NoChatAction noChatAction;
 
-    public MessageRouter(Gson gson, Context context) {
-        this.mGson = gson;
+    public MessageRouter(Context context) {
         this.mContext = context;
         initActionMap();
         initChatAction();
+        //初始化表情
+        FaceReplace.getFaceHolder().init(context);
         EventBus.getDefault().register(context);
     }
 
@@ -70,7 +70,7 @@ public class MessageRouter implements MessageCallback {
     public void onGetMessage(byte[] messageBytes, short msgId) {
         ProtoStringAvg.strAvg message = unPack(messageBytes);
         if (message == null) {
-            Log.e(tag, "Wire can not unpack!!!!!!");
+            Log.e(tag, "protobuf can not unpack!!!!!!");
             return;
         }
 

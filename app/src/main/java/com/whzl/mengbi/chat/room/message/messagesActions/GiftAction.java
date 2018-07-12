@@ -38,7 +38,7 @@ public class GiftAction implements Actions {
                 Drawable bitmapDrable = new BitmapDrawable(resource);
                 int width = resource.getWidth();
                 int height = resource.getHeight();
-                float dpHeight = 15F;
+                float dpHeight = ImageUrl.IMAGE_HIGHT;
                 float dpWidth = width * dpHeight / height;
                 bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
                 CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(bitmapDrable);

@@ -62,7 +62,56 @@ public class ResourceMap {
     }
 
     private void initAnchorMap() {
-
+        anchorLevelMap.put(0, R.drawable.anchor_level1);
+        anchorLevelMap.put(1, R.drawable.anchor_level2);
+        anchorLevelMap.put(2, R.drawable.anchor_level3);
+        anchorLevelMap.put(3, R.drawable.anchor_level4);
+        anchorLevelMap.put(4, R.drawable.anchor_level5);
+        anchorLevelMap.put(5, R.drawable.anchor_level6);
+        anchorLevelMap.put(6, R.drawable.anchor_level7);
+        anchorLevelMap.put(7, R.drawable.anchor_level8);
+        anchorLevelMap.put(8, R.drawable.anchor_level9);
+        anchorLevelMap.put(9, R.drawable.anchor_level10);
+        anchorLevelMap.put(10, R.drawable.anchor_level11);
+        anchorLevelMap.put(11, R.drawable.anchor_level12);
+        anchorLevelMap.put(12, R.drawable.anchor_level13);
+        anchorLevelMap.put(13, R.drawable.anchor_level14);
+        anchorLevelMap.put(14, R.drawable.anchor_level15);
+        anchorLevelMap.put(15, R.drawable.anchor_level16);
+        anchorLevelMap.put(16, R.drawable.anchor_level17);
+        anchorLevelMap.put(17, R.drawable.anchor_level18);
+        anchorLevelMap.put(18, R.drawable.anchor_level19);
+        anchorLevelMap.put(19, R.drawable.anchor_level20);
+        anchorLevelMap.put(20, R.drawable.anchor_level21);
+        anchorLevelMap.put(21, R.drawable.anchor_level22);
+        anchorLevelMap.put(22, R.drawable.anchor_level23);
+        anchorLevelMap.put(23, R.drawable.anchor_level24);
+        anchorLevelMap.put(24, R.drawable.anchor_level25);
+        anchorLevelMap.put(25, R.drawable.anchor_level26);
+        anchorLevelMap.put(26, R.drawable.anchor_level27);
+        anchorLevelMap.put(27, R.drawable.anchor_level28);
+        anchorLevelMap.put(28, R.drawable.anchor_level29);
+        anchorLevelMap.put(29, R.drawable.anchor_level30);
+        anchorLevelMap.put(30, R.drawable.anchor_level31);
+        anchorLevelMap.put(31, R.drawable.anchor_level32);
+        anchorLevelMap.put(32, R.drawable.anchor_level33);
+        anchorLevelMap.put(33, R.drawable.anchor_level34);
+        anchorLevelMap.put(34, R.drawable.anchor_level35);
+        anchorLevelMap.put(35, R.drawable.anchor_level36);
+        anchorLevelMap.put(36, R.drawable.anchor_level37);
+        anchorLevelMap.put(37, R.drawable.anchor_level38);
+        anchorLevelMap.put(38, R.drawable.anchor_level39);
+        anchorLevelMap.put(39, R.drawable.anchor_level40);
+        anchorLevelMap.put(40, R.drawable.anchor_level41);
+        anchorLevelMap.put(41, R.drawable.anchor_level42);
+        anchorLevelMap.put(42, R.drawable.anchor_level43);
+        anchorLevelMap.put(43, R.drawable.anchor_level44);
+        anchorLevelMap.put(44, R.drawable.anchor_level45);
+        anchorLevelMap.put(45, R.drawable.anchor_level46);
+        anchorLevelMap.put(46, R.drawable.anchor_level47);
+        anchorLevelMap.put(47, R.drawable.anchor_level48);
+        anchorLevelMap.put(48, R.drawable.anchor_level49);
+        anchorLevelMap.put(49, R.drawable.anchor_level50);
     }
 
     public int getUserLevelIcon(int level) {
@@ -80,6 +129,16 @@ public class ResourceMap {
     }
 
     public int getAnchorLevelIcon(int anchorLevel) {
-        return 0;
+        int levelIcon;
+        if (anchorLevelMap.containsKey(anchorLevel)) {
+            levelIcon = anchorLevelMap.get(anchorLevel);
+        }else {
+            if (anchorLevel > 49) {
+                levelIcon = R.drawable.anchor_level50;
+            }else {
+                levelIcon = R.drawable.anchor_level1;
+            }
+        }
+        return levelIcon;
     }
 }

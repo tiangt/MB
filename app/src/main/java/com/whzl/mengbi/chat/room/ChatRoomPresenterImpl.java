@@ -2,12 +2,6 @@ package com.whzl.mengbi.chat.room;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.LinearLayout;
-
-import com.google.gson.Gson;
-import com.whzl.mengbi.chat.room.message.messageJson.SubProgramJson;
-import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
-import com.whzl.mengbi.ui.common.BaseAppliaction;
 
 import com.whzl.mengbi.chat.client.ErrorCallback;
 import com.whzl.mengbi.chat.client.IConnectCallback;
@@ -15,11 +9,11 @@ import com.whzl.mengbi.chat.client.MbChatClient;
 import com.whzl.mengbi.chat.client.MbSocketFactory;
 import com.whzl.mengbi.chat.client.MessageCallback;
 import com.whzl.mengbi.chat.client.ServerAddr;
-
 import com.whzl.mengbi.chat.room.message.ChatOutMsg;
 import com.whzl.mengbi.chat.room.message.LoginMessage;
-
 import com.whzl.mengbi.chat.room.message.MessageRouter;
+import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.ui.common.BaseAppliaction;
 import com.whzl.mengbi.util.SPUtils;
 
 import java.util.ArrayList;
@@ -32,41 +26,7 @@ public class ChatRoomPresenterImpl{
     private IConnectCallback connectCallback;
     private ErrorCallback errorCallback;
     private MessageCallback messageCallback;
-    private Gson gson;
     private LiveRoomTokenInfo liveRoomTokenInfo;
-//    public boolean canIprivateChat(EnterUserInfo userInfo) {
-//        if (!EnvironmentBridge.getUserInfoBridge().isLogin()) {
-//            return false;
-//        }
-//
-//        if (EnvironmentBridge.getUserInfoBridge().isVip()) {
-//            return true;
-//        }
-
-//        if (userInfo.getData().getIsGuard() == 1) {
-//            return true;
-//        }
-//
-//        for (EnterUserInfo.DataEntity.LevelListEntity item : userInfo.getData().getLevelList()) {
-//            if (item.getLevelType().equals("ROYAL_LEVEL")) {
-//                return true;
-//            }
-//        }
-//
-//        for (EnterUserInfo.DataEntity.LevelListEntity item : userInfo.getData().getLevelList()) {
-//            if (item.getLevelType().equals("USER_LEVEL")) {
-//                int levelValue = item.getLevelValue();
-//                if (levelValue > 5) {
-//                    return true;
-//                }
-//            }
-//        }
-
-//        if (AudienceView.identity == 40 || AudienceView.identity == 41) {
-//            return true;
-//        }
-//        return false;
-//  }
 
     public void setupConnection(LiveRoomTokenInfo liveRoomTokenInfo, Context context) {
         this.liveRoomTokenInfo = liveRoomTokenInfo;
@@ -95,7 +55,7 @@ public class ChatRoomPresenterImpl{
             }
         };
 
-        messageCallback = new MessageRouter(gson,context);
+        messageCallback = new MessageRouter(context);
 
         client = new MbChatClient(socketFactory);
         client.setErrorCallback(errorCallback);
@@ -168,11 +128,6 @@ public class ChatRoomPresenterImpl{
 //        }
 //
         ChatOutMsg msg;
-//        String toNickname = chatToStatus.getToUser().getNickName();
-//        if (toNickname.equals("所有人")) {
-//            toNickname = "";
-//        }
-//        int toId = chatToStatus.getToUser().getUid();
         boolean islogin = (Boolean) SPUtils.get(BaseAppliaction.getInstance(),"islogin",false);
         if(islogin){
             msg = new ChatOutMsg(message, liveRoomTokenInfo.getData().getProgramId()+"",client.getCurrentDomain(),
@@ -188,50 +143,17 @@ public class ChatRoomPresenterImpl{
         client.send(msg);
     }
 
-
     public void onChatRoomDestroy() {
         client.closeSocket();
         messageCallback.unregister();
     }
-
 
     public void sendBroadCast(String content) {
         Log.e(TAG, "sendBroadCast 发送广播:" + content);
         //iChatRoom.sendBroadCast(content);
     }
 
-
-
     public void onBackPressed() {
     }
 
-
-    public void fillChatToList(LinearLayout chatToLayout) {
-//        chatToLayout.removeAllViews();
-//        for (final ChatToUser user : chatToStatus.getUserList()) {
-//            View chatToItem = LayoutInflater.from(iChatRoom.getContext()).
-//                    inflate(R.layout.chattolist_item, chatToLayout, false);
-//            TextView text = (TextView) chatToItem.findViewById(R.id.chattolist_text);
-//            text.setText(user.getNickName());
-//            chatToItem.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (user.getUid() == 0) {//所有人
-//                        chatToStatus.setChatType(ChatToStatus.ChatType.PUBLIC_CHAT);
-//                        iChatRoom.getChatInputView().changToPub();
-//                    }
-//
-//                    iChatRoom.setChatToNickName(user.getNickName());
-//                    chatToStatus.setToUser(user);
-//                    iChatRoom.dissMissSelectToPop();
-//                }
-//            });
-//            chatToLayout.addView(chatToItem);
-//        }
-    }
-
-//    @Override
-//    public ChatToStatus getChatToStatus() {
-//        return chatToStatus;
-//    }
 }

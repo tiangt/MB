@@ -13,8 +13,10 @@ import android.view.View;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
+import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.NickNameSpan;
+import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
 
@@ -82,8 +84,9 @@ public class ChatMessage implements FillHolderMessage{
             }
         }
         mholder.textView.append(getNickNameSpan(from_nickname + ":  ",from_uid));
+        SpannableString spanString = getLightStr(contentString, Color.WHITE);
         //TODO:表情替换
-        mholder.textView.append(getLightStr(contentString, Color.WHITE));
+        mholder.textView.append(FaceReplace.getFaceHolder().faceReplace(mholder.textView, spanString, mContext));
         //mholder.textView.append(SmileyParser.getInstance().addSmileySpans(contentString));
     }
 
@@ -146,7 +149,7 @@ public class ChatMessage implements FillHolderMessage{
 
     private SpannableString replaceFaceList(SpannableString content) {
         SpannableString faceContentSpanString = new SpannableString(content);
-        //List<EmjoyInfo.FaceBean> faceList = EmjoyInfo.
+        List<EmjoyInfo.FaceBean> faceList;
         return faceContentSpanString;
     }
 }

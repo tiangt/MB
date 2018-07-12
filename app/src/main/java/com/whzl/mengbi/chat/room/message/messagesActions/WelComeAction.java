@@ -4,22 +4,19 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
+import com.whzl.mengbi.chat.room.util.CenterAlignImageSpan;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.network.RequestManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,15 +49,17 @@ public class WelComeAction implements Actions{
         }
         for (String url:goodsUrlList) {
             String imageUrl = url;
-            Glide.with(context).asBitmap().load(imageUrl).into(new SimpleTarget<Bitmap>() {
+            RequestManager.getInstance(context).getImage(imageUrl, new RequestManager.ReqCallBack<Object>() {
                 @Override
-                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                public void onReqSuccess(Object result) {
                     addFinishedCount();
+                    Bitmap resource = (Bitmap)result;
                     Drawable bitmapDrable = new BitmapDrawable(resource);
                     int width = resource.getWidth();
                     int height = resource.getHeight();
-                    bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(width), DensityUtil.dp2px(height));
-                    ImageSpan imageSpan = new ImageSpan(bitmapDrable);
+                    float dpWidth = width * ImageUrl.IMAGE_HIGHT / height;
+                    bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(ImageUrl.IMAGE_HIGHT));
+                    CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(bitmapDrable);
                     SpannableString spanString = new SpannableString(imageUrl);
                     spanString.setSpan(imageSpan, 0, spanString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                     int index = imageIndexMap.get(imageUrl);
@@ -73,11 +72,11 @@ public class WelComeAction implements Actions{
                 }
 
                 @Override
-                public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                    super.onLoadFailed(errorDrawable);
+                public void onReqFailed(String errorMsg) {
                     addFinishedCount();
+                    LogUtils.e("onReqFailed"+errorMsg);
                     if (finishedImageCount >= goodsUrlList.size()) {
-                        WelcomeMsg welcomeMsg = new WelcomeMsg(welcomeJson, context, null);
+                        WelcomeMsg welcomeMsg = new WelcomeMsg(welcomeJson, context, spanList);
                         UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(welcomeMsg);
                         EventBus.getDefault().post(chatEvent);
                     }
