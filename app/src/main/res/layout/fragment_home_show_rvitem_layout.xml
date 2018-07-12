@@ -4,11 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y8"
+            android:layout_marginLeft="@dimen/x4"
+            android:layout_marginRight="@dimen/x11"
+            android:layout_marginBottom="@dimen/y6">
                 <ImageView
                     android:id="@+id/home_rvitem_cover"
                     android:layout_width="match_parent"
@@ -20,8 +24,7 @@
                     android:layout_height="12dp"
                     android:layout_marginTop="7dp"
                     android:layout_marginRight="7dp"
-                    android:layout_alignRight="@id/home_rvitem_cover"
-                    android:background="@drawable/ic_home_watch_status" />
+                    android:layout_alignRight="@id/home_rvitem_cover"/>
 
                 <TextView
                     android:id="@+id/home_rvitem_anchorNickname"

@@ -27,6 +27,7 @@ import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
 import com.whzl.mengbi.util.CustomPopWindowUtils;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SelectorUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -47,6 +48,15 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.OnClickListener{
+
+    //相机请求码
+    private static final int CAMERA_REQUEST_CODE = 1;
+    //相册请求码
+    private static final int ALBUM_REQUEST_CODE = 2;
+    //修改昵称
+    public static final int NICKNAME_CODE = 3;
+    //修改性别
+    public static final int SEX_CODE = 4;
 
     private UserInfo mUserInfo;
     private CircleImageView mCircleImageView;
@@ -181,11 +191,13 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
                 break;
             case R.id.user_info_nickname://修改昵称
                  Intent nicknameIntent = new Intent(UserInfoActivity.this,UserInfoNickNameActivity.class);
-                 startActivityForResult(nicknameIntent,3);
+                 nicknameIntent.putExtra("nickname",mUserInfo.getData().getNickname());
+                 startActivityForResult(nicknameIntent,NICKNAME_CODE);
                  break;
             case R.id.user_info_sex://修改性别
                 Intent sexIntent = new Intent(UserInfoActivity.this,UserInfoSexActivity.class);
-                startActivityForResult(sexIntent,4);
+                sexIntent.putExtra("sex",mUserInfo.getData().getGender());
+                startActivityForResult(sexIntent,SEX_CODE);
                  break;
             case R.id.user_info_birthday://修改生日
                 String  strDate = mUserInfo.getData().getBirthday();
@@ -262,6 +274,7 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
                 startActivity(mIntent);
                 SPUtils.remove(this,"islogin");//清除用户登录状态
                 SPUtils.remove(this,"visitor");//清除游客登录状态
+                SPUtils.remove(this,"userId");//清除用户Id
                 SPUtils.remove(this,"username");//清除用户用户名
                 SPUtils.remove(this,"password");//清除用户密码
                 SPUtils.remove(this,"third_party");//清除第三方登录名称
@@ -326,18 +339,34 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
-            case RxPermisssionsUitls.CAMERA_REQUEST_CODE://相机
+            case CAMERA_REQUEST_CODE://相机
                 if(resultCode == RESULT_OK){
-                    System.out.println("CAMERA>>>>>>>>>"+data);
+
                 }
                 break;
-            case RxPermisssionsUitls.ALBUM_REQUEST_CODE://相册
+            case ALBUM_REQUEST_CODE://相册
                 if(resultCode == RESULT_OK){
                     List list = Matisse.obtainResult(data);
                     for (int i=0;i<list.size();i++){
                         String strfile = list.get(i).toString();
+                        LogUtils.d(strfile);
                         userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId()+"",strfile);
                     }
+                }
+                break;
+            case NICKNAME_CODE://昵称
+                if(resultCode == RESULT_OK){
+                    String nickname = data.getStringExtra("nickname");
+                    userInfoPresenter.onUpdataNickName(mUserInfo.getData().getUserId()+"",nickname);
+                }
+                break;
+            case SEX_CODE://性别
+                if(resultCode == RESULT_OK){
+                    String sex = data.getStringExtra("sex");
+                    HashMap hashMap = new HashMap();
+                    hashMap.put("userId",mUserInfo.getData().getUserId());
+                    hashMap.put("sex",sex);
+                    userInfoPresenter.onUpdataUserInfo(hashMap);
                 }
                 break;
         }

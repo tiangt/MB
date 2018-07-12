@@ -11,23 +11,17 @@
     <include
         android:id="@+id/user_info_nickname_include"
         layout="@layout/activity_base_toolbar"/>
-    <RelativeLayout
-        android:id="@+id/user_info_nickname_rela"
+    <EditText
+        android:id="@+id/user_info_nickname_ET"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y28"
+        android:layout_marginTop="@dimen/y4"
+        android:paddingLeft="@dimen/x16"
+        android:gravity="left"
+        android:textColor="@color/font_color_52"
+        android:hint="@string/user_info_nickname_hint"
         android:background="@color/font_color_51"
-        android:layout_below="@id/user_info_nickname_include">
-        <EditText
-            android:id="@+id/user_info_nickname_ET"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/y28"
-            android:layout_marginTop="@dimen/y4"
-            android:paddingLeft="@dimen/x16"
-            android:gravity="left"
-            android:textColor="@color/font_color_52"
-            android:hint="@string/user_info_nickname_hint"
-            android:background="@null"/>
-    </RelativeLayout>
+        android:layout_below="@id/user_info_nickname_include"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,5 +29,5 @@
         android:paddingLeft="@dimen/x16"
         android:textColor="@color/font_color_53"
         android:text="@string/user_info_nickname_length"
-        android:layout_below="@id/user_info_nickname_rela"/>
+        android:layout_below="@id/user_info_nickname_ET"/>
 </RelativeLayout>

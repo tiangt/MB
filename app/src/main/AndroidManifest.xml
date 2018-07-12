@@ -76,16 +76,16 @@
         <activity
             android:name=".ui.activity.HomeActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.activity.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.activity.RegisterActivity"
@@ -181,5 +181,30 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+        <!--账户中心-->
+        <!--设置-->
+        <activity android:name=".ui.activity.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <!--意见反馈-->
+        <activity android:name=".ui.activity.FeedBackActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <!--客服中心-->
+        <activity android:name=".ui.activity.CustomServiceCenterActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ui.activity.UserInfoNickNameActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <!--个人信息-->
+        <!--修改性别-->
+        <activity android:name=".ui.activity.UserInfoSexActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+        <!--修改昵称-->
+        <activity android:name=".ui.activity.RechargeActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"></activity>
     </application>
 </manifest>

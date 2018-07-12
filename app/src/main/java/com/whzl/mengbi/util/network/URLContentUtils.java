@@ -87,6 +87,15 @@ public class URLContentUtils{
      */
     public static final String OPEN_LOGIN="v1/user/open-login";
 
+    /**
+     * 移动端充值规则接口
+     */
+    public static final String RECHARGE_GET_CHANNEL="v1/recharge/get-channel";
+
+    /**
+     * 支付宝下单接口
+     */
+    public static final String RECHARGE_ORDER="v1/recharge/order";
 
     /**
      * 获取房间信息

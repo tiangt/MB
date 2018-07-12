@@ -508,5 +508,27 @@ public class RequestManager {
             }
         });
     }
+    public <T> Call getImage(String url, final ReqCallBack<T> reqCallBack) {
+        Request request = new Request.Builder().url(url).build();
+        final Call call = mOkHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                LogUtils.e("url="+url + " getImage error" + e.toString());
+                failedCallBack(e.toString(), reqCallBack);
+            }
 
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    byte []body = response.body().bytes();
+                    final Bitmap bitmap = BitmapFactory.decodeByteArray(body, 0, body.length);
+                    successCallBack((T) bitmap, reqCallBack);
+                } else {
+                    failedCallBack("服务器错误", reqCallBack);
+                }
+            }
+        });
+        return null;
+    }
 }

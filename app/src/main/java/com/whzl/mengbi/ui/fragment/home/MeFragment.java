@@ -13,7 +13,10 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.MePresenter;
 import com.whzl.mengbi.presenter.impl.MePresenterImpl;
+import com.whzl.mengbi.ui.activity.RechargeActivity;
+import com.whzl.mengbi.ui.activity.SettingsActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
+import com.whzl.mengbi.ui.fragment.BaseFragment;
 import com.whzl.mengbi.ui.view.MeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -21,7 +24,7 @@ import com.whzl.mengbi.ui.fragment.BaseFragement;
 
 
 
-public class MeFragment extends BaseFragement implements MeView,View.OnClickListener{
+public class MeFragment extends BaseFragment implements MeView,View.OnClickListener{
 
     private ImageView mUserEditorImg;
     private CircleImageView mUserCircleImageView;
@@ -53,11 +56,22 @@ public class MeFragment extends BaseFragement implements MeView,View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        super.onCreateView(inflater,container,savedInstanceState);
         View mView = inflater.inflate(R.layout.fragment_me_layout,null);
         mePresenter = new MePresenterImpl(this);
         initData();
         initView(mView);
         return mView;
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.fragment_me_layout;
+    }
+
+    @Override
+    public void init() {
+
     }
 
     /**
@@ -75,6 +89,8 @@ public class MeFragment extends BaseFragement implements MeView,View.OnClickList
         mWatchRecordBut = contentView.findViewById(R.id.account_center_watchrecord_but);
         mSettingsBut = contentView.findViewById(R.id.account_center_settings_but);
         mUserEditorImg.setOnClickListener(this);
+        mRechargeBut.setOnClickListener(this);
+        mSettingsBut.setOnClickListener(this);
     }
 
     /**
@@ -88,18 +104,29 @@ public class MeFragment extends BaseFragement implements MeView,View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.account_center_usereditor://编辑
-                Intent mUserEditorIntent = new Intent(mContext, UserInfoActivity.class);
+                Intent mUserEditorIntent = new Intent(getMyActivity(), UserInfoActivity.class);
                 Bundle mUserEditorBundle = new Bundle();
                 mUserEditorBundle.putSerializable("userbean",mUserInfo);
                 mUserEditorIntent.putExtras(mUserEditorBundle);
                 startActivity(mUserEditorIntent);
+                break;
+            case R.id.account_center_recharge_but://充值
+                Intent rechargeIntent = new Intent(getMyActivity(), RechargeActivity.class);
+                rechargeIntent.putExtra("profile",mUserInfo.getData().getAvatar());
+                rechargeIntent.putExtra("userId",mUserInfo.getData().getUserId());
+                rechargeIntent.putExtra("coin",mUserInfo.getData().getWealth().getCoin());
+                startActivity(rechargeIntent);
+                break;
+            case R.id.account_center_settings_but://设置
+                Intent settingsIntent = new Intent(getMyActivity(), SettingsActivity.class);
+                startActivity(settingsIntent);
                 break;
         }
     }
 
     @Override
     public void showUserInfo(UserInfo userInfo) {
-        GlideImageLoader.getInstace().circleCropImage(mContext, userInfo.getData().getAvatar(), mUserCircleImageView);
+        GlideImageLoader.getInstace().circleCropImage(getMyActivity(), userInfo.getData().getAvatar(), mUserCircleImageView);
         mNickNameText.setText(userInfo.getData().getNickname());
         mSproutText.setText(userInfo.getData().getUserId()+"");
         mGoldText.setText(userInfo.getData().getWealth().getCoin()+"");

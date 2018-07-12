@@ -29,6 +29,7 @@ import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.ui.handler.BaseHandler;
 import com.whzl.mengbi.ui.view.RechargeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.alipay.AuthResult;
 import com.whzl.mengbi.util.alipay.PayResult;
@@ -124,6 +125,7 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
                     alipayRuleListBeans.addAll(listBean.getRuleList());
                 }
                 alipaychannelId = channelListBean.getChannelId();
+                channelId = alipaychannelId;
             }
 
             if(channelListBean.getChannelFlag().equals("WeixinApp")){
@@ -137,12 +139,13 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
         moneyRV.setAdapter(moneyAdapter = new CommonAdapter<RechargeRuleListBean>(this,R.layout.activity_recharge_rvitem_layout,alipayRuleListBeans) {
             @Override
             protected void convert(ViewHolder holder, RechargeRuleListBean ruleListBean, int position) {
-                String chengCount = String.valueOf(ruleListBean.getChengCount())+"萌币";
+                String chengCount = AmountConversionUitls.coinConversion(ruleListBean.getChengCount());
+                String rechargeCount = AmountConversionUitls.amountConversion(ruleListBean.getRechargeCount());
                 SpannableStringBuilder stringBuilder = new SpannableStringBuilder(chengCount);
                 ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#ffa800"));
                 stringBuilder.setSpan(colorSpan,0,chengCount.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
                 stringBuilder.append("\n");
-                stringBuilder.append("￥"+ruleListBean.getRechargeCount());
+                stringBuilder.append(rechargeCount);
                 TextView moeny = holder.getView(R.id.recharge_rvitem_moeny);
                 moeny.setText(stringBuilder);
             }
@@ -151,8 +154,8 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
         moneyAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                String str = "确认支付￥"+String.valueOf(alipayRuleListBeans.get(position).getRechargeCount());
-                confirmPayBut.setText(str);
+                String rechargeCount = "确认支付"+AmountConversionUitls.amountConversion(alipayRuleListBeans.get(position).getRechargeCount());
+                confirmPayBut.setText(rechargeCount);
                 ruleId = alipayRuleListBeans.get(position).getRuleId();
             }
 
@@ -172,12 +175,13 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
                 moneyRV.setAdapter(moneyAdapter = new CommonAdapter<RechargeRuleListBean>(this,R.layout.activity_recharge_rvitem_layout,alipayRuleListBeans) {
                     @Override
                     protected void convert(ViewHolder holder, RechargeRuleListBean ruleListBean, int position) {
-                        String chengCount = String.valueOf(ruleListBean.getChengCount())+"萌币";
+                        String chengCount = AmountConversionUitls.coinConversion(ruleListBean.getChengCount());
+                        String rechargeCount = AmountConversionUitls.amountConversion(ruleListBean.getRechargeCount());
                         SpannableStringBuilder stringBuilder = new SpannableStringBuilder(chengCount);
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#ffa800"));
                         stringBuilder.setSpan(colorSpan,0,chengCount.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
                         stringBuilder.append("\n");
-                        stringBuilder.append("￥"+ruleListBean.getRechargeCount());
+                        stringBuilder.append(rechargeCount);
                         TextView moeny = holder.getView(R.id.recharge_rvitem_moeny);
                         moeny.setText(stringBuilder);
                     }
@@ -186,7 +190,8 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
                 moneyAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                        String str = "确认支付￥"+String.valueOf(alipayRuleListBeans.get(position).getRechargeCount());
+                        String rechargeCount = "确认支付￥"+AmountConversionUitls.amountConversion(alipayRuleListBeans.get(position).getRechargeCount());
+                        String str = String.valueOf(alipayRuleListBeans.get(position).getRechargeCount());
                         confirmPayBut.setText(str);
                         ruleId = alipayRuleListBeans.get(position).getRuleId();
                     }
@@ -202,12 +207,13 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
                 moneyRV.setAdapter(moneyAdapter = new CommonAdapter<RechargeRuleListBean>(this,R.layout.activity_recharge_rvitem_layout,weixinRuleListBeans) {
                     @Override
                     protected void convert(ViewHolder holder, RechargeRuleListBean ruleListBean, int position) {
-                        String chengCount = String.valueOf(ruleListBean.getChengCount())+"萌币";
+                        String chengCount = AmountConversionUitls.coinConversion(ruleListBean.getChengCount());
+                        String rechargeCount = AmountConversionUitls.amountConversion(ruleListBean.getRechargeCount());
                         SpannableStringBuilder stringBuilder = new SpannableStringBuilder(chengCount);
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#ffa800"));
                         stringBuilder.setSpan(colorSpan,0,chengCount.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
                         stringBuilder.append("\n");
-                        stringBuilder.append("￥"+ruleListBean.getRechargeCount());
+                        stringBuilder.append(rechargeCount);
                         TextView moeny = holder.getView(R.id.recharge_rvitem_moeny);
                         moeny.setText(stringBuilder);
                     }
@@ -216,8 +222,8 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
                 moneyAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                        String str = "确认支付￥"+String.valueOf(weixinRuleListBeans.get(position).getRechargeCount());
-                        confirmPayBut.setText(str);
+                        String rechargeCount = "确认支付￥"+AmountConversionUitls.amountConversion(weixinRuleListBeans.get(position).getRechargeCount());
+                        confirmPayBut.setText(rechargeCount);
                         ruleId = weixinRuleListBeans.get(position).getRuleId();
                     }
 
@@ -246,7 +252,12 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
     @Override
     public void showOrderInfo(int orderId, String token) {
         mToken = token;
-        aliPayAuth(token);
+        int radioId= payModeRG.getCheckedRadioButtonId();
+        if(radioId == R.id.recharge_mode_alipay_RB){
+            aliPayAuth(token);
+        }else{
+            ToastUtils.showToast("微信支付");
+        }
     }
 
     private class PayHandler extends BaseHandler{
@@ -277,6 +288,7 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
                     }else{
                         LogUtils.d("授权失败");
                     }
+                    break;
             }
         }
     }

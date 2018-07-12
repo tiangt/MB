@@ -35,6 +35,8 @@
 
     <!--首页-->
     <string name="home_title">首页</string>
+    <string name="home_recommend">首页</string>
+    <string name="home_">首页</string>
     <!--直播间-->
     <string name="live_display_anchornickname">主播昵称</string>
     <string name="live_display_fans">粉丝：</string>

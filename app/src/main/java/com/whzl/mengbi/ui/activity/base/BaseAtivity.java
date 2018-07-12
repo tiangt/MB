@@ -1,29 +1,18 @@
 package com.whzl.mengbi.ui.activity.base;
 
-import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.tbruyelle.rxpermissions2.Permission;
-import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.EventBusBean;
 import com.whzl.mengbi.eventbus.EventBusUtils;
-import com.whzl.mengbi.ui.widget.view.GenericToolbar;
-import com.whzl.mengbi.ui.widget.view.Style;
-import com.whzl.mengbi.util.LogUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import io.reactivex.functions.Consumer;
 
 /**
  * @function 是为我们所有的activity提供公共的行为

@@ -17,6 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.BannerInfo;
 import com.whzl.mengbi.presenter.HomePresenter;
@@ -96,9 +100,6 @@ public class HomeFragment extends BaseFragement implements HomeView{
                              Bundle savedInstanceState) {
         mContext = getActivity();
         mView = inflater.inflate(R.layout.fragment_home_layout,null);
-        Toolbar mToolbar = mView.findViewById(R.id.fragment_home_toolbar);
-        mToolbar.setTitle("");
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         homePresenter = new HomePresenterImpl(this);
         initData();
         initView();
@@ -125,18 +126,20 @@ public class HomeFragment extends BaseFragement implements HomeView{
         liveShowTv = mView.findViewById(R.id.fm_home_show_live_tv);
         recommendLiveRv = mView.findViewById(R.id.fm_home_recommend_recycler_view);
         wonderfulLiveRv =  mView.findViewById(R.id.fm_home_show_live_recycler_view);
+        RefreshLayout refreshLayout = (RefreshLayout)mView.findViewById(R.id.fm_home_refreshLayout);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                refreshlayout.finishRefresh();
 
-        //首页小编推荐字体加粗
-        SpannableString spanString = new SpannableString("小编推荐");
-        StyleSpan span = new StyleSpan(Typeface.BOLD_ITALIC);//加粗
-        spanString.setSpan(span, 0, spanString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        recommend_tv.setText(spanString);
-
-        //首页精彩直播字体加粗
-        SpannableString liveSpanTV = new SpannableString("精彩直播");
-        StyleSpan liveStyleTV = new StyleSpan(Typeface.BOLD_ITALIC);//加粗
-        spanString.setSpan(liveStyleTV, 0, liveSpanTV.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        liveShowTv.setText(liveSpanTV);
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                refreshlayout.finishLoadMore();
+            }
+        });
     }
 
     public void initData() {

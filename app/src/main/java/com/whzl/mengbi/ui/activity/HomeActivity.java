@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.ui.adapter.ViewPagerAdapter;
@@ -39,11 +40,11 @@ public class HomeActivity extends BaseAtivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        StatusBarUtil.setColor(this,getResources().getColor(R.color.colorPrimary));
         setContentView(R.layout.activity_home_layout);
         //实例化控件
         initView();
     }
-
 
     private void initView(){
         //底部导航切换，滑动
@@ -58,29 +59,25 @@ public class HomeActivity extends BaseAtivity {
                         boolean islogin = (boolean)SPUtils.get(HomeActivity.this,"islogin",false);
                         switch (item.getItemId()) {
                             case R.id.item_home:
-                                item.setIcon(R.drawable.ic_home_bottom_checked);
+                                 item.setIcon(R.drawable.ic_home_bottom_checked);
                                 viewPager.setCurrentItem(0);
                                 break;
                             case R.id.item_follow:
-                                if (islogin) {
-                                    viewPager.setCurrentItem(1);
-                                } else {
+                                if (!islogin) {
                                     Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
-                                    mIntent.putExtra("touristFlag", "0");
-                                    finish();
+                                    mIntent.putExtra("visitor", true);
                                     startActivity(mIntent);
                                 }
+                                viewPager.setCurrentItem(1);
                                 break;
                             case R.id.item_my:
-                                if (islogin) {
-                                    item.setIcon(R.drawable.mechance);
-                                    viewPager.setCurrentItem(2);
-                                } else {
+                                item.setIcon(R.drawable.mechance);
+                                if (!islogin) {
                                     Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
-                                    mIntent.putExtra("touristFlag", "0");
-                                    finish();
+                                    mIntent.putExtra("visitor", true);
                                     startActivity(mIntent);
                                 }
+                                viewPager.setCurrentItem(2);
                                 break;
                         }
                         return false;
