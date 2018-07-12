@@ -108,19 +108,9 @@ public class URLContentUtils{
      */
     public static final String ROOM_USER_INFO = "v1/room/get-enter-user-info";
 
-    /**
-<<<<<<< HEAD
-     * 直播间基本信息
-     */
-    public static final String ROOM_INFO = "v1/room/get-room-info";
 
     /**
-     * 观看人数
-     */
-    public static final String AUDIENCE_COUNT = "v1/room/total-audience";
-=======
      * 直播间的在线观看用户
      */
     public static final String ROOM_ONLINE = "v1/room/online";
->>>>>>> 11a87667266e286c85dd8b545a206a520954b0cc
 }

@@ -93,6 +93,8 @@ dependencies {
     implementation 'com.google.protobuf:protobuf-java:3.5.1'
     implementation 'com.google.protobuf:protoc:3.5.1'
     implementation 'org.greenrobot:eventbus:3.0.0'
+
+    implementation 'com.zhy:base-rvadapter:3.0.3'
     //上拉刷新，下拉加载
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
