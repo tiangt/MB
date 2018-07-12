@@ -87,15 +87,20 @@ public class URLContentUtils{
      */
     public static final String OPEN_LOGIN="v1/user/open-login";
 
-    /**
-     * 移动端充值规则接口
-     */
-    public static final String RECHARGE_GET_CHANNEL="v1/recharge/get-channel";
 
     /**
-     * 支付宝下单接口
+     * 获取房间信息
      */
-    public static final String RECHARGE_ORDER="v1/recharge/order";
+    public static final String ROOM_INFO = "v1/room/get-room-info";
+
+    /**
+     * 获取房间观看人数
+     */
+    public static final String AUDIENCE_COUNT = "v1/room/total-audience";
+
+    /**
+     * 关注主播
+     */
     public static final String FELLOW_HOST = "v1/room/add-sub";
 
     /**
@@ -104,6 +109,7 @@ public class URLContentUtils{
     public static final String ROOM_USER_INFO = "v1/room/get-enter-user-info";
 
     /**
+<<<<<<< HEAD
      * 直播间基本信息
      */
     public static final String ROOM_INFO = "v1/room/get-room-info";
@@ -112,4 +118,9 @@ public class URLContentUtils{
      * 观看人数
      */
     public static final String AUDIENCE_COUNT = "v1/room/total-audience";
+=======
+     * 直播间的在线观看用户
+     */
+    public static final String ROOM_ONLINE = "v1/room/online";
+>>>>>>> 11a87667266e286c85dd8b545a206a520954b0cc
 }
