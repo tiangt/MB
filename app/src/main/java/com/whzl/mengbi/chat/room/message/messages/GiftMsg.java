@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 
 import com.whzl.mengbi.chat.room.message.messageJson.GiftJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
@@ -48,7 +49,7 @@ public class GiftMsg implements FillHolderMessage {
     public void fillHolder(RecyclerView.ViewHolder holder) {
         mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        //mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+        mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         mHolder.textView.append(LevelUtil.getImageResourceSpan(context, ResourceMap.getResourceMap().getUserLevelIcon(fromLevel)));
         mHolder.textView.append(" ");
         mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickName, fromUid, programId));

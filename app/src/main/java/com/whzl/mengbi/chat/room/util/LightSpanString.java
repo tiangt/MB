@@ -23,6 +23,9 @@ public class LightSpanString {
         NickNameSpan clickSpan = new NickNameSpan(context) {
             @Override
             public void onClick(View widget) {
+                if (uid <= 0) {
+                    return;
+                }
                 Log.i("chatMsg","点击了 "+nickName);
                 AudienceInfoDialog.newInstance(uid, programId).show(((AppCompatActivity)context).getSupportFragmentManager());
                 //new EnterUserPop().enterUserPop(mContext,uid, ChatRoomInfo.getProgramId());

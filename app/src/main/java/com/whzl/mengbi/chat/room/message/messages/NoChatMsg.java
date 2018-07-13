@@ -3,13 +3,10 @@ package com.whzl.mengbi.chat.room.message.messages;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
-import android.view.View;
+import android.text.method.LinkMovementMethod;
 
-import com.whzl.mengbi.chat.room.util.NickNameSpan;
+import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 
 public class NoChatMsg implements FillHolderMessage{
@@ -19,6 +16,7 @@ public class NoChatMsg implements FillHolderMessage{
     private String toNickname;
     private int period;
     private int nochatType;
+    private int programId = -1;
     private Context context;
 
     public NoChatMsg(int fromUid, String fromNickname, int toUid, String toNickname, int period, int nochatType, Context context) {
@@ -29,6 +27,9 @@ public class NoChatMsg implements FillHolderMessage{
         this.period = period;
         this.nochatType = nochatType;
         this.context = context;
+        if (null != ChatRoomInfo.getInstance().getRoomInfoBean()) {
+            programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
+        }
     }
 
     public int getFromUid() {
@@ -88,66 +89,45 @@ public class NoChatMsg implements FillHolderMessage{
         return SINGLE_TEXTVIEW;
     }
 
-    private SpannableString getNickNameSpan(final String nickName, final int uid) {
-        SpannableString nickSpan = new SpannableString(nickName);
-        NickNameSpan clickSpan = new NickNameSpan(context) {
-            @Override
-            public void onClick(View widget) {
-                Log.i("chatMsg", "点击了 " + nickName);
-                //TODO:弹窗
-                //new EnterUserPop().enterUserPop(mContext, uid, ChatRoomInfo.getProgramId());
-            }
-        };
-
-        nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return nickSpan;
-    }
-
-    private SpannableString getLightStr(String content, int color) {
-        //文本内容
-        SpannableString ss = new SpannableString(content);
-        //设置字符颜色
-        ss.setSpan(new ForegroundColorSpan(color), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return ss;
-    }
 
     private void showNoChatMsg(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        mHolder.textView.append(getNickNameSpan(toNickname, toUid));
+        mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId));
         mHolder.textView.append(" 被 ");
-        mHolder.textView.append(getNickNameSpan(fromNickname, fromUid));
-        String nochatContent = " 禁止发言" + period / 50 + "分钟";
-        mHolder.textView.append(getLightStr(nochatContent, Color.RED));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId));
+        String nochatContent = " 禁止发言" + period / 60 + "分钟";
+        mHolder.textView.append(LightSpanString.getLightString(nochatContent, Color.parseColor("#ff611b")));
     }
 
     private void showRelieveNoChatMsg(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        mHolder.textView.append(getNickNameSpan(toNickname, toUid));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId));
         mHolder.textView.append(" 被 ");
-        mHolder.textView.append(getNickNameSpan(fromNickname, fromUid));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId));
         String nochatContent = " 解除禁言";
-        mHolder.textView.append(getLightStr(nochatContent, Color.RED));
+        mHolder.textView.append(LightSpanString.getLightString(nochatContent, Color.parseColor("#ff611b")));
     }
 
     private void showKickoutMsg(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        mHolder.textView.append(getNickNameSpan(toNickname, toUid));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId));
         mHolder.textView.append(" 被 ");
-        mHolder.textView.append(getNickNameSpan(fromNickname, fromUid));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId));
         String kickouContent = " 踢出房间";
-        mHolder.textView.append(getLightStr(kickouContent, Color.RED));
+        mHolder.textView.append(LightSpanString.getLightString(kickouContent, Color.parseColor("#ff611b")));
     }
 
     private void showRoomManagerMsg(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        mHolder.textView.append(getNickNameSpan(toNickname, toUid));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId));
         mHolder.textView.append(" 被 ");
-        mHolder.textView.append(getNickNameSpan("主播", fromUid));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId));
         String kickouContent = " 设置为房管";
-        mHolder.textView.append(getLightStr(kickouContent, Color.RED));
+        mHolder.textView.append(LightSpanString.getLightString(kickouContent, Color.parseColor("#ff611b")));
     }
 }

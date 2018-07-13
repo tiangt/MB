@@ -99,7 +99,7 @@ public class ChatMessage implements FillHolderMessage{
                 mholder.textView.append(" ");
             }
         }
-        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId));
+        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname + ": ", from_uid, programId));
         SpannableString spanString = LightSpanString.getLightString(contentString, Color.WHITE);
         //TODO:表情替换
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
