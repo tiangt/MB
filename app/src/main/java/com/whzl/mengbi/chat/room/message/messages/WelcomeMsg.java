@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 
+import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
@@ -32,12 +33,15 @@ public class WelcomeMsg implements FillHolderMessage {
         this.uid = welcomeJson.getContext().getInfo().getUserId();
         mContext = context;
         //TODO:判断主播or用户
-        int anchorUid = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getAnchor().getId();
-        if (anchorUid == this.uid) {
-            isAnchor = true;
+        if (ChatRoomInfo.getInstance().getRoomInfoBean() != null) {
+            int anchorUid = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getAnchor().getId();
+            if (anchorUid == this.uid) {
+                isAnchor = true;
+            }
         }
         this.userLevel = getUserLevel(uid, welcomeJson.getContext().getInfo().getLevelList());
         this.userSpanList = userSpanList;
+        this.hasGuard = userHasGuard(welcomeJson.getContext().getInfo().getUserBagList());
     }
 
     @Override
@@ -55,7 +59,10 @@ public class WelcomeMsg implements FillHolderMessage {
             mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
             mHolder.textView.append(" ");
         }
-
+        if (hasGuard) {
+            mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.guard));
+            mHolder.textView.append(" ");
+        }
         if (null != userSpanList) {
             for(SpannableString spanString : userSpanList) {
                 mHolder.textView.append(spanString);
@@ -103,14 +110,17 @@ public class WelcomeMsg implements FillHolderMessage {
         return nickSpan;
     }
 
-    private boolean hasGuard(List<WelcomeJson.UserBagItem> goodsList) {
+    private boolean userHasGuard(List<WelcomeJson.UserBagItem> goodsList) {
+        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
+            return false;
+        }
         int programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
         boolean hasGuard = false;
         for(WelcomeJson.UserBagItem bagItem: goodsList) {
-//            if (bagItem.getGoodsType().equals("GUARD") && bagItem. == programId) {
-//                hasGuard = true;
-//                break;
-//            }
+            if (bagItem.getGoodsType().equals("GUARD") && bagItem.getBindProgramId() == programId) {
+                hasGuard = true;
+                break;
+            }
         }
         return hasGuard;
     }
