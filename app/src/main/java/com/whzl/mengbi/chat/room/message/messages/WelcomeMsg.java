@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 
@@ -27,6 +28,7 @@ public class WelcomeMsg implements FillHolderMessage {
     private Context mContext;
     private boolean isAnchor = false;
     private boolean hasGuard = false;
+    private int programId = 0;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
@@ -38,6 +40,7 @@ public class WelcomeMsg implements FillHolderMessage {
             if (anchorUid == this.uid) {
                 isAnchor = true;
             }
+            programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
         }
         this.userLevel = getUserLevel(uid, welcomeJson.getContext().getInfo().getLevelList());
         this.userSpanList = userSpanList;
@@ -48,7 +51,7 @@ public class WelcomeMsg implements FillHolderMessage {
     public void fillHolder(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        //mHolder.textView.append(getLightStr("欢迎"));
+        mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         if (uid != 0) {
             int levelIcon = 0;
             if (isAnchor) {
@@ -69,7 +72,7 @@ public class WelcomeMsg implements FillHolderMessage {
                 mHolder.textView.append(" ");
             }
         }
-        mHolder.textView.append(getNickNameSpan(nickName, uid));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId));
         mHolder.textView.append(LightSpanString.getLightString(" 进入直播间",Color.WHITE));
     }
 
