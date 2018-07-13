@@ -14,6 +14,9 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.List;
 
+/**
+ * @author shaw
+ */
 public class AudienceContributeListAdapter<T> extends CommonAdapter<ContributeDataBean.DataBean.UserInfoBean> {
 
     private int[] rankIcons = new int[]{R.drawable.contribute_rank_1, R.drawable.contribute_rank_2, R.drawable.contribute_rank_3, R.drawable.contribute_rank_4, R.drawable.contribute_rank_5};
@@ -30,8 +33,6 @@ public class AudienceContributeListAdapter<T> extends CommonAdapter<ContributeDa
 
     @Override
     protected void convert(ViewHolder holder, ContributeDataBean.DataBean.UserInfoBean userInfoBean, int position) {
-        LinearLayout llLevelContainer = holder.getView(R.id.ll_level_container);
-        llLevelContainer.removeAllViews();
         ImageView ivRank = holder.getView(R.id.iv_rank);
         ivRank.setVisibility(position < 5 ? View.VISIBLE : View.INVISIBLE);
         if (position < 5) {

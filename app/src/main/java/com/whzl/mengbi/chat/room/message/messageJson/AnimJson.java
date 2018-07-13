@@ -24,6 +24,15 @@ public class AnimJson {
     private String type;
     private String animType;
     private int animId;
+    private String giftUrl;
+
+    public String getGiftUrl() {
+        return giftUrl;
+    }
+
+    public void setGiftUrl(String giftUrl) {
+        this.giftUrl = giftUrl;
+    }
 
     public void setResources(List<ResourcesEntity> resources) {
         this.resources = resources;
@@ -177,6 +186,13 @@ public class AnimJson {
         private String toNickname;
         private String goodsName;
         private long lastUpdateTime;
+        private long seconds;
+
+        public long getSeconds() {
+            return seconds;
+        }
+
+
 
         public void setLastUpdateTime(long lastUpdateTime) {
             this.lastUpdateTime = lastUpdateTime;

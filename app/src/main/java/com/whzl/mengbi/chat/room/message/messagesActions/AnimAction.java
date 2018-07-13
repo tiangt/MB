@@ -26,7 +26,7 @@ public class AnimAction implements Actions {
         int resourceId;
         String aniType = animJson.getAnimType();
         if (aniType.equals("MOBILE_GIFT_GIF") || aniType.equals("MOBILE_CAR_GIF")) {
-            imageType = ".gif";
+            imageType = "gif";
             String strResId = "";
             for(AnimJson.ResourcesEntity resource : animJson.getResources()) {
                 if (resource.getResType().equals("GIF")) {
@@ -41,7 +41,7 @@ public class AnimAction implements Actions {
                 return;
             }
         }else if (aniType.equals("TOTAl")) {
-            imageType = ".jpg";
+            imageType = "jpg";
             if (animJson.getContext() == null) {
                 return;
             }

@@ -1,19 +1,24 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,8 +32,8 @@ import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
-import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -46,6 +51,7 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -54,6 +60,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,6 +100,14 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     ImageButton btnChat;
     @BindView(R.id.btn_send_gift)
     ImageButton btnSendGift;
+    @BindView(R.id.gift_anim_view)
+    RelativeLayout giftAnimView;
+    @BindView(R.id.btn_contribute)
+    Button btnContribute;
+    @BindView(R.id.btn_close)
+    Button btnClose;
+    @BindView(R.id.iv_gift_gif)
+    ImageView ivGiftGif;
 
     private Unbinder mBind;
     private LivePresenterImpl mLivePresenter;
@@ -110,8 +125,10 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private final static String TAG_DIALOG_CHAT = "tagChat";
     private final static String TAG_DIALOG_AUDIENCE = "tagAudience";
     private final static String TAG_DIALOG_CONTRIBUTE = "tagContribute";
-    private ArrayList<AnimJson> mTotalGiftList = new ArrayList<>();
+    private ArrayList<AnimJson> mTotalAnimtList = new ArrayList<>();
     private boolean flagIsAnimating;
+    private ArrayList<AnimEvent> mGifAnimList = new ArrayList<>();
+    private boolean flagIsGifAnimating;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -179,7 +196,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
             @Override
             public int getItemCount() {
-                return chatList == null ? 23 : chatList.size();
+                return chatList == null ? 0 : chatList.size();
             }
         };
         recycler.setAdapter(chatAdapter);
@@ -256,7 +273,6 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                 LiveHouseAudienceListDialog.newInstance(mProgramId)
                         .setDimAmount(0)
                         .setShowBottom(true)
-                        .setOutCancel(true)
                         .show(getSupportFragmentManager());
                 break;
 
@@ -303,12 +319,69 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnimEvent animEvent) {
-        if ("TOTAL".equals(animEvent.getAnimJson().getAnimType())) {
-            mTotalGiftList.add(animEvent.getAnimJson());
+        if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())) {
+            AnimJson animJson = animEvent.getAnimJson();
+            animJson.setGiftUrl(animEvent.getAnimUrl());
+            mTotalAnimtList.add(animJson);
             if (!flagIsAnimating) {
-                animFift(animEvent.getAnimJson().getContext());
+                animGift(mTotalAnimtList.get(0));
+            }
+        } else {
+            long seconds = 0;
+            if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())) {
+                seconds = animEvent.getAnimJson().getContext().getSeconds();
+                ivGiftGif.setVisibility(View.VISIBLE);
+            } else if ("MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
+                List<AnimJson.ResourcesEntity> resources = animEvent.getAnimJson().getResources();
+                for (int i = 0; i < resources.size(); i++) {
+                    AnimJson.ResourcesEntity resourcesEntity = resources.get(i);
+                    if ("PARAMS".equals(resourcesEntity.getResType())) {
+                        String resValue = resourcesEntity.getResValue();
+                    }
+                }
+            }
+            if (seconds > 0) {
+                animEvent.setSeconds(seconds);
+                mGifAnimList.add(animEvent);
+                if(!flagIsGifAnimating){
+                    animGif(mGifAnimList.get(0));
+                }
             }
         }
+
+    }
+
+    private void animGif(AnimEvent animEvent) {
+        flagIsGifAnimating = true;
+        GlideImageLoader.getInstace().loadGif(getApplicationContext(), animEvent.getAnimUrl(), ivGiftGif, new GlideImageLoader.GifListener() {
+            @Override
+            public void onResourceReady() {
+                ivGiftGif.setVisibility(View.VISIBLE);
+                ivGiftGif.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ivGiftGif.setVisibility(View.GONE);
+                        mGifAnimList.remove(0);
+                        if(mGifAnimList.size() > 0){
+                            animGif(mGifAnimList.get(0));
+                        }else {
+                            flagIsGifAnimating = false;
+                        }
+                    }
+                }, animEvent.getSeconds() * 1000);
+            }
+
+            @Override
+            public void onFail() {
+                ivGiftGif.setVisibility(View.GONE);
+                mGifAnimList.remove(0);
+                if(mGifAnimList.size() > 0){
+                    animGif(mGifAnimList.get(0));
+                }else {
+                    flagIsAnimating = true;
+                }
+            }
+        });
     }
 
     @BindView(R.id.iv_anim_gift_avatar)
@@ -317,18 +390,77 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     TextView tvAnimGiftForm;
     @BindView(R.id.tv_anim_gift_name)
     TextView tvAnimGiftName;
-    @BindView(R.id.ll_message_info_container)
-    LinearLayout llMessageInfoContainer;
     @BindView(R.id.iv_anim_gift_icon)
     ImageView ivAnimGiftIcon;
     @BindView(R.id.tv_anim_gift_count)
     TextView tvAnimGiftCount;
 
-    private void animFift(AnimJson.ContextEntity context) {
+    private void animGift(AnimJson animJson) {
+        AnimJson.ContextEntity context = animJson.getContext();
+        giftAnimView.setVisibility(View.VISIBLE);
         String avatarUrl = ImageUrl.getImageUrl(context.getUserId(), "jpg", context.getLastUpdateTime());
         GlideImageLoader.getInstace().displayImage(this, avatarUrl, ivAnimGiftAvatar);
+        GlideImageLoader.getInstace().displayImage(this, animJson.getGiftUrl(), ivAnimGiftIcon);
         tvAnimGiftForm.setText(context.getNickname());
-        tvAnimGiftName.setText(context.getGoodsName());
+        SpannableString span = new SpannableString("送 " + context.getGoodsName());
+        span.setSpan(new ForegroundColorSpan(Color.parseColor("#fe4b22")), 2, span.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvAnimGiftName.setText(span);
+        tvAnimGiftCount.setText("x " + context.getGiftTotalCount());
+        giftAnimView.post(() -> {
+            int animGiftWidth = giftAnimView.getWidth();
+            int animX = UIUtil.dip2px(LiveDisplayActivityNew.this, 13.5f) + animGiftWidth;
+            giftAnimView.animate().translationX(animX).setInterpolator(new DecelerateInterpolator())
+                    .setDuration(500)
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+                            flagIsAnimating = true;
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            scaleAnim(tvAnimGiftCount);
+                            giftAnimView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    giftAnimView.setVisibility(View.GONE);
+                                    giftAnimView.setTranslationX(0);
+                                    mTotalAnimtList.remove(0);
+                                    if (mTotalAnimtList.size() > 0) {
+                                        animGift(mTotalAnimtList.get(0));
+                                    } else {
+                                        flagIsAnimating = false;
+                                    }
+                                }
+                            }, 2500);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    })
+                    .start();
+        });
+    }
+
+    private void scaleAnim(View view) {
+        ValueAnimator animator = ValueAnimator.ofFloat(1, 2f, 1);
+        animator.setDuration(400);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float animatedValue = (float) animation.getAnimatedValue();
+                view.setScaleX(animatedValue);
+                view.setScaleY(animatedValue);
+            }
+        });
+        animator.start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -366,6 +498,20 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         }
     }
 
+    private void setupPlayerSize(int height, int width) {
+        if (height == 0 || width == 0) {
+            return;
+        }
+        ratioLayout.setPicRatio(width / (float) height);
+        ratioLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                ratioLayout.requestLayout();
+            }
+        });
+    }
+
+
     @Override
     public void onAudienceSuccess(long count) {
         tvPopularity.setText("人气\n" + count);
@@ -379,19 +525,6 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @Override
     public void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data) {
         btnFollow.setVisibility(data.isIsSubs() ? View.GONE : View.VISIBLE);
-    }
-
-    private void setupPlayerSize(int height, int width) {
-        if (height == 0 || width == 0) {
-            return;
-        }
-        ratioLayout.setPicRatio(width / (float) height);
-        ratioLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                ratioLayout.requestLayout();
-            }
-        });
     }
 
     @Override
