@@ -23,7 +23,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * @author shaw
@@ -42,17 +41,8 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
     TextView tvLocation;
     @BindView(R.id.tv_introduce)
     TextView tvIntroduce;
-    //    @BindView(R.id.tv_ban)
-//    TextView tvBan;
-//    @BindView(R.id.tv_kick_out)
-//    TextView tvKickOut;
-//    @BindView(R.id.tv_upgrade)
-//    TextView tvUpgrade;
-//    @BindView(R.id.adjust)
-//    TextView adjust;
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
-    Unbinder unbinder;
 
     public static BaseAwesomeDialog newInstance(int userId, int programId) {
         AudienceInfoDialog dialog = new AudienceInfoDialog();

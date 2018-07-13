@@ -51,7 +51,7 @@ public class AudienceListAdapter<T> extends CommonAdapter<AudienceListBean.DataB
                             .into(new SimpleTarget<Drawable>() {
                                 @Override
                                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                    int intrinsicHeight = resource.getIntrinsicHeight();  
+                                    int intrinsicHeight = resource.getIntrinsicHeight();
                                     int intrinsicWidth = resource.getIntrinsicWidth();
                                     ImageView imageView = new ImageView(mContext);
                                     imageView.setImageDrawable(resource);
