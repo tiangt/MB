@@ -69,9 +69,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="1dp"
                     android:layout_toRightOf="@id/rl_host_info"
-                    android:src="@drawable/ic_live_follow"
                     android:background="@null"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_live_follow" />
 
             </RelativeLayout>
 
@@ -133,6 +133,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp">
+
+                <include
+                    android:id="@+id/gift_anim_view"
+                    layout="@layout/layout_gift_anim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="13.5dp"
+                    app:layout_constraintRight_toLeftOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
         </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -152,9 +168,9 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="17.5dp"
-            android:src="@drawable/ic_live_display_talk"
+            android:background="@null"
             android:scaleType="centerCrop"
-            android:background="@null" />
+            android:src="@drawable/ic_live_display_talk" />
 
         <ImageButton
             android:id="@+id/btn_send_gift"
@@ -163,9 +179,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="17.5dp"
-            android:src="@drawable/ic_live_display_gift"
             android:background="@null"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_live_display_gift" />
 
     </RelativeLayout>
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="34dp"
+    android:background="@drawable/shape_live_house_gift_anim_bg">
+
+    <com.whzl.mengbi.ui.widget.view.CircleImageView
+        android:id="@+id/iv_anim_gift_avatar"
+        android:layout_width="34dp"
+        android:layout_height="match_parent" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="6dp"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/iv_anim_gift_avatar"
+        android:gravity="center_vertical"
+        android:id="@+id/ll_message_info_container">
+
+        <TextView
+            android:id="@+id/tv_anim_gift_form"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#f9f9f9"
+            android:textSize="11sp" />
+
+
+        <TextView
+            android:id="@+id/tv_anim_gift_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#f9f9f9"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_anim_gift_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="13.5dp"
+        android:layout_toRightOf="@id/ll_message_info_container"/>
+    
+    <TextView
+        android:id="@+id/tv_anim_gift_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/iv_anim_gift_icon"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="2dp"/>
+
+</RelativeLayout>

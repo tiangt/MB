@@ -10,19 +10,24 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
-import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
+import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
+import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -88,6 +93,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     ImageButton btnChat;
     @BindView(R.id.btn_send_gift)
     ImageButton btnSendGift;
+
     private Unbinder mBind;
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -104,6 +110,8 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private final static String TAG_DIALOG_CHAT = "tagChat";
     private final static String TAG_DIALOG_AUDIENCE = "tagAudience";
     private final static String TAG_DIALOG_CONTRIBUTE = "tagContribute";
+    private ArrayList<AnimJson> mTotalGiftList = new ArrayList<>();
+    private boolean flagIsAnimating;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,13 +138,6 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         if (getIntent() != null) {
             mProgramId = getIntent().getIntExtra("ProgramId", -1);
             SPUtils.put(this, "programId", mProgramId);
-//            mAnchorNickName = getIntent().getStringExtra("AnchorNickname");
-//            mRoomUserCount = getIntent().getIntExtra("RoomUserCount", 0);
-//            mCover = getIntent().getStringExtra("Cover");
-//            mStream = getIntent().getStringExtra("Stream");
-//            mDisplayWidth = getIntent().getIntExtra("displayWidth", 4);
-//            mDisplayHeight = getIntent().getIntExtra("displayHeight", 3);
-//            mStream = getIntent().getStringExtra("Stream");
         }
         userId = (Integer) SPUtils.get(this, "userId", 0);
         mLivePresenter.getLiveGift();
@@ -213,12 +214,9 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     private void initPlayers(String stream) {
         mMasterPlayer = new KSYMediaPlayer.Builder(this).build();
-        mMasterPlayer.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(IMediaPlayer mp) {
-                if (mMasterPlayer != null)
-                    mMasterPlayer.start();
-            }
+        mMasterPlayer.setOnPreparedListener(mp -> {
+            if (mMasterPlayer != null)
+                mMasterPlayer.start();
         });
         try {
             mMasterPlayer.shouldAutoPlay(false);
@@ -301,6 +299,36 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LuckGiftEvent luckGiftEvent) {
         // TODO: 2018/7/10
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(AnimEvent animEvent) {
+        if ("TOTAL".equals(animEvent.getAnimJson().getAnimType())) {
+            mTotalGiftList.add(animEvent.getAnimJson());
+            if (!flagIsAnimating) {
+                animFift(animEvent.getAnimJson().getContext());
+            }
+        }
+    }
+
+    @BindView(R.id.iv_anim_gift_avatar)
+    CircleImageView ivAnimGiftAvatar;
+    @BindView(R.id.tv_anim_gift_form)
+    TextView tvAnimGiftForm;
+    @BindView(R.id.tv_anim_gift_name)
+    TextView tvAnimGiftName;
+    @BindView(R.id.ll_message_info_container)
+    LinearLayout llMessageInfoContainer;
+    @BindView(R.id.iv_anim_gift_icon)
+    ImageView ivAnimGiftIcon;
+    @BindView(R.id.tv_anim_gift_count)
+    TextView tvAnimGiftCount;
+
+    private void animFift(AnimJson.ContextEntity context) {
+        String avatarUrl = ImageUrl.getImageUrl(context.getUserId(), "jpg", context.getLastUpdateTime());
+        GlideImageLoader.getInstace().displayImage(this, avatarUrl, ivAnimGiftAvatar);
+        tvAnimGiftForm.setText(context.getNickname());
+        tvAnimGiftName.setText(context.getGoodsName());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

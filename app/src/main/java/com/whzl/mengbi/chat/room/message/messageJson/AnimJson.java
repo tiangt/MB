@@ -112,9 +112,13 @@ public class AnimJson {
             this.animationResId = animationResId;
         }
 
-        public void setLocation(String location) {this.location = location;}
+        public void setLocation(String location) {
+            this.location = location;
+        }
 
-        public String getLocation() {return this.location;}
+        public String getLocation() {
+            return this.location;
+        }
 
         public void setResValue(String resValue) {
             this.resValue = resValue;
@@ -153,6 +157,16 @@ public class AnimJson {
          */
         private int goodsId;
         private int count;
+
+        public int getGiftTotalCount() {
+            return giftTotalCount;
+        }
+
+        public void setGiftTotalCount(int giftTotalCount) {
+            this.giftTotalCount = giftTotalCount;
+        }
+
+        private int giftTotalCount;
         private int comboTimes;
         private int toUserId;
         private String nickname;
@@ -162,6 +176,16 @@ public class AnimJson {
         private int goodsPicId;
         private String toNickname;
         private String goodsName;
+        private long lastUpdateTime;
+
+        public void setLastUpdateTime(long lastUpdateTime) {
+            this.lastUpdateTime = lastUpdateTime;
+        }
+
+        public long getLastUpdateTime() {
+            return lastUpdateTime;
+        }
+
 
         public void setGoodsId(int goodsId) {
             this.goodsId = goodsId;
@@ -250,5 +274,6 @@ public class AnimJson {
         public String getGoodsName() {
             return goodsName;
         }
+
     }
 }
