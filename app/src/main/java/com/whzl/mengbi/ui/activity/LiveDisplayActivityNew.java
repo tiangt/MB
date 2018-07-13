@@ -22,8 +22,8 @@ import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
-import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -94,7 +94,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private KSYMediaPlayer mMasterPlayer;
     private ChatRoomPresenterImpl chatRoomPresenter;
     private GiftInfo mGiftData;
-    private ArrayList<ChatMessage> chatList = new ArrayList<>();
+    private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     private RecyclerView.Adapter chatAdapter;
     private boolean isRecyclerScrolling;
     private int userId;
@@ -172,8 +172,8 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                ChatMessage chatMessage = chatList.get(position);
-                chatMessage.fillHolder(holder);
+                FillHolderMessage message = chatList.get(position);
+                message.fillHolder(holder);
             }
 
             @Override
@@ -290,7 +290,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     @Override
     public void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo) {
-//        new Thread(() -> chatRoomPresenter.setupConnection(liveRoomTokenInfo, LiveDisplayActivityNew.this)).start();
+        chatRoomPresenter.setupConnection(liveRoomTokenInfo, LiveDisplayActivityNew.this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -306,7 +306,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
-        chatList.add(((ChatMessage) message));
+        chatList.add(message);
         if (!isRecyclerScrolling) {
             chatAdapter.notifyDataSetChanged();
             recycler.smoothScrollToPosition(chatList.size() - 1);
@@ -318,6 +318,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
         if (roomInfoBean.getData() != null) {
             tvFansCount.setText("粉丝：" + roomInfoBean.getData().getSubscriptionNum() + "");
+            ChatRoomInfo.getInstance().setRoomInfoBean(roomInfoBean);
             if (roomInfoBean.getData().getAnchor() != null) {
                 GlideImageLoader.getInstace().circleCropImage(this, roomInfoBean.getData().getAnchor().getAvatar(), ivHostAvatar);
                 tvHostName.setText(roomInfoBean.getData().getAnchor().getName());

@@ -59,10 +59,12 @@ public class ChatMessage implements FillHolderMessage{
             e.printStackTrace();
         }
         from_level = LevelUtil.getUserLevel(msgJson.getFrom_json());
-        int anchorUid = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getAnchor().getId();
-        if (anchorUid == from_uid) {
-            isAnchor = true;
-            from_level = LevelUtil.getAnchorLevel(msgJson.getFrom_json());
+        if (ChatRoomInfo.getInstance().getRoomInfoBean() != null) {
+            int anchorUid = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getAnchor().getId();
+            if (anchorUid == from_uid) {
+                isAnchor = true;
+                from_level = LevelUtil.getAnchorLevel(msgJson.getFrom_json());
+            }
         }
         to_level = LevelUtil.getUserLevel(msgJson.getTo_json());
         hasGuard = hasGuard(msgJson.getFrom_json().getGoodsList());
@@ -172,8 +174,11 @@ public class ChatMessage implements FillHolderMessage{
     }
 
     private boolean hasGuard(List<FromJson.Good> goodsList) {
-        int programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
+        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null) {
+            return false;
+        }
         boolean hasGuard = false;
+        int programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
         for(FromJson.Good good: goodsList) {
             if (good.getGoodsType().equals("GUARD") && good.getBindProgramId() == programId) {
                 hasGuard = true;

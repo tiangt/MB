@@ -85,6 +85,15 @@ public class WelcomeJson {
         String isEquip;
         int goodsPicId;
         String goodsName;
+        int bindProgramId = 0;
+
+        public int getBindProgramId() {
+            return bindProgramId;
+        }
+
+        public void setBindProgramId(int bindProgramId) {
+            this.bindProgramId = bindProgramId;
+        }
 
         public String getGoodsName() {
             return goodsName;
