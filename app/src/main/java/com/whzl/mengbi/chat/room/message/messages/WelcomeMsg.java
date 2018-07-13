@@ -27,6 +27,7 @@ public class WelcomeMsg implements FillHolderMessage {
     private Context mContext;
     private boolean isAnchor = false;
     private boolean hasGuard = false;
+    private int programId = 0;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
@@ -38,6 +39,7 @@ public class WelcomeMsg implements FillHolderMessage {
             if (anchorUid == this.uid) {
                 isAnchor = true;
             }
+            programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
         }
         this.userLevel = getUserLevel(uid, welcomeJson.getContext().getInfo().getLevelList());
         this.userSpanList = userSpanList;
@@ -69,7 +71,7 @@ public class WelcomeMsg implements FillHolderMessage {
                 mHolder.textView.append(" ");
             }
         }
-        mHolder.textView.append(getNickNameSpan(nickName, uid));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId));
         mHolder.textView.append(LightSpanString.getLightString(" 进入直播间",Color.WHITE));
     }
 

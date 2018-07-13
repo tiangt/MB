@@ -34,6 +34,8 @@ public abstract class NickNameSpan extends ClickableSpan {
         float textSize = DensityUtil.dp2px(15);
         ds.setTextSize(textSize);
     }
-
-
 }
+
+
+
+
