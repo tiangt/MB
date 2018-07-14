@@ -1,7 +1,6 @@
 package com.whzl.mengbi.chat.room.message.messages;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -100,7 +99,7 @@ public class ChatMessage implements FillHolderMessage{
             }
         }
         mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname + ": ", from_uid, programId));
-        SpannableString spanString = LightSpanString.getLightString(contentString, Color.WHITE);
+        SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
         //TODO:表情替换
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
         mholder.textView.append(spanString);
@@ -117,9 +116,9 @@ public class ChatMessage implements FillHolderMessage{
             }
         }
         mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname,from_uid, programId));
-        mholder.textView.append(LightSpanString.getLightString("对 您 私聊:  ", Color.WHITE));
+        mholder.textView.append(LightSpanString.getLightString("对 您 私聊:  ", WHITE_FONG_COLOR));
         //TODO:表情替换
-        SpannableString spanString = LightSpanString.getLightString(contentString, Color.WHITE);
+        SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
         mholder.textView.append(spanString);
     }
@@ -144,7 +143,7 @@ public class ChatMessage implements FillHolderMessage{
     }
 
     private boolean userHasGuard(List<FromJson.Good> goodsList) {
-        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null) {
+        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
             return false;
         }
         boolean hasGuard = false;

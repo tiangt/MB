@@ -29,7 +29,6 @@ public class GiftMsg implements FillHolderMessage {
     private Context context;
     private int programId = 0;
 
-    private SingleTextViewHolder mHolder;
 
     public GiftMsg(GiftJson giftJson, Context context, SpannableString giftPicSpan) {
         fromUid = giftJson.getContext().getUserId();
@@ -47,17 +46,17 @@ public class GiftMsg implements FillHolderMessage {
 
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
-        mHolder = (SingleTextViewHolder) holder;
+        SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         mHolder.textView.append(LevelUtil.getImageResourceSpan(context, ResourceMap.getResourceMap().getUserLevelIcon(fromLevel)));
         mHolder.textView.append(" ");
         mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickName, fromUid, programId));
         mHolder.textView.append(" ");
-        mHolder.textView.append(LightSpanString.getLightString("赠送给 主播 ", Color.WHITE));
+        mHolder.textView.append(LightSpanString.getLightString("赠送给 主播 ", WHITE_FONG_COLOR));
         //mHolder.textView.append(getNickNameSpan(toNickName,toUid));
         mHolder.textView.append(LightSpanString.getLightString(giftCount +"", Color.parseColor("#f1275b")));
-        mHolder.textView.append(LightSpanString.getLightString("个" + giftName, Color.WHITE));
+        mHolder.textView.append(LightSpanString.getLightString("个" + giftName, WHITE_FONG_COLOR));
         if (giftPicSpan != null) {
             mHolder.textView.append(giftPicSpan);
         }

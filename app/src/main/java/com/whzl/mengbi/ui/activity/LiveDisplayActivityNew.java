@@ -403,7 +403,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private void animGift(AnimJson animJson) {
         AnimJson.ContextEntity context = animJson.getContext();
         giftAnimView.setVisibility(View.VISIBLE);
-        String avatarUrl = ImageUrl.getImageUrl(context.getUserId(), "jpg", context.getLastUpdateTime());
+        String avatarUrl = ImageUrl.getAvatarUrl(context.getUserId(), "jpg", context.getLastUpdateTime());
         GlideImageLoader.getInstace().displayImage(this, avatarUrl, ivAnimGiftAvatar);
         GlideImageLoader.getInstace().displayImage(this, animJson.getGiftUrl(), ivAnimGiftIcon);
         tvAnimGiftForm.setText(context.getNickname());

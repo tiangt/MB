@@ -6,12 +6,14 @@ import android.util.Log;
 import com.whzl.mengbi.chat.ProtoStringAvg;
 import com.whzl.mengbi.chat.client.MessageCallback;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatRoomEventJson;
+import com.whzl.mengbi.chat.room.message.messages.NoChatMsg;
 import com.whzl.mengbi.chat.room.message.messagesActions.Actions;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.OpenGuardAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
@@ -58,6 +60,7 @@ public class MessageRouter implements MessageCallback {
         //actionsMap.put("BROADCAST", new BroadcastAction());
         actionsMap.put("SubscribeProgram", new SubProgramAction());
         actionsMap.put("ANIMATION", new AnimAction());
+        actionsMap.put("OPEN_GUARD_M", new OpenGuardAction());
     }
 
     private void initChatAction() {
@@ -109,10 +112,8 @@ public class MessageRouter implements MessageCallback {
     }
 
     private void parseChatMsg(ProtoStringAvg.strAvg  message) {
-
         String type = getStrAvgString(message, 2);
         String msgInfo = getStrAvgString(message, 3);
-
         if (type == null || msgInfo == null) {
             return;
         } else if (type.equals("common")) {
@@ -164,17 +165,16 @@ public class MessageRouter implements MessageCallback {
         int fromUid = -1;
         int toUid = -1;
         int iPeriod = 0;
-
         try {
             fromUid = Integer.valueOf(fromUidStr);
             toUid = Integer.valueOf(toUidStr);
             type = Integer.valueOf(typeStr);
             iPeriod = Integer.valueOf(periodStr);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            Log.e(tag, e.getMessage());
             return;
         }
-
-
+        NoChatMsg nochatMsg = new NoChatMsg(fromUid, nickName, toUid, toNickName, iPeriod, type, mContext);
+        noChatAction.performAction(nochatMsg, mContext);
     }
 }

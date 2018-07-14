@@ -7,8 +7,20 @@ public class ImageUrl {
     //imageType: gif, jpg
     //根据时间戳获取url
     public static String getImageUrl(int imageId, String imageType, long timestamp) {
-        String strImageId = String.format("%09d", imageId);
-        String url = URLContentUtils.BASE_IMAGE_URL + "default/" + strImageId.substring(0, 3) + "/" +
+        return getUrlWithId(imageId, "default", imageType, timestamp);
+    }
+
+    public static  String getImageUrl(int imageId, String imageType) {
+        return getImageUrl(imageId, imageType, -1);
+    }
+
+    public static String getAvatarUrl(int uid, String imageType, long timestamp) {
+        return getUrlWithId(uid, "avatar", "jpg", timestamp);
+    }
+
+    private static String getUrlWithId(int id, String path, String imageType, long timestamp) {
+        String strImageId = String.format("%09d", id);
+        String url = URLContentUtils.BASE_IMAGE_URL + path + "/" + strImageId.substring(0, 3) + "/" +
                 strImageId.substring(3,5) + "/" + strImageId.substring(5, 7) +
                 "/" + strImageId.substring(7, 9) + "." + imageType;
         if (timestamp >= 0) {
@@ -18,7 +30,4 @@ public class ImageUrl {
         return url;
     }
 
-    public static  String getImageUrl(int imageId, String imageType) {
-        return getImageUrl(imageId, imageType, -1);
-    }
 }
