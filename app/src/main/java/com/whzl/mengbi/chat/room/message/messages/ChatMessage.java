@@ -143,7 +143,7 @@ public class ChatMessage implements FillHolderMessage{
     }
 
     private boolean userHasGuard(List<FromJson.Good> goodsList) {
-        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null) {
+        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
             return false;
         }
         boolean hasGuard = false;
