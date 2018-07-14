@@ -61,12 +61,14 @@ public class NoChatMsg implements FillHolderMessage{
         switch (nochatType) {
             case 1:
             case 3:
+            case 5:
             case 10:
                 //禁止发言消息
                 showNoChatMsg(holder);
                 break;
             case 0:
             case 2:
+            case 4:
             case 11:
                 showRelieveNoChatMsg(holder);
                 //解除禁言消息
@@ -76,10 +78,10 @@ public class NoChatMsg implements FillHolderMessage{
                 //设置为房管
                 break;
             case 8:
-                showRoomManagerMsg(holder);
+                showKickoutMsg(holder);
                 //剔出房间
                 break;
-            default :
+            default:
                 return;
         }
     }
@@ -94,19 +96,18 @@ public class NoChatMsg implements FillHolderMessage{
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId));
-        mHolder.textView.append(" 被 ");
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId));
-        String nochatContent = " 禁止发言" + period / 60 + "分钟";
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname + " 被 ", toUid, programId, WHITE_FONG_COLOR));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, Color.parseColor("#20d190")));
+        String nochatContent = " 禁止发言" + period + "分钟";
         mHolder.textView.append(LightSpanString.getLightString(nochatContent, Color.parseColor("#ff611b")));
     }
 
     private void showRelieveNoChatMsg(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId));
-        mHolder.textView.append(" 被 ");
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId));
+        mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname + " 被 ", toUid, programId, WHITE_FONG_COLOR));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, Color.parseColor("#20d190")));
         String nochatContent = " 解除禁言";
         mHolder.textView.append(LightSpanString.getLightString(nochatContent, Color.parseColor("#ff611b")));
     }
@@ -114,9 +115,9 @@ public class NoChatMsg implements FillHolderMessage{
     private void showKickoutMsg(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId));
-        mHolder.textView.append(" 被 ");
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId));
+        mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname + " 被 ", toUid, programId, WHITE_FONG_COLOR));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, Color.parseColor("#20d190")));
         String kickouContent = " 踢出房间";
         mHolder.textView.append(LightSpanString.getLightString(kickouContent, Color.parseColor("#ff611b")));
     }
@@ -124,9 +125,9 @@ public class NoChatMsg implements FillHolderMessage{
     private void showRoomManagerMsg(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId));
-        mHolder.textView.append(" 被 ");
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId));
+        mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname + " 被 ", toUid, programId, WHITE_FONG_COLOR));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, Color.parseColor("#20d190")));
         String kickouContent = " 设置为房管";
         mHolder.textView.append(LightSpanString.getLightString(kickouContent, Color.parseColor("#ff611b")));
     }

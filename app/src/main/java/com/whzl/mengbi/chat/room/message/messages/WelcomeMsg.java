@@ -61,19 +61,23 @@ public class WelcomeMsg implements FillHolderMessage {
             }
             mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
             mHolder.textView.append(" ");
-        }
-        if (hasGuard) {
-            mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.guard));
-            mHolder.textView.append(" ");
-        }
-        if (null != userSpanList) {
-            for(SpannableString spanString : userSpanList) {
-                mHolder.textView.append(spanString);
+            if (hasGuard) {
+                mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.guard));
                 mHolder.textView.append(" ");
             }
+            if (null != userSpanList) {
+                for(SpannableString spanString : userSpanList) {
+                    mHolder.textView.append(spanString);
+                    mHolder.textView.append(" ");
+                }
+            }
+            mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#f4be2c")));
+        }else {
+            mHolder.textView.append(LightSpanString.getLightString("欢迎 ", WHITE_FONG_COLOR));
+            mHolder.textView.append(LightSpanString.getLightString(nickName, Color.parseColor("#ffffff")));
+
         }
-        mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId));
-        mHolder.textView.append(LightSpanString.getLightString(" 进入直播间",Color.WHITE));
+        mHolder.textView.append(LightSpanString.getLightString(" 进入直播间", WHITE_FONG_COLOR));
     }
 
     @Override

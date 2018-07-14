@@ -1,6 +1,7 @@
 package com.whzl.mengbi.chat.room.util;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -19,8 +20,12 @@ public class LightSpanString {
     }
 
     public static SpannableString getNickNameSpan(Context context, final String nickName, final int uid, final int programId){
+        return LightSpanString.getNickNameSpan(context, nickName, uid, programId, Color.parseColor("#75bbfb"));
+    }
+
+    public static SpannableString getNickNameSpan(Context context, final String nickName, final int uid, final int programId, int color){
         SpannableString nickSpan = new SpannableString(nickName);
-        NickNameSpan clickSpan = new NickNameSpan(context) {
+        NickNameSpan clickSpan = new NickNameSpan(context, color) {
             @Override
             public void onClick(View widget) {
                 if (uid <= 0) {
