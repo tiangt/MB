@@ -20,4 +20,8 @@ public interface LiveView {
     void onFollowHostSuccess();
 
     void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data);
+
+    void onSendGiftSuccess();
+
+    void onError(String meg);
 }

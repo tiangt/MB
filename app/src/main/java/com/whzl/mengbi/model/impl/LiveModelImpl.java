@@ -29,12 +29,14 @@ public class LiveModelImpl implements LiveModel {
                 LiveRoomTokenInfo liveRoomTokenInfo = GsonUtils.GsonToBean(result.toString(), LiveRoomTokenInfo.class);
                 if (liveRoomTokenInfo.getCode() == 200) {
                     listener.onLiveTokenSuccess(liveRoomTokenInfo);
+                }else {
+                    listener.onError(liveRoomTokenInfo.getMsg());
                 }
             }
 
             @Override
             public void onReqFailed(String errorMsg) {
-
+                listener.onError(errorMsg);
             }
         });
     }
@@ -51,12 +53,15 @@ public class LiveModelImpl implements LiveModel {
                         GiftInfo giftInfo = GsonUtils.GsonToBean(strJson, GiftInfo.class);
                         if (giftInfo.getCode() == 200) {
                             listener.onLiveGiftSuccess(giftInfo);
+                        }else {
+                            listener.onError(giftInfo.getMsg());
                         }
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
                         LogUtils.d(errorMsg);
+                        listener.onError(errorMsg);
                     }
                 });
     }
@@ -79,12 +84,14 @@ public class LiveModelImpl implements LiveModel {
                 RoomInfoBean roomInfoBean = GsonUtils.GsonToBean(result.toString(), RoomInfoBean.class);
                 if (roomInfoBean.getCode() == 200) {
                     listener.onRoomInfoSuccess(roomInfoBean);
+                }else {
+                    listener.onError(roomInfoBean.getMsg());
                 }
             }
 
             @Override
             public void onReqFailed(String errorMsg) {
-
+                listener.onError(errorMsg);
             }
         });
     }
@@ -101,12 +108,14 @@ public class LiveModelImpl implements LiveModel {
                     if (audienceCountBean.getData() != null) {
                         listener.onAudienceSuccess(audienceCountBean.getData().getRoomUserNum());
                     }
+                }else {
+                    listener.onError(audienceCountBean.getMsg());
                 }
             }
 
             @Override
             public void onReqFailed(String errorMsg) {
-
+                listener.onError(errorMsg);
             }
         });
     }
@@ -122,12 +131,14 @@ public class LiveModelImpl implements LiveModel {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
                     listener.onFellowHostSuccess();
+                }else {
+                    listener.onError(responseInfo.getMsg());
                 }
             }
 
             @Override
             public void onReqFailed(String errorMsg) {
-
+                listener.onError(errorMsg);
             }
         });
     }
@@ -142,14 +153,45 @@ public class LiveModelImpl implements LiveModel {
             public void onReqSuccess(Object result) {
                 RoomUserInfo roomUserInfo = GsonUtils.GsonToBean(result.toString(), RoomUserInfo.class);
                 if (roomUserInfo.getCode() == 200) {
-                    if (roomUserInfo.getData() != null)
+                    if (roomUserInfo.getData() != null) {
                         listener.onGetRoomUserInfoSuccess(roomUserInfo.getData());
+                    }
+                }else {
+                    listener.onError(roomUserInfo.getMsg());
                 }
             }
 
             @Override
             public void onReqFailed(String errorMsg) {
+                listener.onError(errorMsg);
+            }
+        });
+    }
 
+    @Override
+    public void doSendGift(int userId, int count, int goodsId, int programId, int targetId, OnLiveFinishedListener listener) {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("roomId", programId + "");
+        paramsMap.put("programId", programId + "");
+        paramsMap.put("targetId", targetId + "");
+        paramsMap.put("goodsId", goodsId + "");
+        paramsMap.put("count", count + "");
+        paramsMap.put("userId", userId + "");
+        paramsMap.put("useBag", false + "");
+        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.SEND_GIFT, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
+                if (responseInfo.getCode() == 200) {
+                    listener.onSendGiftSuccess();
+                } else {
+                    listener.onError(responseInfo.getMsg());
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+                listener.onError(errorMsg);
             }
         });
     }

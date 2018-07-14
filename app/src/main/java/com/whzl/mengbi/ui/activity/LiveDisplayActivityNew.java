@@ -118,7 +118,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     private RecyclerView.Adapter chatAdapter;
     private boolean isRecyclerScrolling;
-    private int userId;
+    private int mUserId;
     private BaseAwesomeDialog mGiftDialog;
     private BaseAwesomeDialog mLiveHouseChatDialog;
     private final static String TAG_DIALOG_GIFT = "tagGift";
@@ -129,6 +129,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private boolean flagIsAnimating;
     private ArrayList<AnimEvent> mGifAnimList = new ArrayList<>();
     private boolean flagIsGifAnimating;
+    private int mAnchorId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -145,7 +146,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
         mLivePresenter.getAudienceAccount(mProgramId);
-        mLivePresenter.getRoomUserInfo(userId, mProgramId
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId
         );
     }
 
@@ -156,7 +157,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             mProgramId = getIntent().getIntExtra("ProgramId", -1);
             SPUtils.put(this, "programId", mProgramId);
         }
-        userId = (Integer) SPUtils.get(this, "userId", 0);
+        mUserId = (int) SPUtils.get(this, "userId", 0);
         mLivePresenter.getLiveGift();
     }
 
@@ -215,6 +216,8 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                     case SCROLL_STATE_SETTLING:
                         isRecyclerScrolling = true;
                         break;
+                    default:
+                        break;
                 }
             }
         });
@@ -223,7 +226,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private void getRoomToken() {
         String sessionId = SPUtils.get(this, "sessionId", "0").toString();
         HashMap map = new HashMap();
-        map.put("userId", userId);
+        map.put("mUserId", mUserId);
         map.put("programId", mProgramId);
         map.put("sessionId", sessionId);
         mLivePresenter.getLiveToken(map);
@@ -248,9 +251,10 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_follow:
-                mLivePresenter.followHost(userId, mProgramId);
+                mLivePresenter.followHost(mUserId, mProgramId);
                 break;
             case R.id.btn_close:
+                finish();
                 break;
             case R.id.btn_chat:
                 LiveHouseChatDialog.newInstance()
@@ -277,8 +281,9 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                 break;
 
             case R.id.btn_contribute:
-                LiveHouseRankDialog.newInstance(mProgramId).
-                        setShowBottom(true)
+                LiveHouseRankDialog.newInstance(mProgramId)
+                        .setDimAmount(0)
+                        .setShowBottom(true)
                         .show(getSupportFragmentManager());
             default:
                 break;
@@ -343,7 +348,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             if (seconds > 0) {
                 animEvent.setSeconds(seconds);
                 mGifAnimList.add(animEvent);
-                if(!flagIsGifAnimating){
+                if (!flagIsGifAnimating) {
                     animGif(mGifAnimList.get(0));
                 }
             }
@@ -362,9 +367,9 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                     public void run() {
                         ivGiftGif.setVisibility(View.GONE);
                         mGifAnimList.remove(0);
-                        if(mGifAnimList.size() > 0){
+                        if (mGifAnimList.size() > 0) {
                             animGif(mGifAnimList.get(0));
-                        }else {
+                        } else {
                             flagIsGifAnimating = false;
                         }
                     }
@@ -375,9 +380,9 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             public void onFail() {
                 ivGiftGif.setVisibility(View.GONE);
                 mGifAnimList.remove(0);
-                if(mGifAnimList.size() > 0){
+                if (mGifAnimList.size() > 0) {
                     animGif(mGifAnimList.get(0));
-                }else {
+                } else {
                     flagIsAnimating = true;
                 }
             }
@@ -476,6 +481,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     @Override
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
+        mAnchorId = roomInfoBean.getData().getAnchor().getId();
         if (roomInfoBean.getData() != null) {
             tvFansCount.setText("粉丝：" + roomInfoBean.getData().getSubscriptionNum() + "");
             ChatRoomInfo.getInstance().setRoomInfoBean(roomInfoBean);
@@ -528,6 +534,16 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     @Override
+    public void onSendGiftSuccess() {
+
+    }
+
+    @Override
+    public void onError(String meg) {
+        showToast(meg);
+    }
+
+    @Override
     public void onLiveFaceSuccess(EmjoyInfo emjoyInfo) {
 
     }
@@ -544,5 +560,9 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                 chatRoomPresenter.sendMessage(message);
             }
         }).start();
+    }
+
+    public void sendGift(int count, int goodId) {
+        mLivePresenter.sendGift(mUserId, count, goodId, mProgramId, mAnchorId);
     }
 }

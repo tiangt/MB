@@ -23,6 +23,10 @@ import com.whzl.mengbi.R;
  */
 public class BaseAppliaction extends Application{
 
+    public static BaseAppliaction getInstace() {
+        return instace;
+    }
+
     private static BaseAppliaction instace = null;
 
     @Override

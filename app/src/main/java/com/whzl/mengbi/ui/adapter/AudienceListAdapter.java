@@ -45,7 +45,7 @@ public class AudienceListAdapter<T> extends CommonAdapter<AudienceListBean.DataB
         if (audienceInfoBean.getMedal() != null) {
             for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
                 AudienceListBean.DataBean.AudienceInfoBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
-                if ("BADGE".equals(medalBean.getGoodsType()) || "GUARD".equals(medalBean.getGoodsType())) {
+                if ("BADGE".equals(medalBean.getGoodsType())) {
                     Glide.with(mContext)
                             .load(medalBean.getGoodsIcon())
                             .into(new SimpleTarget<Drawable>() {

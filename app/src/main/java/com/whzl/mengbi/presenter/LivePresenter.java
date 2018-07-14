@@ -17,4 +17,5 @@ public interface LivePresenter {
 
     void onDestory();
 
+    void sendGift(int userId, int count, int goodId, int programId, int anchorId);
 }
