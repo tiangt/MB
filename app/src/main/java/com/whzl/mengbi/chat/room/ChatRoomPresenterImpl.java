@@ -33,18 +33,20 @@ public class ChatRoomPresenterImpl{
         MbSocketFactory socketFactory = new MbSocketFactory();
         connectCallback = new IConnectCallback() {
             @Override
-            public void onConnectSuccess(String domain) {
+            public void onConnectSuccess(String domain, boolean isReconnect) {
                 Log.d(TAG, "连接成功");
                 if(domain!=null){
                     chatLogin(domain);
-                    Log.d(TAG,"chatLogin");
+                    Log.d(TAG,"chatLogin finished");
                 }
-
+                //TODO: if isReconnect == true, get token info
             }
 
             @Override
             public void onConnectFailed() {
                 Log.d(TAG, "连接失败");
+                //TODO: toast
+                //ToastUtils.showToast("网络连接异常，请检查网络");
             }
         };
 
