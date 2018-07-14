@@ -9,8 +9,10 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.BuildConfig;
+import com.whzl.mengbi.ui.common.BaseAppliaction;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -37,21 +39,22 @@ public class RequestManager {
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");//mdiatype 这个需要和服务端保持一致
     private static final String TAG = RequestManager.class.getSimpleName();
-    private static final String APPKEY ="mb_android";
-    private static final String APPSECRET ="3b2d8c0d1d88d44f1ef99b015caa5fe4";
+    private static final String APPKEY = "mb_android";
+    private static final String APPSECRET = "3b2d8c0d1d88d44f1ef99b015caa5fe4";
     private static final String CLIENTTYPE = "android";
 
     private static volatile RequestManager mInstance;//单利引用
     public static final int TYPE_GET = 0;//get请求
     public static final int TYPE_POST_JSON = 1;//post请求参数为json
     public static final int TYPE_POST_FORM = 2;//post请求参数为表单
-    public static final int RESPONSE_CODE=200;//响应成功标识码
+    public static final int RESPONSE_CODE = 200;//响应成功标识码
     private OkHttpClient mOkHttpClient;//okHttpClient 实例
     private Handler okHttpHandler;//全局处理子线程和M主线程通信
 
 
     /**
      * 生成sign
+     *
      * @param params_map
      * @return
      */
@@ -72,7 +75,7 @@ public class RequestManager {
         }
         try {
             String encodeParams = URLEncoder.encode(params, "UTF-8");
-            Log.e("http","params=" + params + ",encodeParams=" + encodeParams);
+            Log.e("http", "params=" + params + ",encodeParams=" + encodeParams);
             sign = EncryptUtils.md5Hex(encodeParams);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -114,8 +117,9 @@ public class RequestManager {
     }
 
     /**
-     *  okHttp同步请求统一入口
-     * @param actionUrl  接口地址
+     * okHttp同步请求统一入口
+     *
+     * @param actionUrl   接口地址
      * @param requestType 请求类型
      * @param paramsMap   请求参数
      */
@@ -135,8 +139,9 @@ public class RequestManager {
 
     /**
      * okHttp get同步请求
-     * @param actionUrl  接口地址
-     * @param paramsMap   请求参数
+     *
+     * @param actionUrl 接口地址
+     * @param paramsMap 请求参数
      */
     private void requestGetBySyn(String actionUrl, HashMap<String, String> paramsMap) {
         StringBuilder tempParams = new StringBuilder();
@@ -151,7 +156,6 @@ public class RequestManager {
                 tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
                 pos++;
             }
-
 
 
             //补全请求地址
@@ -170,17 +174,18 @@ public class RequestManager {
 
     /**
      * okHttp post同步请求
-     * @param actionUrl  接口地址
-     * @param paramsMap   请求参数
+     *
+     * @param actionUrl 接口地址
+     * @param paramsMap 请求参数
      */
     private void requestPostBySyn(String actionUrl, HashMap<String, String> paramsMap) {
         try {
             //处理参数
-            paramsMap.put("appKey",APPKEY);
+            paramsMap.put("appKey", APPKEY);
             paramsMap.put("timestamp", new Date().getTime() / 1000 + "");
-            paramsMap.put("appSecret",APPSECRET);
-            paramsMap.put("clientType",CLIENTTYPE);
-            paramsMap.put("clientVersion", BuildConfig.VERSION_CODE+"");
+            paramsMap.put("appSecret", APPSECRET);
+            paramsMap.put("clientType", CLIENTTYPE);
+            paramsMap.put("clientVersion", BuildConfig.VERSION_CODE + "");
 
 //            StringBuilder tempParams = new StringBuilder();
 //            int pos = 0;
@@ -194,7 +199,7 @@ public class RequestManager {
 //
 //            tempParams.d
             String sign = getSign(paramsMap);
-            paramsMap.put("sign",sign);
+            paramsMap.put("sign", sign);
             paramsMap.remove("appSecret");
             String params = JSON.toJSONString(paramsMap);
             //补全请求地址
@@ -221,6 +226,7 @@ public class RequestManager {
 
     /**
      * okHttp post同步请求表单提交
+     *
      * @param actionUrl 接口地址
      * @param paramsMap 请求参数
      */
@@ -252,11 +258,12 @@ public class RequestManager {
 
     /**
      * okHttp异步请求统一入口
+     *
      * @param actionUrl   接口地址
      * @param requestType 请求类型
      * @param paramsMap   请求参数
-     * @param callBack 请求返回数据回调
-     * @param <T> 数据泛型
+     * @param callBack    请求返回数据回调
+     * @param <T>         数据泛型
      **/
     public <T> Call requestAsyn(String actionUrl, int requestType, HashMap<String, String> paramsMap, ReqCallBack<T> callBack) {
         Call call = null;
@@ -273,12 +280,14 @@ public class RequestManager {
         }
         return call;
     }
+
     /**
      * okHttp get异步请求
+     *
      * @param actionUrl 接口地址
      * @param paramsMap 请求参数
-     * @param callBack 请求返回数据回调
-     * @param <T> 数据泛型
+     * @param callBack  请求返回数据回调
+     * @param <T>       数据泛型
      * @return
      */
     private <T> Call requestGetByAsyn(String actionUrl, HashMap<String, String> paramsMap, final ReqCallBack<T> callBack) {
@@ -322,24 +331,22 @@ public class RequestManager {
 
     /**
      * okHttp post异步请求
+     *
      * @param actionUrl 接口地址
      * @param paramsMap 请求参数
-     * @param callBack 请求返回数据回调
-     * @param <T> 数据泛型
+     * @param callBack  请求返回数据回调
+     * @param <T>       数据泛型
      * @return
      */
     private <T> Call requestPostByAsyn(String actionUrl, HashMap<String, String> paramsMap, final ReqCallBack<T> callBack) {
+        String sessionId = (String) SPUtils.get(BaseAppliaction.getInstace(), "sessionId", "");
         try {
-            paramsMap.put("appKey",APPKEY);
-            paramsMap.put("timestamp", new Date().getTime() / 1000 + "");
-            paramsMap.put("appSecret",APPSECRET);
-            if(paramsMap.get("sessionId")!=null){
-                paramsMap.put("sessionId","");
-            }else{
-                paramsMap.put("sessionId", "");
-            }
-            paramsMap.put("clientType",CLIENTTYPE);
-            paramsMap.put("clientVersion", BuildConfig.VERSION_CODE+"");
+            paramsMap.put("appKey", APPKEY);
+            paramsMap.put("timestamp", System.currentTimeMillis() / 1000 + "");
+            paramsMap.put("appSecret", APPSECRET);
+            paramsMap.put("sessionId", sessionId);
+            paramsMap.put("clientType", CLIENTTYPE);
+            paramsMap.put("clientVersion", BuildConfig.VERSION_CODE + "");
 //            StringBuilder tempParams = new StringBuilder();
 //            int pos = 0;
 //            for (String key : paramsMap.keySet()) {
@@ -350,7 +357,7 @@ public class RequestManager {
 //                pos++;
 //            }
             String sign = getSign(paramsMap);
-            paramsMap.put("sign",sign);
+            paramsMap.put("sign", sign);
             paramsMap.remove("appSecret");
             String params = JSON.toJSONString(paramsMap);
             RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, params);
@@ -387,10 +394,11 @@ public class RequestManager {
 
     /**
      * okHttp post异步请求表单提交
+     *
      * @param actionUrl 接口地址
      * @param paramsMap 请求参数
-     * @param callBack 请求返回数据回调
-     * @param <T> 数据泛型
+     * @param callBack  请求返回数据回调
+     * @param <T>       数据泛型
      * @return
      */
     private <T> Call requestPostByAsynWithForm(String actionUrl, HashMap<String, String> paramsMap, final ReqCallBack<T> callBack) {
@@ -434,14 +442,14 @@ public class RequestManager {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                LogUtils.e("url="+url + " getImage error" + e.toString());
+                LogUtils.e("url=" + url + " getImage error" + e.toString());
                 failedCallBack(e.toString(), reqCallBack);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    byte []body = response.body().bytes();
+                    byte[] body = response.body().bytes();
                     final Bitmap bitmap = BitmapFactory.decodeByteArray(body, 0, body.length);
                     successCallBack((T) bitmap, reqCallBack);
                 } else {
@@ -466,6 +474,7 @@ public class RequestManager {
 
     /**
      * 统一为请求添加头信息
+     *
      * @return
      */
     private Request.Builder addHeaders() {
@@ -480,6 +489,7 @@ public class RequestManager {
 
     /**
      * 统一同意处理成功信息
+     *
      * @param result
      * @param callBack
      * @param <T>
@@ -497,6 +507,7 @@ public class RequestManager {
 
     /**
      * 统一处理失败信息
+     *
      * @param errorMsg
      * @param callBack
      * @param <T>

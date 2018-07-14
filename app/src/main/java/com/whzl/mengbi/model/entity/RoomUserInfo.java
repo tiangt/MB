@@ -195,10 +195,10 @@ public class RoomUserInfo {
              * chengPonit : 1846429640
              */
 
-            private int coin;
+            private long coin;
             private int chengPonit;
 
-            public int getCoin() {
+            public long getCoin() {
                 return coin;
             }
 

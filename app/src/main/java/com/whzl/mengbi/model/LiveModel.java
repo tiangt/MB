@@ -14,4 +14,6 @@ public interface LiveModel {
     void doFollowHost(int userId, int programId, OnLiveFinishedListener listener);
 
     void doRoomUserInfo(int userId, int programId, OnLiveFinishedListener listener);
+
+    void doSendGift(int userId, int count, int goodsId, int programId, int targetId, OnLiveFinishedListener listener);
 }

@@ -126,5 +126,11 @@ public class URLContentUtils{
     /**
      * 直播间贡献排行
      */
-    public static final String CONTRIBUATION_LIST = "v1/rank/room-rank";
+    public static final String CONTRIBUTION_LIST = "v1/rank/room-rank";
+
+    /**
+     * 直播间贡献排行
+     */
+    public static final String SEND_GIFT = "v1/consume/send-gift";
+
 }

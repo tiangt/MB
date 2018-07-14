@@ -118,14 +118,14 @@ public abstract class BaseAtivity extends AppCompatActivity{
         if (isActivityFinished()) {
             return;
         }
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     protected void showToast(int msgRes) {
         if (isActivityFinished()) {
             return;
         }
-        Toast.makeText(this, msgRes, Toast.LENGTH_SHORT);
+        Toast.makeText(this, msgRes, Toast.LENGTH_SHORT).show();
     }
 
 }

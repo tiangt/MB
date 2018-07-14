@@ -14,7 +14,9 @@ public interface OnLiveFinishedListener {
     void onAudienceSuccess(long audienceAccount);
     void onSuccess();
     void onFellowHostSuccess();
-    void onEroor();
+    void onError(String mes);
 
     void onGetRoomUserInfoSuccess(RoomUserInfo.DataBean data);
+
+    void onSendGiftSuccess();
 }

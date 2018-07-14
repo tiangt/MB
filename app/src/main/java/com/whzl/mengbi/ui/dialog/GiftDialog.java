@@ -20,6 +20,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -28,6 +29,7 @@ import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.ui.widget.view.NoScrollViewPager;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -67,6 +69,7 @@ public class GiftDialog extends BaseAwesomeDialog {
     private ArrayList<GiftCountInfoBean> giftCountInfoList;
     private CommonAdapter<GiftCountInfoBean> adapter;
     private PopupWindow popupWindow;
+    private GiftInfo.GiftDetailInfoBean giftDetailInfoBean;
 
     public static BaseAwesomeDialog newInstance(GiftInfo giftInfo) {
         mGiftInfo = giftInfo;
@@ -122,6 +125,22 @@ public class GiftDialog extends BaseAwesomeDialog {
                 showCountSelectPopWindow();
                 break;
             case R.id.btn_send_gift:
+                String countStr = tvCount.getText().toString().trim();
+                int giftCount = 0;
+                try {
+                    giftCount = Integer.parseInt(countStr);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                if(giftDetailInfoBean == null){
+                    ToastUtils.showToast("请选择礼物");
+                    return;
+                }
+                if(giftCount == 0){
+                    ToastUtils.showToast("礼物数量不能为0");
+                    return;
+                }
+                ((LiveDisplayActivityNew) getActivity()).sendGift(giftCount, giftDetailInfoBean.getGoodsId());
                 break;
             case R.id.btn_count_confirm:
                 KeyBoardUtil.closeKeybord(etCount, getContext());
@@ -199,6 +218,7 @@ public class GiftDialog extends BaseAwesomeDialog {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GiftSelectedEvent event) {
+        giftDetailInfoBean = event.giftDetailInfoBean;
         String countStr = tvCount.getText().toString().trim();
         int count = 0;
         try {
@@ -206,7 +226,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        tvAmount.setText(event.giftDetailInfoBean.getRent() * count + "");
+        tvAmount.setText(giftDetailInfoBean.getRent() * count + "");
     }
 
 }

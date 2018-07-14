@@ -49,6 +49,11 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
+    public void sendGift(int userId, int count, int goodId, int programId, int anchorId) {
+        liveModel.doSendGift(userId, count, goodId, programId, anchorId, this);
+    }
+
+    @Override
     public void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo) {
         if (liveView != null) {
             liveView.onLiveTokenSuccess(liveRoomTokenInfo);
@@ -96,14 +101,23 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void onEroor() {
-
+    public void onError(String msg) {
+        if (liveView != null) {
+            liveView.onError(msg);
+        }
     }
 
     @Override
     public void onGetRoomUserInfoSuccess(RoomUserInfo.DataBean data) {
         if (liveView != null) {
             liveView.onGetRoomUserInFoSuccess(data);
+        }
+    }
+
+    @Override
+    public void onSendGiftSuccess() {
+        if (liveView != null) {
+            liveView.onSendGiftSuccess();
         }
     }
 
