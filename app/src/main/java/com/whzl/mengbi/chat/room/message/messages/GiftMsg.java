@@ -58,6 +58,7 @@ public class GiftMsg implements FillHolderMessage {
         mHolder.textView.append(LightSpanString.getLightString(giftCount +"", Color.parseColor("#f1275b")));
         mHolder.textView.append(LightSpanString.getLightString("个" + giftName, WHITE_FONG_COLOR));
         if (giftPicSpan != null) {
+            mHolder.textView.append(" ");
             mHolder.textView.append(giftPicSpan);
         }
     }
