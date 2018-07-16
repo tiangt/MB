@@ -62,16 +62,21 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
     private boolean visitor = false;
 
     private LoginPresenter loginPresenter;
+    private String from;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_layout);
         if(getIntent()!=null){
             visitor = getIntent().getBooleanExtra("visitor",false);
+            from = getIntent().getStringExtra("from");
         }
         loginPresenter = new LoginPresenterImpl(this);
         //自动登录
-        autoLogin();
+        if(from == null){
+            autoLogin();
+        }
         initView();
     }
 
@@ -182,6 +187,10 @@ public class LoginActivity extends BaseAtivity implements LoginView,View.OnClick
      */
     @Override
     public void navigateToHome() {
+        if(LiveDisplayActivityNew.class.equals(from)){
+            setResult(RESULT_OK);
+            finish();
+        }
         Intent mIntent = new Intent(this,HomeActivity.class);
         startActivity(mIntent);
         finish();

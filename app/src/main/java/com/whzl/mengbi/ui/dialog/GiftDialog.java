@@ -153,6 +153,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                 }
                 etCount.getText().clear();
                 tvCount.setText(count + "");
+                setAmount(count);
                 llCountCustomContainer.setVisibility(View.GONE);
                 rlSendContainer.setVisibility(View.VISIBLE);
                 break;
@@ -199,7 +200,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     tvCount.setText(giftCountInfoList.get(position).count + "");
-                    popupWindow.dismiss();
+                    setAmount(giftCountInfoList.get(position).count);
                 }
 
                 @Override
@@ -227,6 +228,16 @@ public class GiftDialog extends BaseAwesomeDialog {
             e.printStackTrace();
         }
         tvAmount.setText(giftDetailInfoBean.getRent() * count + "");
+    }
+
+
+    private void setAmount(int count){
+        if(giftDetailInfoBean != null){
+            tvAmount.setText(count * giftDetailInfoBean.getRent() + "");
+            popupWindow.dismiss();
+        }else {
+            tvAmount.setText(0 + "");
+        }
     }
 
 }

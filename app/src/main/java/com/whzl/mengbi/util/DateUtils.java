@@ -99,4 +99,27 @@ public class DateUtils {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);
     }
+
+    /**
+     * 日期转化为毫秒
+     */
+    public static long dateStrToMillis(String dateStr) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        long millis = 0;
+        try {
+            millis = simpleDateFormat.parse(dateStr).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return millis;
+    }
+
+    /**
+     * 计算岁数
+     */
+    public static long getAge(String birthdayStr) {
+        long millis = dateStrToMillis(birthdayStr);
+        long currentMillis = System.currentTimeMillis();
+        return (currentMillis - millis) / 1000 / 60 / 60 / 24 / 365;
+    }
 }
