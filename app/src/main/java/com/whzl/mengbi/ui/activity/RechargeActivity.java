@@ -14,11 +14,13 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.model.entity.RechargeChannelListBean;
 import com.whzl.mengbi.model.entity.RechargeInfo;
 import com.whzl.mengbi.model.entity.RechargeListBean;
@@ -147,15 +149,20 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
                 stringBuilder.setSpan(colorSpan,0,chengCount.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
                 stringBuilder.append("\n");
                 stringBuilder.append(rechargeCount);
-                TextView moeny = holder.getView(R.id.recharge_rvitem_moeny);
-                moeny.setText(stringBuilder);
+                TextView money = holder.getView(R.id.recharge_rvitem_moeny);
+                money.setText(stringBuilder);
             }
         });
 
         moneyAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                String rechargeCount = "确认支付"+AmountConversionUitls.amountConversion(alipayRuleListBeans.get(position).getRechargeCount());
+                RelativeLayout layout = (RelativeLayout)view;
+                TextView moneyTextView = (TextView)layout.findViewById(R.id.recharge_rvitem_moeny);
+                moneyTextView.setBackgroundColor(Color.parseColor("#ffa800"));
+                String moneyContent = moneyTextView.getText().toString();
+                moneyTextView.setText(LightSpanString.getLightString(moneyContent, Color.parseColor("#f9f9f9")));
+                String rechargeCount = "确认支付￥"+AmountConversionUitls.amountConversion(alipayRuleListBeans.get(position).getRechargeCount());
                 confirmPayBut.setText(rechargeCount);
                 ruleId = alipayRuleListBeans.get(position).getRuleId();
             }
@@ -191,9 +198,14 @@ public class RechargeActivity extends BaseAtivity implements RechargeView,View.O
                 moneyAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                        RelativeLayout layout = (RelativeLayout)view;
+                        TextView moneyTextView = (TextView)layout.findViewById(R.id.recharge_rvitem_moeny);
+                        moneyTextView.setBackgroundColor(Color.parseColor("#ffa800"));
+                        String moneyContent = moneyTextView.getText().toString();
+                        moneyTextView.setText(LightSpanString.getLightString(moneyContent, Color.parseColor("#f9f9f9")));
                         String rechargeCount = "确认支付￥"+AmountConversionUitls.amountConversion(alipayRuleListBeans.get(position).getRechargeCount());
                         String str = String.valueOf(alipayRuleListBeans.get(position).getRechargeCount());
-                        confirmPayBut.setText(str);
+                        confirmPayBut.setText(rechargeCount);
                         ruleId = alipayRuleListBeans.get(position).getRuleId();
                     }
 

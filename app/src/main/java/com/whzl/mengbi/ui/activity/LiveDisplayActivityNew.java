@@ -115,6 +115,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private KSYMediaPlayer mMasterPlayer;
     private ChatRoomPresenterImpl chatRoomPresenter;
     private GiftInfo mGiftData;
+    private static final int CHAT_LIST_SIZE = 200;
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     private RecyclerView.Adapter chatAdapter;
     private boolean isRecyclerScrolling;
@@ -151,6 +152,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     private void initEnv() {
+        chatList.ensureCapacity(CHAT_LIST_SIZE);
         mLivePresenter = new LivePresenterImpl(this);
         chatRoomPresenter = new ChatRoomPresenterImpl();
         if (getIntent() != null) {
@@ -471,6 +473,9 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
+        if (chatList.size() >= CHAT_LIST_SIZE) {
+            chatList.remove(0);
+        }
         chatList.add(message);
         if (!isRecyclerScrolling) {
             chatAdapter.notifyDataSetChanged();
