@@ -15,14 +15,15 @@ public class  MbChatClient {
     private MessageCallback mMessageCallback;
     private ErrorCallback errorCallback;
     private Thread listenThread;
-    String tag = "androidclient";
+    String tag = "androidSocket";
     private String currentDomain;
     private MbSocketFactory socketFactory;
 
     private InputStream in;
     private OutputStream out;
 
-    private volatile boolean isStoped;
+    private volatile boolean isStoped = false;
+    private boolean isReconnect = false;
 
     private List<ServerAddr> serverList;
 
@@ -55,54 +56,36 @@ public class  MbChatClient {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for(ServerAddr addr:serverList) {
-                    socket = socketFactory.getSocket();
-                    try {
-                        socket.connectSocket(addr.getAddr(),addr.getPort());
-                        Log.i(tag,"connectSocket");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        continue;
-                    }
-
-                    if(socket.getIsConnected()){
-                        try {
-                            in = socket.getSocketInputStream();
-                            Log.i(tag,"getSocketInputStream");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            try {
-                                socket.shutdownSocket();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                                continue;
-                            }
+                while(!isStoped) {
+                    for(ServerAddr addr:serverList) {
+                        if (!doConnect(addr)) {
                             continue;
                         }
-
-                        try {
-                            out = socket.getSocketOutputStream();
-                            Log.i(tag,"getSocketOutputStream");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            try {
-                                socket.shutdownSocket();
-                            } catch (IOException e1) {
-                                e1.printStackTrace();
-                                continue;
-                            }
-                            continue;
-                        }
-
-                        if(in != null && out!=null){
+                        if(in != null && out != null) {
                             currentDomain = addr.getAddr();
                             startListen();
-                            mConnectCallback.onConnectSuccess(currentDomain);
+                            mConnectCallback.onConnectSuccess(currentDomain, isReconnect);
+                            try{
+                                listenThread.join();
+                                socket.shutdownSocket();
+                                isReconnect = true;
+                            }catch (InterruptedException e) {
+
+                            }catch (IOException e) {
+
+                            }
                             break;
                         }
                     }
+                    if (!isStoped) {
+                        mConnectCallback.onConnectFailed();
+                    }
+                    try{
+                        Thread.sleep(3000);
+                    }catch(InterruptedException e) {
 
-                    mConnectCallback.onConnectFailed();
+                    }
+                    Log.e(tag, "do reconnect");
                 }
             }
         }).start();
@@ -173,23 +156,6 @@ public class  MbChatClient {
             }
         });
         listenThread.start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    listenThread.join();
-                    Log.i(tag,"网络监听线程返回");
-                    if(!isStoped){
-                        connectWithServerList(serverList);
-                        Log.e(tag,"重新连接聊天服务器");
-                    }
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
     }
 
     private PackageHeader readHeader(byte[] headerBuffer){
@@ -235,6 +201,50 @@ public class  MbChatClient {
         }else{
             return false;
         }
+    }
+
+    private boolean doConnect(ServerAddr addr) {
+        socket = socketFactory.getSocket();
+        try {
+            socket.connectSocket(addr.getAddr(),addr.getPort());
+            Log.i(tag,"connectSocket");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if(socket.getIsConnected()){
+            try {
+                in = socket.getSocketInputStream();
+                Log.i(tag,"getSocketInputStream");
+            } catch (IOException e) {
+                e.printStackTrace();
+                try {
+                    socket.shutdownSocket();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                    return false;
+                }
+                return false;
+            }
+
+            try {
+                out = socket.getSocketOutputStream();
+                Log.i(tag,"getSocketOutputStream");
+            } catch (IOException e) {
+                e.printStackTrace();
+                try {
+                    socket.shutdownSocket();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                    return false;
+                }
+                return false;
+            }
+
+
+        }
+        return true;
     }
 
     class PackageHeader{
