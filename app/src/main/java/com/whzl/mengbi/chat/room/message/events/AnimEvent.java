@@ -6,15 +6,15 @@ public class AnimEvent {
     private AnimJson animJson;
     private String animUrl;
 
-    public long getSeconds() {
-        return Seconds;
+    public double getSeconds() {
+        return seconds;
     }
 
-    public void setSeconds(long seconds) {
-        Seconds = seconds;
+    public void setSeconds(double seconds) {
+        this.seconds = seconds;
     }
 
-    private long Seconds;
+    private double seconds;
 
     public AnimEvent(AnimJson animJson, String animUrl) {
         this.animJson = animJson;

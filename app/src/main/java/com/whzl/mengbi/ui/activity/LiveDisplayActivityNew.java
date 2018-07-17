@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.activity;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,10 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -29,8 +32,12 @@ import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
+import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
+import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
+import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
+import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
@@ -56,6 +63,7 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,7 +93,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @BindView(R.id.rl_contribution_container)
     RelativeLayout rlContributionContainer;
     @BindView(R.id.player_master)
-    SurfaceView playerMaster;
+    SurfaceView surfaceView;
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.tv_fans_count)
@@ -108,6 +116,14 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     Button btnClose;
     @BindView(R.id.iv_gift_gif)
     ImageView ivGiftGif;
+    @BindView(R.id.tv_stop_tip)
+    TextView tvStopTip;
+    @BindView(R.id.tv_run_way_gift)
+    TextView tvRunWayGift;
+    @BindView(R.id.rl_info_container)
+    RelativeLayout rlInfoContainer;
+    @BindView(R.id.tv_lucky_gift)
+    TextView tvLuckyGift;
 
     private Unbinder mBind;
     private LivePresenterImpl mLivePresenter;
@@ -115,44 +131,102 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private KSYMediaPlayer mMasterPlayer;
     private ChatRoomPresenterImpl chatRoomPresenter;
     private GiftInfo mGiftData;
-    private static final int CHAT_LIST_SIZE = 200;
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     private RecyclerView.Adapter chatAdapter;
     private boolean isRecyclerScrolling;
     private int mUserId;
     private BaseAwesomeDialog mGiftDialog;
-    private BaseAwesomeDialog mLiveHouseChatDialog;
-    private final static String TAG_DIALOG_GIFT = "tagGift";
-    private final static String TAG_DIALOG_CHAT = "tagChat";
-    private final static String TAG_DIALOG_AUDIENCE = "tagAudience";
-    private final static String TAG_DIALOG_CONTRIBUTE = "tagContribute";
-    private ArrayList<AnimJson> mTotalAnimtList = new ArrayList<>();
-    private boolean flagIsAnimating;
+    private ArrayList<AnimJson> mTotalAnimList = new ArrayList<>();
+    private boolean flagIsTotalAnimating = false;
     private ArrayList<AnimEvent> mGifAnimList = new ArrayList<>();
-    private boolean flagIsGifAnimating;
+    private boolean flagIsGifAnimating = false;
     private int mAnchorId;
+    private Runnable mTotalGiftAnimAction;
+    private Runnable mGifAction;
+    private Runnable mCacheComboAction;
+    private int REQUEST_LOGIN;
+    private boolean flagRunwayRunning = false;
+    private ArrayList<RunWayEvent> mRunWayList = new ArrayList<>();
+    private Runnable mRunWayAction;
+    private boolean isLuckyGiftShow;
+    private ArrayList<LuckGiftEvent> mLuckGiftList = new ArrayList<>();
+    private Runnable mLuckyGiftAction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initEnv();
         setContentView(R.layout.activity_live_display_new);
-        StatusBarUtil.setColor(this, Color.parseColor("#181818"));
+        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
         mBind = ButterKnife.bind(this);
         initView();
+        initAction();
         getDatas();
+    }
+
+    private void initAction() {
+        mTotalGiftAnimAction = () -> {
+            giftAnimView.setTranslationX(0);
+            flagIsTotalAnimating = false;
+            if (mTotalAnimList.size() > 0) {
+                mTotalAnimList.remove(0);
+            }
+            if (mTotalAnimList.size() > 0) {
+                animGift(mTotalAnimList.get(0));
+            }
+        };
+        mCacheComboAction = () -> comboCache();
+
+        mRunWayAction = () -> {
+            flagIsGifAnimating = false;
+            tvRunWayGift.setVisibility(View.GONE);
+            mRunWayList.remove(0);
+            if (mRunWayList.size() > 0) {
+                showRunWay(mRunWayList.get(0));
+            }
+        };
+
+        mLuckyGiftAction = () -> tvLuckyGift.animate()
+                .translationX(-UIUtil.dip2px(LiveDisplayActivityNew.this, 360))
+                .setInterpolator(new AccelerateInterpolator())
+                .setDuration(300)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        tvLuckyGift.setTranslationX(UIUtil.dip2px(LiveDisplayActivityNew.this, 360));
+                        isLuckyGiftShow = false;
+                        mLuckGiftList.remove(0);
+                        if (mLuckGiftList.size() > 0) {
+                            showLuckyGift(mLuckGiftList.get(0));
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                })
+                .start();
     }
 
     private void getDatas() {
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
         mLivePresenter.getAudienceAccount(mProgramId);
-        mLivePresenter.getRoomUserInfo(mUserId, mProgramId
-        );
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
     }
 
     private void initEnv() {
-        chatList.ensureCapacity(CHAT_LIST_SIZE);
         mLivePresenter = new LivePresenterImpl(this);
         chatRoomPresenter = new ChatRoomPresenterImpl();
         if (getIntent() != null) {
@@ -161,24 +235,33 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         }
         mUserId = (int) SPUtils.get(this, "userId", 0);
         mLivePresenter.getLiveGift();
+        mMasterPlayer = new KSYMediaPlayer.Builder(this).build();
+        mMasterPlayer.setOnPreparedListener(mp -> {
+            if (mMasterPlayer != null) {
+                mMasterPlayer.start();
+            }
+        });
     }
 
     private void initView() {
-        playerMaster.getHolder().addCallback(new SurfaceHolder.Callback() {
+        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
+                if (mMasterPlayer != null) {
+                    mMasterPlayer.setDisplay(surfaceHolder);
+                    mMasterPlayer.setScreenOnWhilePlaying(true);
+                }
             }
 
             @Override
             public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-                if (mMasterPlayer != null)
-                    mMasterPlayer.setSurface(surfaceHolder.getSurface());
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-                if (mMasterPlayer != null)
-                    mMasterPlayer.setSurface(null);
+                if (mMasterPlayer != null) {
+                    mMasterPlayer.setDisplay(null);
+                }
             }
         });
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
@@ -187,7 +270,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View item = getLayoutInflater().inflate(R.layout.chat_text, null);
+                View item = LayoutInflater.from(LiveDisplayActivityNew.this).inflate(R.layout.chat_text, null);
                 return new SingleTextViewHolder(item);
             }
 
@@ -226,20 +309,13 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     private void getRoomToken() {
-        String sessionId = SPUtils.get(this, "sessionId", "0").toString();
         HashMap map = new HashMap();
-        map.put("mUserId", mUserId);
+        map.put("userId", mUserId);
         map.put("programId", mProgramId);
-        map.put("sessionId", sessionId);
         mLivePresenter.getLiveToken(map);
     }
 
     private void initPlayers(String stream) {
-        mMasterPlayer = new KSYMediaPlayer.Builder(this).build();
-        mMasterPlayer.setOnPreparedListener(mp -> {
-            if (mMasterPlayer != null)
-                mMasterPlayer.start();
-        });
         try {
             mMasterPlayer.shouldAutoPlay(false);
             mMasterPlayer.setDataSource(stream);
@@ -253,6 +329,10 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_follow:
+                if (mUserId == 0) {
+                    login();
+                    return;
+                }
                 mLivePresenter.followHost(mUserId, mProgramId);
                 break;
             case R.id.btn_close:
@@ -265,8 +345,15 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_send_gift:
+                if (mUserId == 0) {
+                    login();
+                    return;
+                }
                 if (mGiftData == null) {
                     mLivePresenter.getLiveGift();
+                    return;
+                }
+                if (mGiftDialog != null && mGiftDialog.isAdded()) {
                     return;
                 }
                 mGiftDialog = GiftDialog.newInstance(mGiftData)
@@ -293,21 +380,11 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mBind.unbind();
-        mLivePresenter.onDestory();
-        if (chatRoomPresenter != null) {
-            chatRoomPresenter.disconnectChat();
-        }
-        if (mMasterPlayer != null)
-            mMasterPlayer.release();
-        mMasterPlayer = null;
-        mLiveHouseChatDialog = null;
-        mGiftDialog = null;
+    private void login() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("from", LiveDisplayActivityNew.class);
+        startActivityForResult(intent, REQUEST_LOGIN);
     }
-
 
     @Override
     public void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo) {
@@ -316,34 +393,61 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(KickoutEvent kickoutEvent) {
-        // TODO: 2018/7/10
+        showToast(kickoutEvent.getNoChatMsg().getNochatType() == 8 ? "踢出房间" : "用多个手机打开同一个直播间，强制退出之前的a直播间");
+        finish();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LuckGiftEvent luckGiftEvent) {
-        // TODO: 2018/7/10
+        mLuckGiftList.add(luckGiftEvent);
+        showLuckyGift(luckGiftEvent);
     }
+
+    private void showLuckyGift(LuckGiftEvent luckGiftEvent) {
+        if (!isLuckyGiftShow) {
+            tvLuckyGift.setTranslationX(UIUtil.dip2px(this, 360));
+            tvLuckyGift.animate().translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(300).start();
+            isLuckyGiftShow = true;
+            tvLuckyGift.append("恭喜");
+            SpannableString nickNameSpannable = new SpannableString(luckGiftEvent.getNickname());
+            nickNameSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#f76667")), 0, nickNameSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvLuckyGift.append(nickNameSpannable);
+            tvLuckyGift.append("送幸运礼物喜中");
+            SpannableString bonusCoinsSpannable = new SpannableString(luckGiftEvent.getTotalLuckMengBi() + "");
+            bonusCoinsSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#f76667")), 0, bonusCoinsSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvLuckyGift.append(bonusCoinsSpannable);
+            tvLuckyGift.postDelayed(mLuckyGiftAction, 2800);
+        }
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnimEvent animEvent) {
         if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())) {
             AnimJson animJson = animEvent.getAnimJson();
             animJson.setGiftUrl(animEvent.getAnimUrl());
-            mTotalAnimtList.add(animJson);
-            if (!flagIsAnimating) {
-                animGift(mTotalAnimtList.get(0));
+            mTotalAnimList.add(animJson);
+            if (!flagIsTotalAnimating) {
+                animGift(mTotalAnimList.get(0));
+            } else if (mTotalAnimList.size() == 2) {
+                combo();
             }
         } else {
-            long seconds = 0;
-            if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())) {
-                seconds = animEvent.getAnimJson().getContext().getSeconds();
-                ivGiftGif.setVisibility(View.VISIBLE);
-            } else if ("MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
+            double seconds = 0;
+            if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
+                    || "MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
                 List<AnimJson.ResourcesEntity> resources = animEvent.getAnimJson().getResources();
                 for (int i = 0; i < resources.size(); i++) {
                     AnimJson.ResourcesEntity resourcesEntity = resources.get(i);
                     if ("PARAMS".equals(resourcesEntity.getResType())) {
                         String resValue = resourcesEntity.getResValue();
+                        try {
+                            JSONObject jsonObject = new JSONObject(resValue);
+                            seconds = jsonObject.getDouble("playSeconds");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 }
             }
@@ -351,6 +455,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                 animEvent.setSeconds(seconds);
                 mGifAnimList.add(animEvent);
                 if (!flagIsGifAnimating) {
+                    flagIsGifAnimating = true;
                     animGif(mGifAnimList.get(0));
                 }
             }
@@ -358,24 +463,51 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     }
 
+    private void combo() {
+        int animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+        int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
+        AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
+        int nextUserId = nextContext.getUserId();
+        int nextGoodId = nextContext.getGoodsId();
+        if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
+            mTotalAnimList.remove(0);
+            giftAnimView.removeCallbacks(mTotalGiftAnimAction);
+            tvAnimGiftCount.setText("x " + nextContext.getGiftTotalCount());
+            scaleAnim(tvAnimGiftCount);
+            giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RunWayEvent runWayEvent) {
+        mRunWayList.add(runWayEvent);
+        showRunWay(runWayEvent);
+    }
+
+    private void showRunWay(RunWayEvent runWayEvent) {
+        if (!flagRunwayRunning) {
+            flagIsGifAnimating = true;
+            tvRunWayGift.setVisibility(View.VISIBLE);
+            tvRunWayGift.setText(runWayEvent.getGiftSpanString());
+            tvRunWayGift.postDelayed(mRunWayAction, 2500);
+        }
+    }
+
     private void animGif(AnimEvent animEvent) {
-        flagIsGifAnimating = true;
+        ivGiftGif.setVisibility(View.VISIBLE);
         GlideImageLoader.getInstace().loadGif(getApplicationContext(), animEvent.getAnimUrl(), ivGiftGif, new GlideImageLoader.GifListener() {
             @Override
             public void onResourceReady() {
-                ivGiftGif.setVisibility(View.VISIBLE);
-                ivGiftGif.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ivGiftGif.setVisibility(View.GONE);
-                        mGifAnimList.remove(0);
-                        if (mGifAnimList.size() > 0) {
-                            animGif(mGifAnimList.get(0));
-                        } else {
-                            flagIsGifAnimating = false;
-                        }
+                mGifAction = () -> {
+                    ivGiftGif.setVisibility(View.GONE);
+                    mGifAnimList.remove(0);
+                    if (mGifAnimList.size() > 0) {
+                        animGif(mGifAnimList.get(0));
+                    } else {
+                        flagIsGifAnimating = false;
                     }
-                }, animEvent.getSeconds() * 1000);
+                };
+                ivGiftGif.postDelayed(mGifAction, ((long) (animEvent.getSeconds() * 1000)));
             }
 
             @Override
@@ -385,7 +517,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                 if (mGifAnimList.size() > 0) {
                     animGif(mGifAnimList.get(0));
                 } else {
-                    flagIsAnimating = true;
+                    flagIsTotalAnimating = true;
                 }
             }
         });
@@ -403,6 +535,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     TextView tvAnimGiftCount;
 
     private void animGift(AnimJson animJson) {
+        flagIsTotalAnimating = true;
         AnimJson.ContextEntity context = animJson.getContext();
         giftAnimView.setVisibility(View.VISIBLE);
         String avatarUrl = ImageUrl.getAvatarUrl(context.getUserId(), "jpg", context.getLastUpdateTime());
@@ -417,29 +550,19 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             int animGiftWidth = giftAnimView.getWidth();
             int animX = UIUtil.dip2px(LiveDisplayActivityNew.this, 13.5f) + animGiftWidth;
             giftAnimView.animate().translationX(animX).setInterpolator(new DecelerateInterpolator())
-                    .setDuration(500)
+                    .setDuration(300)
                     .setListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
-                            flagIsAnimating = true;
                         }
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            scaleAnim(tvAnimGiftCount);
-                            giftAnimView.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    giftAnimView.setVisibility(View.GONE);
-                                    giftAnimView.setTranslationX(0);
-                                    mTotalAnimtList.remove(0);
-                                    if (mTotalAnimtList.size() > 0) {
-                                        animGift(mTotalAnimtList.get(0));
-                                    } else {
-                                        flagIsAnimating = false;
-                                    }
-                                }
-                            }, 2500);
+                            if (mTotalAnimList.size() > 1) {
+                                comboCache();
+                            } else {
+                                giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
+                            }
                         }
 
                         @Override
@@ -456,16 +579,31 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         });
     }
 
-    private void scaleAnim(View view) {
-        ValueAnimator animator = ValueAnimator.ofFloat(1, 2f, 1);
-        animator.setDuration(400);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float animatedValue = (float) animation.getAnimatedValue();
-                view.setScaleX(animatedValue);
-                view.setScaleY(animatedValue);
+    private void comboCache() {
+        int animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+        int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
+        AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
+        int nextUserId = nextContext.getUserId();
+        int nextGoodId = nextContext.getGoodsId();
+        if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
+            mTotalAnimList.remove(0);
+            giftAnimView.removeCallbacks(mTotalGiftAnimAction);
+            tvAnimGiftCount.setText("x " + nextContext.getGiftTotalCount());
+            scaleAnim(tvAnimGiftCount);
+            giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
+            if (mTotalAnimList.size() > 1) {
+                giftAnimView.postDelayed(mCacheComboAction, 300);
             }
+        }
+    }
+
+    private void scaleAnim(View view) {
+        ValueAnimator animator = ValueAnimator.ofFloat(1, 1.8f, 1);
+        animator.setDuration(300);
+        animator.addUpdateListener(animation -> {
+            float animatedValue = (float) animation.getAnimatedValue();
+            view.setScaleX(animatedValue);
+            view.setScaleY(animatedValue);
         });
         animator.start();
     }
@@ -473,14 +611,38 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
-        if (chatList.size() >= CHAT_LIST_SIZE) {
-            chatList.remove(0);
-        }
         chatList.add(message);
         if (!isRecyclerScrolling) {
-            chatAdapter.notifyDataSetChanged();
-            recycler.smoothScrollToPosition(chatList.size() - 1);
+            if (chatAdapter != null && recycler != null) {
+                chatAdapter.notifyDataSetChanged();
+                recycler.smoothScrollToPosition(chatList.size() - 1);
+            }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StartPlayEvent startPlayEvent) {
+        StartStopLiveJson.ContextEntity context = startPlayEvent.getStartStopLiveJson().getContext();
+        if (context.getHeight() != 0 && context.getWidth() != 0) {
+            ratioLayout.setPicRatio(context.getWidth() / ((float) context.getHeight()));
+        }
+        StartStopLiveJson.ShowStreams showStreams = startPlayEvent.getStartStopLiveJson().getContext().getShow_streams().get(0);
+        mMasterPlayer.reset();
+        try {
+            mMasterPlayer.setDataSource(showStreams.getStreamAddress());
+            mMasterPlayer.prepareAsync();
+            mMasterPlayer.setDisplay(surfaceView.getHolder());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        tvStopTip.setVisibility(View.GONE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(StopPlayEvent stopPlayEvent) {
+        mMasterPlayer.stop();
+        mMasterPlayer.release();
+        tvStopTip.setVisibility(View.VISIBLE);
     }
 
 
@@ -500,11 +662,14 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                     if (roomInfoBean.getData().getStream().getStreamAddress().getFlv() != null) {
                         initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getFlv());
                     } else if (roomInfoBean.getData().getStream().getStreamAddress().getHls() != null) {
-                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getFlv());
+                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getHls());
                     } else if (roomInfoBean.getData().getStream().getStreamAddress().getRtmp() != null) {
-                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getFlv());
+                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getRtmp());
                     }
                 }
+            }
+            if (!"T".equals(roomInfoBean.getData().getProgramStatus())) {
+                tvStopTip.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -514,12 +679,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             return;
         }
         ratioLayout.setPicRatio(width / (float) height);
-        ratioLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                ratioLayout.requestLayout();
-            }
-        });
+        ratioLayout.post(() -> ratioLayout.requestLayout());
     }
 
 
@@ -559,15 +719,42 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     public void sendMeeage(String message) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                chatRoomPresenter.sendMessage(message);
-            }
-        }).start();
+        new Thread(() -> chatRoomPresenter.sendMessage(message)).start();
     }
 
     public void sendGift(int count, int goodId) {
         mLivePresenter.sendGift(mUserId, count, goodId, mProgramId, mAnchorId);
+    }
+
+    @Override
+    protected void onDestroy() {
+        giftAnimView.removeCallbacks(mTotalGiftAnimAction);
+        giftAnimView.removeCallbacks(mCacheComboAction);
+        ivGiftGif.removeCallbacks(mGifAction);
+        tvRunWayGift.removeCallbacks(mRunWayAction);
+        tvLuckyGift.removeCallbacks(mLuckyGiftAction);
+        mBind.unbind();
+        super.onDestroy();
+        mLivePresenter.onDestory();
+        if (chatRoomPresenter != null) {
+            chatRoomPresenter.disconnectChat();
+        }
+        if (mMasterPlayer != null) {
+            mMasterPlayer.stop();
+            mMasterPlayer.release();
+            mMasterPlayer = null;
+        }
+        mGiftDialog = null;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == REQUEST_LOGIN) {
+            if (RESULT_OK == resultCode) {
+                mUserId = (int) SPUtils.get(this, "userId", 0);
+            }
+        }
     }
 }

@@ -109,6 +109,16 @@
                 android:textColor="#f0f0f0"
                 android:textSize="10sp" />
 
+            <TextView
+                android:id="@+id/tv_run_way_gift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_toRightOf="@id/btn_contribute"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="18dp"
+                android:visibility="gone"/>
+
             <Button
                 android:id="@+id/btn_close"
                 android:layout_width="10dp"
@@ -133,18 +143,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+
+            <TextView
+                android:id="@+id/tv_lucky_gift"
+                android:layout_width="320dp"
+                android:layout_height="56dp"
+                android:textSize="10dp"
+                android:singleLine="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:background="@drawable/lucky_gift_bg"
+                android:translationX="360dp"/>
+
+            <TextView
+                android:id="@+id/tv_stop_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="主播休息中"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_centerInParent="true"
+                android:textColor="@color/player_yellow"
+                android:visibility="gone"/>
+
             <ImageView
                 android:id="@+id/iv_gift_gif"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                android:layout_centerVertical="true"/>
+                android:visibility="gone" />
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="50dp">
 
                 <include
                     layout="@layout/layout_gift_anim"
