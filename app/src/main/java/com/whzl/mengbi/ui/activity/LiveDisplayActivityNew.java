@@ -12,10 +12,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,12 +27,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
+import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
+import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
@@ -55,6 +60,7 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -113,6 +119,14 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     Button btnClose;
     @BindView(R.id.iv_gift_gif)
     ImageView ivGiftGif;
+    @BindView(R.id.tv_stop_tip)
+    TextView tvStopTip;
+    @BindView(R.id.tv_run_way_gift)
+    TextView tvRunWayGift;
+    @BindView(R.id.rl_info_container)
+    RelativeLayout rlInfoContainer;
+    @BindView(R.id.tv_lucky_gift)
+    TextView tvLuckyGift;
 
     private Unbinder mBind;
     private LivePresenterImpl mLivePresenter;
@@ -125,12 +139,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private boolean isRecyclerScrolling;
     private int mUserId;
     private BaseAwesomeDialog mGiftDialog;
-    private BaseAwesomeDialog mLiveHouseChatDialog;
-    private final static String TAG_DIALOG_GIFT = "tagGift";
-    private final static String TAG_DIALOG_CHAT = "tagChat";
-    private final static String TAG_DIALOG_AUDIENCE = "tagAudience";
-    private final static String TAG_DIALOG_CONTRIBUTE = "tagContribute";
-    private ArrayList<AnimJson> mTotalAnimtList = new ArrayList<>();
+    private ArrayList<AnimJson> mTotalAnimList = new ArrayList<>();
     private boolean flagIsTotalAnimating = false;
     private ArrayList<AnimEvent> mGifAnimList = new ArrayList<>();
     private boolean flagIsGifAnimating = false;
@@ -139,6 +148,12 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private Runnable mGifAction;
     private Runnable mCacheComboAction;
     private int REQUEST_LOGIN;
+    private boolean flagRunwayRunning = false;
+    private ArrayList<RunWayEvent> mRunWayList = new ArrayList<>();
+    private Runnable mRunWayAction;
+    private boolean isLuckyGiftShow;
+    private ArrayList<LuckGiftEvent> mLuckGiftList = new ArrayList<>();
+    private Runnable mLuckyGiftAction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -153,23 +168,58 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     private void initAction() {
-        mTotalGiftAnimAction = new Runnable() {
-            @Override
-            public void run() {
-                mTotalAnimtList.remove(0);
-                giftAnimView.setTranslationX(0);
-                flagIsTotalAnimating = false;
-                if (mTotalAnimtList.size() > 0) {
-                    animGift(mTotalAnimtList.get(0));
-                }
+        mTotalGiftAnimAction = () -> {
+            giftAnimView.setTranslationX(0);
+            flagIsTotalAnimating = false;
+            if (mTotalAnimList.size() > 0) {
+                mTotalAnimList.remove(0);
+            }
+            if (mTotalAnimList.size() > 0) {
+                animGift(mTotalAnimList.get(0));
             }
         };
-        mCacheComboAction = new Runnable() {
-            @Override
-            public void run() {
-                comboCache();
+        mCacheComboAction = () -> comboCache();
+
+        mRunWayAction = () -> {
+            flagIsGifAnimating = false;
+            tvRunWayGift.setVisibility(View.GONE);
+            mRunWayList.remove(0);
+            if (mRunWayList.size() > 0) {
+                showRunWay(mRunWayList.get(0));
             }
         };
+
+        mLuckyGiftAction = () -> tvLuckyGift.animate()
+                .translationX(-UIUtil.dip2px(LiveDisplayActivityNew.this, 360))
+                .setInterpolator(new AccelerateInterpolator())
+                .setDuration(300)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        tvLuckyGift.setTranslationX(UIUtil.dip2px(LiveDisplayActivityNew.this, 360));
+                        isLuckyGiftShow = false;
+                        mLuckGiftList.remove(0);
+                        if (mLuckGiftList.size() > 0) {
+                            showLuckyGift(mLuckGiftList.get(0));
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                })
+                .start();
     }
 
     private void getDatas() {
@@ -186,12 +236,21 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             mProgramId = getIntent().getIntExtra("ProgramId", -1);
             SPUtils.put(this, "programId", mProgramId);
         }
-//        mUserId = (int) SPUtils.get(this, "userId", 0);
+        mUserId = (int) SPUtils.get(this, "userId", 0);
         mLivePresenter.getLiveGift();
         mMasterPlayer = new KSYMediaPlayer.Builder(this).build();
         mMasterPlayer.setOnPreparedListener(mp -> {
             if (mMasterPlayer != null) {
                 mMasterPlayer.start();
+            }
+        });
+        mMasterPlayer.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(IMediaPlayer iMediaPlayer, int info, int i1) {
+                if(info == IMediaPlayer.MEDIA_INFO_RELOADED) {
+                    Log.d("LiveDisplayActivity", "Succeed to reload video.");
+                }
+                return false;
             }
         });
     }
@@ -223,7 +282,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View item = getLayoutInflater().inflate(R.layout.chat_text, null);
+                View item = LayoutInflater.from(LiveDisplayActivityNew.this).inflate(R.layout.chat_text, null);
                 return new SingleTextViewHolder(item);
             }
 
@@ -270,7 +329,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     private void initPlayers(String stream) {
         try {
-            mMasterPlayer.shouldAutoPlay(false);
+            //mMasterPlayer.shouldAutoPlay(false);
             mMasterPlayer.setDataSource(stream);
             mMasterPlayer.prepareAsync();
         } catch (IOException e) {
@@ -340,26 +399,6 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     @Override
-    protected void onDestroy() {
-        giftAnimView.removeCallbacks(mTotalGiftAnimAction);
-        ivGiftGif.removeCallbacks(mGifAction);
-        mBind.unbind();
-        mLivePresenter.onDestory();
-        if (chatRoomPresenter != null) {
-            chatRoomPresenter.disconnectChat();
-        }
-        if (mMasterPlayer != null) {
-            mMasterPlayer.stop();
-            mMasterPlayer.release();
-            mMasterPlayer = null;
-        }
-        mLiveHouseChatDialog = null;
-        mGiftDialog = null;
-        super.onDestroy();
-    }
-
-
-    @Override
     public void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo) {
         chatRoomPresenter.setupConnection(liveRoomTokenInfo, LiveDisplayActivityNew.this);
     }
@@ -372,18 +411,37 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LuckGiftEvent luckGiftEvent) {
-        // TODO: 2018/7/10
+        mLuckGiftList.add(luckGiftEvent);
+        showLuckyGift(luckGiftEvent);
     }
+
+    private void showLuckyGift(LuckGiftEvent luckGiftEvent) {
+        if (!isLuckyGiftShow) {
+            tvLuckyGift.setTranslationX(UIUtil.dip2px(this, 360));
+            tvLuckyGift.animate().translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(300).start();
+            isLuckyGiftShow = true;
+            tvLuckyGift.append("恭喜");
+            SpannableString nickNameSpannable = new SpannableString(luckGiftEvent.getNickname());
+            nickNameSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#f76667")), 0, nickNameSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvLuckyGift.append(nickNameSpannable);
+            tvLuckyGift.append("送幸运礼物喜中");
+            SpannableString bonusCoinsSpannable = new SpannableString(luckGiftEvent.getTotalLuckMengBi() + "");
+            bonusCoinsSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#f76667")), 0, bonusCoinsSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvLuckyGift.append(bonusCoinsSpannable);
+            tvLuckyGift.postDelayed(mLuckyGiftAction, 2800);
+        }
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnimEvent animEvent) {
         if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())) {
             AnimJson animJson = animEvent.getAnimJson();
             animJson.setGiftUrl(animEvent.getAnimUrl());
-            mTotalAnimtList.add(animJson);
+            mTotalAnimList.add(animJson);
             if (!flagIsTotalAnimating) {
-                animGift(mTotalAnimtList.get(0));
-            } else if (mTotalAnimtList.size() == 2) {
+                animGift(mTotalAnimList.get(0));
+            } else if (mTotalAnimList.size() == 2) {
                 combo();
             }
         } else {
@@ -418,17 +476,32 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     private void combo() {
-        int animatingUserId = mTotalAnimtList.get(0).getContext().getUserId();
-        int animatingGoodsId = mTotalAnimtList.get(0).getContext().getGoodsId();
-        AnimJson.ContextEntity nextContext = mTotalAnimtList.get(1).getContext();
+        int animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+        int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
+        AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
         int nextUserId = nextContext.getUserId();
         int nextGoodId = nextContext.getGoodsId();
         if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
-            mTotalAnimtList.remove(0);
+            mTotalAnimList.remove(0);
             giftAnimView.removeCallbacks(mTotalGiftAnimAction);
             tvAnimGiftCount.setText("x " + nextContext.getGiftTotalCount());
             scaleAnim(tvAnimGiftCount);
             giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RunWayEvent runWayEvent) {
+        mRunWayList.add(runWayEvent);
+        showRunWay(runWayEvent);
+    }
+
+    private void showRunWay(RunWayEvent runWayEvent) {
+        if (!flagRunwayRunning) {
+            flagIsGifAnimating = true;
+            tvRunWayGift.setVisibility(View.VISIBLE);
+            tvRunWayGift.setText(runWayEvent.getGiftSpanString());
+            tvRunWayGift.postDelayed(mRunWayAction, 2500);
         }
     }
 
@@ -497,7 +570,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            if (mTotalAnimtList.size() > 1) {
+                            if (mTotalAnimList.size() > 1) {
                                 comboCache();
                             } else {
                                 giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
@@ -519,18 +592,18 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     }
 
     private void comboCache() {
-        int animatingUserId = mTotalAnimtList.get(0).getContext().getUserId();
-        int animatingGoodsId = mTotalAnimtList.get(0).getContext().getGoodsId();
-        AnimJson.ContextEntity nextContext = mTotalAnimtList.get(1).getContext();
+        int animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+        int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
+        AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
         int nextUserId = nextContext.getUserId();
         int nextGoodId = nextContext.getGoodsId();
         if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
-            mTotalAnimtList.remove(0);
+            mTotalAnimList.remove(0);
             giftAnimView.removeCallbacks(mTotalGiftAnimAction);
             tvAnimGiftCount.setText("x " + nextContext.getGiftTotalCount());
             scaleAnim(tvAnimGiftCount);
             giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
-            if (mTotalAnimtList.size() > 1) {
+            if (mTotalAnimList.size() > 1) {
                 giftAnimView.postDelayed(mCacheComboAction, 300);
             }
         }
@@ -565,22 +638,29 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         if (context.getHeight() != 0 && context.getWidth() != 0) {
             ratioLayout.setPicRatio(context.getWidth() / ((float) context.getHeight()));
         }
-        StartStopLiveJson.ShowStreams showStreams = startPlayEvent.getStartStopLiveJson().getContext().getShow_streams().get(0);
-        mMasterPlayer.reset();
+        String streamAddress = startPlayEvent.getStreamAddress();
+//        if (mMasterPlayer == null) {
+//            Log.e("LiveDisplayActivityNew", "mMasterPlayer is null");
+//            ToastUtils.showToast("Player is null");
+//            //return;
+//        }
         try {
-            mMasterPlayer.setDataSource(showStreams.getStreamAddress());
+            mMasterPlayer.reset();
+            mMasterPlayer.setDataSource(streamAddress);
+            mMasterPlayer.prepareAsync();
             mMasterPlayer.setDisplay(surfaceView.getHolder());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
+        tvStopTip.setVisibility(View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StopPlayEvent stopPlayEvent) {
-        mMasterPlayer.stop();
-        mMasterPlayer.release();
+        mMasterPlayer.reset();
+        //mMasterPlayer.stop();
+        //mMasterPlayer.release();
+        tvStopTip.setVisibility(View.VISIBLE);
     }
 
 
@@ -599,12 +679,15 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                 if (roomInfoBean.getData().getStream().getStreamAddress() != null) {
                     if (roomInfoBean.getData().getStream().getStreamAddress().getFlv() != null) {
                         initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getFlv());
-                    } else if (roomInfoBean.getData().getStream().getStreamAddress().getHls() != null) {
-                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getHls());
                     } else if (roomInfoBean.getData().getStream().getStreamAddress().getRtmp() != null) {
                         initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getRtmp());
+                    } else if (roomInfoBean.getData().getStream().getStreamAddress().getHls() != null) {
+                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getHls());
                     }
                 }
+            }
+            if (!"T".equals(roomInfoBean.getData().getProgramStatus())) {
+                tvStopTip.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -660,6 +743,29 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     public void sendGift(int count, int goodId) {
         mLivePresenter.sendGift(mUserId, count, goodId, mProgramId, mAnchorId);
     }
+
+    @Override
+    protected void onDestroy() {
+        ToastUtils.showToast("LiveDisplayActivityNew destory");
+        giftAnimView.removeCallbacks(mTotalGiftAnimAction);
+        giftAnimView.removeCallbacks(mCacheComboAction);
+        ivGiftGif.removeCallbacks(mGifAction);
+        tvRunWayGift.removeCallbacks(mRunWayAction);
+        tvLuckyGift.removeCallbacks(mLuckyGiftAction);
+        mBind.unbind();
+        super.onDestroy();
+        mLivePresenter.onDestory();
+        if (chatRoomPresenter != null) {
+            chatRoomPresenter.disconnectChat();
+        }
+        if (mMasterPlayer != null) {
+            mMasterPlayer.stop();
+            mMasterPlayer.release();
+            mMasterPlayer = null;
+        }
+        mGiftDialog = null;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

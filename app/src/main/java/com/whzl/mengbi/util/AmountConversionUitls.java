@@ -1,7 +1,5 @@
 package com.whzl.mengbi.util;
 
-import android.util.Log;
-
 import java.text.NumberFormat;
 import java.util.HashMap;
 
@@ -64,27 +62,20 @@ public class AmountConversionUitls {
     }
 
     public static String amountConversion(long amount){
-
-        if(amount >= 10000000){
-            return "￥"+amount/100;
-        }
-
-        if(amount >= 1000000){
-            return "￥"+amount/100;
-        }
-
-        if(amount >= 100000){
-            return "￥"+amount/100;
-        }
-
-        if(amount >= 10000){
-            return "￥"+amount/100;
-        }
-
-        if(amount >= 1000){
-            return "￥"+amount/100;
-        }
-        return "￥"+amountConversionFormat(amount);
+        return "" + amount / 100.0;
+//        if(amount >= 10000000){
+//            return ""+amount/100;
+//        }else if(amount >= 1000000){
+//            return ""+amount/100;
+//        }else if(amount >= 100000){
+//            return ""+amount/100;
+//        }else if(amount >= 10000){
+//            return ""+amount/100;
+//        }else if(amount >= 1000){
+//            return ""+amount/100;
+//        }else {
+//            return ""+amountConversionFormat(amount);
+//        }
     }
 
     /**
