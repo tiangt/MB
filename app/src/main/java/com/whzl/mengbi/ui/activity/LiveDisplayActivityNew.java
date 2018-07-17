@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -26,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
+import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
@@ -59,6 +61,7 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -171,6 +174,15 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
         mMasterPlayer.setOnPreparedListener(mp -> {
             if (mMasterPlayer != null) {
                 mMasterPlayer.start();
+            }
+        });
+        mMasterPlayer.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(IMediaPlayer iMediaPlayer, int info, int i1) {
+                if(info == IMediaPlayer.MEDIA_INFO_RELOADED) {
+                    Log.d("LiveDisplayActivity", "Succeed to reload video.");
+                }
+                return false;
             }
         });
     }
@@ -314,7 +326,7 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
 
     private void initPlayers(String stream) {
         try {
-            mMasterPlayer.shouldAutoPlay(false);
+            //mMasterPlayer.shouldAutoPlay(false);
             mMasterPlayer.setDataSource(stream);
             mMasterPlayer.prepareAsync();
         } catch (IOException e) {
@@ -623,10 +635,15 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
         if (context.getHeight() != 0 && context.getWidth() != 0) {
             ratioLayout.setPicRatio(context.getWidth() / ((float) context.getHeight()));
         }
-        StartStopLiveJson.ShowStreams showStreams = startPlayEvent.getStartStopLiveJson().getContext().getShow_streams().get(0);
-        mMasterPlayer.reset();
+        String streamAddress = startPlayEvent.getStreamAddress();
+//        if (mMasterPlayer == null) {
+//            Log.e("LiveDisplayActivityNew", "mMasterPlayer is null");
+//            ToastUtils.showToast("Player is null");
+//            //return;
+//        }
         try {
-            mMasterPlayer.setDataSource(showStreams.getStreamAddress());
+            mMasterPlayer.reset();
+            mMasterPlayer.setDataSource(streamAddress);
             mMasterPlayer.prepareAsync();
             mMasterPlayer.setDisplay(surfaceView.getHolder());
         } catch (IOException e) {
@@ -659,10 +676,10 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
                 if (roomInfoBean.getData().getStream().getStreamAddress() != null) {
                     if (roomInfoBean.getData().getStream().getStreamAddress().getFlv() != null) {
                         initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getFlv());
-                    } else if (roomInfoBean.getData().getStream().getStreamAddress().getHls() != null) {
-                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getHls());
                     } else if (roomInfoBean.getData().getStream().getStreamAddress().getRtmp() != null) {
                         initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getRtmp());
+                    } else if (roomInfoBean.getData().getStream().getStreamAddress().getHls() != null) {
+                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getHls());
                     }
                 }
             }
@@ -726,6 +743,7 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
 
     @Override
     protected void onDestroy() {
+        ToastUtils.showToast("LiveDisplayActivityNew destory");
         giftAnimView.removeCallbacks(mTotalGiftAnimAction);
         giftAnimView.removeCallbacks(mCacheComboAction);
         ivGiftGif.removeCallbacks(mGifAction);

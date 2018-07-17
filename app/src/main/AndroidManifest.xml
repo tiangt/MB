@@ -176,7 +176,9 @@
         <activity android:name=".ui.activity.camera.Camera2Activity"></activity>
         <activity
             android:name=".ui.activity.LiveDisplayActivityNew"
-            android:windowSoftInputMode="adjustNothing"></activity>
+            android:windowSoftInputMode="adjustNothing">
+
+        </activity>
 
         <!--Provider组件-->
         <provider

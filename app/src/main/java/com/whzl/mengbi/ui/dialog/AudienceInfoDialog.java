@@ -11,7 +11,7 @@ import com.whzl.mengbi.ui.common.BaseAppliaction;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
-import com.whzl.mengbi.util.DateUtil;
+import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -84,7 +84,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
                         if (!TextUtils.isEmpty(introduce)) {
                             tvIntroduce.setText(introduce);
                         }
-                        tvAge.setText(DateUtil.getAge(dataBean.getBirthday()) + "岁");
+                        tvAge.setText(DateUtils.getAge(dataBean.getBirthday()) + "岁");
                         int identityId = dataBean.getIdentityId();
                         List<RoomUserInfo.DataBean.LevelMapBean> levelMap = dataBean.getLevelMap();
                         for (int i = 0; i < levelMap.size(); i++) {

@@ -159,9 +159,9 @@
                 android:id="@+id/tv_stop_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="主播休息中"
+                android:text="主播正在休息中"
                 android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:layout_centerInParent="true"
                 android:textColor="@color/player_yellow"
                 android:visibility="gone"/>
