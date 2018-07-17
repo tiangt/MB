@@ -8,6 +8,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/appBg</item>
     </style>
 
     <style name="MenuTextStyle">
@@ -98,5 +99,10 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textStyle">bold</item>
         <item name="android:gravity">center</item>
+    </style>
+    <!--全屏不要状态栏-->
+    <style name="AppTheme.NoTitle_FullScreen" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 </resources>

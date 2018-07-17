@@ -14,4 +14,7 @@
     <item name="search_book_contents_failed" type="id" />
     <item name="search_book_contents_succeeded" type="id" />
     <item name="chat_text" type="id" />
+    <item name="toolbar" type="id" />
+    <item name="tv_toolbar_title" type="id" />
+    <item name="tv_toolbar_menu_text" type="id" />
 </resources>

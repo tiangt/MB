@@ -133,4 +133,9 @@ public class URLContentUtils{
      */
     public static final String SEND_GIFT = "v1/consume/send-gift";
 
+    /**
+     * 检查登录
+     */
+    public static final String CHECK_LOGIN = "v1/user/check-login";
+
 }

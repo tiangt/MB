@@ -140,4 +140,6 @@
     <color name="viewfinder_laser">#ffff0000</color>
     <color name="viewfinder_mask">#60000000</color>
     <color name="header">#58567D</color>
+    <color name="appBg">#EBEAEA</color>
+    <color name="btn_not_enable">#ffcccccc</color>
 </resources>

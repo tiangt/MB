@@ -48,6 +48,7 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
+import com.whzl.mengbi.ui.activity.base.BaseAtivityNew;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
@@ -83,7 +84,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
  * @author shaw
  * @date 2018/7/6
  */
-public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
+public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
     @BindView(R.id.tv_host_name)
@@ -124,8 +125,6 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     RelativeLayout rlInfoContainer;
     @BindView(R.id.tv_lucky_gift)
     TextView tvLuckyGift;
-
-    private Unbinder mBind;
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
     private KSYMediaPlayer mMasterPlayer;
@@ -153,80 +152,13 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     private Runnable mLuckyGiftAction;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initEnv();
+    protected void setupContentView() {
         setContentView(R.layout.activity_live_display_new);
+    }
+
+    @Override
+    protected void initEnv() {
         StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
-        mBind = ButterKnife.bind(this);
-        initView();
-        initAction();
-        getDatas();
-    }
-
-    private void initAction() {
-        mTotalGiftAnimAction = () -> {
-            giftAnimView.setTranslationX(0);
-            flagIsTotalAnimating = false;
-            if (mTotalAnimList.size() > 0) {
-                mTotalAnimList.remove(0);
-            }
-            if (mTotalAnimList.size() > 0) {
-                animGift(mTotalAnimList.get(0));
-            }
-        };
-        mCacheComboAction = () -> comboCache();
-
-        mRunWayAction = () -> {
-            flagIsGifAnimating = false;
-            tvRunWayGift.setVisibility(View.GONE);
-            mRunWayList.remove(0);
-            if (mRunWayList.size() > 0) {
-                showRunWay(mRunWayList.get(0));
-            }
-        };
-
-        mLuckyGiftAction = () -> tvLuckyGift.animate()
-                .translationX(-UIUtil.dip2px(LiveDisplayActivityNew.this, 360))
-                .setInterpolator(new AccelerateInterpolator())
-                .setDuration(300)
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        tvLuckyGift.setTranslationX(UIUtil.dip2px(LiveDisplayActivityNew.this, 360));
-                        isLuckyGiftShow = false;
-                        mLuckGiftList.remove(0);
-                        if (mLuckGiftList.size() > 0) {
-                            showLuckyGift(mLuckGiftList.get(0));
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                })
-                .start();
-    }
-
-    private void getDatas() {
-        getRoomToken();
-        mLivePresenter.getRoomInfo(mProgramId);
-        mLivePresenter.getAudienceAccount(mProgramId);
-        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
-    }
-
-    private void initEnv() {
         mLivePresenter = new LivePresenterImpl(this);
         chatRoomPresenter = new ChatRoomPresenterImpl();
         if (getIntent() != null) {
@@ -243,7 +175,8 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         });
     }
 
-    private void initView() {
+    @Override
+    protected void setupView() {
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -306,6 +239,70 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
                 }
             }
         });
+        initAction();
+    }
+
+    @Override
+    protected void loadData() {
+        getRoomToken();
+        mLivePresenter.getRoomInfo(mProgramId);
+        mLivePresenter.getAudienceAccount(mProgramId);
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+    }
+
+    private void initAction() {
+        mTotalGiftAnimAction = () -> {
+            giftAnimView.setTranslationX(0);
+            flagIsTotalAnimating = false;
+            if (mTotalAnimList.size() > 0) {
+                mTotalAnimList.remove(0);
+            }
+            if (mTotalAnimList.size() > 0) {
+                animGift(mTotalAnimList.get(0));
+            }
+        };
+        mCacheComboAction = () -> comboCache();
+
+        mRunWayAction = () -> {
+            flagIsGifAnimating = false;
+            tvRunWayGift.setVisibility(View.GONE);
+            mRunWayList.remove(0);
+            if (mRunWayList.size() > 0) {
+                showRunWay(mRunWayList.get(0));
+            }
+        };
+
+        mLuckyGiftAction = () -> tvLuckyGift.animate()
+                .translationX(-UIUtil.dip2px(LiveDisplayActivityNew.this, 360))
+                .setInterpolator(new AccelerateInterpolator())
+                .setDuration(300)
+                .setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        tvLuckyGift.setTranslationX(UIUtil.dip2px(LiveDisplayActivityNew.this, 360));
+                        isLuckyGiftShow = false;
+                        mLuckGiftList.remove(0);
+                        if (mLuckGiftList.size() > 0) {
+                            showLuckyGift(mLuckGiftList.get(0));
+                        }
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                })
+                .start();
     }
 
     private void getRoomToken() {
@@ -642,6 +639,7 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
     public void onMessageEvent(StopPlayEvent stopPlayEvent) {
         mMasterPlayer.stop();
         mMasterPlayer.release();
+        mMasterPlayer.reset();
         tvStopTip.setVisibility(View.VISIBLE);
     }
 
@@ -733,7 +731,6 @@ public class LiveDisplayActivityNew extends BaseAtivity implements LiveView {
         ivGiftGif.removeCallbacks(mGifAction);
         tvRunWayGift.removeCallbacks(mRunWayAction);
         tvLuckyGift.removeCallbacks(mLuckyGiftAction);
-        mBind.unbind();
         super.onDestroy();
         mLivePresenter.onDestory();
         if (chatRoomPresenter != null) {
