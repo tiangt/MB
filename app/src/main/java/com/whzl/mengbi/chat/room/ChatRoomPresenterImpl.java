@@ -13,7 +13,7 @@ import com.whzl.mengbi.chat.room.message.ChatOutMsg;
 import com.whzl.mengbi.chat.room.message.LoginMessage;
 import com.whzl.mengbi.chat.room.message.MessageRouter;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
-import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.SPUtils;
 
 import java.util.ArrayList;
@@ -76,16 +76,16 @@ public class ChatRoomPresenterImpl{
      */
     public void chatLogin(String domain) {
         LoginMessage message;
-        int userId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstace(), "userId", 0).toString());
+        int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(), "userId", 0).toString());
         if(userId > 0) {
             message = new LoginMessage(liveRoomTokenInfo.getData().getProgramId()+"",
                     domain, liveRoomTokenInfo.getData().getUserId(), liveRoomTokenInfo.getData().getToken());
         }else{
-            int programId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"programId",0).toString());
-            String nickname = SPUtils.get(BaseAppliaction.getInstance(),"nickname","0").toString();
+            int programId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(),"programId",0).toString());
+            String nickname = SPUtils.get(BaseApplication.getInstance(),"nickname","0").toString();
             if (nickname.equals("0")) {
                 nickname = getNickname();
-                SPUtils.put(BaseAppliaction.getInstace(), "nickname", nickname);
+                SPUtils.put(BaseApplication.getInstance(), "nickname", nickname);
             }
             message = new LoginMessage(programId+"",domain,userId,nickname);
         }
@@ -135,15 +135,15 @@ public class ChatRoomPresenterImpl{
 //        }
 //
         ChatOutMsg msg;
-        boolean islogin = (Boolean) SPUtils.get(BaseAppliaction.getInstance(),"islogin",false);
+        boolean islogin = (Boolean) SPUtils.get(BaseApplication.getInstance(),"islogin",false);
         if(islogin){
             msg = new ChatOutMsg(message, liveRoomTokenInfo.getData().getProgramId()+"",client.getCurrentDomain(),
                     liveRoomTokenInfo.getData().getUserId()+"", liveRoomTokenInfo.getData().getToken()
                     ,"0","0","common");
         }else{
-            int programId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"programId",0).toString());
-            int userId = Integer.parseInt(SPUtils.get(BaseAppliaction.getInstance(),"userId",0).toString());
-            String nickname = SPUtils.get(BaseAppliaction.getInstance(),"nickname","0").toString();
+            int programId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(),"programId",0).toString());
+            int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(),"userId",0).toString());
+            String nickname = SPUtils.get(BaseApplication.getInstance(),"nickname","0").toString();
             msg = new ChatOutMsg(message,programId+"",client.getCurrentDomain(),userId+"",nickname
                     ,"0","0","common");
         }

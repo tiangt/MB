@@ -1,10 +1,9 @@
 package com.whzl.mengbi.presenter.impl;
 
 import com.whzl.mengbi.model.LoginModel;
-import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.impl.LoginModelImpl;
-import com.whzl.mengbi.presenter.LoginPresenter;
+import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.OnLoginFinishedListener;
 import com.whzl.mengbi.ui.view.LoginView;
 
@@ -19,7 +18,7 @@ import java.util.HashMap;
  * LoginPresenterImpl只 有View和Model的引用那么Model怎么把结果告诉View呢？
  */
 
-public class LoginPresenterImpl implements LoginPresenter,OnLoginFinishedListener {
+public class LoginPresenterImpl implements LoginPresent, OnLoginFinishedListener {
     private LoginView loginView;
     private LoginModel loginModel;
 
@@ -28,36 +27,27 @@ public class LoginPresenterImpl implements LoginPresenter,OnLoginFinishedListene
         this.loginModel = new LoginModelImpl();
     }
 
+
     @Override
-    public void visitorValidateCredentials(String deviceId) {
-        loginModel.doVisitorLogin(deviceId,this);
+    public void login(HashMap hashMap) {
+        loginModel.doLogin(hashMap, this);
     }
 
     @Override
-    public void validateCredentials(HashMap hashMap,String url) {
+    public void openLogin(HashMap hashMap) {
+        loginModel.openLogin(hashMap, this);
+    }
+
+    @Override
+    public void onLoginSuccess(UserInfo userInfo) {
         if (loginView != null) {
-            //loginView.showProgress();
-        }
-        loginModel.doLogin(hashMap, url,this);
-    }
-
-    @Override
-    public void onVisitorLoginSuccess() {
-        if(loginView!=null){
-            loginView.visitorNavigateToHome();
-        }
-    }
-
-    @Override
-    public void onSuccess() {
-        if (loginView != null) {
-            loginView.navigateToHome();
+            loginView.loginSuccess(userInfo);
         }
     }
 
     @Override
     public void onError(String error) {
-        if(loginView != null){
+        if (loginView != null) {
             loginView.showError(error);
         }
     }
@@ -66,4 +56,5 @@ public class LoginPresenterImpl implements LoginPresenter,OnLoginFinishedListene
     public void onDestroy() {
         loginView = null;
     }
+
 }

@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.common.BaseApplication;
 
 
 /**
@@ -23,7 +23,7 @@ public abstract  class BaseFragement extends Fragment {
 
     public Context getContext() {
         if (mContext == null) {
-            return BaseAppliaction.getInstance();
+            return BaseApplication.getInstance();
         }
         return mContext;
     }

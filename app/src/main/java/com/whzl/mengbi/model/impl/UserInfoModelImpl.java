@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.whzl.mengbi.model.UserInfoModel;
 import com.whzl.mengbi.presenter.OnUserInfoFInishedListener;
-import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -18,7 +18,7 @@ public class UserInfoModelImpl implements UserInfoModel{
         HashMap hashMap = new HashMap();
         hashMap.put("userId",userId);
         hashMap.put("avatar",filename);
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.MODIFY_AVATAR,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_AVATAR,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
                 String strJson = result.toString();
@@ -45,7 +45,7 @@ public class UserInfoModelImpl implements UserInfoModel{
         HashMap hashMap = new HashMap();
         hashMap.put("userId",userId);
         hashMap.put("nickname",nickname);
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.MODIFY_NICKNAME,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_NICKNAME,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
                 String strJson = result.toString();
@@ -69,7 +69,7 @@ public class UserInfoModelImpl implements UserInfoModel{
 
     @Override
     public void doUpdataUserInfo(HashMap hashMap, OnUserInfoFInishedListener listener) {
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.MODIFY_USER_INFO,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_USER_INFO,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
                 String strJson = result.toString();

@@ -1,6 +1,5 @@
 package com.whzl.mengbi.presenter;
 
-import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.model.entity.UserInfo;
 
 /**
@@ -9,14 +8,9 @@ import com.whzl.mengbi.model.entity.UserInfo;
 public interface OnLoginFinishedListener {
 
     /**
-     * 游客请求成功回调
-     */
-    void onVisitorLoginSuccess();
-
-    /**
      * 用户请求成功回调
      */
-    void onSuccess();
+    void onLoginSuccess(UserInfo userInfo);
 
     /**
      * 请求失败回调

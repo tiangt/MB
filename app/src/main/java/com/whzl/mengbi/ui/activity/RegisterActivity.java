@@ -124,7 +124,7 @@ public class RegisterActivity extends BaseAtivity implements RegisterView, View.
 
     @Override
     public void navigateToAll(RegisterInfo registerInfo) {
-            Intent mIntent = new Intent(mContext,LoginActivity.class);
+            Intent mIntent = new Intent(mContext,LoginActivityNew.class);
             mIntent.putExtra("userName",userName);
             setResult(1,mIntent);
             finish();
@@ -167,7 +167,7 @@ public class RegisterActivity extends BaseAtivity implements RegisterView, View.
                 finish();
                 break;
             case R.id.item_user_login:
-                Intent mIntent = new Intent(this,LoginActivity.class);
+                Intent mIntent = new Intent(this,LoginActivityNew.class);
                 mIntent.putExtra("visitor",true);
                 startActivity(mIntent);
                 break;

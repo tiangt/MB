@@ -9,11 +9,10 @@ import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
-import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
@@ -23,7 +22,7 @@ public class LiveModelImpl implements LiveModel {
 
     @Override
     public void doLiveRoomToken(HashMap hashMap, OnLiveFinishedListener listener) {
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.CHECK_ENTERR_ROOM, RequestManager.TYPE_POST_JSON, hashMap, new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_ENTERR_ROOM, RequestManager.TYPE_POST_JSON, hashMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 LiveRoomTokenInfo liveRoomTokenInfo = GsonUtils.GsonToBean(result.toString(), LiveRoomTokenInfo.class);
@@ -44,7 +43,7 @@ public class LiveModelImpl implements LiveModel {
     @Override
     public void doLiveGift(OnLiveFinishedListener listener) {
         HashMap parmarMap = new HashMap();
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.GIFT_LIST, RequestManager.TYPE_POST_JSON, parmarMap,
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GIFT_LIST, RequestManager.TYPE_POST_JSON, parmarMap,
                 new RequestManager.ReqCallBack<Object>() {
 
                     @Override
@@ -68,7 +67,7 @@ public class LiveModelImpl implements LiveModel {
 
     @Override
     public void doLiveFace(String fileName, OnLiveFinishedListener listener) {
-        String strJson = FileUtils.getJson(fileName, BaseAppliaction.getInstance());
+        String strJson = FileUtils.getJson(fileName, BaseApplication.getInstance());
         EmjoyInfo emjoyInfo = GsonUtils.GsonToBean(strJson, EmjoyInfo.class);
         listener.onLiveFaceSuccess(emjoyInfo);
     }
@@ -78,7 +77,7 @@ public class LiveModelImpl implements LiveModel {
     public void doRoomInfo(int programId, OnLiveFinishedListener listener) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.ROOM_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 RoomInfoBean roomInfoBean = GsonUtils.GsonToBean(result.toString(), RoomInfoBean.class);
@@ -100,7 +99,7 @@ public class LiveModelImpl implements LiveModel {
     public void doAudienceAccount(int programId, OnLiveFinishedListener listener) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.AUDIENCE_COUNT, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.AUDIENCE_COUNT, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 AudienceCountBean audienceCountBean = GsonUtils.GsonToBean(result.toString(), AudienceCountBean.class);
@@ -125,7 +124,7 @@ public class LiveModelImpl implements LiveModel {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
         paramsMap.put("userId", userId + "");
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.FELLOW_HOST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.FELLOW_HOST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
@@ -148,7 +147,7 @@ public class LiveModelImpl implements LiveModel {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
         paramsMap.put("userId", userId + "");
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 RoomUserInfo roomUserInfo = GsonUtils.GsonToBean(result.toString(), RoomUserInfo.class);
@@ -178,7 +177,7 @@ public class LiveModelImpl implements LiveModel {
         paramsMap.put("count", count + "");
         paramsMap.put("userId", userId + "");
         paramsMap.put("useBag", false + "");
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.SEND_GIFT, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SEND_GIFT, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);

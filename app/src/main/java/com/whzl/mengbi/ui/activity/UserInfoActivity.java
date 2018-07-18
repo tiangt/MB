@@ -269,7 +269,7 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
                         cityPickerView.showCityPicker();
                 break;
             case R.id.user_info_quit_but://退出登录
-                Intent mIntent = new Intent(UserInfoActivity.this,LoginActivity.class);
+                Intent mIntent = new Intent(UserInfoActivity.this,LoginActivityNew.class);
                 mIntent.putExtra("visitor",true);
                 startActivity(mIntent);
                 SPUtils.remove(this,"islogin");//清除用户登录状态

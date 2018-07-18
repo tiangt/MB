@@ -47,7 +47,7 @@ import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
-import com.whzl.mengbi.ui.activity.base.BaseAtivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
@@ -81,7 +81,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
  * @author shaw
  * @date 2018/7/6
  */
-public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
+public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView {
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
     @BindView(R.id.tv_host_name)
@@ -140,7 +140,7 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
     private Runnable mTotalGiftAnimAction;
     private Runnable mGifAction;
     private Runnable mCacheComboAction;
-    private int REQUEST_LOGIN;
+    private int REQUEST_LOGIN = 120;
     private boolean flagRunwayRunning = false;
     private ArrayList<RunWayEvent> mRunWayList = new ArrayList<>();
     private Runnable mRunWayAction;
@@ -173,7 +173,7 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
         mMasterPlayer.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(IMediaPlayer iMediaPlayer, int info, int i1) {
-                if(info == IMediaPlayer.MEDIA_INFO_RELOADED) {
+                if (info == IMediaPlayer.MEDIA_INFO_RELOADED) {
                     Log.d("LiveDisplayActivity", "Succeed to reload video.");
                 }
                 return false;
@@ -383,8 +383,8 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
     }
 
     private void login() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra("from", LiveDisplayActivityNew.class);
+        Intent intent = new Intent(this, LoginActivityNew.class);
+        intent.putExtra("from", this.getClass().toString());
         startActivityForResult(intent, REQUEST_LOGIN);
     }
 
@@ -680,7 +680,6 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
             return;
         }
         ratioLayout.setPicRatio(width / (float) height);
-        ratioLayout.post(() -> ratioLayout.requestLayout());
     }
 
 
@@ -752,9 +751,10 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == REQUEST_LOGIN) {
+        if (requestCode == REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
                 mUserId = (int) SPUtils.get(this, "userId", 0);
+                mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
             }
         }
     }

@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.CheckLoginResultBean;
-import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
-import com.whzl.mengbi.ui.activity.base.BaseAtivityNew;
-import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
@@ -18,18 +18,16 @@ import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author shaw
  * @date 2018/7/17
  */
-public class SplashActivity extends BaseAtivityNew {
+public class SplashActivity extends BaseActivityNew {
 
 
     @Override
@@ -45,14 +43,14 @@ public class SplashActivity extends BaseAtivityNew {
     @Override
     protected void loadData() {
         HashMap<String, String> paramsMap = new HashMap<>();
-        int userId = (int) SPUtils.get(this, "userId", 0);
-        String sessionId = (String) SPUtils.get(this, "sessionIds", "");
+        int userId = (int) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
+        String sessionId = (String) SPUtils.get(this, SpConfig.KEY_SESSION_ID, "");
         if (userId == 0 || TextUtils.isEmpty(sessionId)) {
             visitorLogin();
             return;
         }
         paramsMap.put("userId", userId + "");
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.CHECK_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object object) {
@@ -81,14 +79,15 @@ public class SplashActivity extends BaseAtivityNew {
         paramsMap.put("platform", "ANDROID");
         String deviceId = RxPermisssionsUitls.getDevice(this);
         paramsMap.put("deviceNumber", deviceId);
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.USER_VISITOR_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.USER_VISITOR_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object object) {
                         VisitorUserInfo visitorUserInfo = GsonUtils.GsonToBean(object.toString(), VisitorUserInfo.class);
                         if (visitorUserInfo.getCode() == RequestManager.RESPONSE_CODE) {
-                            SPUtils.put(BaseAppliaction.getInstance(), "userId", visitorUserInfo.getData().getUserId());
-                            SPUtils.put(BaseAppliaction.getInstance(), "sessionId", visitorUserInfo.getData().getSessionId());
+                            SPUtils.put(BaseApplication.getInstance(), "userId", visitorUserInfo.getData().getUserId());
+                            SPUtils.put(BaseApplication.getInstance(), "sessionId", visitorUserInfo.getData().getSessionId());
+                            SPUtils.put(BaseApplication.getInstance(), "nickname", visitorUserInfo.getData().getNickname());
                             delayJumpToHomeActivity(false);
                         } else {
                             delayJumpToHomeActivity(false);
@@ -108,7 +107,7 @@ public class SplashActivity extends BaseAtivityNew {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((Boolean s) -> {
-                    Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     intent.putExtra("isNormalLogin", isNormalLogin);
                     startActivity(intent);
                     finish();

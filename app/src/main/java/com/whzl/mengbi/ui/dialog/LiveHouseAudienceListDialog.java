@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.ui.adapter.AudienceListAdapter;
-import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
@@ -80,7 +80,7 @@ public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
     private void getAudienceList() {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", mProgramid + "");
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.ROOM_ONLINE, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_ONLINE, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 AudienceListBean audienceListBean = GsonUtils.GsonToBean(result.toString(), AudienceListBean.class);
