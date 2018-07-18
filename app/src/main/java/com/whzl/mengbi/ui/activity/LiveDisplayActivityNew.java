@@ -721,7 +721,7 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
     }
 
     public void sendMeeage(String message) {
-        new Thread(() -> chatRoomPresenter.sendMessage(message)).start();
+        chatRoomPresenter.sendMessage(message);
     }
 
     public void sendGift(int count, int goodId) {

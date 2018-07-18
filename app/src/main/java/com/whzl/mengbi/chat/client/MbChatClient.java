@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 
 public class  MbChatClient {
@@ -27,6 +29,7 @@ public class  MbChatClient {
     private boolean isReconnect = false;
 
     private List<ServerAddr> serverList;
+    private BlockingQueue<ByteableMessage> blockingQueue = new ArrayBlockingQueue<>(10);
 
     public MbChatClient(MbSocketFactory socketFactory){
         this.socketFactory = socketFactory;
@@ -90,22 +93,26 @@ public class  MbChatClient {
                 }
             }
         }).start();
-
+        startSendThread();
     }
 
     public void send(ByteableMessage msg){
+        try{
+            blockingQueue.put(msg);
+        }catch (InterruptedException e) {
 
-        if(!socket.getIsConnected()){
-            Log.e(tag,"server not connected");
-            return;
         }
-        try {
-            out.write(msg.getMessageBytes());
-        } catch (IOException e) {
-            errorCallback.onError();
-            e.printStackTrace();
-            //todo 是否需要重发
-        }
+//        if(!socket.getIsConnected()){
+//            Log.e(tag,"server not connected");
+//            return;
+//        }
+//        try {
+//            out.write(msg.getMessageBytes());
+//        } catch (IOException e) {
+//            errorCallback.onError();
+//            e.printStackTrace();
+//            //todo 是否需要重发
+//        }
     }
 
     public void closeSocket(){
@@ -135,9 +142,26 @@ public class  MbChatClient {
         sendThread = new Thread(new Runnable() {
             @Override
             public void run() {
-
+                while(!isStoped) {
+                    try {
+                        if (blockingQueue == null) {
+                            Thread.sleep(1000);
+                            continue;
+                        }
+                        ByteableMessage msg = blockingQueue.take();
+                        if (!socket.getIsConnected()) {
+                            Thread.sleep(1000);
+                            continue;
+                        }
+                        out.write(msg.getMessageBytes());
+                    }catch (Exception e) {
+                        Log.e("MBChatClient", "socket send thread error");
+                        continue;
+                    }
+                }
             }
         });
+        sendThread.start();
     }
 
     private void startListen(){
