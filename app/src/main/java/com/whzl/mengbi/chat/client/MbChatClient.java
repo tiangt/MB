@@ -15,6 +15,7 @@ public class  MbChatClient {
     private MessageCallback mMessageCallback;
     private ErrorCallback errorCallback;
     private Thread listenThread;
+    private Thread sendThread;
     String tag = "androidSocket";
     private String currentDomain;
     private MbSocketFactory socketFactory;
@@ -89,9 +90,11 @@ public class  MbChatClient {
                 }
             }
         }).start();
+
     }
 
     public void send(ByteableMessage msg){
+
         if(!socket.getIsConnected()){
             Log.e(tag,"server not connected");
             return;
@@ -126,6 +129,15 @@ public class  MbChatClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void startSendThread() {
+        sendThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
     }
 
     private void startListen(){

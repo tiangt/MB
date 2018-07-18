@@ -62,23 +62,15 @@ public class LoginActivity extends BaseAtivity implements LoginView, View.OnClic
     private boolean visitor = false;
 
     private LoginPresenter loginPresenter;
-<<<<<<< HEAD
-=======
     private String from;
->>>>>>> c6a03da3794b3ef8909625a35d439144acf8c386
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_layout);
-<<<<<<< HEAD
-        if (getIntent() != null) {
-            visitor = getIntent().getBooleanExtra("visitor", false);
-=======
         if(getIntent()!=null){
             visitor = getIntent().getBooleanExtra("visitor",false);
             from = getIntent().getStringExtra("from");
->>>>>>> c6a03da3794b3ef8909625a35d439144acf8c386
         }
         loginPresenter = new LoginPresenterImpl(this);
         //自动登录
@@ -134,17 +126,13 @@ public class LoginActivity extends BaseAtivity implements LoginView, View.OnClic
                 loginPresenter.validateCredentials(paramsMap, URLContentUtils.USER_NORMAL_LOGIN);
             }
         } else {
-            if (visitor) {
-                return;
-            } else {
-                //手机设备ID
-                String deviceid = RxPermisssionsUitls.getDevice(this);
-                if (deviceid == null) {
-                    deviceid = "";
-                }
-                //游客登录
-                loginPresenter.visitorValidateCredentials(deviceid);
+            //手机设备ID
+            String deviceid = RxPermisssionsUitls.getDevice(this);
+            if (deviceid == null) {
+                deviceid = "";
             }
+            //游客登录
+            loginPresenter.visitorValidateCredentials(deviceid);
         }
     }
 
@@ -195,17 +183,13 @@ public class LoginActivity extends BaseAtivity implements LoginView, View.OnClic
      */
     @Override
     public void navigateToHome() {
-<<<<<<< HEAD
-        Intent mIntent = new Intent(this, HomeActivity.class);
-=======
         if(LiveDisplayActivityNew.class.equals(from)){
             setResult(RESULT_OK);
             finish();
         }
         Intent mIntent = new Intent(this,HomeActivity.class);
->>>>>>> c6a03da3794b3ef8909625a35d439144acf8c386
         startActivity(mIntent);
-        finish();
+        //finish();
     }
 
     /**
