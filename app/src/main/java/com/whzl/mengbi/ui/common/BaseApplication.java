@@ -71,7 +71,6 @@ public class BaseApplication extends Application {
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(this).setShareConfig(config);
         UMConfigure.init(this, SDKConfig.KEY_UMENG, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
-
     }
 
     //static 代码段可以防止内存泄露

@@ -70,6 +70,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.validation.Validator;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -132,9 +134,9 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     private boolean isRecyclerScrolling;
     private int mUserId;
     private BaseAwesomeDialog mGiftDialog;
-    private ArrayList<AnimJson> mTotalAnimList = new ArrayList<>();
+    private volatile ArrayList<AnimJson> mTotalAnimList = new ArrayList<>();
     private boolean flagIsTotalAnimating = false;
-    private ArrayList<AnimEvent> mGifAnimList = new ArrayList<>();
+    private volatile ArrayList<AnimEvent> mGifAnimList = new ArrayList<>();
     private boolean flagIsGifAnimating = false;
     private int mAnchorId;
     private Runnable mTotalGiftAnimAction;
@@ -142,10 +144,10 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     private Runnable mCacheComboAction;
     private int REQUEST_LOGIN = 120;
     private boolean flagRunwayRunning = false;
-    private ArrayList<RunWayEvent> mRunWayList = new ArrayList<>();
+    private volatile ArrayList<RunWayEvent> mRunWayList = new ArrayList<>();
     private Runnable mRunWayAction;
     private boolean isLuckyGiftShow;
-    private ArrayList<LuckGiftEvent> mLuckGiftList = new ArrayList<>();
+    private volatile ArrayList<LuckGiftEvent> mLuckGiftList = new ArrayList<>();
     private Runnable mLuckyGiftAction;
 
     @Override
@@ -278,37 +280,28 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             }
         };
 
-        mLuckyGiftAction = () -> tvLuckyGift.animate()
-                .translationX(-UIUtil.dip2px(LiveDisplayActivityNew.this, 360))
-                .setInterpolator(new AccelerateInterpolator())
-                .setDuration(300)
-                .setListener(new Animator.AnimatorListener() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
+        mLuckyGiftAction = () -> {
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 360);
+            valueAnimator.setInterpolator(new AccelerateInterpolator());
+            valueAnimator.setDuration(300);
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float animatedValue = ((float) animation.getAnimatedValue());
+                    tvLuckyGift.setTranslationX(-UIUtil.dip2px(LiveDisplayActivityNew.this, animatedValue));
+                    if (animatedValue == 360) {
                         tvLuckyGift.setTranslationX(UIUtil.dip2px(LiveDisplayActivityNew.this, 360));
-                        isLuckyGiftShow = false;
                         mLuckGiftList.remove(0);
                         if (mLuckGiftList.size() > 0) {
                             showLuckyGift(mLuckGiftList.get(0));
+                        } else {
+                            isLuckyGiftShow = false;
                         }
                     }
-
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animator animation) {
-
-                    }
-                })
-                .start();
+                }
+            });
+            valueAnimator.start();
+        };
     }
 
     private void getRoomToken() {
@@ -396,31 +389,32 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(KickoutEvent kickoutEvent) {
-        showToast(kickoutEvent.getNoChatMsg().getNochatType() == 8 ? "踢出房间" : "用多个手机打开同一个直播间，强制退出之前的a直播间");
+        showToast(kickoutEvent.getNoChatMsg().getNochatType() == 8 ? "踢出房间" : "用多个手机打开同一个直播间，强制退出之前的直播间");
         finish();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LuckGiftEvent luckGiftEvent) {
         mLuckGiftList.add(luckGiftEvent);
-        showLuckyGift(luckGiftEvent);
+        synchronized (this) {
+            if (!isLuckyGiftShow) {
+                showLuckyGift(mLuckGiftList.get(0));
+            }
+        }
     }
 
     private void showLuckyGift(LuckGiftEvent luckGiftEvent) {
-        if (!isLuckyGiftShow) {
-            tvLuckyGift.setTranslationX(UIUtil.dip2px(this, 360));
-            tvLuckyGift.animate().translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(300).start();
-            isLuckyGiftShow = true;
-            tvLuckyGift.append("恭喜");
-            SpannableString nickNameSpannable = new SpannableString(luckGiftEvent.getNickname());
-            nickNameSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#f76667")), 0, nickNameSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            tvLuckyGift.append(nickNameSpannable);
-            tvLuckyGift.append("送幸运礼物喜中");
-            SpannableString bonusCoinsSpannable = new SpannableString(luckGiftEvent.getTotalLuckMengBi() + "");
-            bonusCoinsSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#f76667")), 0, bonusCoinsSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            tvLuckyGift.append(bonusCoinsSpannable);
-            tvLuckyGift.postDelayed(mLuckyGiftAction, 2800);
-        }
+        isLuckyGiftShow = true;
+        tvLuckyGift.animate().translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(300).start();
+        tvLuckyGift.setText("恭喜");
+        SpannableString nickNameSpannable = new SpannableString(luckGiftEvent.getNickname());
+        nickNameSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#f76667")), 0, nickNameSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvLuckyGift.append(nickNameSpannable);
+        tvLuckyGift.append("送幸运礼物喜中");
+        SpannableString bonusCoinsSpannable = new SpannableString(luckGiftEvent.getTotalLuckMengBi() + "");
+        bonusCoinsSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#f76667")), 0, bonusCoinsSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tvLuckyGift.append(bonusCoinsSpannable);
+        tvLuckyGift.postDelayed(mLuckyGiftAction, 2800);
     }
 
 

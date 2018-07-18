@@ -42,7 +42,7 @@
         <RadioButton
             android:id="@+id/rb_me"
             style="@style/main_tab"
-            android:drawableTop="@drawable/selector_main_tab_home_icon"
+            android:drawableTop="@drawable/selector_main_tab_me_icon"
             android:text="@string/me_title" />
 
     </RadioGroup>

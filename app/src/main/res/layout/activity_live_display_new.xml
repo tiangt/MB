@@ -148,10 +148,11 @@
                 android:id="@+id/tv_lucky_gift"
                 android:layout_width="320dp"
                 android:layout_height="56dp"
-                android:textSize="10dp"
+                android:textSize="10sp"
                 android:singleLine="true"
                 android:layout_centerHorizontal="true"
-                android:gravity="center"
+                android:gravity="center_horizontal"
+                android:paddingTop="25dp"
                 android:background="@drawable/lucky_gift_bg"
                 android:translationX="360dp"/>
 
