@@ -4,9 +4,7 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -49,7 +47,6 @@ import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
-import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 import com.whzl.mengbi.ui.activity.base.BaseAtivityNew;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
@@ -74,9 +71,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
@@ -648,8 +643,6 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StopPlayEvent stopPlayEvent) {
-        mMasterPlayer.stop();
-        mMasterPlayer.release();
         mMasterPlayer.reset();
         tvStopTip.setVisibility(View.VISIBLE);
     }
