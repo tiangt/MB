@@ -320,7 +320,6 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
 
     private void initPlayers(String stream) {
         try {
-            //mMasterPlayer.shouldAutoPlay(false);
             mMasterPlayer.setDataSource(stream);
             mMasterPlayer.prepareAsync();
         } catch (IOException e) {
@@ -396,7 +395,7 @@ public class LiveDisplayActivityNew extends BaseAtivityNew implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(KickoutEvent kickoutEvent) {
-        showToast(kickoutEvent.getNoChatMsg().getNochatType() == 8 ? "踢出房间" : "用多个手机打开同一个直播间，强制退出之前的a直播间");
+        showToast(kickoutEvent.getNoChatMsg().getNochatType() == 8 ? "你已经被踢出踢出直播间" : "用多个手机打开同一个直播间，强制退出之前的直播间");
         finish();
     }
 

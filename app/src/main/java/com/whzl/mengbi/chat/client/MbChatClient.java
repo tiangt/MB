@@ -277,8 +277,6 @@ public class  MbChatClient {
                 }
                 return false;
             }
-
-
         }
         return true;
     }
