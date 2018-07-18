@@ -157,11 +157,11 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     protected void initEnv() {
         StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
         mLivePresenter = new LivePresenterImpl(this);
-        chatRoomPresenter = new ChatRoomPresenterImpl();
         if (getIntent() != null) {
             mProgramId = getIntent().getIntExtra("ProgramId", -1);
             SPUtils.put(this, "programId", mProgramId);
         }
+        chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
         mUserId = (int) SPUtils.get(this, "userId", 0);
         mLivePresenter.getLiveGift();
         mMasterPlayer = new KSYMediaPlayer.Builder(this).build();
@@ -737,7 +737,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         super.onDestroy();
         mLivePresenter.onDestory();
         if (chatRoomPresenter != null) {
-            chatRoomPresenter.disconnectChat();
+            chatRoomPresenter.onChatRoomDestroy();
         }
         if (mMasterPlayer != null) {
             mMasterPlayer.stop();
