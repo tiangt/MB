@@ -9,8 +9,10 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.BuildConfig;
+import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.ui.common.BaseAppliaction;
 import com.whzl.mengbi.util.EncryptUtils;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 

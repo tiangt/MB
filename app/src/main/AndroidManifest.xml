@@ -42,29 +42,37 @@
         android:theme="@style/AppTheme">
 
         <!--友盟APPKEY-->
-        <meta-data android:value="5b3c9412a40fa34d390000ac" android:name="UMENG_APPKEY"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5b3c9412a40fa34d390000ac" />
         <!--QQAPPKEY-->
-        <meta-data android:value="101477481" android:name="52f84675951166e7dcc95b019ccd63fa"/>
+        <meta-data
+            android:name="52f84675951166e7dcc95b019ccd63fa"
+            android:value="101477481" />
         <!--微信APPKEY-->
-        <meta-data android:value="wxbaa94b521372015c" android:name="c1762807092c6ace7405071a9df51290"/>
+        <meta-data
+            android:name="c1762807092c6ace7405071a9df51290"
+            android:value="wxbaa94b521372015c" />
 
         <!--QQ兼顾Android 8.0-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent101477481" />
                 <!--<data android:scheme="tencent101477481" />-->
             </intent-filter>
         </activity>
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!--微信兼顾8.0：-->
         <activity
@@ -76,21 +84,20 @@
         <activity
             android:name=".ui.activity.HomeActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.activity.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <!-- 金山云直播 -->
         <activity
@@ -164,7 +171,7 @@
             android:launchMode="singleTop"
             android:theme="@style/Theme.RiseAnimation" />
 
-        <activity android:name=".ui.activity.UserInfoActivity"/>
+        <activity android:name=".ui.activity.UserInfoActivity" />
 
         <activity android:name=".ui.activity.camera.Camera2Activity"></activity>
         <activity
@@ -177,36 +184,51 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.whzl.mengbi.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
         <!--账户中心-->
         <!--设置-->
-        <activity android:name=".ui.activity.SettingsActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.activity.SettingsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <!--意见反馈-->
-        <activity android:name=".ui.activity.FeedBackActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.activity.FeedBackActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <!--客服中心-->
-        <activity android:name=".ui.activity.CustomServiceCenterActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
-        <activity android:name=".ui.activity.UserInfoNickNameActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.activity.CustomServiceCenterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.UserInfoNickNameActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <!--个人信息-->
         <!--修改性别-->
-        <activity android:name=".ui.activity.UserInfoSexActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".ui.activity.UserInfoSexActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <!--修改昵称-->
-        <activity android:name=".ui.activity.RechargeActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".ui.activity.RechargeActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ui.activity.LoginActivityNew"></activity>
+        <activity
+            android:name=".ui.activity.SplashActivity"
+            android:theme="@style/AppTheme.NoTitle_FullScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

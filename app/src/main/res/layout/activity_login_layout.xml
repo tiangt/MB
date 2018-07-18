@@ -35,7 +35,7 @@
             android:textSize="@dimen/font_size_44px"
             android:layout_below="@id/login_mengbi_logo"
             android:hint="@string/user_phone_editetxt"
-            android:background="@drawable/home_rounded_edittext"/>
+            android:background="@drawable/login_edit_text_bg"/>
 
         <EditText
             android:id="@+id/login_user_password"
@@ -47,7 +47,7 @@
             android:inputType="textPassword"
             android:hint="@string/user_password_editetxt"
             android:textSize="@dimen/font_size_44px"
-            android:background="@drawable/home_rounded_edittext"
+            android:background="@drawable/login_edit_text_bg"
             android:layout_below="@id/login_user_name"/>
 
         <Button

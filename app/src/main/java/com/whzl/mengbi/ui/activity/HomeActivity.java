@@ -36,17 +36,17 @@ public class HomeActivity extends BaseAtivity {
     private ViewPager viewPager;
     private MenuItem menuItem;
     private BottomNavigationView bottomNavigationView;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.setColor(this,getResources().getColor(R.color.colorPrimary));
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary));
         setContentView(R.layout.activity_home_layout);
         //实例化控件
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         //底部导航切换，滑动
         viewPager = findViewById(R.id.home_viewpager);
         bottomNavigationView = findViewById(R.id.home_bottom_navigation);
@@ -56,15 +56,15 @@ public class HomeActivity extends BaseAtivity {
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        boolean islogin = (boolean)SPUtils.get(HomeActivity.this,"islogin",false);
+                        boolean islogin = (boolean) SPUtils.get(HomeActivity.this, "islogin", false);
                         switch (item.getItemId()) {
                             case R.id.item_home:
-                                 item.setIcon(R.drawable.ic_home_bottom_checked);
+                                item.setIcon(R.drawable.ic_home_bottom_checked);
                                 viewPager.setCurrentItem(0);
                                 break;
                             case R.id.item_follow:
                                 if (!islogin) {
-                                    Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
+                                    Intent mIntent = new Intent(HomeActivity.this, LoginActivity.class);
                                     mIntent.putExtra("visitor", true);
                                     startActivity(mIntent);
                                 }
@@ -73,7 +73,7 @@ public class HomeActivity extends BaseAtivity {
                             case R.id.item_my:
                                 item.setIcon(R.drawable.mechance);
                                 if (!islogin) {
-                                    Intent mIntent = new Intent(HomeActivity.this,LoginActivity.class);
+                                    Intent mIntent = new Intent(HomeActivity.this, LoginActivity.class);
                                     mIntent.putExtra("visitor", true);
                                     startActivity(mIntent);
                                 }
