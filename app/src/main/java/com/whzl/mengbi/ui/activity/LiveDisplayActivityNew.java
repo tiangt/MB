@@ -159,11 +159,11 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     protected void initEnv() {
         StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
         mLivePresenter = new LivePresenterImpl(this);
-        chatRoomPresenter = new ChatRoomPresenterImpl();
         if (getIntent() != null) {
             mProgramId = getIntent().getIntExtra("ProgramId", -1);
             SPUtils.put(this, "programId", mProgramId);
         }
+        chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
         mUserId = (int) SPUtils.get(this, "userId", 0);
         mLivePresenter.getLiveGift();
         mMasterPlayer = new KSYMediaPlayer.Builder(this).build();
@@ -313,7 +313,6 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     private void initPlayers(String stream) {
         try {
-            //mMasterPlayer.shouldAutoPlay(false);
             mMasterPlayer.setDataSource(stream);
             mMasterPlayer.prepareAsync();
         } catch (IOException e) {
@@ -389,7 +388,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(KickoutEvent kickoutEvent) {
-        showToast(kickoutEvent.getNoChatMsg().getNochatType() == 8 ? "踢出房间" : "用多个手机打开同一个直播间，强制退出之前的直播间");
+        showToast(kickoutEvent.getNoChatMsg().getNochatType() == 8 ? "你已经被踢出踢出直播间" : "用多个手机打开同一个直播间，强制退出之前的直播间");
         finish();
     }
 
@@ -732,7 +731,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         super.onDestroy();
         mLivePresenter.onDestory();
         if (chatRoomPresenter != null) {
-            chatRoomPresenter.disconnectChat();
+            chatRoomPresenter.onChatRoomDestroy();
         }
         if (mMasterPlayer != null) {
             mMasterPlayer.stop();

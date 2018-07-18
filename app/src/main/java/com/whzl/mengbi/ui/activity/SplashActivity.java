@@ -78,6 +78,9 @@ public class SplashActivity extends BaseActivityNew {
         HashMap paramsMap = new HashMap();
         paramsMap.put("platform", "ANDROID");
         String deviceId = RxPermisssionsUitls.getDevice(this);
+        if (deviceId == null) {
+            deviceId = "";
+        }
         paramsMap.put("deviceNumber", deviceId);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.USER_VISITOR_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
@@ -85,9 +88,9 @@ public class SplashActivity extends BaseActivityNew {
                     public void onReqSuccess(Object object) {
                         VisitorUserInfo visitorUserInfo = GsonUtils.GsonToBean(object.toString(), VisitorUserInfo.class);
                         if (visitorUserInfo.getCode() == RequestManager.RESPONSE_CODE) {
-                            SPUtils.put(BaseApplication.getInstance(), "userId", visitorUserInfo.getData().getUserId());
-                            SPUtils.put(BaseApplication.getInstance(), "sessionId", visitorUserInfo.getData().getSessionId());
-                            SPUtils.put(BaseApplication.getInstance(), "nickname", visitorUserInfo.getData().getNickname());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, visitorUserInfo.getData().getUserId());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, visitorUserInfo.getData().getSessionId());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_NICKNAME, visitorUserInfo.getData().getNickname());
                             delayJumpToHomeActivity(false);
                         } else {
                             delayJumpToHomeActivity(false);

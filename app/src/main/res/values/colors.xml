@@ -113,6 +113,7 @@
     <color name="player_yellow">#FFCC00</color>
     <color name="player_purple">#996699</color>
     <color name="player_blue2">#0099cc</color>
+    <color name="player_rest">#FD840E</color>
 
 
     <color name="bg_color">#EDEDED</color>

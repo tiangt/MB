@@ -12,6 +12,7 @@ import com.whzl.mengbi.chat.client.ServerAddr;
 import com.whzl.mengbi.chat.room.message.ChatOutMsg;
 import com.whzl.mengbi.chat.room.message.LoginMessage;
 import com.whzl.mengbi.chat.room.message.MessageRouter;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.SPUtils;
@@ -29,6 +30,11 @@ public class ChatRoomPresenterImpl{
     private ErrorCallback errorCallback;
     private MessageCallback messageCallback;
     private LiveRoomTokenInfo liveRoomTokenInfo;
+    private String programId;
+
+    public ChatRoomPresenterImpl(String programId) {
+        this.programId = programId;
+    }
 
     public void setupConnection(LiveRoomTokenInfo liveRoomTokenInfo, Context context) {
         this.liveRoomTokenInfo = liveRoomTokenInfo;
@@ -76,18 +82,16 @@ public class ChatRoomPresenterImpl{
      */
     public void chatLogin(String domain) {
         LoginMessage message;
-        int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(), "userId", 0).toString());
+        int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0).toString());
         if(userId > 0) {
-            message = new LoginMessage(liveRoomTokenInfo.getData().getProgramId()+"",
-                    domain, liveRoomTokenInfo.getData().getUserId(), liveRoomTokenInfo.getData().getToken());
+            message = new LoginMessage(programId, domain, userId, liveRoomTokenInfo.getData().getToken());
         }else{
-            int programId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(),"programId",0).toString());
-            String nickname = SPUtils.get(BaseApplication.getInstance(),"nickname","0").toString();
+            String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_NICKNAME,"0").toString();
             if (nickname.equals("0")) {
                 nickname = getNickname();
-                SPUtils.put(BaseApplication.getInstance(), "nickname", nickname);
+                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_NICKNAME, nickname);
             }
-            message = new LoginMessage(programId+"",domain,userId,nickname);
+            message = new LoginMessage(programId,domain,userId,nickname);
         }
         client.send(message);
     }
@@ -106,21 +110,7 @@ public class ChatRoomPresenterImpl{
         return list;
     }
 
-
-    public void disconnectChat() {
-        client.closeSocket();
-    }
-
-
     public void sendMessage(String message) {
-
-//        if (!EnvironmentBridge.getUserInfoBridge().isLogin()) {
-//            if (message.length() > 5) {
-//                iChatRoom.showWarning("游客最多发言5个字");
-//                return;
-//            }
-//        }
-//
 //        if (message.length() > 50) {
 //            iChatRoom.showWarning("最多发言50个字");
 //            return;
@@ -135,18 +125,10 @@ public class ChatRoomPresenterImpl{
 //        }
 //
         ChatOutMsg msg;
-        boolean islogin = (Boolean) SPUtils.get(BaseApplication.getInstance(),"islogin",false);
-        if(islogin){
-            msg = new ChatOutMsg(message, liveRoomTokenInfo.getData().getProgramId()+"",client.getCurrentDomain(),
-                    liveRoomTokenInfo.getData().getUserId()+"", liveRoomTokenInfo.getData().getToken()
-                    ,"0","0","common");
-        }else{
-            int programId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(),"programId",0).toString());
-            int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(),"userId",0).toString());
-            String nickname = SPUtils.get(BaseApplication.getInstance(),"nickname","0").toString();
-            msg = new ChatOutMsg(message,programId+"",client.getCurrentDomain(),userId+"",nickname
-                    ,"0","0","common");
-        }
+        String userId = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_ID,0).toString();
+        String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_NICKNAME,"0").toString();
+        msg = new ChatOutMsg(message, programId,client.getCurrentDomain(),userId,nickname
+                ,"0","0","common");
         client.send(msg);
     }
 

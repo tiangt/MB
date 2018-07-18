@@ -164,7 +164,7 @@
                 android:textStyle="bold"
                 android:textSize="24sp"
                 android:layout_centerInParent="true"
-                android:textColor="@color/player_yellow"
+                android:textColor="@color/player_rest"
                 android:visibility="gone"/>
 
             <ImageView
