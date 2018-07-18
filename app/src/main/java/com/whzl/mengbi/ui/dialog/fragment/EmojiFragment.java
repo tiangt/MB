@@ -16,7 +16,7 @@ import android.widget.EditText;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.ui.adapter.ChatEmojiAdapter;
-import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.FileUtils;
@@ -61,7 +61,7 @@ public class EmojiFragment extends BaseFragment {
     protected void initEnv() {
         super.initEnv();
         index = getArguments().getInt("index");
-        String strJson = FileUtils.getJson("images/face/face.json", BaseAppliaction.getInstance());
+        String strJson = FileUtils.getJson("images/face/face.json", BaseApplication.getInstance());
         EmjoyInfo emjoyInfo = GsonUtils.GsonToBean(strJson, EmjoyInfo.class);
         publicBeans = null;
         if (index < 2) {

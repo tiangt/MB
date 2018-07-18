@@ -5,10 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.whzl.mengbi.model.RegisterModel;
 import com.whzl.mengbi.model.entity.RegisterInfo;
 import com.whzl.mengbi.presenter.OnRegisterFinishedListener;
-import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
@@ -20,7 +19,7 @@ public class RegisterModelImpl implements RegisterModel {
     public void doRegexCode(String mobile, final OnRegisterFinishedListener listener) {
         HashMap paramsMapMobile = new HashMap();
         paramsMapMobile.put("mobile",mobile);
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.SEND_CODE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SEND_CODE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
@@ -47,7 +46,7 @@ public class RegisterModelImpl implements RegisterModel {
         paramsMap.put("code",code);
         paramsMap.put("username",username);
 
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.REGISTER, RequestManager.TYPE_POST_JSON, paramsMap,
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.REGISTER, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {

@@ -14,20 +14,27 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SDKConfig;
 
 /**
- *@function 1.他是整个程序的入口，2初始化工作，3为整个应用的其他模块提供上下文
+ * @function 1.他是整个程序的入口，2初始化工作，3为整个应用的其他模块提供上下文
  */
-public class BaseAppliaction extends Application{
+public class BaseApplication extends Application {
 
-    public static BaseAppliaction getInstace() {
-        return instace;
+    private static BaseApplication instance = null;
+
+
+    {
+        //初始化微信登录
+        PlatformConfig.setWeixin(SDKConfig.KEY_WEIXIN, SDKConfig.SECREAT_WEIXING);
+        //初始化QQ登录
+        PlatformConfig.setQQZone(SDKConfig.KEY_QQ, SDKConfig.SECREAT_QQ);
     }
-
-    private static BaseAppliaction instace = null;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -39,7 +46,7 @@ public class BaseAppliaction extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        instace = this;
+        instance = this;
         initUM();
         /**
          * 预先加载一级列表显示 全国所有城市市的数据
@@ -47,25 +54,24 @@ public class BaseAppliaction extends Application{
         CityListLoader.getInstance().loadCityData(this);
     }
 
-    public static BaseAppliaction getInstance(){
-        return instace;
+    public static BaseApplication getInstance() {
+        return instance;
     }
 
     /**
      * 初始化友盟
      */
-    private void initUM(){
+    private void initUM() {
         /**
          * 设置组件化的Log开关
          * 参数: boolean 默认为false，如需查看LOG设置为true
          */
         UMConfigure.setLogEnabled(true);
-        UMConfigure.init(this,UMConfigure.DEVICE_TYPE_PHONE,"5b3c9412a40fa34d390000ac");
-        //初始化微信登录
-        PlatformConfig.setWeixin("wxbaa94b521372015c", "c1762807092c6ace7405071a9df51290");
-        //初始化QQ登录
-        PlatformConfig.setQQZone("101477481", "52f84675951166e7dcc95b019ccd63fa");
-        UMShareAPI.get(this);
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(this).setShareConfig(config);
+        UMConfigure.init(this, SDKConfig.KEY_UMENG, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+
     }
 
     //static 代码段可以防止内存泄露

@@ -9,8 +9,8 @@ import java.util.HashMap;
  */
 public interface LoginModel {
 
-    void doVisitorLogin(String deviceId,OnLoginFinishedListener listener);
+    void doLogin(HashMap hashMap, OnLoginFinishedListener listener);
 
-    void doLogin(HashMap hashMap,String url,OnLoginFinishedListener listener);
+    void openLogin(HashMap hashMap, OnLoginFinishedListener listener);
 
 }

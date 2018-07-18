@@ -13,10 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.EventBusBean;
 import com.whzl.mengbi.eventbus.EventBusUtils;
 import com.whzl.mengbi.ui.common.ActivityStackManager;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.SPUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -28,7 +30,7 @@ import butterknife.Unbinder;
 /**
  * @author shaw
  */
-public abstract class BaseAtivityNew extends AppCompatActivity {
+public abstract class BaseActivityNew extends AppCompatActivity {
 
     private Unbinder mBinder;
 

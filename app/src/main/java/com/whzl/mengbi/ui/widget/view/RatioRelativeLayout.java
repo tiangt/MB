@@ -50,6 +50,7 @@ public class RatioRelativeLayout extends RelativeLayout {
 
     public void setPicRatio(float picRatio) {
         mPicRatio = picRatio;
+        post(() -> requestLayout());
     }
 
     public void setRelative(int relative) {

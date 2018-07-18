@@ -31,9 +31,8 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" />
 
-
     <application
-        android:name=".ui.common.BaseAppliaction"
+        android:name=".ui.common.BaseApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_footer_logo"
         android:label="@string/app_name"
@@ -41,20 +40,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--友盟APPKEY-->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5b3c9412a40fa34d390000ac" />
+        <!--&lt;!&ndash;&lt;!&ndash;友盟APPKEY&ndash;&gt;&ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="UMENG_APPKEY"-->
+            <!--android:value="5b3c9412a40fa34d390000ac" />-->
         <!--QQAPPKEY-->
-        <meta-data
-            android:name="52f84675951166e7dcc95b019ccd63fa"
-            android:value="101477481" />
-        <!--微信APPKEY-->
-        <meta-data
-            android:name="c1762807092c6ace7405071a9df51290"
-            android:value="wxbaa94b521372015c" />
+        <!--<meta-data-->
+            <!--android:name="52f84675951166e7dcc95b019ccd63fa"-->
+            <!--android:value="101477481" />-->
+        <!--&lt;!&ndash;微信APPKEY&ndash;&gt;-->
+        <!--<meta-data-->
+            <!--android:name="c1762807092c6ace7405071a9df51290"-->
+            <!--android:value="wxbaa94b521372015c" />-->
 
-        <!--QQ兼顾Android 8.0-->
+        <!--&lt;!&ndash;QQ兼顾Android 8.0&ndash;&gt;-->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -64,9 +63,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="tencent101477481" />
-                <!--<data android:scheme="tencent101477481" />-->
             </intent-filter>
         </activity>
         <activity
@@ -81,19 +78,6 @@
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <activity
-            android:name=".ui.activity.HomeActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".ui.activity.LoginActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:launchMode="singleTop"
@@ -230,5 +214,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.MainActivity" />
     </application>
 </manifest>

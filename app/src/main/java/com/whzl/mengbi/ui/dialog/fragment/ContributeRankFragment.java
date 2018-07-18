@@ -9,7 +9,7 @@ import android.view.View;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.ContributeDataBean;
 import com.whzl.mengbi.ui.adapter.AudienceContributeListAdapter;
-import com.whzl.mengbi.ui.common.BaseAppliaction;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.fragment.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
@@ -78,7 +78,7 @@ public class ContributeRankFragment extends BaseFragment {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
         paramsMap.put("type", type + "");
-        RequestManager.getInstance(BaseAppliaction.getInstance()).requestAsyn(URLContentUtils.CONTRIBUTION_LIST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CONTRIBUTION_LIST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 ContributeDataBean contributeDataBean = GsonUtils.GsonToBean(result.toString(), ContributeDataBean.class);

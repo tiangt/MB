@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/y94"
         android:layout_below="@id/me_toolbar_include"
-        android:background="@color/font_color_46">
+        android:background="@color/colorPrimary">
 
         <com.whzl.mengbi.ui.widget.view.CircleImageView
             android:id="@+id/account_center_usereditor"
