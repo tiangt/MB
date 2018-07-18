@@ -20,6 +20,7 @@ import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.LoginView;
+import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
@@ -188,8 +189,9 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
                 String phone = etPhone.getText().toString().trim();
                 String passwrd = etPassword.getText().toString();
                 HashMap<String, String> paramsMap = new HashMap<>();
-                paramsMap.put("identity", phone);
-                paramsMap.put("password", passwrd);
+                paramsMap.put("username", phone);
+                paramsMap.put("password", EncryptUtils.md5Hex(passwrd));
+                paramsMap.put("platform", "ANDROID");
                 mLoginPresent.login(paramsMap);
                 break;
         }
@@ -200,7 +202,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
         showToast(R.string.login_success);
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
-        SPUtils.put(BaseApplication.getInstance(), "nickname", userInfo.getData().getNickname());
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_NICKNAME, userInfo.getData().getNickname());
         if (LiveDisplayActivityNew.class.toString().equals(activityFrom)) {
             setResult(RESULT_OK);
         }
