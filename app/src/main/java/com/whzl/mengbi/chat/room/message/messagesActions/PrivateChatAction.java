@@ -18,7 +18,7 @@ public class PrivateChatAction implements Actions{
         if(json == null){
             return;
         }
-        ChatMessage message = new ChatMessage(json,context, null);
+        ChatMessage message = new ChatMessage(json,context, null, true);
         EventBus.getDefault().post(new UpdatePubChatEvent(message));
     }
 }

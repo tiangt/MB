@@ -58,7 +58,6 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -631,11 +630,6 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             ratioLayout.setPicRatio(context.getWidth() / ((float) context.getHeight()));
         }
         String streamAddress = startPlayEvent.getStreamAddress();
-//        if (mMasterPlayer == null) {
-//            Log.e("LiveDisplayActivityNew", "mMasterPlayer is null");
-//            ToastUtils.showToast("Player is null");
-//            //return;
-//        }
         try {
             mMasterPlayer.reset();
             mMasterPlayer.setDataSource(streamAddress);
@@ -649,8 +643,6 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StopPlayEvent stopPlayEvent) {
-        mMasterPlayer.stop();
-        mMasterPlayer.release();
         mMasterPlayer.reset();
         tvStopTip.setVisibility(View.VISIBLE);
     }
@@ -728,7 +720,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     }
 
     public void sendMeeage(String message) {
-        new Thread(() -> chatRoomPresenter.sendMessage(message)).start();
+        chatRoomPresenter.sendMessage(message);
     }
 
     public void sendGift(int count, int goodId) {
@@ -737,7 +729,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     @Override
     protected void onDestroy() {
-        ToastUtils.showToast("LiveDisplayActivityNew destory");
+        //ToastUtils.showToast("LiveDisplayActivityNew destory");
         giftAnimView.removeCallbacks(mTotalGiftAnimAction);
         giftAnimView.removeCallbacks(mCacheComboAction);
         ivGiftGif.removeCallbacks(mGifAction);

@@ -126,6 +126,7 @@ public class MessageRouter implements MessageCallback {
                 return;
             }
             if (eventJson.getEventCode() != null) {
+                String eventCode = eventJson.getEventCode();
                 handleEventAction(eventJson.getEventCode(), msgInfo);
             }else if (eventJson.getMsgType() != null) {
                 handleMsgTypeAction(eventJson.getMsgType(), msgInfo);

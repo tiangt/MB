@@ -17,7 +17,9 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.SPUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 public class ChatRoomPresenterImpl{
@@ -74,14 +76,17 @@ public class ChatRoomPresenterImpl{
      */
     public void chatLogin(String domain) {
         LoginMessage message;
-        boolean islogin = (Boolean) SPUtils.get(BaseApplication.getInstance(),"islogin",false);
-        if(islogin){
+        int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(), "userId", 0).toString());
+        if(userId > 0) {
             message = new LoginMessage(liveRoomTokenInfo.getData().getProgramId()+"",
                     domain, liveRoomTokenInfo.getData().getUserId(), liveRoomTokenInfo.getData().getToken());
         }else{
             int programId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(),"programId",0).toString());
-            int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(),"userId",0).toString());
             String nickname = SPUtils.get(BaseApplication.getInstance(),"nickname","0").toString();
+            if (nickname.equals("0")) {
+                nickname = getNickname();
+                SPUtils.put(BaseApplication.getInstance(), "nickname", nickname);
+            }
             message = new LoginMessage(programId+"",domain,userId,nickname);
         }
         client.send(message);
@@ -156,6 +161,11 @@ public class ChatRoomPresenterImpl{
     }
 
     public void onBackPressed() {
+    }
+
+    private String getNickname() {
+        Random random = new Random(new Date().getTime() / 1000);
+        return "中国萌友" + (1000000 + random.nextInt(100000));
     }
 
 }

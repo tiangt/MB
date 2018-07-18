@@ -200,6 +200,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
         showToast(R.string.login_success);
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
+        SPUtils.put(BaseApplication.getInstance(), "nickname", userInfo.getData().getNickname());
         if (LiveDisplayActivityNew.class.toString().equals(activityFrom)) {
             setResult(RESULT_OK);
         }

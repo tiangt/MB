@@ -36,8 +36,9 @@ public class ChatMessage implements FillHolderMessage{
     private int programId = 0;
     private SingleTextViewHolder mholder;
     private List<SpannableString> fromSpanList;
+    private boolean isPrivate = false;
 
-    public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList) {
+    public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList, boolean isPrivate) {
         this.mContext = context;
         from_nickname = msgJson.getFrom_nickname();
         this.fromSpanList = fromSpanList;
@@ -62,20 +63,33 @@ public class ChatMessage implements FillHolderMessage{
         }
         to_level = LevelUtil.getUserLevel(msgJson.getTo_json());
         hasGuard = userHasGuard(msgJson.getFrom_json().getGoodsList());
-
+        this.isPrivate = isPrivate;
     }
-
 
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
         this.mholder = (SingleTextViewHolder) holder;
         mholder.textView.setText("");
         mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
-        if(to_uid == 0){
+        if (isPrivate) {
+            parsePrivateMessage();
+        }else if(to_uid == 0){
             parseNoRecieverMessage();
         }else{
             parseHasRecieverMessage();
         }
+    }
+
+    private void parsePrivateMessage() {
+        if(from_uid != 0){
+            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
+        }
+        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname,from_uid, programId));
+        mholder.textView.append(LightSpanString.getLightString("对 您 私聊:  ", WHITE_FONG_COLOR));
+        //TODO:表情替换
+        SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
+        FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
+        mholder.textView.append(spanString);
     }
 
     private void parseNoRecieverMessage(){
@@ -116,7 +130,7 @@ public class ChatMessage implements FillHolderMessage{
             }
         }
         mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname,from_uid, programId));
-        mholder.textView.append(LightSpanString.getLightString("对 您 私聊:  ", WHITE_FONG_COLOR));
+        mholder.textView.append(LightSpanString.getLightString("对 您 说:  ", WHITE_FONG_COLOR));
         //TODO:表情替换
         SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);

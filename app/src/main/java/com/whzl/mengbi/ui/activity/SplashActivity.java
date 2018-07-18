@@ -87,6 +87,7 @@ public class SplashActivity extends BaseActivityNew {
                         if (visitorUserInfo.getCode() == RequestManager.RESPONSE_CODE) {
                             SPUtils.put(BaseApplication.getInstance(), "userId", visitorUserInfo.getData().getUserId());
                             SPUtils.put(BaseApplication.getInstance(), "sessionId", visitorUserInfo.getData().getSessionId());
+                            SPUtils.put(BaseApplication.getInstance(), "nickname", visitorUserInfo.getData().getNickname());
                             delayJumpToHomeActivity(false);
                         } else {
                             delayJumpToHomeActivity(false);

@@ -1,22 +1,20 @@
 package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
-import android.text.Spanned;
 
-import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.GiftJson;
 import com.whzl.mengbi.chat.room.message.messages.GiftMsg;
-import com.whzl.mengbi.chat.room.util.CenterAlignImageSpan;
+import com.whzl.mengbi.chat.room.util.DownloadEvent;
+import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.network.RequestManager;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GiftAction implements Actions {
@@ -28,33 +26,20 @@ public class GiftAction implements Actions {
         }
         int giftPicId = giftJson.getContext().getGoodsPicId();
         final String giftUrl = ImageUrl.getImageUrl(giftPicId, "jpg", giftJson.getContext().getLastUpdateTime());
-
-        SpannableString spanString = new SpannableString("gift");
-
-        RequestManager.getInstance(context).getImage(giftUrl, new RequestManager.ReqCallBack<Object>(){
+        List<String> imageUrlList = new ArrayList<>();
+        imageUrlList.add(giftUrl);
+        DownloadImageFile downloadImageFile = new DownloadImageFile(new DownloadEvent() {
             @Override
-            public void onReqSuccess(Object result) {
-                Bitmap resource = (Bitmap) result;
-                Drawable bitmapDrable = new BitmapDrawable(resource);
-                int width = resource.getWidth();
-                int height = resource.getHeight();
-                float dpHeight = ImageUrl.IMAGE_HIGHT;
-                float dpWidth = width * dpHeight / height;
-                bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
-                CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(bitmapDrable);
-                spanString.setSpan(imageSpan, 0, spanString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            public void finished(List<SpannableString> imageSpanList) {
+                SpannableString spanString = null;
+                if (imageSpanList != null && !imageSpanList.isEmpty()) {
+                    spanString = imageSpanList.get(0);
+                }
                 GiftMsg giftMsg = new GiftMsg(giftJson, context, spanString);
-                UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(giftMsg);
-                EventBus.getDefault().post(chatEvent);
-            }
-
-            @Override
-            public void onReqFailed(String errorMsg) {
-                GiftMsg giftMsg = new GiftMsg(giftJson, context, null);
-                UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(giftMsg);
-                EventBus.getDefault().post(chatEvent);
+                EventBus.getDefault().post(new UpdatePubChatEvent(giftMsg));
             }
         });
+        downloadImageFile.doDownload(imageUrlList, context);
     }
 
 }
