@@ -15,10 +15,14 @@ import com.whzl.mengbi.chat.room.message.MessageRouter;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -43,16 +47,18 @@ public class ChatRoomPresenterImpl{
             @Override
             public void onConnectSuccess(String domain, boolean isReconnect) {
                 Log.d(TAG, "连接成功");
-                if(domain!=null){
+                int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0).toString());
+                if (userId == 0 || !isReconnect) {
                     chatLogin(domain);
-                    Log.d(TAG,"chatLogin finished");
+                }else {
+                    doLiveRoomToken(userId + "", domain);
                 }
-                //TODO: if isReconnect == true, get token info
+                Log.d(TAG,"chatLogin finished");
             }
 
             @Override
             public void onConnectFailed() {
-                Log.d(TAG, "连接失败");
+                Log.e(TAG, "连接失败");
                 //TODO: toast
                 //ToastUtils.showToast("网络连接异常，请检查网络");
             }
@@ -150,4 +156,28 @@ public class ChatRoomPresenterImpl{
         return "中国萌友" + (1000000 + random.nextInt(100000));
     }
 
+    private void doLiveRoomToken(String userId, String domain) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("userId", userId);
+        hashMap.put("programId", programId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_ENTERR_ROOM, RequestManager.TYPE_POST_JSON, hashMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                LiveRoomTokenInfo tokenInfo = GsonUtils.GsonToBean(result.toString(), LiveRoomTokenInfo.class);
+                if (tokenInfo.getCode() == 200) {
+                    liveRoomTokenInfo = tokenInfo;
+                    chatLogin(domain);
+                }else {
+                    chatLogin(domain);
+                    Log.e(TAG, "getLiveRoomToken error,code=" + tokenInfo.getCode());
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+                chatLogin(domain);
+                Log.e(TAG, "getLiveRoomToken error,err=" + errorMsg);
+            }
+        });
+    }
 }
