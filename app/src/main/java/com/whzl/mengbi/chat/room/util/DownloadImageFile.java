@@ -31,28 +31,34 @@ public class DownloadImageFile {
     public void doDownload(List<String> imageUrlList, Context context) {
         List<SpannableString> spanList = new ArrayList<>();
         HashMap<String, Integer> imageIndexMap = new HashMap<String, Integer>();
+        List<String> downloadList = new ArrayList<>();
         for(int i = 0; i < imageUrlList.size(); ++i) {
-            imageIndexMap.put(imageUrlList.get(i), i);
-            spanList.add(new SpannableString(Integer.toString(i)));
+            String url = imageUrlList.get(i);
+            Bitmap resource = ImageCache.getInstance().getBitmapByUrl(url);
+            if (resource != null) {
+                spanList.add(getImageSpanString(resource));
+            }else {
+                imageIndexMap.put(imageUrlList.get(i), i);
+                spanList.add(new SpannableString(Integer.toString(i)));
+                downloadList.add(url);
+            }
         }
-        for (String url:imageUrlList) {
+        if (downloadList.isEmpty()) {
+            downloadEvent.finished(spanList);
+            return;
+        }
+        for (String url:downloadList) {
             String imageUrl = url;
             RequestManager.getInstance(context).getImage(imageUrl, new RequestManager.ReqCallBack<Object>() {
                 @Override
                 public void onReqSuccess(Object result) {
                     finishedImageCount.incrementAndGet();
                     Bitmap resource = (Bitmap) result;
-                    Drawable bitmapDrable = new BitmapDrawable(resource);
-                    int width = resource.getWidth();
-                    int height = resource.getHeight();
-                    float dpWidth = width * ImageUrl.IMAGE_HIGHT / height;
-                    bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(ImageUrl.IMAGE_HIGHT));
-                    CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(bitmapDrable);
-                    SpannableString spanString = new SpannableString(imageUrl);
-                    spanString.setSpan(imageSpan, 0, spanString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    ImageCache.getInstance().putBitmap(imageUrl, resource);
+                    SpannableString spanString = getImageSpanString(resource);
                     int index = imageIndexMap.get(imageUrl);
                     spanList.set(index, spanString);
-                    if (finishedImageCount.get() >= imageUrlList.size()) {
+                    if (finishedImageCount.get() >= downloadList.size()) {
                         downloadEvent.finished(spanList);
                     }
                 }
@@ -61,12 +67,24 @@ public class DownloadImageFile {
                 public void onReqFailed(String errorMsg) {
                     finishedImageCount.incrementAndGet();
                     LogUtils.e("onReqFailed" + errorMsg);
-                    if (finishedImageCount.get() >= imageUrlList.size()) {
+                    if (finishedImageCount.get() >= downloadList.size()) {
                         downloadEvent.finished(null);
                     }
                 }
             });
         }
+    }
+
+    private SpannableString getImageSpanString(Bitmap resource) {
+        Drawable bitmapDrable = new BitmapDrawable(resource);
+        int width = resource.getWidth();
+        int height = resource.getHeight();
+        float dpWidth = width * ImageUrl.IMAGE_HIGHT / height;
+        bitmapDrable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(ImageUrl.IMAGE_HIGHT));
+        CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(bitmapDrable);
+        SpannableString spanString = new SpannableString("url");
+        spanString.setSpan(imageSpan, 0, spanString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spanString;
     }
 
 }
