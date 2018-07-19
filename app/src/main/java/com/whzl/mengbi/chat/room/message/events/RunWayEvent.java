@@ -1,9 +1,12 @@
 package com.whzl.mengbi.chat.room.message.events;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.SpannableString;
+import android.widget.TextView;
 
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 
 public class RunWayEvent {
     private Context mContext;
@@ -31,6 +34,18 @@ public class RunWayEvent {
 
     public SpannableString getGiftSpanString() {
         return giftSpanString;
+    }
+
+    public void showRunWay(TextView tvRunWayGift) {
+        tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getNickname(),
+                Color.parseColor("#f1275b")));
+        tvRunWayGift.append(LightSpanString.getLightString(" 送 ", Color.parseColor("#faf9f9")));
+        tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getToNickname(),
+                Color.parseColor("#f1275b")));
+        tvRunWayGift.append(LightSpanString.getLightString(" " + runWayJson.getContext().getCount(),
+                Color.parseColor("#faf9f9")));
+        tvRunWayGift.append(LightSpanString.getLightString("个" + runWayJson.getContext().getGoodsName(),
+                Color.parseColor("#faf9f9")));
     }
 
     /*

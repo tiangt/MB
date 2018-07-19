@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.BuildConfig;
@@ -75,7 +74,7 @@ public class RequestManager {
         }
         try {
             String encodeParams = URLEncoder.encode(params, "UTF-8");
-            Log.e("http", "params=" + params + ",encodeParams=" + encodeParams);
+            //Log.e("http", "params=" + params + ",encodeParams=" + encodeParams);
             sign = EncryptUtils.md5Hex(encodeParams);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
