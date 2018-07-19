@@ -4,13 +4,13 @@ import java.util.List;
 
 public class RecommendDataBean {
 
-    private List<RecommendListInfo> list;
+    private List<RecommendAnchorInfoBean> list;
 
-    public List<RecommendListInfo> getList() {
+    public List<RecommendAnchorInfoBean> getList() {
         return list;
     }
 
-    public void setList(List<RecommendListInfo> list) {
+    public void setList(List<RecommendAnchorInfoBean> list) {
         this.list = list;
     }
 }

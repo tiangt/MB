@@ -31,8 +31,8 @@ public class HomePresenterImpl implements HomePresenter,OnHomeFinishedListener {
     }
 
     @Override
-    public void getLiveShow() {
-        homeModel.doLiveShow(this);
+    public void getAnchorList(int pager) {
+        homeModel.doAnchorList(pager,this);
     }
 
     @Override

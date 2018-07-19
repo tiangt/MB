@@ -86,10 +86,10 @@ public class ChatRoomPresenterImpl{
         if(userId > 0) {
             message = new LoginMessage(programId, domain, userId, liveRoomTokenInfo.getData().getToken());
         }else{
-            String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_NICKNAME,"0").toString();
+            String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_NAME,"0").toString();
             if (nickname.equals("0")) {
                 nickname = getNickname();
-                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_NICKNAME, nickname);
+                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, nickname);
             }
             message = new LoginMessage(programId,domain,userId,nickname);
         }
@@ -126,7 +126,7 @@ public class ChatRoomPresenterImpl{
 //
         ChatOutMsg msg;
         String userId = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_ID,0).toString();
-        String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_NICKNAME,"0").toString();
+        String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_NAME,"0").toString();
         msg = new ChatOutMsg(message, programId,client.getCurrentDomain(),userId,nickname
                 ,"0","0","common");
         client.send(msg);

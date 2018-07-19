@@ -11,7 +11,7 @@ import com.whzl.mengbi.model.entity.ContributeDataBean;
 import com.whzl.mengbi.ui.adapter.AudienceContributeListAdapter;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
-import com.whzl.mengbi.ui.fragment.BaseFragment;
+import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.network.RequestManager;

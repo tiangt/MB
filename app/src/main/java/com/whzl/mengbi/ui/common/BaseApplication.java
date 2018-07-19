@@ -22,6 +22,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SDKConfig;
 
 /**
+ * @author shaw
  * @function 1.他是整个程序的入口，2初始化工作，3为整个应用的其他模块提供上下文
  */
 public class BaseApplication extends Application {
@@ -76,20 +77,16 @@ public class BaseApplication extends Application {
     //static 代码段可以防止内存泄露
     static {
         //设置全局的Header构建器
-        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
-            @Override
-            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                layout.setPrimaryColorsId(R.color.colorAccent, android.R.color.white);//全局设置主题颜色
-                return new ClassicsHeader(context);//.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
-            }
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> {
+            //全局设置主题颜色
+            layout.setPrimaryColorsId(R.color.colorAccent);
+            //.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
+            return new ClassicsHeader(context);
         });
         //设置全局的Footer构建器
-        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
-            @Override
-            public RefreshFooter createRefreshFooter(Context context, RefreshLayout layout) {
-                //指定为经典Footer，默认是 BallPulseFooter
-                return new ClassicsFooter(context).setDrawableSize(20);
-            }
+        SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> {
+            //指定为经典Footer，默认是 BallPulseFooter
+            return new ClassicsFooter(context).setDrawableSize(20).setPrimaryColorId(R.color.colorAccent);
         });
     }
 }

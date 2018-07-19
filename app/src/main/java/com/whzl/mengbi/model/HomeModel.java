@@ -11,6 +11,6 @@ public interface HomeModel {
 
     void doRecommend(OnHomeFinishedListener listenter);
 
-    void doLiveShow(OnHomeFinishedListener listenter);
+    void doAnchorList(int pager, OnHomeFinishedListener listenter);
 
 }

@@ -1,6 +1,12 @@
 package com.whzl.mengbi.util.glide;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
@@ -8,11 +14,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.whzl.mengbi.BuildConfig;
+import com.whzl.mengbi.util.UIUtil;
 import com.youth.banner.loader.ImageLoader;
+
+import java.security.MessageDigest;
 
 public class GlideImageLoader extends ImageLoader {
 
@@ -80,6 +92,68 @@ public class GlideImageLoader extends ImageLoader {
         void onResourceReady();
 
         void onFail();
+    }
+
+    public void loadRoundImage(Context context, Object object, ImageView imageView, int radius) {
+        RequestOptions transform = new RequestOptions().transform(new GlideRoundTransform(context, radius));
+        Glide.with(context).load(object).apply(transform).into(imageView);
+    }
+
+    public class GlideRoundTransform extends BitmapTransformation {
+        private final int VERSION = 1;
+        private final String ID = BuildConfig.APPLICATION_ID + "GlideRoundedCornersTransform." + VERSION;
+        private final byte[] ID_BYTES = ID.getBytes(CHARSET);
+
+
+        private Context context;
+        private int radius;
+
+        public GlideRoundTransform(Context context, int radius) {
+            super();
+            this.context = context;
+            this.radius = radius;
+        }
+
+        @Override
+        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
+            return roundCrop(pool, toTransform);
+        }
+
+        private Bitmap roundCrop(BitmapPool pool, Bitmap source) {
+            if (source == null) {
+                return null;
+            }
+
+            Bitmap result = pool.get(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
+            if (result == null) {
+                result = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
+            }
+
+            Canvas canvas = new Canvas(result);
+            Paint paint = new Paint();
+            paint.setShader(new BitmapShader(source, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP));
+            paint.setAntiAlias(true);
+            RectF rectF = new RectF(0f, 0f, source.getWidth(), source.getHeight());
+            canvas.drawRoundRect(rectF, UIUtil.dip2px(context, radius), UIUtil.dip2px(context, radius), paint);
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof GlideRoundTransform;
+        }
+
+
+        @Override
+        public int hashCode() {
+            return ID.hashCode();
+        }
+
+
+        @Override
+        public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+            messageDigest.update(ID_BYTES);
+        }
     }
 
 }

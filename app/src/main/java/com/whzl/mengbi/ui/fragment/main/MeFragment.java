@@ -1,4 +1,4 @@
-package com.whzl.mengbi.ui.fragment.home;
+package com.whzl.mengbi.ui.fragment.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,12 +16,10 @@ import com.whzl.mengbi.presenter.impl.MePresenterImpl;
 import com.whzl.mengbi.ui.activity.RechargeActivity;
 import com.whzl.mengbi.ui.activity.SettingsActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
-import com.whzl.mengbi.ui.fragment.BaseFragment;
+import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.MeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.ui.fragment.BaseFragement;
-
 
 
 public class MeFragment extends BaseFragment implements MeView,View.OnClickListener{

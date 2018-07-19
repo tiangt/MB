@@ -9,7 +9,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.adapter.LiveHouseGiftAdapter;
-import com.whzl.mengbi.ui.fragment.BaseFragment;
+import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 
 import org.greenrobot.eventbus.EventBus;

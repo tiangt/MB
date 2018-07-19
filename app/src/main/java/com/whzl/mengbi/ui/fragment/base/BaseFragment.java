@@ -1,4 +1,4 @@
-package com.whzl.mengbi.ui.fragment;
+package com.whzl.mengbi.ui.fragment.base;
 
 import android.app.Activity;
 import android.content.Context;

@@ -17,7 +17,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.ui.adapter.ChatEmojiAdapter;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.ui.fragment.BaseFragment;
+import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.GsonUtils;

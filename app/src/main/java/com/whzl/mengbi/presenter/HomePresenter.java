@@ -6,7 +6,7 @@ public interface HomePresenter {
 
     void getRecommend();
 
-    void getLiveShow();
+    void getAnchorList(int pager);
 
     void onDestroy();
 }

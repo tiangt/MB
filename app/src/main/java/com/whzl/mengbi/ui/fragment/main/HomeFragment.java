@@ -1,23 +1,16 @@
-package com.whzl.mengbi.ui.fragment.home;
+package com.whzl.mengbi.ui.fragment.main;
 
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -28,14 +21,14 @@ import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
 import com.whzl.mengbi.model.entity.LiveShowListInfo;
 import com.whzl.mengbi.model.entity.RecommendInfo;
-import com.whzl.mengbi.model.entity.RecommendListInfo;
+import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
 import com.whzl.mengbi.ui.adapter.HomeLiveAdapter;
 import com.whzl.mengbi.ui.adapter.RecommendAdapter;
 import com.whzl.mengbi.ui.view.HomeView;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.ui.fragment.BaseFragement;
+import com.whzl.mengbi.ui.fragment.base.BaseFragement;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -59,7 +52,7 @@ public class HomeFragment extends BaseFragement implements HomeView{
      */
     private TextView liveShowTv;
     private RecyclerView recommendLiveRv;
-    private RecommendAdapter<RecommendListInfo> mRecommendAdapter;
+    private RecommendAdapter<RecommendAnchorInfoBean> mRecommendAdapter;
     /**
      *精彩直播
      */
@@ -78,7 +71,7 @@ public class HomeFragment extends BaseFragement implements HomeView{
 
 
     private List<LiveShowListInfo> wonderfulList = new ArrayList<>();
-    private List<RecommendListInfo> recommendList = new ArrayList<>();
+    private List<RecommendAnchorInfoBean> recommendList = new ArrayList<>();
 
     private HomePresenter homePresenter;
 
@@ -145,7 +138,7 @@ public class HomeFragment extends BaseFragement implements HomeView{
     public void initData() {
         homePresenter.getBanner();
         homePresenter.getRecommend();
-        homePresenter.getLiveShow();
+        homePresenter.getAnchorList(1);
     }
 
     //绑定首页推荐主播数据
@@ -154,7 +147,7 @@ public class HomeFragment extends BaseFragement implements HomeView{
         mRecommendLayoutManager = new GridLayoutManager(mContext, 2);
         recommendLiveRv.setLayoutManager(mRecommendLayoutManager);
         //设置Adapter
-        mRecommendAdapter = new RecommendAdapter<RecommendListInfo>(mContext, R.layout.fragment_home_recommend_rvitem_layout, recommendList);
+        mRecommendAdapter = new RecommendAdapter<RecommendAnchorInfoBean>(mContext, R.layout.fragment_home_recommend_rvitem_layout, recommendList);
         recommendLiveRv.setAdapter(mRecommendAdapter);
         mRecommendAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
