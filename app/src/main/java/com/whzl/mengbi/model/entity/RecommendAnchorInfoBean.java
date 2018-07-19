@@ -1,6 +1,6 @@
 package com.whzl.mengbi.model.entity;
 
-public class RecommendListInfo {
+public class RecommendAnchorInfoBean {
 
     private Integer programId;
 

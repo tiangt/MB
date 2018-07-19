@@ -1,4 +1,4 @@
-package com.whzl.mengbi.ui.fragment.home;
+package com.whzl.mengbi.ui.fragment.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.ui.fragment.BaseFragement;
+import com.whzl.mengbi.ui.fragment.base.BaseFragement;
 
 
 public class FollowFragment extends BaseFragement {

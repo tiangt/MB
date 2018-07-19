@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
-import com.whzl.mengbi.ui.fragment.BaseFragment;
+import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.util.ArrayList;

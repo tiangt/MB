@@ -9,9 +9,10 @@ import android.widget.RadioGroup;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
-import com.whzl.mengbi.ui.fragment.home.FollowFragment;
-import com.whzl.mengbi.ui.fragment.home.HomeFragment;
-import com.whzl.mengbi.ui.fragment.home.MeFragment;
+import com.whzl.mengbi.ui.fragment.main.FollowFragment;
+import com.whzl.mengbi.ui.fragment.main.HomeFragment;
+import com.whzl.mengbi.ui.fragment.main.HomeFragmentNew;
+import com.whzl.mengbi.ui.fragment.main.MeFragment;
 import com.whzl.mengbi.util.SPUtils;
 
 import butterknife.BindView;
@@ -33,7 +34,7 @@ public class MainActivity extends BaseActivityNew {
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{HomeFragment.newInstance("首页"), FollowFragment.newInstance("关注"), MeFragment.newInstance("我的")};
+        fragments = new Fragment[]{new HomeFragmentNew(), FollowFragment.newInstance("关注"), MeFragment.newInstance("我的")};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
         rgTab.setOnCheckedChangeListener((group, checkedId) -> {

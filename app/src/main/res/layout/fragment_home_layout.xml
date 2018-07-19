@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.home.HomeFragment">
+    tools:context=".ui.fragment.main.HomeFragment">
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/fm_home_refreshLayout"
         android:layout_width="match_parent"

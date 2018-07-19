@@ -3,22 +3,22 @@ package com.whzl.mengbi.ui.adapter;
 import android.content.Context;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.model.entity.RecommendListInfo;
+import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.List;
 
-public class RecommendAdapter<T> extends CommonAdapter<RecommendListInfo> {
+public class RecommendAdapter<T> extends CommonAdapter<RecommendAnchorInfoBean> {
 
 
-    public RecommendAdapter(Context context, int layoutId, List<RecommendListInfo> datas) {
+    public RecommendAdapter(Context context, int layoutId, List<RecommendAnchorInfoBean> datas) {
         super(context, layoutId, datas);
     }
 
     @Override
-    protected void convert(ViewHolder holder, RecommendListInfo info, int position) {
+    protected void convert(ViewHolder holder, RecommendAnchorInfoBean info, int position) {
         if (info.getStatus().equals("T")){
             GlideImageLoader.getInstace().displayImage(mContext, R.drawable.ic_home_live_middle,holder.getView(R.id.home_recommend_rvitem_status));
         }

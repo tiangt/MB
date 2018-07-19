@@ -41,6 +41,7 @@ import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
+import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -158,7 +159,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
         mLivePresenter = new LivePresenterImpl(this);
         if (getIntent() != null) {
-            mProgramId = getIntent().getIntExtra("ProgramId", -1);
+            mProgramId = getIntent().getIntExtra(BundleConfig.PROGRAM_ID, -1);
             SPUtils.put(this, "programId", mProgramId);
         }
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");

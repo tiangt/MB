@@ -17,7 +17,7 @@ import java.util.HashMap;
 /**
  * Class Note:首页
  */
-public class HomeModelImpl implements HomeModel{
+public class HomeModelImpl implements HomeModel {
 
     @Override
     public void doBanner(final OnHomeFinishedListener listenter) {
@@ -27,7 +27,7 @@ public class HomeModelImpl implements HomeModel{
                     @Override
                     public void onReqSuccess(Object result) {
                         BannerInfo bannerInfo = GsonUtils.GsonToBean(result.toString(), BannerInfo.class);
-                        if(bannerInfo.getCode()==200){
+                        if (bannerInfo.getCode() == 200) {
                             listenter.onBannerSuccess(bannerInfo);
                         }
                     }
@@ -47,23 +47,23 @@ public class HomeModelImpl implements HomeModel{
                     @Override
                     public void onReqSuccess(Object result) {
                         String jsonStr = result.toString();
-                        RecommendInfo recommendInfo = JSON.parseObject(jsonStr,RecommendInfo.class);
-                        if(recommendInfo.getCode()==200){
+                        RecommendInfo recommendInfo = JSON.parseObject(jsonStr, RecommendInfo.class);
+                        if (recommendInfo.getCode() == 200) {
                             listenter.onRecommendSuccess(recommendInfo);
                         }
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        LogUtils.e("onReqFailed"+errorMsg);
+                        LogUtils.e("onReqFailed" + errorMsg);
                     }
                 });
     }
 
     @Override
-    public void doLiveShow(final OnHomeFinishedListener listenter) {
+    public void doAnchorList(int pager, final OnHomeFinishedListener listenter) {
         HashMap liveMap = new HashMap();
-        liveMap.put("page",1);
+        liveMap.put("page", pager);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SHOW_ANCHOR, RequestManager.TYPE_POST_JSON, liveMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
@@ -74,7 +74,7 @@ public class HomeModelImpl implements HomeModel{
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        LogUtils.e("onReqFailed"+errorMsg);
+                        LogUtils.e("onReqFailed" + errorMsg);
                     }
                 });
     }
