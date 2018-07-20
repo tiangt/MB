@@ -626,7 +626,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     public void onMessageEvent(StartPlayEvent startPlayEvent) {
         StartStopLiveJson.ContextEntity context = startPlayEvent.getStartStopLiveJson().getContext();
         if (context.getHeight() != 0 && context.getWidth() != 0) {
-            //ratioLayout.setPicRatio(context.getWidth() / ((float) context.getHeight()));
+            ratioLayout.setPicRatio(context.getWidth() / ((float) context.getHeight()));
         }
         String streamAddress = startPlayEvent.getStreamAddress();
         if (mMasterPlayer == null) {

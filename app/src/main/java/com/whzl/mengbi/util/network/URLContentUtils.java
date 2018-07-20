@@ -138,4 +138,6 @@ public class URLContentUtils{
      */
     public static final String CHECK_LOGIN = "v1/user/check-login";
 
+    public static final String SITE_TIME = "site/time";
+
 }
