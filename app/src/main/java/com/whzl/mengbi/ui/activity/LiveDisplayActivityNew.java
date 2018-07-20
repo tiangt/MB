@@ -71,8 +71,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.xml.validation.Validator;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -477,15 +475,17 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RunWayEvent runWayEvent) {
-        mRunWayList.add(runWayEvent);
-        showRunWay(runWayEvent);
+        return;
+        //第一版去掉跑道功能
+//        mRunWayList.add(runWayEvent);
+//        showRunWay(runWayEvent);
     }
 
     private void showRunWay(RunWayEvent runWayEvent) {
         if (!flagRunwayRunning) {
             flagIsGifAnimating = true;
             tvRunWayGift.setVisibility(View.VISIBLE);
-            tvRunWayGift.setText(runWayEvent.getGiftSpanString());
+            runWayEvent.showRunWay(tvRunWayGift);
             tvRunWayGift.postDelayed(mRunWayAction, 2500);
         }
     }

@@ -15,6 +15,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.OpenGuardAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.RunWayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SubProgramAction;
@@ -61,6 +62,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("SubscribeProgram", new SubProgramAction());
         actionsMap.put("ANIMATION", new AnimAction());
         actionsMap.put("OPEN_GUARD_M", new OpenGuardAction());
+        actionsMap.put("RUNWAY", new RunWayAction());
     }
 
     private void initChatAction() {
