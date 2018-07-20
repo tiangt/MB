@@ -17,6 +17,7 @@ import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
+import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.List;
@@ -40,8 +41,18 @@ public class AudienceListAdapter<T> extends CommonAdapter<AudienceListBean.DataB
         } else {
             imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(audienceInfoBean.getLevelMap().getUSER_LEVEL()));
         }
+        if(identity == UserIdentity.ROOM_MANAGER) {
+            //imageView.setImageResource(R.drawable.room_manager);
+        }
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         llLevelContainer.addView(imageView, params);
+        if (identity == UserIdentity.ROOM_MANAGER) {
+            ImageView mgrView = new ImageView(mContext);
+            mgrView.setImageResource(R.drawable.room_manager);
+            LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            mgrViewParams.leftMargin = UIUtil.dip2px(mContext, 6);
+            llLevelContainer.addView(mgrView, mgrViewParams);
+        }
         if (audienceInfoBean.getMedal() != null) {
             for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
                 AudienceListBean.DataBean.AudienceInfoBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);

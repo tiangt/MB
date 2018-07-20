@@ -24,7 +24,7 @@ public class StartPlayEvent {
     public String getStreamAddress() {
         String streamAddress = startStopLiveJson.getContext().getShow_streams().get(0).getStreamAddress();
         for(StartStopLiveJson.ShowStreams showStreams : startStopLiveJson.getContext().getShow_streams()) {
-            if (showStreams.getStreamType().equals("rtmp")) {
+            if (showStreams.getStreamType().equals("flv")) {
                 streamAddress = showStreams.getStreamAddress();
                 break;
             }

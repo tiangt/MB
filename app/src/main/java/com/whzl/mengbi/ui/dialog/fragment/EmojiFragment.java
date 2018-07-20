@@ -14,13 +14,12 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.ui.adapter.ChatEmojiAdapter;
-import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.FileUtils;
-import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.util.List;
@@ -61,8 +60,8 @@ public class EmojiFragment extends BaseFragment {
     protected void initEnv() {
         super.initEnv();
         index = getArguments().getInt("index");
-        String strJson = FileUtils.getJson("images/face/face.json", BaseApplication.getInstance());
-        EmjoyInfo emjoyInfo = GsonUtils.GsonToBean(strJson, EmjoyInfo.class);
+        //String strJson = FileUtils.getJson("images/face/face.json", BaseApplication.getInstance());
+        EmjoyInfo emjoyInfo = FaceReplace.getInstance().getEmjoyInfo();
         publicBeans = null;
         if (index < 2) {
             publicBeans = emjoyInfo.getFace().getPublicX().subList(index * 27, (index + 1) * 27);

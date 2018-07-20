@@ -72,7 +72,9 @@ public class ChatRoomPresenterImpl{
         };
 
         messageCallback = new MessageRouter(context);
-
+        if (client != null) {
+            client.closeSocket();
+        }
         client = new MbChatClient(socketFactory);
         client.setErrorCallback(errorCallback);
         client.setConnectCallback(connectCallback);
