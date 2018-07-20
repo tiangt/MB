@@ -13,13 +13,13 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.MePresenter;
 import com.whzl.mengbi.presenter.impl.MePresenterImpl;
-import com.whzl.mengbi.ui.activity.RechargeActivity;
 import com.whzl.mengbi.ui.activity.SettingsActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.MeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 
 public class MeFragment extends BaseFragment implements MeView,View.OnClickListener{
@@ -109,7 +109,7 @@ public class MeFragment extends BaseFragment implements MeView,View.OnClickListe
                 startActivity(mUserEditorIntent);
                 break;
             case R.id.account_center_recharge_but://充值
-                Intent rechargeIntent = new Intent(getMyActivity(), RechargeActivity.class);
+                Intent rechargeIntent = new Intent(getMyActivity(), WXPayEntryActivity.class);
                 rechargeIntent.putExtra("profile",mUserInfo.getData().getAvatar());
                 rechargeIntent.putExtra("userId",mUserInfo.getData().getUserId());
                 rechargeIntent.putExtra("coin",mUserInfo.getData().getWealth().getCoin());

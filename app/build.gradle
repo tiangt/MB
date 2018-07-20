@@ -103,8 +103,8 @@ dependencies {
     //知乎开源相册选择
     implementation 'com.zhihu.android:matisse:0.4.3'
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.0.5'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
     //时间滚动选择
     implementation 'com.contrarywind:Android-PickerView:3.2.5'
@@ -132,6 +132,9 @@ dependencies {
 
     //状态栏颜色控制
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
+
+    //微信支付
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 }
 
 protobuf {

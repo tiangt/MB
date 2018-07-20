@@ -42,16 +42,16 @@
 
         <!--&lt;!&ndash;&lt;!&ndash;友盟APPKEY&ndash;&gt;&ndash;&gt;-->
         <!--<meta-data-->
-            <!--android:name="UMENG_APPKEY"-->
-            <!--android:value="5b3c9412a40fa34d390000ac" />-->
+        <!--android:name="UMENG_APPKEY"-->
+        <!--android:value="5b3c9412a40fa34d390000ac" />-->
         <!--QQAPPKEY-->
         <!--<meta-data-->
-            <!--android:name="52f84675951166e7dcc95b019ccd63fa"-->
-            <!--android:value="101477481" />-->
+        <!--android:name="52f84675951166e7dcc95b019ccd63fa"-->
+        <!--android:value="101477481" />-->
         <!--&lt;!&ndash;微信APPKEY&ndash;&gt;-->
         <!--<meta-data-->
-            <!--android:name="c1762807092c6ace7405071a9df51290"-->
-            <!--android:value="wxbaa94b521372015c" />-->
+        <!--android:name="c1762807092c6ace7405071a9df51290"-->
+        <!--android:value="wxbaa94b521372015c" />-->
 
         <!--&lt;!&ndash;QQ兼顾Android 8.0&ndash;&gt;-->
         <activity
@@ -63,6 +63,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent101477481" />
             </intent-filter>
         </activity>
@@ -201,11 +202,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!--修改昵称-->
-        <activity
-            android:name=".ui.activity.RechargeActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".ui.activity.LoginActivityNew"></activity>
+
         <activity
             android:name=".ui.activity.SplashActivity"
             android:theme="@style/AppTheme.NoTitle_FullScreen">
@@ -214,6 +211,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.MainActivity" />
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".ui.activity.LoginActivityNew" />
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!--<data android:scheme="wxbaa94b521372015c" />-->
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

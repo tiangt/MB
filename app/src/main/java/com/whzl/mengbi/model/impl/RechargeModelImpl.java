@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.whzl.mengbi.model.RechargeModel;
 import com.whzl.mengbi.model.entity.RechargeInfo;
+import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.OnRechargeFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -13,6 +15,27 @@ import com.whzl.mengbi.util.network.URLContentUtils;
 import java.util.HashMap;
 
 public class RechargeModelImpl implements RechargeModel {
+
+    @Override
+    public void doUserInfo(int userId, final OnRechargeFinishedListener listener) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("userId",userId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO,RequestManager.TYPE_POST_JSON,paramsMap,
+                new RequestManager.ReqCallBack(){
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        UserInfo userInfo = GsonUtils.GsonToBean(result.toString(),UserInfo.class);
+                        if (userInfo.getCode() == 200) {
+                            listener.onGetUserInfoSuccess(userInfo);
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("onReqFailed"+errorMsg);
+                    }
+                });
+    }
 
     @Override
     public void doRechargeChannel(HashMap hashMap,OnRechargeFinishedListener listener) {

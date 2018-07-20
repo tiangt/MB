@@ -1,5 +1,6 @@
 package com.whzl.mengbi.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RechargeListBean {
@@ -8,7 +9,7 @@ public class RechargeListBean {
     private String flag;
     private String name;
     private String pic;
-    private List<RechargeRuleListBean> ruleList;
+    private ArrayList<RechargeRuleListBean> ruleList;
 
     public String getChannelCat() {
         return channelCat;
@@ -54,7 +55,7 @@ public class RechargeListBean {
         return ruleList;
     }
 
-    public void setRuleList(List<RechargeRuleListBean> ruleList) {
+    public void setRuleList(ArrayList<RechargeRuleListBean> ruleList) {
         this.ruleList = ruleList;
     }
 }

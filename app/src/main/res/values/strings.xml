@@ -97,10 +97,10 @@
     <string name="recharge_account_number">充值账号：</string>
     <string name="recharge_coins_balance">萌币余额：</string>
     <string name="recharge_mode">充值方式：</string>
-    <string name="recharge_alipay">支付宝支付</string>
-    <string name="recharge_wechat_pay">微信支付</string>
+    <string name="recharge_ali_pay">支付宝支付</string>
+    <string name="recharge_we_chat_pay">微信支付</string>
     <string name="recharge_money">充值金额：</string>
-    <string name="recharge_hint">充值到账有一定时间延迟，请耐心等待，如长时间未到账，请联系客服QQ：</string>
+    <string name="recharge_hint">充值到账有一定时间延迟，请耐心等待，如长时间未到账，\n请联系客服QQ：</string>
     <!--金山云直播-->
     <string name="text_resolution">请选择合适的分辨率:</string>
     <string name="text_orientation">请选择显示方式:</string>
@@ -219,5 +219,16 @@
     <string name="me_title">我的</string>
     <string name="login_success">登录成功</string>
     <string name="load_more_end"><![CDATA[ 别拖了     到底了]]></string>
+    <string name="personal">个人中心</string>
+    <string name="recharge_type">充值方式</string>
+    <string name="recharge_amount">充值金额</string>
+    <string name="recharge_tip">请先选择充值金额</string>
+    <string name="recharge_confirm">确认支付 ¥%1$.2f</string>
+    <string name="recharge_account">充值账号：%1$s</string>
+    <string name="mengbi_left">萌币余额：</string>
+    <string name="pay_success">支付成功</string>
+    <string name="user_cancel">用户取消</string>
+    <string name="pay_fail">支付失败</string>
+    <string name="rmb">¥ %1$.2f</string>
 
 </resources>

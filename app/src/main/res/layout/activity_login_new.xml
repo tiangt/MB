@@ -97,7 +97,7 @@
             android:layout_width="290dp"
             android:layout_height="40dp"
             android:enabled="false"
-            android:background="@drawable/selector_login_btn_bg"
+            android:background="@drawable/selector_comm_btn_bg"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
             android:text="登 录"

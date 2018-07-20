@@ -30,7 +30,7 @@
             android:textSize="@dimen/font_size_30px"
             android:textColor="@color/font_color_47"
             android:drawablePadding="@dimen/x7"
-            android:drawableRight="@drawable/radiobutton_selector"
+            android:drawableRight="@drawable/selector_pay_way_rb"
             android:button="@null"/>
 
         <View
@@ -49,7 +49,7 @@
             android:textSize="@dimen/font_size_30px"
             android:textColor="@color/font_color_47"
             android:drawablePadding="@dimen/x7"
-            android:drawableRight="@drawable/radiobutton_selector"
+            android:drawableRight="@drawable/selector_pay_way_rb"
             android:button="@null"/>
     </RadioGroup>
 </RelativeLayout>

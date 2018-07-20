@@ -240,19 +240,29 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             }
             mAnchorInfoList.addAll(liveShowInfo.getData().getList());
             if (liveShowInfo.getData().getList() == null || liveShowInfo.getData().getList().size() < NetConfig.DEFAULT_PAGER_SIZE) {
-                refreshLayout.setEnableLoadMore(false);
                 anchorAdapter.notifyDataSetChanged();
                 anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
+                refreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.setEnableLoadMore(false);
+                    }
+                }, 500);
             } else {
                 refreshLayout.setEnableLoadMore(true);
                 anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
                 anchorAdapter.notifyDataSetChanged();
             }
         } else {
-            refreshLayout.setEnableLoadMore(false);
             if (mAnchorInfoList.size() > 0) {
                 anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
             }
+            refreshLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshLayout.setEnableLoadMore(false);
+                }
+            }, 500);
         }
     }
 

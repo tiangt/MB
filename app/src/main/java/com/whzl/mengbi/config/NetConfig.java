@@ -6,4 +6,12 @@ package com.whzl.mengbi.config;
  */
 public interface NetConfig {
     int DEFAULT_PAGER_SIZE = 20;
+    String FLAG_ALI_PAY = "AlipayMobile";
+    String FLAG_WECHAT_PAY = "WeixinApp";
+    String FLAG_ACTIVE = "ACTIVE";
+    int CODE_ALI_PAY_SUCCESS = 9000;
+    int CODE_ALI_PAY_CANCEL = 6001;
+    int CODE_WE_CHAT_PAY_SUCCESS = 0;
+    int CODE_WE_CHAT_PAY_CANCEL = -2;
+    int CODE_WE_CHAT_PAY_FAIL = -1;
 }
