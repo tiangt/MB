@@ -70,7 +70,9 @@ public class ChatRoomPresenterImpl{
                 Log.d(TAG, "网络出现问题");
             }
         };
-
+        if (messageCallback != null) {
+            messageCallback.unregister();
+        }
         messageCallback = new MessageRouter(context);
         if (client != null) {
             client.closeSocket();

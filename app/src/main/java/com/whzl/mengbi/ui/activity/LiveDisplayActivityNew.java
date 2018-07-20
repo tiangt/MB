@@ -382,7 +382,6 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         Intent intent = new Intent(this, LoginActivityNew.class);
         intent.putExtra("from", this.getClass().toString());
         startActivityForResult(intent, REQUEST_LOGIN);
-        chatRoomPresenter.onChatRoomDestroy();
     }
 
     @Override

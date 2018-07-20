@@ -20,8 +20,9 @@ public class NoChatAction  {
                 if (nickname.equals(noChatMsg.getToNickname())) {
                     EventBus.getDefault().post(new KickoutEvent(noChatMsg));
                 }
+            }else if(loginUid == noChatMsg.getToUid()){
+                EventBus.getDefault().post(new KickoutEvent(noChatMsg));
             }
-            EventBus.getDefault().post(new KickoutEvent(noChatMsg));
         }else {
             EventBus.getDefault().post(new UpdatePubChatEvent(noChatMsg));
         }

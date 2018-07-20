@@ -5,17 +5,15 @@ public class URLContentUtils{
     /**
      * 测试请求接口根地址
      */
-    public static final String BASE_URL = "https://t2-api.mengbitv.com/";
+    //public static final String BASE_URL = "https://t2-api.mengbitv.com/";
+    public static final String BASE_URL = "https://api.mengbitv.com/";
 
     /**
      * 勋章图片地址
-     * http://t2-api.mengbitv.com"//
-     * https://test-api.mengbitv.com"//测试
-     * https://test-img.mengbitv.com
-     * http://api.mengbitv.com" //正式服
-     * https://img.mengbitv.com"
      */
-      public static final String BASE_IMAGE_URL="https://test-img.mengbitv.com/";
+    //public static final String BASE_IMAGE_URL="https://test-img.mengbitv.com/";
+    public static final String BASE_IMAGE_URL="https://img.mengbitv.com/";
+
 
     /**
      * 匿名登录接口
