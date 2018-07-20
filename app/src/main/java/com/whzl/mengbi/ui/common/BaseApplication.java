@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.common;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.view.View;
 
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -86,7 +87,10 @@ public class BaseApplication extends Application {
         //设置全局的Footer构建器
         SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> {
             //指定为经典Footer，默认是 BallPulseFooter
-            return new ClassicsFooter(context).setDrawableSize(20).setPrimaryColorId(R.color.colorAccent);
+            ClassicsFooter classicsFooter = new ClassicsFooter(context);
+            classicsFooter.setDrawableSize(20);
+            classicsFooter.setPrimaryColorId(R.color.colorAccent);
+            return classicsFooter;
         });
     }
 }

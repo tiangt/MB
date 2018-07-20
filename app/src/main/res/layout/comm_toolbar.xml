@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="64dp"
-    android:minHeight="64dp"
+    android:layout_height="46dp"
+    android:minHeight="46dp"
     android:background="@color/colorPrimaryDark"
     app:contentInsetLeft="0dp"
     app:navigationIcon="@drawable/ic_login_return">

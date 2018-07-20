@@ -102,12 +102,12 @@ public abstract class BaseActivityNew extends AppCompatActivity {
         }
     }
 
-    protected void setContentView(int layoutId, int titleRes) {
-        setContentView(layoutId, titleRes, R.string.nothing, false);
+    protected void setContentView(int layoutId, int titleRes, boolean isShowBack) {
+        setContentView(layoutId, titleRes, R.string.nothing, isShowBack);
     }
 
-    protected void setContentView(int layoutId, String title) {
-        setContentView(layoutId, title, "", false);
+    protected void setContentView(int layoutId, String title,boolean isShowBack) {
+        setContentView(layoutId, title, "", isShowBack);
     }
 
     protected void onToolbarMenuClick() {

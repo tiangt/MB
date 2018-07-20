@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_toolbar" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:focusableInTouchMode="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:background="#f0f0f0">
+
+                <com.whzl.mengbi.ui.widget.view.CircleImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@id/iv_avatar"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#323232"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_left_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:textColor="#323232"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#f9f9f9"
+                android:gravity="center_vertical"
+                android:paddingLeft="14dp"
+                android:text="@string/recharge_type"
+                android:textColor="#323232"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"/>
+
+            <View style="@style/recharge_divider_style" />
+
+            <RadioGroup
+                android:id="@+id/rg_pay_way"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f9f9f9"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rb_ali_pay"
+                    style="@style/recharge_pay_way_rb"
+                    android:drawableLeft="@drawable/alipay"
+                    android:drawableRight="@drawable/selector_pay_way_rb"
+                    android:text="@string/recharge_ali_pay"
+                    android:visibility="gone"/>
+
+                <View style="@style/recharge_divider_style" />
+
+                <RadioButton
+                    android:id="@+id/rb_we_chat_pay"
+                    style="@style/recharge_pay_way_rb"
+                    android:drawableLeft="@drawable/wechat"
+                    android:text="@string/recharge_we_chat_pay"
+                    android:visibility="gone"/>
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#f9f9f9"
+                android:gravity="center_vertical"
+                android:paddingLeft="14dp"
+                android:text="@string/recharge_amount"
+                android:textColor="#323232"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#f9f9f9"
+                android:focusableInTouchMode="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="6dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/btn_recharge"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/selector_recharge_btn_bg"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="@string/recharge_tip"
+                android:textColor="#f9f9f9"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                style="?android:attr/borderlessButtonStyle" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="11dp"
+                android:lineSpacingExtra="3dp"
+                android:text="@string/recharge_hint"
+                android:textColor="#646464"
+                android:textSize="12sp"
+                android:paddingBottom="10dp"/>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    　
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:src="@drawable/first_charge"
+            app:layout_constraintDimensionRatio="H,4.573:1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

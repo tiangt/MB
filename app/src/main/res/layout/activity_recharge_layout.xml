@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/font_color_49"
-    tools:context=".ui.activity.RechargeActivity">
+    tools:context=".wxapi.WXPayEntryActivityOld">
     <include
         android:id="@+id/recharge_include"
         layout="@layout/activity_base_toolbar"/>
@@ -89,13 +89,13 @@
                 android:layout_marginLeft="@dimen/x16"
                 android:layout_marginRight="@dimen/x18"
                 android:checked="true"
-                android:text="@string/recharge_alipay"
+                android:text="@string/recharge_ali_pay"
                 android:textStyle="bold"
                 android:textSize="@dimen/font_size_30px"
                 android:textColor="@color/font_color_47"
                 android:drawableLeft="@drawable/alipay"
                 android:drawablePadding="@dimen/x7"
-                android:drawableRight="@drawable/radiobutton_selector"
+                android:drawableRight="@drawable/selector_pay_way_rb"
                 android:button="@null"/>
 
             <View
@@ -111,13 +111,13 @@
                 android:layout_height="@dimen/y28"
                 android:layout_marginLeft="@dimen/x16"
                 android:layout_marginRight="@dimen/x18"
-                android:text="@string/recharge_wechat_pay"
+                android:text="@string/recharge_we_chat_pay"
                 android:textStyle="bold"
                 android:textSize="@dimen/font_size_30px"
                 android:textColor="@color/font_color_47"
                 android:drawableLeft="@drawable/wechat"
                 android:drawablePadding="@dimen/x7"
-                android:drawableRight="@drawable/radiobutton_selector"
+                android:drawableRight="@drawable/selector_pay_way_rb"
                 android:button="@null"/>
         </RadioGroup>
     </RelativeLayout>
@@ -185,6 +185,6 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/y51"
-            android:background="@drawable/firstcharge"/>
+            android:background="@drawable/first_charge"/>
     </RelativeLayout>
 </RelativeLayout>
