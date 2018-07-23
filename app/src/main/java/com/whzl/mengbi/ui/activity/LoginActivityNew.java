@@ -40,6 +40,7 @@ import butterknife.OnClick;
  */
 public class LoginActivityNew extends BaseActivityNew implements LoginView {
 
+    private static final int REQUEST_REGISTER = 520;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.et_password)
@@ -178,6 +179,12 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
 
     }
 
+    @Override
+    protected void onToolbarMenuClick() {
+        super.onToolbarMenuClick();
+        Intent intent = new Intent(this, RegisterActivityNew.class);
+        startActivityForResult(intent, REQUEST_REGISTER);
+    }
 
     @OnClick({R.id.btn_wechat_login, R.id.btn_qq_login, R.id.btn_login})
     public void onClick(View view) {
@@ -225,6 +232,9 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_REGISTER) {
+            finish();
+        }
     }
 
     @Override

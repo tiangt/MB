@@ -308,7 +308,7 @@ public class RequestManager {
                 .addFormDataPart("sign", sign)
                 .build();
 
-        String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
+        String requestUrl = String.format("%s/%s", URLContentUtils.getBaseUrl(), actionUrl);
         Request request = addHeaders().url(requestUrl).post(requestBody).build();
         Call call = mOkHttpClient.newCall(request);
         call.enqueue(new Callback() {
