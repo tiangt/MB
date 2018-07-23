@@ -155,10 +155,8 @@ public class RequestManager {
                 tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
                 pos++;
             }
-
-
             //补全请求地址
-            String requestUrl = String.format("%s/%s?%s", URLContentUtils.BASE_URL, actionUrl, tempParams.toString());
+            String requestUrl = String.format("%s/%s?%s", URLContentUtils.getBaseUrl(), actionUrl, tempParams.toString());
             //创建一个请求
             Request request = addHeaders().url(requestUrl).build();
             //创建一个Call
@@ -202,7 +200,7 @@ public class RequestManager {
             paramsMap.remove("appSecret");
             String params = JSON.toJSONString(paramsMap);
             //补全请求地址
-            String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
+            String requestUrl = String.format("%s/%s", URLContentUtils.getBaseUrl(), actionUrl);
             //生成参数
             //String params = paramsMap.toString();
             //创建一个请求实体对象 RequestBody
@@ -240,7 +238,7 @@ public class RequestManager {
             //生成表单实体对象
             RequestBody formBody = builder.build();
             //补全请求地址
-            String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
+            String requestUrl = String.format("%s/%s", URLContentUtils.getBaseUrl(), actionUrl);
             //创建一个请求
             final Request request = addHeaders().url(requestUrl).post(formBody).build();
             //创建一个Call
@@ -300,7 +298,7 @@ public class RequestManager {
                 tempParams.append(String.format("%s=%s", key, URLEncoder.encode(paramsMap.get(key), "utf-8")));
                 pos++;
             }
-            String requestUrl = String.format("%s/%s?%s", URLContentUtils.BASE_URL, actionUrl, tempParams.toString());
+            String requestUrl = String.format("%s/%s?%s", URLContentUtils.getBaseUrl(), actionUrl, tempParams.toString());
             final Request request = addHeaders().url(requestUrl).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {
@@ -360,7 +358,7 @@ public class RequestManager {
             paramsMap.remove("appSecret");
             String params = JSON.toJSONString(paramsMap);
             RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, params);
-            String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
+            String requestUrl = String.format("%s/%s", URLContentUtils.getBaseUrl(), actionUrl);
             final CacheControl.Builder builder = new CacheControl.Builder();
             builder.maxAge(10, TimeUnit.MILLISECONDS);
             CacheControl cache = builder.build();
@@ -407,7 +405,7 @@ public class RequestManager {
                 builder.add(key, paramsMap.get(key));
             }
             RequestBody formBody = builder.build();
-            String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
+            String requestUrl = String.format("%s/%s", URLContentUtils.getBaseUrl(), actionUrl);
             final Request request = addHeaders().url(requestUrl).post(formBody).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {

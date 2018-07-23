@@ -20,7 +20,7 @@ public class ImageUrl {
 
     private static String getUrlWithId(int id, String path, String imageType, long timestamp) {
         String strImageId = String.format("%09d", id);
-        String url = URLContentUtils.BASE_IMAGE_URL + path + "/" + strImageId.substring(0, 3) + "/" +
+        String url = URLContentUtils.getBaseImageUrl() + path + "/" + strImageId.substring(0, 3) + "/" +
                 strImageId.substring(3,5) + "/" + strImageId.substring(5, 7) +
                 "/" + strImageId.substring(7, 9) + "." + imageType;
         if (timestamp >= 0) {

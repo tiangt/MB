@@ -20,12 +20,14 @@ android {
     }
     buildTypes {
         release {
+            buildConfigField("boolean", "API_DEBUG_ENT", "false");
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         debug {
+            buildConfigField("boolean", "API_DEBUG_ENT", "true");
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

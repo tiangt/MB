@@ -1,18 +1,20 @@
 package com.whzl.mengbi.util.network;
 
+import com.whzl.mengbi.BuildConfig;
+
 public class URLContentUtils{
 
     /**
-     * 测试请求接口根地址
+     * 接口根地址
      */
-    public static final String BASE_URL = "https://t2-api.mengbitv.com/";
-    //public static final String BASE_URL = "https://api.mengbitv.com/";
+    public static final String DEBUG_BASE_URL = "https://t2-api.mengbitv.com/";
+    public static final String RELEASE_BASE_URL = "https://api.mengbitv.com/";
 
     /**
      * 勋章图片地址
      */
-    public static final String BASE_IMAGE_URL="https://test-img.mengbitv.com/";
-    //public static final String BASE_IMAGE_URL="https://img.mengbitv.com/";
+    public static final String DEBUG_BASE_IMAGE_URL="https://test-img.mengbitv.com/";
+    public static final String RELEASE_BASE_IMAGE_URL="https://img.mengbitv.com/";
 
 
     /**
@@ -138,4 +140,11 @@ public class URLContentUtils{
 
     public static final String SITE_TIME = "site/time";
 
+    public static String getBaseUrl() {
+        return BuildConfig.API_DEBUG_ENT ? DEBUG_BASE_URL : RELEASE_BASE_URL;
+    }
+
+    public static String getBaseImageUrl() {
+        return BuildConfig.API_DEBUG_ENT ? DEBUG_BASE_IMAGE_URL : RELEASE_BASE_IMAGE_URL;
+    }
 }
