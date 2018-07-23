@@ -24,6 +24,7 @@ import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.network.RequestManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -192,7 +193,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
                 HashMap<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("username", phone);
                 paramsMap.put("password", EncryptUtils.md5Hex(passwrd));
-                paramsMap.put("platform", "ANDROID");
+                paramsMap.put("platform", RequestManager.CLIENTTYPE);
                 mLoginPresent.login(paramsMap);
                 break;
         }

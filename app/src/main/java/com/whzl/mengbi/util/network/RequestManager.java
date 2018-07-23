@@ -40,7 +40,7 @@ public class RequestManager {
     private static final String TAG = RequestManager.class.getSimpleName();
     private static final String APPKEY = "mb_android";
     private static final String APPSECRET = "3b2d8c0d1d88d44f1ef99b015caa5fe4";
-    private static final String CLIENTTYPE = "android";
+    public static final String CLIENTTYPE = "ANDROID";
 
     private static volatile RequestManager mInstance;//单利引用
     public static final int TYPE_GET = 0;//get请求

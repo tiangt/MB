@@ -180,7 +180,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
                 if (info == IMediaPlayer.MEDIA_INFO_RELOADED) {
                     Log.d("LiveDisplayActivity", "Succeed to reload video.");
                 }
-                Log.e("Player", "info=" + info);
+                //Log.e("Player", "info=" + info);
                 return false;
             }
         });

@@ -76,7 +76,7 @@ public class SplashActivity extends BaseActivityNew {
 
     private void visitorLogin() {
         HashMap paramsMap = new HashMap();
-        paramsMap.put("platform", "ANDROID");
+        paramsMap.put("platform", RequestManager.CLIENTTYPE);
         String deviceId = RxPermisssionsUitls.getDevice(this);
         if (deviceId == null) {
             deviceId = "";

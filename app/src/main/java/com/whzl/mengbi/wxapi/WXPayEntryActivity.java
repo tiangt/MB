@@ -135,8 +135,8 @@ public class WXPayEntryActivity extends BaseActivityNew implements IWXAPIEventHa
         @Override
         public void onBindViewHolder(int position) {
             RechargeRuleListBean rechargeRuleListBean = currentRuleList.get(position);
-            tvDesc.setText(AmountConversionUitls.coinConversion(rechargeRuleListBean.getRechargeCount()));
-            tvCost.setText(getString(R.string.rmb, rechargeRuleListBean.getChengCount() / 100f));
+            tvDesc.setText(AmountConversionUitls.coinConversion(rechargeRuleListBean.getChengCount()));
+            tvCost.setText(getString(R.string.rmb, rechargeRuleListBean.getRechargeCount() / 100f));
             ruleContainer.setSelected(mRuleId == rechargeRuleListBean.getRuleId());
             tvDesc.setSelected(mRuleId == rechargeRuleListBean.getRuleId());
             tvCost.setSelected(mRuleId == rechargeRuleListBean.getRuleId());
@@ -149,7 +149,7 @@ public class WXPayEntryActivity extends BaseActivityNew implements IWXAPIEventHa
             mRuleId = rechargeRuleListBean.getRuleId();
             adapter.notifyDataSetChanged();
             btnRecharge.setEnabled(true);
-            btnRecharge.setText(getString(R.string.recharge_confirm, rechargeRuleListBean.getChengCount() / 100f));
+            btnRecharge.setText(getString(R.string.recharge_confirm, rechargeRuleListBean.getRechargeCount() / 100f));
         }
     }
 
