@@ -11,11 +11,11 @@ public interface LivePresenter {
 
     void getAudienceAccount(int programId);
 
-    void followHost(int userId, int programId);
+    void followHost(long userId, int programId);
 
-    void getRoomUserInfo(int userId, int programId);
+    void getRoomUserInfo(long userId, int programId);
 
     void onDestory();
 
-    void sendGift(int userId, int count, int goodId, int programId, int anchorId);
+    void sendGift(long userId, int count, int goodId, int programId, int anchorId);
 }

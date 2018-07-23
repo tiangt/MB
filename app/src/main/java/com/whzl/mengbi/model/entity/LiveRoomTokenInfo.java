@@ -15,17 +15,13 @@ public class LiveRoomTokenInfo extends ResponseInfo {
     }
 
     public static class DataBean {
-        private int userId;
+        private long userId;
         private int programId;
         private String token;
         private List<RoomServerListBean> roomServerList;
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
         }
 
         public int getProgramId() {

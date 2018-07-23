@@ -31,7 +31,7 @@ public class RechargePresenterImpl implements RechargePresenter, OnRechargeFinis
     }
 
     @Override
-    public void getUserInfo(int userId) {
+    public void getUserInfo(long userId) {
         rechargeModel.doUserInfo(userId, this);
     }
 

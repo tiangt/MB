@@ -58,10 +58,10 @@ public class RunWayJson {
         private int goodsId;
         private int count;
         private int comboTimes;
-        private int toUserId;
+        private long toUserId;
         private String nickname;
         private long dateLong;
-        private int userId;
+        private long userId;
         private int goodsPicId;
         private String toNickname;
         private String goodsName;
@@ -81,7 +81,7 @@ public class RunWayJson {
             return comboTimes;
         }
 
-        public int getToUserId() {
+        public long getToUserId() {
             return toUserId;
         }
 
@@ -93,7 +93,7 @@ public class RunWayJson {
             return dateLong;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
         }
 

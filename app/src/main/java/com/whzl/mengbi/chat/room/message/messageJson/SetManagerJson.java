@@ -62,9 +62,9 @@ public class SetManagerJson {
          * userId : 15070491
          * toUserNickname : 哪个是汽水
          */
-        private int toUserId;
+        private long toUserId;
         private String nickname;
-        private int userId;
+        private long userId;
         private String toUserNickname;
 
         public void setToUserId(int toUserId) {
@@ -75,15 +75,11 @@ public class SetManagerJson {
             this.nickname = nickname;
         }
 
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
-
         public void setToUserNickname(String toUserNickname) {
             this.toUserNickname = toUserNickname;
         }
 
-        public int getToUserId() {
+        public long getToUserId() {
             return toUserId;
         }
 
@@ -91,7 +87,7 @@ public class SetManagerJson {
             return nickname;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
         }
 

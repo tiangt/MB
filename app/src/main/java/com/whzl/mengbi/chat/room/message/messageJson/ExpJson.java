@@ -61,13 +61,13 @@ public class ExpJson {
 
     public class ExpContext {
         List<ExpLevelItem> levels;
-        int userId;
+        long userId;
 
         public List<ExpLevelItem> getLevels() {
             return levels;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
         }
     }

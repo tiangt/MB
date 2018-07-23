@@ -12,7 +12,7 @@ public class RecommendAnchorInfoBean {
 
     private String cover;
 
-    private Integer anchorId;
+    private long anchorId;
 
     private String anchorNickname;
 
@@ -60,7 +60,7 @@ public class RecommendAnchorInfoBean {
         this.cover = cover;
     }
 
-    public Integer getAnchorId() {
+    public long getAnchorId() {
         return anchorId;
     }
 

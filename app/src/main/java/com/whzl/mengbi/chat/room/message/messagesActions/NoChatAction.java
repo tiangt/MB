@@ -14,7 +14,7 @@ public class NoChatAction  {
     public void performAction(NoChatMsg noChatMsg, Context context) {
         if (noChatMsg.getNochatType() == KickoutEvent.KICKOUT_CODE ||
                 noChatMsg.getNochatType() == KickoutEvent.LOGOUT_CODE) {
-            int loginUid = Integer.parseInt(SPUtils.get(context, "userId", 0).toString());
+            long loginUid = Long.parseLong(SPUtils.get(context, "userId", (long)0).toString());
             if (0 == loginUid) {
                 String nickname = SPUtils.get(context, "nickname", "").toString();
                 if (nickname.equals(noChatMsg.getToNickname())) {

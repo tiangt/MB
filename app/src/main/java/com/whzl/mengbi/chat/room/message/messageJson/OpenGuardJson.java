@@ -14,7 +14,7 @@ public class OpenGuardJson {
 
     public class ContextEntity{
         String nickname;
-        int userId;
+        long userId;
 
         public String getNickname() {
             return nickname;
@@ -24,12 +24,8 @@ public class OpenGuardJson {
             this.nickname = nickname;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
         }
     }
 }

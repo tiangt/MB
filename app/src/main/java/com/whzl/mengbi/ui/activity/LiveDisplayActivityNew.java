@@ -132,7 +132,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     private RecyclerView.Adapter chatAdapter;
     private boolean isRecyclerScrolling;
-    private int mUserId;
+    private long mUserId;
     private BaseAwesomeDialog mGiftDialog;
     private volatile ArrayList<AnimJson> mTotalAnimList = new ArrayList<>();
     private boolean flagIsTotalAnimating = false;
@@ -164,7 +164,8 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             SPUtils.put(this, "programId", mProgramId);
         }
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
-        mUserId = (int) SPUtils.get(this, "userId", 0);
+
+        mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
         mLivePresenter.getLiveGift();
         mMasterPlayer = new KSYMediaPlayer.Builder(this).build();
         mMasterPlayer.setOnPreparedListener(mp -> {
@@ -463,10 +464,10 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     }
 
     private void combo() {
-        int animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+        long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
         int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
         AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
-        int nextUserId = nextContext.getUserId();
+        long nextUserId = nextContext.getUserId();
         int nextGoodId = nextContext.getGoodsId();
         if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
             mTotalAnimList.remove(0);
@@ -581,10 +582,10 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     }
 
     private void comboCache() {
-        int animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+        long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
         int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
         AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
-        int nextUserId = nextContext.getUserId();
+        long nextUserId = nextContext.getUserId();
         int nextGoodId = nextContext.getGoodsId();
         if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
             mTotalAnimList.remove(0);
@@ -756,7 +757,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
-                mUserId = (int) SPUtils.get(this, "userId", 0);
+                mUserId = Long.parseLong(SPUtils.get(this, "userId", (long)0).toString());
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
             }

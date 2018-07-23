@@ -16,9 +16,9 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
  */
 public class SetManagerMessage implements FillHolderMessage {
     private String toNickname;
-    private int toUserId;
+    private long toUserId;
     private String fromNickname;
-    private int fromUserId;
+    private long fromUserId;
     private Context mContext;
     private int programId = 0;
 

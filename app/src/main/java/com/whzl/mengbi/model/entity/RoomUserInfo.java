@@ -44,7 +44,7 @@ public class RoomUserInfo {
 
     public static class DataBean {
 
-        private int userId;
+        private long userId;
         private String userType;
         private String nickname;
         private String avatar;
@@ -61,13 +61,10 @@ public class RoomUserInfo {
         private List<LevelMapBean> levelMap;
         private List<GoodsListBean> goodsList;
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
         }
 
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
 
         public String getUserType() {
             return userType;

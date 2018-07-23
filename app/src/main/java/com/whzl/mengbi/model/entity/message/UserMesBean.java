@@ -84,7 +84,7 @@ public class UserMesBean {
             private String nickname;
             private String registerType;
             private String status;
-            private int userId;
+            private long userId;
             private UserIdentityMapBean userIdentityMap;
             private UserSetMapBean userSetMap;
             private UserTagMapBean userTagMap;
@@ -191,12 +191,8 @@ public class UserMesBean {
                 this.status = status;
             }
 
-            public int getUserId() {
+            public long getUserId() {
                 return userId;
-            }
-
-            public void setUserId(int userId) {
-                this.userId = userId;
             }
 
             public UserIdentityMapBean getUserIdentityMap() {
@@ -463,7 +459,7 @@ public class UserMesBean {
                 private String goodsType;
                 private String isEquip;
                 private int surplusDay;
-                private int userId;
+                private long userId;
 
                 public boolean isColorSpeak() {
                     return colorSpeak;
@@ -545,13 +541,10 @@ public class UserMesBean {
                     this.surplusDay = surplusDay;
                 }
 
-                public int getUserId() {
+                public long getUserId() {
                     return userId;
                 }
 
-                public void setUserId(int userId) {
-                    this.userId = userId;
-                }
             }
         }
     }

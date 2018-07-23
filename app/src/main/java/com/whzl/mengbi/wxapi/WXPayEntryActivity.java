@@ -26,7 +26,6 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SDKConfig;
-import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.RechargeChannelListBean;
 import com.whzl.mengbi.model.entity.RechargeInfo;
 import com.whzl.mengbi.model.entity.RechargeRuleListBean;
@@ -85,7 +84,7 @@ public class WXPayEntryActivity extends BaseActivityNew implements IWXAPIEventHa
     private SparseArray<Integer> channelIdMap = new SparseArray<>();
     private BaseListAdapter adapter;
     private int mRuleId = -1;
-    private int mUserId;
+    private long mUserId;
 
     @Override
     protected void setupContentView() {
@@ -96,7 +95,8 @@ public class WXPayEntryActivity extends BaseActivityNew implements IWXAPIEventHa
     protected void initEnv() {
         super.initEnv();
         mPresent = new RechargePresenterImpl(this);
-        mUserId = (int) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
+        mUserId = Long.parseLong(SPUtils.get(this, "userId", (long)0).toString());
+        //mUserId = (long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
         wxApi = WXAPIFactory.createWXAPI(this, SDKConfig.KEY_WEIXIN);
         wxApi.handleIntent(getIntent(), this);
     }
@@ -244,13 +244,14 @@ public class WXPayEntryActivity extends BaseActivityNew implements IWXAPIEventHa
     @OnClick(R.id.btn_recharge)
     public void onClick() {
         int channelId = channelIdMap.get(rgPayWay.getCheckedRadioButtonId());
-        int mUserId = (int) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
-        HashMap<String, Integer> paramsMap = new HashMap();
-        paramsMap.put("channelId", channelId);
-        paramsMap.put("ruleId", mRuleId);
+        mUserId = Long.parseLong(SPUtils.get(this, "userId", (long)0).toString());
+        //long mUserId = (long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
+        HashMap<String, Long> paramsMap = new HashMap();
+        paramsMap.put("channelId", (long)channelId);
+        paramsMap.put("ruleId", (long)mRuleId);
         paramsMap.put("userId", mUserId);
         paramsMap.put("toUserId", mUserId);
-        paramsMap.put("proxyUserId", 0);
+        paramsMap.put("proxyUserId", (long)0);
         mPresent.getOrderInfo(paramsMap);
     }
 

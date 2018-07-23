@@ -13,7 +13,7 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 public class OpenGuardMessage implements FillHolderMessage {
     private int userLevel;
     private String nickname;
-    private int uid;
+    private long uid;
     private Context mContext;
     private int programId;
 

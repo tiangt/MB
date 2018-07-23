@@ -43,7 +43,7 @@ public class SplashActivity extends BaseActivityNew {
     @Override
     protected void loadData() {
         HashMap<String, String> paramsMap = new HashMap<>();
-        int userId = (int) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
+        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long)0).toString());
         String sessionId = (String) SPUtils.get(this, SpConfig.KEY_SESSION_ID, "");
         if (userId == 0 || TextUtils.isEmpty(sessionId)) {
             visitorLogin();

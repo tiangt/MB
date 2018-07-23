@@ -67,7 +67,7 @@ public class AudienceListBean {
              * platform : PC_WEB
              */
 
-            private int userid;
+            private long userid;
             private String name;
             private int identity;
             private String avatar;
@@ -95,12 +95,8 @@ public class AudienceListBean {
                 }
             };
 
-            public int getUserid() {
+            public long getUserid() {
                 return userid;
-            }
-
-            public void setUserid(int userid) {
-                this.userid = userid;
             }
 
             public String getName() {
@@ -158,7 +154,7 @@ public class AudienceListBean {
 
             @Override
             public void writeToParcel(Parcel dest, int flags) {
-                dest.writeInt(userid);
+                dest.writeLong(userid);
                 dest.writeString(name);
                 dest.writeInt(identity);
                 dest.writeString(avatar);

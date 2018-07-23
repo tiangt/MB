@@ -16,7 +16,7 @@ public class RegisterInfo extends ResponseInfo {
     public static class DataBean {
 
         private String sessionId;
-        private int userId;
+        private long userId;
         private String nickName;
         private String avatar;
         private String userType;
@@ -29,12 +29,8 @@ public class RegisterInfo extends ResponseInfo {
             this.sessionId = sessionId;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
         }
 
         public String getNickName() {

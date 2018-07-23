@@ -14,7 +14,7 @@ public class VisitorUserInfo extends ResponseInfo {
 
     public static class DataBean {
         private String sessionId;
-        private int userId;
+        private long userId;
         private String nickname;
 
         public String getSessionId() {
@@ -25,12 +25,8 @@ public class VisitorUserInfo extends ResponseInfo {
             this.sessionId = sessionId;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
         }
 
         public String getNickname() {

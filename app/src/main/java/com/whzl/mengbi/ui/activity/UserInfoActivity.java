@@ -27,13 +27,13 @@ import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
 import com.whzl.mengbi.util.CustomPopWindowUtils;
-import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.RxPermisssionsUitls;
-import com.whzl.mengbi.util.SelectorUtils;
-import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.FileUtils;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.SelectorUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.zhihu.matisse.Matisse;
 
 import java.io.File;
@@ -42,10 +42,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.OnClickListener{
 
@@ -181,7 +177,7 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = DensityUtil.dp2px(200);
         Calendar calendar = Calendar.getInstance();
-        int userId = mUserInfo.getData().getUserId();
+        long userId = mUserInfo.getData().getUserId();
         switch (v.getId()){
             case R.id.user_info_head_text://修改头像
                 View view = getLayoutInflater().inflate(R.layout.activity_user_info_photo_pop_layout,null);
