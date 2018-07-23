@@ -73,10 +73,6 @@ public class NoChatMsg implements FillHolderMessage{
                 showRelieveNoChatMsg(holder);
                 //解除禁言消息
                 break;
-            case 7:
-                showRoomManagerMsg(holder);
-                //设置为房管
-                break;
             case 8:
                 showKickoutMsg(holder);
                 //剔出房间
@@ -119,16 +115,6 @@ public class NoChatMsg implements FillHolderMessage{
         mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname + " 被 ", toUid, programId, WHITE_FONG_COLOR));
         mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, Color.parseColor("#20d190")));
         String kickouContent = " 踢出房间";
-        mHolder.textView.append(LightSpanString.getLightString(kickouContent, Color.parseColor("#ff611b")));
-    }
-
-    private void showRoomManagerMsg(RecyclerView.ViewHolder holder) {
-        SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
-        mHolder.textView.setText("");
-        mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname + " 被 ", toUid, programId, WHITE_FONG_COLOR));
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, Color.parseColor("#20d190")));
-        String kickouContent = " 设置为房管";
         mHolder.textView.append(LightSpanString.getLightString(kickouContent, Color.parseColor("#ff611b")));
     }
 }

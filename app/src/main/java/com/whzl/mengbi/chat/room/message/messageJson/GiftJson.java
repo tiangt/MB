@@ -1,6 +1,8 @@
 package com.whzl.mengbi.chat.room.message.messageJson;
 
 
+import java.util.List;
+
 public class GiftJson {
     public class GiftContext{
         int count;
@@ -12,6 +14,11 @@ public class GiftJson {
         int goodsPicId;
         int goodsId;
         long lastUpdateTime;
+        List<LevelEntity> levels;
+
+        public List<LevelEntity> getLevels() {
+            return levels;
+        }
 
         public long getLastUpdateTime() {
             return lastUpdateTime;
@@ -73,5 +80,18 @@ public class GiftJson {
 
     public GiftContext getContext() {
         return context;
+    }
+
+    public class LevelEntity{
+        public String getLevelType() {
+            return levelType;
+        }
+
+        public int getLevelValue() {
+            return levelValue;
+        }
+
+        String levelType;
+        int levelValue;
     }
 }

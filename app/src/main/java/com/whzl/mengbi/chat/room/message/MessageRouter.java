@@ -16,6 +16,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.OpenGuardAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RunWayAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.SetManagerAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SubProgramAction;
@@ -63,6 +64,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("ANIMATION", new AnimAction());
         actionsMap.put("OPEN_GUARD_M", new OpenGuardAction());
         actionsMap.put("RUNWAY", new RunWayAction());
+        actionsMap.put("SET_MANAGER", new SetManagerAction());
     }
 
     private void initChatAction() {
@@ -139,7 +141,7 @@ public class MessageRouter implements MessageCallback {
     private void handleEventAction(String eventCode, String msgInfo) {
         Actions action = actionsMap.get(eventCode);
         if (null == action) {
-            Log.e("chatMsg", "eventCode has no action");
+            Log.i("chatMsg", "eventCode has no action");
             return;
         }
         action.performAction(msgInfo, mContext);
@@ -148,7 +150,7 @@ public class MessageRouter implements MessageCallback {
     private void handleMsgTypeAction(String msgType, String msgInfo) {
         Actions action = actionsMap.get(msgType);
         if (null == action) {
-            Log.e("chatMsg", "msgType has no action");
+            Log.i("chatMsg", "msgType has no action");
             return;
         }
         action.performAction(msgInfo, mContext);

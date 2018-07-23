@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.fragment.main;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,17 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
-import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.model.entity.BannerInfo;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
 import com.whzl.mengbi.model.entity.LiveShowListInfo;
-import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
+import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -212,6 +208,10 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     @Override
     public void showBanner(BannerInfo bannerInfo) {
         List<BannerInfo.DataBean.ListBean> bannerInfoList = bannerInfo.getData().getList();
+        if (bannerInfoList.isEmpty()) {
+            banner.setVisibility(View.GONE);
+            return;
+        }
         ArrayList<String> banners = new ArrayList<>();
         for (int i = 0; i < bannerInfoList.size(); i++) {
             banners.add(bannerInfoList.get(i).getImage());

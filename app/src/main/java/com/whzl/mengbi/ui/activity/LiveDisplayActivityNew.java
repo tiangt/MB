@@ -59,6 +59,7 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -169,6 +170,8 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         mMasterPlayer.setOnPreparedListener(mp -> {
             if (mMasterPlayer != null) {
                 mMasterPlayer.start();
+            }else {
+                Log.e("Player", "player is null at start");
             }
         });
         mMasterPlayer.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
@@ -177,6 +180,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
                 if (info == IMediaPlayer.MEDIA_INFO_RELOADED) {
                     Log.d("LiveDisplayActivity", "Succeed to reload video.");
                 }
+                //Log.e("Player", "info=" + info);
                 return false;
             }
         });
@@ -624,11 +628,15 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             ratioLayout.setPicRatio(context.getWidth() / ((float) context.getHeight()));
         }
         String streamAddress = startPlayEvent.getStreamAddress();
+        if (mMasterPlayer == null) {
+            ToastUtils.showToast("mMasterPlayer is null");
+            return;
+        }
+        mMasterPlayer.reset();
         try {
-            mMasterPlayer.reset();
             mMasterPlayer.setDataSource(streamAddress);
             mMasterPlayer.prepareAsync();
-            mMasterPlayer.setDisplay(surfaceView.getHolder());
+            mMasterPlayer.setSurface(surfaceView.getHolder().getSurface());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -750,6 +758,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             if (RESULT_OK == resultCode) {
                 mUserId = (int) SPUtils.get(this, "userId", 0);
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                getRoomToken();
             }
         }
     }

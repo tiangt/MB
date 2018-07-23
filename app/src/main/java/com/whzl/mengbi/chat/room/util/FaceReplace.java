@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.view.View;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
@@ -23,6 +24,7 @@ import pl.droidsonroids.gif.GifDrawable;
 
 public class FaceReplace {
     private List<FacePattern> patternList = null;
+    private EmjoyInfo emjoyInfo = null;
     private static class FaceReplaceHolder {
         private static final FaceReplace instance = new FaceReplace();
     }
@@ -36,7 +38,7 @@ public class FaceReplace {
             return;
         }
         String strJson = FileUtils.getJson("images/face/face.json", context);
-        EmjoyInfo emjoyInfo = GsonUtils.GsonToBean(strJson, EmjoyInfo.class);
+        emjoyInfo = GsonUtils.GsonToBean(strJson, EmjoyInfo.class);
         List<EmjoyInfo.FaceBean.PublicBean> faceList = emjoyInfo.getFace().getPublicX();
         patternList = new ArrayList<>();
         for(EmjoyInfo.FaceBean.PublicBean faceBean: faceList) {
@@ -45,7 +47,12 @@ public class FaceReplace {
         }
     }
 
+    public EmjoyInfo getEmjoyInfo() {
+        return emjoyInfo;
+    }
+
     public void faceReplace(TextView textView, SpannableString spanString, Context context) {
+        textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         DrawableCallback callback = new DrawableCallback(textView);
         for(FacePattern fp : patternList) {
             Matcher m = fp.getPattern().matcher(spanString);
@@ -56,7 +63,7 @@ public class FaceReplace {
                 Drawable drawable;
                 try {
                     drawable = new GifDrawable(fp.getFileContent());
-                    drawable.setCallback(callback);
+                    drawable.setCallback(new DrawableCallback(textView));
                 } catch (Exception ignored) {
                     break;
                 }
