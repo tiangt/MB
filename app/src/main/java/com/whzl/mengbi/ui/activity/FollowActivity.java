@@ -1,8 +1,8 @@
-package com.whzl.mengbi.ui.fragment.main;
+package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,22 +12,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.umeng.qq.tencent.JsonUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -41,31 +39,52 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
  * @author shaw
+ * @date 2018/7/23
  */
-public class FollowFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
-
+public class FollowActivity extends BaseActivityNew implements OnRefreshListener, OnLoadMoreListener {
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    private BaseListAdapter adapter;
     private ArrayList<AnchorFollowedDataBean.AnchorInfoBean> mAnchorList = new ArrayList<>();
     private int mCurrentPager = 1;
-    private BaseListAdapter adapter;
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_follow;
+    protected void setupContentView() {
+        setContentView(R.layout.activity_follow, R.string.follow_title, true);
     }
 
     @Override
-    public void init() {
+    protected void setupView() {
         initRecycler();
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
+    }
+
+    @Override
+    protected void loadData() {
         getAnchorList(mCurrentPager++);
+    }
+
+    private void initRecycler() {
+        recycler.setLayoutManager(new LinearLayoutManager(this));
+        recycler.addItemDecoration(new DividerItemDecoration(this, RecyclerView.VERTICAL));
+        adapter = new BaseListAdapter() {
+            @Override
+            protected int getDataCount() {
+                return mAnchorList == null ? 0 : mAnchorList.size();
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(FollowActivity.this).inflate(R.layout.item_anchor_followed, parent, false);
+                return new AnchorViewHolder(itemView);
+            }
+        };
+        recycler.setAdapter(adapter);
     }
 
     @Override
@@ -80,7 +99,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     public void getAnchorList(int pager) {
-        int userId = (int) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0);
+        int userId = (int) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
         HashMap hashMap = new HashMap();
         hashMap.put("userId", userId);
         hashMap.put("pager", pager);
@@ -138,28 +157,6 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         }
     }
 
-    private void initRecycler() {
-        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        recycler.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
-        adapter = new BaseListAdapter() {
-            @Override
-            protected int getDataCount() {
-                return mAnchorList == null ? 0 : mAnchorList.size();
-            }
-
-            @Override
-            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_anchor_followed, parent, false);
-                return new AnchorViewHolder(itemView);
-            }
-        };
-        recycler.setAdapter(adapter);
-    }
-
-    public static FollowFragment newInstance() {
-        return new FollowFragment();
-    }
-
     class AnchorViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_avatar)
         ImageView ivAvatar;
@@ -180,7 +177,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         @Override
         public void onBindViewHolder(int position) {
             AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
-            GlideImageLoader.getInstace().displayImage(getContext(), anchorInfoBean.avatar, ivAvatar);
+            GlideImageLoader.getInstace().displayImage(FollowActivity.this, anchorInfoBean.avatar, ivAvatar);
             tvStatus.setVisibility("T".equals(anchorInfoBean.status) ? View.VISIBLE : View.GONE);
             tvRoomNum.setText(getString(R.string.room_num, anchorInfoBean.programId));
             tvAnchorName.setText(anchorInfoBean.anchorNickname);
@@ -190,7 +187,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
-            Intent intent = new Intent(getContext(), LiveDisplayActivityNew.class);
+            Intent intent = new Intent(FollowActivity.this, LiveDisplayActivityNew.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, anchorInfoBean.programId);
             startActivity(intent);
         }

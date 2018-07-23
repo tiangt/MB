@@ -18,4 +18,13 @@ public class ToastUtils {
         }
         toast.show();
     }
+
+    public static void showToast(int text){
+        if(toast==null){
+            toast = Toast.makeText(BaseApplication.getInstance(), text,Toast.LENGTH_SHORT);
+        }else {
+            toast.setText(text);//如果不为空，则直接改变当前toast的文本
+        }
+        toast.show();
+    }
 }

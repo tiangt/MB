@@ -9,16 +9,37 @@ import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
+import java.io.File;
 import java.util.HashMap;
 
-public class UserInfoModelImpl implements UserInfoModel{
+public class UserInfoModelImpl implements UserInfoModel {
 
     @Override
-    public void doUpdataPortrait(String userId,String filename, OnUserInfoFInishedListener listener) {
-        HashMap hashMap = new HashMap();
-        hashMap.put("userId",userId);
-        hashMap.put("avatar",filename);
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_AVATAR,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
+    public void doUpdataPortrait(String userId, String filename, OnUserInfoFInishedListener listener) {
+//        HashMap hashMap = new HashMap();
+//        hashMap.put("userId",userId);
+//        hashMap.put("avatar",new File(filename));
+//        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_AVATAR,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
+//            @Override
+//            public void onReqSuccess(Object result) {
+//                String strJson = result.toString();
+//                JSONObject jsonObject = JSON.parseObject(strJson);
+//                String code = jsonObject.get("code").toString();
+//                if(code.equals("200")){
+//                    String data = jsonObject.get("data").toString();
+//                    listener.onPortraitSuccess(data);
+//                }else{
+//                    String msg = jsonObject.get("msg").toString();
+//                    listener.onError(msg);
+//                }
+//            }
+//
+//            @Override
+//            public void onReqFailed(String errorMsg) {
+//                LogUtils.d(errorMsg);
+//            }
+//        });
+        RequestManager.getInstance(BaseApplication.getInstance()).upload(userId, new File(filename), URLContentUtils.MODIFY_AVATAR, new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
                 String strJson = result.toString();
@@ -26,7 +47,9 @@ public class UserInfoModelImpl implements UserInfoModel{
                 String code = jsonObject.get("code").toString();
                 if(code.equals("200")){
                     String data = jsonObject.get("data").toString();
-                    listener.onPortraitSuccess(data);
+                    JSONObject pathJsonObject = JSON.parseObject(data);
+                    String path = pathJsonObject.get("path").toString();
+                    listener.onPortraitSuccess(path);
                 }else{
                     String msg = jsonObject.get("msg").toString();
                     listener.onError(msg);
@@ -35,26 +58,26 @@ public class UserInfoModelImpl implements UserInfoModel{
 
             @Override
             public void onReqFailed(String errorMsg) {
-                LogUtils.d(errorMsg);
+
             }
         });
     }
 
     @Override
-    public void doUpdataNickName(String userId,String nickname, OnUserInfoFInishedListener listener) {
+    public void doUpdataNickName(String userId, String nickname, OnUserInfoFInishedListener listener) {
         HashMap hashMap = new HashMap();
-        hashMap.put("userId",userId);
-        hashMap.put("nickname",nickname);
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_NICKNAME,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
+        hashMap.put("userId", userId);
+        hashMap.put("nickname", nickname);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_NICKNAME, RequestManager.TYPE_POST_JSON, hashMap, new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
                 String strJson = result.toString();
                 JSONObject jsonObject = JSON.parseObject(strJson);
                 String code = jsonObject.get("code").toString();
-                if(code.equals("200")){
+                if (code.equals("200")) {
                     String data = jsonObject.get("data").toString();
                     listener.onSuccess(data);
-                }else{
+                } else {
                     String msg = jsonObject.get("msg").toString();
                     listener.onError(msg);
                 }
@@ -69,16 +92,16 @@ public class UserInfoModelImpl implements UserInfoModel{
 
     @Override
     public void doUpdataUserInfo(HashMap hashMap, OnUserInfoFInishedListener listener) {
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_USER_INFO,RequestManager.TYPE_POST_JSON,hashMap, new RequestManager.ReqCallBack() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_USER_INFO, RequestManager.TYPE_POST_JSON, hashMap, new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
                 String strJson = result.toString();
                 JSONObject jsonObject = JSON.parseObject(strJson);
                 String code = jsonObject.get("code").toString();
-                if(code.equals("200")){
+                if (code.equals("200")) {
                     String data = jsonObject.get("data").toString();
                     listener.onSuccess(data);
-                }else{
+                } else {
                     String msg = jsonObject.get("msg").toString();
                     listener.onError(msg);
                 }

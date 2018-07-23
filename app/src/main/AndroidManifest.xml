@@ -213,7 +213,8 @@
         </activity>
         <activity
             android:name=".ui.activity.MainActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:exported="true"/>
         <activity android:name=".ui.activity.LoginActivityNew" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
@@ -225,5 +226,6 @@
                 <!--<data android:scheme="wxbaa94b521372015c" />-->
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.FollowActivity" />
     </application>
 </manifest>

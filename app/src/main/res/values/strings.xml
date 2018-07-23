@@ -230,5 +230,10 @@
     <string name="user_cancel">用户取消</string>
     <string name="pay_fail">支付失败</string>
     <string name="rmb">¥ %1$.2f</string>
+    <string name="room_num">房间号：%1$d</string>
+    <string name="personal_info">个人信息</string>
+    <string name="permission_storage_denid">存储权限被禁止,部分功能可能无法正常工作.</string>
+    <string name="permission_camera_denid">相机权限被禁止,部分功能可能无法正常工作.</string>
+    <string name="permission_denid">存储或相机权限被禁止,部分功能可能无法正常工作.</string>
 
 </resources>

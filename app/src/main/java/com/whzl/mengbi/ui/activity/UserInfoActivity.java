@@ -19,35 +19,34 @@ import com.lljjcoder.bean.ProvinceBean;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.UserInfoPresenter;
 import com.whzl.mengbi.presenter.impl.UserInfoPresenterImpl;
-import com.whzl.mengbi.ui.activity.base.BaseAtivity;
+import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
 import com.whzl.mengbi.util.CustomPopWindowUtils;
-import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.PhotoUtil;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SelectorUtils;
+import com.whzl.mengbi.util.StorageUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.FileUtils;
-import com.whzl.mengbi.util.SPUtils;
-import com.zhihu.matisse.Matisse;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
+import butterknife.OnClick;
 
-public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.OnClickListener{
+public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
 
     //相机请求码
     private static final int CAMERA_REQUEST_CODE = 1;
@@ -81,30 +80,34 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
     private File tempFile;
     private UserInfoPresenter userInfoPresenter;
     private CityPickerView cityPickerView;//地区选择器
+    private String tempCapturePath;
+    private String tempCropPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_info_layout);
+    }
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
         Intent intent = getIntent();
-        if(intent!=null){
-            Bundle bundle = intent.getExtras();
-            mUserInfo = (UserInfo) bundle.getSerializable("userbean");
-        }
+        mUserInfo = (UserInfo) intent.getSerializableExtra("userbean");
         userInfoPresenter = new UserInfoPresenterImpl(this);
         cityPickerView = new CityPickerView();
         cityPickerView.init(this);
-        initView();
-        initModelAndView();
     }
 
-    /**
-     * 实例化控件
-     */
-   public void  initView(){
+    @Override
+    protected void setupContentView() {
+        setContentView(R.layout.activity_user_info_layout, R.string.personal_info, true);
+    }
+
+    @Override
+    protected void setupView() {
         mCircleImageView = (CircleImageView) findViewById(R.id.user_info_head_img);
-        mProfileTV = (TextView)findViewById(R.id.user_info_head_text);
-        mSpout =(TextView)  findViewById(R.id.user_info_sprount);
+        mProfileTV = (TextView) findViewById(R.id.user_info_head_text);
+        mSpout = (TextView) findViewById(R.id.user_info_sprount);
         mNickName = (TextView) findViewById(R.id.user_info_nickname);
         mSex = (TextView) findViewById(R.id.user_info_sex);
         mAddress = (TextView) findViewById(R.id.user_info_address);
@@ -113,101 +116,102 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
         mAnchorImg = (ImageView) findViewById(R.id.user_info_anchorlevel_img);
         mUserLevel = (TextView) findViewById(R.id.user_info_userlevel);
         mUserImg = findViewById(R.id.user_info_userlevel_img);
-        mQuit = (Button) findViewById(R.id.user_info_quit_but);
-        mNickName.setOnClickListener(this);
-        mSex.setOnClickListener(this);
-        mAddress.setOnClickListener(this);
-        mProfileTV.setOnClickListener(this);
-        mBirthday.setOnClickListener(this);
-        mQuit.setOnClickListener(this);
+        initModelAndView();
     }
 
+    @Override
+    protected void loadData() {
+
+    }
+
+
     /**
-     *赋予控件数据
+     * 赋予控件数据
      */
-    private void  initModelAndView(){
-        GlideImageLoader.getInstace().circleCropImage(this,mUserInfo.getData().getAvatar(),mCircleImageView);
-        mSpout.setText(mUserInfo.getData().getUserId()+"");
+    private void initModelAndView() {
+        GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getData().getAvatar(), mCircleImageView);
+        mSpout.setText(mUserInfo.getData().getUserId() + "");
         mNickName.setText(mUserInfo.getData().getNickname());
         mSex.setText(mUserInfo.getData().getGender());
-         if(mUserInfo.getData().getGender().equals("M")){
+        if (mUserInfo.getData().getGender().equals("M")) {
             mSex.setText("男");
-        }else if(mUserInfo.getData().getGender().equals("W")){
+        } else if (mUserInfo.getData().getGender().equals("W")) {
             mSex.setText("女");
-        }else{
+        } else {
             mSex.setText("保密");
         }
         StringBuilder stringBuilder = new StringBuilder();
-        if(mUserInfo.getData().getProvince()!=null){
+        if (mUserInfo.getData().getProvince() != null) {
             stringBuilder.append(mUserInfo.getData().getProvince());
         }
-        if(mUserInfo.getData().getCity()!=null){
-            stringBuilder.append("-"+mUserInfo.getData().getCity());
+        if (mUserInfo.getData().getCity() != null) {
+            stringBuilder.append("-" + mUserInfo.getData().getCity());
         }
         mAddress.setText(stringBuilder);
         mBirthday.setText(mUserInfo.getData().getBirthday());
-        for (UserInfo.DataBean.LevelListBean levelList:mUserInfo.getData().getLevelList()){
-            if(levelList.getLevelType().equals("ROYAL_LEVEL")){
-                for (UserInfo.DataBean.LevelListBean.ExpListBean expListBean:levelList.getExpList()){
-                    String anchorsjexp = "离升级还差"+String.valueOf(expListBean.getSjNeedExpValue());
+        for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
+            if (levelList.getLevelType().equals("ROYAL_LEVEL")) {
+                for (UserInfo.DataBean.LevelListBean.ExpListBean expListBean : levelList.getExpList()) {
+                    String anchorsjexp = "离升级还差" + String.valueOf(expListBean.getSjNeedExpValue());
                     SpannableStringBuilder anchorSpan = new SpannableStringBuilder(anchorsjexp);
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#f1275b"));
-                    anchorSpan.setSpan(colorSpan,5,anchorsjexp.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    anchorSpan.setSpan(colorSpan, 5, anchorsjexp.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
                     anchorSpan.append("主播经验");
                     mAnchorLevel.setText(anchorSpan);
                 }
-            }else {
-                for (UserInfo.DataBean.LevelListBean.ExpListBean expListBean:levelList.getExpList()){
-                    String usersjexp = "离升级还差"+String.valueOf(expListBean.getSjNeedExpValue());
+            } else {
+                for (UserInfo.DataBean.LevelListBean.ExpListBean expListBean : levelList.getExpList()) {
+                    String usersjexp = "离升级还差" + String.valueOf(expListBean.getSjNeedExpValue());
                     SpannableStringBuilder userSpan = new SpannableStringBuilder(usersjexp);
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#4facf3"));
-                    userSpan.setSpan(colorSpan,5,usersjexp.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    userSpan.setSpan(colorSpan, 5, usersjexp.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
                     userSpan.append("富豪经验");
                     mUserLevel.setText(userSpan);
                 }
                 String levelVal = String.valueOf(levelList.getLevelValue());
                 int resId = FileUtils.userLevelDrawable(levelVal);
-                GlideImageLoader.getInstace().displayImage(this,resId,mUserImg);
+                GlideImageLoader.getInstace().displayImage(this, resId, mUserImg);
             }
         }
     }
 
     /**
      * 监听view触发事件
+     *
      * @param v
      */
-    @Override
+    @OnClick({R.id.rl_avatar_container, R.id.rl_nick_name_container, R.id.rl_gender_container, R.id.rl_address_container, R.id.rl_birthday_container})
     public void onClick(View v) {
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = DensityUtil.dp2px(200);
         Calendar calendar = Calendar.getInstance();
         int userId = mUserInfo.getData().getUserId();
-        switch (v.getId()){
-            case R.id.user_info_head_text://修改头像
-                View view = getLayoutInflater().inflate(R.layout.activity_user_info_photo_pop_layout,null);
-                mCustomPopWindow = CustomPopWindowUtils.profile(this,view,mCircleImageView,width,height);
+        switch (v.getId()) {
+            case R.id.rl_avatar_container://修改头像
+                View view = getLayoutInflater().inflate(R.layout.activity_user_info_photo_pop_layout, null);
+                mCustomPopWindow = CustomPopWindowUtils.profile(this, view, mCircleImageView, width, height);
                 //初始化CustomPopWindow控件
                 initPopView(view);
                 break;
-            case R.id.user_info_nickname://修改昵称
-                 Intent nicknameIntent = new Intent(UserInfoActivity.this,UserInfoNickNameActivity.class);
-                 nicknameIntent.putExtra("nickname",mUserInfo.getData().getNickname());
-                 startActivityForResult(nicknameIntent,NICKNAME_CODE);
-                 break;
-            case R.id.user_info_sex://修改性别
-                Intent sexIntent = new Intent(UserInfoActivity.this,UserInfoSexActivity.class);
-                sexIntent.putExtra("sex",mUserInfo.getData().getGender());
-                startActivityForResult(sexIntent,SEX_CODE);
-                 break;
-            case R.id.user_info_birthday://修改生日
-                String  strDate = mUserInfo.getData().getBirthday();
+            case R.id.rl_nick_name_container://修改昵称
+                Intent nicknameIntent = new Intent(UserInfoActivity.this, UserInfoNickNameActivity.class);
+                nicknameIntent.putExtra("nickname", mUserInfo.getData().getNickname());
+                startActivityForResult(nicknameIntent, NICKNAME_CODE);
+                break;
+            case R.id.rl_gender_container://修改性别
+                Intent sexIntent = new Intent(UserInfoActivity.this, UserInfoSexActivity.class);
+                sexIntent.putExtra("sex", mUserInfo.getData().getGender());
+                startActivityForResult(sexIntent, SEX_CODE);
+                break;
+            case R.id.rl_birthday_container://修改生日
+                String strDate = mUserInfo.getData().getBirthday();
                 try {
                     Date date = DateUtils.getDate(strDate);
                     calendar.setTime(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                boolean type[] = new boolean[]{true,true,true,false,false,false};
+                boolean type[] = new boolean[]{true, true, true, false, false, false};
                 TimePickerView timePickerView = new TimePickerView
                         .Builder(this, new TimePickerView.OnTimeSelectListener() {
                     @Override
@@ -215,8 +219,8 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
                         String time1 = DateUtils.getTime(date);
                         String time2 = DateUtils.getTime2(date);
                         HashMap hashMap = new HashMap();
-                        hashMap.put("userId",userId);
-                        hashMap.put("birthday",time2);
+                        hashMap.put("userId", userId);
+                        hashMap.put("birthday", time2);
                         userInfoPresenter.onUpdataUserInfo(hashMap);
                     }
                 })
@@ -238,51 +242,38 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
                 timePickerView.setDate(calendar);
                 timePickerView.show();
                 break;
-            case R.id.user_info_address://修改地区
-                        cityPickerView.setConfig(SelectorUtils.address());
-                        cityPickerView.setOnCityItemClickListener(new OnCityItemClickListener() {
-                            @Override
-                            public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
-                                StringBuilder strBuilder = new StringBuilder();
-                                //省份
-                                if (province != null) {
-                                    strBuilder.append(province.getName());
-                                }
-                                //城市
-                                if (city != null) {
-                                    strBuilder.append("-"+city.getName());
-                                }
-                                mAddress.setText(strBuilder);
-                                String provinceStr = province.getName();
-                                String cityStr = city.getName();
-                                HashMap hashMap = new HashMap();
-                                hashMap.put("userId",userId);
-                                hashMap.put("province",provinceStr);
-                                hashMap.put("city",cityStr);
-                                userInfoPresenter.onUpdataUserInfo(hashMap);
-                            }
-                            @Override
-                            public void onCancel() {
-                                cityPickerView.hide();
-                            }
-                        });
-                        cityPickerView.showCityPicker();
+            case R.id.rl_address_container://修改地区
+                cityPickerView.setConfig(SelectorUtils.address());
+                cityPickerView.setOnCityItemClickListener(new OnCityItemClickListener() {
+                    @Override
+                    public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+                        StringBuilder strBuilder = new StringBuilder();
+                        //省份
+                        if (province != null) {
+                            strBuilder.append(province.getName());
+                        }
+                        //城市
+                        if (city != null) {
+                            strBuilder.append("-" + city.getName());
+                        }
+                        mAddress.setText(strBuilder);
+                        String provinceStr = province.getName();
+                        String cityStr = city.getName();
+                        HashMap hashMap = new HashMap();
+                        hashMap.put("userId", userId);
+                        hashMap.put("province", provinceStr);
+                        hashMap.put("city", cityStr);
+                        userInfoPresenter.onUpdataUserInfo(hashMap);
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        cityPickerView.hide();
+                    }
+                });
+                cityPickerView.showCityPicker();
                 break;
-            case R.id.user_info_quit_but://退出登录
-                Intent mIntent = new Intent(UserInfoActivity.this,LoginActivityNew.class);
-                mIntent.putExtra("visitor",true);
-                startActivity(mIntent);
-                SPUtils.remove(this,"islogin");//清除用户登录状态
-                SPUtils.remove(this,"visitor");//清除游客登录状态
-                SPUtils.remove(this,"userId");//清除用户Id
-                SPUtils.remove(this,"username");//清除用户用户名
-                SPUtils.remove(this,"password");//清除用户密码
-                SPUtils.remove(this,"third_party");//清除第三方登录名称
-                SPUtils.remove(this,"qq_openid");//清除第QQ登录openid
-                SPUtils.remove(this,"qq_access_token");//清除QQ登录access_token
-                SPUtils.remove(this,"weixin_openid");//清除微信登录openid
-                SPUtils.remove(this,"weixin_access_token");//清除微信登录access_token
-                finish();
+            default:
                 break;
         }
     }
@@ -290,24 +281,31 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
     /**
      * 更换头像
      * PopWindows view 事件
+     *
      * @param view
      */
-    private void initPopView(View view){
+    private void initPopView(View view) {
         butPhoto = (Button) view.findViewById(R.id.user_info_photo);
         butAlbum = (Button) view.findViewById(R.id.user_info_album);
         butCancel = (Button) view.findViewById(R.id.user_info_cancel);
         //拍照
         butPhoto.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                RxPermisssionsUitls.getPicFromCamera(UserInfoActivity.this);
+                tempCapturePath = StorageUtil.getTempDir() + "avatar_captured";
+                tempCropPath = StorageUtil.getTempDir() + "avatar_crop.jpg";
+                RxPermisssionsUitls.getPicFromCamera(UserInfoActivity.this, tempCapturePath);
+                mCustomPopWindow.dissmiss();
             }
         });
         //相册选择
         butAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tempCropPath = StorageUtil.getTempDir() + "avatar_crop.jpg";
                 RxPermisssionsUitls.getPicFromAlbm(UserInfoActivity.this);
+                mCustomPopWindow.dissmiss();
             }
         });
         //取消
@@ -322,7 +320,8 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
 
     @Override
     public void showPortrait(String filename) {
-
+        GlideImageLoader.getInstace().displayImage(this, filename, mCircleImageView);
+        EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 
     @Override
@@ -338,38 +337,30 @@ public class UserInfoActivity extends BaseAtivity implements UserInfoView, View.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case CAMERA_REQUEST_CODE://相机
-                if(resultCode == RESULT_OK){
-
-                }
-                break;
-            case ALBUM_REQUEST_CODE://相册
-                if(resultCode == RESULT_OK){
-                    List list = Matisse.obtainResult(data);
-                    for (int i=0;i<list.size();i++){
-                        String strfile = list.get(i).toString();
-                        LogUtils.d(strfile);
-                        userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId()+"",strfile);
-                    }
-                }
-                break;
+        switch (requestCode) {
             case NICKNAME_CODE://昵称
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     String nickname = data.getStringExtra("nickname");
-                    userInfoPresenter.onUpdataNickName(mUserInfo.getData().getUserId()+"",nickname);
+                    userInfoPresenter.onUpdataNickName(mUserInfo.getData().getUserId() + "", nickname);
                 }
                 break;
             case SEX_CODE://性别
-                if(resultCode == RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     String sex = data.getStringExtra("sex");
                     HashMap hashMap = new HashMap();
-                    hashMap.put("userId",mUserInfo.getData().getUserId());
-                    hashMap.put("sex",sex);
+                    hashMap.put("userId", mUserInfo.getData().getUserId());
+                    hashMap.put("sex", sex);
                     userInfoPresenter.onUpdataUserInfo(hashMap);
                 }
                 break;
         }
+
+        PhotoUtil.onActivityResult(this, tempCapturePath, tempCropPath, requestCode, resultCode, data, new PhotoUtil.UploadListener() {
+            @Override
+            public void upload() {
+                userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId() + "", tempCropPath);
+            }
+        });
     }
 
     @Override

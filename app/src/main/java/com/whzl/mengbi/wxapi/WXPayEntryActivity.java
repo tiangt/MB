@@ -27,6 +27,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SDKConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.RechargeChannelListBean;
 import com.whzl.mengbi.model.entity.RechargeInfo;
 import com.whzl.mengbi.model.entity.RechargeRuleListBean;
@@ -44,6 +45,8 @@ import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -271,6 +274,7 @@ public class WXPayEntryActivity extends BaseActivityNew implements IWXAPIEventHa
                         case NetConfig.CODE_ALI_PAY_SUCCESS:
                             showToast(R.string.pay_success);
                             mPresent.getUserInfo(mUserId);
+                            EventBus.getDefault().post(new UserInfoUpdateEvent());
                             break;
                         case NetConfig.CODE_ALI_PAY_CANCEL:
                             showToast(R.string.user_cancel);
@@ -296,6 +300,7 @@ public class WXPayEntryActivity extends BaseActivityNew implements IWXAPIEventHa
                 case NetConfig.CODE_WE_CHAT_PAY_SUCCESS:
                     showToast(R.string.pay_success);
                     mPresent.getUserInfo(mUserId);
+                    EventBus.getDefault().post(new UserInfoUpdateEvent());
                     break;
                 case NetConfig.CODE_WE_CHAT_PAY_CANCEL:
                     showToast(R.string.user_cancel);

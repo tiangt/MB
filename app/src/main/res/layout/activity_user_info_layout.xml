@@ -1,300 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.UserInfoActivity">
+    android:orientation="vertical">
 
-    <include
-        android:id="@+id/user_info_toolbar_include"
-        layout="@layout/activity_base_toolbar"/>
+    <include layout="@layout/comm_toolbar" />
 
     <RelativeLayout
-        android:id="@+id/user_info_head_layout"
+        android:id="@+id/rl_avatar_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y36"
-        android:layout_below="@id/user_info_toolbar_include"
-        android:background="@color/font_color_white">
+        android:layout_height="57dp"
+        android:background="@color/comm_white">
+
         <com.whzl.mengbi.ui.widget.view.CircleImageView
             android:id="@+id/user_info_head_img"
-            android:layout_width="@dimen/x40"
-            android:layout_height="@dimen/y28"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="36dp">
-        </com.whzl.mengbi.ui.widget.view.CircleImageView>
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp" />
 
         <TextView
             android:id="@+id/user_info_head_text"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
-            android:drawablePadding="@dimen/x20"
-            android:paddingRight="@dimen/x15"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:drawablePadding="9dp"
             android:drawableRight="@drawable/arrowright"
-            android:textStyle="bold"
+            android:text="@string/user_info_profile_photo"
             android:textColor="@color/font_color_47"
-            android:text="@string/user_info_profile_photo" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
-    <View
-        android:id="@+id/user_info_head_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_info_head_layout"/>
+
     <RelativeLayout
-        android:id="@+id/user_info_sprount_layout"
+        android:id="@+id/rl_account_container"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y29"
-        android:layout_below="@id/user_info_head_layout">
+        android:layout_height="45dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/comm_white">
+
         <TextView
             android:id="@+id/user_info_sprount_text"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:textColor="@color/font_color_47"
-            android:textStyle="bold"
-            android:text="@string/user_info_sprout"/>
+            style="@style/user_info_option_left_text"
+            android:text="@string/user_info_sprout" />
+
         <TextView
             android:id="@+id/user_info_sprount"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:drawableRight="@drawable/arrowright"
-            android:drawablePadding="@dimen/x20"
-            android:paddingRight="@dimen/x15"/>
+            style="@style/user_info_option_right_text"
+            android:drawableRight="@null" />
     </RelativeLayout>
 
     <View
         android:id="@+id/user_info_sprount_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_info_sprount_layout"/>
+        style="@style/user_info_option_divider" />
 
     <RelativeLayout
-        android:id="@+id/user_info_nickname_layout"
+        android:id="@+id/rl_nick_name_container"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y29"
-        android:layout_below="@id/user_info_sprount_layout">
+        android:layout_height="45dp"
+        android:background="@color/comm_white">
+
         <TextView
             android:id="@+id/user_info_nickname_text"
-            android:layout_width="@dimen/x25"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:textColor="@color/font_color_47"
-            android:textStyle="bold"
-            android:text="@string/user_info_nickname"/>
+            style="@style/user_info_option_left_text"
+            android:text="@string/user_info_nickname" />
 
         <TextView
             android:id="@+id/user_info_nickname"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:drawableRight="@drawable/arrowright"
-            android:drawablePadding="@dimen/x20"
-            android:paddingRight="@dimen/x15"/>
+            style="@style/user_info_option_right_text" />
     </RelativeLayout>
 
-    <View
-        android:id="@+id/user_info_nickname_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_info_nickname_layout"/>
+    <View style="@style/user_info_option_divider" />
 
     <RelativeLayout
-        android:id="@+id/user_info_sex_layout"
+        android:id="@+id/rl_gender_container"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y29"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/user_info_nickname_layout">
+        android:layout_height="45dp"
+        android:background="@color/comm_white">
+
         <TextView
             android:id="@+id/user_info_sex_text"
-            android:layout_width="@dimen/x25"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_centerInParent="true"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/font_color_47"
-            android:textStyle="bold"
-            android:text="@string/user_info_sex"/>
+            style="@style/user_info_option_left_text"
+            android:text="@string/user_info_sex" />
 
         <TextView
             android:id="@+id/user_info_sex"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:drawableRight="@drawable/arrowright"
-            android:drawablePadding="@dimen/x20"
-            android:paddingRight="@dimen/x15"/>
+            style="@style/user_info_option_right_text" />
     </RelativeLayout>
-    <View
-        android:id="@+id/user_info_sex_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_info_sex_layout"/>
+
+    <View style="@style/user_info_option_divider" />
+
     <RelativeLayout
-        android:id="@+id/user_info_address_layout"
+        android:id="@+id/rl_address_container"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y29"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/user_info_sex_layout">
+        android:layout_height="45dp"
+        android:background="@color/comm_white">
+
         <TextView
             android:id="@+id/user_info_address_text"
-            android:layout_width="@dimen/x25"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_centerInParent="true"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/font_color_47"
-            android:textStyle="bold"
-            android:text="@string/user_info_address"/>
+            style="@style/user_info_option_left_text"
+            android:text="@string/user_info_address" />
 
         <TextView
             android:id="@+id/user_info_address"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:drawableRight="@drawable/arrowright"
-            android:drawablePadding="@dimen/x20"
-            android:paddingRight="@dimen/x15"/>
+            style="@style/user_info_option_right_text" />
     </RelativeLayout>
-    <View
-        android:id="@+id/user_info_address_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_info_address_layout"/>
+
+    <View style="@style/user_info_option_divider" />
+
     <RelativeLayout
-        android:id="@+id/user_info_birthday_layout"
+        android:id="@+id/rl_birthday_container"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y29"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/user_info_address_layout">
+        android:layout_height="45dp"
+        android:background="@color/comm_white">
+
         <TextView
             android:id="@+id/user_info_birthday_text"
-            android:layout_width="@dimen/x25"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_centerInParent="true"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/font_color_47"
-            android:textStyle="bold"
-            android:text="@string/user_info_birthday"/>
+            style="@style/user_info_option_left_text"
+            android:text="@string/user_info_birthday" />
 
         <TextView
             android:id="@+id/user_info_birthday"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:drawableRight="@drawable/arrowright"
-            android:drawablePadding="@dimen/x20"
-            android:paddingRight="@dimen/x15"/>
+            style="@style/user_info_option_right_text" />
     </RelativeLayout>
-    <View
-        android:id="@+id/user_info_birthday_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_info_birthday_layout"/>
+
     <RelativeLayout
-        android:id="@+id/user_info_anchorlevel_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/y29"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/user_info_birthday_layout">
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/comm_white">
+
         <TextView
             android:id="@+id/user_info_anchorlevel_text"
-            android:layout_width="@dimen/x52"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="3dp"
+            android:text="@string/user_info_anchorlevel"
             android:textColor="@color/font_color_47"
-            android:textStyle="bold"
-            android:text="@string/user_info_anchorlevel"/>
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/user_info_anchorlevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_below="@id/user_info_anchorlevel_text"/>
+            android:layout_below="@id/user_info_anchorlevel_text"
+            android:layout_marginLeft="19dp"
+            android:textColor="#646464"
+            android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/user_info_anchorlevel_img"
-            android:layout_width="@dimen/x20"
-            android:layout_height="@dimen/y10"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/x14"
-            android:layout_alignParentRight="true"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp" />
     </RelativeLayout>
 
 
-    <View
-        android:id="@+id/user_info_anchorlevel_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_info_anchorlevel_layout"/>
+    <View style="@style/user_info_option_divider" />
 
     <RelativeLayout
         android:id="@+id/user_info_userlevel_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/y29"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/user_info_anchorlevel_layout">
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/comm_white">
+
         <TextView
             android:id="@+id/user_info_userlevel_text"
-            android:layout_width="@dimen/x52"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="3dp"
+            android:text="@string/user_info_userlevel"
             android:textColor="@color/font_color_47"
-            android:textStyle="bold"
-            android:text="@string/user_info_userlevel"/>
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/user_info_userlevel"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_below="@id/user_info_userlevel_text"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_info_userlevel_text"
+            android:layout_marginLeft="19dp"
+            android:textColor="#646464"
+            android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/user_info_userlevel_img"
-            android:layout_width="@dimen/x20"
-            android:layout_height="@dimen/y10"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/x14"
-            android:layout_alignParentRight="true"/>
+            android:layout_width="23dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp" />
     </RelativeLayout>
-
-    <View
-        android:id="@+id/user_info_userlevel_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_info_userlevel_layout"/>
-
-    <Button
-        android:id="@+id/user_info_quit_but"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/x39"
-        android:layout_marginTop="@dimen/x36"
-        android:layout_marginLeft="@dimen/x7"
-        android:layout_marginRight="@dimen/x7"
-        android:textColor="@color/font_color_white"
-        android:layout_below="@id/user_info_userlevel_view"
-        android:background="@drawable/home_rounded_button"
-        android:text="@string/user_info_exitlogin"/>
-</RelativeLayout>
+</LinearLayout>

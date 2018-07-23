@@ -103,6 +103,7 @@ public class EmojiFragment extends BaseFragment {
         recycler.setAdapter(chatEmojiAdapter);
     }
 
+
     @OnClick(R.id.btn_delete)
     public void onClick() {
         // 模拟软键盘删除

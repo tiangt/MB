@@ -22,6 +22,7 @@ public abstract class BaseFragment extends Fragment {
     protected Activity mActivity;
     protected View rootView;
     private Unbinder mUnbinder;
+    private boolean isNeedLoadData = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     public abstract void init();
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
