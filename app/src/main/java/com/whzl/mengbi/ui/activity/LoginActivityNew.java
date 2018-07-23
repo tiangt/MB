@@ -13,6 +13,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
@@ -21,6 +22,7 @@ import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.LoginView;
 import com.whzl.mengbi.util.EncryptUtils;
+import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
@@ -38,9 +40,6 @@ import butterknife.OnClick;
  */
 public class LoginActivityNew extends BaseActivityNew implements LoginView {
 
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.et_password)
@@ -72,14 +71,14 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
             if (SHARE_MEDIA.QQ.equals(platform)) {
                 String openid = data.get("openid");
                 String access_token = data.get("access_token");
-                hashMap.put("type", "QQ");
+                hashMap.put("type", NetConfig.OPEN_LOGIN_QQ);
                 hashMap.put("token", access_token);
                 hashMap.put("openid", openid);
             } else if (SHARE_MEDIA.WEIXIN.equals(platform)) {
                 String openid = data.get("openid");
                 String access_token = data.get("access_token");
                 LogUtils.d("————————————————————————————" + access_token);
-                hashMap.put("type", "WEIXIN");
+                hashMap.put("type", NetConfig.OPEN_LOGIN_WEIXIN);
                 hashMap.put("token", access_token);
                 hashMap.put("openid", openid);
             }
@@ -94,6 +93,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
          */
         @Override
         public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            dismissLoading();
             showToast(t.getMessage());
         }
 
@@ -104,6 +104,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
          */
         @Override
         public void onCancel(SHARE_MEDIA platform, int action) {
+            dismissLoading();
             showToast("用户取消");
             LogUtils.d("onError  platform" + platform);
         }
@@ -163,7 +164,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
             public void afterTextChanged(Editable s) {
                 boolean isPhone = StringUtils.isPhone(etPhone.getText().toString().trim());
                 String password = etPassword.getText().toString().trim();
-                if (isPhone && !TextUtils.isEmpty(password) && password.length() > 6) {
+                if (isPhone && !TextUtils.isEmpty(password) && password.length() >= 6) {
                     btnLogin.setEnabled(true);
                 } else {
                     btnLogin.setEnabled(false);
@@ -180,6 +181,8 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
 
     @OnClick({R.id.btn_wechat_login, R.id.btn_qq_login, R.id.btn_login})
     public void onClick(View view) {
+        KeyBoardUtil.hideInputMethod(this);
+        showLoading("登录中...");
         switch (view.getId()) {
             case R.id.btn_wechat_login:
                 umShareAPI.getPlatformInfo(this, SHARE_MEDIA.WEIXIN, umAuthListener);
@@ -189,11 +192,11 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
                 break;
             case R.id.btn_login:
                 String phone = etPhone.getText().toString().trim();
-                String passwrd = etPassword.getText().toString();
+                String password = etPassword.getText().toString();
                 HashMap<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("username", phone);
-                paramsMap.put("password", EncryptUtils.md5Hex(passwrd));
-                paramsMap.put("platform", RequestManager.CLIENTTYPE);
+                paramsMap.put("password", EncryptUtils.md5Hex(password));
+                paramsMap.put("platform", "ANDROID");
                 mLoginPresent.login(paramsMap);
                 break;
         }
@@ -201,6 +204,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
 
     @Override
     public void loginSuccess(UserInfo userInfo) {
+        dismissLoading();
         showToast(R.string.login_success);
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
@@ -213,6 +217,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
 
     @Override
     public void showError(String msg) {
+        dismissLoading();
         showToast(msg);
     }
 

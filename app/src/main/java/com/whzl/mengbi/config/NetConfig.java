@@ -14,4 +14,9 @@ public interface NetConfig {
     int CODE_WE_CHAT_PAY_SUCCESS = 0;
     int CODE_WE_CHAT_PAY_CANCEL = -2;
     int CODE_WE_CHAT_PAY_FAIL = -1;
+    String OPEN_LOGIN_WEIXIN = "WEIXIN";
+    String OPEN_LOGIN_QQ = "QQ";
+    String LEVEL_TYPE_ANCHOR = "ANCHOR_LEVEL";
+    String LEVEL_TYPE_USER = "USER_LEVEL";
+    String USER_TYPE_ANCHOR = "ANCHOR";
 }

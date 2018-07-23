@@ -22,6 +22,9 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 
+/**
+ * @author shaw
+ */
 public class RxPermisssionsUitls {
     //相机请求码
     public static final int CAMERA_REQUEST_CODE = 1;
@@ -34,10 +37,11 @@ public class RxPermisssionsUitls {
 
     /**
      * 设备信息权限
+     *
      * @param activity
      * @return
      */
-    public static String  getDevice(Activity activity){
+    public static String getDevice(Activity activity) {
 
         RxPermissions rxPermissions = new RxPermissions(activity);
         rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
@@ -49,7 +53,7 @@ public class RxPermisssionsUitls {
 
                     @Override
                     public void onNext(Boolean aBoolean) {
-                        if (aBoolean){
+                        if (aBoolean) {
                             deviceId = DeviceUtils.getDeviceId(activity);
                         }
                     }
@@ -69,11 +73,12 @@ public class RxPermisssionsUitls {
 
     /**
      * 从相机获取图片
+     *
      * @param activity
      */
-    public static void getPicFromCamera(Activity activity) {
+    public static void getPicFromCamera(Activity activity, String tempPath) {
         RxPermissions rxPermissions = new RxPermissions(activity);
-        rxPermissions.request(Manifest.permission.CAMERA)
+        rxPermissions.request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
                 .subscribe(new Observer<Boolean>() {
 
                     @Override
@@ -83,20 +88,10 @@ public class RxPermisssionsUitls {
 
                     @Override
                     public void onNext(Boolean aBoolean) {
-                        if(aBoolean){
-                            //用于保存调用相机拍照后所生成的文件
-                            tempFile = new File(Environment.getExternalStorageDirectory().getPath(), System.currentTimeMillis() + ".jpg");
-                            //跳转到调用系统相机
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            //判断版本
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {   //如果在Android7.0以上,使用FileProvider获取Uri
-                                intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                Uri contentUri = FileProvider.getUriForFile(activity, "com.whzl.mengbi.fileprovider", tempFile);
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri);
-                            } else {    //否则使用Uri.fromFile(file)方法获取Uri
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
-                            }
-                            activity.startActivityForResult(intent, CAMERA_REQUEST_CODE);
+                        if (aBoolean) {
+                            PhotoUtil.capture(activity, tempPath);
+                        } else {
+                            ToastUtils.showToast(R.string.permission_denid);
                         }
                     }
 
@@ -114,46 +109,39 @@ public class RxPermisssionsUitls {
 
     /**
      * 从相册获取图片
+     *
      * @param activity
      */
-    public static void getPicFromAlbm(Activity activity){
+    public static void getPicFromAlbm(Activity activity) {
         RxPermissions rxPermissions = new RxPermissions(activity);
         rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
-                     .subscribe(new Observer<Boolean>() {
-                         @Override
-                         public void onSubscribe(Disposable d) {
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-                         }
+                    }
 
-                         @Override
-                         public void onNext(Boolean aBoolean) {
-                            if(aBoolean){
-                                //用户已同意该权限
-                                Matisse.from(activity)
-                                        .choose(MimeType.allOf())//选择mime类型
-                                        .countable(true)
-                                        .maxSelectable(1)//图片选择最多的数量
-                                        .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                                        .thumbnailScale(0.85f)
-                                        .imageEngine(new PicassoEngine())
-                                        .theme(R.style.Matisse_Zhihu)
-                                        .forResult(ALBUM_REQUEST_CODE);
-                            }else{
-                                //用户已拒绝该权限
-                            }
-                         }
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
+                            //用户已同意该权限
+                            PhotoUtil.selectAlbums(activity);
+                        } else {
+                            //用户已拒绝该权限
+                            ToastUtils.showToast(R.string.permission_storage_denid);
+                        }
+                    }
 
-                         @Override
-                         public void onError(Throwable e) {
+                    @Override
+                    public void onError(Throwable e) {
 
-                         }
+                    }
 
-                         @Override
-                         public void onComplete() {
+                    @Override
+                    public void onComplete() {
 
-                         }
-                     });
+                    }
+                });
     }
 
 }

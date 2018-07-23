@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity.base;
 
+import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.EventBusBean;
 import com.whzl.mengbi.eventbus.EventBusUtils;
 import com.whzl.mengbi.ui.common.ActivityStackManager;
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.SPUtils;
 
@@ -32,7 +35,10 @@ import butterknife.Unbinder;
  */
 public abstract class BaseActivityNew extends AppCompatActivity {
 
+    private static final String TAG_LOADING_DIALOG = "dialogLoading";
     private Unbinder mBinder;
+    private BaseAwesomeDialog mLoadingDialog;
+    private ProgressDialog dialog;
 
     /**
      * 输出日志
@@ -77,7 +83,7 @@ public abstract class BaseActivityNew extends AppCompatActivity {
             supportActionBar.setDisplayHomeAsUpEnabled(isShowBack);
             supportActionBar.setDisplayShowTitleEnabled(false);
         }
-        if(tvToolbarMenuText != null){
+        if (tvToolbarMenuText != null) {
             tvToolbarMenuText.setText(rightMenuRes);
             tvToolbarMenuText.setOnClickListener(v -> onToolbarMenuClick());
         }
@@ -96,7 +102,7 @@ public abstract class BaseActivityNew extends AppCompatActivity {
             supportActionBar.setDisplayHomeAsUpEnabled(isShowBack);
             supportActionBar.setDisplayShowTitleEnabled(false);
         }
-        if(tvToolbarMenuText != null){
+        if (tvToolbarMenuText != null) {
             tvToolbarMenuText.setText(rightMenu);
             tvToolbarMenuText.setOnClickListener(v -> onToolbarMenuClick());
         }
@@ -106,7 +112,7 @@ public abstract class BaseActivityNew extends AppCompatActivity {
         setContentView(layoutId, titleRes, R.string.nothing, isShowBack);
     }
 
-    protected void setContentView(int layoutId, String title,boolean isShowBack) {
+    protected void setContentView(int layoutId, String title, boolean isShowBack) {
         setContentView(layoutId, title, "", isShowBack);
     }
 
@@ -150,6 +156,32 @@ public abstract class BaseActivityNew extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void showLoading(String msg) {
+        if (dialog == null) {
+            dialog = new ProgressDialog(this);
+            dialog.setMessage(msg);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+        }
+        dialog.show();
+    }
+
+    protected void dismissLoading() {
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+    }
+
+    protected void showLoading() {
+        if (dialog == null) {
+            dialog = new ProgressDialog(this);
+            dialog.setMessage("加载中，请稍后...");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
+        }
+        dialog.show();
     }
 
 }

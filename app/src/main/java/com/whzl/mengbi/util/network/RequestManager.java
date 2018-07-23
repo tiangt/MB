@@ -13,6 +13,7 @@ import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -28,6 +29,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -277,6 +279,57 @@ public class RequestManager {
         }
         return call;
     }
+
+    /**
+     * 上传头像
+     */
+    public <T> void upload(String userId, File file, String actionUrl, ReqCallBack<T> reqCallBack) {
+        String sessionId = (String) SPUtils.get(BaseApplication.getInstance(), "sessionId", "");
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("appKey", APPKEY);
+        paramsMap.put("timestamp", System.currentTimeMillis() / 1000 + "");
+        paramsMap.put("appSecret", APPSECRET);
+        paramsMap.put("sessionId", sessionId);
+        paramsMap.put("clientType", CLIENTTYPE);
+        paramsMap.put("clientVersion", BuildConfig.VERSION_CODE + "");
+        paramsMap.put("userId", userId + "");
+        String sign = getSign(paramsMap);
+        RequestBody fileBody = RequestBody.create(MediaType.parse("image/png"), file);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("avatar", "avatar_image", fileBody)
+                .addFormDataPart("userId", userId)
+                .addFormDataPart("appKey", APPKEY)
+                .addFormDataPart("sessionId", sessionId)
+                .addFormDataPart("timestamp", System.currentTimeMillis() / 1000 + "")
+//                .addFormDataPart("appSecret", APPSECRET)
+                .addFormDataPart("clientType", CLIENTTYPE)
+                .addFormDataPart("clientVersion", BuildConfig.VERSION_CODE + "")
+                .addFormDataPart("sign", sign)
+                .build();
+
+        String requestUrl = String.format("%s/%s", URLContentUtils.BASE_URL, actionUrl);
+        Request request = addHeaders().url(requestUrl).post(requestBody).build();
+        Call call = mOkHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                failedCallBack("访问失败", reqCallBack);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    String string = response.body().string();
+                    LogUtils.e("url=" + actionUrl + ",response ----->" + string);
+                    successCallBack((T) string, reqCallBack);
+                } else {
+                    failedCallBack("服务器错误", reqCallBack);
+                }
+            }
+        });
+    }
+
 
     /**
      * okHttp get异步请求

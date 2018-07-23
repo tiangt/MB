@@ -76,7 +76,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
-            android:background="@color/colorAccent" />
+            android:background="@color/colorCommNotActive" />
 
         <TextView
             android:id="@+id/login_third_party_text"
@@ -85,7 +85,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text="@string/user_other_textview"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorCommNotActive"
             android:textSize="@dimen/font_size_44px" />
 
         <View
@@ -95,7 +95,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="29dp"
-            android:background="@color/colorAccent" />
+            android:background="@color/colorCommNotActive" />
     </RelativeLayout>
 
     <RelativeLayout

@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:text="@string/user_info_album"
+        android:textColor="#323232"
         android:background="@color/font_color_white"/>
     <View
         android:layout_width="match_parent"
@@ -29,5 +30,6 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:text="@string/user_info_cancel"
+        android:textColor="#323232"
         android:background="@color/font_color_white"/>
 </LinearLayout>

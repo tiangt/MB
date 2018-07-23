@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivityNew {
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{new HomeFragmentNew(), FollowFragment.newInstance("关注"), MeFragment.newInstance("我的")};
+        fragments = new Fragment[]{new HomeFragmentNew(), FollowFragment.newInstance(), MeFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
         rgTab.setOnCheckedChangeListener((group, checkedId) -> {

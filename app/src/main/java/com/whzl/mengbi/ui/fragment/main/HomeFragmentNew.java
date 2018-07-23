@@ -117,7 +117,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
 
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_anchor_home, null);
+                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_anchor_home, parent, false);
                 return new AnchorInfoViewHolder(itemView, TYPE_ANCHOR);
             }
         };
@@ -247,7 +247,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                     public void run() {
                         refreshLayout.setEnableLoadMore(false);
                     }
-                }, 500);
+                }, 300);
             } else {
                 refreshLayout.setEnableLoadMore(true);
                 anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
@@ -262,7 +262,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                 public void run() {
                     refreshLayout.setEnableLoadMore(false);
                 }
-            }, 500);
+            }, 300);
         }
     }
 

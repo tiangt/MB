@@ -128,7 +128,7 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/selector_recharge_btn_bg"
+                android:background="@drawable/selector_comm_btn_bg"
                 android:enabled="false"
                 android:gravity="center"
                 android:text="@string/recharge_tip"
