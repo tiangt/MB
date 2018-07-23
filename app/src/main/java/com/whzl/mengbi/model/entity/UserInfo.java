@@ -19,7 +19,7 @@ public class UserInfo extends ResponseInfo implements Serializable{
 
     public static class DataBean implements Serializable{
 
-        private int userId;
+        private long userId;
         private String nickname;
         private String avatar;
         private String userType;
@@ -32,12 +32,8 @@ public class UserInfo extends ResponseInfo implements Serializable{
         private String sessionId;
         private List<LevelListBean> levelList;
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
         }
 
         public String getNickname() {
@@ -130,23 +126,15 @@ public class UserInfo extends ResponseInfo implements Serializable{
 
         public static class WealthBean implements Serializable{
 
-            private int coin;
-            private int chengPonit;
+            private long coin;
+            private long chengPonit;
 
-            public int getCoin() {
+            public long getCoin() {
                 return coin;
             }
 
-            public void setCoin(int coin) {
-                this.coin = coin;
-            }
-
-            public int getChengPonit() {
+            public long getChengPonit() {
                 return chengPonit;
-            }
-
-            public void setChengPonit(int chengPonit) {
-                this.chengPonit = chengPonit;
             }
         }
 

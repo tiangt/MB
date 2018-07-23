@@ -33,7 +33,7 @@ public class ContributeDataBean {
              * value : 1225800
              */
 
-            public int userId;
+            public long userId;
             public String nickname;
             public String gender;
             public String avatar;

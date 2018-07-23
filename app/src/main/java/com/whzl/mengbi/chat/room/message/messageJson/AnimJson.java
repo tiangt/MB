@@ -177,11 +177,11 @@ public class AnimJson {
 
         private int giftTotalCount;
         private int comboTimes;
-        private int toUserId;
+        private long toUserId;
         private String nickname;
         private long dateLong;
         private String color;
-        private int userId;
+        private long userId;
         private int goodsPicId;
         private String toNickname;
         private String goodsName;
@@ -231,10 +231,6 @@ public class AnimJson {
             this.color = color;
         }
 
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
-
         public void setGoodsPicId(int goodsPicId) {
             this.goodsPicId = goodsPicId;
         }
@@ -259,7 +255,7 @@ public class AnimJson {
             return comboTimes;
         }
 
-        public int getToUserId() {
+        public long getToUserId() {
             return toUserId;
         }
 
@@ -275,7 +271,7 @@ public class AnimJson {
             return color;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
         }
 

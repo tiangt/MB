@@ -14,11 +14,11 @@ public class ImageUrl {
         return getImageUrl(imageId, imageType, -1);
     }
 
-    public static String getAvatarUrl(int uid, String imageType, long timestamp) {
+    public static String getAvatarUrl(long uid, String imageType, long timestamp) {
         return getUrlWithId(uid, "avatar", "jpg", timestamp);
     }
 
-    private static String getUrlWithId(int id, String path, String imageType, long timestamp) {
+    private static String getUrlWithId(long id, String path, String imageType, long timestamp) {
         String strImageId = String.format("%09d", id);
         String url = URLContentUtils.getBaseImageUrl() + path + "/" + strImageId.substring(0, 3) + "/" +
                 strImageId.substring(3,5) + "/" + strImageId.substring(5, 7) +

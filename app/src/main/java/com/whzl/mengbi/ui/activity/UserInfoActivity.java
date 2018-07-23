@@ -185,7 +185,7 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = DensityUtil.dp2px(200);
         Calendar calendar = Calendar.getInstance();
-        int userId = mUserInfo.getData().getUserId();
+        long userId = mUserInfo.getData().getUserId();
         switch (v.getId()) {
             case R.id.rl_avatar_container://修改头像
                 View view = getLayoutInflater().inflate(R.layout.activity_user_info_photo_pop_layout, null);

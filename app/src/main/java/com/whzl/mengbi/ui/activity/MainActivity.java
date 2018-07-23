@@ -68,7 +68,8 @@ public class MainActivity extends BaseActivityNew {
 
     private boolean checkLogin() {
         String sessionId = (String) SPUtils.get(MainActivity.this, SpConfig.KEY_SESSION_ID, "");
-        int userId = (int) SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, 0);
+        long userId = Long.parseLong(SPUtils.get(MainActivity.this, "userId", (long)0).toString());
+        //long userId =  (long) SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, 0);
         if (userId == 0 || TextUtils.isEmpty(sessionId)) {
             return false;
         }

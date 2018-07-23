@@ -17,9 +17,9 @@ import java.util.List;
 
 
 public class GiftMsg implements FillHolderMessage {
-    private int fromUid;
+    private long fromUid;
     private String fromNickName;
-    private int toUid;
+    private long toUid;
     private String toNickName;
     private int fromLevel;
 

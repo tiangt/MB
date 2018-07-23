@@ -47,12 +47,8 @@ public class SubProgramJson {
             this.platform = platform;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
         }
 
         public int getLevelValue() {
@@ -65,7 +61,7 @@ public class SubProgramJson {
 
         String nickname;
         String platform;
-        int userId;
+        long userId;
         int levelValue;
     }
 }

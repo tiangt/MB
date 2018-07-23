@@ -9,8 +9,8 @@ public class GiftJson {
         String goodsName;
         String nickname;
         String toNickname;
-        int toUserId;
-        int userId;
+        long toUserId;
+        long userId;
         int goodsPicId;
         int goodsId;
         long lastUpdateTime;
@@ -62,11 +62,11 @@ public class GiftJson {
             return toNickname;
         }
 
-        public int getToUserId() {
+        public long getToUserId() {
             return toUserId;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
         }
     }

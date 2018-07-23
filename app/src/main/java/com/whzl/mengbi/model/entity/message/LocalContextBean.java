@@ -55,7 +55,7 @@ public class LocalContextBean {
         public static class InfoBean {
 
             private String nickname;
-            private int userId;
+            private long userId;
 
             public String getNickname() {
                 return nickname;
@@ -65,13 +65,10 @@ public class LocalContextBean {
                 this.nickname = nickname;
             }
 
-            public int getUserId() {
+            public long getUserId() {
                 return userId;
             }
 
-            public void setUserId(int userId) {
-                this.userId = userId;
-            }
         }
     }
 }

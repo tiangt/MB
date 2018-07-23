@@ -47,7 +47,7 @@ public class ChatRoomPresenterImpl{
             @Override
             public void onConnectSuccess(String domain, boolean isReconnect) {
                 Log.d(TAG, "连接成功");
-                int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0).toString());
+                long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long)0).toString());
                 if (userId == 0 || !isReconnect) {
                     chatLogin(domain);
                 }else {
@@ -92,7 +92,7 @@ public class ChatRoomPresenterImpl{
      */
     public void chatLogin(String domain) {
         LoginMessage message;
-        int userId = Integer.parseInt(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0).toString());
+        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         if(userId > 0) {
             message = new LoginMessage(programId, domain, userId, liveRoomTokenInfo.getData().getToken());
         }else{
@@ -135,7 +135,7 @@ public class ChatRoomPresenterImpl{
 //        }
 //
         ChatOutMsg msg;
-        String userId = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_ID,0).toString();
+        String userId = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_ID,(long) 0).toString();
         String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_NAME,"0").toString();
         msg = new ChatOutMsg(message, programId,client.getCurrentDomain(),userId,nickname
                 ,"0","0","common");

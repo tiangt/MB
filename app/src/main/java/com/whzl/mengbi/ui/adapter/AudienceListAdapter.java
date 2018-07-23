@@ -41,9 +41,6 @@ public class AudienceListAdapter<T> extends CommonAdapter<AudienceListBean.DataB
         } else {
             imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(audienceInfoBean.getLevelMap().getUSER_LEVEL()));
         }
-        if(identity == UserIdentity.ROOM_MANAGER) {
-            //imageView.setImageResource(R.drawable.room_manager);
-        }
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         llLevelContainer.addView(imageView, params);
         if (identity == UserIdentity.ROOM_MANAGER) {

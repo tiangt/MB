@@ -49,7 +49,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void sendGift(int userId, int count, int goodId, int programId, int anchorId) {
+    public void sendGift(long userId, int count, int goodId, int programId, int anchorId) {
         liveModel.doSendGift(userId, count, goodId, programId, anchorId, this);
     }
 
@@ -122,12 +122,12 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void followHost(int userId, int mProgramId) {
+    public void followHost(long userId, int mProgramId) {
         liveModel.doFollowHost(userId, mProgramId, this);
     }
 
     @Override
-    public void getRoomUserInfo(int userId, int programId) {
+    public void getRoomUserInfo(long userId, int programId) {
         if (userId != 0) {
             liveModel.doRoomUserInfo(userId, programId, this);
         }

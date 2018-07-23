@@ -77,7 +77,7 @@ public class BroadCastJson {
         private String message;
         private String anchorId;
         private String nickname;
-        private int userId;
+        private long userId;
         private String anchorNickname;
         private int programId;
 
@@ -97,10 +97,6 @@ public class BroadCastJson {
             this.nickname = nickname;
         }
 
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
-
         public void setAnchorNickname(String anchorNickname) {
             this.anchorNickname = anchorNickname;
         }
@@ -117,7 +113,7 @@ public class BroadCastJson {
             return nickname;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
         }
 

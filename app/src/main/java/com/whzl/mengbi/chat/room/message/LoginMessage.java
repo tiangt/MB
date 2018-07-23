@@ -2,13 +2,12 @@ package com.whzl.mengbi.chat.room.message;
 
 import android.util.Log;
 
+import com.google.protobuf.ByteString;
 import com.whzl.mengbi.chat.client.ByteableMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.protobuf.ByteString;
 
 public class LoginMessage implements ByteableMessage {
     private String archives_id;
@@ -18,7 +17,7 @@ public class LoginMessage implements ByteableMessage {
     private String dev_type="{\"type\":3}";
     private short type = 101;
 
-    public LoginMessage(String archives_id, String domain, int uid, String token){
+    public LoginMessage(String archives_id, String domain, long uid, String token){
         this.archives_id = archives_id;
         this.domain = domain;
         this.uid = uid + "";

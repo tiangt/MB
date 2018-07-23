@@ -6,7 +6,7 @@ public interface RechargePresenter {
     void getChannelInfo(HashMap hashMap);
     void getOrderInfo(HashMap hashMap);
 
-    void getUserInfo(int userId);
+    void getUserInfo(long userId);
 
     void onDestroy();
 }

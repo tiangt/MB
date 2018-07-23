@@ -120,7 +120,7 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void doFollowHost(int userId, int programId, OnLiveFinishedListener listener) {
+    public void doFollowHost(long userId, int programId, OnLiveFinishedListener listener) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
         paramsMap.put("userId", userId + "");
@@ -143,7 +143,7 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void doRoomUserInfo(int userId, int programId, OnLiveFinishedListener listener) {
+    public void doRoomUserInfo(long userId, int programId, OnLiveFinishedListener listener) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
         paramsMap.put("userId", userId + "");
@@ -168,7 +168,7 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void doSendGift(int userId, int count, int goodsId, int programId, int targetId, OnLiveFinishedListener listener) {
+    public void doSendGift(long userId, int count, int goodsId, int programId, int targetId, OnLiveFinishedListener listener) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("roomId", programId + "");
         paramsMap.put("programId", programId + "");

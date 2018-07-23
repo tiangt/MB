@@ -204,7 +204,7 @@
         <item>一心一意</item>
     </array>
 
-    <string name="audience_count">观众（%1$d）</string>
+    <string name="audience_count">观众</string>
     <string name="ban">禁言</string>
     <string name="kick_out">踢出</string>
     <string name="upgrade_room_manager">升房管</string>

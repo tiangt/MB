@@ -19,11 +19,11 @@ public class LightSpanString {
         return ss;
     }
 
-    public static SpannableString getNickNameSpan(Context context, final String nickName, final int uid, final int programId){
+    public static SpannableString getNickNameSpan(Context context, final String nickName, final long uid, final int programId){
         return LightSpanString.getNickNameSpan(context, nickName, uid, programId, Color.parseColor("#75bbfb"));
     }
 
-    public static SpannableString getNickNameSpan(Context context, final String nickName, final int uid, final int programId, int color){
+    public static SpannableString getNickNameSpan(Context context, final String nickName, final long uid, final int programId, int color){
         SpannableString nickSpan = new SpannableString(nickName);
         NickNameSpan clickSpan = new NickNameSpan(context, color) {
             @Override

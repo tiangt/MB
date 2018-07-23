@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class RechargeModelImpl implements RechargeModel {
 
     @Override
-    public void doUserInfo(int userId, final OnRechargeFinishedListener listener) {
+    public void doUserInfo(long userId, final OnRechargeFinishedListener listener) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId",userId);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO,RequestManager.TYPE_POST_JSON,paramsMap,

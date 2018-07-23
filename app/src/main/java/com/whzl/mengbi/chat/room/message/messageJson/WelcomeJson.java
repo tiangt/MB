@@ -119,11 +119,11 @@ public class WelcomeJson {
     public class WelcomeInfo{
         String nickname;
         String certNum;
-        int userId;
+        long userId;
         List<WelcomeLevelListItem> levelList;
         List<UserBagItem> userBagList;
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
         }
 

@@ -44,10 +44,10 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
 
-    public static BaseAwesomeDialog newInstance(int userId, int programId) {
+    public static BaseAwesomeDialog newInstance(long userId, int programId) {
         AudienceInfoDialog dialog = new AudienceInfoDialog();
         Bundle args = new Bundle();
-        args.putInt("userId", userId);
+        args.putLong("userId", userId);
         args.putInt("programId", programId);
         dialog.setArguments(args);
         return dialog;
@@ -60,12 +60,12 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-        int userId = getArguments().getInt("userId");
+        long userId = getArguments().getLong("userId");
         int programId = getArguments().getInt("programId");
         getUserInfo(userId, programId);
     }
 
-    private void getUserInfo(int userId, int programId) {
+    private void getUserInfo(long userId, int programId) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
         paramsMap.put("userId", userId + "");

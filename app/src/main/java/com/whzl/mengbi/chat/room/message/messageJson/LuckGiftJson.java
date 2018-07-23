@@ -61,15 +61,11 @@ public class LuckGiftJson {
 
     public class ContextEntity {
         private String nickname;
-        private int userId;
+        private long userId;
         private List<PrizesEntity> prizes;
 
         public void setNickname(String nickname) {
             this.nickname = nickname;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
         }
 
         public void setPrizes(List<PrizesEntity> prizes) {
@@ -80,7 +76,7 @@ public class LuckGiftJson {
             return nickname;
         }
 
-        public int getUserId() {
+        public long getUserId() {
             return userId;
         }
 

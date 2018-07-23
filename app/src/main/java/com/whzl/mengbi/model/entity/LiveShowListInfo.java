@@ -6,7 +6,7 @@ public class LiveShowListInfo {
     private String status;
     private int roomUserCount;
     private String cover;
-    private int anchorId;
+    private long anchorId;
     private String anchorNickname;
     private String anchorLevelName;
     private ShowStreamDataInfo showStreamData;
@@ -51,7 +51,7 @@ public class LiveShowListInfo {
         this.cover = cover;
     }
 
-    public int getAnchorId() {
+    public long getAnchorId() {
         return anchorId;
     }
 
