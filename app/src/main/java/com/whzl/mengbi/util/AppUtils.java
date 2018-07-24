@@ -1,13 +1,21 @@
 package com.whzl.mengbi.util;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 
+import com.whzl.mengbi.BuildConfig;
+
+import java.io.File;
 import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
@@ -15,6 +23,7 @@ import javax.security.auth.x500.X500Principal;
 public class AppUtils {
     private final static X500Principal DEBUG_DN = new X500Principal(
             "CN=Android Debug,O=Android,C=US");
+    public static int REQUEST_INSTALL = 100;
 
     /**
      * Get version name
@@ -233,5 +242,22 @@ public class AppUtils {
             }
         }
         return false;
+    }
+
+    public static void install(String filePath, Activity activity) {
+        File apkFile = new File(filePath);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(
+                    activity
+                    , BuildConfig.APPLICATION_ID + ".fileprovider"
+                    , apkFile);
+            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        } else {
+            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+        }
+        activity.startActivityForResult(intent, REQUEST_INSTALL);
     }
 }

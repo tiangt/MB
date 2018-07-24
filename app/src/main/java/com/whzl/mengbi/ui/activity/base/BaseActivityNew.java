@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.activity.base;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +41,8 @@ public abstract class BaseActivityNew extends AppCompatActivity {
     private Unbinder mBinder;
     private BaseAwesomeDialog mLoadingDialog;
     private ProgressDialog dialog;
+    private boolean isClickable = true;
+    private long lastClickTime;
 
     /**
      * 输出日志
@@ -182,6 +186,23 @@ public abstract class BaseActivityNew extends AppCompatActivity {
             dialog.setCancelable(false);
         }
         dialog.show();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if (isFastDoubleClick()) {
+                return true;
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    public boolean isFastDoubleClick() {
+        long time = System.currentTimeMillis();
+        long timeD = time - lastClickTime;
+        lastClickTime = time;
+        return timeD <= 500;
     }
 
 }

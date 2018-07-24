@@ -41,12 +41,12 @@ public class StorageUtil {
     }
 
     public static File getDownloadDir() {
-        String path = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/mengbi/downloads/";
-        File file = new File(path);
-        if (!file.exists()) {
-            file.mkdirs();
+        File file = Environment.getExternalStorageDirectory();
+        File download = new File(file.getAbsoluteFile() + "/mengbi/downloads/");
+        if (!download.exists()) {
+            download.mkdirs();
         }
-        return file;
+        return download;
     }
 
     public static File getLogDir() {

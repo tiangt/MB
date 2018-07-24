@@ -141,6 +141,17 @@ public class URLContentUtils {
      * 获取关注主播列表
      */
     public static final String ANCHOR_FOLLOWED = "v1/program/get-my-programs";
+
+    /**
+     * 获取关注主播列表
+     */
+    public static final String CHECK_UPDATE = "v1/version/version-android";
+
+    /**
+     * 退出登录
+     */
+    public static final String LOGOUT = "v1/user/logout";
+
     public static final String SITE_TIME = "site/time";
 
     public static String getBaseUrl() {

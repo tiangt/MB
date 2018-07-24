@@ -7,29 +7,44 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.UserInfo;
+import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.presenter.MePresenter;
 import com.whzl.mengbi.presenter.impl.MePresenterImpl;
 import com.whzl.mengbi.ui.activity.FollowActivity;
+import com.whzl.mengbi.ui.activity.MainActivity;
+import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.SettingsActivity;
+import com.whzl.mengbi.ui.activity.SplashActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.MeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.util.DeviceUtils;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
+import com.whzl.mengbi.util.RxPermisssionsUitls;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -37,6 +52,7 @@ import butterknife.Unbinder;
  */
 public class MeFragment extends BaseFragment implements MeView {
 
+    private static final int REQUEST_SETTING = 100;
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
     @BindView(R.id.tv_nick_name)
@@ -52,6 +68,7 @@ public class MeFragment extends BaseFragment implements MeView {
     Unbinder unbinder;
     private MePresenter mPresent;
     private UserInfo mUserinfo;
+    private String deviceId;
 
     public static MeFragment newInstance() {
         return new MeFragment();
@@ -104,7 +121,7 @@ public class MeFragment extends BaseFragment implements MeView {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(UserInfoUpdateEvent userInfoUpdateEvent){
+    public void onMessageEvent(UserInfoUpdateEvent userInfoUpdateEvent) {
         mPresent.getUserInfo();
     }
 
@@ -153,8 +170,8 @@ public class MeFragment extends BaseFragment implements MeView {
     }
 
     private void jumpToSettingActivity() {
-        Intent intent = new Intent(getContext(), SettingsActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(getContext(), SettingActivity.class);
+        startActivityForResult(intent, REQUEST_SETTING);
     }
 
     private void jumpToRechargeActivity() {
@@ -162,4 +179,49 @@ public class MeFragment extends BaseFragment implements MeView {
         startActivity(intent);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_SETTING) {
+            if (resultCode == RESULT_OK) {
+                ((MainActivity) getActivity()).setCheck(0);
+                HashMap paramsMap = new HashMap();
+                paramsMap.put("platform", RequestManager.CLIENTTYPE);
+                RxPermisssionsUitls.getDevice(getMyActivity(), new RxPermisssionsUitls.OnPermissionListener() {
+                    @Override
+                    public void onGranted() {
+                        deviceId = DeviceUtils.getDeviceId(getContext());
+                        paramsMap.put("deviceNumber", deviceId);
+                        visitorLogin(paramsMap);
+                    }
+
+                    @Override
+                    public void onDeny() {
+                        paramsMap.put("deviceNumber", "");
+                        visitorLogin(paramsMap);
+                    }
+                });
+                visitorLogin(paramsMap);
+            }
+        }
+    }
+
+    private void visitorLogin(HashMap paramsMap) {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.USER_VISITOR_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object object) {
+                        VisitorUserInfo visitorUserInfo = GsonUtils.GsonToBean(object.toString(), VisitorUserInfo.class);
+                        if (visitorUserInfo.getCode() == RequestManager.RESPONSE_CODE) {
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, visitorUserInfo.getData().getUserId());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, visitorUserInfo.getData().getSessionId());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, visitorUserInfo.getData().getNickname());
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                    }
+                });
+    }
 }

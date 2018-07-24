@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.fragment.base;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,7 +23,6 @@ public abstract class BaseFragment extends Fragment {
     protected Activity mActivity;
     protected View rootView;
     private Unbinder mUnbinder;
-    private boolean isNeedLoadData = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

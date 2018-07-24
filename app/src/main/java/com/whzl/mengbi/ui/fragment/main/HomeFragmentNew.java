@@ -242,12 +242,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             if (liveShowInfo.getData().getList() == null || liveShowInfo.getData().getList().size() < NetConfig.DEFAULT_PAGER_SIZE) {
                 anchorAdapter.notifyDataSetChanged();
                 anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
-                refreshLayout.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshLayout.setEnableLoadMore(false);
-                    }
-                }, 300);
+                refreshLayout.postDelayed(() -> refreshLayout.setEnableLoadMore(false), 300);
             } else {
                 refreshLayout.setEnableLoadMore(true);
                 anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
@@ -257,12 +252,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             if (mAnchorInfoList.size() > 0) {
                 anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
             }
-            refreshLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    refreshLayout.setEnableLoadMore(false);
-                }
-            }, 300);
+            refreshLayout.postDelayed(() -> refreshLayout.setEnableLoadMore(false), 300);
         }
     }
 

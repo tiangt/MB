@@ -19,4 +19,5 @@ public interface NetConfig {
     String LEVEL_TYPE_ANCHOR = "ANCHOR_LEVEL";
     String LEVEL_TYPE_USER = "USER_LEVEL";
     String USER_TYPE_ANCHOR = "ANCHOR";
+    String FORCE_UPDATE = "FORCE";
 }

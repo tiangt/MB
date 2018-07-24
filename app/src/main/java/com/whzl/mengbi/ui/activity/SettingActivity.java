@@ -3,16 +3,16 @@ package com.whzl.mengbi.ui.activity;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.RadioGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -20,9 +20,6 @@ import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
-import com.whzl.mengbi.ui.fragment.main.FollowFragment;
-import com.whzl.mengbi.ui.fragment.main.HomeFragmentNew;
-import com.whzl.mengbi.ui.fragment.main.MeFragment;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.AsyncRun;
 import com.whzl.mengbi.util.DownloadManagerUtil;
@@ -35,108 +32,80 @@ import com.whzl.mengbi.util.network.URLContentUtils;
 import java.util.HashMap;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 /**
  * @author shaw
- * @date 2018/7/18
+ * @date 2018/7/24
  */
-public class MainActivity extends BaseActivityNew {
-    @BindView(R.id.rg_tab)
-    RadioGroup rgTab;
-    private Fragment[] fragments;
-    private int currentSelectedIndex = 0;
+public class SettingActivity extends BaseActivityNew {
+    @BindView(R.id.tv_version_name)
+    TextView tvVersionName;
+    @BindView(R.id.btn_login_out)
+    Button btnLoginOut;
     private ProgressDialog progressDialog;
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_setting_new, R.string.setting, true);
     }
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{new HomeFragmentNew(), FollowFragment.newInstance(), MeFragment.newInstance()};
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
-        rgTab.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case R.id.rb_home:
-                    setTabChange(0);
-                    break;
-                case R.id.rb_follow:
-                    if (checkLogin()) {
-                        setTabChange(1);
-                        return;
-                    }
-                    login();
-                    break;
-                case R.id.rb_me:
-                    if (checkLogin()) {
-                        setTabChange(2);
-                        return;
-                    }
-                    login();
-                    break;
-            }
-        });
-    }
-
-    private void login() {
-        currentSelectedIndex = 0;
-        Intent intent = new Intent(MainActivity.this, LoginActivityNew.class);
-        startActivity(intent);
-        rgTab.check(rgTab.getChildAt(0).getId());
-    }
-
-    private boolean checkLogin() {
-        String sessionId = (String) SPUtils.get(MainActivity.this, SpConfig.KEY_SESSION_ID, "");
-        long userId = Long.parseLong(SPUtils.get(MainActivity.this, "userId", (long) 0).toString());
-        //long userId =  (long) SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, 0);
-        if (userId == 0 || TextUtils.isEmpty(sessionId)) {
-            return false;
-        }
-        return true;
-    }
-
-    private void setTabChange(int index) {
-        if (index == currentSelectedIndex) {
-            return;
-        }
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.hide(fragments[currentSelectedIndex]);
-        if (fragments[index].isAdded()) {
-            fragmentTransaction.show(fragments[index]);
-        } else {
-            fragmentTransaction.add(R.id.fragment_container, fragments[index]);
-        }
-        fragmentTransaction.commit();
-        currentSelectedIndex = index;
+        tvVersionName.setText("当前版本v" + AppUtils.getVersionName(this));
     }
 
     @Override
     protected void loadData() {
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_UPDATE, RequestManager.TYPE_POST_JSON, new HashMap<>(), new RequestManager.ReqCallBack() {
-            @Override
-            public void onReqSuccess(Object result) {
-                String strJson = result.toString();
-                UpdateInfoBean updateInfoBean = GsonUtils.GsonToBean(strJson, UpdateInfoBean.class);
-                if (updateInfoBean.code == 200) {
-                    showUpgradeDialog(updateInfoBean.data.phone);
-                }
 
-            }
-
-            @Override
-            public void onReqFailed(String errorMsg) {
-                LogUtils.d(errorMsg);
-            }
-        });
     }
 
-    private void showUpgradeDialog(UpdateInfoBean.PhoneBean phone) {
+
+    @OnClick({R.id.rl_version_container, R.id.btn_login_out, R.id.tv_feedback, R.id.tv_custom, R.id.about_us})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rl_version_container:
+                RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_UPDATE, RequestManager.TYPE_POST_JSON, new HashMap<>(), new RequestManager.ReqCallBack() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        String strJson = result.toString();
+                        UpdateInfoBean updateInfoBean = GsonUtils.GsonToBean(strJson, UpdateInfoBean.class);
+                        if (updateInfoBean.code == 200) {
+                            showDudateDialog(updateInfoBean.data.phone);
+                        }
+
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d(errorMsg);
+                    }
+                });
+                break;
+            case R.id.btn_login_out:
+                btnLoginOut.setEnabled(false);
+                logOut();
+                break;
+            case R.id.tv_feedback:
+                break;
+            case R.id.tv_custom:
+                Intent customServiceIntent = new Intent(this, CustomServiceCenterActivity.class);
+                startActivity(customServiceIntent);
+                break;
+            case R.id.about_us:
+                Intent aboutIntent = new Intent(this, AboutUsActivity.class);
+                startActivity(aboutIntent);
+                break;
+        }
+    }
+
+    private void showDudateDialog(UpdateInfoBean.PhoneBean phone) {
         int versionCode = AppUtils.getVersionCode(this);
         if (versionCode >= phone.versionCode) {
+            showToast("当前已是最新版本");
             return;
         }
         AwesomeDialog.init()
@@ -159,7 +128,7 @@ public class MainActivity extends BaseActivityNew {
                             @Override
                             public void onClick(View v) {
                                 holder.getConvertView().findViewById(R.id.btn_upgrade).setEnabled(false);
-                                RxPermissions permissions = new RxPermissions(MainActivity.this);
+                                RxPermissions permissions = new RxPermissions(SettingActivity.this);
                                 permissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Observer<Boolean>() {
                                     @Override
                                     public void onSubscribe(Disposable d) {
@@ -195,15 +164,36 @@ public class MainActivity extends BaseActivityNew {
                 .show(getSupportFragmentManager());
     }
 
+    private void logOut() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.LOGOUT, RequestManager.TYPE_POST_JSON, new HashMap<>(), new RequestManager.ReqCallBack() {
+            @Override
+            public void onReqSuccess(Object result) {
+                String strJson = result.toString();
+                ResponseInfo responseInfo = GsonUtils.GsonToBean(strJson, ResponseInfo.class);
+                if (responseInfo.getCode() == 200) {
+                    showToast("已退出登录");
+                    setResult(RESULT_OK);
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+                LogUtils.d(errorMsg);
+                btnLoginOut.setEnabled(true);
+            }
+        });
+    }
+
     private void downLoad(String appUrl) {
         DownloadManagerUtil.getInstance().download(this,
-                appUrl,
-                "/mengbi.apk", new DownloadManagerUtil.DownLoadListener() {
+                appUrl, "/mengbi.apk", new DownloadManagerUtil.DownLoadListener() {
                     @Override
                     public void onProgress(int progress) {
                         AsyncRun.run(() -> {
                             if (progressDialog == null) {
-                                progressDialog = new ProgressDialog(MainActivity.this);
+                                progressDialog = new ProgressDialog(SettingActivity.this);
                                 progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                                 progressDialog.setCancelable(false);
                                 progressDialog.setMax(100);
@@ -219,7 +209,7 @@ public class MainActivity extends BaseActivityNew {
                             if (progressDialog != null) {
                                 progressDialog.dismiss();
                             }
-                            AppUtils.install(filePath, MainActivity.this);
+                            AppUtils.install(filePath, SettingActivity.this);
                         });
                     }
 
@@ -228,17 +218,5 @@ public class MainActivity extends BaseActivityNew {
 
                     }
                 });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppUtils.REQUEST_INSTALL) {
-            finish();
-        }
-    }
-
-    public void setCheck(int index) {
-        rgTab.check(rgTab.getChildAt(index).getId());
     }
 }

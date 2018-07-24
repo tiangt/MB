@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.widget.CompoundButton;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
@@ -41,7 +42,7 @@ public class RxPermisssionsUitls {
      * @param activity
      * @return
      */
-    public static String getDevice(Activity activity) {
+    public static void getDevice(Activity activity, OnPermissionListener listener) {
 
         RxPermissions rxPermissions = new RxPermissions(activity);
         rxPermissions.request(Manifest.permission.READ_PHONE_STATE)
@@ -54,7 +55,9 @@ public class RxPermisssionsUitls {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
-                            deviceId = DeviceUtils.getDeviceId(activity);
+                            listener.onGranted();
+                        }else {
+                            listener.onDeny();
                         }
                     }
 
@@ -68,7 +71,6 @@ public class RxPermisssionsUitls {
 
                     }
                 });
-        return deviceId;
     }
 
     /**
@@ -142,6 +144,14 @@ public class RxPermisssionsUitls {
 
                     }
                 });
+    }
+
+
+    private OnPermissionListener permissionListener;
+
+    public interface OnPermissionListener {
+        void onGranted();
+        void onDeny();
     }
 
 }

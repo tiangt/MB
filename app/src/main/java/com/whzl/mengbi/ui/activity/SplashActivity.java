@@ -9,6 +9,7 @@ import com.whzl.mengbi.model.entity.CheckLoginResultBean;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
@@ -30,6 +31,8 @@ import io.reactivex.schedulers.Schedulers;
 public class SplashActivity extends BaseActivityNew {
 
 
+    private String deviceId;
+
     @Override
     protected void setupContentView() {
         setContentView(R.layout.activity_splash);
@@ -43,7 +46,7 @@ public class SplashActivity extends BaseActivityNew {
     @Override
     protected void loadData() {
         HashMap<String, String> paramsMap = new HashMap<>();
-        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long)0).toString());
+        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         String sessionId = (String) SPUtils.get(this, SpConfig.KEY_SESSION_ID, "");
         if (userId == 0 || TextUtils.isEmpty(sessionId)) {
             visitorLogin();
@@ -77,11 +80,23 @@ public class SplashActivity extends BaseActivityNew {
     private void visitorLogin() {
         HashMap paramsMap = new HashMap();
         paramsMap.put("platform", RequestManager.CLIENTTYPE);
-        String deviceId = RxPermisssionsUitls.getDevice(this);
-        if (deviceId == null) {
-            deviceId = "";
-        }
-        paramsMap.put("deviceNumber", deviceId);
+        RxPermisssionsUitls.getDevice(this, new RxPermisssionsUitls.OnPermissionListener() {
+            @Override
+            public void onGranted() {
+                deviceId = DeviceUtils.getDeviceId(SplashActivity.this);
+                paramsMap.put("deviceNumber", deviceId);
+                visitorLogin(paramsMap);
+            }
+
+            @Override
+            public void onDeny() {
+                paramsMap.put("deviceNumber", "");
+                visitorLogin(paramsMap);
+            }
+        });
+    }
+
+    private void visitorLogin(HashMap paramsMap) {
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.USER_VISITOR_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
@@ -106,7 +121,7 @@ public class SplashActivity extends BaseActivityNew {
 
     private void delayJumpToHomeActivity(boolean isNormalLogin) {
         Observable.just(isNormalLogin)
-                .delay(2, TimeUnit.SECONDS)
+                .delay(1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((Boolean s) -> {

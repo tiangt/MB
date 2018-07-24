@@ -1,80 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/font_color_49"
-    tools:context=".ui.activity.CustomServiceCenterActivity">
+    android:orientation="vertical">
 
     <include
-        android:id="@+id/user_custom_official_service_include"
-        layout="@layout/activity_base_toolbar"/>
+        layout="@layout/comm_toolbar" />
 
     <RelativeLayout
         android:id="@+id/user_custom_official_service_rela"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y29"
-        android:layout_below="@id/user_custom_official_service_include"
+        android:layout_height="45dp"
         android:background="@color/font_color_51">
+
         <TextView
             android:id="@+id/user_custom_official_service_text"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/y11"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_centerInParent="true"
-            android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="17dp"
+            android:text="@string/user_custom_fficial_service"
             android:textColor="@color/font_color_47"
-            android:textStyle="bold"
-            android:text="@string/user_custom_fficial_service"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/user_custom_official_service_qq_text"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:textColor="@color/font_color_50"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
             android:text="@string/user_custom_fficial_service_qq"
-            android:paddingRight="@dimen/x15"/>
+            android:textColor="@color/font_color_50" />
     </RelativeLayout>
+
     <View
         android:id="@+id/user_custom_fficial_service_bottom_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_custom_official_service_rela"/>
+        android:layout_height="1dp"
+        android:background="@color/font_color_12" />
+
     <RelativeLayout
         android:id="@+id/user_custom_guild_entered_rela"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/y29"
-        android:layout_below="@id/user_custom_official_service_rela"
+        android:layout_height="45dp"
         android:background="@color/font_color_51">
+
         <TextView
             android:id="@+id/user_custom_guild_entered_text"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="17dp"
+            android:text="@string/user_custom_guild_entered"
             android:textColor="@color/font_color_47"
-            android:textStyle="bold"
-            android:text="@string/user_custom_guild_entered"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/user_custom_guild_entered_qq"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/y10"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:textColor="@color/font_color_50"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
             android:text="@string/user_custom_guild_entered_qq"
-            android:paddingRight="@dimen/x15"/>
+            android:textColor="@color/font_color_50" />
     </RelativeLayout>
+
     <View
         android:id="@+id/user_custom_guild_entered_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y1"
-        android:background="@color/font_color_12"
-        android:layout_below="@id/user_custom_guild_entered_rela"/>
-</RelativeLayout>
+        android:layout_below="@id/user_custom_guild_entered_rela"
+        android:background="@color/font_color_12" />
+</LinearLayout>

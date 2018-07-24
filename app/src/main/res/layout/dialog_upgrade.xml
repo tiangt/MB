@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="304dp"
+        android:layout_height="375dp"
+        android:background="@drawable/shape_dialog_update_bg">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/update_dialog_bg" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="122dp"
+            android:src="@drawable/update_slogon" />
+
+        <RelativeLayout
+            android:id="@+id/rl_version_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="205dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="13dp"
+                android:layout_marginRight="13dp"
+                android:background="#e5e5e5" />
+
+            <TextView
+                android:id="@+id/tv_version_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="13dp"
+                android:paddingRight="13dp"
+                android:textColor="#646464"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:background="#f5f9fa"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_below="@id/rl_version_container"
+            android:layout_marginTop="10dp"
+            android:overScrollMode="never">
+
+            <TextView
+                android:id="@+id/tv_update_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:lineSpacingExtra="5dp"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:textColor="#323232"
+                android:textSize="15sp" />
+        </android.support.v4.widget.NestedScrollView>
+
+        <ImageButton
+            android:id="@+id/btn_dismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@null"
+            android:padding="10dp"
+            android:src="@drawable/close_blue_icon" />
+
+        <Button
+            android:id="@+id/btn_upgrade"
+            android:layout_width="250dp"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="13.5dp"
+            android:background="@drawable/shape_upgrade_btn_bg"
+            android:text="@string/upgrade"
+            android:textColor="@color/comm_white"
+            android:textSize="17sp"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

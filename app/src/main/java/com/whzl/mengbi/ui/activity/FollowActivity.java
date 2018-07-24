@@ -99,7 +99,7 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
     }
 
     public void getAnchorList(int pager) {
-        int userId = (int) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
+        long userId = (long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
         HashMap hashMap = new HashMap();
         hashMap.put("userId", userId);
         hashMap.put("pager", pager);

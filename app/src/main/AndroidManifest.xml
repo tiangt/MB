@@ -30,6 +30,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".ui.common.BaseApplication"
@@ -228,5 +229,7 @@
         </activity>
         <activity android:name=".ui.activity.FollowActivity" />
         <activity android:name=".ui.activity.RegisterActivityNew" />
+        <activity android:name=".ui.activity.SettingActivity" />
+        <activity android:name=".ui.activity.AboutUsActivity" />
     </application>
 </manifest>
