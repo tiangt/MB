@@ -6,4 +6,6 @@ public interface OnUserInfoFInishedListener {
     void onSuccess(String nickname);
 
     void onError(String msg);
+
+    void onModifyNicknameSuc(String nickname);
 }

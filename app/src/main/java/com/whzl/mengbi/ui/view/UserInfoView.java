@@ -6,4 +6,6 @@ public interface UserInfoView {
     void showSuccess(String msg);
 
     void showError(String msg);
+
+    void onModifyNickname(String nickname);
 }

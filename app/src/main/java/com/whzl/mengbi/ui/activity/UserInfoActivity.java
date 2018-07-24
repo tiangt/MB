@@ -3,22 +3,17 @@ package com.whzl.mengbi.ui.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bigkoo.pickerview.TimePickerView;
-import com.lljjcoder.Interface.OnCityItemClickListener;
-import com.lljjcoder.bean.CityBean;
-import com.lljjcoder.bean.DistrictBean;
-import com.lljjcoder.bean.ProvinceBean;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.UserInfoPresenter;
@@ -31,17 +26,17 @@ import com.whzl.mengbi.util.CustomPopWindowUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.PhotoUtil;
+import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
-import com.whzl.mengbi.util.SelectorUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StorageUtil;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.text.ParseException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -53,32 +48,22 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
     public static final int NICKNAME_CODE = 3;
     //修改性别
     public static final int SEX_CODE = 4;
-    @BindView(R.id.user_info_head_img)
-    CircleImageView userInfoHeadImg;
-    @BindView(R.id.user_info_head_text)
-    TextView userInfoHeadText;
-    @BindView(R.id.user_info_sprount)
-    TextView userInfoSprount;
-    @BindView(R.id.user_info_nickname)
-    TextView userInfoNickname;
-    @BindView(R.id.user_info_sex)
-    TextView userInfoSex;
-    @BindView(R.id.user_info_address)
-    TextView userInfoAddress;
-    @BindView(R.id.user_info_birthday)
-    TextView userInfoBirthday;
-    @BindView(R.id.user_info_anchorlevel)
-    TextView userInfoAnchorlevel;
-    @BindView(R.id.user_info_anchorlevel_img)
-    ImageView userInfoAnchorlevelImg;
-    @BindView(R.id.user_info_userlevel)
-    TextView userInfoUserlevel;
-    @BindView(R.id.user_info_userlevel_img)
-    ImageView userInfoUserlevelImg;
+
 
     private UserInfo mUserInfo;
-
-
+    private CircleImageView mCircleImageView;
+    private TextView mProfileTV;
+    private TextView mSpout;
+    private TextView mNickName;
+    private TextView mSex;
+    private TextView mAddress;
+    private TextView mBirthday;
+    private RelativeLayout mAnchorInfoLayout;
+    private TextView mAnchorLevel;
+    private ImageView mAnchorImg;
+    private TextView mUserLevel;
+    private ImageView mUserImg;
+    private Button mQuit;
     //更换头像
     private CustomPopWindow mCustomPopWindow;
     private Button butPhoto;
@@ -90,7 +75,6 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
     private CityPickerView cityPickerView;//地区选择器
     private String tempCapturePath;
     private String tempCropPath;
-    private TimePickerView timePickerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +96,18 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
 
     @Override
     protected void setupView() {
+        mCircleImageView = (CircleImageView) findViewById(R.id.user_info_head_img);
+        mProfileTV = (TextView) findViewById(R.id.user_info_head_text);
+        mSpout = (TextView) findViewById(R.id.user_info_sprount);
+        mNickName = (TextView) findViewById(R.id.user_info_nickname);
+//        mSex = (TextView) findViewById(R.id.user_info_sex);
+//        mAddress = (TextView) findViewById(R.id.user_info_address);
+//        mBirthday = (TextView) findViewById(R.id.user_info_birthday);
+        mAnchorInfoLayout = (RelativeLayout) findViewById(R.id.user_anchor_layout);
+        mAnchorLevel = (TextView) findViewById(R.id.user_info_anchorlevel);
+        mAnchorImg = (ImageView) findViewById(R.id.user_info_anchorlevel_img);
+        mUserLevel = (TextView) findViewById(R.id.user_info_userlevel);
+        mUserImg = findViewById(R.id.user_info_userlevel_img);
         initModelAndView();
     }
 
@@ -125,48 +121,43 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
      * 赋予控件数据
      */
     private void initModelAndView() {
-        GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getData().getAvatar(), userInfoHeadImg);
-        userInfoSprount.setText(mUserInfo.getData().getUserId() + "");
-        userInfoNickname.setText(mUserInfo.getData().getNickname());
-        if (mUserInfo.getData().getGender().equals("M")) {
-            userInfoSex.setText("男");
-        } else if (mUserInfo.getData().getGender().equals("W")) {
-            userInfoSex.setText("女");
-        } else {
-            userInfoSex.setText("保密");
-        }
-        StringBuilder stringBuilder = new StringBuilder();
-        if (mUserInfo.getData().getProvince() != null) {
-            stringBuilder.append(mUserInfo.getData().getProvince());
-        }
-        if (mUserInfo.getData().getCity() != null) {
-            stringBuilder.append("-" + mUserInfo.getData().getCity());
-        }
-        userInfoAddress.setText(stringBuilder);
-        userInfoBirthday.setText(mUserInfo.getData().getBirthday());
+        GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getData().getAvatar(), mCircleImageView);
+        mSpout.setText(mUserInfo.getData().getUserId() + "");
+        mNickName.setText(mUserInfo.getData().getNickname());
+//        mSex.setText(mUserInfo.getData().getGender());
+//        if (mUserInfo.getData().getGender().equals("M")) {
+//            mSex.setText("男");
+//        } else if (mUserInfo.getData().getGender().equals("W")) {
+//            mSex.setText("女");
+//        } else {
+//            mSex.setText("保密");
+//        }
+//        StringBuilder stringBuilder = new StringBuilder();
+//        if (mUserInfo.getData().getProvince() != null) {
+//            stringBuilder.append(mUserInfo.getData().getProvince());
+//        }
+//        if (mUserInfo.getData().getCity() != null) {
+//            stringBuilder.append("-" + mUserInfo.getData().getCity());
+//        }
+//        mAddress.setText(stringBuilder);
+//        mBirthday.setText(mUserInfo.getData().getBirthday());
         for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
-            if (levelList.getLevelType().equals("ROYAL_LEVEL")) {
-                for (UserInfo.DataBean.LevelListBean.ExpListBean expListBean : levelList.getExpList()) {
-                    String anchorsjexp = "离升级还差" + String.valueOf(expListBean.getSjNeedExpValue());
-                    SpannableStringBuilder anchorSpan = new SpannableStringBuilder(anchorsjexp);
-                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#f1275b"));
-                    anchorSpan.setSpan(colorSpan, 5, anchorsjexp.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    anchorSpan.append("主播经验");
-                    userInfoAnchorlevel.setText(anchorSpan);
-                }
-            } else {
-                for (UserInfo.DataBean.LevelListBean.ExpListBean expListBean : levelList.getExpList()) {
-                    String usersjexp = "离升级还差" + String.valueOf(expListBean.getSjNeedExpValue());
-                    SpannableStringBuilder userSpan = new SpannableStringBuilder(usersjexp);
-                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#4facf3"));
-                    userSpan.setSpan(colorSpan, 5, usersjexp.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    userSpan.append("富豪经验");
-                    userInfoUserlevel.setText(userSpan);
-                }
-                String levelVal = String.valueOf(levelList.getLevelValue());
-                int resId = FileUtils.userLevelDrawable(levelVal);
-                GlideImageLoader.getInstace().displayImage(this, resId, userInfoUserlevelImg);
+            String levelType = levelList.getLevelType();
+            if (levelType.equals("ANCHOR_LEVEL") && !levelList.getExpList().isEmpty()) {
+                mAnchorLevel.append("离升级还差");
+                mAnchorLevel.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjNeedExpValue() + "", Color.parseColor("#f1275b")));
+                mAnchorLevel.append("主播经验");
+                mAnchorImg.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelList.getLevelValue()));
+            } else if (levelType.equals("USER_LEVEL") && !levelList.getExpList().isEmpty()) {
+                mUserLevel.append("离升级还差");
+                mUserLevel.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjNeedExpValue() + "", Color.parseColor("#4facf3")));
+                mUserLevel.append("富豪经验");
+                int userLevel = levelList.getLevelValue();
+                mUserImg.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(userLevel));
             }
+        }
+        if (mUserInfo.getData().getUserType().equals("VIEWER")) {
+            mAnchorInfoLayout.setVisibility(View.GONE);
         }
     }
 
@@ -175,7 +166,8 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
      *
      * @param v
      */
-    @OnClick({R.id.rl_avatar_container, R.id.rl_nick_name_container, R.id.rl_gender_container, R.id.rl_address_container, R.id.rl_birthday_container})
+    //@OnClick({R.id.rl_avatar_container, R.id.rl_nick_name_container, R.id.rl_gender_container, R.id.rl_address_container, R.id.rl_birthday_container})
+    @OnClick({R.id.rl_avatar_container, R.id.rl_nick_name_container})
     public void onClick(View v) {
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = DensityUtil.dp2px(200);
@@ -184,7 +176,7 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
         switch (v.getId()) {
             case R.id.rl_avatar_container://修改头像
                 View view = getLayoutInflater().inflate(R.layout.activity_user_info_photo_pop_layout, null);
-                mCustomPopWindow = CustomPopWindowUtils.profile(this, view, userInfoHeadImg, width, height);
+                mCustomPopWindow = CustomPopWindowUtils.profile(this, view, mCircleImageView, width, height);
                 //初始化CustomPopWindow控件
                 initPopView(view);
                 break;
@@ -193,87 +185,81 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
                 nicknameIntent.putExtra("nickname", mUserInfo.getData().getNickname());
                 startActivityForResult(nicknameIntent, NICKNAME_CODE);
                 break;
-            case R.id.rl_gender_container://修改性别
-                Intent sexIntent = new Intent(UserInfoActivity.this, UserInfoSexActivity.class);
-                sexIntent.putExtra("sex", mUserInfo.getData().getGender());
-                startActivityForResult(sexIntent, SEX_CODE);
-                break;
-            case R.id.rl_birthday_container://修改生日
-                String strDate = mUserInfo.getData().getBirthday();
-                try {
-                    Date date = DateUtils.getDate(strDate);
-                    calendar.setTime(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                boolean type[] = new boolean[]{true, true, true, false, false, false};
-                if (timePickerView == null) {
-                    timePickerView = new TimePickerView
-                            .Builder(this, new TimePickerView.OnTimeSelectListener() {
-                        @Override
-                        public void onTimeSelect(Date date, View v) {
-                            String time1 = DateUtils.getTime(date);
-                            String time2 = DateUtils.getTime2(date);
-                            HashMap hashMap = new HashMap();
-                            hashMap.put("userId", userId);
-                            hashMap.put("birthday", time2);
-                            userInfoPresenter.onUpdataUserInfo(hashMap);
-                        }
-                    })
-                            .setType(type)
-                            .setCancelText("取消")
-                            .setTitleText("日期选择")
-                            .setSubmitText("完成")
-                            .setContentSize(22)
-                            .setTitleSize(22)
-                            .setSubCalSize(22)
-                            .setOutSideCancelable(true)
-                            .isCyclic(true)
-                            .setTextColorCenter(Color.BLACK)
-                            .setTitleColor(Color.BLACK)
-                            .setSubmitColor(Color.parseColor("#4facf3"))
-                            .setCancelColor(Color.parseColor("#4facf3"))
-                            .isCenterLabel(false)
-                            .build();
-                    timePickerView.setDate(calendar);
-                }
-                timePickerView.show();
-                break;
-            case R.id.rl_address_container://修改地区
-                if (cityPickerView == null) {
-                    cityPickerView = new CityPickerView();
-                    cityPickerView.init(this);
-                    cityPickerView.setConfig(SelectorUtils.address());
-                    cityPickerView.setOnCityItemClickListener(new OnCityItemClickListener() {
-                        @Override
-                        public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
-                            StringBuilder strBuilder = new StringBuilder();
-                            //省份
-                            if (province != null) {
-                                strBuilder.append(province.getName());
-                            }
-                            //城市
-                            if (city != null) {
-                                strBuilder.append("-" + city.getName());
-                            }
-                            userInfoAddress.setText(strBuilder);
-                            String provinceStr = province.getName();
-                            String cityStr = city.getName();
-                            HashMap hashMap = new HashMap();
-                            hashMap.put("userId", userId);
-                            hashMap.put("province", provinceStr);
-                            hashMap.put("city", cityStr);
-                            userInfoPresenter.onUpdataUserInfo(hashMap);
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            cityPickerView.hide();
-                        }
-                    });
-                }
-                cityPickerView.showCityPicker();
-                break;
+//            case R.id.rl_gender_container://修改性别
+//                Intent sexIntent = new Intent(UserInfoActivity.this, UserInfoSexActivity.class);
+//                sexIntent.putExtra("sex", mUserInfo.getData().getGender());
+//                startActivityForResult(sexIntent, SEX_CODE);
+//                break;
+//            case R.id.rl_birthday_container://修改生日
+//                String strDate = mUserInfo.getData().getBirthday();
+//                try {
+//                    Date date = DateUtils.getDate(strDate);
+//                    calendar.setTime(date);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                boolean type[] = new boolean[]{true, true, true, false, false, false};
+//                TimePickerView timePickerView = new TimePickerView
+//                        .Builder(this, new TimePickerView.OnTimeSelectListener() {
+//                    @Override
+//                    public void onTimeSelect(Date date, View v) {
+//                        String time1 = DateUtils.getTime(date);
+//                        String time2 = DateUtils.getTime2(date);
+//                        HashMap hashMap = new HashMap();
+//                        hashMap.put("userId", userId);
+//                        hashMap.put("birthday", time2);
+//                        userInfoPresenter.onUpdataUserInfo(hashMap);
+//                    }
+//                })
+//                        .setType(type)
+//                        .setCancelText("取消")
+//                        .setTitleText("日期选择")
+//                        .setSubmitText("完成")
+//                        .setContentSize(22)
+//                        .setTitleSize(22)
+//                        .setSubCalSize(22)
+//                        .setOutSideCancelable(true)
+//                        .isCyclic(true)
+//                        .setTextColorCenter(Color.BLACK)
+//                        .setTitleColor(Color.BLACK)
+//                        .setSubmitColor(Color.parseColor("#4facf3"))
+//                        .setCancelColor(Color.parseColor("#4facf3"))
+//                        .isCenterLabel(false)
+//                        .build();
+//                timePickerView.setDate(calendar);
+//                timePickerView.show();
+//                break;
+//            case R.id.rl_address_container://修改地区
+//                cityPickerView.setConfig(SelectorUtils.address());
+//                cityPickerView.setOnCityItemClickListener(new OnCityItemClickListener() {
+//                    @Override
+//                    public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+//                        StringBuilder strBuilder = new StringBuilder();
+//                        //省份
+//                        if (province != null) {
+//                            strBuilder.append(province.getName());
+//                        }
+//                        //城市
+//                        if (city != null) {
+//                            strBuilder.append("-" + city.getName());
+//                        }
+//                        mAddress.setText(strBuilder);
+//                        String provinceStr = province.getName();
+//                        String cityStr = city.getName();
+//                        HashMap hashMap = new HashMap();
+//                        hashMap.put("userId", userId);
+//                        hashMap.put("province", provinceStr);
+//                        hashMap.put("city", cityStr);
+//                        userInfoPresenter.onUpdataUserInfo(hashMap);
+//                    }
+//
+//                    @Override
+//                    public void onCancel() {
+//                        cityPickerView.hide();
+//                    }
+//                });
+//                cityPickerView.showCityPicker();
+//                break;
             default:
                 break;
         }
@@ -321,7 +307,7 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
 
     @Override
     public void showPortrait(String filename) {
-        GlideImageLoader.getInstace().displayImage(this, filename, userInfoHeadImg);
+        GlideImageLoader.getInstace().displayImage(this, filename, mCircleImageView);
         EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 
@@ -332,7 +318,13 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
 
     @Override
     public void showError(String msg) {
-        //ToastUtils.showToast(msg);
+        ToastUtils.showToast(msg);
+    }
+
+    @Override
+    public void onModifyNickname(String nickname) {
+        SPUtils.put(this, SpConfig.KEY_USER_NAME, nickname);
+        mNickName.setText(nickname);
     }
 
     @Override

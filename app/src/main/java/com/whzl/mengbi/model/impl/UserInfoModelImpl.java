@@ -71,12 +71,14 @@ public class UserInfoModelImpl implements UserInfoModel {
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MODIFY_NICKNAME, RequestManager.TYPE_POST_JSON, hashMap, new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
+                //SPUtils.put()
                 String strJson = result.toString();
                 JSONObject jsonObject = JSON.parseObject(strJson);
                 String code = jsonObject.get("code").toString();
                 if (code.equals("200")) {
                     String data = jsonObject.get("data").toString();
-                    listener.onSuccess(data);
+                    listener.onModifyNicknameSuc(nickname);
+                    //listener.onModify
                 } else {
                     String msg = jsonObject.get("msg").toString();
                     listener.onError(msg);
@@ -85,6 +87,7 @@ public class UserInfoModelImpl implements UserInfoModel {
 
             @Override
             public void onReqFailed(String errorMsg) {
+                //TODO: show toast
                 LogUtils.d(errorMsg);
             }
         });

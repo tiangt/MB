@@ -231,7 +231,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
 
     @Override
     public void showLiveShow(LiveShowInfo liveShowInfo) {
-        if (liveShowInfo != null || liveShowInfo.getData() != null) {
+        if (liveShowInfo != null && liveShowInfo.getData() != null && liveShowInfo.getData().getList() != null) {
             if (mCurrentPager == 2) {
                 mAnchorInfoList.clear();
                 refreshLayout.finishRefresh();

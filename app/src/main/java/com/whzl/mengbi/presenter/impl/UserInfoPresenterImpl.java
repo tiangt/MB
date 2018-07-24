@@ -55,6 +55,13 @@ public class UserInfoPresenterImpl implements UserInfoPresenter,OnUserInfoFInish
     }
 
     @Override
+    public void onModifyNicknameSuc(String nickname) {
+        if (userInfoView != null) {
+            userInfoView.onModifyNickname(nickname);
+        }
+    }
+
+    @Override
     public void onDestory() {
         userInfoView = null;
     }

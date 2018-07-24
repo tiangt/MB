@@ -1,7 +1,6 @@
 package com.whzl.mengbi.model.entity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author shaw
@@ -36,7 +35,7 @@ public class AnchorFollowedDataBean {
         public String cover;
         public int anchorId;
         public String anchorNickname;
-        public String anchorLevelName;
+        public int anchorLevelValue;
         public ShowStreamDataBean showStreamData;
         public String avatar;
     }
