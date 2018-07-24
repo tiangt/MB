@@ -227,5 +227,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.FollowActivity" />
+        <activity android:name=".ui.activity.RegisterActivityNew" />
     </application>
 </manifest>
