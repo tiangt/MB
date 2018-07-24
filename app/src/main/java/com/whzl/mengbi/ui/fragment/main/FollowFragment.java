@@ -195,4 +195,13 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
             startActivity(intent);
         }
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mCurrentPager = 1;
+            getAnchorList(mCurrentPager ++);
+        }
+    }
 }

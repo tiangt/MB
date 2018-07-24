@@ -12,9 +12,11 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.umeng.commonsdk.utils.UMUtils;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
+import com.umeng.socialize.utils.CommonUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SDKConfig;
 import com.whzl.mengbi.util.LogUtils;
@@ -27,6 +29,11 @@ import com.whzl.mengbi.util.ToastUtils;
 public class BaseApplication extends Application {
 
     private static BaseApplication instance = null;
+
+    public String getChannel() {
+        return channel;
+    }
+
     private String channel;
 
 
@@ -48,6 +55,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        CrashHandler.getInstance().init(this);
         channel = WalleChannelReader.getChannel(getApplicationContext());
         initUM();
         /**
@@ -74,6 +82,7 @@ public class BaseApplication extends Application {
         UMShareAPI.get(this).setShareConfig(config);
         MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         MobclickAgent.openActivityDurationTrack(false);
+        UMUtils.setChannel(this, channel);
         UMConfigure.init(this, SDKConfig.KEY_UMENG, channel, UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 
