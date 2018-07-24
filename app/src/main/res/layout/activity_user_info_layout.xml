@@ -75,7 +75,7 @@
 
     <View style="@style/user_info_option_divider" />
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/rl_gender_container"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
@@ -126,6 +126,7 @@
             android:id="@+id/user_info_birthday"
             style="@style/user_info_option_right_text" />
     </RelativeLayout>
+    -->
 
     <RelativeLayout
         android:layout_width="match_parent"
