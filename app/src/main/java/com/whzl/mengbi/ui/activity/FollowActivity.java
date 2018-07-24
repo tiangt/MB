@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +24,6 @@ import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -99,7 +97,7 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
     }
 
     public void getAnchorList(int pager) {
-        int userId = (int) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
+        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         HashMap hashMap = new HashMap();
         hashMap.put("userId", userId);
         hashMap.put("pager", pager);

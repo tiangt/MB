@@ -3,9 +3,6 @@ package com.whzl.mengbi.ui.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,6 +16,8 @@ import com.lljjcoder.bean.ProvinceBean;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.UserInfoPresenter;
@@ -28,13 +27,15 @@ import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
 import com.whzl.mengbi.util.CustomPopWindowUtils;
+import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.PhotoUtil;
+import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.SelectorUtils;
 import com.whzl.mengbi.util.StorageUtil;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.util.DateUtils;
-import com.whzl.mengbi.util.FileUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -150,27 +151,17 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
         mAddress.setText(stringBuilder);
         mBirthday.setText(mUserInfo.getData().getBirthday());
         for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
-            if (levelList.getLevelType().equals("ROYAL_LEVEL")) {
-                for (UserInfo.DataBean.LevelListBean.ExpListBean expListBean : levelList.getExpList()) {
-                    String anchorsjexp = "离升级还差" + String.valueOf(expListBean.getSjNeedExpValue());
-                    SpannableStringBuilder anchorSpan = new SpannableStringBuilder(anchorsjexp);
-                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#f1275b"));
-                    anchorSpan.setSpan(colorSpan, 5, anchorsjexp.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    anchorSpan.append("主播经验");
-                    mAnchorLevel.setText(anchorSpan);
-                }
-            } else {
-                for (UserInfo.DataBean.LevelListBean.ExpListBean expListBean : levelList.getExpList()) {
-                    String usersjexp = "离升级还差" + String.valueOf(expListBean.getSjNeedExpValue());
-                    SpannableStringBuilder userSpan = new SpannableStringBuilder(usersjexp);
-                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#4facf3"));
-                    userSpan.setSpan(colorSpan, 5, usersjexp.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    userSpan.append("富豪经验");
-                    mUserLevel.setText(userSpan);
-                }
-                String levelVal = String.valueOf(levelList.getLevelValue());
-                int resId = FileUtils.userLevelDrawable(levelVal);
-                GlideImageLoader.getInstace().displayImage(this, resId, mUserImg);
+            String levelType = levelList.getLevelType();
+            if (levelType.equals("ANCHOR_LEVEL") && !levelList.getExpList().isEmpty()) {
+                String anchorsjexp = "离升级还差" + levelList.getExpList().get(0).getSjNeedExpValue();
+                mAnchorLevel.setText(LightSpanString.getLightString(anchorsjexp, Color.parseColor("#f1275b")));
+                mAnchorLevel.append("主播经验");
+            } else if (levelType.equals("USER_LEVEL") && !levelList.getExpList().isEmpty()) {
+                String userSjexp = "离升级还差" + levelList.getExpList().get(0).getSjNeedExpValue();
+                mUserLevel.setText(LightSpanString.getLightString(userSjexp, Color.parseColor("#4facf3")));
+                mUserLevel.append("富豪经验");
+                int userLevel = levelList.getLevelValue();
+                mUserImg.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(userLevel));
             }
         }
     }
@@ -331,7 +322,13 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
 
     @Override
     public void showError(String msg) {
-        //ToastUtils.showToast(msg);
+        ToastUtils.showToast(msg);
+    }
+
+    @Override
+    public void onModifyNickname(String nickname) {
+        SPUtils.put(this, SpConfig.KEY_USER_NAME, nickname);
+        mNickName.setText(nickname);
     }
 
     @Override
