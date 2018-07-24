@@ -25,6 +25,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -118,7 +119,7 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
     }
 
     private void loadSuccess(AnchorFollowedDataBean anchorFollowedDataBean) {
-        if (anchorFollowedDataBean != null || anchorFollowedDataBean.data != null) {
+        if (anchorFollowedDataBean != null && anchorFollowedDataBean.data != null && anchorFollowedDataBean.data.list != null) {
             if (mCurrentPager == 2) {
                 mAnchorList.clear();
                 refreshLayout.finishRefresh();
@@ -179,6 +180,7 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
             tvStatus.setVisibility("T".equals(anchorInfoBean.status) ? View.VISIBLE : View.GONE);
             tvRoomNum.setText(getString(R.string.room_num, anchorInfoBean.programId));
             tvAnchorName.setText(anchorInfoBean.anchorNickname);
+            ivLevelIcon.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(anchorInfoBean.anchorLevelValue));
         }
 
         @Override

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lljjcoder.style.citypickerview.CityPickerView;
@@ -57,6 +58,7 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
     private TextView mSex;
     private TextView mAddress;
     private TextView mBirthday;
+    private RelativeLayout mAnchorInfoLayout;
     private TextView mAnchorLevel;
     private ImageView mAnchorImg;
     private TextView mUserLevel;
@@ -104,6 +106,7 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
 //        mSex = (TextView) findViewById(R.id.user_info_sex);
 //        mAddress = (TextView) findViewById(R.id.user_info_address);
 //        mBirthday = (TextView) findViewById(R.id.user_info_birthday);
+        mAnchorInfoLayout = (RelativeLayout) findViewById(R.id.user_anchor_layout);
         mAnchorLevel = (TextView) findViewById(R.id.user_info_anchorlevel);
         mAnchorImg = (ImageView) findViewById(R.id.user_info_anchorlevel_img);
         mUserLevel = (TextView) findViewById(R.id.user_info_userlevel);
@@ -144,16 +147,20 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
         for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
             String levelType = levelList.getLevelType();
             if (levelType.equals("ANCHOR_LEVEL") && !levelList.getExpList().isEmpty()) {
-                String anchorsjexp = "离升级还差" + levelList.getExpList().get(0).getSjNeedExpValue();
-                mAnchorLevel.setText(LightSpanString.getLightString(anchorsjexp, Color.parseColor("#f1275b")));
+                mAnchorLevel.append("离升级还差");
+                mAnchorLevel.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjNeedExpValue() + "", Color.parseColor("#f1275b")));
                 mAnchorLevel.append("主播经验");
+                mAnchorImg.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelList.getLevelValue()));
             } else if (levelType.equals("USER_LEVEL") && !levelList.getExpList().isEmpty()) {
-                String userSjexp = "离升级还差" + levelList.getExpList().get(0).getSjNeedExpValue();
-                mUserLevel.setText(LightSpanString.getLightString(userSjexp, Color.parseColor("#4facf3")));
+                mUserLevel.append("离升级还差");
+                mUserLevel.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjNeedExpValue() + "", Color.parseColor("#4facf3")));
                 mUserLevel.append("富豪经验");
                 int userLevel = levelList.getLevelValue();
                 mUserImg.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(userLevel));
             }
+        }
+        if (mUserInfo.getData().getUserType().equals("VIEWER")) {
+            mAnchorInfoLayout.setVisibility(View.GONE);
         }
     }
 
