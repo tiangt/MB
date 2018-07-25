@@ -3,9 +3,12 @@ package com.whzl.mengbi.ui.activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
+import com.lht.paintview.util.LogUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.CheckLoginResultBean;
+import com.whzl.mengbi.model.entity.ResponseInfo;
+import com.whzl.mengbi.model.entity.TimeStampInfo;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -16,6 +19,9 @@ import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +51,7 @@ public class SplashActivity extends BaseActivityNew {
 
     @Override
     protected void loadData() {
+        getTimeDiff();
         HashMap<String, String> paramsMap = new HashMap<>();
         long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         String sessionId = (String) SPUtils.get(this, SpConfig.KEY_SESSION_ID, "");
@@ -129,6 +136,26 @@ public class SplashActivity extends BaseActivityNew {
                     intent.putExtra("isNormalLogin", isNormalLogin);
                     startActivity(intent);
                     finish();
+                });
+    }
+
+    private void getTimeDiff() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SITE_TIME, RequestManager.TYPE_POST_JSON, new HashMap<>(),
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object object) {
+                        TimeStampInfo timeStampInfo = GsonUtils.GsonToBean(object.toString(), TimeStampInfo.class);
+                        if (timeStampInfo.code == 200) {
+                            long time = timeStampInfo.data.time;
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.TIME_DIFF, time - System.currentTimeMillis() / 1000);
+                            LogUtil.d(time - System.currentTimeMillis() / 1000 + "==============================");
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        delayJumpToHomeActivity(false);
+                    }
                 });
     }
 }

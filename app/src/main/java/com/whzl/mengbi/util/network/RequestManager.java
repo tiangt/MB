@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.BuildConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
@@ -390,9 +391,10 @@ public class RequestManager {
      */
     private <T> Call requestPostByAsyn(String actionUrl, HashMap<String, String> paramsMap, final ReqCallBack<T> callBack) {
         String sessionId = (String) SPUtils.get(BaseApplication.getInstance(), "sessionId", "");
+        long timeDiff = (long) SPUtils.get(BaseApplication.getInstance(), SpConfig.TIME_DIFF, 0L);
         try {
             paramsMap.put("appKey", APPKEY);
-            paramsMap.put("timestamp", System.currentTimeMillis() / 1000 + "");
+            paramsMap.put("timestamp", System.currentTimeMillis() / 1000 + timeDiff + "");
             paramsMap.put("appSecret", APPSECRET);
             paramsMap.put("sessionId", sessionId);
             paramsMap.put("clientType", CLIENTTYPE);

@@ -8,4 +8,5 @@ public interface SpConfig {
     String KEY_USER_ID = "userId";
     String KEY_SESSION_ID = "sessionId";
     String KEY_USER_NAME = "nickname";
+    String TIME_DIFF = "timeDiff";
 }

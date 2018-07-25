@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
+import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
@@ -238,14 +239,11 @@ public class GiftDialog extends BaseAwesomeDialog {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GiftSelectedEvent event) {
         giftDetailInfoBean = event.giftDetailInfoBean;
-        String countStr = tvCount.getText().toString().trim();
-        int count = 0;
-        try {
-            count = Integer.parseInt(countStr);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        tvAmount.setText(giftDetailInfoBean.getRent() * count + "");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UserInfoUpdateEvent event) {
+        tvAmount.setText(event.coin + "");
     }
 
 }

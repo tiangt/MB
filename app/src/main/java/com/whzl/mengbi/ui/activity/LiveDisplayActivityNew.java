@@ -64,6 +64,7 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
@@ -706,6 +707,9 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             mUserId = data.getUserId();
             if (data.getWeathMap() != null) {
                 coin = data.getWeathMap().getCoin();
+                UserInfoUpdateEvent userInfoUpdateEvent = new UserInfoUpdateEvent();
+                userInfoUpdateEvent.coin = coin;
+                EventBus.getDefault().post(userInfoUpdateEvent);
             }
         }
 
@@ -713,7 +717,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     @Override
     public void onSendGiftSuccess() {
-
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
     }
 
     @Override

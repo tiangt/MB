@@ -77,7 +77,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         initAnchorRecycler();
         loadData();
         refreshLayout.setOnRefreshListener(refreshLayout -> {
-            refreshLayout.setEnableAutoLoadMore(true);
+            refreshLayout.setEnableLoadMore(true);
             mCurrentPager = 1;
             mHomePresenter.getBanner();
             mHomePresenter.getRecommend();

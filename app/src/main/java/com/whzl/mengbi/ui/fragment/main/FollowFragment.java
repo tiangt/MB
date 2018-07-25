@@ -60,7 +60,6 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     @Override
     protected void initEnv() {
         super.initEnv();
-        userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
     }
 
     @Override
@@ -88,6 +87,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     public void getAnchorList(int pager) {
+        userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         HashMap hashMap = new HashMap();
         hashMap.put("userId", userId);
         hashMap.put("pager", pager);
@@ -120,7 +120,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 adapter.notifyDataSetChanged();
                 if (mAnchorList.size() > 0) {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
-                }else {
+                } else {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
                 }
                 refreshLayout.postDelayed(new Runnable() {
@@ -137,7 +137,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         } else {
             if (mAnchorList.size() > 0) {
                 adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
-            }else {
+            } else {
                 adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             }
             refreshLayout.postDelayed(new Runnable() {

@@ -146,14 +146,6 @@
  ## okhttp
  -keep class com.squareup.okhttp.** { *; }
 
-
- #基累
- -keep class me.fmfm.base.** { *; }
- -keep interface me.fmfm.base.** { *; }
-
- -keep class me.fmfm.biz.widget.** { *; }
-
-
 #gson
 -keepattributes *Annotation*
 -keep class sun.misc.Unsafe { *; }

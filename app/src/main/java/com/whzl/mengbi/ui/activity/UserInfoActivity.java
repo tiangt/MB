@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
@@ -326,6 +327,12 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        PhotoUtil.onActivityResult(this, tempCapturePath, tempCropPath, requestCode, resultCode, data, new PhotoUtil.UploadListener() {
+            @Override
+            public void upload() {
+                userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId() + "", tempCropPath);
+            }
+        });
         switch (requestCode) {
             case NICKNAME_CODE://昵称
                 if (resultCode == RESULT_OK) {
@@ -343,13 +350,6 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
                 }
                 break;
         }
-
-        PhotoUtil.onActivityResult(this, tempCapturePath, tempCropPath, requestCode, resultCode, data, new PhotoUtil.UploadListener() {
-            @Override
-            public void upload() {
-                userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId() + "", tempCropPath);
-            }
-        });
     }
 
     @Override
