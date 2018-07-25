@@ -36,7 +36,6 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import butterknife.BindView;
 import butterknife.OnClick;
 
 public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
@@ -139,14 +138,15 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
 //        mBirthday.setText(mUserInfo.getData().getBirthday());
         for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
             String levelType = levelList.getLevelType();
+            long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
             if (levelType.equals("ANCHOR_LEVEL") && !levelList.getExpList().isEmpty()) {
                 mAnchorLevel.append("离升级还差");
-                mAnchorLevel.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjNeedExpValue() + "", Color.parseColor("#f1275b")));
+                mAnchorLevel.append(LightSpanString.getLightString( sjNeedValue + "", Color.parseColor("#f1275b")));
                 mAnchorLevel.append("主播经验");
                 mAnchorImg.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelList.getLevelValue()));
             } else if (levelType.equals("USER_LEVEL") && !levelList.getExpList().isEmpty()) {
                 mUserLevel.append("离升级还差");
-                mUserLevel.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjNeedExpValue() + "", Color.parseColor("#4facf3")));
+                mUserLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#4facf3")));
                 mUserLevel.append("富豪经验");
                 int userLevel = levelList.getLevelValue();
                 mUserImg.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(userLevel));
