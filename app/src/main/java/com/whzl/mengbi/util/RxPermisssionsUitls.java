@@ -13,9 +13,6 @@ import android.widget.CompoundButton;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import java.io.File;
 

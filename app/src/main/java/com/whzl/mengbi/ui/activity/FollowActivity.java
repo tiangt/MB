@@ -141,6 +141,8 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
                 adapter.notifyDataSetChanged();
                 if (mAnchorList.size() > 0) {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
+                }else {
+                    adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
                 }
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
@@ -156,6 +158,8 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
         } else {
             if (mAnchorList.size() > 0) {
                 adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
+            }else {
+                adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             }
             refreshLayout.postDelayed(new Runnable() {
                 @Override

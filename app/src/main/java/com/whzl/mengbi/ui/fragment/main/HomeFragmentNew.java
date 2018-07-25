@@ -241,7 +241,11 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             mAnchorInfoList.addAll(liveShowInfo.getData().getList());
             if (liveShowInfo.getData().getList() == null || liveShowInfo.getData().getList().size() < NetConfig.DEFAULT_PAGER_SIZE) {
                 anchorAdapter.notifyDataSetChanged();
-                anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
+                if (mAnchorInfoList.size() > 0) {
+                    anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
+                } else {
+                    anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
+                }
                 refreshLayout.postDelayed(() -> refreshLayout.setEnableLoadMore(false), 300);
             } else {
                 refreshLayout.setEnableLoadMore(true);
@@ -251,6 +255,8 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         } else {
             if (mAnchorInfoList.size() > 0) {
                 anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
+            } else {
+                anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             }
             refreshLayout.postDelayed(() -> refreshLayout.setEnableLoadMore(false), 300);
         }

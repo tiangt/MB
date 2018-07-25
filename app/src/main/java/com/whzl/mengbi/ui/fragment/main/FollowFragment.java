@@ -120,6 +120,8 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 adapter.notifyDataSetChanged();
                 if (mAnchorList.size() > 0) {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
+                }else {
+                    adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
                 }
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
@@ -135,6 +137,8 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         } else {
             if (mAnchorList.size() > 0) {
                 adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
+            }else {
+                adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             }
             refreshLayout.postDelayed(new Runnable() {
                 @Override

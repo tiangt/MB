@@ -8,8 +8,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
@@ -23,8 +21,6 @@ import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
 import com.whzl.mengbi.util.CustomPopWindowUtils;
-import com.whzl.mengbi.util.DateUtils;
-import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.PhotoUtil;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
@@ -72,7 +68,6 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
     //调用照相机返回图片文件
     private File tempFile;
     private UserInfoPresenter userInfoPresenter;
-    private CityPickerView cityPickerView;//地区选择器
     private String tempCapturePath;
     private String tempCropPath;
 
@@ -325,6 +320,7 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
     public void onModifyNickname(String nickname) {
         SPUtils.put(this, SpConfig.KEY_USER_NAME, nickname);
         mNickName.setText(nickname);
+        EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 
     @Override

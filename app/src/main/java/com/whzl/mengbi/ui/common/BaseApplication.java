@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -61,7 +60,7 @@ public class BaseApplication extends Application {
         /**
          * 预先加载一级列表显示 全国所有城市市的数据
          */
-        CityListLoader.getInstance().loadCityData(this);
+//        CityListLoader.getInstance().loadCityData(this);
     }
 
     public static BaseApplication getInstance() {
