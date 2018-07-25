@@ -33,9 +33,6 @@ public class PhotoUtil {
 
     public static void capture(Activity activity, String tempCapturePath) {
         File file = new File(tempCapturePath);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdir();
-        }
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -49,16 +46,13 @@ public class PhotoUtil {
 
     public static void cropSelectedImage(Activity activity, Uri inUri, String tempOutPath) {
         File file = new File(tempOutPath);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdir();
-        }
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(inUri, "image/*");
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 200);
-        intent.putExtra("outputY", 200);
+        intent.putExtra("outputX", 100);
+        intent.putExtra("outputY", 100);
         intent.putExtra("scale", true);
         //true返回数据bitmap
         intent.putExtra("return-data", false);
@@ -90,7 +84,6 @@ public class PhotoUtil {
         //true返回数据bitmap
         intent.putExtra("return-data", false);
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-        intent.putExtra("noFaceDetection", true);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileOut));
         activity.startActivityForResult(intent, CROP_IMAGE);
     }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseAtivity;
 
-public class UserInfoNickNameActivity extends BaseAtivity implements View.OnClickListener{
+public class UserInfoNickNameActivity extends BaseAtivity implements View.OnClickListener {
 
     private EditText nicknameET;
     private ImageView backIV;
@@ -24,36 +24,36 @@ public class UserInfoNickNameActivity extends BaseAtivity implements View.OnClic
         initView();
     }
 
-    private void  initView(){
+    private void initView() {
         String nickname = "";
-        if(getIntent() != null){
+        if (getIntent() != null) {
             nickname = getIntent().getStringExtra("nickname");
         }
         View includeView = findViewById(R.id.user_info_nickname_include);
+        ImageView ivBack = findViewById(R.id.base_toolbar_back);
         backIV = (ImageView) includeView.findViewById(R.id.base_toolbar_back);
         titleTV = (TextView) includeView.findViewById(R.id.base_toolbar_title);
         rightTV = (TextView) includeView.findViewById(R.id.base_toolbar_right);
         nicknameET = (EditText) findViewById(R.id.user_info_nickname_ET);
-
-
         titleTV.setText("昵称");
         rightTV.setText("保存");
 
         nicknameET.setText(nickname);
         backIV.setOnClickListener(this);
         rightTV.setOnClickListener(this);
+        ivBack.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.base_toolbar_back:
                 finish();
                 break;
             case R.id.base_toolbar_right:
                 Intent mIntent = new Intent(this, UserInfoActivity.class);
-                mIntent.putExtra("nickname",nicknameET.getText().toString().trim());
-                setResult(RESULT_OK,mIntent);
+                mIntent.putExtra("nickname", nicknameET.getText().toString().trim());
+                setResult(RESULT_OK, mIntent);
                 finish();
                 break;
         }

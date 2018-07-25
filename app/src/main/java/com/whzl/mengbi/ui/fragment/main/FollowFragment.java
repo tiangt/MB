@@ -90,7 +90,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         HashMap hashMap = new HashMap();
         hashMap.put("userId", userId);
-        hashMap.put("pager", pager);
+        hashMap.put("page", pager);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ANCHOR_FOLLOWED, RequestManager.TYPE_POST_JSON, hashMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override

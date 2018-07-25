@@ -111,7 +111,7 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
 
         HashMap hashMap = new HashMap();
         hashMap.put("userId", mUserId);
-        hashMap.put("pager", pager);
+        hashMap.put("page", pager);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ANCHOR_FOLLOWED, RequestManager.TYPE_POST_JSON, hashMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override

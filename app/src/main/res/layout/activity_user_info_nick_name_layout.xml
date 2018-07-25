@@ -17,7 +17,7 @@
         android:layout_height="@dimen/y28"
         android:layout_marginTop="@dimen/y4"
         android:paddingLeft="@dimen/x16"
-        android:gravity="left"
+        android:gravity="left|center_vertical"
         android:textColor="@color/font_color_52"
         android:hint="@string/user_info_nickname_hint"
         android:background="@color/font_color_51"

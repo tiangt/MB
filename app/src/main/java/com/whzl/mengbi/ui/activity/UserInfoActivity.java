@@ -276,8 +276,8 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
 
             @Override
             public void onClick(View v) {
-                tempCapturePath = StorageUtil.getTempDir() + "/avatar_captured";
-                tempCropPath = StorageUtil.getTempDir() + "/avatar_crop.jpg";
+                tempCapturePath = StorageUtil.getTempDir() + File.separator + System.currentTimeMillis() + "avatar_captured.jpg";
+                tempCropPath = StorageUtil.getTempDir() + File.separator + System.currentTimeMillis() + "avatar_crop.jpg";
                 RxPermisssionsUitls.getPicFromCamera(UserInfoActivity.this, tempCapturePath);
                 mCustomPopWindow.dissmiss();
             }
@@ -286,7 +286,7 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
         butAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempCropPath = StorageUtil.getTempDir() + "/avatar_crop.jpg";
+                tempCropPath = StorageUtil.getTempDir() + File.separator + System.currentTimeMillis() + "avatar_crop.jpg";
                 RxPermisssionsUitls.getPicFromAlbm(UserInfoActivity.this);
                 mCustomPopWindow.dissmiss();
             }
