@@ -17,8 +17,6 @@ import com.whzl.mengbi.presenter.impl.MePresenterImpl;
 import com.whzl.mengbi.ui.activity.FollowActivity;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.SettingActivity;
-import com.whzl.mengbi.ui.activity.SettingsActivity;
-import com.whzl.mengbi.ui.activity.SplashActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -89,7 +87,8 @@ public class MeFragment extends BaseFragment implements MeView {
         }
         mUserinfo = userInfo;
         GlideImageLoader.getInstace().displayImage(getContext(), userInfo.getData().getAvatar(), ivAvatar);
-        tvNickName.setText(userInfo.getData().getNickname());
+        String nickname = SPUtils.get(getContext(), SpConfig.KEY_USER_NAME, "0").toString();
+        tvNickName.setText(nickname);
         tvId.setText("萌号：" + userInfo.getData().getUserId());
         tvMengbiAmount.setText(userInfo.getData().getWealth().getCoin() + "");
         tvMengdouAmount.setText(userInfo.getData().getWealth().getChengPonit() + "");
