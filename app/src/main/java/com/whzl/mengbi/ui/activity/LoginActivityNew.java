@@ -84,7 +84,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
                 hashMap.put("token", access_token);
                 hashMap.put("openid", openid);
             }
-            hashMap.put("channelId", BaseApplication.getInstance().getChannel());
+//            hashMap.put("channelId", BaseApplication.getInstance().getChannel());
             mLoginPresent.openLogin(hashMap);
         }
 

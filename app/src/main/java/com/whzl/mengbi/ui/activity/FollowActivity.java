@@ -1,5 +1,7 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +22,7 @@ import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
+import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -50,6 +53,13 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
     private BaseListAdapter adapter;
     private ArrayList<AnchorFollowedDataBean.AnchorInfoBean> mAnchorList = new ArrayList<>();
     private int mCurrentPager = 1;
+    private long mUserId;
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        mUserId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+    }
 
     @Override
     protected void setupContentView() {
@@ -98,9 +108,9 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
     }
 
     public void getAnchorList(int pager) {
-        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+
         HashMap hashMap = new HashMap();
-        hashMap.put("userId", userId);
+        hashMap.put("userId", mUserId);
         hashMap.put("pager", pager);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ANCHOR_FOLLOWED, RequestManager.TYPE_POST_JSON, hashMap,
                 new RequestManager.ReqCallBack<Object>() {
@@ -191,5 +201,45 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
             intent.putExtra(BundleConfig.PROGRAM_ID, anchorInfoBean.programId);
             startActivity(intent);
         }
+
+        @Override
+        public void onItemLongClick(View view, int position) {
+            super.onItemLongClick(view, position);
+            AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(FollowActivity.this);
+            dialog.setTitle("提示");
+            dialog.setMessage("是否确定取消关注该主播");
+            dialog.setNegativeButton("取消", null);
+            dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    HashMap map = new HashMap();
+                    map.put("userId", mUserId);
+                    map.put("programId", anchorInfoBean.programId);
+                    unFollow(map);
+                }
+            });
+            dialog.show();
+        }
+    }
+
+    private void unFollow(HashMap paramsMap) {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.UNFOLLOW_ANCHOR, RequestManager.TYPE_POST_JSON, paramsMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        String jsonStr = result.toString();
+                        ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
+                        if (responseInfo.getCode() == 200) {
+                            mCurrentPager = 1;
+                            getAnchorList(mCurrentPager++);
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        ToastUtils.showToast(errorMsg);
+                    }
+                });
     }
 }

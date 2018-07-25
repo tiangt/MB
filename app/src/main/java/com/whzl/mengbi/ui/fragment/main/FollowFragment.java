@@ -1,5 +1,7 @@
 package com.whzl.mengbi.ui.fragment.main;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +22,7 @@ import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
+import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -52,6 +55,13 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     private ArrayList<AnchorFollowedDataBean.AnchorInfoBean> mAnchorList = new ArrayList<>();
     private int mCurrentPager = 1;
     private BaseListAdapter adapter;
+    private long userId;
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+    }
 
     @Override
     public int getLayoutId() {
@@ -78,7 +88,6 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     public void getAnchorList(int pager) {
-        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         HashMap hashMap = new HashMap();
         hashMap.put("userId", userId);
         hashMap.put("pager", pager);
@@ -194,14 +203,55 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
             intent.putExtra(BundleConfig.PROGRAM_ID, anchorInfoBean.programId);
             startActivity(intent);
         }
+
+        @Override
+        public void onItemLongClick(View view, int position) {
+            super.onItemLongClick(view, position);
+            AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("提示");
+            dialog.setMessage("是否确定取消关注该主播");
+            dialog.setNegativeButton("取消", null);
+            dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    HashMap map = new HashMap();
+                    map.put("userId", userId);
+                    map.put("programId", anchorInfoBean.programId);
+                    unFollow(map);
+                }
+            });
+            dialog.show();
+        }
     }
+
+    private void unFollow(HashMap paramsMap) {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.UNFOLLOW_ANCHOR, RequestManager.TYPE_POST_JSON, paramsMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        String jsonStr = result.toString();
+                        ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
+                        if (responseInfo.getCode() == 200) {
+                            mCurrentPager = 1;
+                            getAnchorList(mCurrentPager++);
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        ToastUtils.showToast(errorMsg);
+                    }
+                });
+    }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             mCurrentPager = 1;
-            getAnchorList(mCurrentPager ++);
+            getAnchorList(mCurrentPager++);
         }
     }
 }

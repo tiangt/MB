@@ -152,6 +152,11 @@ public class URLContentUtils {
      */
     public static final String LOGOUT = "v1/user/logout";
 
+    /**
+     * 取消关注
+     */
+    public static final String UNFOLLOW_ANCHOR = "v1/room/remove-user-program";
+
     public static final String SITE_TIME = "site/time";
 
     public static String getBaseUrl() {
