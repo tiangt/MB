@@ -14,9 +14,11 @@ import com.whzl.mengbi.chat.room.message.LoginMessage;
 import com.whzl.mengbi.chat.room.message.MessageRouter;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
@@ -35,6 +37,7 @@ public class ChatRoomPresenterImpl{
     private MessageCallback messageCallback;
     private LiveRoomTokenInfo liveRoomTokenInfo;
     private String programId;
+    private boolean netErrorNoticed = false;
 
     public ChatRoomPresenterImpl(String programId) {
         this.programId = programId;
@@ -54,12 +57,18 @@ public class ChatRoomPresenterImpl{
                     doLiveRoomToken(userId + "", domain);
                 }
                 Log.d(TAG,"chatLogin finished");
+                netErrorNoticed = false;
             }
 
             @Override
             public void onConnectFailed() {
                 Log.e(TAG, "连接失败");
+                if (netErrorNoticed) {
+                    return;
+                }
                 //TODO: toast
+                updateUI(context, "网络连接异常,请检查网络!");
+                netErrorNoticed = true;
                 //ToastUtils.showToast("网络连接异常，请检查网络");
             }
         };
@@ -181,6 +190,19 @@ public class ChatRoomPresenterImpl{
             public void onReqFailed(String errorMsg) {
                 chatLogin(domain);
                 Log.e(TAG, "getLiveRoomToken error,err=" + errorMsg);
+            }
+        });
+    }
+
+    public void updateUI(final Context context, String msg) {
+        LiveDisplayActivityNew activity = (LiveDisplayActivityNew)context;
+        if (null == activity) {
+            return;
+        }
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.showToast(msg);
             }
         });
     }

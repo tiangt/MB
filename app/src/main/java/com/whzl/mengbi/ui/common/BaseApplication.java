@@ -3,9 +3,6 @@ package com.whzl.mengbi.ui.common;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -16,11 +13,8 @@ import com.umeng.commonsdk.utils.UMUtils;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
-import com.umeng.socialize.utils.CommonUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SDKConfig;
-import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.ToastUtils;
 
 /**
  * @author shaw
@@ -57,8 +51,8 @@ public class BaseApplication extends Application {
         instance = this;
         CrashHandler.getInstance().init(this);
         channel = WalleChannelReader.getChannel(getApplicationContext());
-        if(TextUtils.isEmpty(channel)){
-            channel = "debug";
+        if (channel == null) {
+            channel = "mengbi";
         }
         initUM();
         /**
