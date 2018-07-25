@@ -88,7 +88,6 @@ public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
                     mDatas.clear();
                     mDatas.addAll(audienceListBean.getData().getList());
                     adapter.notifyDataSetChanged();
-                    tvTitle.setText(getString(R.string.audience_count));
                 }
             }
 

@@ -14,7 +14,8 @@
         android:paddingTop="12.5dp"
         android:textColor="@color/colorblack"
         android:textSize="17sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:text="观众"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
