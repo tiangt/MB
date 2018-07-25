@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -31,12 +32,14 @@ import com.whzl.mengbi.ui.widget.view.NoScrollViewPager;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,7 +50,8 @@ import butterknife.OnClick;
  */
 public class GiftDialog extends BaseAwesomeDialog {
 
-    private static GiftInfo mGiftInfo;
+    private GiftInfo mGiftInfo;
+    private long coin;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
@@ -71,9 +75,13 @@ public class GiftDialog extends BaseAwesomeDialog {
     private PopupWindow popupWindow;
     private GiftInfo.GiftDetailInfoBean giftDetailInfoBean;
 
-    public static BaseAwesomeDialog newInstance(GiftInfo giftInfo) {
-        mGiftInfo = giftInfo;
-        return new GiftDialog();
+    public static BaseAwesomeDialog newInstance(GiftInfo giftInfo, long coin) {
+        Bundle args = new Bundle();
+        args.putParcelable("gift_info", giftInfo);
+        args.putLong("coin", coin);
+        BaseAwesomeDialog dialog = new GiftDialog();
+        dialog.setArguments(args);
+        return dialog;
     }
 
     @Override
@@ -95,6 +103,8 @@ public class GiftDialog extends BaseAwesomeDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+        coin = getArguments().getLong("coin");
+        mGiftInfo = getArguments().getParcelable("gift_info");
         ArrayList<Fragment> fragments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
         if (mGiftInfo.getData().getRecommend() != null) {
@@ -116,9 +126,10 @@ public class GiftDialog extends BaseAwesomeDialog {
         viewpager.setOffscreenPageLimit(titles.size());
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         tabLayout.setupWithViewPager(viewpager);
+        tvAmount.setText(coin + "");
     }
 
-    @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm})
+    @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm, R.id.tv_top_up})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_count:
@@ -132,11 +143,11 @@ public class GiftDialog extends BaseAwesomeDialog {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
-                if(giftDetailInfoBean == null){
+                if (giftDetailInfoBean == null) {
                     ToastUtils.showToast("请选择礼物");
                     return;
                 }
-                if(giftCount == 0){
+                if (giftCount == 0) {
                     ToastUtils.showToast("礼物数量不能为0");
                     return;
                 }
@@ -147,18 +158,26 @@ public class GiftDialog extends BaseAwesomeDialog {
                 String trim = etCount.getText().toString().trim();
                 int count = 0;
                 try {
-                    count =Integer.parseInt(trim);
+                    count = Integer.parseInt(trim);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
                 etCount.getText().clear();
                 tvCount.setText(count + "");
-                setAmount(count);
                 llCountCustomContainer.setVisibility(View.GONE);
                 rlSendContainer.setVisibility(View.VISIBLE);
                 break;
+            case R.id.tv_top_up:
+                jumpRechargeActivity();
+                break;
         }
 
+    }
+
+    private void jumpRechargeActivity() {
+        Intent intent = new Intent(getContext(), WXPayEntryActivity.class);
+        startActivity(intent);
+        dismiss();
     }
 
     @Override
@@ -200,7 +219,6 @@ public class GiftDialog extends BaseAwesomeDialog {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     tvCount.setText(giftCountInfoList.get(position).count + "");
-                    setAmount(giftCountInfoList.get(position).count);
                 }
 
                 @Override
@@ -228,16 +246,6 @@ public class GiftDialog extends BaseAwesomeDialog {
             e.printStackTrace();
         }
         tvAmount.setText(giftDetailInfoBean.getRent() * count + "");
-    }
-
-
-    private void setAmount(int count){
-        if(giftDetailInfoBean != null){
-            tvAmount.setText(count * giftDetailInfoBean.getRent() + "");
-            popupWindow.dismiss();
-        }else {
-            tvAmount.setText(0 + "");
-        }
     }
 
 }

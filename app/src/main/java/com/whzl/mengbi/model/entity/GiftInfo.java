@@ -5,9 +5,24 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class GiftInfo extends ResponseInfo {
+public class GiftInfo extends ResponseInfo implements Parcelable {
 
     private DataBean data;
+
+    protected GiftInfo(Parcel in) {
+    }
+
+    public static final Creator<GiftInfo> CREATOR = new Creator<GiftInfo>() {
+        @Override
+        public GiftInfo createFromParcel(Parcel in) {
+            return new GiftInfo(in);
+        }
+
+        @Override
+        public GiftInfo[] newArray(int size) {
+            return new GiftInfo[size];
+        }
+    };
 
     public DataBean getData() {
         return data;
@@ -15,6 +30,15 @@ public class GiftInfo extends ResponseInfo {
 
     public void setData(DataBean data) {
         this.data = data;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
     }
 
     public class DataBean {

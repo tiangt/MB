@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.whzl.mengbi">
 
     <!-- 获取系统权限 -->
@@ -35,11 +36,12 @@
     <application
         android:name=".ui.common.BaseApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_footer_logo"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_launcher"
+        android:label="${appName}"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="label">
 
         <!--&lt;!&ndash;&lt;!&ndash;友盟APPKEY&ndash;&gt;&ndash;&gt;-->
         <!--<meta-data-->

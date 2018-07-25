@@ -42,6 +42,7 @@ import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -149,6 +150,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     private boolean isLuckyGiftShow;
     private volatile ArrayList<LuckGiftEvent> mLuckGiftList = new ArrayList<>();
     private Runnable mLuckyGiftAction;
+    private long coin;
 
     @Override
     protected void setupContentView() {
@@ -171,7 +173,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         mMasterPlayer.setOnPreparedListener(mp -> {
             if (mMasterPlayer != null) {
                 mMasterPlayer.start();
-            }else {
+            } else {
                 Log.e("Player", "player is null at start");
             }
         });
@@ -355,7 +357,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
                 if (mGiftDialog != null && mGiftDialog.isAdded()) {
                     return;
                 }
-                mGiftDialog = GiftDialog.newInstance(mGiftData)
+                mGiftDialog = GiftDialog.newInstance(mGiftData, coin)
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
@@ -700,6 +702,13 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     @Override
     public void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data) {
         btnFollow.setVisibility(data.isIsSubs() ? View.GONE : View.VISIBLE);
+        if (data != null) {
+            mUserId = data.getUserId();
+            if (data.getWeathMap() != null) {
+                coin = data.getWeathMap().getCoin();
+            }
+        }
+
     }
 
     @Override
@@ -757,10 +766,17 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
-                mUserId = Long.parseLong(SPUtils.get(this, "userId", (long)0).toString());
+                mUserId = Long.parseLong(SPUtils.get(this, "userId", (long) 0).toString());
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
             }
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UserInfoUpdateEvent event) {
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+    }
+
+
 }

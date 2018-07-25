@@ -3,17 +3,24 @@ package com.whzl.mengbi.ui.common;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.lljjcoder.style.citylist.utils.CityListLoader;
+import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
+import com.umeng.commonsdk.utils.UMUtils;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
+import com.umeng.socialize.utils.CommonUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SDKConfig;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.ToastUtils;
 
 /**
  * @author shaw
@@ -22,6 +29,12 @@ import com.whzl.mengbi.config.SDKConfig;
 public class BaseApplication extends Application {
 
     private static BaseApplication instance = null;
+
+    public String getChannel() {
+        return channel;
+    }
+
+    private String channel;
 
 
     {
@@ -42,6 +55,8 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        CrashHandler.getInstance().init(this);
+        channel = WalleChannelReader.getChannel(getApplicationContext());
         initUM();
         /**
          * 预先加载一级列表显示 全国所有城市市的数据
@@ -65,7 +80,10 @@ public class BaseApplication extends Application {
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(this).setShareConfig(config);
-        UMConfigure.init(this, SDKConfig.KEY_UMENG, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+        MobclickAgent.openActivityDurationTrack(false);
+        UMUtils.setChannel(this, channel);
+        UMConfigure.init(this, SDKConfig.KEY_UMENG, channel, UMConfigure.DEVICE_TYPE_PHONE, "");
     }
 
     //static 代码段可以防止内存泄露

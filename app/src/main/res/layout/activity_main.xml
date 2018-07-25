@@ -23,8 +23,7 @@
         android:layout_weight="0"
         android:background="@color/white"
         android:orientation="horizontal"
-        android:paddingBottom="4dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="4dp">
 
         <RadioButton
             android:id="@+id/rb_home"

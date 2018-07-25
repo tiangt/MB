@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.protobuf'
+apply from: 'multiple-channel.gradle'
 
 android {
     compileSdkVersion 27
@@ -20,14 +21,16 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField("boolean", "API_DEBUG_ENT", "false");
+            buildConfigField("boolean", "API_DEBUG_ENT", "false")
+            manifestPlaceholders = [appName: "萌比直播"]
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         debug {
-            buildConfigField("boolean", "API_DEBUG_ENT", "true");
+            buildConfigField("boolean", "API_DEBUG_ENT", "true")
+            manifestPlaceholders = [appName: "萌比直播dev"]
             minifyEnabled false
             signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -123,6 +126,8 @@ dependencies {
     implementation files('libs/umeng-share-wechat-simplify-6.9.2.jar')
     implementation files('libs/SecurityEnvSDK-release-1.1.0.jar')
     implementation files('libs/umeng-sharetool-6.9.2.jar')
+    implementation 'com.umeng.sdk:analytics:7.5.0'
+
     implementation files('libs/alipaySdk-20180601.jar')
 
     implementation files('libs/alipaySdk-20180601.jar')
@@ -136,6 +141,8 @@ dependencies {
 
     //微信支付
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
+    implementation 'com.meituan.android.walle:library:1.1.6'
 }
 
 protobuf {

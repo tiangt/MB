@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.fragment.main;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -222,5 +223,13 @@ public class MeFragment extends BaseFragment implements MeView {
                     public void onReqFailed(String errorMsg) {
                     }
                 });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mPresent.getUserInfo();
+        }
     }
 }

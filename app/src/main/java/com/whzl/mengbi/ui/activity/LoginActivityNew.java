@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.app.Application;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -83,6 +84,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
                 hashMap.put("token", access_token);
                 hashMap.put("openid", openid);
             }
+            hashMap.put("channelId", BaseApplication.getInstance().getChannel());
             mLoginPresent.openLogin(hashMap);
         }
 
@@ -204,6 +206,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
                 paramsMap.put("username", phone);
                 paramsMap.put("password", EncryptUtils.md5Hex(password));
                 paramsMap.put("platform", "ANDROID");
+                paramsMap.put("channelId", BaseApplication.getInstance().getChannel());
                 mLoginPresent.login(paramsMap);
                 break;
         }

@@ -188,21 +188,4 @@ public abstract class BaseActivityNew extends AppCompatActivity {
         dialog.show();
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            if (isFastDoubleClick()) {
-                return true;
-            }
-        }
-        return super.dispatchTouchEvent(ev);
-    }
-
-    public boolean isFastDoubleClick() {
-        long time = System.currentTimeMillis();
-        long timeD = time - lastClickTime;
-        lastClickTime = time;
-        return timeD <= 500;
-    }
-
 }
