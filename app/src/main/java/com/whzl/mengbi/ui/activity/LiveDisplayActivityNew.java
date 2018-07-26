@@ -519,12 +519,14 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
             @Override
             public void onFail() {
-                ivGiftGif.setVisibility(View.GONE);
-                mGifAnimList.remove(0);
-                if (mGifAnimList.size() > 0) {
-                    animGif(mGifAnimList.get(0));
-                } else {
-                    flagIsTotalAnimating = true;
+                if (!isFinishing()) {
+                    ivGiftGif.setVisibility(View.GONE);
+                    mGifAnimList.remove(0);
+                    if (mGifAnimList.size() > 0) {
+                        animGif(mGifAnimList.get(0));
+                    } else {
+                        flagIsTotalAnimating = true;
+                    }
                 }
             }
         });
@@ -559,7 +561,6 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             giftAnimView.animate().translationX(animX).setInterpolator(new DecelerateInterpolator())
                     .setDuration(300)
                     .setListener(new Animator.AnimatorListener() {
-
 
                         @Override
                         public void onAnimationStart(Animator animation) {

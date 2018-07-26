@@ -82,13 +82,13 @@
 
 
         <!--&lt;!&ndash;&lt;!&ndash;友盟APPKEY&ndash;&gt;&ndash;&gt;-->
-        <!--<meta-data-->
-        <!--android:name="UMENG_APPKEY"-->
-        <!--android:value="5b3c9412a40fa34d390000ac" />-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5b3c9412a40fa34d390000ac" />
 
-        <!--<meta-data-->
-        <!--android:name="UMENG_CHANNEL"-->
-        <!--android:value="mengbi" />-->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="mengbi" />
         <!--QQAPPKEY-->
         <!--<meta-data-->
         <!--android:name="52f84675951166e7dcc95b019ccd63fa"-->
