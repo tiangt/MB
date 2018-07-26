@@ -149,6 +149,8 @@ dependencies {
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
 
     implementation 'com.meituan.android.walle:library:1.1.6'
+    //百度统计
+    implementation 'com.baidu.mobstat:mtj-sdk-circle:3.9.1.0'
 }
 
 protobuf {

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.baidu.mobstat.StatService;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -60,6 +61,9 @@ public class BaseApplication extends Application {
          * 预先加载一级列表显示 全国所有城市市的数据
          */
 //        CityListLoader.getInstance().loadCityData(this);
+        StatService.setDebugOn(true);
+        StatService.setAppChannel(this, "qudao", true);
+        StatService.autoTrace(this, true, false);
     }
 
     public static BaseApplication getInstance() {
@@ -75,13 +79,13 @@ public class BaseApplication extends Application {
          * 参数: boolean 默认为false，如需查看LOG设置为true
          */
         UMConfigure.setLogEnabled(true);
-        UMConfigure.init(this, SDKConfig.KEY_UMENG, channel, UMConfigure.DEVICE_TYPE_PHONE, null);
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(this).setShareConfig(config);
-        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
-        MobclickAgent.openActivityDurationTrack(false);
-        UMUtils.setChannel(this, channel);
+        UMConfigure.init(this, SDKConfig.KEY_UMENG, channel, UMConfigure.DEVICE_TYPE_PHONE, null);
+//        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+//        MobclickAgent.openActivityDurationTrack(false);
+//        UMUtils.setChannel(this, channel);
 
     }
 

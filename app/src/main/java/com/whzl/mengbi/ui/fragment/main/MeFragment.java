@@ -64,7 +64,6 @@ public class MeFragment extends BaseFragment implements MeView {
     TextView tvMengbiAmount;
     @BindView(R.id.tv_mengdou_amount)
     TextView tvMengdouAmount;
-    Unbinder unbinder;
     private MePresenter mPresent;
     private UserInfo mUserinfo;
     private String deviceId;
@@ -130,13 +129,6 @@ public class MeFragment extends BaseFragment implements MeView {
         super.onDestroy();
         mPresent.onDestroy();
         EventBus.getDefault().unregister(this);
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 
     @OnClick({R.id.btn_recharge, R.id.tv_my_follow, R.id.tv_setting, R.id.btn_edit})
