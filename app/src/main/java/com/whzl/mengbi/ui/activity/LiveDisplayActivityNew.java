@@ -137,7 +137,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     private long mUserId;
     private BaseAwesomeDialog mGiftDialog;
     private volatile ArrayList<AnimJson> mTotalAnimList = new ArrayList<>();
-    private boolean flagIsTotalAnimating = false;
+    private volatile boolean flagIsTotalAnimating = false;
     private volatile ArrayList<AnimEvent> mGifAnimList = new ArrayList<>();
     private boolean flagIsGifAnimating = false;
     private int mAnchorId;
@@ -427,15 +427,11 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnimEvent animEvent) {
         if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())) {
-            synchronized (this) {
-                AnimJson animJson = animEvent.getAnimJson();
-                animJson.setGiftUrl(animEvent.getAnimUrl());
-                mTotalAnimList.add(animJson);
-                if (!flagIsTotalAnimating) {
-                    animGift(mTotalAnimList.get(0));
-                } else if (mTotalAnimList.size() == 2) {
-                    combo();
-                }
+            AnimJson animJson = animEvent.getAnimJson();
+            animJson.setGiftUrl(animEvent.getAnimUrl());
+            mTotalAnimList.add(animJson);
+            if (!flagIsTotalAnimating) {
+                animGift(mTotalAnimList.get(0));
             }
         } else {
             double seconds = 0;
@@ -466,21 +462,6 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             }
         }
 
-    }
-
-    private synchronized void combo() {
-        long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
-        int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
-        AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
-        long nextUserId = nextContext.getUserId();
-        int nextGoodId = nextContext.getGoodsId();
-        if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
-            mTotalAnimList.remove(0);
-            giftAnimView.removeCallbacks(mTotalGiftAnimAction);
-            tvAnimGiftCount.setText("x " + nextContext.getGiftTotalCount());
-            scaleAnim(tvAnimGiftCount);
-            giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -566,7 +547,16 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             if (mTotalAnimList.size() > 1) {
-                                comboCache();
+                                long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+                                int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
+                                AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
+                                long nextUserId = nextContext.getUserId();
+                                int nextGoodId = nextContext.getGoodsId();
+                                if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
+                                    comboCache();
+                                } else {
+                                    giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
+                                }
                             } else {
                                 giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
                             }
@@ -587,26 +577,21 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     }
 
     private synchronized void comboCache() {
-        long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
-        int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
-        AnimJson.ContextEntity nextContext = null;
-        try {
-            nextContext = mTotalAnimList.get(1).getContext();
-        } catch (Exception e) {
-            giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
-            return;
-        }
-
-        long nextUserId = nextContext.getUserId();
-        int nextGoodId = nextContext.getGoodsId();
-        if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
-            mTotalAnimList.remove(0);
-            giftAnimView.removeCallbacks(mTotalGiftAnimAction);
-            tvAnimGiftCount.setText("x " + nextContext.getGiftTotalCount());
-            scaleAnim(tvAnimGiftCount);
-            giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
-            if (mTotalAnimList.size() > 1) {
-                giftAnimView.postDelayed(mCacheComboAction, 300);
+        AnimJson.ContextEntity comboContext = mTotalAnimList.get(1).getContext();
+        mTotalAnimList.remove(0);
+        giftAnimView.removeCallbacks(mTotalGiftAnimAction);
+        tvAnimGiftCount.setText("x " + comboContext.getGiftTotalCount());
+        scaleAnim(tvAnimGiftCount);
+        if (mTotalAnimList.size() > 1) {
+            long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+            int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
+            AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
+            long nextUserId = nextContext.getUserId();
+            int nextGoodId = nextContext.getGoodsId();
+            if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
+                giftAnimView.postDelayed(mCacheComboAction, 200);
+            } else {
+                giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
             }
         } else {
             giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
