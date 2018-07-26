@@ -152,8 +152,12 @@ public class ChatRoomPresenterImpl{
     }
 
     public void onChatRoomDestroy() {
-        client.closeSocket();
-        messageCallback.unregister();
+        if (null != client) {
+            client.closeSocket();
+        }
+        if (null != messageCallback) {
+            messageCallback.unregister();
+        }
     }
 
     public void sendBroadCast(String content) {
