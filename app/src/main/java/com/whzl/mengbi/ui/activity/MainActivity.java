@@ -33,10 +33,13 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author shaw
@@ -48,6 +51,7 @@ public class MainActivity extends BaseActivityNew {
     private Fragment[] fragments;
     private int currentSelectedIndex = 0;
     private ProgressDialog progressDialog;
+    private boolean isExit;
 
     @Override
     protected void setupContentView() {
@@ -240,5 +244,37 @@ public class MainActivity extends BaseActivityNew {
 
     public void setCheck(int index) {
         rgTab.check(rgTab.getChildAt(index).getId());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isExit) {
+            super.onBackPressed();
+            return;
+        }
+        Observable.just(1)
+                .delay(2, TimeUnit.SECONDS)
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        isExit = true;
+                        showToast("再按一次退出");
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        isExit = false;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }
