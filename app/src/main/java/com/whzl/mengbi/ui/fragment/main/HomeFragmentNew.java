@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.fragment.main;
 
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,6 +44,8 @@ import butterknife.ButterKnife;
 public class HomeFragmentNew extends BaseFragment implements HomeView {
     private static final int TYPE_RECOMMEND = 250;
     private static final int TYPE_ANCHOR = 520;
+    @BindView(R.id.bannerLayout)
+    ConstraintLayout bannerLayout;
     @BindView(R.id.banner)
     Banner banner;
     @BindView(R.id.recommend_recycler)
@@ -212,7 +215,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     public void showBanner(BannerInfo bannerInfo) {
         List<BannerInfo.DataBean.ListBean> bannerInfoList = bannerInfo.getData().getList();
         if (bannerInfoList.isEmpty()) {
-            banner.setVisibility(View.GONE);
+            bannerLayout.setVisibility(View.GONE);
             return;
         }
         ArrayList<String> banners = new ArrayList<>();
