@@ -87,7 +87,8 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     }
 
     private void initRecommendRecycler() {
-
+        recommendRecycler.setNestedScrollingEnabled(false);
+        recommendRecycler.setFocusableInTouchMode(false);
         recommendRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recommendAdapter = new BaseListAdapter() {
 
@@ -106,6 +107,8 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     }
 
     private void initAnchorRecycler() {
+        anchorRecycler.setNestedScrollingEnabled(false);
+        anchorRecycler.setFocusableInTouchMode(false);
         anchorRecycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         anchorRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
         anchorAdapter = new BaseListAdapter() {

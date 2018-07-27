@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -192,6 +193,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     @Override
     protected void setupView() {
+        surfaceView.setAlpha(0);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -319,6 +321,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     }
 
     private void initPlayers(String stream) {
+        surfaceView.setAlpha(1);
         try {
             mMasterPlayer.setDataSource(stream);
             mMasterPlayer.prepareAsync();
@@ -633,6 +636,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             return;
         }
         mMasterPlayer.reset();
+        surfaceView.setAlpha(1);
         try {
             mMasterPlayer.setDataSource(streamAddress);
             mMasterPlayer.prepareAsync();

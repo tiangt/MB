@@ -284,7 +284,7 @@ public class RequestManager {
     /**
      * 上传头像
      */
-    public <T> void upload(String userId, File file, String actionUrl, ReqCallBack<T> reqCallBack) {
+    public <T> void uploadAvatar(String userId, File file, String actionUrl, ReqCallBack<T> reqCallBack) {
         String sessionId = (String) SPUtils.get(BaseApplication.getInstance(), "sessionId", "");
         HashMap paramsMap = new HashMap();
         paramsMap.put("appKey", APPKEY);

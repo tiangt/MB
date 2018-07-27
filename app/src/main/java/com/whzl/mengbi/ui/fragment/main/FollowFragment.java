@@ -258,4 +258,5 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
             getAnchorList(mCurrentPager++);
         }
     }
+
 }

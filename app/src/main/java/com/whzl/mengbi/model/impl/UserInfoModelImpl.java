@@ -39,7 +39,7 @@ public class UserInfoModelImpl implements UserInfoModel {
 //                LogUtils.d(errorMsg);
 //            }
 //        });
-        RequestManager.getInstance(BaseApplication.getInstance()).upload(userId, new File(filename), URLContentUtils.MODIFY_AVATAR, new RequestManager.ReqCallBack() {
+        RequestManager.getInstance(BaseApplication.getInstance()).uploadAvatar(userId, new File(filename), URLContentUtils.MODIFY_AVATAR, new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
                 String strJson = result.toString();
