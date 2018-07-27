@@ -38,6 +38,7 @@ public class ChatRoomPresenterImpl{
     private LiveRoomTokenInfo liveRoomTokenInfo;
     private String programId;
     private boolean netErrorNoticed = false;
+    private List<String> sendFailMsg = new ArrayList<>();
 
     public ChatRoomPresenterImpl(String programId) {
         this.programId = programId;
@@ -143,6 +144,13 @@ public class ChatRoomPresenterImpl{
 //            }
 //        }
 //
+        if (client == null) {
+            sendFailMsg.add(message);
+            if (sendFailMsg.size() >= 5) {
+                sendFailMsg.remove(0);
+            }
+            return;
+        }
         ChatOutMsg msg;
         String userId = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_ID,(long) 0).toString();
         String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_NAME,"0").toString();
@@ -152,8 +160,12 @@ public class ChatRoomPresenterImpl{
     }
 
     public void onChatRoomDestroy() {
-        client.closeSocket();
-        messageCallback.unregister();
+        if (null != client) {
+            client.closeSocket();
+        }
+        if (null != messageCallback) {
+            messageCallback.unregister();
+        }
     }
 
     public void sendBroadCast(String content) {
@@ -194,7 +206,7 @@ public class ChatRoomPresenterImpl{
         });
     }
 
-    public void updateUI(final Context context, String msg) {
+    private void updateUI(final Context context, String msg) {
         LiveDisplayActivityNew activity = (LiveDisplayActivityNew)context;
         if (null == activity) {
             return;
@@ -205,5 +217,12 @@ public class ChatRoomPresenterImpl{
                 ToastUtils.showToast(msg);
             }
         });
+    }
+
+    private void sendFailedMsg() {
+        for(String msg : sendFailMsg) {
+            sendMessage(msg);
+        }
+        sendFailMsg.clear();
     }
 }

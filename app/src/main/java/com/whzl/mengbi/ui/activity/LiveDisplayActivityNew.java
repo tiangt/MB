@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -421,6 +420,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         SpannableString bonusCoinsSpannable = new SpannableString(luckGiftEvent.getTotalLuckMengBi() + "");
         bonusCoinsSpannable.setSpan(new ForegroundColorSpan(Color.parseColor("#f76667")), 0, bonusCoinsSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvLuckyGift.append(bonusCoinsSpannable);
+        tvLuckyGift.append("萌币");
         tvLuckyGift.postDelayed(mLuckyGiftAction, 2800);
     }
 
@@ -501,12 +501,14 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
             @Override
             public void onFail() {
-                ivGiftGif.setVisibility(View.GONE);
-                mGifAnimList.remove(0);
-                if (mGifAnimList.size() > 0) {
-                    animGif(mGifAnimList.get(0));
-                } else {
-                    flagIsTotalAnimating = true;
+                if (!isFinishing()) {
+                    ivGiftGif.setVisibility(View.GONE);
+                    mGifAnimList.remove(0);
+                    if (mGifAnimList.size() > 0) {
+                        animGif(mGifAnimList.get(0));
+                    } else {
+                        flagIsTotalAnimating = true;
+                    }
                 }
             }
         });
@@ -541,8 +543,10 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             giftAnimView.animate().translationX(animX).setInterpolator(new DecelerateInterpolator())
                     .setDuration(300)
                     .setListener(new Animator.AnimatorListener() {
+
                         @Override
                         public void onAnimationStart(Animator animation) {
+
                         }
 
                         @Override
