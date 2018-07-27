@@ -2,8 +2,10 @@ package com.whzl.mengbi.ui.common;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.support.multidex.MultiDex;
 
+import com.lht.paintview.util.LogUtil;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -16,6 +18,17 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SDKConfig;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
 
 /**
  * @author shaw
@@ -60,6 +73,7 @@ public class BaseApplication extends Application {
          * 预先加载一级列表显示 全国所有城市市的数据
          */
 //        CityListLoader.getInstance().loadCityData(this);
+        initApi();
     }
 
     public static BaseApplication getInstance() {
@@ -101,6 +115,22 @@ public class BaseApplication extends Application {
             classicsFooter.setDrawableSize(20);
             classicsFooter.setPrimaryColorId(R.color.colorCommNotActive);
             return classicsFooter;
+        });
+    }
+
+    public void initApi() {
+        ApiFactory.getInstance().build(getApplicationContext(), URLContentUtils.getBaseUrl(), (Interceptor.Chain chain) -> {
+            Request newRequest = chain.request();
+            okhttp3.Response response = chain.proceed(newRequest);
+            String bodyString = "";
+            if (response.isSuccessful()) {
+                bodyString = response.body().string();
+                LogUtil.d("okhttp = " + bodyString);
+            }
+            okhttp3.Response r = response.newBuilder()
+                    .body(ResponseBody.create(response.body().contentType(), bodyString))
+                    .build();
+            return r;
         });
     }
 }

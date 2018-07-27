@@ -193,7 +193,6 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     @Override
     protected void setupView() {
-        surfaceView.setAlpha(0);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -321,7 +320,6 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
     }
 
     private void initPlayers(String stream) {
-        surfaceView.setAlpha(1);
         try {
             mMasterPlayer.setDataSource(stream);
             mMasterPlayer.prepareAsync();

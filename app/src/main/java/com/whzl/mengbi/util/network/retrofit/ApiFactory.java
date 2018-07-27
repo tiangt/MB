@@ -1,9 +1,11 @@
 package com.whzl.mengbi.util.network.retrofit;
 
 import android.content.Context;
+
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.whzl.mengbi.BuildConfig;
+import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.LogUtils;
 
 import java.io.File;
@@ -47,10 +49,8 @@ public class ApiFactory {
     //  ------- retrofit2.0 -------
     public void build(Context context, String serverUrl, Interceptor interceptor) {
         HttpLoggingInterceptor httpLoggingInterceptor = null;
-        if (BuildConfig.API_DEBUG_ENT) {
-            httpLoggingInterceptor = new HttpLoggingInterceptor(message -> LogUtils.d(message));
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        }
+        httpLoggingInterceptor = new HttpLoggingInterceptor(message -> LogUtil.d("okhttp", message));
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
 

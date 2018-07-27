@@ -146,4 +146,10 @@ public class RegisterActivityNew extends BaseActivityNew implements RegisterView
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cdt.cancel();
+    }
 }

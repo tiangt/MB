@@ -61,7 +61,7 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
                 case INTERNAL_SERVER_ERROR:
                 case BAD_GATEWAY:
                 case SERVICE_UNAVAILABLE:
-                    AsyncRun.run(() -> ToastUtils.showToast("服务端开小差了，请稍后再试"));
+                    ToastUtils.showToast("服务端开小差了，请稍后再试");
                     onError(0);
                     break;
                 case UNAUTHORIZED:
@@ -69,8 +69,7 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
                 case NOT_FOUND:
                 case REQUEST_TIMEOUT:
                 default:
-                    AsyncRun.run(() -> ToastUtils.showToast("网络连接失败，请检查网络设置"));
-                    onError(0);
+                    ToastUtils.showToast("网络连接失败，请检查网络设置");
                     break;
             }
         } else if (e instanceof JsonParseException
@@ -78,22 +77,18 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
                 || e instanceof ParseException) {
 
             //均视为解析错误
-            AsyncRun.run(() -> ToastUtils.showToast("数据异常，请稍后再试"));
-            onError(0);
+            ToastUtils.showToast("数据异常，请稍后再试");
         } else if (e instanceof ConnectException) {
             //均视为网络错误
-            AsyncRun.run(() -> ToastUtils.showToast("网络连接失败，请稍后再试"));
-            onError(0);
+            ToastUtils.showToast("网络连接失败，请稍后再试");
         } else if (e instanceof UnknownHostException
                 || e instanceof SocketTimeoutException) {
-            AsyncRun.run(() -> ToastUtils.showToast("网络连接失败，请检查网络设置"));
-            onError(0);
+            ToastUtils.showToast("网络连接失败，请检查网络设置");
         } else {
             //未知错误
-            AsyncRun.run(() -> ToastUtils.showToast("发生未知错误"));
-            onError(0);
+            ToastUtils.showToast("网络连接失败，请检查网络设置");
         }
-        onComplete();
+        onError(0);
     }
 
     @Override
@@ -103,7 +98,7 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
         }
 
         if (body == null) {
-            AsyncRun.run(() -> ToastUtils.showToast("数据异常，请稍后再试"));
+            ToastUtils.showToast("数据异常，请稍后再试");
             onError(0);
             return;
         } else {
@@ -129,28 +124,25 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
                     }
                 }
             } else {
-                AsyncRun.run(() -> ToastUtils.showToast(body.msg));
+                ToastUtils.showToast(body.msg);
                 onError(body.code);
-
             }
         }
-        onComplete();
     }
-
-    public abstract void onSuccess(T t);
-
-    public abstract void onError(int code);
 
     @Override
     public void onComplete() {
 
     }
 
-
     @Override
     public void onSubscribe(Disposable disposable) {
 
     }
+
+    public abstract void onSuccess(T t);
+
+    public abstract void onError(int code);
 
     /**
      * 检查是否继续，比如activiy已经结束

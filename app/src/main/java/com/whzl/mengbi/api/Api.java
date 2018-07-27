@@ -15,7 +15,7 @@ import retrofit2.http.POST;
  * @date 2018/7/27
  */
 public interface Api {
-    @POST("wish/banner/list")
+    @POST("v1/user/visitor-login")
     @FormUrlEncoded
-    Observable<ApiResult<JsonElement>> test(@FieldMap Map params);
+    Observable<ApiResult<JsonElement>> test(@FieldMap Map<String, String> params);
 }
