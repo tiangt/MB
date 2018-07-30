@@ -2,31 +2,23 @@ package com.whzl.mengbi.ui.common;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 import android.support.multidex.MultiDex;
 
-import com.lht.paintview.util.LogUtil;
 import com.baidu.mobstat.StatService;
+import com.lht.paintview.util.LogUtil;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
-import com.umeng.commonsdk.utils.UMUtils;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SDKConfig;
-import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -67,7 +59,7 @@ public class BaseApplication extends Application {
         CrashHandler.getInstance().init(this);
         channel = WalleChannelReader.getChannel(getApplicationContext());
         if (channel == null) {
-            channel = "mengbi";
+            channel = "";
         }
         initUM();
         /**
