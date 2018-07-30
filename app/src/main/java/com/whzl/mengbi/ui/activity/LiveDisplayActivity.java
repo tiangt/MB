@@ -132,6 +132,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ChatRoomPresenterImpl chatRoomPresenter;
     private GiftInfo mGiftData;
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
+    private static final int TOTAL_CHAT_MSG = 100;
     private RecyclerView.Adapter chatAdapter;
     private boolean isRecyclerScrolling;
     private long mUserId;
@@ -623,6 +624,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
+        if (chatList.size() >= TOTAL_CHAT_MSG) {
+            chatList.remove(0);
+        }
         chatList.add(message);
         if (!isRecyclerScrolling) {
             if (chatAdapter != null && recycler != null) {
