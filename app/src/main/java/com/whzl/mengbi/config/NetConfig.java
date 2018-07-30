@@ -20,4 +20,7 @@ public interface NetConfig {
     String LEVEL_TYPE_USER = "USER_LEVEL";
     String USER_TYPE_ANCHOR = "ANCHOR";
     String FORCE_UPDATE = "FORCE";
+    String APPKEY = "mb_android";
+    String APPSECRET = "3b2d8c0d1d88d44f1ef99b015caa5fe4";
+    String CLIENTTYPE = "ANDROID";
 }

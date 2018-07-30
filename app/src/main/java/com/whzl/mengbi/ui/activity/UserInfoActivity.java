@@ -141,7 +141,7 @@ public class UserInfoActivity extends BaseActivityNew implements UserInfoView {
             long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
             if (levelType.equals("ANCHOR_LEVEL") && !levelList.getExpList().isEmpty()) {
                 mAnchorLevel.append("离升级还差");
-                mAnchorLevel.append(LightSpanString.getLightString( sjNeedValue + "", Color.parseColor("#f1275b")));
+                mAnchorLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#f1275b")));
                 mAnchorLevel.append("主播经验");
                 mAnchorImg.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelList.getLevelValue()));
             } else if (levelType.equals("USER_LEVEL") && !levelList.getExpList().isEmpty()) {
