@@ -23,7 +23,7 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -95,6 +95,9 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
+                        if(isDetached()){
+                            return;
+                        }
                         String jsonStr = result.toString();
                         AnchorFollowedDataBean anchorFollowedDataBean = GsonUtils.GsonToBean(jsonStr, AnchorFollowedDataBean.class);
                         loadSuccess(anchorFollowedDataBean);
@@ -203,7 +206,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
-            Intent intent = new Intent(getContext(), LiveDisplayActivityNew.class);
+            Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, anchorInfoBean.programId);
             startActivity(intent);
         }
@@ -234,6 +237,9 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
+                        if(isDetached()){
+                            return;
+                        }
                         String jsonStr = result.toString();
                         ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
                         if (responseInfo.getCode() == 200) {

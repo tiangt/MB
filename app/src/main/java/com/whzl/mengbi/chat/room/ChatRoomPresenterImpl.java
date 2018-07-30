@@ -14,7 +14,7 @@ import com.whzl.mengbi.chat.room.message.LoginMessage;
 import com.whzl.mengbi.chat.room.message.MessageRouter;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -207,7 +207,7 @@ public class ChatRoomPresenterImpl{
     }
 
     private void updateUI(final Context context, String msg) {
-        LiveDisplayActivityNew activity = (LiveDisplayActivityNew)context;
+        LiveDisplayActivity activity = (LiveDisplayActivity)context;
         if (null == activity) {
             return;
         }

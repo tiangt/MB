@@ -32,7 +32,7 @@ android {
         }
 
         debug {
-            buildConfigField("boolean", "API_DEBUG_ENT", "false")
+            buildConfigField("boolean", "API_DEBUG_ENT", "true")
             manifestPlaceholders = [appName: "萌比直播dev"]
             minifyEnabled false
             shrinkResources false
@@ -111,15 +111,13 @@ dependencies {
     //没有使用特殊Header，可以不加这行
     implementation 'com.android.support:multidex:1.0.3'
     //知乎开源相册选择
-//    implementation 'com.zhihu.android:matisse:0.4.3'
+    // implementation 'com.zhihu.android:matisse:0.4.3'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
-    //时间滚动选择
-    //implementation 'com.contrarywind:Android-PickerView:3.2.5'
-    //地区滚动选择
-    //implementation 'liji.library.dev:citypickerview:3.1.8'
+    //滚动选择
+    implementation 'com.contrarywind:Android-PickerView:4.1.2'
     //友盟基础组件
     implementation 'com.umeng.sdk:common:1.5.3'
     implementation 'com.umeng.sdk:utdid:1.1.5.3'

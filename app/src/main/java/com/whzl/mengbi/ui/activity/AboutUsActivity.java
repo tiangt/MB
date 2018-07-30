@@ -1,23 +1,21 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.text.SpannableString;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.StringUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * @author shaw
  * @date 2018/7/24
  */
-public class AboutUsActivity extends BaseActivityNew {
+public class AboutUsActivity extends BaseActivity {
     @BindView(R.id.tv_home)
     TextView tvHome;
     @BindView(R.id.tv_version_name)

@@ -205,7 +205,7 @@
 
         <activity android:name=".ui.activity.camera.Camera2Activity"></activity>
         <activity
-            android:name=".ui.activity.LiveDisplayActivityNew"
+            android:name=".ui.activity.LiveDisplayActivity"
             android:windowSoftInputMode="adjustNothing">
 
         </activity>
@@ -237,13 +237,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.UserInfoNickNameActivity"
+            android:name=".ui.activity.NickNameModifyActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!--个人信息-->
         <!--修改性别-->
         <activity
-            android:name=".ui.activity.UserInfoSexActivity"
+            android:name=".ui.activity.GenderModifyActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <!--修改昵称-->

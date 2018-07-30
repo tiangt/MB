@@ -14,7 +14,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -39,13 +39,12 @@ import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * @author shaw
  * @date 2018/7/18
  */
-public class MainActivity extends BaseActivityNew {
+public class MainActivity extends BaseActivity {
     @BindView(R.id.rg_tab)
     RadioGroup rgTab;
     private Fragment[] fragments;

@@ -1,37 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/font_color_49"
-    tools:context=".ui.activity.UserInfoSexActivity">
+    android:orientation="vertical">
 
     <include
-        android:id="@+id/user_info_sex_include"
-        layout="@layout/activity_base_toolbar"/>
+        layout="@layout/comm_toolbar"/>
 
     <RadioGroup
-        android:id="@+id/user_info_sex_rg"
+        android:id="@+id/rg_gender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/font_color_51"
-        android:layout_below="@id/user_info_sex_include">
+        android:background="@color/font_color_51">
         <RadioButton
-            android:id="@+id/user_info_sex_m_rb"
+            android:id="@+id/rb_men"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y28"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_marginRight="@dimen/x18"
-            android:checked="true"
+            android:layout_height="45dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="17dp"
             android:text="@string/user_info_sex_m"
             android:textStyle="bold"
             android:textSize="@dimen/font_size_30px"
             android:textColor="@color/font_color_47"
-            android:drawablePadding="@dimen/x7"
             android:drawableRight="@drawable/selector_pay_way_rb"
-            android:button="@null"/>
+            android:button="@null" />
 
         <View
             android:layout_width="match_parent"
@@ -39,17 +33,16 @@
             android:background="@color/font_color_49"/>
 
         <RadioButton
-            android:id="@+id/user_info_sex_w_rb"
+            android:id="@+id/rb_women"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y28"
-            android:layout_marginLeft="@dimen/x16"
-            android:layout_marginRight="@dimen/x18"
+            android:layout_height="45dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="17dp"
             android:text="@string/user_info_sex_w"
             android:textStyle="bold"
             android:textSize="@dimen/font_size_30px"
             android:textColor="@color/font_color_47"
-            android:drawablePadding="@dimen/x7"
             android:drawableRight="@drawable/selector_pay_way_rb"
             android:button="@null"/>
     </RadioGroup>
-</RelativeLayout>
+</LinearLayout>

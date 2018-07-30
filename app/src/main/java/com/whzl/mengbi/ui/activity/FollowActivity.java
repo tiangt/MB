@@ -23,7 +23,7 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -45,7 +45,7 @@ import butterknife.ButterKnife;
  * @author shaw
  * @date 2018/7/23
  */
-public class FollowActivity extends BaseActivityNew implements OnRefreshListener, OnLoadMoreListener {
+public class FollowActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener {
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.refresh_layout)
@@ -201,7 +201,7 @@ public class FollowActivity extends BaseActivityNew implements OnRefreshListener
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
-            Intent intent = new Intent(FollowActivity.this, LiveDisplayActivityNew.class);
+            Intent intent = new Intent(FollowActivity.this, LiveDisplayActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, anchorInfoBean.programId);
             startActivity(intent);
         }

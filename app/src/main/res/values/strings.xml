@@ -242,5 +242,8 @@
     <string name="login_out">退出登录</string>
     <string name="about_us">关于我们</string>
     <string name="custom">客服中心</string>
+    <string name="nick_name">昵称</string>
+    <string name="save">保存</string>
+    <string name="gender">性别</string>
 
 </resources>

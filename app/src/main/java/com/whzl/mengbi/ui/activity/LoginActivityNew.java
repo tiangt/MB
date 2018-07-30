@@ -1,8 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
-import android.app.Application;
 import android.content.Intent;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,7 +17,7 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.LoginView;
 import com.whzl.mengbi.util.EncryptUtils;
@@ -27,7 +25,6 @@ import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
-import com.whzl.mengbi.util.network.RequestManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +36,7 @@ import butterknife.OnClick;
  * @author shaw
  * @date 2018/7/17
  */
-public class LoginActivityNew extends BaseActivityNew implements LoginView {
+public class LoginActivityNew extends BaseActivity implements LoginView {
 
     private static final int REQUEST_REGISTER = 520;
     @BindView(R.id.et_phone)
@@ -184,7 +181,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
     @Override
     protected void onToolbarMenuClick() {
         super.onToolbarMenuClick();
-        Intent intent = new Intent(this, RegisterActivityNew.class);
+        Intent intent = new Intent(this, RegisterActivity.class);
         startActivityForResult(intent, REQUEST_REGISTER);
     }
 
@@ -219,7 +216,7 @@ public class LoginActivityNew extends BaseActivityNew implements LoginView {
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, userInfo.getData().getNickname());
-        if (LiveDisplayActivityNew.class.toString().equals(activityFrom)) {
+        if (LiveDisplayActivity.class.toString().equals(activityFrom)) {
             setResult(RESULT_OK);
         }
         finish();

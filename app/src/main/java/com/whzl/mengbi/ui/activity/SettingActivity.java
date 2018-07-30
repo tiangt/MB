@@ -3,7 +3,6 @@ package com.whzl.mengbi.ui.activity;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,10 +10,9 @@ import android.widget.TextView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
-import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -25,14 +23,12 @@ import com.whzl.mengbi.util.AsyncRun;
 import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -41,7 +37,7 @@ import io.reactivex.disposables.Disposable;
  * @author shaw
  * @date 2018/7/24
  */
-public class SettingActivity extends BaseActivityNew {
+public class SettingActivity extends BaseActivity {
     @BindView(R.id.tv_version_name)
     TextView tvVersionName;
     @BindView(R.id.btn_login_out)

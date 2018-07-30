@@ -73,7 +73,6 @@ public class BaseApplication extends Application {
         /**
          * 预先加载一级列表显示 全国所有城市市的数据
          */
-//        CityListLoader.getInstance().loadCityData(this);
         initApi();
         StatService.setDebugOn(true);
         StatService.setAppChannel(this, channel, true);
@@ -107,9 +106,7 @@ public class BaseApplication extends Application {
     static {
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> {
-            //全局设置主题颜色
             layout.setPrimaryColorsId(R.color.colorCommNotActive);
-            //.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
             return new ClassicsHeader(context);
         });
         //设置全局的Footer构建器

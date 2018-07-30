@@ -22,7 +22,7 @@ import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -40,7 +40,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -152,7 +151,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                     ToastUtils.showToast("礼物数量不能为0");
                     return;
                 }
-                ((LiveDisplayActivityNew) getActivity()).sendGift(giftCount, giftDetailInfoBean.getGoodsId());
+                ((LiveDisplayActivity) getActivity()).sendGift(giftCount, giftDetailInfoBean.getGoodsId());
                 break;
             case R.id.btn_count_confirm:
                 KeyBoardUtil.closeKeybord(etCount, getContext());

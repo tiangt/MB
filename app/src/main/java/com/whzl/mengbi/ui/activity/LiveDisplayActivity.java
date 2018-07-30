@@ -49,7 +49,7 @@ import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
@@ -85,7 +85,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
  * @author shaw
  * @date 2018/7/6
  */
-public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView {
+public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
     @BindView(R.id.tv_host_name)
@@ -218,7 +218,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View item = LayoutInflater.from(LiveDisplayActivityNew.this).inflate(R.layout.chat_text, null);
+                View item = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.chat_text, null);
                 return new SingleTextViewHolder(item);
             }
 
@@ -295,9 +295,9 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float animatedValue = ((float) animation.getAnimatedValue());
-                    tvLuckyGift.setTranslationX(-UIUtil.dip2px(LiveDisplayActivityNew.this, animatedValue));
+                    tvLuckyGift.setTranslationX(-UIUtil.dip2px(LiveDisplayActivity.this, animatedValue));
                     if (animatedValue == 360) {
-                        tvLuckyGift.setTranslationX(UIUtil.dip2px(LiveDisplayActivityNew.this, 360));
+                        tvLuckyGift.setTranslationX(UIUtil.dip2px(LiveDisplayActivity.this, 360));
                         mLuckGiftList.remove(0);
                         if (mLuckGiftList.size() > 0) {
                             showLuckyGift(mLuckGiftList.get(0));
@@ -308,6 +308,16 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
                 }
             });
             valueAnimator.start();
+        };
+
+        mGifAction = () -> {
+            ivGiftGif.setVisibility(View.GONE);
+            mGifAnimList.remove(0);
+            if (mGifAnimList.size() > 0) {
+                animGif(mGifAnimList.get(0));
+            } else {
+                flagIsGifAnimating = false;
+            }
         };
     }
 
@@ -390,7 +400,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
 
     @Override
     public void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo) {
-        chatRoomPresenter.setupConnection(liveRoomTokenInfo, LiveDisplayActivityNew.this);
+        chatRoomPresenter.setupConnection(liveRoomTokenInfo, LiveDisplayActivity.this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -487,29 +497,25 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         GlideImageLoader.getInstace().loadGif(getApplicationContext(), animEvent.getAnimUrl(), ivGiftGif, new GlideImageLoader.GifListener() {
             @Override
             public void onResourceReady() {
-                mGifAction = () -> {
-                    ivGiftGif.setVisibility(View.GONE);
-                    mGifAnimList.remove(0);
-                    if (mGifAnimList.size() > 0) {
-                        animGif(mGifAnimList.get(0));
-                    } else {
-                        flagIsGifAnimating = false;
-                    }
-                };
+                if (isFinishing()) {
+                    return;
+                }
                 ivGiftGif.postDelayed(mGifAction, ((long) (animEvent.getSeconds() * 1000)));
             }
 
             @Override
             public void onFail() {
-                if (!isFinishing()) {
-                    ivGiftGif.setVisibility(View.GONE);
-                    mGifAnimList.remove(0);
-                    if (mGifAnimList.size() > 0) {
-                        animGif(mGifAnimList.get(0));
-                    } else {
-                        flagIsTotalAnimating = true;
-                    }
+                if (isFinishing()) {
+                    return;
                 }
+                ivGiftGif.setVisibility(View.GONE);
+                mGifAnimList.remove(0);
+                if (mGifAnimList.size() > 0) {
+                    animGif(mGifAnimList.get(0));
+                } else {
+                    flagIsTotalAnimating = true;
+                }
+
             }
         });
     }
@@ -539,7 +545,7 @@ public class LiveDisplayActivityNew extends BaseActivityNew implements LiveView 
         tvAnimGiftCount.setText("x " + context.getGiftTotalCount());
         giftAnimView.post(() -> {
             int animGiftWidth = giftAnimView.getWidth();
-            int animX = UIUtil.dip2px(LiveDisplayActivityNew.this, 13.5f) + animGiftWidth;
+            int animX = UIUtil.dip2px(LiveDisplayActivity.this, 13.5f) + animGiftWidth;
             giftAnimView.animate().translationX(animX).setInterpolator(new DecelerateInterpolator())
                     .setDuration(300)
                     .setListener(new Animator.AnimatorListener() {

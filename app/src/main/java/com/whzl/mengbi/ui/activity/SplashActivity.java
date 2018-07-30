@@ -3,16 +3,13 @@ package com.whzl.mengbi.ui.activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
-import com.google.gson.JsonElement;
 import com.lht.paintview.util.LogUtil;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.CheckLoginResultBean;
-import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.TimeStampInfo;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.GsonUtils;
@@ -21,12 +18,6 @@ import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
-import com.whzl.mengbi.util.network.retrofit.ApiFactory;
-import com.whzl.mengbi.util.network.retrofit.ApiObserver;
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -39,7 +30,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author shaw
  * @date 2018/7/17
  */
-public class SplashActivity extends BaseActivityNew {
+public class SplashActivity extends BaseActivity {
 
 
     private String deviceId;
