@@ -142,6 +142,17 @@
         android:layout_marginLeft="15dp" />
 
     <TextView
+        android:id="@+id/tv_watch_history"
+        style="@style/me_option_item"
+        android:drawableLeft="@drawable/me_clock_icon"
+        android:text="观看记录" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp" />
+
+    <TextView
         android:id="@+id/tv_setting"
         style="@style/me_option_item"
         android:drawableLeft="@drawable/settings"

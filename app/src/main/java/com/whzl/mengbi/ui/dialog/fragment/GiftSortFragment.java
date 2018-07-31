@@ -28,6 +28,7 @@ public class GiftSortFragment extends BaseFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
     private LiveHouseGiftAdapter giftAdapter;
+    private boolean flagOnMessageEvent = true;
 
 
     public static GiftSortFragment newInstance(ArrayList<GiftInfo.GiftDetailInfoBean> giftList) {
@@ -55,6 +56,7 @@ public class GiftSortFragment extends BaseFragment {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 giftAdapter.setSelectedPosition(position);
                 GiftInfo.GiftDetailInfoBean giftDetailInfoBean = giftList.get(position);
+                flagOnMessageEvent = false;
                 EventBus.getDefault().post(new GiftSelectedEvent(giftDetailInfoBean));
             }
 
@@ -74,9 +76,11 @@ public class GiftSortFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GiftSelectedEvent event) {
-        if (getUserVisibleHint()) {
+        if(!flagOnMessageEvent){
+            flagOnMessageEvent = true;
             return;
         }
+        flagOnMessageEvent = false;
         giftAdapter.setSelectedPosition(-1);
     }
 }

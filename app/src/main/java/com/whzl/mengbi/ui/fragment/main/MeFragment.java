@@ -18,6 +18,7 @@ import com.whzl.mengbi.ui.activity.FollowActivity;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
+import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.MeView;
@@ -131,7 +132,7 @@ public class MeFragment extends BaseFragment implements MeView {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.btn_recharge, R.id.tv_my_follow, R.id.tv_setting, R.id.btn_edit})
+    @OnClick({R.id.btn_recharge, R.id.tv_my_follow, R.id.tv_setting, R.id.btn_edit, R.id.tv_watch_history})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_recharge:
@@ -145,9 +146,18 @@ public class MeFragment extends BaseFragment implements MeView {
                 break;
             case R.id.btn_edit:
                 jumpToPersonalInfoActivity();
+                break;
+            case R.id.tv_watch_history:
+                jumpToWatchHistoryActivity();
+                break;
             default:
                 break;
         }
+    }
+
+    private void jumpToWatchHistoryActivity() {
+        Intent intent = new Intent(getContext(), WatchHistoryActivity.class);
+        startActivity(intent);
     }
 
     private void jumpToFollowActivity() {

@@ -275,5 +275,6 @@
         <activity android:name=".ui.activity.RegisterActivityNew" />
         <activity android:name=".ui.activity.SettingActivity" />
         <activity android:name=".ui.activity.AboutUsActivity" />
+        <activity android:name=".ui.activity.WatchHistoryActivity" />
     </application>
 </manifest>

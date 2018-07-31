@@ -116,6 +116,9 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
+                        if (isFinishing()) {
+                            return;
+                        }
                         String jsonStr = result.toString();
                         AnchorFollowedDataBean anchorFollowedDataBean = GsonUtils.GsonToBean(jsonStr, AnchorFollowedDataBean.class);
                         loadSuccess(anchorFollowedDataBean);
@@ -141,7 +144,7 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
                 adapter.notifyDataSetChanged();
                 if (mAnchorList.size() > 0) {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
-                }else {
+                } else {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
                 }
                 refreshLayout.postDelayed(new Runnable() {
@@ -158,7 +161,7 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
         } else {
             if (mAnchorList.size() > 0) {
                 adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
-            }else {
+            } else {
                 adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             }
             refreshLayout.postDelayed(new Runnable() {

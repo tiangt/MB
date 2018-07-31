@@ -98,7 +98,7 @@ public class BaseApplication extends Application {
     static {
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> {
-            layout.setPrimaryColorsId(R.color.colorCommNotActive);
+            layout.setPrimaryColorsId(R.color.appBg);
             return new ClassicsHeader(context);
         });
         //设置全局的Footer构建器
@@ -106,7 +106,7 @@ public class BaseApplication extends Application {
             //指定为经典Footer，默认是 BallPulseFooter
             ClassicsFooter classicsFooter = new ClassicsFooter(context);
             classicsFooter.setDrawableSize(20);
-            classicsFooter.setPrimaryColorId(R.color.colorCommNotActive);
+            classicsFooter.setPrimaryColorId(R.color.appBg);
             return classicsFooter;
         });
     }

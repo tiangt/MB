@@ -21,6 +21,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -110,8 +112,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageButton btnChat;
     @BindView(R.id.btn_send_gift)
     ImageButton btnSendGift;
-    @BindView(R.id.gift_anim_view)
-    RelativeLayout giftAnimView;
+    //    @BindView(R.id.gift_anim_view)
+//    RelativeLayout giftAnimView;
+    @BindView(R.id.ll_gift_container)
+    LinearLayout llGiftContainer;
     @BindView(R.id.btn_contribute)
     Button btnContribute;
     @BindView(R.id.btn_close)
@@ -122,8 +126,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvStopTip;
     @BindView(R.id.tv_run_way_gift)
     TextView tvRunWayGift;
-    @BindView(R.id.rl_info_container)
-    RelativeLayout rlInfoContainer;
+    //    @BindView(R.id.rl_info_container)
+//    RelativeLayout rlInfoContainer;
     @BindView(R.id.tv_lucky_gift)
     TextView tvLuckyGift;
     private LivePresenterImpl mLivePresenter;
@@ -153,6 +157,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private volatile ArrayList<LuckGiftEvent> mLuckGiftList = new ArrayList<>();
     private Runnable mLuckyGiftAction;
     private long coin;
+    private GiftControl giftControl;
 
     @Override
     protected void setupContentView() {
@@ -189,10 +194,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 return false;
             }
         });
+        giftControl = new GiftControl(this);
     }
 
     @Override
     protected void setupView() {
+        giftControl.setGiftLayout(llGiftContainer, 2).setHideMode(false);
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
@@ -268,7 +275,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initAction() {
         mTotalGiftAnimAction = () -> {
-            giftAnimView.setTranslationX(0);
+//            giftAnimView.setTranslationX(0);
             flagIsTotalAnimating = false;
             if (mTotalAnimList.size() > 0) {
                 mTotalAnimList.remove(0);
@@ -440,11 +447,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(AnimEvent animEvent) {
         if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())) {
             AnimJson animJson = animEvent.getAnimJson();
-            animJson.setGiftUrl(animEvent.getAnimUrl());
-            mTotalAnimList.add(animJson);
-            if (!flagIsTotalAnimating) {
-                animGift(mTotalAnimList.get(0));
-            }
+            animJson.getContext().setGiftUrl(animEvent.getAnimUrl());
+            giftControl.loadGift(animJson.getContext());
+//            mTotalAnimList.add(animJson);
+//            if (!flagIsTotalAnimating) {
+//                animGift(mTotalAnimList.get(0));
+//            }
         } else {
             double seconds = 0;
             if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
@@ -521,93 +529,93 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         });
     }
 
-    @BindView(R.id.iv_anim_gift_avatar)
-    CircleImageView ivAnimGiftAvatar;
-    @BindView(R.id.tv_anim_gift_form)
-    TextView tvAnimGiftForm;
-    @BindView(R.id.tv_anim_gift_name)
-    TextView tvAnimGiftName;
-    @BindView(R.id.iv_anim_gift_icon)
-    ImageView ivAnimGiftIcon;
-    @BindView(R.id.tv_anim_gift_count)
-    TextView tvAnimGiftCount;
+//    @BindView(R.id.iv_anim_gift_avatar)
+//    CircleImageView ivAnimGiftAvatar;
+//    @BindView(R.id.tv_anim_gift_form)
+//    TextView tvAnimGiftForm;
+//    @BindView(R.id.tv_anim_gift_name)
+//    TextView tvAnimGiftName;
+//    @BindView(R.id.iv_anim_gift_icon)
+//    ImageView ivAnimGiftIcon;
+//    @BindView(R.id.tv_anim_gift_count)
+//    TextView tvAnimGiftCount;
 
     private synchronized void animGift(AnimJson animJson) {
-        flagIsTotalAnimating = true;
-        AnimJson.ContextEntity context = animJson.getContext();
-        giftAnimView.setVisibility(View.VISIBLE);
-        String avatarUrl = ImageUrl.getAvatarUrl(context.getUserId(), "jpg", context.getLastUpdateTime());
-        GlideImageLoader.getInstace().displayImage(this, avatarUrl, ivAnimGiftAvatar);
-        GlideImageLoader.getInstace().displayImage(this, animJson.getGiftUrl(), ivAnimGiftIcon);
-        tvAnimGiftForm.setText(context.getNickname());
-        SpannableString span = new SpannableString("送 " + context.getGoodsName());
-        span.setSpan(new ForegroundColorSpan(Color.parseColor("#fe4b22")), 2, span.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        tvAnimGiftName.setText(span);
-        tvAnimGiftCount.setText("x " + context.getGiftTotalCount());
-        giftAnimView.post(() -> {
-            int animGiftWidth = giftAnimView.getWidth();
-            int animX = UIUtil.dip2px(LiveDisplayActivity.this, 13.5f) + animGiftWidth;
-            giftAnimView.animate().translationX(animX).setInterpolator(new DecelerateInterpolator())
-                    .setDuration(300)
-                    .setListener(new Animator.AnimatorListener() {
-
-                        @Override
-                        public void onAnimationStart(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            if (mTotalAnimList.size() > 1) {
-                                long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
-                                int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
-                                AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
-                                long nextUserId = nextContext.getUserId();
-                                int nextGoodId = nextContext.getGoodsId();
-                                if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
-                                    comboCache();
-                                } else {
-                                    giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
-                                }
-                            } else {
-                                giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
-                            }
-                        }
-
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animator animation) {
-
-                        }
-                    })
-                    .start();
-        });
+//        flagIsTotalAnimating = true;
+//        AnimJson.ContextEntity context = animJson.getContext();
+////        giftAnimView.setVisibility(View.VISIBLE);
+//        String avatarUrl = ImageUrl.getAvatarUrl(context.getUserId(), "jpg", context.getLastUpdateTime());
+//        GlideImageLoader.getInstace().displayImage(this, avatarUrl, ivAnimGiftAvatar);
+//        GlideImageLoader.getInstace().displayImage(this, animJson.getGiftUrl(), ivAnimGiftIcon);
+//        tvAnimGiftForm.setText(context.getNickname());
+//        SpannableString span = new SpannableString("送 " + context.getGoodsName());
+//        span.setSpan(new ForegroundColorSpan(Color.parseColor("#fe4b22")), 2, span.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        tvAnimGiftName.setText(span);
+//        tvAnimGiftCount.setText("x " + context.getGiftTotalCount());
+//        giftAnimView.post(() -> {
+//            int animGiftWidth = giftAnimView.getWidth();
+//            int animX = UIUtil.dip2px(LiveDisplayActivity.this, 13.5f) + animGiftWidth;
+////            giftAnimView.animate().translationX(animX).setInterpolator(new DecelerateInterpolator())
+//                    .setDuration(300)
+//                    .setListener(new Animator.AnimatorListener() {
+//
+//                        @Override
+//                        public void onAnimationStart(Animator animation) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            if (mTotalAnimList.size() > 1) {
+//                                long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+//                                int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
+//                                AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
+//                                long nextUserId = nextContext.getUserId();
+//                                int nextGoodId = nextContext.getGoodsId();
+//                                if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
+//                                    comboCache();
+//                                } else {
+//                                    giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
+//                                }
+//                            } else {
+//                                giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onAnimationCancel(Animator animation) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onAnimationRepeat(Animator animation) {
+//
+//                        }
+//                    })
+//                    .start();
+//        });
     }
 
     private synchronized void comboCache() {
-        AnimJson.ContextEntity comboContext = mTotalAnimList.get(1).getContext();
-        mTotalAnimList.remove(0);
-        giftAnimView.removeCallbacks(mTotalGiftAnimAction);
-        tvAnimGiftCount.setText("x " + comboContext.getGiftTotalCount());
-        scaleAnim(tvAnimGiftCount);
-        if (mTotalAnimList.size() > 1) {
-            long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
-            int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
-            AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
-            long nextUserId = nextContext.getUserId();
-            int nextGoodId = nextContext.getGoodsId();
-            if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
-                giftAnimView.postDelayed(mCacheComboAction, 200);
-            } else {
-                giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
-            }
-        } else {
-            giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
-        }
+//        AnimJson.ContextEntity comboContext = mTotalAnimList.get(1).getContext();
+//        mTotalAnimList.remove(0);
+//        giftAnimView.removeCallbacks(mTotalGiftAnimAction);
+//        tvAnimGiftCount.setText("x " + comboContext.getGiftTotalCount());
+//        scaleAnim(tvAnimGiftCount);
+//        if (mTotalAnimList.size() > 1) {
+//            long animatingUserId = mTotalAnimList.get(0).getContext().getUserId();
+//            int animatingGoodsId = mTotalAnimList.get(0).getContext().getGoodsId();
+//            AnimJson.ContextEntity nextContext = mTotalAnimList.get(1).getContext();
+//            long nextUserId = nextContext.getUserId();
+//            int nextGoodId = nextContext.getGoodsId();
+//            if (animatingGoodsId == nextGoodId && animatingUserId == nextUserId) {
+//                giftAnimView.postDelayed(mCacheComboAction, 200);
+//            } else {
+//                giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
+//            }
+//        } else {
+//            giftAnimView.postDelayed(mTotalGiftAnimAction, 2500);
+//        }
     }
 
     private void scaleAnim(View view) {
@@ -758,8 +766,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void onDestroy() {
         //ToastUtils.showToast("LiveDisplayActivityNew destory");
-        giftAnimView.removeCallbacks(mTotalGiftAnimAction);
-        giftAnimView.removeCallbacks(mCacheComboAction);
+//        giftAnimView.removeCallbacks(mTotalGiftAnimAction);
+//        giftAnimView.removeCallbacks(mCacheComboAction);
         ivGiftGif.removeCallbacks(mGifAction);
         tvRunWayGift.removeCallbacks(mRunWayAction);
         tvLuckyGift.removeCallbacks(mLuckyGiftAction);

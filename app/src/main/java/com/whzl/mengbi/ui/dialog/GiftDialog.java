@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -26,7 +27,9 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.ui.dialog.fragment.BackpackFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GiftSortMotherFragment;
+import com.whzl.mengbi.ui.fragment.main.HomeFragmentNew;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.ui.widget.view.NoScrollViewPager;
@@ -54,8 +57,8 @@ public class GiftDialog extends BaseAwesomeDialog {
     private long coin;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
-    @BindView(R.id.viewpager)
-    NoScrollViewPager viewpager;
+    //    @BindView(R.id.viewpager)
+//    NoScrollViewPager viewpager;
     @BindView(R.id.tv_count)
     TextView tvCount;
     @BindView(R.id.btn_send_gift)
@@ -74,6 +77,8 @@ public class GiftDialog extends BaseAwesomeDialog {
     private CommonAdapter<GiftCountInfoBean> adapter;
     private PopupWindow popupWindow;
     private GiftInfo.GiftDetailInfoBean giftDetailInfoBean;
+    private int currentSelectedIndex;
+    private ArrayList<Fragment> fragments;
 
     public static BaseAwesomeDialog newInstance(GiftInfo giftInfo, long coin) {
         Bundle args = new Bundle();
@@ -105,28 +110,68 @@ public class GiftDialog extends BaseAwesomeDialog {
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         coin = getArguments().getLong("coin");
         mGiftInfo = getArguments().getParcelable("gift_info");
-        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
         if (mGiftInfo.getData().getRecommend() != null) {
             fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getRecommend()));
             titles.add("推荐");
+            tabLayout.addTab(tabLayout.newTab().setText("推荐"));
         }
         if (mGiftInfo.getData().getLucky() != null) {
             fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLucky()));
             titles.add("幸运");
+            tabLayout.addTab(tabLayout.newTab().setText("幸运"));
         }
         if (mGiftInfo.getData().getCommon() != null) {
             fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getCommon()));
             titles.add("普通");
+            tabLayout.addTab(tabLayout.newTab().setText("普通"));
         }
         if (mGiftInfo.getData().getLuxury() != null) {
             fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLuxury()));
             titles.add("豪华");
+            tabLayout.addTab(tabLayout.newTab().setText("豪华"));
         }
-        viewpager.setOffscreenPageLimit(titles.size());
-        viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
-        tabLayout.setupWithViewPager(viewpager);
+        fragments.add(BackpackFragment.newInstance());
+        tabLayout.addTab(tabLayout.newTab().setText("背包"));
+//        viewpager.setOffscreenPageLimit(titles.size());
+//        viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         tvAmount.setText(coin + "");
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                setTabChange(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.container, fragments.get(0));
+        fragmentTransaction.commit();
+    }
+
+    private void setTabChange(int index) {
+        if (index == currentSelectedIndex) {
+            return;
+        }
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.hide(fragments.get(currentSelectedIndex));
+        if (fragments.get(index).isAdded()) {
+            fragmentTransaction.show(fragments.get(index));
+        } else {
+            fragmentTransaction.add(R.id.container, fragments.get(index));
+        }
+        fragmentTransaction.commit();
+        currentSelectedIndex = index;
     }
 
     @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm, R.id.tv_top_up})
@@ -219,6 +264,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     tvCount.setText(giftCountInfoList.get(position).count + "");
+                    popupWindow.dismiss();
                 }
 
                 @Override

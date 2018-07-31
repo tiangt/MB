@@ -1,10 +1,15 @@
 package com.whzl.mengbi.util.network.retrofit;
 
+import android.app.Activity;
+import android.content.Context;
 import android.net.ParseException;
+import android.support.v4.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+import com.whzl.mengbi.chat.room.message.messageJson.SubProgramJson;
+import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
 import com.whzl.mengbi.util.AsyncRun;
 import com.whzl.mengbi.util.GenericUtil;
 import com.whzl.mengbi.util.ToastUtils;
@@ -36,15 +41,24 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
     private static final int SERVICE_UNAVAILABLE = 503;
     private static final int GATEWAY_TIMEOUT = 504;
 
-    private static final String TAG = "ApiCallback";
+    private Activity activity;
 
     private Gson gson = new Gson();
+    private Fragment fragment;
 
-    public ApiObserver() {
+    public ApiObserver(Activity activity) {
+        this.activity = activity;
+    }
+
+    public ApiObserver(Fragment fragment) {
+        this.fragment = fragment;
     }
 
     @Override
     public void onError(Throwable e) {
+        if (!isAlive()) {
+            return;
+        }
         e.printStackTrace();
         Throwable throwable = e;
         //获取最根源的异常
@@ -132,7 +146,8 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
 
     @Override
     public void onComplete() {
-
+        activity = null;
+        fragment = null;
     }
 
     @Override
@@ -150,6 +165,13 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
      * @return
      */
     protected boolean isAlive() {
-        return true;
+        boolean isAlive = true;
+        if (activity != null) {
+            isAlive = !activity.isFinishing();
+        }
+        if (fragment != null) {
+            isAlive = !fragment.isDetached();
+        }
+        return isAlive;
     }
 }

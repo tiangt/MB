@@ -1,6 +1,7 @@
 package com.whzl.mengbi.api;
 
-import com.google.gson.JsonElement;
+import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.WatchHistoryListBean;
 import com.whzl.mengbi.util.network.retrofit.ApiResult;
 
 import java.util.Map;
@@ -15,7 +16,23 @@ import retrofit2.http.POST;
  * @date 2018/7/27
  */
 public interface Api {
-    @POST("v1/user/visitor-login")
+
+
+    /**
+     * 观看记录
+     * @param params
+     * @return
+     */
+    @POST("v1/user/watch-record")
     @FormUrlEncoded
-    Observable<ApiResult<JsonElement>> test(@FieldMap Map<String, String> params);
+    Observable<ApiResult<WatchHistoryListBean>> getWatchHistory(@FieldMap Map<String, String> params);
+
+    /**
+     * 背包
+     * @param params
+     * @return
+     */
+    @POST("v1/consume/user-combine-gift")
+    @FormUrlEncoded
+    Observable<ApiResult<BackpackListBean>> getBackpack(@FieldMap Map<String, String> params);
 }

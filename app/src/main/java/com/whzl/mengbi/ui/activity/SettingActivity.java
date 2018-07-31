@@ -1,7 +1,9 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -82,8 +84,7 @@ public class SettingActivity extends BaseActivity {
                 });
                 break;
             case R.id.btn_login_out:
-                btnLoginOut.setEnabled(false);
-                logOut();
+                showConfirmDialog();
                 break;
             case R.id.tv_feedback:
                 break;
@@ -96,6 +97,15 @@ public class SettingActivity extends BaseActivity {
                 startActivity(aboutIntent);
                 break;
         }
+    }
+
+    private void showConfirmDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("提示");
+        dialog.setMessage("是否确定退出登录");
+        dialog.setNegativeButton("取消", null);
+        dialog.setPositiveButton("确定", (dialog1, which) -> logOut());
+        dialog.show();
     }
 
     private void showDudateDialog(UpdateInfoBean.PhoneBean phone) {
@@ -177,7 +187,6 @@ public class SettingActivity extends BaseActivity {
             @Override
             public void onReqFailed(String errorMsg) {
                 LogUtils.d(errorMsg);
-                btnLoginOut.setEnabled(true);
             }
         });
     }

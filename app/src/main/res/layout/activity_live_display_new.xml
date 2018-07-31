@@ -113,11 +113,11 @@
                 android:id="@+id/tv_run_way_gift"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:layout_toRightOf="@id/btn_contribute"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="18dp"
-                android:visibility="gone"/>
+                android:layout_toRightOf="@id/btn_contribute"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_close"
@@ -140,31 +140,32 @@
             <SurfaceView
                 android:id="@+id/player_master"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/white"/>
 
 
             <TextView
                 android:id="@+id/tv_lucky_gift"
                 android:layout_width="320dp"
                 android:layout_height="56dp"
-                android:textSize="10sp"
-                android:singleLine="true"
                 android:layout_centerHorizontal="true"
+                android:background="@drawable/lucky_gift_bg"
                 android:gravity="center_horizontal"
                 android:paddingTop="25dp"
-                android:background="@drawable/lucky_gift_bg"
-                android:translationX="360dp"/>
+                android:singleLine="true"
+                android:textSize="10sp"
+                android:translationX="360dp" />
 
             <TextView
                 android:id="@+id/tv_stop_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="主播正在休息中"
-                android:textStyle="bold"
-                android:textSize="24sp"
                 android:layout_centerInParent="true"
+                android:text="主播正在休息中"
                 android:textColor="@color/player_rest"
-                android:visibility="gone"/>
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_gift_gif"
@@ -178,14 +179,25 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="50dp">
 
-                <include
-                    layout="@layout/layout_gift_anim"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="13.5dp"
-                    app:layout_constraintRight_toLeftOf="parent" />
+                <!--<include-->
+                <!--layout="@layout/layout_gift_anim"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="34dp"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_marginLeft="13.5dp"-->
+                <!--app:layout_constraintRight_toLeftOf="parent" />-->
+
             </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_gift_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true">
+
+            </LinearLayout>
 
         </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 

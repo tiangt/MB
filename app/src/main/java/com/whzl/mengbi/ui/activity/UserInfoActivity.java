@@ -229,7 +229,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 .setSubmitText("确定")//确认按钮文字
                 .setTitleSize(17)//标题文字大小
                 .setTitleText("生日选择")//标题文字
-                .setOutSideCancelable(false)//点击屏幕，点在控件外部范围时，是否取消显示
                 .isCyclic(true)//是否循环滚动
                 .setTitleColor(Color.BLACK)//标题文字颜色
                 .setSubmitColor(Color.parseColor("#007aff"))//确定按钮文字颜色
@@ -350,6 +349,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                     userInfoPresenter.onUpdataUserInfo(hashMap);
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -397,12 +398,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                                 }
                                 Province_AreaList.add(City_AreaList);//添加该省所有地区数据
 
-                                if(jsonBean.get(i).getCityList().get(c).getName().equals(mUserInfo.getData().getProvince())){
+                                if (jsonBean.get(i).getCityList().get(c).getName().equals(mUserInfo.getData().getCity())) {
                                     mSelectedPosition2 = c;
                                 }
                             }
 
-                            if(jsonBean.get(i).getName().equals(mUserInfo.getData().getProvince())){
+                            if (jsonBean.get(i).getName().equals(mUserInfo.getData().getProvince())) {
                                 mSelectedPosition1 = i;
                             }
                             /**
