@@ -10,6 +10,8 @@ import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -30,6 +32,7 @@ import okhttp3.ResponseBody;
 public class BaseApplication extends Application {
 
     private static BaseApplication instance = null;
+    public RefWatcher _refWatcher;
 
     public String getChannel() {
         return channel;
@@ -56,16 +59,23 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        CrashHandler.getInstance().init(this);
         channel = WalleChannelReader.getChannel(getApplicationContext());
         if (channel == null) {
             channel = "";
         }
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        CrashHandler.getInstance().init(this);
+        _refWatcher = LeakCanary.install(this);
         initUM();
-        /**
-         * 预先加载一级列表显示 全国所有城市市的数据
-         */
-        initApi();
+        initApi();Reportf
+        initBaiduStatistic();
+    }
+
+    private void initBaiduStatistic() {
         StatService.setDebugOn(true);
         StatService.setAppChannel(this, channel, true);
         StatService.autoTrace(this, true, false);

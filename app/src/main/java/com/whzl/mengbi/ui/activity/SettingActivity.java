@@ -45,6 +45,7 @@ public class SettingActivity extends BaseActivity {
     @BindView(R.id.btn_login_out)
     Button btnLoginOut;
     private ProgressDialog progressDialog;
+    private AwesomeDialog awesomeDialog;
 
     @Override
     protected void setupContentView() {
@@ -114,8 +115,8 @@ public class SettingActivity extends BaseActivity {
             showToast("当前已是最新版本");
             return;
         }
-        AwesomeDialog.init()
-                .setLayoutId(R.layout.dialog_upgrade)
+        awesomeDialog = AwesomeDialog.init();
+        awesomeDialog.setLayoutId(R.layout.dialog_upgrade)
                 .setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
@@ -223,5 +224,11 @@ public class SettingActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        awesomeDialog = null;
     }
 }
