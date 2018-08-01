@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#181818"
@@ -137,11 +138,20 @@
             android:layout_marginTop="7dp"
             app:ratio="1.33">
 
-            <SurfaceView
-                android:id="@+id/player_master"
+            <!--<SurfaceView-->
+            <!--android:id="@+id/player_master"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+            <com.ksyun.media.player.KSYTextureView
+                android:id="@+id/texture_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <ProgressBar
+                android:id="@+id/progressbar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true" />
 
             <TextView
                 android:id="@+id/tv_lucky_gift"

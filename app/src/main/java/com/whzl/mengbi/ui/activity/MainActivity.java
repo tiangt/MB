@@ -51,6 +51,7 @@ public class MainActivity extends BaseActivity {
     private int currentSelectedIndex = 0;
     private ProgressDialog progressDialog;
     private boolean isExit;
+    private AwesomeDialog awesomeDialog;
 
     @Override
     protected void setupContentView() {
@@ -142,7 +143,8 @@ public class MainActivity extends BaseActivity {
         if (versionCode >= phone.versionCode) {
             return;
         }
-        AwesomeDialog.init()
+        awesomeDialog = AwesomeDialog.init();
+        awesomeDialog
                 .setLayoutId(R.layout.dialog_upgrade)
                 .setConvertListener(new ViewConvertListener() {
                     @Override
@@ -275,5 +277,11 @@ public class MainActivity extends BaseActivity {
 
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        awesomeDialog = null;
     }
 }

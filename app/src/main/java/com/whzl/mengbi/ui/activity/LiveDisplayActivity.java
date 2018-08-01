@@ -1,9 +1,10 @@
 package com.whzl.mengbi.ui.activity;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,22 +13,23 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
+import com.ksyun.media.player.KSYTextureView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
@@ -41,7 +43,6 @@ import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
-import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -52,6 +53,7 @@ import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
+import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
@@ -66,6 +68,7 @@ import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.zxing.NetUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -97,8 +100,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageButton btnFollow;
     @BindView(R.id.rl_contribution_container)
     RelativeLayout rlContributionContainer;
-    @BindView(R.id.player_master)
-    SurfaceView surfaceView;
+    //    @BindView(R.id.player_master)
+//    SurfaceView surfaceView;
+    @BindView(R.id.texture_view)
+    KSYTextureView textureView;
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.tv_fans_count)
@@ -127,13 +132,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvStopTip;
     @BindView(R.id.tv_run_way_gift)
     TextView tvRunWayGift;
+    @BindView(R.id.progressbar)
+    ProgressBar progressBar;
     //    @BindView(R.id.rl_info_container)
 //    RelativeLayout rlInfoContainer;
     @BindView(R.id.tv_lucky_gift)
     TextView tvLuckyGift;
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
-    private KSYMediaPlayer mMasterPlayer;
+    //    private KSYMediaPlayer mMasterPlayer;
     private ChatRoomPresenterImpl chatRoomPresenter;
     private GiftInfo mGiftData;
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
@@ -142,14 +149,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private boolean isRecyclerScrolling;
     private long mUserId;
     private BaseAwesomeDialog mGiftDialog;
-    private volatile ArrayList<AnimJson> mTotalAnimList = new ArrayList<>();
-    private volatile boolean flagIsTotalAnimating = false;
+    //    private volatile ArrayList<AnimJson> mTotalAnimList = new ArrayList<>();
+//    private volatile boolean flagIsTotalAnimating = false;
     private volatile ArrayList<AnimEvent> mGifAnimList = new ArrayList<>();
     private boolean flagIsGifAnimating = false;
     private int mAnchorId;
-    private Runnable mTotalGiftAnimAction;
+    //    private Runnable mTotalGiftAnimAction;
     private Runnable mGifAction;
-    private Runnable mCacheComboAction;
+    //    private Runnable mCacheComboAction;
     private int REQUEST_LOGIN = 120;
     private boolean flagRunwayRunning = false;
     private volatile ArrayList<RunWayEvent> mRunWayList = new ArrayList<>();
@@ -159,6 +166,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Runnable mLuckyGiftAction;
     private long coin;
     private GiftControl giftControl;
+    private String mStream;
 
     @Override
     protected void setupContentView() {
@@ -168,6 +176,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void initEnv() {
         StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mLivePresenter = new LivePresenterImpl(this);
         if (getIntent() != null) {
             mProgramId = getIntent().getIntExtra(BundleConfig.PROGRAM_ID, -1);
@@ -177,50 +186,103 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
         mLivePresenter.getLiveGift();
-        mMasterPlayer = new KSYMediaPlayer.Builder(this).build();
-        mMasterPlayer.setOnPreparedListener(mp -> {
-            if (mMasterPlayer != null) {
-                mMasterPlayer.start();
-            } else {
-                Log.e("Player", "player is null at start");
-            }
-        });
-        mMasterPlayer.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
-            @Override
-            public boolean onInfo(IMediaPlayer iMediaPlayer, int info, int i1) {
-                if (info == IMediaPlayer.MEDIA_INFO_RELOADED) {
-                    Log.d("LiveDisplayActivity", "Succeed to reload video.");
-                }
-                //Log.e("Player", "info=" + info);
-                return false;
-            }
-        });
+//        initPlayer();
         giftControl = new GiftControl(this);
+        initReceiver();
+    }
+
+    private void initReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        NetStateChangeReceiver receiver = new NetStateChangeReceiver();
+        receiver.setEvevt(netMobile -> {
+            if (netMobile != NetUtils.NETWORK_NONE) {
+                if (textureView != null && mStream != null) {
+                    textureView.softReset();
+                    try {
+                        textureView.setDataSource(mStream);
+                        textureView.prepareAsync();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                showToast("网络连接断开，请检测网络设置");
+                progressBar.setVisibility(View.VISIBLE);
+            }
+        });
+        registerReceiver(receiver, intentFilter);
+    }
+
+    private void initPlayer() {
+//        mMasterPlayer = new KSYMediaPlayer.Builder(this).build();
+//        mMasterPlayer.setOnPreparedListener(mp -> {
+//            if (mMasterPlayer != null) {
+//                mMasterPlayer.start();
+//            } else {
+//                Log.e("Player", "player is null at start");
+//            }
+//        });
+//        mMasterPlayer.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
+//            @Override
+//            public boolean onInfo(IMediaPlayer iMediaPlayer, int info, int i1) {
+//                if (info == IMediaPlayer.MEDIA_INFO_RELOADED) {
+//                    Log.d("LiveDisplayActivity", "Succeed to reload video.");
+//                }
+//                //Log.e("Player", "info=" + info);
+//                return false;
+//            }
+//        });
+        textureView.setDecodeMode(KSYMediaPlayer.KSYDecodeMode.KSY_DECODE_MODE_AUTO);
+        textureView.setOnPreparedListener(iMediaPlayer -> {
+            progressBar.setVisibility(View.GONE);
+            textureView.start();
+        });
+        textureView.setOnInfoListener((iMediaPlayer, i, i1) -> {
+            if (i == IMediaPlayer.MEDIA_INFO_RELOADED) {
+                Log.d("LiveDisplayActivity", "Succeed to reload video.");
+            }
+            //Log.e("Player", "info=" + info);
+            switch (i) {
+                case KSYMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                    progressBar.setVisibility(View.VISIBLE);
+                    break;
+                case KSYMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                    progressBar.setVisibility(View.GONE);
+                    break;
+            }
+            return false;
+        });
+        textureView.setOnCompletionListener(iMediaPlayer -> {
+            textureView.stop();
+            textureView.release();
+        });
     }
 
     @Override
     protected void setupView() {
+        initPlayer();
         giftControl.setGiftLayout(llGiftContainer, 3).setHideMode(false);
-        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
-            @Override
-            public void surfaceCreated(SurfaceHolder surfaceHolder) {
-                if (mMasterPlayer != null) {
-                    mMasterPlayer.setDisplay(surfaceHolder);
-                    mMasterPlayer.setScreenOnWhilePlaying(true);
-                }
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-                if (mMasterPlayer != null) {
-                    mMasterPlayer.setDisplay(null);
-                }
-            }
-        });
+//        surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
+//            @Override
+//            public void surfaceCreated(SurfaceHolder surfaceHolder) {
+//                if (mMasterPlayer != null) {
+//                    mMasterPlayer.setDisplay(surfaceHolder);
+//                    mMasterPlayer.setScreenOnWhilePlaying(true);
+//                }
+//            }
+//
+//            @Override
+//            public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+//            }
+//
+//            @Override
+//            public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+//                if (mMasterPlayer != null) {
+//                    mMasterPlayer.setDisplay(null);
+//                }
+//            }
+//        });
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         chatAdapter = new RecyclerView.Adapter() {
@@ -337,10 +399,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getLiveToken(map);
     }
 
-    private void initPlayers(String stream) {
+    private void setDateSourceForPlayer(String stream) {
+        mStream = stream;
+//        try {
+//            mMasterPlayer.setDataSource(stream);
+//            mMasterPlayer.prepareAsync();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         try {
-            mMasterPlayer.setDataSource(stream);
-            mMasterPlayer.prepareAsync();
+            textureView.setDataSource(stream);
+            textureView.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -523,7 +592,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (mGifAnimList.size() > 0) {
                     animGif(mGifAnimList.get(0));
                 } else {
-                    flagIsTotalAnimating = true;
+                    flagIsGifAnimating = false;
                 }
 
             }
@@ -544,7 +613,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //    private synchronized void animGift(AnimJson animJson) {
 //        flagIsTotalAnimating = true;
 //        AnimJson.ContextEntity context = animJson.getContext();
-////        giftAnimView.setVisibility(View.VISIBLE);
+//        giftAnimView.setVisibility(View.VISIBLE);
 //        String avatarUrl = ImageUrl.getAvatarUrl(context.getUserId(), "jpg", context.getLastUpdateTime());
 //        GlideImageLoader.getInstace().displayImage(this, avatarUrl, ivAnimGiftAvatar);
 //        GlideImageLoader.getInstace().displayImage(this, animJson.getGiftUrl(), ivAnimGiftIcon);
@@ -651,17 +720,28 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (context.getHeight() != 0 && context.getWidth() != 0) {
             ratioLayout.setPicRatio(context.getWidth() / ((float) context.getHeight()));
         }
-        String streamAddress = startPlayEvent.getStreamAddress();
-        if (mMasterPlayer == null) {
+        mStream = startPlayEvent.getStreamAddress();
+//        if (mMasterPlayer == null) {
+//            ToastUtils.showToast("mMasterPlayer is null");
+//            return;
+//        }
+//        mMasterPlayer.reset();
+//        surfaceView.setAlpha(1);
+//        try {
+//            mMasterPlayer.setDataSource(streamAddress);
+//            mMasterPlayer.prepareAsync();
+//            mMasterPlayer.setSurface(surfaceView.getHolder().getSurface());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        if (textureView == null) {
             ToastUtils.showToast("mMasterPlayer is null");
             return;
         }
-        mMasterPlayer.reset();
-        surfaceView.setAlpha(1);
+        textureView.reset();
         try {
-            mMasterPlayer.setDataSource(streamAddress);
-            mMasterPlayer.prepareAsync();
-            mMasterPlayer.setSurface(surfaceView.getHolder().getSurface());
+            textureView.setDataSource(mStream);
+            textureView.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -670,7 +750,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StopPlayEvent stopPlayEvent) {
-        mMasterPlayer.reset();
+//        mMasterPlayer.reset();
+        mStream = null;
+        textureView.reset();
         tvStopTip.setVisibility(View.VISIBLE);
     }
 
@@ -689,16 +771,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 setupPlayerSize(roomInfoBean.getData().getStream().getHeight(), roomInfoBean.getData().getStream().getWidth());
                 if (roomInfoBean.getData().getStream().getStreamAddress() != null) {
                     if (roomInfoBean.getData().getStream().getStreamAddress().getFlv() != null) {
-                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getFlv());
+                        setDateSourceForPlayer(roomInfoBean.getData().getStream().getStreamAddress().getFlv());
                     } else if (roomInfoBean.getData().getStream().getStreamAddress().getRtmp() != null) {
-                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getRtmp());
+                        setDateSourceForPlayer(roomInfoBean.getData().getStream().getStreamAddress().getRtmp());
                     } else if (roomInfoBean.getData().getStream().getStreamAddress().getHls() != null) {
-                        initPlayers(roomInfoBean.getData().getStream().getStreamAddress().getHls());
+                        setDateSourceForPlayer(roomInfoBean.getData().getStream().getStreamAddress().getHls());
                     }
                 }
             }
             if (!"T".equals(roomInfoBean.getData().getProgramStatus())) {
                 tvStopTip.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             }
         }
     }
@@ -786,10 +869,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (chatRoomPresenter != null) {
             chatRoomPresenter.onChatRoomDestroy();
         }
-        if (mMasterPlayer != null) {
-            mMasterPlayer.stop();
-            mMasterPlayer.release();
-            mMasterPlayer = null;
+//        if (mMasterPlayer != null) {
+//            mMasterPlayer.stop();
+//            mMasterPlayer.release();
+//            mMasterPlayer = null;
+//        }
+        if (textureView != null) {
+            textureView.stop();
+            textureView.release();
+            textureView = null;
         }
         mGiftDialog = null;
     }
@@ -812,5 +900,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (textureView != null) {
+            //mAudioBackgroundPlay为true表示切换到后台后仍然播放音频
+            textureView.runInBackground(true);
+        }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (textureView != null) {
+            textureView.runInForeground();
+        }
+    }
 }
