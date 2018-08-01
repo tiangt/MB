@@ -10,4 +10,6 @@ public interface HomeView {
     void showRecommend(RecommendInfo recommendInfo);
 
     void showLiveShow(LiveShowInfo liveShowInfo);
+
+    void onError(String msg);
 }

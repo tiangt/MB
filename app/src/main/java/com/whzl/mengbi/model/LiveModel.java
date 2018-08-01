@@ -15,5 +15,5 @@ public interface LiveModel {
 
     void doRoomUserInfo(long userId, int programId, OnLiveFinishedListener listener);
 
-    void doSendGift(long userId, int count, int goodsId, int programId, int targetId, OnLiveFinishedListener listener);
+    void doSendGift(HashMap paramsMap, OnLiveFinishedListener listener);
 }

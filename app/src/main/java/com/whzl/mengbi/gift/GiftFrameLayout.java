@@ -91,7 +91,6 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
 
     private LeftGiftAnimationStatusListener mGiftAnimationListener;
     private View rootView;
-    private int mJumpCombo;
 
     public GiftFrameLayout(Context context) {
         this(context, null);
@@ -148,7 +147,6 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         }
         mGift = gift;
         mGiftCount = gift.getGiftTotalCount();
-        mJumpCombo = 0;
         if (!TextUtils.isEmpty(gift.getNickname())) {
             tvFromNickName.setText(gift.getNickname());
         }
@@ -384,7 +382,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         isShowing = true;
         isEnd = false;
         tvCount.setText("x " + mGift.getCount());
-        tvFromNickName.setText(mGift.getNickname());
+        tvFromNickName.setText(mGift.getNickname() + "送");
         tvGiftName.setText(mGift.getGoodsName());
         String avatarUrl = ImageUrl.getAvatarUrl(mGift.getUserId(), "jpg", mGift.getLastUpdateTime());
         GlideImageLoader.getInstace().displayImage(getContext(), avatarUrl, ivAvatar);
@@ -396,7 +394,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
      */
     public void comboEndAnim() {
         if (mHandler != null) {
-            if (mGiftCount < mGift.getGiftTotalCount()) {//连击
+            if (mCombo < mGift.getGiftTotalCount()) {//连击
                 mHandler.sendEmptyMessage(RESTART_GIFT_ANIMATION_CODE);
             } else {
                 mCurrentAnimRunnable = new GiftNumAnimaRunnable();
@@ -444,7 +442,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         if (anim == null) {
             if (isFirst) {
                 tvCount.setVisibility(View.VISIBLE);
-                tvCount.setText("x " + mGift.getGiftTotalCount());
+                tvCount.setText("x " + mGift.getCount());
                 comboEndAnim();
             } else {
                 //数量增加

@@ -20,19 +20,18 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
+import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.BackpackFragment;
+import com.whzl.mengbi.ui.dialog.fragment.BackpackMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GiftSortMotherFragment;
-import com.whzl.mengbi.ui.fragment.main.HomeFragmentNew;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
-import com.whzl.mengbi.ui.widget.view.NoScrollViewPager;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -132,7 +131,7 @@ public class GiftDialog extends BaseAwesomeDialog {
             titles.add("豪华");
             tabLayout.addTab(tabLayout.newTab().setText("豪华"));
         }
-        fragments.add(BackpackFragment.newInstance());
+        fragments.add(BackpackMotherFragment.newInstance());
         tabLayout.addTab(tabLayout.newTab().setText("背包"));
 //        viewpager.setOffscreenPageLimit(titles.size());
 //        viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
@@ -196,7 +195,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                     ToastUtils.showToast("礼物数量不能为0");
                     return;
                 }
-                ((LiveDisplayActivity) getActivity()).sendGift(giftCount, giftDetailInfoBean.getGoodsId());
+                ((LiveDisplayActivity) getActivity()).sendGift(giftCount, giftDetailInfoBean.getGoodsId(), giftDetailInfoBean.isBackpack());
                 break;
             case R.id.btn_count_confirm:
                 KeyBoardUtil.closeKeybord(etCount, getContext());
@@ -287,7 +286,7 @@ public class GiftDialog extends BaseAwesomeDialog {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(UserInfoUpdateEvent event) {
+    public void onMessageEvent(LiveHouseUserInfoUpdateEvent event) {
         tvAmount.setText(event.coin + "");
     }
 

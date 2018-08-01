@@ -29,12 +29,15 @@ public class HomeModelImpl implements HomeModel {
                         BannerInfo bannerInfo = GsonUtils.GsonToBean(result.toString(), BannerInfo.class);
                         if (bannerInfo.getCode() == 200) {
                             listenter.onBannerSuccess(bannerInfo);
+                        }else {
+                            listenter.onError(bannerInfo.getMsg());
                         }
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
                         LogUtils.d("onReqFailed" + errorMsg.toString());
+                        listenter.onError(errorMsg);
                     }
                 });
     }
@@ -50,12 +53,15 @@ public class HomeModelImpl implements HomeModel {
                         RecommendInfo recommendInfo = JSON.parseObject(jsonStr, RecommendInfo.class);
                         if (recommendInfo.getCode() == 200) {
                             listenter.onRecommendSuccess(recommendInfo);
+                        }else {
+                            listenter.onError(recommendInfo.getMsg());
                         }
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
                         LogUtils.e("onReqFailed" + errorMsg);
+                        listenter.onError(errorMsg);
                     }
                 });
     }
@@ -69,12 +75,18 @@ public class HomeModelImpl implements HomeModel {
                     @Override
                     public void onReqSuccess(Object result) {
                         LiveShowInfo liveShowInfo = JSON.parseObject(result.toString(), LiveShowInfo.class);
-                        listenter.onLiveShowSuccess(liveShowInfo);
+                        if(liveShowInfo.getCode() == 200){
+                            listenter.onLiveShowSuccess(liveShowInfo);
+                        }else {
+                            listenter.onError(liveShowInfo.getMsg());
+                        }
+
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
                         LogUtils.e("onReqFailed" + errorMsg);
+                        listenter.onError(errorMsg);
                     }
                 });
     }

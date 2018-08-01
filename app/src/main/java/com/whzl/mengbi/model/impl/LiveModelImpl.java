@@ -17,6 +17,7 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class LiveModelImpl implements LiveModel {
 
@@ -168,15 +169,7 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void doSendGift(long userId, int count, int goodsId, int programId, int targetId, OnLiveFinishedListener listener) {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("roomId", programId + "");
-        paramsMap.put("programId", programId + "");
-        paramsMap.put("targetId", targetId + "");
-        paramsMap.put("goodsId", goodsId + "");
-        paramsMap.put("count", count + "");
-        paramsMap.put("userId", userId + "");
-        paramsMap.put("useBag", false + "");
+    public void doSendGift(HashMap paramsMap, OnLiveFinishedListener listener) {
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SEND_GIFT, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {

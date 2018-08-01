@@ -269,6 +269,13 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     }
 
     @Override
+    public void onError(String msg) {
+        refreshLayout.finishLoadMore();
+        refreshLayout.finishRefresh();
+        mCurrentPager --;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mHomePresenter.onDestroy();

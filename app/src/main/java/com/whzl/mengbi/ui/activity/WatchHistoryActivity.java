@@ -131,7 +131,7 @@ public class WatchHistoryActivity extends BaseListActivity<WatchHistoryListBean.
 
                     @Override
                     public void onError(int code) {
-
+                        loadFail();
                     }
                 });
 

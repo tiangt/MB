@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Created by KathLine on 2017/1/8.
+ * @author KathLine
+ * @date 2017/1/8
  */
 public class GiftAnimationUtil {
-
 
     /**
      * @param target

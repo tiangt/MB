@@ -85,6 +85,9 @@ public abstract class BaseListActivity<T> extends BaseActivity implements OnRefr
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        if (setEnableLoadMore()) {
+            refresh.setEnableLoadMore(true);
+        }
         onLoadAction(ACTION_PULL_REFRESH);
     }
 
@@ -134,5 +137,14 @@ public abstract class BaseListActivity<T> extends BaseActivity implements OnRefr
             }
             refresh.postDelayed(() -> refresh.setEnableLoadMore(false), 300);
         }
+    }
+
+    protected void loadFail() {
+        mPager--;
+        if (mPager == 1) {
+            refresh.setEnableLoadMore(false);
+        }
+        refresh.finishRefresh();
+        refresh.finishLoadMore();
     }
 }

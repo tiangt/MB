@@ -140,8 +140,7 @@
             <SurfaceView
                 android:id="@+id/player_master"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"/>
+                android:layout_height="match_parent" />
 
 
             <TextView
@@ -193,9 +192,9 @@
                 android:id="@+id/ll_gift_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_marginBottom="30dp"
-                android:orientation="vertical"
-                android:layout_alignParentBottom="true">
+                android:orientation="vertical">
 
             </LinearLayout>
 

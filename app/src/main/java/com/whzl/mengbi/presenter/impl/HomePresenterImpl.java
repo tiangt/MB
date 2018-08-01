@@ -58,7 +58,9 @@ public class HomePresenterImpl implements HomePresenter,OnHomeFinishedListener {
 
     @Override
     public void onError(String msg) {
-        LogUtils.d(msg);
+        if(homeView != null){
+            homeView.onError(msg);
+        }
     }
 
 

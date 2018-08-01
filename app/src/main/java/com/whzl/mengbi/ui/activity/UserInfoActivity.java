@@ -258,6 +258,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 hashMap.put("province", options1Items.get(options1).getPickerViewText());
                 hashMap.put("city", options2Items.get(options1).get(options2));
                 userInfoPresenter.onUpdataUserInfo(hashMap);
+                mSelectedPosition1 = options1;
+                mSelectedPosition2 = options2;
             }
         })
 

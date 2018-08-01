@@ -245,5 +245,6 @@
     <string name="nick_name">昵称</string>
     <string name="save">保存</string>
     <string name="gender">性别</string>
+    <string name="empty_backpack">你的背包是空的</string>
 
 </resources>

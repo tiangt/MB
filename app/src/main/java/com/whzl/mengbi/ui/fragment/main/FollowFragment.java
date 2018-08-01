@@ -105,7 +105,13 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
                     @Override
                     public void onReqFailed(String errorMsg) {
+                        if(isDetached()){
+                            return;
+                        }
+                        refreshLayout.finishRefresh();
+                        refreshLayout.finishLoadMore();
                         ToastUtils.showToast(errorMsg);
+                        mCurrentPager --;
                     }
                 });
     }

@@ -1,16 +1,20 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.app.Application;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.whzl.mengbi.BuildConfig;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
@@ -18,6 +22,7 @@ import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.common.ActivityStackManager;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.LoginView;
 import com.whzl.mengbi.util.EncryptUtils;
@@ -25,18 +30,21 @@ import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * @author shaw
  * @date 2018/7/17
  */
-public class LoginActivityNew extends BaseActivity implements LoginView {
+public class LoginActivityNew extends BaseActivity implements LoginView, TextWatcher {
 
     private static final int REQUEST_REGISTER = 520;
     @BindView(R.id.et_phone)
@@ -45,6 +53,8 @@ public class LoginActivityNew extends BaseActivity implements LoginView {
     EditText etPassword;
     @BindView(R.id.btn_login)
     Button btnLogin;
+    @BindView(R.id.rg_env_switch)
+    RadioGroup rgEnvSwitch;
     private LoginPresent mLoginPresent;
     private UMShareAPI umShareAPI;
 
@@ -126,51 +136,40 @@ public class LoginActivityNew extends BaseActivity implements LoginView {
 
     @Override
     protected void setupView() {
-        etPhone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+        rgEnvSwitch.setVisibility(BuildConfig.API_DEBUG_ENT ? View.VISIBLE : View.GONE);
+        rgEnvSwitch.check(URLContentUtils.isDebug ? R.id.rb_debug : R.id.rb_release);
+        rgEnvSwitch.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rb_debug) {
+                URLContentUtils.isDebug = true;
+            } else {
+                URLContentUtils.isDebug = false;
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                boolean isPhone = StringUtils.isPhone(etPhone.getText().toString().trim());
-                String password = etPassword.getText().toString().trim();
-                if (isPhone && !TextUtils.isEmpty(password) && password.length() >= 6) {
-                    btnLogin.setEnabled(true);
-                } else {
-                    btnLogin.setEnabled(false);
-                }
-            }
+            BaseApplication.getInstance().initApi();
         });
+        etPhone.addTextChangedListener(this);
 
-        etPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        etPassword.addTextChangedListener(this);
+    }
 
-            }
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
 
-            }
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                boolean isPhone = StringUtils.isPhone(etPhone.getText().toString().trim());
-                String password = etPassword.getText().toString().trim();
-                if (isPhone && !TextUtils.isEmpty(password) && password.length() >= 6) {
-                    btnLogin.setEnabled(true);
-                } else {
-                    btnLogin.setEnabled(false);
-                }
-            }
-        });
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        boolean isPhone = StringUtils.isPhone(etPhone.getText().toString().trim());
+        String password = etPassword.getText().toString().trim();
+        if (isPhone && !TextUtils.isEmpty(password) && password.length() >= 6) {
+            btnLogin.setEnabled(true);
+        } else {
+            btnLogin.setEnabled(false);
+        }
     }
 
     @Override
@@ -241,5 +240,12 @@ public class LoginActivityNew extends BaseActivity implements LoginView {
     protected void onDestroy() {
         super.onDestroy();
         umShareAPI.release();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

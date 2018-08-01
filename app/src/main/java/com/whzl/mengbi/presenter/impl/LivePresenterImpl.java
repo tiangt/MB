@@ -49,8 +49,8 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void sendGift(long userId, int count, int goodId, int programId, int anchorId) {
-        liveModel.doSendGift(userId, count, goodId, programId, anchorId, this);
+    public void sendGift(HashMap paramsMap) {
+        liveModel.doSendGift(paramsMap, this);
     }
 
     @Override
