@@ -3,7 +3,10 @@ package com.whzl.mengbi.ui.activity;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +33,7 @@ import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.ksyun.media.player.KSYTextureView;
+import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
@@ -40,9 +44,15 @@ import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
+import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.util.CenterAlignImageSpan;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
+import com.whzl.mengbi.chat.room.util.DownloadEvent;
+import com.whzl.mengbi.chat.room.util.DownloadImageFile;
+import com.whzl.mengbi.chat.room.util.ImageCache;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -53,6 +63,7 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -70,6 +81,8 @@ import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -341,6 +354,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
         Observable.interval(0, 10, TimeUnit.SECONDS)
                 .subscribe(aLong -> mLivePresenter.getAudienceAccount(mProgramId));
     }
@@ -368,7 +382,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        };
 
         mLuckyGiftAction = () -> {
-            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 360);
+            ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 400);
             valueAnimator.setInterpolator(new AccelerateInterpolator());
             valueAnimator.setDuration(300);
             valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -376,8 +390,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 public void onAnimationUpdate(ValueAnimator animation) {
                     float animatedValue = ((float) animation.getAnimatedValue());
                     tvLuckyGift.setTranslationX(-UIUtil.dip2px(LiveDisplayActivity.this, animatedValue));
-                    if (animatedValue == 360) {
-                        tvLuckyGift.setTranslationX(UIUtil.dip2px(LiveDisplayActivity.this, 360));
+                    if (animatedValue == 400) {
+                        tvLuckyGift.setTranslationX(UIUtil.dip2px(LiveDisplayActivity.this, 400));
                         mLuckGiftList.remove(0);
                         if (mLuckGiftList.size() > 0) {
                             showLuckyGift(mLuckGiftList.get(0));
@@ -839,6 +853,31 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onError(String meg) {
         showToast(meg);
+    }
+
+    @Override
+    public void onGetRunWayListSuccess(RunWayListBean runWayListBean) {
+        if (runWayListBean != null && runWayListBean.list != null) {
+            ArrayList<String> imageUrlList = new ArrayList<>();
+            for (int i = 0; i < runWayListBean.list.size(); i++) {
+                imageUrlList.add(runWayListBean.list.get(i).getGoodsPic());
+            }
+            DownloadImageFile downloadImageFile = new DownloadImageFile(new DownloadEvent() {
+                @Override
+                public void finished(List<SpannableString> imageSpanList) {
+                    for (int i = 0; i < runWayListBean.list.size(); i++) {
+                        RunWayJson runWayJson = new RunWayJson();
+                        runWayJson.setContext(runWayListBean.list.get(i));
+                        RunWayEvent event = new RunWayEvent(runWayJson, imageSpanList.get(i));
+                        if (mRunWayGiftControl == null) {
+                            mRunWayGiftControl = new RunWayGiftControl(runWayText);
+                        }
+                        mRunWayGiftControl.load(event);
+                    }
+                }
+            });
+            downloadImageFile.doDownload(imageUrlList, this);
+        }
     }
 
     @Override

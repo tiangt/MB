@@ -1,5 +1,6 @@
 package com.whzl.mengbi.model.impl;
 
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.AudienceCountBean;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
@@ -8,6 +9,7 @@ import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.FileUtils;
@@ -15,9 +17,14 @@ import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class LiveModelImpl implements LiveModel {
 
@@ -29,7 +36,7 @@ public class LiveModelImpl implements LiveModel {
                 LiveRoomTokenInfo liveRoomTokenInfo = GsonUtils.GsonToBean(result.toString(), LiveRoomTokenInfo.class);
                 if (liveRoomTokenInfo.getCode() == 200) {
                     listener.onLiveTokenSuccess(liveRoomTokenInfo);
-                }else {
+                } else {
                     listener.onError(liveRoomTokenInfo.getMsg());
                 }
             }
@@ -53,7 +60,7 @@ public class LiveModelImpl implements LiveModel {
                         GiftInfo giftInfo = GsonUtils.GsonToBean(strJson, GiftInfo.class);
                         if (giftInfo.getCode() == 200) {
                             listener.onLiveGiftSuccess(giftInfo);
-                        }else {
+                        } else {
                             listener.onError(giftInfo.getMsg());
                         }
                     }
@@ -84,7 +91,7 @@ public class LiveModelImpl implements LiveModel {
                 RoomInfoBean roomInfoBean = GsonUtils.GsonToBean(result.toString(), RoomInfoBean.class);
                 if (roomInfoBean.getCode() == 200) {
                     listener.onRoomInfoSuccess(roomInfoBean);
-                }else {
+                } else {
                     listener.onError(roomInfoBean.getMsg());
                 }
             }
@@ -108,7 +115,7 @@ public class LiveModelImpl implements LiveModel {
                     if (audienceCountBean.getData() != null) {
                         listener.onAudienceSuccess(audienceCountBean.getData().getRoomUserNum());
                     }
-                }else {
+                } else {
                     listener.onError(audienceCountBean.getMsg());
                 }
             }
@@ -131,7 +138,7 @@ public class LiveModelImpl implements LiveModel {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
                     listener.onFellowHostSuccess();
-                }else {
+                } else {
                     listener.onError(responseInfo.getMsg());
                 }
             }
@@ -156,7 +163,7 @@ public class LiveModelImpl implements LiveModel {
                     if (roomUserInfo.getData() != null) {
                         listener.onGetRoomUserInfoSuccess(roomUserInfo.getData());
                     }
-                }else {
+                } else {
                     listener.onError(roomUserInfo.getMsg());
                 }
             }
@@ -186,5 +193,24 @@ public class LiveModelImpl implements LiveModel {
                 listener.onError(errorMsg);
             }
         });
+    }
+
+    @Override
+    public void getRunWayList(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getRunWayList(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<RunWayListBean>() {
+                    @Override
+                    public void onSuccess(RunWayListBean runWayListBean) {
+                        listener.onGetRunWayListSuccess(runWayListBean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                    }
+                });
+
     }
 }

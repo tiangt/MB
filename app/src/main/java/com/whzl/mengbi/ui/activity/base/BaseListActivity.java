@@ -130,6 +130,11 @@ public abstract class BaseListActivity<T> extends BaseActivity implements OnRefr
                 }
             }
         } else {
+            if (mPager == 2 || mPager == 1) {
+                refresh.finishRefresh();
+            } else {
+                refresh.finishLoadMore();
+            }
             if (mDatas.size() > 0) {
                 adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
             } else {

@@ -46,6 +46,10 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
     private Gson gson = new Gson();
     private Fragment fragment;
 
+    protected ApiObserver() {
+
+    }
+
     protected ApiObserver(Activity activity) {
         this.activity = activity;
     }

@@ -34,6 +34,6 @@ public class WatchHistoryListBean {
         public String anchorNickname;
         public String anchorLevelName;
         public String anchorAvatar;
-        public List<?> showStreamData;
+        public Object showStreamData;
     }
 }

@@ -18,4 +18,6 @@ public interface LivePresenter {
     void onDestory();
 
     void sendGift(HashMap paramsMap);
+
+    void getRunWayList(HashMap paramsMap);
 }

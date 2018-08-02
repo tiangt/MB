@@ -1,6 +1,7 @@
 package com.whzl.mengbi.api;
 
 import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
 import com.whzl.mengbi.util.network.retrofit.ApiResult;
 
@@ -35,4 +36,14 @@ public interface Api {
     @POST("v1/consume/user-combine-gift")
     @FormUrlEncoded
     Observable<ApiResult<BackpackListBean>> getBackpack(@FieldMap Map<String, String> params);
+
+    /**
+     * 跑道
+     * @param params
+     * @return
+     */
+    @POST("v1/room/runway")
+    @FormUrlEncoded
+    Observable<ApiResult<RunWayListBean>> getRunWayList(@FieldMap Map<String, String> params);
+
 }

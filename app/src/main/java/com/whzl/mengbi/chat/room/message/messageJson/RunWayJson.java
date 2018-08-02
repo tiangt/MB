@@ -29,6 +29,10 @@ public class RunWayJson {
         return context;
     }
 
+    public void setContext(ContextEntity context) {
+        this.context = context;
+    }
+
     public String getMsgType() {
         return msgType;
     }
@@ -65,6 +69,13 @@ public class RunWayJson {
         private int goodsPicId;
         private String toNickname;
         private String goodsName;
+
+        public String getGoodsPic() {
+            return goodsPic;
+        }
+
+        private String goodsPic;
+
         private boolean cacheIt;//是否需要缓存，若不需要则只显示一遍，否则，显示seconds秒
         private long seconds;//跑道显示时间，单位：S
         private int price;

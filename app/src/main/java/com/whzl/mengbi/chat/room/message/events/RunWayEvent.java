@@ -24,6 +24,13 @@ public class RunWayEvent {
 
     }
 
+    public RunWayEvent(RunWayJson runWayJson, SpannableString giftSpanString) {
+        this.runWayJson = runWayJson;
+        this.giftSpanString = giftSpanString;
+
+    }
+
+
     public Context getmContext() {
         return mContext;
     }
