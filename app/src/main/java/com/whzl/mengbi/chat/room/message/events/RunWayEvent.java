@@ -37,7 +37,7 @@ public class RunWayEvent {
     }
 
     public void showRunWay(TextView tvRunWayGift) {
-        tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getNickname(),
+        tvRunWayGift.setText(LightSpanString.getLightString(runWayJson.getContext().getNickname(),
                 Color.parseColor("#f1275b")));
         tvRunWayGift.append(LightSpanString.getLightString(" 送 ", Color.parseColor("#faf9f9")));
         tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getToNickname(),
@@ -46,6 +46,9 @@ public class RunWayEvent {
                 Color.parseColor("#faf9f9")));
         tvRunWayGift.append(LightSpanString.getLightString("个" + runWayJson.getContext().getGoodsName(),
                 Color.parseColor("#faf9f9")));
+        tvRunWayGift.append(LightSpanString.getLightString(" ",
+                Color.parseColor("#faf9f9")));
+        tvRunWayGift.append(getGiftSpanString());
     }
 
     /*

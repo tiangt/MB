@@ -86,7 +86,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
                         }
                         tvAge.setText(DateUtils.getAge(dataBean.getBirthday()) + "岁");
                         int identityId = dataBean.getIdentityId();
-                        List<RoomUserInfo.DataBean.LevelMapBean> levelMap = dataBean.getLevelMap();
+                        List<RoomUserInfo.DataBean.LevelMapBean> levelMap = dataBean.getLevelList();
                         for (int i = 0; i < levelMap.size(); i++) {
                             if (identityId == 10 && "ANCHOR_LEVEL".equals(levelMap.get(i).getLevelType())) {
                                 int levelValue = levelMap.get(i).getLevelValue();

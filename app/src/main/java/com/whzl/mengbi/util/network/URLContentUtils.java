@@ -117,7 +117,7 @@ public class URLContentUtils {
     /**
      * 直播间用户信息
      */
-    public static final String ROOM_USER_INFO = "v1/room/get-enter-user-info";
+    public static final String ROOM_USER_INFO = "v1/room/room-user";
 
 
     /**

@@ -3,8 +3,8 @@
     android:id="@+id/gift_anim_view"
     android:layout_width="wrap_content"
     android:layout_height="37dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginBottom="20dp">
+    android:layout_marginBottom="20dp"
+    android:layout_marginLeft="20dp">
 
     <RelativeLayout
         android:id="@+id/rl_info_container"

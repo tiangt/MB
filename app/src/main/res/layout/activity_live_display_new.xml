@@ -110,15 +110,21 @@
                 android:textColor="#f0f0f0"
                 android:textSize="10sp" />
 
-            <TextView
-                android:id="@+id/tv_run_way_gift"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="18dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/btn_contribute"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                android:layout_marginRight="40dp"
+                android:layout_centerVertical="true">
+
+                <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
+                    android:id="@+id/tv_run_way_gift"
+                    android:layout_width="1000dp"
+                    android:layout_height="match_parent"
+                    android:singleLine="true"
+                    android:textSize="12sp" />
+            </android.support.design.widget.CoordinatorLayout>
 
             <Button
                 android:id="@+id/btn_close"
@@ -127,7 +133,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/close_icon" />
+                android:background="@drawable/close_icon"
+                android:paddingLeft="10dp" />
 
         </RelativeLayout>
 
@@ -163,7 +170,7 @@
                 android:paddingTop="25dp"
                 android:singleLine="true"
                 android:textSize="10sp"
-                android:translationX="360dp" />
+                android:translationX="400dp" />
 
             <TextView
                 android:id="@+id/tv_stop_tip"
@@ -181,22 +188,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone" />
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="50dp">
-
-                <!--<include-->
-                <!--layout="@layout/layout_gift_anim"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="34dp"-->
-                <!--android:layout_alignParentBottom="true"-->
-                <!--android:layout_marginLeft="13.5dp"-->
-                <!--app:layout_constraintRight_toLeftOf="parent" />-->
-
-            </android.support.constraint.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/ll_gift_container"

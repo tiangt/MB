@@ -19,8 +19,8 @@ public class NetStateChangeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
-            NetUtils.init(context);
-            int netWorkState = NetUtils.getNetWorkState();
+            NetUtils utils = new NetUtils(context);
+            int netWorkState = utils.getNetWorkState();
             LogUtil.d("shaw", netWorkState + "+++++++++++++++++++++++++==");
             if (evevt != null) {
                 evevt.onNetChange(netWorkState);

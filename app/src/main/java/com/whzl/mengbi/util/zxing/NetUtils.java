@@ -25,12 +25,12 @@ public class NetUtils {
 
     public static Context mContext;
 
-    public static void init(Context context) {
+    public NetUtils(Context context) {
         mContext = context;
     }
 
 
-    public static int getNetWorkState() {
+    public int getNetWorkState() {
         if (mContext == null) {
             throw new UnsupportedOperationException("please use NetUtils before init it");
         }

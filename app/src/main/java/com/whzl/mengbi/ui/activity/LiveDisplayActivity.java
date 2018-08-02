@@ -47,6 +47,7 @@ import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gift.GiftControl;
+import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -62,6 +63,7 @@ import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
+import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
@@ -79,9 +81,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
@@ -130,10 +135,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageView ivGiftGif;
     @BindView(R.id.tv_stop_tip)
     TextView tvStopTip;
-    @BindView(R.id.tv_run_way_gift)
-    TextView tvRunWayGift;
+    //    @BindView(R.id.tv_run_way_gift)
+//    TextView tvRunWayGift;
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
+    @BindView(R.id.tv_run_way_gift)
+    AutoScrollTextView runWayText;
     //    @BindView(R.id.rl_info_container)
 //    RelativeLayout rlInfoContainer;
     @BindView(R.id.tv_lucky_gift)
@@ -167,6 +174,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private long coin;
     private GiftControl giftControl;
     private String mStream;
+    private RunWayGiftControl mRunWayGiftControl;
 
     @Override
     protected void setupContentView() {
@@ -332,8 +340,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     protected void loadData() {
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
-        mLivePresenter.getAudienceAccount(mProgramId);
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        Observable.interval(0, 10, TimeUnit.SECONDS)
+                .subscribe(aLong -> mLivePresenter.getAudienceAccount(mProgramId));
     }
 
     private void initAction() {
@@ -349,14 +358,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        };
 //        mCacheComboAction = this::comboCache;
 
-        mRunWayAction = () -> {
-            flagIsGifAnimating = false;
-            tvRunWayGift.setVisibility(View.GONE);
-            mRunWayList.remove(0);
-            if (mRunWayList.size() > 0) {
-                showRunWay(mRunWayList.get(0));
-            }
-        };
+//        mRunWayAction = () -> {
+//            flagIsGifAnimating = false;
+//            tvRunWayGift.setVisibility(View.GONE);
+//            mRunWayList.remove(0);
+//            if (mRunWayList.size() > 0) {
+//                showRunWay(mRunWayList.get(0));
+//            }
+//        };
 
         mLuckyGiftAction = () -> {
             ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 360);
@@ -556,20 +565,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RunWayEvent runWayEvent) {
-        return;
         //第一版去掉跑道功能
 //        mRunWayList.add(runWayEvent);
 //        showRunWay(runWayEvent);
+        if (mRunWayGiftControl == null) {
+            mRunWayGiftControl = new RunWayGiftControl(runWayText);
+        }
+        mRunWayGiftControl.load(runWayEvent);
     }
 
-    private void showRunWay(RunWayEvent runWayEvent) {
-        if (!flagRunwayRunning) {
-            flagIsGifAnimating = true;
-            tvRunWayGift.setVisibility(View.VISIBLE);
-            runWayEvent.showRunWay(tvRunWayGift);
-            tvRunWayGift.postDelayed(mRunWayAction, 2500);
-        }
-    }
+//    private void showRunWay(RunWayEvent runWayEvent) {
+//        if (!flagRunwayRunning) {
+//            flagIsGifAnimating = true;
+//            tvRunWayGift.setVisibility(View.VISIBLE);
+//            runWayEvent.showRunWay(tvRunWayGift);
+//            tvRunWayGift.postDelayed(mRunWayAction, 2500);
+//        }
+//    }
 
     private void animGif(AnimEvent animEvent) {
         ivGiftGif.setVisibility(View.VISIBLE);
@@ -857,13 +869,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     protected void onDestroy() {
-        //ToastUtils.showToast("LiveDisplayActivityNew destory");
+        //ToastUtils.showToast("LiveDisplayActivityNew destroy");
 //        giftAnimView.removeCallbacks(mTotalGiftAnimAction);
 //        giftAnimView.removeCallbacks(mCacheComboAction);
         ivGiftGif.removeCallbacks(mGifAction);
-        tvRunWayGift.removeCallbacks(mRunWayAction);
+//        tvRunWayGift.removeCallbacks(mRunWayAction);
         tvLuckyGift.removeCallbacks(mLuckyGiftAction);
         giftControl.cleanAll();
+        if (mRunWayGiftControl != null) {
+            mRunWayGiftControl.destroy();
+        }
         super.onDestroy();
         mLivePresenter.onDestory();
         if (chatRoomPresenter != null) {
