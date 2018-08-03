@@ -6,6 +6,7 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.impl.LiveModelImpl;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
@@ -49,8 +50,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void sendGift(long userId, int count, int goodId, int programId, int anchorId) {
-        liveModel.doSendGift(userId, count, goodId, programId, anchorId, this);
+    public void sendGift(HashMap paramsMap) {
+        liveModel.doSendGift(paramsMap, this);
+    }
+
+    @Override
+    public void getRunWayList(HashMap paramsMap) {
+        liveModel.getRunWayList(paramsMap, this);
     }
 
     @Override
@@ -118,6 +124,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     public void onSendGiftSuccess() {
         if (liveView != null) {
             liveView.onSendGiftSuccess();
+        }
+    }
+
+    @Override
+    public void onGetRunWayListSuccess(RunWayListBean runWayListBean) {
+        if (liveView != null) {
+            liveView.onGetRunWayListSuccess(runWayListBean);
         }
     }
 

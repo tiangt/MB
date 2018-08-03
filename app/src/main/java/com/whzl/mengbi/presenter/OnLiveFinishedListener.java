@@ -5,6 +5,7 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.model.entity.RunWayListBean;
 
 public interface OnLiveFinishedListener {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -19,4 +20,6 @@ public interface OnLiveFinishedListener {
     void onGetRoomUserInfoSuccess(RoomUserInfo.DataBean data);
 
     void onSendGiftSuccess();
+
+    void onGetRunWayListSuccess(RunWayListBean runWayListBean);
 }

@@ -35,7 +35,7 @@ import butterknife.Unbinder;
 /**
  * @author shaw
  */
-public abstract class BaseActivityNew extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG_LOADING_DIALOG = "dialogLoading";
     private Unbinder mBinder;

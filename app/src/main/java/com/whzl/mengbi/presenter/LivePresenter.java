@@ -17,5 +17,7 @@ public interface LivePresenter {
 
     void onDestory();
 
-    void sendGift(long userId, int count, int goodId, int programId, int anchorId);
+    void sendGift(HashMap paramsMap);
+
+    void getRunWayList(HashMap paramsMap);
 }

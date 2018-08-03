@@ -4,6 +4,9 @@ import com.whzl.mengbi.BuildConfig;
 
 public class URLContentUtils {
 
+    public static boolean isDebug = BuildConfig.API_DEBUG_ENT;
+
+
     /**
      * 接口根地址
      */
@@ -114,7 +117,7 @@ public class URLContentUtils {
     /**
      * 直播间用户信息
      */
-    public static final String ROOM_USER_INFO = "v1/room/get-enter-user-info";
+    public static final String ROOM_USER_INFO = "v1/room/room-user";
 
 
     /**
@@ -157,13 +160,17 @@ public class URLContentUtils {
      */
     public static final String UNFOLLOW_ANCHOR = "v1/room/remove-user-program";
 
+    /**
+     * 跑道
+     */
+
     public static final String SITE_TIME = "site/time";
 
     public static String getBaseUrl() {
-        return BuildConfig.API_DEBUG_ENT ? DEBUG_BASE_URL : RELEASE_BASE_URL;
+        return isDebug ? DEBUG_BASE_URL : RELEASE_BASE_URL;
     }
 
     public static String getBaseImageUrl() {
-        return BuildConfig.API_DEBUG_ENT ? DEBUG_BASE_IMAGE_URL : RELEASE_BASE_IMAGE_URL;
+        return isDebug ? DEBUG_BASE_IMAGE_URL : RELEASE_BASE_IMAGE_URL;
     }
 }

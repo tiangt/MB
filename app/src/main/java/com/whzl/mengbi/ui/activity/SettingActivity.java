@@ -1,9 +1,10 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -11,10 +12,9 @@ import android.widget.TextView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
-import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -25,14 +25,12 @@ import com.whzl.mengbi.util.AsyncRun;
 import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -41,12 +39,13 @@ import io.reactivex.disposables.Disposable;
  * @author shaw
  * @date 2018/7/24
  */
-public class SettingActivity extends BaseActivityNew {
+public class SettingActivity extends BaseActivity {
     @BindView(R.id.tv_version_name)
     TextView tvVersionName;
     @BindView(R.id.btn_login_out)
     Button btnLoginOut;
     private ProgressDialog progressDialog;
+    private AwesomeDialog awesomeDialog;
 
     @Override
     protected void setupContentView() {
@@ -86,8 +85,7 @@ public class SettingActivity extends BaseActivityNew {
                 });
                 break;
             case R.id.btn_login_out:
-                btnLoginOut.setEnabled(false);
-                logOut();
+                showConfirmDialog();
                 break;
             case R.id.tv_feedback:
                 break;
@@ -102,14 +100,23 @@ public class SettingActivity extends BaseActivityNew {
         }
     }
 
+    private void showConfirmDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("提示");
+        dialog.setMessage("是否确定退出登录");
+        dialog.setNegativeButton("取消", null);
+        dialog.setPositiveButton("确定", (dialog1, which) -> logOut());
+        dialog.show();
+    }
+
     private void showDudateDialog(UpdateInfoBean.PhoneBean phone) {
         int versionCode = AppUtils.getVersionCode(this);
         if (versionCode >= phone.versionCode) {
             showToast("当前已是最新版本");
             return;
         }
-        AwesomeDialog.init()
-                .setLayoutId(R.layout.dialog_upgrade)
+        awesomeDialog = AwesomeDialog.init();
+        awesomeDialog.setLayoutId(R.layout.dialog_upgrade)
                 .setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
@@ -181,7 +188,6 @@ public class SettingActivity extends BaseActivityNew {
             @Override
             public void onReqFailed(String errorMsg) {
                 LogUtils.d(errorMsg);
-                btnLoginOut.setEnabled(true);
             }
         });
     }
@@ -218,5 +224,11 @@ public class SettingActivity extends BaseActivityNew {
 
                     }
                 });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        awesomeDialog = null;
     }
 }

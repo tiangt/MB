@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -153,7 +153,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
             case R.id.btn_send:
                 String message = etContent.getText().toString().trim();
                 if (!TextUtils.isEmpty(message)) {
-                    ((LiveDisplayActivityNew) getActivity()).sendMeeage(message);
+                    ((LiveDisplayActivity) getActivity()).sendMeeage(message);
                     etContent.getText().clear();
                     KeyBoardUtil.closeKeybord(etContent, getContext());
                     dismiss();

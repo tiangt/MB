@@ -13,7 +13,7 @@
         android:background="@color/comm_white">
 
         <com.whzl.mengbi.ui.widget.view.CircleImageView
-            android:id="@+id/user_info_head_img"
+            android:id="@+id/iv_avatar"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_centerVertical="true"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="15dp"
             android:drawablePadding="9dp"
             android:drawableRight="@drawable/arrowright"
             android:text="@string/user_info_profile_photo"
@@ -48,13 +48,12 @@
             android:text="@string/user_info_sprout" />
 
         <TextView
-            android:id="@+id/user_info_sprount"
+            android:id="@+id/tv_account"
             style="@style/user_info_option_right_text"
             android:drawableRight="@null" />
     </RelativeLayout>
 
     <View
-        android:id="@+id/user_info_sprount_view"
         style="@style/user_info_option_divider" />
 
     <RelativeLayout
@@ -69,13 +68,13 @@
             android:text="@string/user_info_nickname" />
 
         <TextView
-            android:id="@+id/user_info_nickname"
+            android:id="@+id/tv_nick_name"
             style="@style/user_info_option_right_text" />
     </RelativeLayout>
 
     <View style="@style/user_info_option_divider" />
 
-    <!--<RelativeLayout
+    <RelativeLayout
         android:id="@+id/rl_gender_container"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
@@ -87,7 +86,7 @@
             android:text="@string/user_info_sex" />
 
         <TextView
-            android:id="@+id/user_info_sex"
+            android:id="@+id/tv_gender"
             style="@style/user_info_option_right_text" />
     </RelativeLayout>
 
@@ -105,7 +104,7 @@
             android:text="@string/user_info_address" />
 
         <TextView
-            android:id="@+id/user_info_address"
+            android:id="@+id/tv_address"
             style="@style/user_info_option_right_text" />
     </RelativeLayout>
 
@@ -123,13 +122,12 @@
             android:text="@string/user_info_birthday" />
 
         <TextView
-            android:id="@+id/user_info_birthday"
+            android:id="@+id/tv_birthday"
             style="@style/user_info_option_right_text" />
     </RelativeLayout>
-    -->
 
     <RelativeLayout
-        android:id="@+id/user_anchor_layout"
+        android:id="@+id/rl_anchor_container"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginTop="5dp"
@@ -146,7 +144,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/user_info_anchorlevel"
+            android:id="@+id/tv_anchor_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_info_anchorlevel_text"
@@ -155,7 +153,7 @@
             android:textSize="12sp" />
 
         <ImageView
-            android:id="@+id/user_info_anchorlevel_img"
+            android:id="@+id/iv_anchor_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -183,7 +181,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/user_info_userlevel"
+            android:id="@+id/tv_user_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_info_userlevel_text"
@@ -192,7 +190,7 @@
             android:textSize="12sp" />
 
         <ImageView
-            android:id="@+id/user_info_userlevel_img"
+            android:id="@+id/iv_user_level"
             android:layout_width="23dp"
             android:layout_height="16dp"
             android:layout_alignParentRight="true"

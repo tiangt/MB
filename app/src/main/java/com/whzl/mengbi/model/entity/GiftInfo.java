@@ -82,7 +82,7 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
 
     }
 
-    public class GiftDetailInfoBean implements Parcelable {
+    public static class GiftDetailInfoBean implements Parcelable {
         private int goodsId;
         private String goodsName;
         private Object goodsEngName;
@@ -94,14 +94,14 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
         private Object tagId;
         private Object tagName;
         private String goodPic;
-        private boolean selected;
+        private boolean isBackpack;
 
-        public boolean isSelected() {
-            return selected;
+        public boolean isBackpack() {
+            return isBackpack;
         }
 
-        public void setSelected(boolean selected) {
-            this.selected = selected;
+        public void setBackpack(boolean backpack) {
+            this.isBackpack = backpack;
         }
 
 
@@ -114,6 +114,8 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
             feeType = in.readString();
             goodPic = in.readString();
         }
+
+        public GiftDetailInfoBean(){}
 
         public final Creator<GiftDetailInfoBean> CREATOR = new Creator<GiftDetailInfoBean>() {
             @Override

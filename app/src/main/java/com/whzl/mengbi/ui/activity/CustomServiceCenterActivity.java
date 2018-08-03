@@ -8,17 +8,16 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
  * @author shaw
  */
-public class CustomServiceCenterActivity extends BaseActivityNew {
+public class CustomServiceCenterActivity extends BaseActivity {
 
 
     @Override

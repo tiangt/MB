@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gift_anim_view"
     android:layout_width="wrap_content"
     android:layout_height="37dp"
-    android:id="@+id/gift_anim_view">
+    android:layout_marginBottom="20dp"
+    android:layout_marginLeft="20dp">
 
     <RelativeLayout
+        android:id="@+id/rl_info_container"
         android:layout_width="wrap_content"
         android:layout_height="34dp"
-        android:background="@drawable/shape_live_house_gift_anim_bg"
         android:layout_alignParentBottom="true"
-        android:id="@+id/rl_info_container"
-        android:layout_marginRight="25dp">
+        android:layout_marginRight="25dp"
+        android:background="@drawable/shape_live_house_gift_anim_bg">
 
         <com.whzl.mengbi.ui.widget.view.CircleImageView
             android:id="@+id/iv_anim_gift_avatar"
@@ -40,28 +42,28 @@
                 android:layout_height="wrap_content"
                 android:textColor="#f9f9f9"
                 android:textSize="10sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_anim_gift_count"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/rl_info_container"
         android:layout_centerVertical="true"
         android:layout_marginRight="2dp"
+        android:paddingBottom="2dp"
         android:textColor="#faf9f9"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_alignRight="@id/rl_info_container"
-        android:paddingBottom="2dp"/>
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/iv_anim_gift_icon"
         android:layout_width="32dp"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@id/tv_anim_gift_count"
-        android:layout_marginRight="5dp"/>
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/tv_anim_gift_count" />
 
 </RelativeLayout>

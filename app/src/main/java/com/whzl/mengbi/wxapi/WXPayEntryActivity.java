@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,7 @@ import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.pay.WXPayOrder;
 import com.whzl.mengbi.presenter.RechargePresenter;
 import com.whzl.mengbi.presenter.impl.RechargePresenterImpl;
-import com.whzl.mengbi.ui.activity.base.BaseActivityNew;
+import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.view.RechargeView;
@@ -63,7 +62,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author shaw
  * @date 2018/7/19
  */
-public class WXPayEntryActivity extends BaseActivityNew implements IWXAPIEventHandler, RechargeView {
+public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandler, RechargeView {
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
     @BindView(R.id.tv_account)

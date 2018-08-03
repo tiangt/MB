@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="6dp">
+
+        <EditText
+            android:id="@+id/et_nick_name"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/comm_white"
+            android:gravity="center_vertical"
+            android:hint="@string/user_info_nickname_hint"
+            android:maxLength="20"
+            android:paddingLeft="14dp"
+            android:textColor="@color/font_color_52"
+            android:textSize="15sp" />
+
+        <ImageButton
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/et_nick_name"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="12dp"
+            android:background="@null"
+            android:src="@drawable/close"
+            android:layout_marginRight="15dp"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="13dp"
+        android:layout_marginTop="6dp"
+        android:text="@string/user_info_nickname_length"
+        android:textColor="@color/font_color_53"
+        android:textSize="12sp" />
+</LinearLayout>

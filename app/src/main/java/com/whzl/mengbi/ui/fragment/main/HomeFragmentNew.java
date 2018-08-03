@@ -20,7 +20,7 @@ import com.whzl.mengbi.model.entity.LiveShowListInfo;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivityNew;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -173,7 +173,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            Intent intent = new Intent(getContext(), LiveDisplayActivityNew.class);
+            Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
             switch (type) {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
@@ -268,4 +268,16 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         }
     }
 
+    @Override
+    public void onError(String msg) {
+        refreshLayout.finishLoadMore();
+        refreshLayout.finishRefresh();
+        mCurrentPager --;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHomePresenter.onDestroy();
+    }
 }

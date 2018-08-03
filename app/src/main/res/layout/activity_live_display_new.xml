@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#181818"
@@ -109,15 +110,21 @@
                 android:textColor="#f0f0f0"
                 android:textSize="10sp" />
 
-            <TextView
-                android:id="@+id/tv_run_way_gift"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/btn_contribute"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="18dp"
-                android:visibility="gone"/>
+                android:layout_marginRight="40dp"
+                android:layout_centerVertical="true">
+
+                <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
+                    android:id="@+id/tv_run_way_gift"
+                    android:layout_width="1000dp"
+                    android:layout_height="match_parent"
+                    android:singleLine="true"
+                    android:textSize="12sp" />
+            </android.support.design.widget.CoordinatorLayout>
 
             <Button
                 android:id="@+id/btn_close"
@@ -126,7 +133,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/close_icon" />
+                android:background="@drawable/close_icon"
+                android:paddingLeft="10dp" />
 
         </RelativeLayout>
 
@@ -137,34 +145,43 @@
             android:layout_marginTop="7dp"
             app:ratio="1.33">
 
-            <SurfaceView
-                android:id="@+id/player_master"
+            <!--<SurfaceView-->
+            <!--android:id="@+id/player_master"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+            <com.ksyun.media.player.KSYTextureView
+                android:id="@+id/texture_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <ProgressBar
+                android:id="@+id/progressbar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true" />
 
             <TextView
                 android:id="@+id/tv_lucky_gift"
                 android:layout_width="320dp"
                 android:layout_height="56dp"
-                android:textSize="10sp"
-                android:singleLine="true"
                 android:layout_centerHorizontal="true"
+                android:background="@drawable/lucky_gift_bg"
                 android:gravity="center_horizontal"
                 android:paddingTop="25dp"
-                android:background="@drawable/lucky_gift_bg"
-                android:translationX="360dp"/>
+                android:singleLine="true"
+                android:textSize="10sp"
+                android:translationX="400dp" />
 
             <TextView
                 android:id="@+id/tv_stop_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="主播正在休息中"
-                android:textStyle="bold"
-                android:textSize="24sp"
                 android:layout_centerInParent="true"
+                android:text="主播正在休息中"
                 android:textColor="@color/player_rest"
-                android:visibility="gone"/>
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_gift_gif"
@@ -172,20 +189,15 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
-            <android.support.constraint.ConstraintLayout
+            <LinearLayout
+                android:id="@+id/ll_gift_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="50dp">
+                android:layout_marginBottom="30dp"
+                android:orientation="vertical">
 
-                <include
-                    layout="@layout/layout_gift_anim"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="13.5dp"
-                    app:layout_constraintRight_toLeftOf="parent" />
-            </android.support.constraint.ConstraintLayout>
+            </LinearLayout>
 
         </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 

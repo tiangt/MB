@@ -44,14 +44,14 @@
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:background="@null"
+                android:gravity="center_vertical"
                 android:hint="@string/phone_number_hint"
                 android:inputType="phone"
+                android:maxLength="11"
                 android:textColorHint="#B9B9B9"
-                android:textSize="16sp"
-                android:maxLength="11"/>
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -80,29 +80,52 @@
                 android:id="@+id/et_password"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:background="@null"
                 android:hint="@string/password_hint"
                 android:inputType="textPassword"
-                android:textColorHint="#B9B9B9"
-                android:textSize="16sp"
                 android:maxLength="12"
-                android:layout_gravity="center_vertical"/>
+                android:textColorHint="#B9B9B9"
+                android:textSize="16sp" />
 
         </LinearLayout>
-        
-        
+
+
         <Button
             android:id="@+id/btn_login"
             android:layout_width="290dp"
             android:layout_height="44dp"
-            android:enabled="false"
-            android:background="@drawable/selector_comm_btn_bg"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
+            android:background="@drawable/selector_comm_btn_bg"
+            android:enabled="false"
             android:text="登 录"
             android:textColor="@color/white"
-            android:textSize="18sp"/>
+            android:textSize="18sp" />
+
+        <RadioGroup
+            android:id="@+id/rg_env_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_debug"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="debug" />
+
+            <RadioButton
+                android:id="@+id/rb_release"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="release" />
+
+        </RadioGroup>
 
 
     </LinearLayout>
@@ -154,9 +177,9 @@
             android:background="@color/appBg"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:textSize="15dp"
+            android:text="其他方式登录"
             android:textColor="#B9B9B9"
-            android:text="其他方式登录" />
+            android:textSize="15dp" />
 
     </RelativeLayout>
 

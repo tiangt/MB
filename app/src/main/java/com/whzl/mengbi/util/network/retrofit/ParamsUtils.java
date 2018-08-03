@@ -20,7 +20,7 @@ import java.util.Map;
  * @date 2018/7/27
  */
 public class ParamsUtils {
-    public static Map getSignPramsMap(Map<String, String> paramsMap) {
+    public static HashMap<String, String> getSignPramsMap(HashMap<String, String> paramsMap) {
         String sessionId = (String) SPUtils.get(BaseApplication.getInstance(), "sessionId", "");
         paramsMap.put("appKey", NetConfig.APPKEY);
         paramsMap.put("timestamp", System.currentTimeMillis() / 1000 + "");

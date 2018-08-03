@@ -94,6 +94,19 @@ public class DateUtils {
     }
 
     //可根据需要自行截取数据显示
+    //yyyy-MM-dd
+    public static String getTime(String dateStr) {
+        Date date = null;
+        try {
+            date = getDate(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return getTime(date);
+    }
+
+    //可根据需要自行截取数据显示
     //yyyy-MM-dd HH:mm:ss
     public static String getTime2(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

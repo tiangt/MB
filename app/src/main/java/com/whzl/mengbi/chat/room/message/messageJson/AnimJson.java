@@ -179,6 +179,16 @@ public class AnimJson {
         private int comboTimes;
         private long toUserId;
         private String nickname;
+
+        public String getGiftUrl() {
+            return giftUrl;
+        }
+
+        public void setGiftUrl(String giftUrl) {
+            this.giftUrl = giftUrl;
+        }
+
+        private String giftUrl;
         private long dateLong;
         private String color;
         private long userId;

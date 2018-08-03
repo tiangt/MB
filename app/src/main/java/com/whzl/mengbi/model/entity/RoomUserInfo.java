@@ -11,7 +11,7 @@ public class RoomUserInfo {
     /**
      * code : 200
      * msg : success
-     * data : {"userId":30000139,"userType":"ANCHOR","nickname":"哈哈哈哈哈哈哈哈和哈","avatar":"http://dev.img.mengbitv.com/avatar/030/00/01/39.jpg?1528258220","status":"ACTIVE","sex":"","introduce":"php echo ？","birthday":"2018-02-22 00:00:00","province":"浙江省","city":"杭州市","levelMap":[{"levelType":"ANCHOR_LEVEL","levelValue":49,"levelName":"天使9","expList":[{"expType":"GIFT_EXP","expName":"付费礼物经验","sjExpvalue":2976859652,"bjExpValue":2976859652,"sjNeedExpValue":3000000000,"bjNeedExpValue":0}]},{"levelType":"ROYAL_LEVEL","levelValue":0,"levelName":"平民","expList":[{"expType":"ROYAL_EXP","expName":"贵族经验","sjExpvalue":0,"bjExpValue":0,"sjNeedExpValue":200,"bjNeedExpValue":0}]},{"levelType":"USER_LEVEL","levelValue":24,"levelName":"伯爵","expList":[{"expType":"USER_EXP","expName":"用户经验","sjExpvalue":20888600,"bjExpValue":20888600,"sjNeedExpValue":30000000,"bjNeedExpValue":0}]}],"isSubs":true,"identityId":10,"isVip":false,"goodsList":[{"goodsId":300,"goodsName":"守护","goodsType":"GUARD","goodsIcon":1005,"bindProgramId":100079,"colorSpeak":true}],"weathMap":{"coin":79367423,"chengPonit":1846429640}}
+     * data : {"userId":30000139,"userType":"ANCHOR","nickname":"哈哈哈哈哈哈哈哈和哈","avatar":"http://dev.img.mengbitv.com/avatar/030/00/01/39.jpg?1528258220","status":"ACTIVE","sex":"","introduce":"php echo ？","birthday":"2018-02-22 00:00:00","province":"浙江省","city":"杭州市","levelList":[{"levelType":"ANCHOR_LEVEL","levelValue":49,"levelName":"天使9","expList":[{"expType":"GIFT_EXP","expName":"付费礼物经验","sjExpvalue":2976859652,"bjExpValue":2976859652,"sjNeedExpValue":3000000000,"bjNeedExpValue":0}]},{"levelType":"ROYAL_LEVEL","levelValue":0,"levelName":"平民","expList":[{"expType":"ROYAL_EXP","expName":"贵族经验","sjExpvalue":0,"bjExpValue":0,"sjNeedExpValue":200,"bjNeedExpValue":0}]},{"levelType":"USER_LEVEL","levelValue":24,"levelName":"伯爵","expList":[{"expType":"USER_EXP","expName":"用户经验","sjExpvalue":20888600,"bjExpValue":20888600,"sjNeedExpValue":30000000,"bjNeedExpValue":0}]}],"isSubs":true,"identityId":10,"isVip":false,"goodsList":[{"goodsId":300,"goodsName":"守护","goodsType":"GUARD","goodsIcon":1005,"bindProgramId":100079,"colorSpeak":true}],"weathMap":{"coin":79367423,"chengPonit":1846429640}}
      */
 
     private int code;
@@ -58,7 +58,7 @@ public class RoomUserInfo {
         private int identityId;
         private boolean isVip;
         private WeathMapBean weathMap;
-        private List<LevelMapBean> levelMap;
+        private List<LevelMapBean> levelList;
         private List<GoodsListBean> goodsList;
 
         public long getUserId() {
@@ -170,12 +170,12 @@ public class RoomUserInfo {
             this.weathMap = weathMap;
         }
 
-        public List<LevelMapBean> getLevelMap() {
-            return levelMap;
+        public List<LevelMapBean> getLevelList() {
+            return levelList;
         }
 
-        public void setLevelMap(List<LevelMapBean> levelMap) {
-            this.levelMap = levelMap;
+        public void setLevelList(List<LevelMapBean> levelList) {
+            this.levelList = levelList;
         }
 
         public List<GoodsListBean> getGoodsList() {
