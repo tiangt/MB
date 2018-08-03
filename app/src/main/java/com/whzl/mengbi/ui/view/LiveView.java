@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.view;
 
+import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -9,8 +10,6 @@ import com.whzl.mengbi.model.entity.RunWayListBean;
 
 public interface LiveView {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
-
-    void onLiveFaceSuccess(EmjoyInfo emjoyInfo);
 
     void onLiveGiftSuccess(GiftInfo giftInfo);
 
@@ -28,4 +27,5 @@ public interface LiveView {
 
     void onGetRunWayListSuccess(RunWayListBean runWayListBean);
 
+    void getGuardListSuccess(GuardListBean guardListBean);
 }

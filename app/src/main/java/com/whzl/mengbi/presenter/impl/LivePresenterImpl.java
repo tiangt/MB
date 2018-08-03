@@ -1,5 +1,6 @@
 package com.whzl.mengbi.presenter.impl;
 
+import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -11,8 +12,10 @@ import com.whzl.mengbi.model.impl.LiveModelImpl;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.view.LiveView;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener {
     private LiveView liveView;
@@ -74,13 +77,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void onLiveFaceSuccess(EmjoyInfo emjoyInfo) {
-        if (liveView != null) {
-            liveView.onLiveFaceSuccess(emjoyInfo);
-        }
-    }
-
-    @Override
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
         if (liveView != null) {
             liveView.onRoomInfoSuccess(roomInfoBean);
@@ -135,6 +131,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
+    public void onGetGuardListSuccess(GuardListBean guardListBean) {
+        if (liveView != null) {
+            liveView.getGuardListSuccess(guardListBean);
+        }
+    }
+
+    @Override
     public void followHost(long userId, int mProgramId) {
         liveModel.doFollowHost(userId, mProgramId, this);
     }
@@ -144,5 +147,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         if (userId != 0) {
             liveModel.doRoomUserInfo(userId, programId, this);
         }
+    }
+
+    @Override
+    public void getGuardList(int programId) {
+        HashMap map = new HashMap();
+        map.put("programId", programId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getGuardList(signPramsMap, this);
     }
 }

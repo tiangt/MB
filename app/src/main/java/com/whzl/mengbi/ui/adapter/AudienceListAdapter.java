@@ -22,14 +22,14 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.List;
 
-public class AudienceListAdapter<T> extends CommonAdapter<AudienceListBean.DataBean.AudienceInfoBean> {
+public class AudienceListAdapter<T> extends CommonAdapter<AudienceListBean.AudienceInfoBean> {
 
-    public AudienceListAdapter(Context context, int layoutId, List<AudienceListBean.DataBean.AudienceInfoBean> datas) {
+    public AudienceListAdapter(Context context, int layoutId, List<AudienceListBean.AudienceInfoBean> datas) {
         super(context, layoutId, datas);
     }
 
     @Override
-    protected void convert(ViewHolder holder, AudienceListBean.DataBean.AudienceInfoBean audienceInfoBean, int position) {
+    protected void convert(ViewHolder holder, AudienceListBean.AudienceInfoBean audienceInfoBean, int position) {
         LinearLayout llLevelContainer = holder.getView(R.id.ll_level_container);
         llLevelContainer.removeAllViews();
         holder.setText(R.id.tv_name, audienceInfoBean.getName());
@@ -52,7 +52,7 @@ public class AudienceListAdapter<T> extends CommonAdapter<AudienceListBean.DataB
         }
         if (audienceInfoBean.getMedal() != null) {
             for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
-                AudienceListBean.DataBean.AudienceInfoBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
+                AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
                 if ("BADGE".equals(medalBean.getGoodsType()) || "GUARD".equals(medalBean.getGoodsType())) {
                     Glide.with(mContext)
                             .load(medalBean.getGoodsIcon())

@@ -33,7 +33,7 @@ public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
     @BindView(R.id.recycler)
     RecyclerView recycler;
 
-    private ArrayList<AudienceListBean.DataBean.AudienceInfoBean> mDatas = new ArrayList<>();
+    private ArrayList<AudienceListBean.AudienceInfoBean> mDatas = new ArrayList<>();
     private AudienceListAdapter adapter;
     private int mProgramid;
 
@@ -59,7 +59,7 @@ public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                AudienceListBean.DataBean.AudienceInfoBean audienceInfoBean = mDatas.get(position);
+                AudienceListBean.AudienceInfoBean audienceInfoBean = mDatas.get(position);
                 AudienceInfoDialog.newInstance(audienceInfoBean.getUserid(), mProgramid)
                         .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                         .setDimAmount(0)

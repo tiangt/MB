@@ -290,4 +290,10 @@ public class GiftDialog extends BaseAwesomeDialog {
         tvAmount.setText(event.coin + "");
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mGiftInfo = null;
+        fragments = null;
+    }
 }

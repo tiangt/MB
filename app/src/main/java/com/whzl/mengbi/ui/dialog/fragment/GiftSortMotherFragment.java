@@ -101,4 +101,5 @@ public class GiftSortMotherFragment extends BaseFragment {
             pagerIndexContainer.addView(view, params);
         }
     }
+
 }

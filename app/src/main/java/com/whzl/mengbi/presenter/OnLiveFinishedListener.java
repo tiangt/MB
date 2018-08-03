@@ -1,5 +1,6 @@
 package com.whzl.mengbi.presenter;
 
+import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -10,7 +11,6 @@ import com.whzl.mengbi.model.entity.RunWayListBean;
 public interface OnLiveFinishedListener {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
     void onLiveGiftSuccess(GiftInfo giftInfo);
-    void onLiveFaceSuccess(EmjoyInfo emjoyInfo);
     void onRoomInfoSuccess(RoomInfoBean roomInfoBean);
     void onAudienceSuccess(long audienceAccount);
     void onSuccess();
@@ -22,4 +22,6 @@ public interface OnLiveFinishedListener {
     void onSendGiftSuccess();
 
     void onGetRunWayListSuccess(RunWayListBean runWayListBean);
+
+    void onGetGuardListSuccess(GuardListBean guardListBean);
 }

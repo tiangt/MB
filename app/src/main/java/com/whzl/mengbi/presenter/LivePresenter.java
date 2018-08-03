@@ -20,4 +20,6 @@ public interface LivePresenter {
     void sendGift(HashMap paramsMap);
 
     void getRunWayList(HashMap paramsMap);
+
+    void getGuardList(int programId);
 }

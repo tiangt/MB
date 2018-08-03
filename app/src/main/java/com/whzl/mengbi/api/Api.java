@@ -1,5 +1,6 @@
 package com.whzl.mengbi.api;
 
+import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
@@ -45,5 +46,23 @@ public interface Api {
     @POST("v1/room/runway")
     @FormUrlEncoded
     Observable<ApiResult<RunWayListBean>> getRunWayList(@FieldMap Map<String, String> params);
+
+    /**
+     * 守护列表
+     * @param params
+     * @return
+     */
+    @POST("v1/room/guard-self-list")
+    @FormUrlEncoded
+    Observable<ApiResult<GuardListBean>> getGuardList(@FieldMap Map<String, String> params);
+
+    /**
+     * 观众列表
+     * @param params
+     * @return
+     */
+    @POST("v1/room/online")
+    @FormUrlEncoded
+    Observable<ApiResult<GuardListBean>> getAudienceList(@FieldMap Map<String, String> params);
 
 }

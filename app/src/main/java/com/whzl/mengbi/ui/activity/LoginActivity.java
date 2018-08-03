@@ -44,7 +44,7 @@ import butterknife.OnClick;
  * @author shaw
  * @date 2018/7/17
  */
-public class LoginActivityNew extends BaseActivity implements LoginView, TextWatcher {
+public class LoginActivity extends BaseActivity implements LoginView, TextWatcher {
 
     private static final int REQUEST_REGISTER = 520;
     @BindView(R.id.et_phone)

@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
 
     private void login() {
         currentSelectedIndex = 0;
-        Intent intent = new Intent(MainActivity.this, LoginActivityNew.class);
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         rgTab.check(rgTab.getChildAt(0).getId());
     }

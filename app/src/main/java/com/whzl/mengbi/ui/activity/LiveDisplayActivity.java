@@ -1,26 +1,19 @@
 package com.whzl.mengbi.ui.activity;
 
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,7 +26,6 @@ import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.ksyun.media.player.KSYTextureView;
-import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
@@ -42,17 +34,15 @@ import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
+import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
-import com.whzl.mengbi.chat.room.util.CenterAlignImageSpan;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadEvent;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
-import com.whzl.mengbi.chat.room.util.ImageCache;
-import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -60,6 +50,7 @@ import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
+import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -69,7 +60,10 @@ import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
+import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
+import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
@@ -81,16 +75,13 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
-import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,9 +90,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
@@ -123,7 +114,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.texture_view)
     KSYTextureView textureView;
     @BindView(R.id.recycler)
-    RecyclerView recycler;
+    RecyclerView mChatRecycler;
     @BindView(R.id.tv_fans_count)
     TextView tvFansCount;
     @BindView(R.id.tv_popularity)
@@ -152,6 +143,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     AutoScrollTextView runWayText;
     @BindView(R.id.tv_lucky_gift)
     TextView tvLuckyGift;
+    @BindView(R.id.guard_recycler)
+    RecyclerView mGuardRecycler;
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
     private ChatRoomPresenterImpl chatRoomPresenter;
@@ -170,6 +163,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RunWayGiftControl mRunWayGiftControl;
     private LuckGiftControl mLuckyGiftControl;
     private GifGiftControl mGifGiftControl;
+    private ArrayList<GuardListBean.GuardDetailBean> mGuardList;
+    private BaseListAdapter mGuardAdapter;
 
     @Override
     protected void setupContentView() {
@@ -244,8 +239,64 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void setupView() {
         initPlayer();
-        recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        recycler.setLayoutManager(new LinearLayoutManager(this));
+        initChatRecycler();
+        initProtectRecycler();
+    }
+
+    private void initProtectRecycler() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mGuardRecycler.setLayoutManager(layoutManager);
+        mGuardAdapter = new BaseListAdapter() {
+            @Override
+            protected int getDataCount() {
+                return mGuardList == null ? 0 : 3;
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.item_protect, parent, false);
+                return new ProtectViewHolder(itemView);
+            }
+        };
+        mGuardRecycler.setAdapter(mGuardAdapter);
+    }
+
+    class ProtectViewHolder extends BaseViewHolder {
+        @BindView(R.id.iv_guard_avatar)
+        ImageView ivGuardAvatar;
+        @BindView(R.id.tv_guard)
+        TextView tvGuard;
+
+        public ProtectViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            if (position > mGuardList.size() - 1) {
+                GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, R.drawable.guard_default_icon, ivGuardAvatar);
+                tvGuard.setVisibility(View.VISIBLE);
+            } else {
+                GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, mGuardList.get(position).avatar, ivGuardAvatar);
+                tvGuard.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            GuardListDialog.newInstance(mProgramId)
+                    .setShowBottom(true)
+                    .setDimAmount(0)
+                    .show(getSupportFragmentManager());
+        }
+    }
+
+    private void initChatRecycler() {
+        mChatRecycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        mChatRecycler.setLayoutManager(new LinearLayoutManager(this));
         chatAdapter = new RecyclerView.Adapter() {
             @NonNull
             @Override
@@ -265,8 +316,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 return chatList == null ? 0 : chatList.size();
             }
         };
-        recycler.setAdapter(chatAdapter);
-        recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mChatRecycler.setAdapter(chatAdapter);
+        mChatRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -296,6 +347,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
         Observable.interval(0, 10, TimeUnit.SECONDS)
                 .subscribe(aLong -> mLivePresenter.getAudienceAccount(mProgramId));
+        mLivePresenter.getGuardList(mProgramId);
     }
 
     private void getRoomToken() {
@@ -371,7 +423,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void login() {
-        Intent intent = new Intent(this, LoginActivityNew.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra("from", this.getClass().toString());
         startActivityForResult(intent, REQUEST_LOGIN);
     }
@@ -434,9 +486,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         chatList.add(message);
         if (!isRecyclerScrolling) {
-            if (chatAdapter != null && recycler != null) {
+            if (chatAdapter != null && mChatRecycler != null) {
                 chatAdapter.notifyDataSetChanged();
-                recycler.smoothScrollToPosition(chatList.size() - 1);
+                mChatRecycler.smoothScrollToPosition(chatList.size() - 1);
             }
         }
     }
@@ -467,6 +519,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mStream = null;
         textureView.reset();
         tvStopTip.setVisibility(View.VISIBLE);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UpdateProgramEvent updateProgramEvent) {
+        tvFansCount.setText("粉丝：" + updateProgramEvent.getmProgramJson().getContext().getProgram().getSubscriptionNum());
     }
 
 
@@ -568,8 +625,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @Override
-    public void onLiveFaceSuccess(EmjoyInfo emjoyInfo) {
-
+    public void getGuardListSuccess(GuardListBean guardListBean) {
+        if (mGuardList == null) {
+            mGuardList = new ArrayList<>();
+        }
+        mGuardList.clear();
+        if (guardListBean != null) {
+            mGuardList.addAll(guardListBean.list);
+        }
+        mGuardAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -626,7 +690,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
-                mUserId = Long.parseLong(SPUtils.get(this, "userId", (long) 0).toString());
+                mUserId = (long) SPUtils.get(this, "userId", 0L);
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
             }

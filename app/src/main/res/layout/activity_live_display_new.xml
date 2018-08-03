@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#181818"
@@ -15,14 +14,16 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="35dp"
+            android:layout_marginTop="6.5dp">
 
             <RelativeLayout
+                android:id="@+id/rl_anchor_info"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="6.5dp"
-                android:background="@drawable/shape_host_info_bg">
+                android:background="@drawable/shape_host_info_bg"
+                android:layout_centerVertical="true">
 
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
                     android:id="@+id/iv_host_avatar"
@@ -35,19 +36,20 @@
                     android:id="@+id/rl_host_info"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/iv_host_avatar"
-                    android:orientation="vertical">
+                    android:layout_toRightOf="@id/iv_host_avatar">
 
                     <TextView
                         android:id="@+id/tv_host_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
+                        android:layout_marginTop="3dp"
                         android:layout_marginRight="6dp"
-                        android:layout_marginTop="6dp"
                         android:singleLine="true"
                         android:textColor="#e5e5e5"
-                        android:textSize="10sp" />
+                        android:textSize="10sp"
+                        android:maxEms="7"
+                        android:ellipsize="end"/>
 
                     <TextView
                         android:id="@+id/tv_fans_count"
@@ -76,13 +78,24 @@
 
             </RelativeLayout>
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/guard_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/rl_anchor_info"
+                android:layout_toLeftOf="@id/tv_popularity"
+                android:layout_marginLeft="5dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+
             <TextView
                 android:id="@+id/tv_popularity"
                 android:layout_width="50dp"
                 android:layout_height="29dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="7.5dp"
+                android:layout_centerVertical="true"
                 android:background="@drawable/shape_live_display_populartity_bg"
                 android:gravity="center"
                 android:textColor="#f0f0f0"
@@ -143,7 +156,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            app:ratio="1.33">
+            app:ratio="1.33"
+            android:background="@color/colorblack">
 
             <!--<SurfaceView-->
             <!--android:id="@+id/player_master"-->

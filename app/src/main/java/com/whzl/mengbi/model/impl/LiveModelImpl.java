@@ -1,6 +1,7 @@
 package com.whzl.mengbi.model.impl;
 
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.AudienceCountBean;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
@@ -21,7 +22,6 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -72,14 +72,6 @@ public class LiveModelImpl implements LiveModel {
                     }
                 });
     }
-
-    @Override
-    public void doLiveFace(String fileName, OnLiveFinishedListener listener) {
-        String strJson = FileUtils.getJson(fileName, BaseApplication.getInstance());
-        EmjoyInfo emjoyInfo = GsonUtils.GsonToBean(strJson, EmjoyInfo.class);
-        listener.onLiveFaceSuccess(emjoyInfo);
-    }
-
 
     @Override
     public void doRoomInfo(int programId, OnLiveFinishedListener listener) {
@@ -205,6 +197,25 @@ public class LiveModelImpl implements LiveModel {
                     @Override
                     public void onSuccess(RunWayListBean runWayListBean) {
                         listener.onGetRunWayListSuccess(runWayListBean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                    }
+                });
+
+    }
+
+    @Override
+    public void getGuardList(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getGuardList(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<GuardListBean>() {
+                    @Override
+                    public void onSuccess(GuardListBean guardListBean) {
+                        listener.onGetGuardListSuccess(guardListBean);
                     }
 
                     @Override

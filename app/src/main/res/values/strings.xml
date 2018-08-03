@@ -246,5 +246,6 @@
     <string name="save">保存</string>
     <string name="gender">性别</string>
     <string name="empty_backpack">你的背包是空的</string>
+    <string name="empty_guard_list">当前主播还没有守护用户\n快给心爱的主播开一个吧</string>
 
 </resources>
