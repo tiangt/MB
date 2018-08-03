@@ -7,8 +7,10 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
+import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 
@@ -381,9 +384,11 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         mCombo = mGift.getCount();
         isShowing = true;
         isEnd = false;
-        tvCount.setText("x " + mGift.getCount());
-        tvFromNickName.setText(mGift.getNickname() + "送");
-        tvGiftName.setText(mGift.getGoodsName());
+        tvCount.setText("x" + mGift.getCount());
+        tvFromNickName.setText(mGift.getNickname());
+        tvGiftName.setText("送 ");
+        SpannableString spannableString = StringUtils.spannableStringColor(mGift.getGoodsName(), Color.parseColor("#fe4b21"));
+        tvGiftName.append(spannableString);
         String avatarUrl = ImageUrl.getAvatarUrl(mGift.getUserId(), "jpg", mGift.getLastUpdateTime());
         GlideImageLoader.getInstace().displayImage(getContext(), avatarUrl, ivAvatar);
         GlideImageLoader.getInstace().displayImage(getContext(), mGift.getGiftUrl(), ivGift);
@@ -442,7 +447,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback {
         if (anim == null) {
             if (isFirst) {
                 tvCount.setVisibility(View.VISIBLE);
-                tvCount.setText("x " + mGift.getCount());
+                tvCount.setText("x" + mGift.getCount());
                 comboEndAnim();
             } else {
                 //数量增加

@@ -330,6 +330,7 @@ public class GiftControl implements GiftFrameLayout.LeftGiftAnimationStatusListe
             }
         }
         mGiftLayoutParent.removeAllViews();
+        mContext = null;
     }
 
     /**

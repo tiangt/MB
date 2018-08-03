@@ -78,9 +78,7 @@ public class AutoScrollTextView extends AppCompatTextView {
             Observable.just(1)
                     .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(integer -> {
-                        flagIsTimeOut = true;
-                    });
+                    .subscribe(integer -> flagIsTimeOut = true);
         }
     }
 

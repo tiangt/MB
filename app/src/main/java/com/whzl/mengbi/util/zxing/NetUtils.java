@@ -23,7 +23,7 @@ public class NetUtils {
      */
     public static final int NETWORK_WIFI = 1;
 
-    public static Context mContext;
+    public Context mContext;
 
     public NetUtils(Context context) {
         mContext = context;
