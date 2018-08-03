@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.activity;
 
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -19,7 +18,6 @@ import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.StringUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -89,13 +87,17 @@ public class RegisterActivityNew extends BaseActivityNew implements RegisterView
         cdt = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                btnGetVerifyCode.setText(millisUntilFinished / 1000 + "秒");
+                if (btnGetVerifyCode != null) {
+                    btnGetVerifyCode.setText(millisUntilFinished / 1000 + "秒");
+                }
             }
 
             @Override
             public void onFinish() {
-                btnGetVerifyCode.setEnabled(true);
-                btnGetVerifyCode.setText("获取验证码");
+                if (btnGetVerifyCode != null) {
+                    btnGetVerifyCode.setEnabled(true);
+                    btnGetVerifyCode.setText("获取验证码");
+                }
             }
         };
         cdt.start();
