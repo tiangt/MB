@@ -1,7 +1,9 @@
 package com.whzl.mengbi.api;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
 import com.whzl.mengbi.util.network.retrofit.ApiResult;
@@ -22,6 +24,7 @@ public interface Api {
 
     /**
      * 观看记录
+     *
      * @param params
      * @return
      */
@@ -31,6 +34,7 @@ public interface Api {
 
     /**
      * 背包
+     *
      * @param params
      * @return
      */
@@ -40,6 +44,7 @@ public interface Api {
 
     /**
      * 跑道
+     *
      * @param params
      * @return
      */
@@ -49,6 +54,7 @@ public interface Api {
 
     /**
      * 守护列表
+     *
      * @param params
      * @return
      */
@@ -58,11 +64,32 @@ public interface Api {
 
     /**
      * 观众列表
+     *
      * @param params
      * @return
      */
     @POST("v1/room/online")
     @FormUrlEncoded
     Observable<ApiResult<GuardListBean>> getAudienceList(@FieldMap Map<String, String> params);
+
+    /**
+     * 观众列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/mall/get-guard-prices")
+    @FormUrlEncoded
+    Observable<ApiResult<GuardPriceBean>> getGuardPrice(@FieldMap Map<String, String> params);
+
+    /**
+     * 观众列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/consume/send-gift")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> sendGift(@FieldMap Map<String, String> params);
 
 }

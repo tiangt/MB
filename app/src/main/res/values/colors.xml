@@ -145,4 +145,5 @@
     <color name="btn_not_enable">#ffcccccc</color>
     <color name="comm_white">#f9f9f9</color>
     <color name="white">#FFFFFF</color>
+    <color name="emoji_bg">#f4f4f4</color>
 </resources>

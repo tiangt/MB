@@ -36,8 +36,6 @@ public class EmojiFragment extends BaseFragment {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    Unbinder unbinder;
-    Unbinder unbinder1;
     private List<EmjoyInfo.FaceBean.PublicBean> publicBeans;
     private ChatEmojiAdapter chatEmojiAdapter;
     private int index;
@@ -61,9 +59,10 @@ public class EmojiFragment extends BaseFragment {
         super.initEnv();
         index = getArguments().getInt("index");
         //String strJson = FileUtils.getJson("images/face/face.json", BaseApplication.getInstance());
+        FaceReplace.getInstance().init(getContext());
         EmjoyInfo emjoyInfo = FaceReplace.getInstance().getEmjoyInfo();
         publicBeans = null;
-        if (index < 2) {
+        if (index < Math.ceil(emjoyInfo.getFace().getPublicX().size() / 27f) - 1) {
             publicBeans = emjoyInfo.getFace().getPublicX().subList(index * 27, (index + 1) * 27);
         } else {
             publicBeans = emjoyInfo.getFace().getPublicX().subList(index * 27, emjoyInfo.getFace().getPublicX().size());

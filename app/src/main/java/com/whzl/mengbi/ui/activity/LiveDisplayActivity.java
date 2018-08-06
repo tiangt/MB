@@ -165,6 +165,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private GifGiftControl mGifGiftControl;
     private ArrayList<GuardListBean.GuardDetailBean> mGuardList;
     private BaseListAdapter mGuardAdapter;
+    private RoomInfoBean.DataBean.AnchorBean mAnchor;
 
     @Override
     protected void setupContentView() {
@@ -287,7 +288,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            GuardListDialog.newInstance(mProgramId)
+            GuardListDialog.newInstance(mProgramId, mAnchor)
                     .setShowBottom(true)
                     .setDimAmount(0)
                     .show(getSupportFragmentManager());
@@ -534,8 +535,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             tvFansCount.setText("粉丝：" + roomInfoBean.getData().getSubscriptionNum() + "");
             ChatRoomInfo.getInstance().setRoomInfoBean(roomInfoBean);
             if (roomInfoBean.getData().getAnchor() != null) {
-                GlideImageLoader.getInstace().circleCropImage(this, roomInfoBean.getData().getAnchor().getAvatar(), ivHostAvatar);
-                tvHostName.setText(roomInfoBean.getData().getAnchor().getName());
+                mAnchor = roomInfoBean.getData().getAnchor();
+                GlideImageLoader.getInstace().circleCropImage(this, mAnchor.getAvatar(), ivHostAvatar);
+                tvHostName.setText(mAnchor.getName());
             }
             if (roomInfoBean.getData().getStream() != null) {
                 setupPlayerSize(roomInfoBean.getData().getStream().getHeight(), roomInfoBean.getData().getStream().getWidth());

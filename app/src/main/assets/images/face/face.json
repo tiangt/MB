@@ -2,248 +2,159 @@
   "face": {
     "public": [
       {
-        "value": "/微笑",
-        "icon": "images/face/public/0.gif"
+        "value": "/开心",
+        "icon": "images/face/public/01.gif",
+        "title": "开心"
       },
       {
-        "value": "/撇嘴",
-        "icon": "images/face/public/1.gif"
-      },
-      {
-        "value": "/色",
-        "icon": "images/face/public/2.gif"
-      },
-      {
-        "value": "/发呆",
-        "icon": "images/face/public/3.gif"
-      },
-      {
-        "value": "/得意",
-        "icon": "images/face/public/4.gif"
-      },
-      {
-        "value": "/流泪",
-        "icon": "images/face/public/5.gif"
-      },
-      {
-        "value": "/害羞",
-        "icon": "images/face/public/6.gif"
-      },
-      {
-        "value": "/闭嘴",
-        "icon": "images/face/public/7.gif"
-      },
-      {
-        "value": "/大哭",
-        "icon": "images/face/public/9.gif"
-      },
-      {
-        "value": "/尴尬",
-        "icon": "images/face/public/10.gif"
-      },
-      {
-        "value": "/发怒",
-        "icon": "images/face/public/11.gif"
-      },
-      {
-        "value": "/调皮",
-        "icon": "images/face/public/12.gif"
-      },
-      {
-        "value": "/龇牙",
-        "icon": "images/face/public/13.gif"
-      },
-      {
-        "value": "/惊讶",
-        "icon": "images/face/public/14.gif"
-      },
-      {
-        "value": "/难过",
-        "icon": "images/face/public/15.gif"
-      },
-      {
-        "value": "/酷",
-        "icon": "images/face/public/16.gif"
-      },
-      {
-        "value": "/冷汗",
-        "icon": "images/face/public/17.gif"
-      },
-      {
-        "value": "/抓狂",
-        "icon": "images/face/public/18.gif"
-      },
-      {
-        "value": "/吐",
-        "icon": "images/face/public/19.gif"
-      },
-      {
-        "value": "/偷笑",
-        "icon": "images/face/public/20.gif"
-      },
-      {
-        "value": "/可爱",
-        "icon": "images/face/public/21.gif"
-      },
-      {
-        "value": "/白眼",
-        "icon": "images/face/public/22.gif"
-      },
-      {
-        "value": "/傲慢",
-        "icon": "images/face/public/23.gif"
-      },
-      {
-        "value": "/饥饿",
-        "icon": "images/face/public/24.gif"
-      },
-      {
-        "value": "/困",
-        "icon": "images/face/public/25.gif"
-      },
-      {
-        "value": "/惊恐",
-        "icon": "images/face/public/26.gif"
-      },
-      {
-        "value": "/流汗",
-        "icon": "images/face/public/27.gif"
-      },
-      {
-        "value": "/憨笑",
-        "icon": "images/face/public/28.gif"
-      },
-      {
-        "value": "/大兵",
-        "icon": "images/face/public/29.gif"
-      },
-      {
-        "value": "/奋斗",
-        "icon": "images/face/public/30.gif"
-      },
-      {
-        "value": "/咒骂",
-        "icon": "images/face/public/31.gif"
-      },
-      {
-        "value": "/疑问",
-        "icon": "images/face/public/32.gif"
-      },
-      {
-        "value": "/嘘",
-        "icon": "images/face/public/33.gif"
-      },
-      {
-        "value": "/晕",
-        "icon": "images/face/public/34.gif"
-      },
-      {
-        "value": "/折磨",
-        "icon": "images/face/public/35.gif"
-      },
-      {
-        "value": "/衰",
-        "icon": "images/face/public/36.gif"
-      },
-      {
-        "value": "/骷髅",
-        "icon": "images/face/public/37.gif"
-      },
-      {
-        "value": "/敲打",
-        "icon": "images/face/public/38.gif"
-      },
-      {
-        "value": "/再见",
-        "icon": "images/face/public/39.gif"
-      },
-      {
-        "value": "/擦汗",
-        "icon": "images/face/public/40.gif"
-      },
-      {
-        "value": "/抠鼻",
-        "icon": "images/face/public/41.gif"
-      },
-      {
-        "value": "/鼓掌",
-        "icon": "images/face/public/42.gif"
-      },
-      {
-        "value": "/糗大了",
-        "icon": "images/face/public/43.gif"
-      },
-      {
-        "value": "/坏笑",
-        "icon": "images/face/public/44.gif"
-      },
-      {
-        "value": "/左哼哼",
-        "icon": "images/face/public/45.gif"
-      },
-      {
-        "value": "/右哼哼",
-        "icon": "images/face/public/46.gif"
-      },
-      {
-        "value": "/哈欠",
-        "icon": "images/face/public/47.gif"
-      },
-      {
-        "value": "/鄙视",
-        "icon": "images/face/public/48.gif"
-      },
-      {
-        "value": "/委屈",
-        "icon": "images/face/public/49.gif"
-      },
-      {
-        "value": "/快哭了",
-        "icon": "images/face/public/50.gif"
-      },
-      {
-        "value": "/阴险",
-        "icon": "images/face/public/51.gif"
+        "value": "/爱心",
+        "icon": "images/face/public/02.gif",
+        "title": "爱心"
       },
       {
         "value": "/亲亲",
-        "icon": "images/face/public/52.gif"
+        "icon": "images/face/public/03.gif",
+        "title": "亲亲"
       },
       {
-        "value": "/吓",
-        "icon": "images/face/public/53.gif"
+        "value": "/点赞",
+        "icon": "images/face/public/04.gif",
+        "title": "点赞"
       },
       {
-        "value": "/可怜",
-        "icon": "images/face/public/54.gif"
+        "value": "/色色",
+        "icon": "images/face/public/05.gif",
+        "title": "色色"
       },
       {
-        "value": "/菜刀",
-        "icon": "images/face/public/55.gif"
+        "value": "/调皮",
+        "icon": "images/face/public/06.gif",
+        "title": "调皮"
       },
       {
-        "value": "/西瓜",
-        "icon": "images/face/public/56.gif"
+        "value": "/害羞",
+        "icon": "images/face/public/07.gif",
+        "title": "害羞"
       },
       {
-        "value": "/啤酒",
-        "icon": "images/face/public/57.gif"
+        "value": "/顶你",
+        "icon": "images/face/public/08.gif",
+        "title": "顶你"
       },
       {
-        "value": "/篮球",
-        "icon": "images/face/public/58.gif"
+        "value": "/大哭",
+        "icon": "images/face/public/09.gif",
+        "title": "大哭"
       },
       {
-        "value": "/乒乓",
-        "icon": "images/face/public/59.gif"
+        "value": "/心碎",
+        "icon": "images/face/public/10.gif",
+        "title": "心碎"
       },
       {
-        "value": "/拥抱",
-        "icon": "images/face/public/60.gif"
+        "value": "/猪头",
+        "icon": "images/face/public/11.gif",
+        "title": "猪头"
       },
       {
-        "value": "/握手",
-        "icon": "images/face/public/61.gif"
+        "value": "/切",
+        "icon": "images/face/public/12.gif",
+        "title": "切"
+      },
+      {
+        "value": "/财迷",
+        "icon": "images/face/public/13.gif",
+        "title": "财迷"
+      },
+      {
+        "value": "/酷",
+        "icon": "images/face/public/14.gif",
+        "title": "酷"
+      },
+      {
+        "value": "/得意",
+        "icon": "images/face/public/15.gif",
+        "title": "得意"
+      },
+      {
+        "value": "/加油",
+        "icon": "images/face/public/16.gif",
+        "title": "加油"
+      },
+      {
+        "value": "/奋斗",
+        "icon": "images/face/public/17.gif",
+        "title": "奋斗"
+      },
+      {
+        "value": "/招呼",
+        "icon": "images/face/public/18.gif",
+        "title": "招呼"
+      },
+      {
+        "value": "/耶",
+        "icon": "images/face/public/19.gif",
+        "title": "耶"
+      },
+      {
+        "value": "/唱歌",
+        "icon": "images/face/public/20.gif",
+        "title": "唱歌"
+      },
+      {
+        "value": "/疑问",
+        "icon": "images/face/public/22.gif",
+        "title": "疑问"
+      },
+      {
+        "value": "/生气",
+        "icon": "images/face/public/23.gif",
+        "title": "生气"
+      },
+      {
+        "value": "/晕",
+        "icon": "images/face/public/24.gif",
+        "title": "晕"
+      },
+      {
+        "value": "/闭嘴",
+        "icon": "images/face/public/25.gif",
+        "title": "闭嘴"
+      },
+      {
+        "value": "/月亮",
+        "icon": "images/face/public/26.gif",
+        "title": "月亮"
+      },
+      {
+        "value": "/哈欠",
+        "icon": "images/face/public/27.gif",
+        "title": "哈欠"
+      },
+      {
+        "value": "/OK",
+        "icon": "images/face/public/28.gif",
+        "title": "OK"
+      },
+      {
+        "value": "/投降",
+        "icon": "images/face/public/29.gif",
+        "title": "投降"
+      },
+      {
+        "value": "/生气",
+        "icon": "images/face/public/30.gif",
+        "title": "生气"
+      },
+      {
+        "value": "/惊恐",
+        "icon": "images/face/public/31.gif",
+        "title": "惊恐"
+      },
+      {
+        "value": "/抠鼻",
+        "icon": "images/face/public/32.gif",
+        "title": "抠鼻"
       }
     ]
   }

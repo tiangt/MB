@@ -1,5 +1,8 @@
 package com.whzl.mengbi.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -137,7 +140,7 @@ public class RoomInfoBean {
             this.stream = stream;
         }
 
-        public static class AnchorBean {
+        public static class AnchorBean implements Parcelable {
             /**
              * id : 30000139
              * name : 哈哈哈哈哈哈哈哈和哈
@@ -159,6 +162,46 @@ public class RoomInfoBean {
             private String introduce;
             private String avatar;
             private List<LevelBean> level;
+
+            protected AnchorBean(Parcel in) {
+                id = in.readInt();
+                name = in.readString();
+                city = in.readString();
+                province = in.readString();
+                lastUpdateTime = in.readString();
+                anchorPlatformType = in.readString();
+                introduce = in.readString();
+                avatar = in.readString();
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeInt(id);
+                dest.writeString(name);
+                dest.writeString(city);
+                dest.writeString(province);
+                dest.writeString(lastUpdateTime);
+                dest.writeString(anchorPlatformType);
+                dest.writeString(introduce);
+                dest.writeString(avatar);
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            public static final Creator<AnchorBean> CREATOR = new Creator<AnchorBean>() {
+                @Override
+                public AnchorBean createFromParcel(Parcel in) {
+                    return new AnchorBean(in);
+                }
+
+                @Override
+                public AnchorBean[] newArray(int size) {
+                    return new AnchorBean[size];
+                }
+            };
 
             public int getId() {
                 return id;

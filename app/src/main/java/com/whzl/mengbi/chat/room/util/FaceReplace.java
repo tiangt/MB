@@ -25,6 +25,12 @@ import pl.droidsonroids.gif.GifDrawable;
 public class FaceReplace {
     private List<FacePattern> patternList = null;
     private EmjoyInfo emjoyInfo = null;
+
+    public void setGuardEmjoyInfo(EmjoyInfo guardEmjoyInfo) {
+        this.guardEmjoyInfo = guardEmjoyInfo;
+    }
+
+    private EmjoyInfo guardEmjoyInfo = null;
     private static class FaceReplaceHolder {
         private static final FaceReplace instance = new FaceReplace();
     }
@@ -45,6 +51,13 @@ public class FaceReplace {
             byte[] fileContent = getFileContent(context, faceBean.getIcon());
             patternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent));
         }
+        String guardStrJson = FileUtils.getJson("images/face/guard_face.json", context);
+        guardEmjoyInfo = GsonUtils.GsonToBean(guardStrJson, EmjoyInfo.class);
+
+    }
+
+    public EmjoyInfo getGuardEmjoyInfo() {
+        return guardEmjoyInfo;
     }
 
     public EmjoyInfo getEmjoyInfo() {

@@ -76,25 +76,45 @@
             android:id="@+id/ll_emoji_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="11dp"
             android:orientation="vertical"
             android:visibility="gone">
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/view_pager"
+            <FrameLayout
+                android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
-                android:layout_height="195dp"
+                android:layout_height="238dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp" />
 
-            <LinearLayout
-                android:id="@+id/pager_index_container"
+            <RadioGroup
+                android:id="@+id/rg_emoji_switch"
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:gravity="center"
-                android:orientation="horizontal" />
+                android:layout_height="34dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_comm"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_common_emoji_switch_rb"
+                    android:paddingLeft="12dp"
+                    android:background="@drawable/selector_emoji_selected_rb_bg"/>
+
+                <RadioButton
+                    android:id="@+id/rb_guard"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_guard_emoji_switch_rb"
+                    android:paddingLeft="12dp"
+                    android:background="@drawable/selector_emoji_selected_rb_bg"/>
+
+            </RadioGroup>
 
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

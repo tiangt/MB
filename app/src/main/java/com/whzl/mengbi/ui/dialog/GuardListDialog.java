@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.AudienceListFragment;
-import com.whzl.mengbi.ui.dialog.fragment.ContributeRankFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GuardListFragment;
 import com.whzl.mengbi.util.UIUtil;
 
@@ -31,10 +32,13 @@ public class GuardListDialog extends BaseAwesomeDialog {
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
+    private int mProgramId;
+    private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
 
-    public static BaseAwesomeDialog newInstance(int programId) {
+    public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
+        args.putParcelable("anchor", anchorBean);
         GuardListDialog dialog = new GuardListDialog();
         dialog.setArguments(args);
         return dialog;
@@ -47,7 +51,8 @@ public class GuardListDialog extends BaseAwesomeDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-        int programId = getArguments().getInt("programId");
+        mProgramId = getArguments().getInt("programId");
+        mAnchorBean = getArguments().getParcelable("anchor");
         tabLayout.post(() -> {
             try {
                 settab(tabLayout);
@@ -58,14 +63,19 @@ public class GuardListDialog extends BaseAwesomeDialog {
         titles.add("守护");
         titles.add("观众");
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(GuardListFragment.newInstance(programId));
-        fragments.add(AudienceListFragment.newInstance(programId));
+        fragments.add(GuardListFragment.newInstance(mProgramId));
+        fragments.add(AudienceListFragment.newInstance(mProgramId));
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         tabLayout.setupWithViewPager(viewpager);
     }
 
     @OnClick(R.id.btn_guard)
     public void onClick() {
+        dismiss();
+        GuardDetailDialog.newInstance(mProgramId, mAnchorBean)
+                .setShowBottom(true)
+                .setDimAmount(0)
+                .show(getFragmentManager());
     }
 
     private void settab(TabLayout tabLayout) throws NoSuchFieldException, IllegalAccessException {

@@ -1,0 +1,56 @@
+{
+  "face": {
+    "public": [
+      {
+        "icon": "images/face/guard/01.gif",
+        "value": "/g奔向你",
+        "title": "奔向你"
+      },
+      {
+        "icon": "images/face/guard/02.gif",
+        "value": "/g嗯嗯",
+        "title": "嗯嗯"
+      },
+      {
+        "icon": "images/face/guard/03.gif",
+        "value": "/g发射爱心",
+        "title": "发射爱心"
+      },
+      {
+        "icon": "images/face/guard/04.gif",
+        "value": "/g飞吻",
+        "title": "飞吻"
+      },
+      {
+        "icon": "images/face/guard/05.gif",
+        "value": "/g哈哈哈",
+        "title": "哈哈哈"
+      },
+      {
+        "icon": "images/face/guard/06.gif",
+        "value": "/g嗨起来",
+        "title": "嗨起来"
+      },
+      {
+        "icon": "images/face/guard/07.gif",
+        "value": "/g加油",
+        "title": "加油"
+      },
+      {
+        "icon": "images/face/guard/08.gif",
+        "value": "/g亲亲",
+        "title": "亲亲"
+      },
+      {
+        "icon": "images/face/guard/09.gif",
+        "value": "/g晚安",
+        "title": "晚安"
+      },
+      {
+        "icon": "images/face/guard/10.gif",
+        "value": "/g赞",
+        "title": "赞"
+      }
+    ]
+  }
+}
