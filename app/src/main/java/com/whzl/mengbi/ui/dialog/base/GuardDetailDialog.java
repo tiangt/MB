@@ -91,15 +91,13 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
         }
         long userId = (long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
         HashMap paramsMap = new HashMap();
-        paramsMap.put("roomId", mProgramId);
-        paramsMap.put("programId", mProgramId);
-        paramsMap.put("targetId", mAnchorBean.getId());
         paramsMap.put("goodsId", mGuardPriceBean.goodsId);
         paramsMap.put("count", 1);
         paramsMap.put("userId", userId);
-        paramsMap.put("useBag", false);
+        paramsMap.put("priceId", mGuardPriceBean.prices.month.priceId);
+        paramsMap.put("programId", mProgramId);
         ApiFactory.getInstance().getApi(Api.class)
-                .sendGift(ParamsUtils.getSignPramsMap(paramsMap))
+                .buy(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ApiObserver<JsonElement>(this) {

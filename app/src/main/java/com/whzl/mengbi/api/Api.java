@@ -88,8 +88,8 @@ public interface Api {
      * @param params
      * @return
      */
-    @POST("v1/consume/send-gift")
+    @POST("v1/consume/mall-buy")
     @FormUrlEncoded
-    Observable<ApiResult<JsonElement>> sendGift(@FieldMap Map<String, String> params);
+    Observable<ApiResult<JsonElement>> buy(@FieldMap Map<String, String> params);
 
 }
