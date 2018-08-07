@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,11 +36,9 @@ import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
-import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
-import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadEvent;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
@@ -51,7 +50,6 @@ import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
-import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -68,8 +66,10 @@ import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.dialog.fragment.PrivateChatDialog;
+import com.whzl.mengbi.ui.fragment.ChatListFragment;
+import com.whzl.mengbi.ui.fragment.PrivateChatListFragment;
 import com.whzl.mengbi.ui.view.LiveView;
-import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
@@ -93,10 +93,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
-
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author shaw
@@ -113,8 +110,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlContributionContainer;
     @BindView(R.id.texture_view)
     KSYTextureView textureView;
-    @BindView(R.id.recycler)
-    RecyclerView mChatRecycler;
     @BindView(R.id.tv_fans_count)
     TextView tvFansCount;
     @BindView(R.id.tv_popularity)
@@ -123,8 +118,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlHostInfo;
     @BindView(R.id.ratio_layout)
     RatioRelativeLayout ratioLayout;
-    @BindView(R.id.btn_chat)
-    ImageButton btnChat;
     @BindView(R.id.btn_send_gift)
     ImageButton btnSendGift;
     @BindView(R.id.ll_gift_container)
@@ -145,14 +138,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvLuckyGift;
     @BindView(R.id.guard_recycler)
     RecyclerView mGuardRecycler;
+    @BindView(R.id.view_message_notify)
+    View viewMessageNotify;
+    @BindView(R.id.rl_bottom_container)
+    RelativeLayout rlBottomContainer;
+
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
     private ChatRoomPresenterImpl chatRoomPresenter;
     private GiftInfo mGiftData;
-    private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
-    private static final int TOTAL_CHAT_MSG = 100;
-    private RecyclerView.Adapter chatAdapter;
-    private boolean isRecyclerScrolling;
     private long mUserId;
     private BaseAwesomeDialog mGiftDialog;
     private int mAnchorId;
@@ -166,6 +160,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ArrayList<GuardListBean.GuardDetailBean> mGuardList;
     private BaseListAdapter mGuardAdapter;
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
+    private boolean isGuard;
+    private Disposable mDisposable;
+    private Fragment[] fragments;
+    private int currentSelectedIndex;
+
+//     1、vip、守护、贵族、主播、运管不受限制
+//        2、名士5以上可以私聊，包含名士5
 
     @Override
     protected void setupContentView() {
@@ -240,8 +241,32 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void setupView() {
         initPlayer();
-        initChatRecycler();
         initProtectRecycler();
+        initFragment();
+    }
+
+    private void initFragment() {
+        fragments = new Fragment[]{ChatListFragment.newInstance(), PrivateChatListFragment.newInstance()};
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, fragments[0]);
+        fragmentTransaction.add(R.id.fragment_container, fragments[1]);
+        fragmentTransaction.hide(fragments[1]);
+        fragmentTransaction.commit();
+    }
+
+    private void setTabChange(int index) {
+        if (index == currentSelectedIndex) {
+            return;
+        }
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.hide(fragments[currentSelectedIndex]);
+        if (fragments[index].isAdded()) {
+            fragmentTransaction.show(fragments[index]);
+        } else {
+            fragmentTransaction.add(R.id.fragment_container, fragments[index]);
+        }
+        fragmentTransaction.commit();
+        currentSelectedIndex = index;
     }
 
     private void initProtectRecycler() {
@@ -293,51 +318,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     .setDimAmount(0)
                     .show(getSupportFragmentManager());
         }
-    }
 
-    private void initChatRecycler() {
-        mChatRecycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        mChatRecycler.setLayoutManager(new LinearLayoutManager(this));
-        chatAdapter = new RecyclerView.Adapter() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View item = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.chat_text, null);
-                return new SingleTextViewHolder(item);
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                FillHolderMessage message = chatList.get(position);
-                message.fillHolder(holder);
-            }
-
-            @Override
-            public int getItemCount() {
-                return chatList == null ? 0 : chatList.size();
-            }
-        };
-        mChatRecycler.setAdapter(chatAdapter);
-        mChatRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case SCROLL_STATE_IDLE:
-                        isRecyclerScrolling = false;
-                        chatAdapter.notifyDataSetChanged();
-                        break;
-                    case SCROLL_STATE_DRAGGING:
-                        isRecyclerScrolling = true;
-                        break;
-                    case SCROLL_STATE_SETTLING:
-                        isRecyclerScrolling = true;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
     }
 
     @Override
@@ -346,8 +327,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRoomInfo(mProgramId);
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
-        Observable.interval(0, 10, TimeUnit.SECONDS)
-                .subscribe(aLong -> mLivePresenter.getAudienceAccount(mProgramId));
+        mDisposable = Observable.interval(0, 20, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            mLivePresenter.getAudienceAccount(mProgramId);
+        });
         mLivePresenter.getGuardList(mProgramId);
     }
 
@@ -368,7 +350,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-    @OnClick({R.id.btn_follow, R.id.btn_close, R.id.btn_chat, R.id.btn_send_gift, R.id.tv_popularity, R.id.btn_contribute})
+    @OnClick({R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift, R.id.tv_popularity, R.id.btn_contribute, R.id.btn_chat, R.id.btn_chat_private, R.id.rootView})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_follow:
@@ -382,10 +364,26 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 finish();
                 break;
             case R.id.btn_chat:
-                LiveHouseChatDialog.newInstance()
+                LiveHouseChatDialog.newInstance(isGuard, mProgramId, mAnchor)
                         .setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
+                break;
+            case R.id.btn_chat_private:
+                if (currentSelectedIndex == 0) {
+                    setTabChange(1);
+//                    rlBottomContainer.setVisibility(View.GONE);
+                    PrivateChatDialog.newInstance(isGuard, mProgramId, mAnchor)
+                            .setDimAmount(0)
+                            .setShowBottom(true)
+                            .show(getSupportFragmentManager());
+                }
+                break;
+            case R.id.rootView:
+                if(fragments[1].isVisible()){
+                    setTabChange(0);
+                    rlBottomContainer.setVisibility(View.VISIBLE);
+                }
                 break;
             case R.id.btn_send_gift:
                 if (mUserId == 0) {
@@ -476,22 +474,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mRunWayGiftControl = new RunWayGiftControl(runWayText);
         }
         mRunWayGiftControl.load(runWayEvent);
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
-        FillHolderMessage message = updatePubChatEvent.getMessage();
-        if (chatList.size() >= TOTAL_CHAT_MSG) {
-            chatList.remove(0);
-        }
-        chatList.add(message);
-        if (!isRecyclerScrolling) {
-            if (chatAdapter != null && mChatRecycler != null) {
-                chatAdapter.notifyDataSetChanged();
-                mChatRecycler.smoothScrollToPosition(chatList.size() - 1);
-            }
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -586,6 +568,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 LiveHouseUserInfoUpdateEvent liveHouseUserInfoUpdateEvent = new LiveHouseUserInfoUpdateEvent();
                 liveHouseUserInfoUpdateEvent.coin = coin;
                 EventBus.getDefault().post(liveHouseUserInfoUpdateEvent);
+            }
+            if (data.getGoodsList() != null) {
+                for (int i = 0; i < data.getGoodsList().size(); i++) {
+                    if ("GUARD".equals(data.getGoodsList().get(i).getGoodsType())) {
+                        isGuard = true;
+                    }
+                }
             }
         }
 
@@ -684,6 +673,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             chatRoomPresenter.onChatRoomDestroy();
         }
         super.onDestroy();
+        mDisposable.dispose();
     }
 
 

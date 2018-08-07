@@ -1,8 +1,11 @@
-package com.whzl.mengbi.ui.dialog;
+package com.whzl.mengbi.ui.dialog.fragment;
 
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -21,8 +24,6 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
-import com.whzl.mengbi.ui.dialog.fragment.CommonEmojiMotherFragment;
-import com.whzl.mengbi.ui.dialog.fragment.GuardEmojiFragment;
 import com.whzl.mengbi.util.KeyBoardUtil;
 
 import butterknife.BindView;
@@ -32,7 +33,7 @@ import butterknife.OnClick;
  * @author shaw
  * @date 2018/7/6
  */
-public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeObserver.OnGlobalLayoutListener {
+public class PrivateChatDialog extends BaseAwesomeDialog {
     @BindView(R.id.et_content)
     EditText etContent;
     @BindView(R.id.ll_emoji_container)
@@ -54,13 +55,19 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     private int mProgramId;
 
     public static BaseAwesomeDialog newInstance(boolean isGuard, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
-        LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
+        PrivateChatDialog liveHouseChatDialog = new PrivateChatDialog();
         Bundle args = new Bundle();
         args.putBoolean("isGuard", isGuard);
         args.putInt("programId", programId);
         args.putParcelable("anchor", anchorBean);
         liveHouseChatDialog.setArguments(args);
         return liveHouseChatDialog;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.NiceDialogHideInput);
     }
 
     @Override
@@ -76,7 +83,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         etContent.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == 1) {
                 KeyBoardUtil.closeKeybord(etContent, getContext());
-                dismiss();
+//                dismiss();
             }
             return false;
         });
@@ -126,26 +133,26 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         currentSelectedIndex = index;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        getView().getViewTreeObserver().addOnGlobalLayoutListener(this);
-    }
+//    @Override
+//    public void onActivityCreated(Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//        getView().getViewTreeObserver().addOnGlobalLayoutListener(this);
+//    }
 
-    @Override
-    public void onGlobalLayout() {
-        if (height == 0) {
-            height = dialogOut.getHeight();
-            return;
-        }
-        if (dialogOut.getHeight() - height > 100 && !btnInputChange.isSelected() && isShowSoftInput) {
-            dismiss();
-        }
-        if (dialogOut.getHeight() - height < -100 && !btnInputChange.isSelected()) {
-            isShowSoftInput = true;
-        }
-        height = dialogOut.getHeight();
-    }
+//    @Override
+//    public void onGlobalLayout() {
+//        if (height == 0) {
+//            height = dialogOut.getHeight();
+//            return;
+//        }
+//        if (dialogOut.getHeight() - height > 100 && !btnInputChange.isSelected() && isShowSoftInput) {
+//            dismiss();
+//        }
+//        if (dialogOut.getHeight() - height < -100 && !btnInputChange.isSelected()) {
+//            isShowSoftInput = true;
+//        }
+//        height = dialogOut.getHeight();
+//    }
 
     @Override
     public void onResume() {
@@ -202,10 +209,16 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+//    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+//    @Override
+//    public void onDestroyView() {
+//        getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+//        super.onDestroyView();
+//    }
+
     @Override
-    public void onDestroyView() {
-        getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-        super.onDestroyView();
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+
     }
 }

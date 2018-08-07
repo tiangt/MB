@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#181818"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/rootView">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,9 +22,9 @@
                 android:id="@+id/rl_anchor_info"
                 android:layout_width="wrap_content"
                 android:layout_height="34dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
-                android:background="@drawable/shape_host_info_bg"
-                android:layout_centerVertical="true">
+                android:background="@drawable/shape_host_info_bg">
 
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
                     android:id="@+id/iv_host_avatar"
@@ -43,13 +44,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="6dp"
-                        android:layout_marginTop="3dp"
                         android:layout_marginRight="6dp"
+                        android:layout_marginTop="3dp"
+                        android:ellipsize="end"
+                        android:maxEms="7"
                         android:singleLine="true"
                         android:textColor="#e5e5e5"
-                        android:textSize="10sp"
-                        android:maxEms="7"
-                        android:ellipsize="end"/>
+                        android:textSize="10sp" />
 
                     <TextView
                         android:id="@+id/tv_fans_count"
@@ -82,9 +83,9 @@
                 android:id="@+id/guard_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toRightOf="@id/rl_anchor_info"
+                android:layout_marginLeft="5dp"
                 android:layout_toLeftOf="@id/tv_popularity"
-                android:layout_marginLeft="5dp">
+                android:layout_toRightOf="@id/rl_anchor_info">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -94,8 +95,8 @@
                 android:layout_width="50dp"
                 android:layout_height="29dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/shape_live_display_populartity_bg"
                 android:gravity="center"
                 android:textColor="#f0f0f0"
@@ -156,8 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            app:ratio="1.33"
-            android:background="@color/colorblack">
+            android:background="@color/colorblack"
+            app:ratio="1.33">
 
             <!--<SurfaceView-->
             <!--android:id="@+id/player_master"-->
@@ -216,16 +217,21 @@
 
         </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
+        <FrameLayout
+            android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="#292929">
+
+        </FrameLayout>
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:id="@+id/rl_bottom_container"
+        android:background="#292929">
 
         <ImageButton
             android:id="@+id/btn_chat"
@@ -234,8 +240,30 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="17.5dp"
             android:background="@null"
-            android:scaleType="centerCrop"
             android:src="@drawable/ic_live_display_talk" />
+
+
+        <ImageButton
+            android:id="@+id/btn_chat_private"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/btn_chat"
+            android:background="@null"
+            android:src="@drawable/ic_live_display_talk" />
+
+
+        <View
+            android:id="@+id/view_message_notify"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_alignRight="@id/btn_chat_private"
+            android:layout_alignTop="@id/btn_chat_private"
+            android:layout_marginRight="9dp"
+            android:layout_marginTop="9dp"
+            android:background="@drawable/shape_red_notify" />
+
 
         <ImageButton
             android:id="@+id/btn_send_gift"

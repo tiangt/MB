@@ -20,13 +20,17 @@ import android.widget.LinearLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
+import com.whzl.mengbi.model.entity.GuardOpenEvent;
 import com.whzl.mengbi.ui.adapter.ChatEmojiAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.UIUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -47,14 +51,19 @@ public class GuardEmojiFragment extends BaseFragment {
     private List<EmjoyInfo.FaceBean.PublicBean> publicBeans;
     private BaseListAdapter chatEmojiAdapter;
 
-    public void setMessageEditText(EditText messageEditText) {
-        this.messageEditText = messageEditText;
-    }
-
     private EditText messageEditText;
 
-    public static GuardEmojiFragment newInstance() {
-        return new GuardEmojiFragment();
+    public static GuardEmojiFragment newInstance(boolean isGuard) {
+        GuardEmojiFragment guardEmojiFragment = new GuardEmojiFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("isGuard", isGuard);
+        guardEmojiFragment.setArguments(args);
+        return guardEmojiFragment;
+    }
+
+
+    public void setMessageEditText(EditText messageEditText) {
+        this.messageEditText = messageEditText;
     }
 
     @Override
@@ -72,6 +81,8 @@ public class GuardEmojiFragment extends BaseFragment {
 
     @Override
     public void init() {
+        boolean isGuard = getArguments().getBoolean("isGuard");
+        llNotEnableContainer.setVisibility(isGuard ? View.GONE : View.VISIBLE);
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         recycler.setLayoutManager(new GridLayoutManager(getContext(), 5));
         chatEmojiAdapter = new BaseListAdapter() {
@@ -104,9 +115,16 @@ public class GuardEmojiFragment extends BaseFragment {
             Bitmap emojiBitmap = FileUtils.readBitmapFromAssetsFile(publicBean.getIcon(), getContext());
             ivEmoji.setImageBitmap(emojiBitmap);
         }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            String emojiDesc = publicBeans.get(position).getValue();
+            messageEditText.append(emojiDesc);
+        }
     }
 
-    @OnClick({R.id.btn_delete, R.id.btn_guard})
+    @OnClick({R.id.btn_delete, R.id.btn_guard, R.id.ll_not_enable_container})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_delete:
@@ -118,7 +136,20 @@ public class GuardEmojiFragment extends BaseFragment {
                 messageEditText.onKeyUp(keyCode, keyEventUp);
                 break;
             case R.id.btn_guard:
+                if(listener != null){
+                    listener.onGuardClick();
+                }
                 break;
         }
+    }
+
+    public void setListener(OnGuardClickListener listener) {
+        this.listener = listener;
+    }
+
+    private OnGuardClickListener listener;
+
+    public interface OnGuardClickListener{
+        void onGuardClick();
     }
 }

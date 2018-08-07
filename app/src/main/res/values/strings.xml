@@ -87,7 +87,7 @@
     <string name="user_feed_back_content">想要新功能？使用不方便？这里吐槽吧！</string>
     <string name="user_feed_back_qq">联系QQ</string>
     <string name="user_feed_back_email">邮箱</string>
-    <string name="user_feed_back_submit">提交</string>
+    <string name="user_feed_back_submit">提 交</string>
     <!--客服中心-->
     <string name="user_custom_fficial_service">官方客服</string>
     <string name="user_custom_fficial_service_qq">QQ：3179747001</string>
@@ -248,5 +248,6 @@
     <string name="empty_backpack">你的背包是空的</string>
     <string name="empty_guard_list">当前主播还没有守护用户\n快给心爱的主播开一个吧</string>
     <string name="guard_priority">1.尊贵标识\n2.排位靠前\n3.尊贵坐席\n4.与主播用户私聊</string>
+    <string name="feedback">意见反馈</string>
 
 </resources>

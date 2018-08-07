@@ -19,7 +19,7 @@ import com.whzl.mengbi.util.ResourceMap;
 import java.util.List;
 
 
-public class ChatMessage implements FillHolderMessage{
+public class ChatMessage implements FillHolderMessage {
     private int from_level;
     private int from_uid;
     private String from_nickname;
@@ -49,7 +49,7 @@ public class ChatMessage implements FillHolderMessage{
         try {
             from_uid = Integer.valueOf(msgJson.getFrom_uid());
             to_uid = Integer.valueOf(msgJson.getTo_uid());
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         from_level = LevelUtil.getUserLevel(msgJson.getFrom_json());
@@ -73,18 +73,18 @@ public class ChatMessage implements FillHolderMessage{
         mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         if (isPrivate) {
             parsePrivateMessage();
-        }else if(to_uid == 0){
+        } else if (to_uid == 0) {
             parseNoRecieverMessage();
-        }else{
+        } else {
             parseHasRecieverMessage();
         }
     }
 
     private void parsePrivateMessage() {
-        if(from_uid != 0){
+        if (from_uid != 0) {
             mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
         }
-        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname,from_uid, programId));
+        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId));
         mholder.textView.append(LightSpanString.getLightString("对 您 私聊:  ", WHITE_FONG_COLOR));
         //TODO:表情替换
         SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
@@ -92,12 +92,12 @@ public class ChatMessage implements FillHolderMessage{
         mholder.textView.append(spanString);
     }
 
-    private void parseNoRecieverMessage(){
+    private void parseNoRecieverMessage() {
         //非游客发言
-        if(from_uid != 0){
+        if (from_uid != 0) {
             if (isAnchor) {
                 mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getAnchorLevelIcon(from_level)));
-            }else {
+            } else {
                 mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
             }
             mholder.textView.append(" ");
@@ -107,7 +107,7 @@ public class ChatMessage implements FillHolderMessage{
             mholder.textView.append(" ");
         }
         if (fromSpanList != null) {
-            for(SpannableString spanString:fromSpanList) {
+            for (SpannableString spanString : fromSpanList) {
                 mholder.textView.append(spanString);
                 mholder.textView.append(" ");
             }
@@ -119,17 +119,17 @@ public class ChatMessage implements FillHolderMessage{
         mholder.textView.append(spanString);
     }
 
-    private void parseHasRecieverMessage(){
-        if(from_uid != 0){
+    private void parseHasRecieverMessage() {
+        if (from_uid != 0) {
             mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
         }
         if (fromSpanList != null) {
-            for(SpannableString spanString:fromSpanList) {
+            for (SpannableString spanString : fromSpanList) {
                 mholder.textView.append(spanString);
                 mholder.textView.append("  ");
             }
         }
-        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname,from_uid, programId));
+        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId));
         mholder.textView.append(LightSpanString.getLightString("对 您 说:  ", WHITE_FONG_COLOR));
         //TODO:表情替换
         SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
@@ -162,7 +162,7 @@ public class ChatMessage implements FillHolderMessage{
         }
         boolean hasGuard = false;
         int programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
-        for(FromJson.Good good: goodsList) {
+        for (FromJson.Good good : goodsList) {
             if (good.getGoodsType().equals("GUARD") && good.getBindProgramId() == programId) {
                 hasGuard = true;
                 break;

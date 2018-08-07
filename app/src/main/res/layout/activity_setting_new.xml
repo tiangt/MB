@@ -9,8 +9,7 @@
     <TextView
         android:id="@+id/tv_feedback"
         style="@style/setting_option_text_style"
-        android:text="@string/user_settings_feed_back"
-        android:visibility="gone"/>
+        android:text="@string/user_settings_feed_back" />
 
     <View
         android:layout_width="match_parent"

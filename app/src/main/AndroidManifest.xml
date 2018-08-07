@@ -276,5 +276,6 @@
         <activity android:name=".ui.activity.SettingActivity" />
         <activity android:name=".ui.activity.AboutUsActivity" />
         <activity android:name=".ui.activity.WatchHistoryActivity" />
+        <activity android:name=".ui.activity.FeedbackActivity" />
     </application>
 </manifest>

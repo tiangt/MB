@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f4f4f4"
+    android:orientation="vertical"
+    tools:showIn="@layout/dialog_live_house_chat">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="9dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_chat_dialog_edit_bg"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_centerVertical="true"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/live_house_chat_edit_text_hint"
+                android:paddingLeft="20dp"
+                android:paddingRight="7dp"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btn_input_change"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/selector_live_house_chat_input_switch"
+                android:textColor="#b9b9b9"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="11dp"
+            android:background="@drawable/shape_dialog_chat_send_btn_bg"
+            android:text="发送"
+            android:textColor="#f0f0f0"
+            android:textSize="17sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#3b1b2924" />
+
+    <LinearLayout
+        android:id="@+id/ll_emoji_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="238dp" />
+
+        <RadioGroup
+            android:id="@+id/rg_emoji_switch"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_comm"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:drawableLeft="@drawable/selector_common_emoji_switch_rb"
+                android:paddingLeft="12dp"
+                android:background="@drawable/selector_emoji_selected_rb_bg" />
+
+            <RadioButton
+                android:id="@+id/rb_guard"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:drawableLeft="@drawable/selector_guard_emoji_switch_rb"
+                android:paddingLeft="12dp"
+                android:background="@drawable/selector_emoji_selected_rb_bg" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+</LinearLayout>

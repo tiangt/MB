@@ -53,6 +53,11 @@ public class FaceReplace {
         }
         String guardStrJson = FileUtils.getJson("images/face/guard_face.json", context);
         guardEmjoyInfo = GsonUtils.GsonToBean(guardStrJson, EmjoyInfo.class);
+        List<EmjoyInfo.FaceBean.PublicBean> guardFaceLost = guardEmjoyInfo.getFace().getPublicX();
+        for(EmjoyInfo.FaceBean.PublicBean faceBean: guardFaceLost) {
+            byte[] fileContent = getFileContent(context, faceBean.getIcon());
+            patternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent));
+        }
 
     }
 

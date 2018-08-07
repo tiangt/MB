@@ -88,6 +88,7 @@ public class SettingActivity extends BaseActivity {
                 showConfirmDialog();
                 break;
             case R.id.tv_feedback:
+                jumpToFeedbackActivity();
                 break;
             case R.id.tv_custom:
                 Intent customServiceIntent = new Intent(this, CustomServiceCenterActivity.class);
@@ -98,6 +99,11 @@ public class SettingActivity extends BaseActivity {
                 startActivity(aboutIntent);
                 break;
         }
+    }
+
+    private void jumpToFeedbackActivity() {
+        Intent intent = new Intent(this, FeedbackActivity.class);
+        startActivity(intent);
     }
 
     private void showConfirmDialog() {

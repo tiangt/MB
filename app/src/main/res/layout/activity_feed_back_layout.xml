@@ -1,58 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/font_color_49"
-    tools:context=".ui.activity.FeedBackActivity">
-    <include layout="@layout/activity_base_toolbar"/>
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_toolbar" />
 
     <EditText
-        android:id="@+id/user_settings_feed_back_content_ET"
+        android:id="@+id/et_feedback"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y80"
-        android:layout_marginTop="@dimen/y6"
-        android:layout_marginLeft="@dimen/x7"
-        android:layout_marginRight="@dimen/x7"
-        android:paddingLeft="@dimen/x16"
-        android:gravity="left"
+        android:layout_height="128dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/feed_back_edittext"
+        android:gravity="left|top"
         android:hint="@string/user_feed_back_content"
-        android:background="@drawable/feed_back_edittext"/>
+        android:paddingLeft="18dp"
+        android:paddingTop="13dp"
+        android:textColor="@color/colorblack"
+        android:textColorHint="#b9b9b9"
+        android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/user_settings_feed_back_qq_ET"
+        android:id="@+id/et_qq"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y28"
-        android:layout_marginTop="@dimen/y6"
-        android:layout_marginLeft="@dimen/x7"
-        android:layout_marginRight="@dimen/x7"
-        android:paddingLeft="@dimen/x16"
+        android:layout_height="45dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/feed_back_edittext"
         android:hint="@string/user_feed_back_qq"
-        android:background="@drawable/feed_back_edittext"/>
+        android:paddingLeft="18dp"
+        android:textColor="@color/colorblack"
+        android:textColorHint="#b9b9b9"
+        android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/user_settings_feed_back_email_ET"
+        android:id="@+id/et_email"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y28"
-        android:layout_marginTop="@dimen/y6"
-        android:layout_marginLeft="@dimen/x7"
-        android:layout_marginRight="@dimen/x7"
-        android:paddingLeft="@dimen/x16"
+        android:layout_height="45dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/feed_back_edittext"
         android:hint="@string/user_feed_back_email"
-        android:background="@drawable/feed_back_edittext"/>
+        android:paddingLeft="18dp"
+        android:textColor="@color/colorblack"
+        android:textColorHint="#b9b9b9"
+        android:textSize="15sp" />
 
     <Button
         android:id="@+id/user_settings_feed_back_submit_but"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y28"
-        android:layout_marginTop="@dimen/y25"
-        android:layout_marginLeft="@dimen/x7"
-        android:layout_marginRight="@dimen/x7"
+        android:layout_height="44dp"
         android:layout_gravity="center|center_vertical"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/shape_upgrade_btn_bg"
         android:text="@string/user_feed_back_submit"
         android:textColor="@color/textview"
-        android:background="@drawable/home_rounded_button"/>
+        android:textSize="18sp"
+        android:textStyle="bold" />
 </LinearLayout>

@@ -92,4 +92,14 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> buy(@FieldMap Map<String, String> params);
 
+    /**
+     * 观众列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/feedback/feedback")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> feedback(@FieldMap Map<String, String> params);
+
 }

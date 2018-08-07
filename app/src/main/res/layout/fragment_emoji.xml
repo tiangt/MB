@@ -6,7 +6,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
 
     </android.support.v7.widget.RecyclerView>
 
@@ -17,7 +19,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="18dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginRight="30dp"
         android:background="@drawable/emoji_delete_icon" />
 
 </RelativeLayout>
