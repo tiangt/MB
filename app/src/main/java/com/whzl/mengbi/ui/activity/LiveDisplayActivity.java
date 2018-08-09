@@ -1,5 +1,8 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -43,7 +46,9 @@ import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadEvent;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
+import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
@@ -51,6 +56,7 @@ import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.eventbus.event.GuardSuccessEvent;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -65,16 +71,17 @@ import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
+import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
-import com.whzl.mengbi.ui.dialog.fragment.PrivateChatDialog;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
-import com.whzl.mengbi.ui.fragment.PrivateChatListFragment;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.UIUtil;
+import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
@@ -140,8 +147,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RecyclerView mGuardRecycler;
     @BindView(R.id.view_message_notify)
     View viewMessageNotify;
+    @BindView(R.id.fragment_container)
+    FrameLayout fragmentContainer;
     @BindView(R.id.rl_bottom_container)
     RelativeLayout rlBottomContainer;
+    @BindView(R.id.rl_guard_success)
+    RelativeLayout rlGuardSuccess;
+    @BindView(R.id.btn_chat)
+    ImageButton btnChat;
+    @BindView(R.id.btn_chat_private)
+    ImageButton btnChatPrivate;
+    @BindView(R.id.iv_guard_avatar)
+    CircleImageView ivGuardAvatar;
+    @BindView(R.id.tv_guard_nick_name)
+    TextView tvGuardNickName;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -162,8 +181,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
     private boolean isGuard;
     private Disposable mDisposable;
-    private Fragment[] fragments;
     private int currentSelectedIndex;
+    private Fragment[] fragments;
+    private ObjectAnimator showGuardAnim;
+    private ObjectAnimator hideGuardAnim;
+    private RoomUserInfo.DataBean mRoomUserInfo;
+    private boolean mCanPrivateChat = false;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -246,8 +269,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void initFragment() {
-        fragments = new Fragment[]{ChatListFragment.newInstance(), PrivateChatListFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragments = new Fragment[]{ChatListFragment.newInstance(), PrivateChatListFragment.newInstance(mProgramId, isGuard)};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.add(R.id.fragment_container, fragments[1]);
         fragmentTransaction.hide(fragments[1]);
@@ -258,6 +281,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (index == currentSelectedIndex) {
             return;
         }
+        if(index == 1){
+            viewMessageNotify.setVisibility(View.GONE);
+        }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
         if (fragments[index].isAdded()) {
@@ -266,7 +292,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             fragmentTransaction.add(R.id.fragment_container, fragments[index]);
         }
         fragmentTransaction.commit();
+        setBottomContainerHieght(index == 0 ? 50 : 0);
         currentSelectedIndex = index;
+    }
+
+    public void setBottomContainerHieght(int dpHeight) {
+        ViewGroup.LayoutParams layoutParams = rlBottomContainer.getLayoutParams();
+        layoutParams.height = UIUtil.dip2px(this, dpHeight);
+        rlBottomContainer.post(new Runnable() {
+            @Override
+            public void run() {
+                rlBottomContainer.setLayoutParams(layoutParams);
+                rlBottomContainer.requestLayout();
+            }
+        });
     }
 
     private void initProtectRecycler() {
@@ -288,13 +327,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mGuardRecycler.setAdapter(mGuardAdapter);
     }
 
+    public void showMessageNotify() {
+        viewMessageNotify.setVisibility(View.VISIBLE);
+    }
+
     class ProtectViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_guard_avatar)
         ImageView ivGuardAvatar;
         @BindView(R.id.tv_guard)
         TextView tvGuard;
 
-        public ProtectViewHolder(View itemView) {
+        ProtectViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -325,6 +368,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     protected void loadData() {
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
+        SPUtils.put(this, SpConfig.KEY_PRIVATE_CHAT, false);
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
         mDisposable = Observable.interval(0, 20, TimeUnit.SECONDS).subscribe((Long aLong) -> {
@@ -350,7 +394,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-    @OnClick({R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift, R.id.tv_popularity, R.id.btn_contribute, R.id.btn_chat, R.id.btn_chat_private, R.id.rootView})
+    @OnClick({R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift, R.id.tv_popularity
+            , R.id.btn_contribute, R.id.btn_chat, R.id.btn_chat_private, R.id.rootView
+            , R.id.fragment_container})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_follow:
@@ -370,19 +416,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_chat_private:
-                if (currentSelectedIndex == 0) {
-                    setTabChange(1);
-//                    rlBottomContainer.setVisibility(View.GONE);
-                    PrivateChatDialog.newInstance(isGuard, mProgramId, mAnchor)
-                            .setDimAmount(0)
-                            .setShowBottom(true)
-                            .show(getSupportFragmentManager());
+                if (!mCanPrivateChat){
+                    showToast("当前用户没有私聊权限");
+                    return;
                 }
+                setTabChange(1);
                 break;
             case R.id.rootView:
-                if(fragments[1].isVisible()){
+                if (currentSelectedIndex == 1) {
                     setTabChange(0);
-                    rlBottomContainer.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.btn_send_gift:
@@ -518,6 +560,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             ChatRoomInfo.getInstance().setRoomInfoBean(roomInfoBean);
             if (roomInfoBean.getData().getAnchor() != null) {
                 mAnchor = roomInfoBean.getData().getAnchor();
+                PrivateChatListFragment fragment = (PrivateChatListFragment) fragments[1];
+                fragment.setUpWithAnchor(mAnchor);
                 GlideImageLoader.getInstace().circleCropImage(this, mAnchor.getAvatar(), ivHostAvatar);
                 tvHostName.setText(mAnchor.getName());
             }
@@ -563,6 +607,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         btnFollow.setVisibility(data.isIsSubs() ? View.GONE : View.VISIBLE);
         if (data != null) {
             mUserId = data.getUserId();
+            mRoomUserInfo = data;
             if (data.getWeathMap() != null) {
                 coin = data.getWeathMap().getCoin();
                 LiveHouseUserInfoUpdateEvent liveHouseUserInfoUpdateEvent = new LiveHouseUserInfoUpdateEvent();
@@ -573,11 +618,37 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 for (int i = 0; i < data.getGoodsList().size(); i++) {
                     if ("GUARD".equals(data.getGoodsList().get(i).getGoodsType())) {
                         isGuard = true;
+                        ((PrivateChatListFragment) fragments[1]).setIsGuard(isGuard);
+                        mCanPrivateChat = true;
+                    }
+                    if ("VIP".equals(data.getGoodsList().get(i).getGoodsType())) {
+                        mCanPrivateChat = true;
+                    }
+                }
+            }
+
+            if (data.getIdentityId() == UserIdentity.ROOM_MANAGER
+                    || data.getIdentityId() == UserIdentity.ANCHOR
+                    || data.getIdentityId() == UserIdentity.OPTR_MANAGER) {
+                mCanPrivateChat = true;
+            }
+
+            if (data.getLevelList() != null) {
+                for (int i = 0; i < data.getLevelList().size(); i++) {
+                    if ("USER_LEVEL".equals(data.getLevelList().get(i).getLevelType())) {
+                        if (data.getLevelList().get(i).getLevelValue() > 5) {
+                            mCanPrivateChat = true;
+                        }
+                    }
+                    if ("ROYAL".equals(data.getLevelList().get(i).getLevelType())) {
+                        if (data.getLevelList().get(i).getLevelValue() > 0) {
+                            mCanPrivateChat = true;
+                        }
                     }
                 }
             }
         }
-
+        SPUtils.put(this, SpConfig.KEY_PRIVATE_CHAT, mCanPrivateChat);
     }
 
     @Override
@@ -632,8 +703,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mGiftData = giftInfo;
     }
 
-    public void sendMeeage(String message) {
-        chatRoomPresenter.sendMessage(message);
+    public void sendMeeage(String message, RoomUserInfo.DataBean chatToUser) {
+        if(chatToUser == null){
+            chatRoomPresenter.sendMessage(message);
+        }else {
+            chatRoomPresenter.sendPrivateMessage(chatToUser, message);
+        }
+
     }
 
     public void sendGift(int count, int goodId, boolean useBag) {
@@ -667,6 +743,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView.release();
             textureView = null;
         }
+        if (showGuardAnim != null) {
+            showGuardAnim.cancel();
+            showGuardAnim = null;
+        }
+        if (hideGuardAnim != null) {
+            hideGuardAnim.cancel();
+            hideGuardAnim = null;
+        }
         mGiftDialog = null;
         mLivePresenter.onDestory();
         if (chatRoomPresenter != null) {
@@ -692,6 +776,54 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserInfoUpdateEvent event) {
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(GuardSuccessEvent event) {
+        mLivePresenter.getGuardList(mProgramId);
+        showGuard();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PrivateChatSelectedEvent event) {
+        setTabChange(1);
+    }
+
+    private void showGuard() {
+        GlideImageLoader.getInstace().displayImage(this, mRoomUserInfo.getAvatar(), ivGuardAvatar);
+        tvGuardNickName.setText(mRoomUserInfo.getNickname());
+        showGuardAnim = ObjectAnimator.ofFloat(rlGuardSuccess, "alpha", 0f, 1f);
+        showGuardAnim.setDuration(3000);
+        showGuardAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                hideGuard();
+                showGuardAnim = null;
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                rlGuardSuccess.setVisibility(View.VISIBLE);
+            }
+        });
+        showGuardAnim.start();
+    }
+
+    private void hideGuard() {
+        hideGuardAnim = ObjectAnimator.ofFloat(rlGuardSuccess, "alpha", 1f, 0f);
+        hideGuardAnim.setDuration(3000);
+        hideGuardAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                rlGuardSuccess.setVisibility(View.VISIBLE);
+                hideGuardAnim = null;
+            }
+        });
+        hideGuardAnim.setStartDelay(3000);
+        hideGuardAnim.start();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.whzl.mengbi.chat.room.message.messages;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -85,7 +86,9 @@ public class ChatMessage implements FillHolderMessage {
             mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
         }
         mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId));
-        mholder.textView.append(LightSpanString.getLightString("对 您 私聊:  ", WHITE_FONG_COLOR));
+        mholder.textView.append(LightSpanString.getLightString("对", WHITE_FONG_COLOR));
+        mholder.textView.append(LightSpanString.getLightString(to_nickName, Color.parseColor("#75bbfb")));
+        mholder.textView.append(LightSpanString.getLightString("说:  ", WHITE_FONG_COLOR));
         //TODO:表情替换
         SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);

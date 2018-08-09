@@ -2,6 +2,7 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
 
+import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
@@ -19,6 +20,6 @@ public class PrivateChatAction implements Actions{
             return;
         }
         ChatMessage message = new ChatMessage(json,context, null, true);
-        EventBus.getDefault().post(new UpdatePubChatEvent(message));
+        EventBus.getDefault().post(new UpdatePrivateChatEvent(message));
     }
 }

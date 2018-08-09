@@ -9,4 +9,5 @@ public interface SpConfig {
     String KEY_SESSION_ID = "sessionId";
     String KEY_USER_NAME = "nickname";
     String TIME_DIFF = "timeDiff";
+    String KEY_PRIVATE_CHAT = "private_chat";
 }

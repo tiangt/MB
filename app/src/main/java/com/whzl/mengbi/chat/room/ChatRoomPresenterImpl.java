@@ -14,6 +14,7 @@ import com.whzl.mengbi.chat.room.message.LoginMessage;
 import com.whzl.mengbi.chat.room.message.MessageRouter;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
@@ -29,7 +30,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class ChatRoomPresenterImpl{
+public class ChatRoomPresenterImpl {
     String TAG = "chatroom presenter";
     private MbChatClient client;
     private IConnectCallback connectCallback;
@@ -51,13 +52,13 @@ public class ChatRoomPresenterImpl{
             @Override
             public void onConnectSuccess(String domain, boolean isReconnect) {
                 Log.d(TAG, "连接成功");
-                long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long)0).toString());
+                long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
                 if (userId == 0 || !isReconnect) {
                     chatLogin(domain);
-                }else {
+                } else {
                     doLiveRoomToken(userId + "", domain);
                 }
-                Log.d(TAG,"chatLogin finished");
+                Log.d(TAG, "chatLogin finished");
                 netErrorNoticed = false;
             }
 
@@ -103,15 +104,15 @@ public class ChatRoomPresenterImpl{
     public void chatLogin(String domain) {
         LoginMessage message;
         long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
-        if(userId > 0) {
+        if (userId > 0) {
             message = new LoginMessage(programId, domain, userId, liveRoomTokenInfo.getData().getToken());
-        }else{
-            String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_NAME,"0").toString();
+        } else {
+            String nickname = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, "0").toString();
             if (nickname.equals("0")) {
                 nickname = getNickname();
                 SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, nickname);
             }
-            message = new LoginMessage(programId,domain,userId,nickname);
+            message = new LoginMessage(programId, domain, userId, nickname);
         }
         client.send(message);
     }
@@ -120,10 +121,10 @@ public class ChatRoomPresenterImpl{
         List<ServerAddr> list = new ArrayList<>();
         if (liveRoomTokenInfo.getData().getRoomServerList() == null) {
             Log.e(TAG, "LiveRoomTokenInfo getData getRoomServerList=null");
-        }else {
+        } else {
             Log.e(TAG, "LiveRoomTokenInfo getData getRoomServerList!=null");
-            for (LiveRoomTokenInfo.DataBean.RoomServerListBean lrtb: liveRoomTokenInfo.getData().getRoomServerList()) {
-                ServerAddr addr = new ServerAddr(lrtb.getServerDomain(),lrtb.getDataPort());
+            for (LiveRoomTokenInfo.DataBean.RoomServerListBean lrtb : liveRoomTokenInfo.getData().getRoomServerList()) {
+                ServerAddr addr = new ServerAddr(lrtb.getServerDomain(), lrtb.getDataPort());
                 list.add(addr);
             }
         }
@@ -152,10 +153,39 @@ public class ChatRoomPresenterImpl{
             return;
         }
         ChatOutMsg msg;
-        String userId = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_ID,(long) 0).toString();
-        String nickname = SPUtils.get(BaseApplication.getInstance(),SpConfig.KEY_USER_NAME,"0").toString();
-        msg = new ChatOutMsg(message, programId,client.getCurrentDomain(),userId,nickname
-                ,"0","0","common");
+        String userId = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString();
+        String nickname = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, "0").toString();
+        msg = new ChatOutMsg(message, programId, client.getCurrentDomain(), userId, nickname
+                , "0", "0", "common");//private
+        client.send(msg);
+    }
+
+    public void sendPrivateMessage(RoomUserInfo.DataBean roomUser, String message) {
+//        if (message.length() > 50) {
+//            iChatRoom.showWarning("最多发言50个字");
+//            return;
+//        }
+//
+//        //如果私聊先判断有没有权限
+//        if (chatToStatus.getChatType() == ChatToStatus.ChatType.PRIVATE_CHAT) {
+//            if (!ChatRoomInfo.isCanIPri()) {//没有私聊权限的话
+//                Toast.makeText((Context) iChatRoom, "财富LV5以上用户才能私聊哦，快快升级吧", Toast.LENGTH_LONG).show();
+//                return;
+//            }
+//        }
+//
+        if (client == null) {
+            sendFailMsg.add(message);
+            if (sendFailMsg.size() >= 5) {
+                sendFailMsg.remove(0);
+            }
+            return;
+        }
+        ChatOutMsg msg;
+        String userId = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString();
+        String nickname = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, "0").toString();
+        msg = new ChatOutMsg(message, programId, client.getCurrentDomain(), userId, nickname
+                , roomUser.getUserId() + "", roomUser.getNickname(), "private");//
         client.send(msg);
     }
 
@@ -192,7 +222,7 @@ public class ChatRoomPresenterImpl{
                 if (tokenInfo.getCode() == 200) {
                     liveRoomTokenInfo = tokenInfo;
                     chatLogin(domain);
-                }else {
+                } else {
                     chatLogin(domain);
                     Log.e(TAG, "getLiveRoomToken error,code=" + tokenInfo.getCode());
                 }
@@ -207,7 +237,7 @@ public class ChatRoomPresenterImpl{
     }
 
     private void updateUI(final Context context, String msg) {
-        LiveDisplayActivity activity = (LiveDisplayActivity)context;
+        LiveDisplayActivity activity = (LiveDisplayActivity) context;
         if (null == activity) {
             return;
         }
@@ -220,7 +250,7 @@ public class ChatRoomPresenterImpl{
     }
 
     private void sendFailedMsg() {
-        for(String msg : sendFailMsg) {
+        for (String msg : sendFailMsg) {
             sendMessage(msg);
         }
         sendFailMsg.clear();

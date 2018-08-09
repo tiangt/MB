@@ -64,7 +64,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowSoftInputMode">stateAlwaysHidden|adjustResize</item>
+        <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
         <item name="android:windowIsFloating">true</item>
     </style>
 

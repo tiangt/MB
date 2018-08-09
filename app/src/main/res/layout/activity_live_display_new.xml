@@ -1,281 +1,333 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#181818"
-    android:orientation="vertical"
-    android:id="@+id/rootView">
+    android:background="#181818">
 
-    <LinearLayout
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rootView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginTop="6.5dp">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <RelativeLayout
-                android:id="@+id/rl_anchor_info"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:background="@drawable/shape_host_info_bg">
-
-                <com.whzl.mengbi.ui.widget.view.CircleImageView
-                    android:id="@+id/iv_host_avatar"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="1dp" />
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginTop="6.5dp">
 
                 <RelativeLayout
-                    android:id="@+id/rl_host_info"
+                    android:id="@+id/rl_anchor_info"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/iv_host_avatar">
+                    android:layout_height="34dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:background="@drawable/shape_host_info_bg">
 
-                    <TextView
-                        android:id="@+id/tv_host_name"
+                    <com.whzl.mengbi.ui.widget.view.CircleImageView
+                        android:id="@+id/iv_host_avatar"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="1dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_host_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@id/iv_host_avatar">
+
+                        <TextView
+                            android:id="@+id/tv_host_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginTop="3dp"
+                            android:ellipsize="end"
+                            android:maxEms="7"
+                            android:singleLine="true"
+                            android:textColor="#e5e5e5"
+                            android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/tv_fans_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginTop="6.5dp"
+                            android:singleLine="true"
+                            android:textColor="#e5e5e5"
+                            android:textSize="10sp" />
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:id="@+id/btn_follow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginRight="6dp"
-                        android:layout_marginTop="3dp"
-                        android:ellipsize="end"
-                        android:maxEms="7"
-                        android:singleLine="true"
-                        android:textColor="#e5e5e5"
-                        android:textSize="10sp" />
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="1dp"
+                        android:layout_toRightOf="@id/rl_host_info"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_live_follow" />
 
-                    <TextView
-                        android:id="@+id/tv_fans_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginRight="6dp"
-                        android:layout_marginTop="6.5dp"
-                        android:singleLine="true"
-                        android:textColor="#e5e5e5"
-                        android:textSize="10sp" />
                 </RelativeLayout>
 
-                <ImageButton
-                    android:id="@+id/btn_follow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/guard_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toLeftOf="@id/tv_popularity"
+                    android:layout_toRightOf="@id/rl_anchor_info">
+
+                </android.support.v7.widget.RecyclerView>
+
+
+                <TextView
+                    android:id="@+id/tv_popularity"
+                    android:layout_width="50dp"
+                    android:layout_height="29dp"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="1dp"
-                    android:layout_toRightOf="@id/rl_host_info"
-                    android:background="@null"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_live_follow" />
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/shape_live_display_populartity_bg"
+                    android:gravity="center"
+                    android:textColor="#f0f0f0"
+                    android:textSize="10sp" />
 
             </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/guard_recycler"
+            <RelativeLayout
+                android:id="@+id/rl_contribution_container"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginTop="6.5dp">
+
+                <Button
+                    android:id="@+id/btn_contribute"
+                    android:layout_width="61dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="16dp"
+                    android:background="@drawable/shape_live_display_contribution_btn_bg"
+                    android:drawableRight="@drawable/live_display_arrow"
+                    android:gravity="center"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:text="@string/live_display_contribution"
+                    android:textColor="#f0f0f0"
+                    android:textSize="10sp" />
+
+                <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_toRightOf="@id/btn_contribute">
+
+                    <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
+                        android:id="@+id/tv_run_way_gift"
+                        android:layout_width="1000dp"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:textSize="12sp" />
+                </android.support.design.widget.CoordinatorLayout>
+
+                <Button
+                    android:id="@+id/btn_close"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/close_icon"
+                    android:paddingLeft="10dp" />
+
+            </RelativeLayout>
+
+            <com.whzl.mengbi.ui.widget.view.RatioRelativeLayout
+                android:id="@+id/ratio_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:background="@color/colorblack"
+                app:ratio="1.33">
+
+                <!--<SurfaceView-->
+                <!--android:id="@+id/player_master"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent" />-->
+                <com.ksyun.media.player.KSYTextureView
+                    android:id="@+id/texture_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ProgressBar
+                    android:id="@+id/progressbar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true" />
+
+                <TextView
+                    android:id="@+id/tv_lucky_gift"
+                    android:layout_width="320dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/lucky_gift_bg"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="25dp"
+                    android:singleLine="true"
+                    android:textColor="#646464"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_stop_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="主播正在休息中"
+                    android:textColor="@color/player_rest"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_gift_gif"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/ll_gift_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="30dp"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+            </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_toLeftOf="@id/tv_popularity"
-                android:layout_toRightOf="@id/rl_anchor_info">
+                android:background="#292929">
 
-            </android.support.v7.widget.RecyclerView>
+            </FrameLayout>
 
-
-            <TextView
-                android:id="@+id/tv_popularity"
-                android:layout_width="50dp"
-                android:layout_height="29dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/shape_live_display_populartity_bg"
-                android:gravity="center"
-                android:textColor="#f0f0f0"
-                android:textSize="10sp" />
-
-        </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_contribution_container"
+            android:id="@+id/rl_bottom_container"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginTop="6.5dp">
-
-            <Button
-                android:id="@+id/btn_contribute"
-                android:layout_width="61dp"
-                android:layout_height="20dp"
-                android:layout_marginLeft="16dp"
-                android:background="@drawable/shape_live_display_contribution_btn_bg"
-                android:drawableRight="@drawable/live_display_arrow"
-                android:gravity="center"
-                android:paddingLeft="6dp"
-                android:paddingRight="6dp"
-                android:text="@string/live_display_contribution"
-                android:textColor="#f0f0f0"
-                android:textSize="10sp" />
-
-            <android.support.design.widget.CoordinatorLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="40dp"
-                android:layout_toRightOf="@id/btn_contribute">
-
-                <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
-                    android:id="@+id/tv_run_way_gift"
-                    android:layout_width="1000dp"
-                    android:layout_height="match_parent"
-                    android:singleLine="true"
-                    android:textSize="12sp" />
-            </android.support.design.widget.CoordinatorLayout>
-
-            <Button
-                android:id="@+id/btn_close"
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/close_icon"
-                android:paddingLeft="10dp" />
-
-        </RelativeLayout>
-
-        <com.whzl.mengbi.ui.widget.view.RatioRelativeLayout
-            android:id="@+id/ratio_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:background="@color/colorblack"
-            app:ratio="1.33">
-
-            <!--<SurfaceView-->
-            <!--android:id="@+id/player_master"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent" />-->
-            <com.ksyun.media.player.KSYTextureView
-                android:id="@+id/texture_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <ProgressBar
-                android:id="@+id/progressbar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerInParent="true" />
-
-            <TextView
-                android:id="@+id/tv_lucky_gift"
-                android:layout_width="320dp"
-                android:layout_height="56dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/lucky_gift_bg"
-                android:gravity="center_horizontal"
-                android:paddingTop="25dp"
-                android:singleLine="true"
-                android:textColor="#646464"
-                android:textSize="11sp"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/tv_stop_tip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="主播正在休息中"
-                android:textColor="@color/player_rest"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/iv_gift_gif"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone" />
-
-            <LinearLayout
-                android:id="@+id/ll_gift_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="30dp"
-                android:orientation="vertical">
-
-            </LinearLayout>
-
-        </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:background="#292929">
 
-        </FrameLayout>
+            <ImageButton
+                android:id="@+id/btn_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="17.5dp"
+                android:background="@null"
+                android:src="@drawable/ic_live_display_talk" />
+
+
+            <ImageButton
+                android:id="@+id/btn_chat_private"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/btn_chat"
+                android:background="@drawable/private_chat_btn_bg"
+                android:src="@drawable/private_chat_icon" />
+
+
+            <View
+                android:id="@+id/view_message_notify"
+                android:layout_width="6dp"
+                android:layout_height="6dp"
+                android:layout_alignRight="@id/btn_chat_private"
+                android:layout_alignTop="@id/btn_chat_private"
+                android:layout_marginRight="9dp"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/shape_red_notify"
+                android:visibility="gone"/>
+
+
+            <ImageButton
+                android:id="@+id/btn_send_gift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="17.5dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_live_display_gift" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_guard_success"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/rl_bottom_container"
-        android:background="#292929">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:alpha="0"
+        android:visibility="gone">
 
-        <ImageButton
-            android:id="@+id/btn_chat"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/guard_successs_bg" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="17.5dp"
-            android:background="@null"
-            android:src="@drawable/ic_live_display_talk" />
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
+            <com.whzl.mengbi.ui.widget.view.CircleImageView
+                android:id="@+id/iv_guard_avatar"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="30dp" />
 
-        <ImageButton
-            android:id="@+id/btn_chat_private"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@id/btn_chat"
-            android:background="@null"
-            android:src="@drawable/ic_live_display_talk" />
-
-
-        <View
-            android:id="@+id/view_message_notify"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:layout_alignRight="@id/btn_chat_private"
-            android:layout_alignTop="@id/btn_chat_private"
-            android:layout_marginRight="9dp"
-            android:layout_marginTop="9dp"
-            android:background="@drawable/shape_red_notify" />
-
-
-        <ImageButton
-            android:id="@+id/btn_send_gift"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="17.5dp"
-            android:background="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_live_display_gift" />
+            <TextView
+                android:id="@+id/tv_guard_nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_guard_avatar"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:maxEms="7"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="#404040"
+                android:textSize="13sp" />
+        </LinearLayout>
 
     </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

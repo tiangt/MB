@@ -296,4 +296,5 @@ public class GiftDialog extends BaseAwesomeDialog {
         mGiftInfo = null;
         fragments = null;
     }
+
 }

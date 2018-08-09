@@ -35,7 +35,7 @@ public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
 
     private ArrayList<AudienceListBean.AudienceInfoBean> mDatas = new ArrayList<>();
     private AudienceListAdapter adapter;
-    private int mProgramid;
+    private int mProgramId;
 
     public static BaseAwesomeDialog newInstance(int programId) {
         Bundle args = new Bundle();
@@ -52,7 +52,7 @@ public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-        mProgramid = getArguments().getInt("programId");
+        mProgramId = getArguments().getInt("programId");
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         recycler.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
         adapter = new AudienceListAdapter(getContext(), R.layout.item_audience, mDatas);
@@ -60,7 +60,13 @@ public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 AudienceListBean.AudienceInfoBean audienceInfoBean = mDatas.get(position);
-                AudienceInfoDialog.newInstance(audienceInfoBean.getUserid(), mProgramid)
+                AudienceInfoDialog.newInstance(audienceInfoBean.getUserid(), mProgramId)
+                        .setListener(new AudienceInfoDialog.OnClickListener() {
+                            @Override
+                            public void onClick() {
+                                dismiss();
+                            }
+                        })
                         .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                         .setDimAmount(0)
                         .setShowBottom(true)
@@ -79,7 +85,7 @@ public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
 
     private void getAudienceList() {
         HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("programId", mProgramid + "");
+        paramsMap.put("programId", mProgramId + "");
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_ONLINE, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {

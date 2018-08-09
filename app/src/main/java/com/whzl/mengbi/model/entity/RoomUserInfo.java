@@ -1,5 +1,8 @@
 package com.whzl.mengbi.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -42,7 +45,7 @@ public class RoomUserInfo {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
 
         private long userId;
         private String userType;
@@ -60,6 +63,58 @@ public class RoomUserInfo {
         private WeathMapBean weathMap;
         private List<LevelMapBean> levelList;
         private List<GoodsListBean> goodsList;
+
+        public DataBean(Parcel in) {
+            userId = in.readLong();
+            userType = in.readString();
+            nickname = in.readString();
+            avatar = in.readString();
+            status = in.readString();
+            sex = in.readString();
+            introduce = in.readString();
+            birthday = in.readString();
+            province = in.readString();
+            city = in.readString();
+            isSubs = in.readByte() != 0;
+            identityId = in.readInt();
+            isVip = in.readByte() != 0;
+        }
+
+        public DataBean(){}
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeLong(userId);
+            dest.writeString(userType);
+            dest.writeString(nickname);
+            dest.writeString(avatar);
+            dest.writeString(status);
+            dest.writeString(sex);
+            dest.writeString(introduce);
+            dest.writeString(birthday);
+            dest.writeString(province);
+            dest.writeString(city);
+            dest.writeByte((byte) (isSubs ? 1 : 0));
+            dest.writeInt(identityId);
+            dest.writeByte((byte) (isVip ? 1 : 0));
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
 
         public long getUserId() {
             return userId;
@@ -186,202 +241,209 @@ public class RoomUserInfo {
             this.goodsList = goodsList;
         }
 
-        public static class WeathMapBean {
-            /**
-             * coin : 79367423
-             * chengPonit : 1846429640
-             */
-
-            private long coin;
-            private int chengPonit;
-
-            public long getCoin() {
-                return coin;
-            }
-
-            public void setCoin(int coin) {
-                this.coin = coin;
-            }
-
-            public int getChengPonit() {
-                return chengPonit;
-            }
-
-            public void setChengPonit(int chengPonit) {
-                this.chengPonit = chengPonit;
-            }
+        public void setUserId(long userId) {
+            this.userId = userId;
         }
 
-        public static class LevelMapBean {
+    }
 
-            private String levelType;
-            private int levelValue;
-            private String levelName;
-            private List<ExpListBean> expList;
+    public class LevelMapBean {
 
-            public String getLevelType() {
-                return levelType;
-            }
+        private String levelType;
+        private int levelValue;
+        private String levelName;
+        private List<ExpListBean> expList;
 
-            public void setLevelType(String levelType) {
-                this.levelType = levelType;
-            }
-
-            public int getLevelValue() {
-                return levelValue;
-            }
-
-            public void setLevelValue(int levelValue) {
-                this.levelValue = levelValue;
-            }
-
-            public String getLevelName() {
-                return levelName;
-            }
-
-            public void setLevelName(String levelName) {
-                this.levelName = levelName;
-            }
-
-            public List<ExpListBean> getExpList() {
-                return expList;
-            }
-
-            public void setExpList(List<ExpListBean> expList) {
-                this.expList = expList;
-            }
-
-            public static class ExpListBean {
-                /**
-                 * expType : GIFT_EXP
-                 * expName : 付费礼物经验
-                 * sjExpvalue : 2976859652
-                 * bjExpValue : 2976859652
-                 * sjNeedExpValue : 3000000000
-                 * bjNeedExpValue : 0
-                 */
-
-                private String expType;
-                private String expName;
-                private long sjExpvalue;
-                private long bjExpValue;
-                private long sjNeedExpValue;
-                private int bjNeedExpValue;
-
-                public String getExpType() {
-                    return expType;
-                }
-
-                public void setExpType(String expType) {
-                    this.expType = expType;
-                }
-
-                public String getExpName() {
-                    return expName;
-                }
-
-                public void setExpName(String expName) {
-                    this.expName = expName;
-                }
-
-                public long getSjExpvalue() {
-                    return sjExpvalue;
-                }
-
-                public void setSjExpvalue(long sjExpvalue) {
-                    this.sjExpvalue = sjExpvalue;
-                }
-
-                public long getBjExpValue() {
-                    return bjExpValue;
-                }
-
-                public void setBjExpValue(long bjExpValue) {
-                    this.bjExpValue = bjExpValue;
-                }
-
-                public long getSjNeedExpValue() {
-                    return sjNeedExpValue;
-                }
-
-                public void setSjNeedExpValue(long sjNeedExpValue) {
-                    this.sjNeedExpValue = sjNeedExpValue;
-                }
-
-                public int getBjNeedExpValue() {
-                    return bjNeedExpValue;
-                }
-
-                public void setBjNeedExpValue(int bjNeedExpValue) {
-                    this.bjNeedExpValue = bjNeedExpValue;
-                }
-            }
+        public String getLevelType() {
+            return levelType;
         }
 
-        public static class GoodsListBean {
-            /**
-             * goodsId : 300
-             * goodsName : 守护
-             * goodsType : GUARD
-             * goodsIcon : 1005
-             * bindProgramId : 100079
-             * colorSpeak : true
-             */
+        public void setLevelType(String levelType) {
+            this.levelType = levelType;
+        }
 
-            private int goodsId;
-            private String goodsName;
-            private String goodsType;
-            private String goodsIcon;
-            private int bindProgramId;
-            private boolean colorSpeak;
+        public int getLevelValue() {
+            return levelValue;
+        }
 
-            public int getGoodsId() {
-                return goodsId;
-            }
+        public void setLevelValue(int levelValue) {
+            this.levelValue = levelValue;
+        }
 
-            public void setGoodsId(int goodsId) {
-                this.goodsId = goodsId;
-            }
+        public String getLevelName() {
+            return levelName;
+        }
 
-            public String getGoodsName() {
-                return goodsName;
-            }
+        public void setLevelName(String levelName) {
+            this.levelName = levelName;
+        }
 
-            public void setGoodsName(String goodsName) {
-                this.goodsName = goodsName;
-            }
+        public List<ExpListBean> getExpList() {
+            return expList;
+        }
 
-            public String getGoodsType() {
-                return goodsType;
-            }
+        public void setExpList(List<ExpListBean> expList) {
+            this.expList = expList;
+        }
 
-            public void setGoodsType(String goodsType) {
-                this.goodsType = goodsType;
-            }
 
-            public String getGoodsIcon() {
-                return goodsIcon;
-            }
+    }
 
-            public void setGoodsIcon(String goodsIcon) {
-                this.goodsIcon = goodsIcon;
-            }
+    public class ExpListBean {
+        /**
+         * expType : GIFT_EXP
+         * expName : 付费礼物经验
+         * sjExpvalue : 2976859652
+         * bjExpValue : 2976859652
+         * sjNeedExpValue : 3000000000
+         * bjNeedExpValue : 0
+         */
 
-            public int getBindProgramId() {
-                return bindProgramId;
-            }
+        private String expType;
+        private String expName;
+        private long sjExpvalue;
+        private long bjExpValue;
+        private long sjNeedExpValue;
+        private int bjNeedExpValue;
 
-            public void setBindProgramId(int bindProgramId) {
-                this.bindProgramId = bindProgramId;
-            }
+        public String getExpType() {
+            return expType;
+        }
 
-            public boolean isColorSpeak() {
-                return colorSpeak;
-            }
+        public void setExpType(String expType) {
+            this.expType = expType;
+        }
 
-            public void setColorSpeak(boolean colorSpeak) {
-                this.colorSpeak = colorSpeak;
-            }
+        public String getExpName() {
+            return expName;
+        }
+
+        public void setExpName(String expName) {
+            this.expName = expName;
+        }
+
+        public long getSjExpvalue() {
+            return sjExpvalue;
+        }
+
+        public void setSjExpvalue(long sjExpvalue) {
+            this.sjExpvalue = sjExpvalue;
+        }
+
+        public long getBjExpValue() {
+            return bjExpValue;
+        }
+
+        public void setBjExpValue(long bjExpValue) {
+            this.bjExpValue = bjExpValue;
+        }
+
+        public long getSjNeedExpValue() {
+            return sjNeedExpValue;
+        }
+
+        public void setSjNeedExpValue(long sjNeedExpValue) {
+            this.sjNeedExpValue = sjNeedExpValue;
+        }
+
+        public int getBjNeedExpValue() {
+            return bjNeedExpValue;
+        }
+
+        public void setBjNeedExpValue(int bjNeedExpValue) {
+            this.bjNeedExpValue = bjNeedExpValue;
+        }
+    }
+
+    public class WeathMapBean {
+        /**
+         * coin : 79367423
+         * chengPonit : 1846429640
+         */
+
+        private long coin;
+        private int chengPonit;
+
+        public long getCoin() {
+            return coin;
+        }
+
+        public void setCoin(int coin) {
+            this.coin = coin;
+        }
+
+        public int getChengPonit() {
+            return chengPonit;
+        }
+
+        public void setChengPonit(int chengPonit) {
+            this.chengPonit = chengPonit;
+        }
+    }
+
+    public class GoodsListBean {
+        /**
+         * goodsId : 300
+         * goodsName : 守护
+         * goodsType : GUARD
+         * goodsIcon : 1005
+         * bindProgramId : 100079
+         * colorSpeak : true
+         */
+
+        private int goodsId;
+        private String goodsName;
+        private String goodsType;
+        private String goodsIcon;
+        private int bindProgramId;
+        private boolean colorSpeak;
+
+        public int getGoodsId() {
+            return goodsId;
+        }
+
+        public void setGoodsId(int goodsId) {
+            this.goodsId = goodsId;
+        }
+
+        public String getGoodsName() {
+            return goodsName;
+        }
+
+        public void setGoodsName(String goodsName) {
+            this.goodsName = goodsName;
+        }
+
+        public String getGoodsType() {
+            return goodsType;
+        }
+
+        public void setGoodsType(String goodsType) {
+            this.goodsType = goodsType;
+        }
+
+        public String getGoodsIcon() {
+            return goodsIcon;
+        }
+
+        public void setGoodsIcon(String goodsIcon) {
+            this.goodsIcon = goodsIcon;
+        }
+
+        public int getBindProgramId() {
+            return bindProgramId;
+        }
+
+        public void setBindProgramId(int bindProgramId) {
+            this.bindProgramId = bindProgramId;
+        }
+
+        public boolean isColorSpeak() {
+            return colorSpeak;
+        }
+
+        public void setColorSpeak(boolean colorSpeak) {
+            this.colorSpeak = colorSpeak;
         }
     }
 }

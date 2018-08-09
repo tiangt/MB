@@ -53,12 +53,6 @@ public class ChatListFragment extends BaseFragment {
         EventBus.getDefault().register(this);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
@@ -118,4 +112,11 @@ public class ChatListFragment extends BaseFragment {
             }
         });
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
 }

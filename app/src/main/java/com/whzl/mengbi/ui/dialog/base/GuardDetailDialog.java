@@ -9,6 +9,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
+import com.whzl.mengbi.eventbus.event.GuardSuccessEvent;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -16,6 +17,8 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -104,6 +107,7 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
                         dismiss();
+                        EventBus.getDefault().post(new GuardSuccessEvent());
                     }
 
                     @Override

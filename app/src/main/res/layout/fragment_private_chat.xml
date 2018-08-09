@@ -15,18 +15,21 @@
             android:layout_centerInParent="true"
             android:text="私聊区"
             android:textColor="#20d190"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
 
         <TextView
             android:id="@+id/tv_chat_to"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
+            android:gravity="center"
             android:text="私聊对象"
             android:textColor="#20d190"
-            android:textSize="10sp" />
+            android:textSize="10sp"
+            android:drawableRight="@drawable/private_chat_down_arrow_icon"
+            android:drawablePadding="8dp"/>
 
     </RelativeLayout>
 
@@ -36,5 +39,59 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="#292929" />
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#f4f4f4"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="9dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_chat_dialog_edit_bg"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_centerVertical="true"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="7dp"
+                android:textColor="#cececf"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btn_input_change"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/live_house_switch_to_key_board_icon"
+                android:textColor="#b9b9b9"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="80dp"
+            android:layout_height="36dp"
+            android:layout_marginRight="11dp"
+            android:background="@drawable/shape_dialog_chat_send_btn_bg"
+            android:text="发送"
+            android:textColor="#f0f0f0"
+            android:textSize="17sp" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

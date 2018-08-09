@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
@@ -52,6 +53,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     private boolean isGuard;
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
     private int mProgramId;
+    private RoomUserInfo.DataBean mChatToUser;
 
     public static BaseAwesomeDialog newInstance(boolean isGuard, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
@@ -59,6 +61,17 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         args.putBoolean("isGuard", isGuard);
         args.putInt("programId", programId);
         args.putParcelable("anchor", anchorBean);
+        liveHouseChatDialog.setArguments(args);
+        return liveHouseChatDialog;
+    }
+
+    public static BaseAwesomeDialog newInstance(boolean isGuard, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, RoomUserInfo.DataBean dateBean) {
+        LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
+        Bundle args = new Bundle();
+        args.putBoolean("isGuard", isGuard);
+        args.putInt("programId", programId);
+        args.putParcelable("anchor", anchorBean);
+        args.putParcelable("chatToUser", dateBean);
         liveHouseChatDialog.setArguments(args);
         return liveHouseChatDialog;
     }
@@ -73,6 +86,10 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         isGuard = getArguments().getBoolean("isGuard");
         mProgramId = getArguments().getInt("programId");
         mAnchorBean = getArguments().getParcelable("anchor");
+        mChatToUser = getArguments().getParcelable("chatToUser");
+        if (mChatToUser != null) {
+            etContent.setHint("对" + mChatToUser.getNickname() + "私聊");
+        }
         etContent.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == 1) {
                 KeyBoardUtil.closeKeybord(etContent, getContext());
@@ -164,12 +181,13 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         switch (view.getId()) {
             case R.id.btn_send:
                 String message = etContent.getText().toString().trim();
-                if (!TextUtils.isEmpty(message)) {
-                    ((LiveDisplayActivity) getActivity()).sendMeeage(message);
-                    etContent.getText().clear();
-                    KeyBoardUtil.closeKeybord(etContent, getContext());
-                    dismiss();
+                if (TextUtils.isEmpty(message)) {
+                    return;
                 }
+                ((LiveDisplayActivity) getActivity()).sendMeeage(message, mChatToUser);
+                etContent.getText().clear();
+                KeyBoardUtil.closeKeybord(etContent, getContext());
+                dismiss();
                 break;
             case R.id.btn_input_change:
                 btnInputChange.setSelected(!btnInputChange.isSelected());
@@ -177,12 +195,12 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     KeyBoardUtil.closeKeybord(etContent, getContext());
                     llEmojiContiner
                             .postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            llEmojiContiner.setVisibility(View.VISIBLE);
-                            isShowSoftInput = false;
-                        }
-                    }, 200);
+                                @Override
+                                public void run() {
+                                    llEmojiContiner.setVisibility(View.VISIBLE);
+                                    isShowSoftInput = false;
+                                }
+                            }, 200);
                 } else {
                     llEmojiContiner.setVisibility(View.GONE);
                     KeyBoardUtil.openKeybord(etContent, getContext());
@@ -208,4 +226,5 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
         super.onDestroyView();
     }
+
 }
