@@ -102,4 +102,35 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> feedback(@FieldMap Map<String, String> params);
 
+    /**
+     * 用户服务器操作
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/user-server-operate")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> serverOprate(@FieldMap Map<String, String> params);
+
+    /**
+     * 升房管
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/set-manager")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> setManager(@FieldMap Map<String, String> params);
+
+    /**
+     * 取消房管
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/remove-manager")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> cancleManager(@FieldMap Map<String, String> params);
+
+
 }

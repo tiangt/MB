@@ -17,6 +17,8 @@ public class OpenGuardAction implements Actions {
             return;
         }
         OpenGuardMessage openGuardMessage = new OpenGuardMessage(openGuardJson, context);
-        EventBus.getDefault().post(new UpdatePubChatEvent(openGuardMessage));
+        UpdatePubChatEvent updatePubChatEvent = new UpdatePubChatEvent(openGuardMessage);
+        updatePubChatEvent.setGuard(true);
+        EventBus.getDefault().post(updatePubChatEvent);
     }
 }

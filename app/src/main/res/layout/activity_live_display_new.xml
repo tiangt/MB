@@ -140,9 +140,10 @@
                     <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
                         android:id="@+id/tv_run_way_gift"
                         android:layout_width="1000dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        android:visibility="gone"/>
                 </android.support.design.widget.CoordinatorLayout>
 
                 <Button
@@ -268,7 +269,7 @@
                 android:layout_marginRight="9dp"
                 android:layout_marginTop="9dp"
                 android:background="@drawable/shape_red_notify"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
 
             <ImageButton

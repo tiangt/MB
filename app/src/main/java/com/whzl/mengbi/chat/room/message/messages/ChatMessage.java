@@ -92,6 +92,9 @@ public class ChatMessage implements FillHolderMessage {
         //TODO:表情替换
         SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
+        if (hasGuard) {
+            FaceReplace.getInstance().guardFaceReplace(mholder.textView, spanString, mContext);
+        }
         mholder.textView.append(spanString);
     }
 
@@ -119,6 +122,9 @@ public class ChatMessage implements FillHolderMessage {
         SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
         //TODO:表情替换
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
+        if (hasGuard) {
+            FaceReplace.getInstance().guardFaceReplace(mholder.textView, spanString, mContext);
+        }
         mholder.textView.append(spanString);
     }
 
@@ -137,6 +143,9 @@ public class ChatMessage implements FillHolderMessage {
         //TODO:表情替换
         SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
+        if (hasGuard) {
+            FaceReplace.getInstance().guardFaceReplace(mholder.textView, spanString, mContext);
+        }
         mholder.textView.append(spanString);
     }
 

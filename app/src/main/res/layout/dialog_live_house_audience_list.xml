@@ -17,8 +17,8 @@
         android:textStyle="bold"
         android:text="观众"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    <FrameLayout
+        android:id="@+id/audience_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="290dp" />
 

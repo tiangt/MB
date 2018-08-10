@@ -103,6 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ll_age_container"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
@@ -110,8 +111,7 @@
                     android:hint="@string/no_motto_hint"
                     android:maxLines="2"
                     android:singleLine="true"
-                    android:textColor="#9e9e9e"
-                    android:layout_marginBottom="10dp"/>
+                    android:textColor="#9e9e9e" />
 
                 <LinearLayout
                     android:id="@+id/ll_option_container"
@@ -119,37 +119,41 @@
                     android:layout_height="50dp"
                     android:layout_below="@id/tv_introduce"
                     android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_ban"-->
-                        <!--style="@style/style_audience_info_option_text"-->
-                        <!--android:text="@string/ban"-->
-                        <!--android:textColor="#f76667" />-->
+                    <TextView
+                        android:id="@+id/tv_ban"
+                        style="@style/style_audience_info_option_text"
+                        android:text="@string/ban"
+                        android:textColor="#f76667"
+                        android:visibility="gone"/>
 
-                    <!--<View style="@style/audience_info_option_divider" />-->
+                    <View style="@style/audience_info_option_divider" />
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_kick_out"-->
-                        <!--style="@style/style_audience_info_option_text"-->
-                        <!--android:text="@string/kick_out"-->
-                        <!--android:textColor="#e07434" />-->
+                    <TextView
+                        android:id="@+id/tv_kick_out"
+                        style="@style/style_audience_info_option_text"
+                        android:text="@string/kick_out"
+                        android:textColor="#e07434"
+                        android:visibility="gone"/>
 
-                    <!--<View style="@style/audience_info_option_divider" />-->
+                    <View style="@style/audience_info_option_divider" />
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/tv_upgrade"-->
-                        <!--style="@style/style_audience_info_option_text"-->
-                        <!--android:text="@string/upgrade_room_manager"-->
-                        <!--android:textColor="#a96aec" />-->
+                    <TextView
+                        android:id="@+id/tv_upgrade"
+                        style="@style/style_audience_info_option_text"
+                        android:text="@string/upgrade_room_manager"
+                        android:textColor="#a96aec"
+                        android:visibility="gone"/>
 
-                    <!--<View style="@style/audience_info_option_divider" />-->
+                    <View style="@style/audience_info_option_divider" />
 
                     <TextView
                         android:id="@+id/tv_private_chat"
                         style="@style/style_audience_info_option_text"
                         android:text="私聊"
-                        android:textColor="#337ec1" />
+                        android:textColor="#337ec1"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 

@@ -24,6 +24,7 @@ import pl.droidsonroids.gif.GifDrawable;
 
 public class FaceReplace {
     private List<FacePattern> patternList = null;
+    private List<FacePattern> guardPatternList = null;
     private EmjoyInfo emjoyInfo = null;
 
     public void setGuardEmjoyInfo(EmjoyInfo guardEmjoyInfo) {
@@ -51,12 +52,13 @@ public class FaceReplace {
             byte[] fileContent = getFileContent(context, faceBean.getIcon());
             patternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent));
         }
+        guardPatternList = new ArrayList<>();
         String guardStrJson = FileUtils.getJson("images/face/guard_face.json", context);
         guardEmjoyInfo = GsonUtils.GsonToBean(guardStrJson, EmjoyInfo.class);
         List<EmjoyInfo.FaceBean.PublicBean> guardFaceLost = guardEmjoyInfo.getFace().getPublicX();
         for(EmjoyInfo.FaceBean.PublicBean faceBean: guardFaceLost) {
             byte[] fileContent = getFileContent(context, faceBean.getIcon());
-            patternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent));
+            guardPatternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent));
         }
 
     }
@@ -73,6 +75,32 @@ public class FaceReplace {
         textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         DrawableCallback callback = new DrawableCallback(textView);
         for(FacePattern fp : patternList) {
+            Matcher m = fp.getPattern().matcher(spanString);
+            //Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(facePath, context);
+            while(m.find()) {
+                int start = m.start();
+                int end = m.end();
+                Drawable drawable;
+                try {
+                    drawable = new GifDrawable(fp.getFileContent());
+                    drawable.setCallback(new DrawableCallback(textView));
+                } catch (Exception ignored) {
+                    break;
+                }
+                if (drawable == null) {
+                    break;
+                }
+                drawable.setBounds(0, 0, DensityUtil.dp2px(ImageUrl.IMAGE_HIGHT), DensityUtil.dp2px(ImageUrl.IMAGE_HIGHT));
+                ImageSpan span = new CenterAlignImageSpan(drawable);
+                spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            }
+        }
+    }
+
+    public void guardFaceReplace(TextView textView, SpannableString spanString, Context context) {
+        textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        DrawableCallback callback = new DrawableCallback(textView);
+        for(FacePattern fp : guardPatternList) {
             Matcher m = fp.getPattern().matcher(spanString);
             //Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(facePath, context);
             while(m.find()) {

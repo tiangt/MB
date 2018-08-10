@@ -70,11 +70,21 @@ public class RunWayJson {
         private String toNickname;
         private String goodsName;
 
+        public int getProgramId() {
+            return programId;
+        }
+
+        private int programId;
+
         public String getGoodsPic() {
             return goodsPic;
         }
 
         private String goodsPic;
+
+        public void setCacheIt(boolean cacheIt) {
+            this.cacheIt = cacheIt;
+        }
 
         private boolean cacheIt;//是否需要缓存，若不需要则只显示一遍，否则，显示seconds秒
         private long seconds;//跑道显示时间，单位：S

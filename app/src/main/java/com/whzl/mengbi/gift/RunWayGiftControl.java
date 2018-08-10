@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 public class RunWayGiftControl {
     private AutoScrollTextView autoScrollView;
-    private ArrayList<RunWayEvent> runwayCacheQueue = new ArrayList<>();
-    private ArrayList<RunWayEvent> runwaySingleQueue = new ArrayList<>();
+    private ArrayList<RunWayEvent> singleRunwayQueue = new ArrayList<>();
+    private RunWayEvent cacheEvent;
 
     public RunWayGiftControl(AutoScrollTextView autoScrollTextView) {
         this.autoScrollView = autoScrollTextView;
@@ -24,30 +24,38 @@ public class RunWayGiftControl {
                 || autoScrollView == null) {
             return;
         }
+        if (event.getRunWayJson().getContext().isCacheIt()) {
+            if (cacheEvent != null && !cacheEvent.isHasRuned()) {
+                cacheEvent.getRunWayJson().getContext().setCacheIt(false);
+                singleRunwayQueue.add(0, cacheEvent);
+            }
+            cacheEvent = event;
+        }
         if (!autoScrollView.isStarting) {
             startRun(event);
             return;
         }
-        if (event.getRunWayJson().getContext().isCacheIt()) {
-            runwayCacheQueue.add(event);
-        } else {
-            runwaySingleQueue.add(event);
+        if (!event.getRunWayJson().getContext().isCacheIt()) {
+            singleRunwayQueue.add(0, event);
         }
+
     }
 
     private synchronized void startRun(RunWayEvent event) {
         if (autoScrollView == null) {
             return;
         }
-        autoScrollView.init(event, () -> {
-            if (runwayCacheQueue.size() > 0) {
-                startRun(runwayCacheQueue.get(0));
-                runwayCacheQueue.remove(0);
-                return;
+        autoScrollView.setOnClickListener(v -> {
+            if(listener != null){
+                listener.onClick(event.getRunWayJson().getContext().getProgramId(), event.getRunWayJson().getContext().getNickname());
             }
-            if (runwaySingleQueue.size() > 0) {
-                startRun(runwaySingleQueue.get(0));
-                runwaySingleQueue.remove(0);
+        });
+        autoScrollView.init(event, () -> {
+            if (singleRunwayQueue.size() > 0) {
+                RunWayGiftControl.this.startRun(singleRunwayQueue.get(0));
+                singleRunwayQueue.remove(0);
+            } else if (cacheEvent != null && !cacheEvent.equals(autoScrollView.getRunWayEvent())) {
+                RunWayGiftControl.this.startRun(cacheEvent);
             }
         });
         autoScrollView.startScroll();
@@ -55,8 +63,21 @@ public class RunWayGiftControl {
 
     public void destroy() {
         autoScrollView = null;
-        runwayCacheQueue = null;
-        runwaySingleQueue = null;
+        singleRunwayQueue = null;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    public void setListener(OnClickListener listener) {
+        this.listener = listener;
+    }
+
+    public OnClickListener listener;
+
+    public interface OnClickListener{
+        void onClick(int programId, String nickname);
+    }
 }

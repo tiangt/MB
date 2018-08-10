@@ -9,6 +9,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 
 public class LightSpanString {
@@ -19,11 +20,11 @@ public class LightSpanString {
         return ss;
     }
 
-    public static SpannableString getNickNameSpan(Context context, final String nickName, final long uid, final int programId){
+    public static SpannableString getNickNameSpan(Context context, final String nickName, final long uid, final int programId) {
         return LightSpanString.getNickNameSpan(context, nickName, uid, programId, Color.parseColor("#75bbfb"));
     }
 
-    public static SpannableString getNickNameSpan(Context context, final String nickName, final long uid, final int programId, int color){
+    public static SpannableString getNickNameSpan(Context context, final String nickName, final long uid, final int programId, int color) {
         SpannableString nickSpan = new SpannableString(nickName);
         NickNameSpan clickSpan = new NickNameSpan(context, color) {
             @Override
@@ -31,13 +32,13 @@ public class LightSpanString {
                 if (uid <= 0) {
                     return;
                 }
-                Log.i("chatMsg","点击了 "+nickName);
-                AudienceInfoDialog.newInstance(uid, programId).show(((AppCompatActivity)context).getSupportFragmentManager());
+                Log.i("chatMsg", "点击了 " + nickName);
+                ((LiveDisplayActivity) context).showAudienceInfoDialog(uid);
                 //new EnterUserPop().enterUserPop(mContext,uid, ChatRoomInfo.getProgramId());
             }
         };
 
-        nickSpan.setSpan(clickSpan,0,nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return nickSpan;
     }
 }

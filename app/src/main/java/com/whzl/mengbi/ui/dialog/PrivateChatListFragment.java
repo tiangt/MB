@@ -21,6 +21,7 @@ import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.util.LogUtil;
@@ -65,12 +66,12 @@ public class PrivateChatListFragment extends BaseFragment {
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
     private RoomUserInfo.DataBean mCurrentChatToUser;
     private boolean isHidden;
+    private BaseAwesomeDialog mChatDialog;
 
 
-    public static PrivateChatListFragment newInstance(int programId, boolean isGuard) {
+    public static PrivateChatListFragment newInstance(int programId) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
-        args.putBoolean("isGuard", isGuard);
         PrivateChatListFragment privateChatListFragment = new PrivateChatListFragment();
         privateChatListFragment.setArguments(args);
         return privateChatListFragment;
@@ -86,11 +87,6 @@ public class PrivateChatListFragment extends BaseFragment {
         initChatRecycler();
         EventBus.getDefault().register(this);
         mProgramId = getArguments().getInt("programId");
-        isGuard = getArguments().getBoolean("isGuard");
-//        RoomUserInfo.DataBean roomUser = new RoomUserInfo.DataBean();
-//        roomUser.setUserId(mAnchor.getId());
-//        roomUser.setNickname(mAnchor.getName());
-//        roomUsers.add(roomUser);
     }
 
     private void initChatRecycler() {
@@ -151,7 +147,7 @@ public class PrivateChatListFragment extends BaseFragment {
                 recycler.smoothScrollToPosition(chatList.size() - 1);
             }
         }
-        if(isHidden){
+        if (isHidden) {
             ((LiveDisplayActivity) getActivity()).showMessageNotify();
         }
     }
@@ -159,6 +155,12 @@ public class PrivateChatListFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PrivateChatSelectedEvent event) {
         chatTo(event.getDataBean());
+        for (int i = 0; i < roomUsers.size(); i++) {
+            if (event.getDataBean().getUserId() == roomUsers.get(i).getUserId()) {
+                Collections.swap(roomUsers, i, 1);
+                return;
+            }
+        }
         if (roomUsers.size() == 5) {
             roomUsers.remove(4);
         }
@@ -187,7 +189,10 @@ public class PrivateChatListFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_content:
-                LiveHouseChatDialog.newInstance(isGuard, mProgramId, mAnchor, mCurrentChatToUser)
+                if (mChatDialog != null && mChatDialog.isAdded()) {
+                    return;
+                }
+                mChatDialog = LiveHouseChatDialog.newInstance(isGuard, mProgramId, mAnchor, mCurrentChatToUser)
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getFragmentManager());

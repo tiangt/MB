@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -56,7 +57,7 @@ import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
-import com.whzl.mengbi.eventbus.event.GuardSuccessEvent;
+import com.whzl.mengbi.eventbus.event.OpenGuardEvent;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -66,6 +67,7 @@ import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
@@ -186,7 +188,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ObjectAnimator showGuardAnim;
     private ObjectAnimator hideGuardAnim;
     private RoomUserInfo.DataBean mRoomUserInfo;
-    private boolean mCanPrivateChat = false;
+    private NetStateChangeReceiver mReceiver;
+    private BaseAwesomeDialog mAudienceListDialog;
+    private BaseAwesomeDialog mRankDialog;
+    private BaseAwesomeDialog mChatDialog;
+    private BaseAwesomeDialog mGuardListDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -215,8 +221,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        NetStateChangeReceiver receiver = new NetStateChangeReceiver();
-        receiver.setEvevt(netMobile -> {
+        mReceiver = new NetStateChangeReceiver();
+        mReceiver.setEvevt(netMobile -> {
             if (netMobile != NetUtils.NETWORK_NONE) {
                 if (textureView != null && mStream != null) {
                     textureView.softReset();
@@ -232,7 +238,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 progressBar.setVisibility(View.VISIBLE);
             }
         });
-        registerReceiver(receiver, intentFilter);
+        registerReceiver(mReceiver, intentFilter);
     }
 
     private void initPlayer() {
@@ -270,7 +276,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragments = new Fragment[]{ChatListFragment.newInstance(), PrivateChatListFragment.newInstance(mProgramId, isGuard)};
+        fragments = new Fragment[]{ChatListFragment.newInstance(), PrivateChatListFragment.newInstance(mProgramId)};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.add(R.id.fragment_container, fragments[1]);
         fragmentTransaction.hide(fragments[1]);
@@ -281,7 +287,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (index == currentSelectedIndex) {
             return;
         }
-        if(index == 1){
+        if (index == 1) {
             viewMessageNotify.setVisibility(View.GONE);
         }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -356,7 +362,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            GuardListDialog.newInstance(mProgramId, mAnchor)
+            if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                return;
+            }
+            mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor)
                     .setShowBottom(true)
                     .setDimAmount(0)
                     .show(getSupportFragmentManager());
@@ -410,13 +419,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 finish();
                 break;
             case R.id.btn_chat:
-                LiveHouseChatDialog.newInstance(isGuard, mProgramId, mAnchor)
+                if (mChatDialog != null && mChatDialog.isAdded()) {
+                    return;
+                }
+                mChatDialog = LiveHouseChatDialog.newInstance(isGuard, mProgramId, mAnchor)
                         .setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_chat_private:
-                if (!mCanPrivateChat){
+                if (!UserIdentity.getCanChatPaivate(mRoomUserInfo)) {
                     showToast("当前用户没有私聊权限");
                     return;
                 }
@@ -446,17 +458,24 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
 
             case R.id.tv_popularity:
-                LiveHouseAudienceListDialog.newInstance(mProgramId)
+                if (mAudienceListDialog != null && mAudienceListDialog.isAdded()) {
+                    return;
+                }
+                mAudienceListDialog = LiveHouseAudienceListDialog.newInstance(mProgramId)
                         .setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
                 break;
 
             case R.id.btn_contribute:
-                LiveHouseRankDialog.newInstance(mProgramId)
+                if (mRankDialog != null && mRankDialog.isAdded()) {
+                    return;
+                }
+                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
                         .setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
+
             default:
                 break;
         }
@@ -514,6 +533,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(RunWayEvent runWayEvent) {
         if (mRunWayGiftControl == null) {
             mRunWayGiftControl = new RunWayGiftControl(runWayText);
+            mRunWayGiftControl.setListener(new RunWayGiftControl.OnClickListener() {
+                @Override
+                public void onClick(int programId, String nickname) {
+                    showJumpLiveHouseDialog(programId, nickname);
+                }
+            });
         }
         mRunWayGiftControl.load(runWayEvent);
     }
@@ -619,36 +644,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     if ("GUARD".equals(data.getGoodsList().get(i).getGoodsType())) {
                         isGuard = true;
                         ((PrivateChatListFragment) fragments[1]).setIsGuard(isGuard);
-                        mCanPrivateChat = true;
-                    }
-                    if ("VIP".equals(data.getGoodsList().get(i).getGoodsType())) {
-                        mCanPrivateChat = true;
                     }
                 }
             }
 
-            if (data.getIdentityId() == UserIdentity.ROOM_MANAGER
-                    || data.getIdentityId() == UserIdentity.ANCHOR
-                    || data.getIdentityId() == UserIdentity.OPTR_MANAGER) {
-                mCanPrivateChat = true;
-            }
-
-            if (data.getLevelList() != null) {
-                for (int i = 0; i < data.getLevelList().size(); i++) {
-                    if ("USER_LEVEL".equals(data.getLevelList().get(i).getLevelType())) {
-                        if (data.getLevelList().get(i).getLevelValue() > 5) {
-                            mCanPrivateChat = true;
-                        }
-                    }
-                    if ("ROYAL".equals(data.getLevelList().get(i).getLevelType())) {
-                        if (data.getLevelList().get(i).getLevelValue() > 0) {
-                            mCanPrivateChat = true;
-                        }
-                    }
-                }
-            }
         }
-        SPUtils.put(this, SpConfig.KEY_PRIVATE_CHAT, mCanPrivateChat);
     }
 
     @Override
@@ -704,9 +704,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void sendMeeage(String message, RoomUserInfo.DataBean chatToUser) {
-        if(chatToUser == null){
+        if (chatToUser == null) {
             chatRoomPresenter.sendMessage(message);
-        }else {
+        } else {
             chatRoomPresenter.sendPrivateMessage(chatToUser, message);
         }
 
@@ -722,6 +722,91 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         paramsMap.put("userId", mUserId + "");
         paramsMap.put("useBag", useBag + "");
         mLivePresenter.sendGift(paramsMap);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UserInfoUpdateEvent event) {
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OpenGuardEvent event) {
+        mLivePresenter.getGuardList(mProgramId);
+        showGuard();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PrivateChatSelectedEvent event) {
+        setTabChange(1);
+    }
+
+    public void showGuard() {
+        GlideImageLoader.getInstace().displayImage(this, mRoomUserInfo.getAvatar(), ivGuardAvatar);
+        tvGuardNickName.setText(mRoomUserInfo.getNickname());
+        showGuardAnim = ObjectAnimator.ofFloat(rlGuardSuccess, "alpha", 0f, 1f);
+        showGuardAnim.setDuration(3000);
+        showGuardAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                hideGuard();
+                showGuardAnim = null;
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                rlGuardSuccess.setVisibility(View.VISIBLE);
+            }
+        });
+        showGuardAnim.start();
+    }
+
+    public void showAudienceInfoDialog(long viewedUserID) {
+        AudienceInfoDialog.newInstance(viewedUserID, mProgramId, mRoomUserInfo)
+                .setListener(() -> {
+                    if (mAudienceListDialog != null && mAudienceListDialog.isAdded()) {
+                        mAudienceListDialog.dismiss();
+                    }
+                    if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                        mGuardListDialog.dismiss();
+                    }
+                })
+                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+                .setDimAmount(0)
+                .setShowBottom(true)
+                .show(getSupportFragmentManager());
+    }
+
+    private void hideGuard() {
+        hideGuardAnim = ObjectAnimator.ofFloat(rlGuardSuccess, "alpha", 1f, 0f);
+        hideGuardAnim.setDuration(3000);
+        hideGuardAnim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                rlGuardSuccess.setVisibility(View.VISIBLE);
+                hideGuardAnim = null;
+            }
+        });
+        hideGuardAnim.setStartDelay(3000);
+        hideGuardAnim.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (textureView != null) {
+            textureView.runInBackground(true);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (textureView != null) {
+            textureView.runInForeground();
+        }
     }
 
     @Override
@@ -758,6 +843,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         super.onDestroy();
         mDisposable.dispose();
+        unregisterReceiver(mReceiver);
     }
 
 
@@ -773,72 +859,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(UserInfoUpdateEvent event) {
-        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(GuardSuccessEvent event) {
-        mLivePresenter.getGuardList(mProgramId);
-        showGuard();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(PrivateChatSelectedEvent event) {
-        setTabChange(1);
-    }
-
-    private void showGuard() {
-        GlideImageLoader.getInstace().displayImage(this, mRoomUserInfo.getAvatar(), ivGuardAvatar);
-        tvGuardNickName.setText(mRoomUserInfo.getNickname());
-        showGuardAnim = ObjectAnimator.ofFloat(rlGuardSuccess, "alpha", 0f, 1f);
-        showGuardAnim.setDuration(3000);
-        showGuardAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                hideGuard();
-                showGuardAnim = null;
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                rlGuardSuccess.setVisibility(View.VISIBLE);
-            }
-        });
-        showGuardAnim.start();
-    }
-
-    private void hideGuard() {
-        hideGuardAnim = ObjectAnimator.ofFloat(rlGuardSuccess, "alpha", 1f, 0f);
-        hideGuardAnim.setDuration(3000);
-        hideGuardAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                rlGuardSuccess.setVisibility(View.VISIBLE);
-                hideGuardAnim = null;
-            }
-        });
-        hideGuardAnim.setStartDelay(3000);
-        hideGuardAnim.start();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (textureView != null) {
-            textureView.runInBackground(true);
+    private void showJumpLiveHouseDialog(int programId, String nickName) {
+        if (programId == mProgramId) {
+            return;
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (textureView != null) {
-            textureView.runInForeground();
-        }
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("提示");
+        dialog.setMessage("是否离开当前直播间\n跳转到" + nickName + "直播间");
+        dialog.setNegativeButton("取消", null);
+        dialog.setPositiveButton("确定", (dialog1, which) -> {
+            Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
+            intent.putExtra(BundleConfig.PROGRAM_ID, programId);
+            startActivity(intent);
+            finish();
+        });
+        dialog.show();
     }
 }

@@ -195,7 +195,9 @@ public class ChatRoomPresenterImpl {
         }
         if (null != messageCallback) {
             messageCallback.unregister();
+            messageCallback = null;
         }
+
     }
 
     public void sendBroadCast(String content) {

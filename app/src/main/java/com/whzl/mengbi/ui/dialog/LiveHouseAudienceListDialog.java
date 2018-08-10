@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +10,12 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.AudienceListBean;
+import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.adapter.AudienceListAdapter;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.ui.dialog.fragment.AudienceListFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -30,11 +33,6 @@ import butterknife.BindView;
 public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
     @BindView(R.id.tv_title)
     TextView tvTitle;
-    @BindView(R.id.recycler)
-    RecyclerView recycler;
-
-    private ArrayList<AudienceListBean.AudienceInfoBean> mDatas = new ArrayList<>();
-    private AudienceListAdapter adapter;
     private int mProgramId;
 
     public static BaseAwesomeDialog newInstance(int programId) {
@@ -53,55 +51,8 @@ public class LiveHouseAudienceListDialog extends BaseAwesomeDialog {
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         mProgramId = getArguments().getInt("programId");
-        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        recycler.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
-        adapter = new AudienceListAdapter(getContext(), R.layout.item_audience, mDatas);
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                AudienceListBean.AudienceInfoBean audienceInfoBean = mDatas.get(position);
-                AudienceInfoDialog.newInstance(audienceInfoBean.getUserid(), mProgramId)
-                        .setListener(new AudienceInfoDialog.OnClickListener() {
-                            @Override
-                            public void onClick() {
-                                dismiss();
-                            }
-                        })
-                        .setAnimStyle(R.style.Theme_AppCompat_Dialog)
-                        .setDimAmount(0)
-                        .setShowBottom(true)
-                        .show(getFragmentManager());
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
-        recycler.setAdapter(adapter);
-        getAudienceList();
-
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.audience_fragment_container, AudienceListFragment.newInstance(mProgramId));
+        fragmentTransaction.commit();
     }
-
-    private void getAudienceList() {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("programId", mProgramId + "");
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_ONLINE, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
-            @Override
-            public void onReqSuccess(Object result) {
-                AudienceListBean audienceListBean = GsonUtils.GsonToBean(result.toString(), AudienceListBean.class);
-                if (audienceListBean.getCode() == 200) {
-                    mDatas.clear();
-                    mDatas.addAll(audienceListBean.getData().getList());
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onReqFailed(String errorMsg) {
-
-            }
-        });
-    }
-
 }

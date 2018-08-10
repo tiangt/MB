@@ -17,7 +17,10 @@ import com.bumptech.glide.request.transition.Transition;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.AudienceListBean;
+import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseListFragment;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
@@ -40,6 +43,8 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class AudienceListFragment extends BaseListFragment<AudienceListBean.AudienceInfoBean> {
 
+    private int mProgramId;
+
     public static AudienceListFragment newInstance(int programId) {
         AudienceListFragment fragment = new AudienceListFragment();
         Bundle args = new Bundle();
@@ -56,9 +61,9 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
 
     @Override
     protected void loadData() {
-        int programId = getArguments().getInt("programId");
+        mProgramId = getArguments().getInt("programId");
         HashMap paramsMap = new HashMap();
-        paramsMap.put("programId", programId);
+        paramsMap.put("programId", mProgramId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
         ApiFactory.getInstance().getApi(Api.class)
                 .getAudienceList(signPramsMap)
@@ -137,6 +142,15 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
                                 });
                     }
                 }
+            }
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            AudienceListBean.AudienceInfoBean audienceInfoBean = mData.get(position);
+            if (getActivity() != null) {
+                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid());
             }
         }
     }

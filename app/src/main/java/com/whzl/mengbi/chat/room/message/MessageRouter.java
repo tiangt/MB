@@ -51,6 +51,7 @@ public class MessageRouter implements MessageCallback {
 
     public void unregister() {
         EventBus.getDefault().unregister(mContext);
+        mContext = null;
     }
 
     private void initActionMap() {

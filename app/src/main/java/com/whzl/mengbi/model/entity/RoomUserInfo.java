@@ -64,6 +64,12 @@ public class RoomUserInfo {
         private List<LevelMapBean> levelList;
         private List<GoodsListBean> goodsList;
 
+        public List<String> getDisabledService() {
+            return disabledService;
+        }
+
+        private List<String> disabledService;
+
         public DataBean(Parcel in) {
             userId = in.readLong();
             userType = in.readString();

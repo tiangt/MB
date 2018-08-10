@@ -12,6 +12,7 @@ public class RunWayEvent {
     private Context mContext;
     private RunWayJson runWayJson;
     private SpannableString giftSpanString;
+    private boolean hasRuned;
 
     /*
     giftSpanString 可能为null,使用时请判断是否为null
@@ -63,5 +64,13 @@ public class RunWayEvent {
      */
     public int getTotalPrice() {
         return runWayJson.getContext().getPrice() * runWayJson.getContext().getCount();
+    }
+
+    public boolean isHasRuned() {
+        return hasRuned;
+    }
+
+    public void setHasRuned(boolean hasRuned) {
+        this.hasRuned = hasRuned;
     }
 }
