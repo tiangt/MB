@@ -63,13 +63,13 @@ public class BaseApplication extends Application {
         if (channel == null) {
             channel = "";
         }
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        _refWatcher = LeakCanary.install(this);
         CrashHandler.getInstance().init(this);
-        _refWatcher = LeakCanary.install(this);
         initUM();
         initApi();
         initBaiduStatistic();
