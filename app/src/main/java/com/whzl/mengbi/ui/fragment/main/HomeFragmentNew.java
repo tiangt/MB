@@ -200,7 +200,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         //设置自动轮播，默认为true
         banner.isAutoPlay(true);
         //设置轮播时间
-        banner.setDelayTime(1500);
+        banner.setDelayTime(2000);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
     }
@@ -213,11 +213,14 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
 
     @Override
     public void showBanner(BannerInfo bannerInfo) {
-        List<BannerInfo.DataBean.ListBean> bannerInfoList = bannerInfo.getData().getList();
-        if (bannerInfoList.isEmpty()) {
+        if (bannerInfo.getData() == null
+                || bannerInfo.getData().getList() == null
+                ||  bannerInfo.getData().getList() .isEmpty()) {
             bannerLayout.setVisibility(View.GONE);
             return;
         }
+        List<BannerInfo.DataBean.ListBean> bannerInfoList = bannerInfo.getData().getList();
+        bannerLayout.setVisibility(View.VISIBLE);
         ArrayList<String> banners = new ArrayList<>();
         for (int i = 0; i < bannerInfoList.size(); i++) {
             banners.add(bannerInfoList.get(i).getImage());
@@ -272,7 +275,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     public void onError(String msg) {
         refreshLayout.finishLoadMore();
         refreshLayout.finishRefresh();
-        mCurrentPager --;
+        mCurrentPager--;
     }
 
     @Override

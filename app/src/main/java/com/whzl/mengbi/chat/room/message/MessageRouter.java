@@ -20,6 +20,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.SetManagerAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SubProgramAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.UpdateProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.util.GsonUtils;
@@ -66,6 +67,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("OPEN_GUARD_M", new OpenGuardAction());
         actionsMap.put("RUNWAY", new RunWayAction());
         actionsMap.put("SET_MANAGER", new SetManagerAction());
+        actionsMap.put("UPDATE_PROGRAM", new UpdateProgramAction());
     }
 
     private void initChatAction() {
