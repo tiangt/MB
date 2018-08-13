@@ -6,12 +6,6 @@ import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 public class UpdatePubChatEvent {
     private FillHolderMessage message;
 
-    public void setGuard(boolean guard) {
-        isGuard = guard;
-    }
-
-    private boolean isGuard;
-
     public UpdatePubChatEvent(FillHolderMessage message) {
         this.message = message;
     }
@@ -20,7 +14,4 @@ public class UpdatePubChatEvent {
         return message;
     }
 
-    public boolean isGuard() {
-        return isGuard;
-    }
 }

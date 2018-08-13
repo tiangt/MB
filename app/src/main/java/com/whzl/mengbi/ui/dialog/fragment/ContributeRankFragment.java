@@ -68,6 +68,9 @@ public class ContributeRankFragment extends BaseFragment {
                 return false;
             }
         });
+        if(getContext() == null){
+            return;
+        }
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         recycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recycler.setAdapter(mAdapter);
@@ -81,6 +84,9 @@ public class ContributeRankFragment extends BaseFragment {
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CONTRIBUTION_LIST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
+                if (getContext() == null) {
+                    return;
+                }
                 ContributeDataBean contributeDataBean = GsonUtils.GsonToBean(result.toString(), ContributeDataBean.class);
                 if (contributeDataBean.code == 200) {
                     if ("day".equals(type)) {

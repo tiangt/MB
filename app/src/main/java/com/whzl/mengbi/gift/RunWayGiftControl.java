@@ -46,8 +46,8 @@ public class RunWayGiftControl {
             return;
         }
         autoScrollView.setOnClickListener(v -> {
-            if(listener != null){
-                listener.onClick(event.getRunWayJson().getContext().getProgramId(), event.getRunWayJson().getContext().getNickname());
+            if (listener != null) {
+                listener.onClick(event.getRunWayJson().getContext().getProgramId(), event.getRunWayJson().getContext().getToNickname());
             }
         });
         autoScrollView.init(event, () -> {
@@ -77,7 +77,7 @@ public class RunWayGiftControl {
 
     public OnClickListener listener;
 
-    public interface OnClickListener{
+    public interface OnClickListener {
         void onClick(int programId, String nickname);
     }
 }

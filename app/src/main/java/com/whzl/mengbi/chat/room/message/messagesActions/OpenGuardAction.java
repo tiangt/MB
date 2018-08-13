@@ -5,6 +5,8 @@ import android.content.Context;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.OpenGuardJson;
 import com.whzl.mengbi.chat.room.message.messages.OpenGuardMessage;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
+import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.util.GsonUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -18,7 +20,8 @@ public class OpenGuardAction implements Actions {
         }
         OpenGuardMessage openGuardMessage = new OpenGuardMessage(openGuardJson, context);
         UpdatePubChatEvent updatePubChatEvent = new UpdatePubChatEvent(openGuardMessage);
-        updatePubChatEvent.setGuard(true);
         EventBus.getDefault().post(updatePubChatEvent);
+        String avatar = ImageUrl.getAvatarUrl(openGuardJson.getContext().getUserId(), "", System.currentTimeMillis());
+        EventBus.getDefault().post(new GuardOpenEvent(avatar, openGuardJson.getContext().getNickname()));
     }
 }

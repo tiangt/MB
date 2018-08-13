@@ -124,6 +124,9 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
                 for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
                     AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
                     if ("BADGE".equals(medalBean.getGoodsType()) || "GUARD".equals(medalBean.getGoodsType())) {
+                        if (getContext() == null) {
+                            return;
+                        }
                         Glide.with(getContext())
                                 .load(medalBean.getGoodsIcon())
                                 .into(new SimpleTarget<Drawable>() {

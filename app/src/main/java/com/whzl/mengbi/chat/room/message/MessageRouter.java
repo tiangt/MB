@@ -109,14 +109,14 @@ public class MessageRouter implements MessageCallback {
     private String getStrAvgString(ProtoStringAvg.strAvg message, int index) {
         String str = null;
         try {
-            str = new String (message.getStrs(index).toByteArray(),"UTF-8") ;
+            str = new String(message.getStrs(index).toByteArray(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return str;
     }
 
-    private void parseChatMsg(ProtoStringAvg.strAvg  message) {
+    private void parseChatMsg(ProtoStringAvg.strAvg message) {
         String type = getStrAvgString(message, 2);
         String msgInfo = getStrAvgString(message, 3);
         if (type == null || msgInfo == null) {
@@ -133,7 +133,7 @@ public class MessageRouter implements MessageCallback {
             if (eventJson.getEventCode() != null) {
                 String eventCode = eventJson.getEventCode();
                 handleEventAction(eventJson.getEventCode(), msgInfo);
-            }else if (eventJson.getMsgType() != null) {
+            } else if (eventJson.getMsgType() != null) {
                 handleMsgTypeAction(eventJson.getMsgType(), msgInfo);
             }
         }
@@ -157,7 +157,7 @@ public class MessageRouter implements MessageCallback {
         action.performAction(msgInfo, mContext);
     }
 
-    private void parseNoChatMsg(ProtoStringAvg.strAvg  message) {
+    private void parseNoChatMsg(ProtoStringAvg.strAvg message) {
         if (message.getStrsList().size() < 8) {
             return;
         }

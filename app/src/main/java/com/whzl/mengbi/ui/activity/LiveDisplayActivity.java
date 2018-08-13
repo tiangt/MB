@@ -57,7 +57,7 @@ import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
-import com.whzl.mengbi.eventbus.event.OpenGuardEvent;
+import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -70,7 +70,6 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
-import com.whzl.mengbi.ui.dialog.LiveHouseAudienceListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
@@ -189,7 +188,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ObjectAnimator hideGuardAnim;
     private RoomUserInfo.DataBean mRoomUserInfo;
     private NetStateChangeReceiver mReceiver;
-    private BaseAwesomeDialog mAudienceListDialog;
     private BaseAwesomeDialog mRankDialog;
     private BaseAwesomeDialog mChatDialog;
     private BaseAwesomeDialog mGuardListDialog;
@@ -200,6 +198,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void setupContentView() {
         setContentView(R.layout.activity_live_display_new);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        initEnv();
+        setupContentView();
+        setupContentView();
+        loadData();
     }
 
     @Override
@@ -327,7 +334,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.item_protect, parent, false);
-                return new ProtectViewHolder(itemView);
+                return new GuardViewHolder(itemView);
             }
         };
         mGuardRecycler.setAdapter(mGuardAdapter);
@@ -337,13 +344,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         viewMessageNotify.setVisibility(View.VISIBLE);
     }
 
-    class ProtectViewHolder extends BaseViewHolder {
+    class GuardViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_guard_avatar)
         ImageView ivGuardAvatar;
         @BindView(R.id.tv_guard)
         TextView tvGuard;
 
-        ProtectViewHolder(View itemView) {
+        GuardViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -365,12 +372,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
                 return;
             }
-            mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor)
+            mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0)
                     .setShowBottom(true)
                     .setDimAmount(0)
                     .show(getSupportFragmentManager());
         }
-
     }
 
     @Override
@@ -456,14 +462,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
                 break;
-
             case R.id.tv_popularity:
-                if (mAudienceListDialog != null && mAudienceListDialog.isAdded()) {
+                if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
                     return;
                 }
-                mAudienceListDialog = LiveHouseAudienceListDialog.newInstance(mProgramId)
-                        .setDimAmount(0)
+                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 1)
                         .setShowBottom(true)
+                        .setDimAmount(0)
                         .show(getSupportFragmentManager());
                 break;
 
@@ -531,15 +536,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RunWayEvent runWayEvent) {
-        if (mRunWayGiftControl == null) {
-            mRunWayGiftControl = new RunWayGiftControl(runWayText);
-            mRunWayGiftControl.setListener(new RunWayGiftControl.OnClickListener() {
-                @Override
-                public void onClick(int programId, String nickname) {
-                    showJumpLiveHouseDialog(programId, nickname);
-                }
-            });
-        }
+        initRunWay();
         mRunWayGiftControl.load(runWayEvent);
     }
 
@@ -675,14 +672,24 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         RunWayJson runWayJson = new RunWayJson();
                         runWayJson.setContext(runWayListBean.list.get(i));
                         RunWayEvent event = new RunWayEvent(runWayJson, imageSpanList.get(i));
-                        if (mRunWayGiftControl == null) {
-                            mRunWayGiftControl = new RunWayGiftControl(runWayText);
-                        }
+                        initRunWay();
                         mRunWayGiftControl.load(event);
                     }
                 }
             });
             downloadImageFile.doDownload(imageUrlList, this);
+        }
+    }
+
+    private void initRunWay() {
+        if (mRunWayGiftControl == null) {
+            mRunWayGiftControl = new RunWayGiftControl(runWayText);
+            mRunWayGiftControl.setListener(new RunWayGiftControl.OnClickListener() {
+                @Override
+                public void onClick(int programId, String nickname) {
+                    showJumpLiveHouseDialog(programId, nickname);
+                }
+            });
         }
     }
 
@@ -730,9 +737,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(OpenGuardEvent event) {
+    public void onMessageEvent(GuardOpenEvent event) {
         mLivePresenter.getGuardList(mProgramId);
-        showGuard();
+        showGuard(event.Avatar, event.nickName);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -740,9 +747,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         setTabChange(1);
     }
 
-    public void showGuard() {
-        GlideImageLoader.getInstace().displayImage(this, mRoomUserInfo.getAvatar(), ivGuardAvatar);
-        tvGuardNickName.setText(mRoomUserInfo.getNickname());
+    public void showGuard(String avatar, String nickName) {
+        GlideImageLoader.getInstace().displayImage(this, avatar, ivGuardAvatar);
+        tvGuardNickName.setText(nickName);
         showGuardAnim = ObjectAnimator.ofFloat(rlGuardSuccess, "alpha", 0f, 1f);
         showGuardAnim.setDuration(3000);
         showGuardAnim.addListener(new AnimatorListenerAdapter() {
@@ -765,9 +772,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void showAudienceInfoDialog(long viewedUserID) {
         AudienceInfoDialog.newInstance(viewedUserID, mProgramId, mRoomUserInfo)
                 .setListener(() -> {
-                    if (mAudienceListDialog != null && mAudienceListDialog.isAdded()) {
-                        mAudienceListDialog.dismiss();
-                    }
                     if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
                         mGuardListDialog.dismiss();
                     }
@@ -811,6 +815,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     protected void onDestroy() {
+        ondestory();
+        super.onDestroy();
+    }
+
+    private void ondestory() {
         if (mGifGiftControl != null) {
             mGifGiftControl.destroy();
         }
@@ -841,7 +850,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (chatRoomPresenter != null) {
             chatRoomPresenter.onChatRoomDestroy();
         }
-        super.onDestroy();
         mDisposable.dispose();
         unregisterReceiver(mReceiver);
     }

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
-import com.whzl.mengbi.eventbus.event.OpenGuardEvent;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 
@@ -66,9 +65,6 @@ public class ChatListFragment extends BaseFragment {
                 chatAdapter.notifyDataSetChanged();
                 recycler.smoothScrollToPosition(chatList.size() - 1);
             }
-        }
-        if (updatePubChatEvent.isGuard()) {
-            EventBus.getDefault().post(new OpenGuardEvent());
         }
     }
 

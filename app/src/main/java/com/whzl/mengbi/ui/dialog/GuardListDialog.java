@@ -36,9 +36,10 @@ public class GuardListDialog extends BaseAwesomeDialog {
     private int mProgramId;
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
 
-    public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
+    public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, int index) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
+        args.putInt("index", index);
         args.putParcelable("anchor", anchorBean);
         GuardListDialog dialog = new GuardListDialog();
         dialog.setArguments(args);
@@ -53,6 +54,7 @@ public class GuardListDialog extends BaseAwesomeDialog {
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         mProgramId = getArguments().getInt("programId");
+        int index = getArguments().getInt("index");
         mAnchorBean = getArguments().getParcelable("anchor");
         tabLayout.post(() -> {
             try {
@@ -68,6 +70,7 @@ public class GuardListDialog extends BaseAwesomeDialog {
         fragments.add(AudienceListFragment.newInstance(mProgramId));
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         tabLayout.setupWithViewPager(viewpager);
+        viewpager.setCurrentItem(index);
     }
 
     @OnClick(R.id.btn_guard)

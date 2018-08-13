@@ -2,13 +2,9 @@ package com.whzl.mengbi.ui.dialog.fragment;
 
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,17 +16,10 @@ import android.widget.LinearLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
-import com.whzl.mengbi.model.entity.GuardOpenEvent;
-import com.whzl.mengbi.ui.adapter.ChatEmojiAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
-import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.FileUtils;
-import com.whzl.mengbi.util.UIUtil;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
