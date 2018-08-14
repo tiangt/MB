@@ -240,7 +240,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     }
                 }
             } else {
-                showToast("网络连接断开，请检测网络设置");
+                showToast(R.string.net_error);
                 progressBar.setVisibility(View.VISIBLE);
             }
         });
@@ -311,12 +311,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void setBottomContainerHieght(int dpHeight) {
         ViewGroup.LayoutParams layoutParams = rlBottomContainer.getLayoutParams();
         layoutParams.height = UIUtil.dip2px(this, dpHeight);
-        rlBottomContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                rlBottomContainer.setLayoutParams(layoutParams);
-                rlBottomContainer.requestLayout();
-            }
+        rlBottomContainer.post(() -> {
+            rlBottomContainer.setLayoutParams(layoutParams);
+            rlBottomContainer.requestLayout();
         });
     }
 
@@ -436,7 +433,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
             case R.id.btn_chat_private:
                 if (!UserIdentity.getCanChatPaivate(mRoomUserInfo)) {
-                    showToast("当前用户没有私聊权限");
+                    showToast(R.string.private_chat_permission_deny);
                     return;
                 }
                 setTabChange(1);
@@ -501,7 +498,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(KickoutEvent kickoutEvent) {
-        showToast(kickoutEvent.getNoChatMsg().getNochatType() == 8 ? "你已经被踢出踢出直播间" : "用多个手机打开同一个直播间，强制退出之前的直播间");
+        showToast(kickoutEvent.getNoChatMsg().getNochatType() == 8
+                ? getString(R.string.kick_out_message)
+                : getString(R.string.force_kick_out_message));
         finish();
     }
 
@@ -572,7 +571,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdateProgramEvent updateProgramEvent) {
-        tvFansCount.setText("粉丝：" + updateProgramEvent.getmProgramJson().getContext().getProgram().getSubscriptionNum());
+        tvFansCount.setText(getString(R.string.subscriptions
+                , updateProgramEvent.getmProgramJson().getContext().getProgram().getSubscriptionNum()));
     }
 
 
@@ -580,7 +580,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
         mAnchorId = roomInfoBean.getData().getAnchor().getId();
         if (roomInfoBean.getData() != null) {
-            tvFansCount.setText("粉丝：" + roomInfoBean.getData().getSubscriptionNum() + "");
+            tvFansCount.setText(getString(R.string.subscriptions, roomInfoBean.getData().getSubscriptionNum() + ""));
             ChatRoomInfo.getInstance().setRoomInfoBean(roomInfoBean);
             if (roomInfoBean.getData().getAnchor() != null) {
                 mAnchor = roomInfoBean.getData().getAnchor();
@@ -618,7 +618,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onAudienceSuccess(long count) {
-        tvPopularity.setText("人气\n" + count);
+        tvPopularity.setText(getString(R.string.audience, count));
     }
 
     @Override
@@ -667,16 +667,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             for (int i = 0; i < runWayListBean.list.size(); i++) {
                 imageUrlList.add(runWayListBean.list.get(i).getGoodsPic());
             }
-            DownloadImageFile downloadImageFile = new DownloadImageFile(new DownloadEvent() {
-                @Override
-                public void finished(List<SpannableString> imageSpanList) {
-                    for (int i = 0; i < runWayListBean.list.size(); i++) {
-                        RunWayJson runWayJson = new RunWayJson();
-                        runWayJson.setContext(runWayListBean.list.get(i));
-                        RunWayEvent event = new RunWayEvent(runWayJson, imageSpanList.get(i));
-                        initRunWay();
-                        mRunWayGiftControl.load(event);
-                    }
+            DownloadImageFile downloadImageFile = new DownloadImageFile(imageSpanList -> {
+                for (int i = 0; i < runWayListBean.list.size(); i++) {
+                    RunWayJson runWayJson = new RunWayJson();
+                    runWayJson.setContext(runWayListBean.list.get(i));
+                    RunWayEvent event = new RunWayEvent(runWayJson, imageSpanList.get(i));
+                    initRunWay();
+                    mRunWayGiftControl.load(event);
                 }
             });
             downloadImageFile.doDownload(imageUrlList, this);
@@ -686,12 +683,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initRunWay() {
         if (mRunWayGiftControl == null) {
             mRunWayGiftControl = new RunWayGiftControl(runWayText);
-            mRunWayGiftControl.setListener(new RunWayGiftControl.OnClickListener() {
-                @Override
-                public void onClick(int programId, String nickname) {
-                    showJumpLiveHouseDialog(programId, nickname);
-                }
-            });
+            mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
         }
     }
 
@@ -876,10 +868,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             return;
         }
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("提示");
-        dialog.setMessage("是否离开当前直播间\n跳转到" + nickName + "直播间");
-        dialog.setNegativeButton("取消", null);
-        dialog.setPositiveButton("确定", (dialog1, which) -> {
+        dialog.setTitle(R.string.alert);
+        dialog.setMessage(getString(R.string.jump_live_house, nickName));
+        dialog.setNegativeButton(R.string.cancel, null);
+        dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
             Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, programId);
             startActivity(intent);

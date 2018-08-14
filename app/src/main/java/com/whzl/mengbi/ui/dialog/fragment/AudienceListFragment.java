@@ -106,6 +106,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
         @Override
         public void onBindViewHolder(int position) {
             AudienceListBean.AudienceInfoBean audienceInfoBean = mData.get(position);
+            linearLayout.removeAllViews();
             tvName.setText(audienceInfoBean.getName());
             GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
             int identity = audienceInfoBean.getIdentity();
