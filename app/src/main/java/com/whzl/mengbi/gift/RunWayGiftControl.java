@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class RunWayGiftControl {
     private AutoScrollTextView autoScrollView;
-    private ArrayList<RunWayEvent> singleRunwayQueue = new ArrayList<>();
+    private ArrayList<RunWayEvent> runwayQueue = new ArrayList<>();
     private RunWayEvent cacheEvent;
 
     public RunWayGiftControl(AutoScrollTextView autoScrollTextView) {
@@ -24,26 +24,19 @@ public class RunWayGiftControl {
                 || autoScrollView == null) {
             return;
         }
-        if (event.getRunWayJson().getContext().isCacheIt()) {
-            if (cacheEvent != null && !cacheEvent.isHasRuned()) {
-                cacheEvent.getRunWayJson().getContext().setCacheIt(false);
-                singleRunwayQueue.add(0, cacheEvent);
-            }
-            cacheEvent = event;
-        }
         if (!autoScrollView.isStarting) {
             startRun(event);
             return;
         }
-        if (!event.getRunWayJson().getContext().isCacheIt()) {
-            singleRunwayQueue.add(0, event);
-        }
-
+        runwayQueue.add(event);
     }
 
     private synchronized void startRun(RunWayEvent event) {
         if (autoScrollView == null) {
             return;
+        }
+        if(event.getRunWayJson().getContext().isCacheIt()){
+            cacheEvent = event;
         }
         autoScrollView.setOnClickListener(v -> {
             if (listener != null) {
@@ -51,9 +44,9 @@ public class RunWayGiftControl {
             }
         });
         autoScrollView.init(event, () -> {
-            if (singleRunwayQueue.size() > 0) {
-                startRun(singleRunwayQueue.get(0));
-                singleRunwayQueue.remove(0);
+            if (runwayQueue.size() > 0) {
+                startRun(runwayQueue.get(0));
+                runwayQueue.remove(0);
             } else if (cacheEvent != null && !cacheEvent.equals(autoScrollView.getRunWayEvent())) {
                 startRun(cacheEvent);
             }
@@ -63,7 +56,7 @@ public class RunWayGiftControl {
 
     public void destroy() {
         autoScrollView = null;
-        singleRunwayQueue = null;
+        runwayQueue = null;
     }
 
     @Override

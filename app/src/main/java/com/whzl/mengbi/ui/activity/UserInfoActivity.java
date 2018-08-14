@@ -292,13 +292,19 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         Button butCancel = view.findViewById(R.id.user_info_cancel);
         //拍照
         butPhoto.setOnClickListener(v -> {
-            tempCapturePath = StorageUtil.getTempDir() + File.separator + System.currentTimeMillis() + "avatar_captured.jpg";
-            tempCropPath = StorageUtil.getTempDir() + File.separator + System.currentTimeMillis() + "avatar_crop.jpg";
+            tempCapturePath = StorageUtil.getTempDir() + File.separator
+                    + System.currentTimeMillis()
+                    + "avatar_captured.jpg";
+            tempCropPath = StorageUtil.getTempDir()
+                    + File.separator + System.currentTimeMillis()
+                    + "avatar_crop.jpg";
             RxPermisssionsUitls.getPicFromCamera(UserInfoActivity.this, tempCapturePath);
             mCustomPopWindow.dissmiss();
         });
         butAlbum.setOnClickListener(v -> {
-            tempCropPath = StorageUtil.getTempDir() + File.separator + System.currentTimeMillis() + "avatar_crop.jpg";
+            tempCropPath = StorageUtil.getTempDir() + File.separator
+                    + System.currentTimeMillis()
+                    + "avatar_crop.jpg";
             RxPermisssionsUitls.getPicFromAlbm(UserInfoActivity.this);
             mCustomPopWindow.dissmiss();
         });
@@ -308,7 +314,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     @Override
     public void showPortrait(String filename) {
-        GlideImageLoader.getInstace().displayImage(this, filename, ivAvatar);
+        GlideImageLoader.getInstace().displayImageNoCache(this, tempCropPath, ivAvatar);
         EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 
@@ -334,7 +340,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         PhotoUtil.onActivityResult(this, tempCapturePath, tempCropPath, requestCode, resultCode, data,
-                () -> userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId() + "", tempCropPath));
+                () -> {
+                    userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId() + "", tempCropPath);
+                });
         switch (requestCode) {
             case NICKNAME_CODE:
                 if (resultCode == RESULT_OK) {
