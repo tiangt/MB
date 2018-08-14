@@ -219,7 +219,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             SPUtils.put(this, "programId", mProgramId);
         }
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
-
         mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
         mLivePresenter.getLiveGift();
         initReceiver();
@@ -360,8 +359,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (position > mGuardList.size() - 1) {
                 GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, R.drawable.guard_default_icon, ivGuardAvatar);
                 tvGuard.setVisibility(View.VISIBLE);
+                ivGuardAvatar.setAlpha(1f);
             } else {
                 GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, mGuardList.get(position).avatar, ivGuardAvatar);
+                ivGuardAvatar.setAlpha(mGuardList.get(position).isOnline == 1 ? 1f : 0.5f);
                 tvGuard.setVisibility(View.GONE);
             }
         }
@@ -487,7 +488,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     }
 
-    private void login() {
+    public void login() {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra("from", this.getClass().toString());
         startActivityForResult(intent, REQUEST_LOGIN);
@@ -564,6 +565,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(StopPlayEvent stopPlayEvent) {
         mStream = null;
+        textureView.stop();
         textureView.reset();
         tvStopTip.setVisibility(View.VISIBLE);
     }
@@ -654,8 +656,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @Override
-    public void onError(String meg) {
-        showToast(meg);
+    public void onError(String msg) {
+        showToast(msg);
     }
 
     @Override
@@ -710,7 +712,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mGiftData = giftInfo;
     }
 
-    public void sendMeeage(String message, RoomUserInfo.DataBean chatToUser) {
+    public void sendMessage(String message, RoomUserInfo.DataBean chatToUser) {
         if (chatToUser == null) {
             chatRoomPresenter.sendMessage(message);
         } else {
@@ -738,8 +740,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GuardOpenEvent event) {
-        mLivePresenter.getGuardList(mProgramId);
-        showGuard(event.Avatar, event.nickName);
+        if (event.userId == mUserId) {
+            mLivePresenter.getGuardList(mProgramId);
+            mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        }
+        showGuard(event.avatar, event.nickName);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -853,7 +858,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mDisposable.dispose();
         unregisterReceiver(mReceiver);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -35,10 +35,10 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class GuardListFragment extends BaseListFragment<GuardListBean.GuardDetailBean> {
 
-    public static GuardListFragment newInstance(int progrsmId) {
+    public static GuardListFragment newInstance(int programId) {
         GuardListFragment fragment = new GuardListFragment();
         Bundle args = new Bundle();
-        args.putInt("programId", progrsmId);
+        args.putInt("programId", programId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,10 +63,14 @@ public class GuardListFragment extends BaseListFragment<GuardListBean.GuardDetai
                     @Override
                     public void onSuccess(GuardListBean guardListBean) {
                         setEmptyText(getString(R.string.empty_guard_list));
-                        if (guardListBean == null) {
+                        if (guardListBean != null) {
                             loadSuccess(guardListBean.list);
+                            GuardListDialog guardListDialog = (GuardListDialog) getParentFragment();
+                            if(guardListDialog != null && guardListDialog.isAdded() && guardListBean.list != null){
+                                guardListDialog.setGuardTitle(guardListBean.list.size());
+                            }
                         } else {
-                            loadSuccess(guardListBean.list);
+                            loadSuccess(null);
                         }
                     }
 
@@ -87,7 +91,7 @@ public class GuardListFragment extends BaseListFragment<GuardListBean.GuardDetai
         @BindView(R.id.tv_expire)
         TextView tvExpire;
 
-        public GuardViewHolder(View itemView) {
+        GuardViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -95,6 +99,7 @@ public class GuardListFragment extends BaseListFragment<GuardListBean.GuardDetai
         @Override
         public void onBindViewHolder(int position) {
             GuardListBean.GuardDetailBean guardDetailBean = mData.get(position);
+            ivAvatar.setAlpha(guardDetailBean.isOnline == 1 ? 1f : 0.5f);
             GlideImageLoader.getInstace().displayImage(getContext(), guardDetailBean.avatar, ivAvatar);
             int userLevelIcon = ResourceMap.getResourceMap().getUserLevelIcon(guardDetailBean.userLevel);
             ivLevelIcon.setImageResource(userLevelIcon);
@@ -105,4 +110,5 @@ public class GuardListFragment extends BaseListFragment<GuardListBean.GuardDetai
             tvExpire.append(" 天");
         }
     }
+
 }

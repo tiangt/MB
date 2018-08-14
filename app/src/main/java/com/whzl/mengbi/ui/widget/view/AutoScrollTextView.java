@@ -78,13 +78,17 @@ public class AutoScrollTextView extends AppCompatTextView {
         flagIsCacheTimeOut = false;
         this.listener = listener;
         setVisibility(GONE);
-        event.showRunWay(this);
+        try {
+            event.showRunWay(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         paint = getPaint();
         String text = getText().toString();
         step = 0f;
         textLength = paint.measureText(text);
         maxTranslateX = textLength + viewWidth + 50;
-        if(mDispose != null){
+        if (mDispose != null) {
             mDispose.dispose();
         }
         if (event.getRunWayJson().getContext().isCacheIt()) {
@@ -195,7 +199,7 @@ public class AutoScrollTextView extends AppCompatTextView {
         }
         step += 1.5;
         if (step > maxTranslateX) {
-            if(listener != null){
+            if (listener != null) {
                 listener.finishSingleRun();
             }
             if (flagIsCacheTimeOut) {

@@ -22,6 +22,6 @@ public class OpenGuardAction implements Actions {
         UpdatePubChatEvent updatePubChatEvent = new UpdatePubChatEvent(openGuardMessage);
         EventBus.getDefault().post(updatePubChatEvent);
         String avatar = ImageUrl.getAvatarUrl(openGuardJson.getContext().getUserId(), "", System.currentTimeMillis());
-        EventBus.getDefault().post(new GuardOpenEvent(avatar, openGuardJson.getContext().getNickname()));
+        EventBus.getDefault().post(new GuardOpenEvent(avatar, openGuardJson.getContext().getNickname(), openGuardJson.getContext().getUserId()));
     }
 }

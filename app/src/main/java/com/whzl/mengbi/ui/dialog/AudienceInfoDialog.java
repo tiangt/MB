@@ -104,7 +104,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         mViewUserId = getArguments().getLong("userId");
         mProgramId = getArguments().getInt("programId");
         mUser = getArguments().getParcelable("user");
-        if (mUser == null || mUser.getUserId() == 0) {
+        if (mUser == null || mUser.getUserId() == 0 || mUser.getUserId() == mViewUserId) {
             llOptionContainer.setVisibility(View.GONE);
         }
         getUserInfo(mViewUserId, mProgramId);
@@ -125,7 +125,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
                     if (roomUserInfoData.getData() != null) {
                         mViewedUser = roomUserInfoData.getData();
                         setupView(mViewedUser);
-                        if (mUser == null) {
+                        if (mUser == null || mUser.getUserId() == mViewUserId) {
                             return;
                         }
                         setupOperations();

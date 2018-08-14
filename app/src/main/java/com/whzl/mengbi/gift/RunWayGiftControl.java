@@ -52,10 +52,10 @@ public class RunWayGiftControl {
         });
         autoScrollView.init(event, () -> {
             if (singleRunwayQueue.size() > 0) {
-                RunWayGiftControl.this.startRun(singleRunwayQueue.get(0));
+                startRun(singleRunwayQueue.get(0));
                 singleRunwayQueue.remove(0);
             } else if (cacheEvent != null && !cacheEvent.equals(autoScrollView.getRunWayEvent())) {
-                RunWayGiftControl.this.startRun(cacheEvent);
+                startRun(cacheEvent);
             }
         });
         autoScrollView.startScroll();

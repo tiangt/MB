@@ -35,6 +35,9 @@ public class GuardListDialog extends BaseAwesomeDialog {
     ViewPager viewpager;
     private int mProgramId;
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
+    private ArrayList<String> titles;
+    private FragmentPagerAdaper mAdapter;
+    private ArrayList<Fragment> fragments;
 
     public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, int index) {
         Bundle args = new Bundle();
@@ -62,13 +65,14 @@ public class GuardListDialog extends BaseAwesomeDialog {
             } catch (Exception e) {
             }
         });
-        ArrayList<String> titles = new ArrayList<>();
+        titles = new ArrayList<>();
         titles.add("守护");
         titles.add("观众");
-        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments = new ArrayList<>();
         fragments.add(GuardListFragment.newInstance(mProgramId));
         fragments.add(AudienceListFragment.newInstance(mProgramId));
-        viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
+        mAdapter = new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles);
+        viewpager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewpager);
         viewpager.setCurrentItem(index);
     }
@@ -86,17 +90,25 @@ public class GuardListDialog extends BaseAwesomeDialog {
         Class<?> tabLayoutClass = tabLayout.getClass();
         Field tabStrip = tabLayoutClass.getDeclaredField("mTabStrip");
         tabStrip.setAccessible(true);
-        LinearLayout ll_tab = (LinearLayout) tabStrip.get(tabLayout);
-        for (int i = 0; i < ll_tab.getChildCount(); i++) {
-            View child = ll_tab.getChildAt(i);
+        LinearLayout llTab = (LinearLayout) tabStrip.get(tabLayout);
+        for (int i = 0; i < llTab.getChildCount(); i++) {
+            View child = llTab.getChildAt(i);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
             int screenWidth = UIUtil.getScreenWidthPixels(getContext());
-            int indexWidth = UIUtil.dip2px(getContext(), 80);
+            int indexWidth = UIUtil.dip2px(getContext(), 150);
             int leftMargin = (int) ((screenWidth - indexWidth * 2) / 4f + 0.5);
             params.leftMargin = (leftMargin);
             params.rightMargin = (leftMargin);
             child.setLayoutParams(params);
             child.invalidate();
         }
+    }
+
+    public void setGuardTitle(int size) {
+        tabLayout.getTabAt(0).setText("守护（" + size + "）");
+    }
+
+    public void setAudienceTitle(int size) {
+        tabLayout.getTabAt(1).setText("观众（" + size + "）");
     }
 }

@@ -4,7 +4,7 @@ package com.whzl.mengbi.model.entity;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserInfo extends ResponseInfo implements Serializable{
+public class UserInfo extends ResponseInfo implements Serializable {
 
     private DataBean data;
 
@@ -17,7 +17,7 @@ public class UserInfo extends ResponseInfo implements Serializable{
     }
 
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
 
         private long userId;
         private String nickname;
@@ -124,7 +124,7 @@ public class UserInfo extends ResponseInfo implements Serializable{
             this.levelList = levelList;
         }
 
-        public static class WealthBean implements Serializable{
+        public static class WealthBean implements Serializable {
 
             private long coin;
             private long chengPonit;
@@ -138,7 +138,7 @@ public class UserInfo extends ResponseInfo implements Serializable{
             }
         }
 
-        public static class LevelListBean implements Serializable{
+        public static class LevelListBean implements Serializable {
 
             private String levelType;
             private int levelValue;
@@ -177,14 +177,14 @@ public class UserInfo extends ResponseInfo implements Serializable{
                 this.expList = expList;
             }
 
-            public static class ExpListBean implements Serializable{
+            public static class ExpListBean implements Serializable {
 
                 private String expType;
                 private String expName;
-                private int sjExpvalue;
-                private int bjExpValue;
-                private int sjNeedExpValue;
-                private int bjNeedExpValue;
+                private long sjExpvalue;
+                private long bjExpValue;
+                private long sjNeedExpValue;
+                private long bjNeedExpValue;
 
                 public String getExpType() {
                     return expType;
@@ -202,7 +202,7 @@ public class UserInfo extends ResponseInfo implements Serializable{
                     this.expName = expName;
                 }
 
-                public int getSjExpvalue() {
+                public long getSjExpvalue() {
                     return sjExpvalue;
                 }
 
@@ -210,27 +210,27 @@ public class UserInfo extends ResponseInfo implements Serializable{
                     this.sjExpvalue = sjExpvalue;
                 }
 
-                public int getBjExpValue() {
+                public long getBjExpValue() {
                     return bjExpValue;
                 }
 
-                public void setBjExpValue(int bjExpValue) {
+                public void setBjExpValue(long bjExpValue) {
                     this.bjExpValue = bjExpValue;
                 }
 
-                public int getSjNeedExpValue() {
+                public long getSjNeedExpValue() {
                     return sjNeedExpValue;
                 }
 
-                public void setSjNeedExpValue(int sjNeedExpValue) {
+                public void setSjNeedExpValue(long sjNeedExpValue) {
                     this.sjNeedExpValue = sjNeedExpValue;
                 }
 
-                public int getBjNeedExpValue() {
+                public long getBjNeedExpValue() {
                     return bjNeedExpValue;
                 }
 
-                public void setBjNeedExpValue(int bjNeedExpValue) {
+                public void setBjNeedExpValue(long bjNeedExpValue) {
                     this.bjNeedExpValue = bjNeedExpValue;
                 }
             }

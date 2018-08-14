@@ -134,7 +134,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
         // 使用 Toast 来显示异常信息
 //        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-//        dialog.setTitle("程序出现异常");
+//        dialog.setGuardTitle("程序出现异常");
 //        dialog.setMessage("请点击[提交]按钮,请此错误提交到服务器,谢谢！");
 //        dialog.setPositiveButton("提交", new DialogInterface.OnClickListener() {
 //            @Override

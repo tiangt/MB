@@ -18,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChatAction implements Actions{
+public class ChatAction implements Actions {
     @Override
     public void performAction(String msgStr, Context context) {
-        ChatCommonJson chatJson = GsonUtils.GsonToBean(msgStr,ChatCommonJson.class);
-        if(chatJson == null){
+        ChatCommonJson chatJson = GsonUtils.GsonToBean(msgStr, ChatCommonJson.class);
+        if (chatJson == null) {
             return;
         }
         List<String> fromGoodsList = getGoodsUrlList(chatJson.getFrom_json());
@@ -95,8 +95,8 @@ public class ChatAction implements Actions{
             return null;
         }
         List<String> goodsUrlList = new ArrayList<>();
-        for (FromJson.Good good :goodsList) {
-            if(good.getGoodsType().equals("BADGE")) {
+        for (FromJson.Good good : goodsList) {
+            if (good.getGoodsType().equals("BADGE")) {
                 goodsUrlList.add(ImageUrl.getImageUrl(good.getGoodsIcon(), "jpg"));
             }
         }
