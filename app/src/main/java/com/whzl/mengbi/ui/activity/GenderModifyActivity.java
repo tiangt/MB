@@ -33,7 +33,7 @@ public class GenderModifyActivity extends BaseActivity {
             return;
         }
         Intent intent = new Intent();
-        intent.putExtra("gender", checkedRadioButtonId == R.id.rb_men ? "M" : "W");
+        intent.putExtra("gender", checkedRadioButtonId == R.id.rb_man ? "M" : "W");
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -46,11 +46,11 @@ public class GenderModifyActivity extends BaseActivity {
     @Override
     protected void setupView() {
         if ("M".equals(gender)) {
-            rbGender.check(R.id.rb_men);
+            rbGender.check(R.id.rb_man);
         } else if ("W".equals(gender)) {
-            rbGender.check(R.id.rb_women);
+            rbGender.check(R.id.rb_woman);
         } else {
-            rbGender.check(R.id.rb_men);
+            rbGender.check(R.id.rb_man);
         }
     }
 

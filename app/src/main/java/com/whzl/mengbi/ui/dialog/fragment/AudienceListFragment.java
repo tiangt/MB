@@ -75,9 +75,6 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
                     public void onSuccess(AudienceListBean.DataBean dataBean) {
                         if (dataBean != null) {
                             loadSuccess(dataBean.getList());
-                            GuardListDialog guardListDialog = (GuardListDialog) getParentFragment();
-                            if (guardListDialog != null && guardListDialog.isAdded() && dataBean.getList() != null)
-                                guardListDialog.setAudienceTitle(dataBean.getList().size());
                         } else {
                             loadSuccess(null);
                         }

@@ -116,7 +116,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         mViewUserName = getArguments().getString("nickName");
         mProgramId = getArguments().getInt("programId");
         mUser = getArguments().getParcelable("user");
-        if (mUser == null || mUser.getUserId() == 0 || mUser.getUserId() == mViewUserId) {
+        if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mViewUserId) {
             llOptionContainer.setVisibility(View.GONE);
         }
         if (mViewUserId == 0) {
@@ -151,7 +151,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
                     if (roomUserInfoData.getData() != null) {
                         mViewedUser = roomUserInfoData.getData();
                         setupView(mViewedUser);
-                        if (mUser == null || mUser.getUserId() == mViewUserId) {
+                        if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mViewUserId) {
                             return;
                         }
                         setupOperations();
@@ -169,30 +169,36 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
 
     private void setupOperations() {
         if (mUser.getIdentityId() == UserIdentity.OPTR_MANAGER) {
-            if (mViewedUser.getIdentityId() == UserIdentity.ANCHOR) {
-                tvPrivateChat.setVisibility(View.VISIBLE);
-            } else {
+            tvPrivateChat.setVisibility(View.VISIBLE);
+            if (mViewedUser.getIdentityId() != UserIdentity.ANCHOR
+                    && mViewedUser.getIdentityId() != UserIdentity.OPTR_MANAGER) {
                 tvBan.setVisibility(View.VISIBLE);
                 tvKickOut.setVisibility(View.VISIBLE);
-                tvPrivateChat.setVisibility(getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
             }
             return;
         }
 
         if (mUser.getIdentityId() == UserIdentity.ANCHOR) {
-            if (mViewedUser.getIdentityId() == UserIdentity.OPTR_MANAGER) {
-                tvPrivateChat.setVisibility(View.VISIBLE);
-            } else {
+            tvPrivateChat.setVisibility(View.VISIBLE);
+            if (mViewedUser.getIdentityId() != UserIdentity.OPTR_MANAGER) {
                 tvBan.setVisibility(View.VISIBLE);
                 tvKickOut.setVisibility(View.VISIBLE);
-                tvPrivateChat.setVisibility(getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
                 tvUpgrade.setVisibility(mViewUserId == 0 ? View.GONE : View.VISIBLE);
             }
             return;
         }
 
-        llOptionContainer.setVisibility(getCanChatPaivate(mUser) && getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
-        tvPrivateChat.setVisibility(getCanChatPaivate(mUser) && getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
+        if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER) {
+            if (mViewedUser.getIdentityId() != UserIdentity.OPTR_MANAGER
+                    && mViewedUser.getIdentityId() != UserIdentity.ANCHOR
+                    && mViewedUser.getIdentityId() != UserIdentity.ROOM_MANAGER) {
+                tvBan.setVisibility(View.VISIBLE);
+                tvKickOut.setVisibility(View.VISIBLE);
+            }
+            return;
+        }
+        llOptionContainer.setVisibility(getCanChatPaivate(mUser) ? View.VISIBLE : View.GONE);
+        tvPrivateChat.setVisibility(getCanChatPaivate(mUser) ? View.VISIBLE : View.GONE);
     }
 
     private void setupView(RoomUserInfo.DataBean user) {

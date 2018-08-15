@@ -7,28 +7,36 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
+        style="@style/LiveHouseDialogTab"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginTop="15dp"
-        style="@style/LiveHouseDialogTab">
+        android:layout_marginTop="15dp">
 
     </android.support.design.widget.TabLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp" />
+        android:layout_height="307dp"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_guard"
-        android:layout_width="260dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="7dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/shape_guard_btn_bg"
-        android:text="开通守护"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:layout_marginBottom="12dp"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/btn_guard"
+            android:layout_width="260dp"
+            android:layout_height="37dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="13dp"
+            android:background="@drawable/shape_guard_btn_bg"
+            android:text="开通守护"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
 </LinearLayout>

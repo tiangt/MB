@@ -26,10 +26,13 @@ import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.UserInfoPresenter;
 import com.whzl.mengbi.presenter.impl.UserInfoPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
+import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
-import com.whzl.mengbi.util.CustomPopWindowUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.JsonUtils;
 import com.whzl.mengbi.util.PhotoUtil;
@@ -85,7 +88,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     ImageView ivUserLevel;
     @BindView(R.id.rl_anchor_container)
     RelativeLayout rlAnchorContainer;
-    private CustomPopWindow mCustomPopWindow;
     private UserInfoPresenter userInfoPresenter;
     private String tempCapturePath;
     private String tempCropPath;
@@ -176,16 +178,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
      */
     @OnClick({R.id.rl_avatar_container, R.id.rl_nick_name_container, R.id.rl_gender_container, R.id.rl_address_container, R.id.rl_birthday_container})
     public void onClick(View v) {
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = DensityUtil.dp2px(200);
-        Calendar calendar = Calendar.getInstance();
-        long userId = mUserInfo.getData().getUserId();
         switch (v.getId()) {
             case R.id.rl_avatar_container:
-                View view = getLayoutInflater().inflate(R.layout.activity_user_info_photo_pop_layout, null);
-                mCustomPopWindow = CustomPopWindowUtils.profile(this, view, ivAvatar, width, height);
-                //初始化CustomPopWindow控件
-                initPopView(view);
+                showOptionDialog();
                 break;
             case R.id.rl_nick_name_container:
                 Intent nicknameIntent = new Intent(UserInfoActivity.this, NickNameModifyActivity.class);
@@ -206,6 +201,36 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             default:
                 break;
         }
+    }
+
+    private void showOptionDialog() {
+        AwesomeDialog.init()
+                .setLayoutId(R.layout.dialog_modify_avatar)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                        holder.setOnClickListener(R.id.btn_capture, v1 -> {
+                            tempCapturePath = StorageUtil.getTempDir() + File.separator
+                                    + System.currentTimeMillis()
+                                    + "avatar_captured.jpg";
+                            tempCropPath = StorageUtil.getTempDir()
+                                    + File.separator + System.currentTimeMillis()
+                                    + "avatar_crop.jpg";
+                            RxPermisssionsUitls.getPicFromCamera(UserInfoActivity.this, tempCapturePath);
+                            dialog.dismiss();
+                        });
+                        holder.setOnClickListener(R.id.btn_album, v12 -> {
+                            tempCropPath = StorageUtil.getTempDir() + File.separator
+                                    + System.currentTimeMillis()
+                                    + "avatar_crop.jpg";
+                            RxPermisssionsUitls.getPicFromAlbm(UserInfoActivity.this);
+                            dialog.dismiss();
+                        });
+                        holder.setOnClickListener(R.id.btn_cancel, v13 -> dialog.dismiss());
+                    }
+                })
+                .setShowBottom(true)
+                .show(getSupportFragmentManager());
     }
 
     private void showDatePick() {
@@ -278,37 +303,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         pvOptions.setPicker(options1Items, options2Items);//二级选择器*/
         pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
         pvOptions.show();
-    }
-
-    /**
-     * 更换头像
-     * PopWindows view 事件
-     *
-     * @param view
-     */
-    private void initPopView(View view) {
-        Button butPhoto = view.findViewById(R.id.user_info_photo);
-        Button butAlbum = view.findViewById(R.id.user_info_album);
-        Button butCancel = view.findViewById(R.id.user_info_cancel);
-        //拍照
-        butPhoto.setOnClickListener(v -> {
-            tempCapturePath = StorageUtil.getTempDir() + File.separator
-                    + System.currentTimeMillis()
-                    + "avatar_captured.jpg";
-            tempCropPath = StorageUtil.getTempDir()
-                    + File.separator + System.currentTimeMillis()
-                    + "avatar_crop.jpg";
-            RxPermisssionsUitls.getPicFromCamera(UserInfoActivity.this, tempCapturePath);
-            mCustomPopWindow.dissmiss();
-        });
-        butAlbum.setOnClickListener(v -> {
-            tempCropPath = StorageUtil.getTempDir() + File.separator
-                    + System.currentTimeMillis()
-                    + "avatar_crop.jpg";
-            RxPermisssionsUitls.getPicFromAlbm(UserInfoActivity.this);
-            mCustomPopWindow.dissmiss();
-        });
-        butCancel.setOnClickListener(v -> mCustomPopWindow.dissmiss());
     }
 
 

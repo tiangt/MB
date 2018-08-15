@@ -188,6 +188,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog mRankDialog;
     private BaseAwesomeDialog mChatDialog;
     private BaseAwesomeDialog mGuardListDialog;
+    private long mAudienceCount;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -367,7 +368,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
                 return;
             }
-            mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0)
+            mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0, mAudienceCount)
                     .setShowBottom(true)
                     .setDimAmount(0)
                     .show(getSupportFragmentManager());
@@ -461,7 +462,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
                     return;
                 }
-                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 1)
+                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 1, mAudienceCount)
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
@@ -616,6 +617,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onAudienceSuccess(long count) {
         tvPopularity.setText(getString(R.string.audience, count));
+        mAudienceCount = count;
     }
 
     @Override
