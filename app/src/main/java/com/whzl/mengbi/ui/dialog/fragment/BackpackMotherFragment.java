@@ -111,7 +111,7 @@ public class BackpackMotherFragment extends BaseFragment {
         HashMap params = new HashMap();
         Long userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
         params.put("userId", userId);
-        Map signPramsMap = ParamsUtils.getSignPramsMap(params);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(params);
         ApiFactory.getInstance().getApi(Api.class)
                 .getBackpack(signPramsMap)
                 .subscribeOn(Schedulers.io())

@@ -89,7 +89,7 @@ public class ChatMessage implements FillHolderMessage {
         if (from_uid != 0) {
             mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
         }
-        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, userId == from_uid ? "你" : from_nickname, from_uid, programId));
+        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, userId == from_uid ? "  你" : "  " + from_nickname, from_uid, programId));
         mholder.textView.append(LightSpanString.getLightString(" 对 ", WHITE_FONG_COLOR));
         mholder.textView.append(LightSpanString.getLightString(userId == to_uid ? "你" : to_nickName, Color.parseColor("#75bbfb")));
         mholder.textView.append(LightSpanString.getLightString("说:  ", WHITE_FONG_COLOR));

@@ -50,8 +50,8 @@ public class LiveModelImpl implements LiveModel {
 
     @Override
     public void doLiveGift(OnLiveFinishedListener listener) {
-        HashMap parmarMap = new HashMap();
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GIFT_LIST, RequestManager.TYPE_POST_JSON, parmarMap,
+        HashMap paramsMap = new HashMap();
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GIFT_LIST, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
 
                     @Override

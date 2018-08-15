@@ -158,7 +158,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             super.onItemClick(view, position);
             AudienceListBean.AudienceInfoBean audienceInfoBean = mData.get(position);
             if (getActivity() != null) {
-                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid());
+                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid(), true);
             }
         }
     }

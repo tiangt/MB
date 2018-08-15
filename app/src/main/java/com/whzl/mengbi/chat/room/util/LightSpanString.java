@@ -30,10 +30,11 @@ public class LightSpanString {
             @Override
             public void onClick(View widget) {
                 if (uid <= 0) {
+                    ((LiveDisplayActivity) context).showAudienceInfoDialog(nickName);
                     return;
                 }
                 Log.i("chatMsg", "点击了 " + nickName);
-                ((LiveDisplayActivity) context).showAudienceInfoDialog(uid);
+                ((LiveDisplayActivity) context).showAudienceInfoDialog(uid, false);
                 //new EnterUserPop().enterUserPop(mContext,uid, ChatRoomInfo.getProgramId());
             }
         };

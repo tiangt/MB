@@ -74,6 +74,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
     private RoomUserInfo.DataBean mUser;
     private long mViewUserId;
     private int mProgramId;
+    private String mViewUserName;
 
     public static AudienceInfoDialog newInstance(long userId, int programId) {
         AudienceInfoDialog dialog = new AudienceInfoDialog();
@@ -94,6 +95,16 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         return dialog;
     }
 
+    public static AudienceInfoDialog newInstance(String nickName, int programId, RoomUserInfo.DataBean user) {
+        AudienceInfoDialog dialog = new AudienceInfoDialog();
+        Bundle args = new Bundle();
+        args.putString("nickName", nickName);
+        args.putInt("programId", programId);
+        args.putParcelable("user", user);
+        dialog.setArguments(args);
+        return dialog;
+    }
+
     @Override
     public int intLayoutId() {
         return R.layout.dialog_audience_info;
@@ -102,10 +113,25 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         mViewUserId = getArguments().getLong("userId");
+        mViewUserName = getArguments().getString("nickName");
         mProgramId = getArguments().getInt("programId");
         mUser = getArguments().getParcelable("user");
         if (mUser == null || mUser.getUserId() == 0 || mUser.getUserId() == mViewUserId) {
             llOptionContainer.setVisibility(View.GONE);
+        }
+        if (mViewUserId == 0) {
+            tvName.setText(mViewUserName);
+            if (mUser != null) {
+                if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER
+                        || mUser.getIdentityId() == UserIdentity.OPTR_MANAGER
+                        || mUser.getIdentityId() == UserIdentity.ANCHOR) {
+                    tvBan.setVisibility(View.VISIBLE);
+                    tvKickOut.setVisibility(View.VISIBLE);
+                    return;
+                }
+            }
+            llOptionContainer.setVisibility(View.GONE);
+            return;
         }
         getUserInfo(mViewUserId, mProgramId);
     }
@@ -165,16 +191,6 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
             return;
         }
 
-        if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER) {
-            if (mViewedUser.getIdentityId() == UserIdentity.OPTR_MANAGER || mViewedUser.getIdentityId() == UserIdentity.ANCHOR) {
-                tvPrivateChat.setVisibility(View.VISIBLE);
-            } else {
-                tvBan.setVisibility(View.VISIBLE);
-                tvKickOut.setVisibility(View.VISIBLE);
-                tvPrivateChat.setVisibility(getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
-            }
-            return;
-        }
         llOptionContainer.setVisibility(getCanChatPaivate(mUser) && getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
         tvPrivateChat.setVisibility(getCanChatPaivate(mUser) && getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
     }
@@ -213,7 +229,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         }
     }
 
-    @OnClick({R.id.btn_dismiss, R.id.tv_private_chat})
+    @OnClick({R.id.btn_dismiss, R.id.tv_private_chat, R.id.tv_kick_out, R.id.tv_ban, R.id.tv_upgrade})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_dismiss:
@@ -227,7 +243,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
                 }
                 break;
             case R.id.tv_ban:
-                if (mViewedUser.getDisabledService() != null) {
+                if (mViewedUser != null && mViewedUser.getDisabledService() != null) {
                     for (int i = 0; i < mViewedUser.getDisabledService().size(); i++) {
                         if ("MUTE".equals(mViewedUser.getDisabledService().get(i))) {
                             severOperate("CANCEL_MUTE");
@@ -265,7 +281,10 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         HashMap paramsMap = new HashMap();
         paramsMap.put("serviceCode", operate);
         paramsMap.put("programId", mProgramId);
-        paramsMap.put("userId", mViewedUser.getUserId());
+        paramsMap.put("userId", mViewUserId);
+        if (!TextUtils.isEmpty(mViewUserName)) {
+            paramsMap.put("nickname", mViewUserName);
+        }
         ApiFactory.getInstance().getApi(Api.class)
                 .serverOprate(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())

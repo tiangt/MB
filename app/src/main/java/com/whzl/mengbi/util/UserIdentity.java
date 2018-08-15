@@ -22,8 +22,7 @@ public class UserIdentity {
         boolean canChatPrivate = false;
         int identityId = user.getIdentityId();
         if (identityId == UserIdentity.ANCHOR
-                || identityId == UserIdentity.OPTR_MANAGER
-                || identityId == UserIdentity.ROOM_MANAGER) {
+                || identityId == UserIdentity.OPTR_MANAGER) {
             canChatPrivate = true;
         }
         List<RoomUserInfo.LevelMapBean> levelMap = user.getLevelList();

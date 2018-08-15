@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +43,6 @@ import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
-import com.whzl.mengbi.chat.room.util.DownloadEvent;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
@@ -94,7 +92,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -766,7 +763,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         showGuardAnim.start();
     }
 
-    public void showAudienceInfoDialog(long viewedUserID) {
+    public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
         AudienceInfoDialog.newInstance(viewedUserID, mProgramId, mRoomUserInfo)
                 .setListener(() -> {
                     if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
@@ -775,7 +772,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 })
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0)
-                .setShowBottom(true)
+                .setShowBottom(isShowBottom)
+                .show(getSupportFragmentManager());
+    }
+
+    public void showAudienceInfoDialog(String nickName) {
+        AudienceInfoDialog.newInstance(nickName, mProgramId, mRoomUserInfo)
+                .setListener(() -> {
+                    if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                        mGuardListDialog.dismiss();
+                    }
+                })
+                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+                .setDimAmount(0)
                 .show(getSupportFragmentManager());
     }
 
@@ -812,11 +821,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     protected void onDestroy() {
-        ondestory();
+        destroy();
         super.onDestroy();
     }
 
-    private void ondestory() {
+    private void destroy() {
         if (mGifGiftControl != null) {
             mGifGiftControl.destroy();
         }
@@ -842,7 +851,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             hideGuardAnim.cancel();
             hideGuardAnim = null;
         }
-        mGiftDialog = null;
         mLivePresenter.onDestory();
         if (chatRoomPresenter != null) {
             chatRoomPresenter.onChatRoomDestroy();
