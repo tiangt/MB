@@ -184,7 +184,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 if (TextUtils.isEmpty(message)) {
                     return;
                 }
-                ((LiveDisplayActivity) getActivity()).sendMeeage(message, mChatToUser);
+                ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
                 etContent.getText().clear();
                 KeyBoardUtil.closeKeybord(etContent, getContext());
                 dismiss();

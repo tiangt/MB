@@ -1,6 +1,8 @@
 package com.whzl.mengbi.chat.room.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -32,11 +34,12 @@ public class FaceReplace {
     }
 
     private EmjoyInfo guardEmjoyInfo = null;
+
     private static class FaceReplaceHolder {
         private static final FaceReplace instance = new FaceReplace();
     }
 
-    public static final FaceReplace getInstance(){
+    public static final FaceReplace getInstance() {
         return FaceReplaceHolder.instance;
     }
 
@@ -48,17 +51,17 @@ public class FaceReplace {
         emjoyInfo = GsonUtils.GsonToBean(strJson, EmjoyInfo.class);
         List<EmjoyInfo.FaceBean.PublicBean> faceList = emjoyInfo.getFace().getPublicX();
         patternList = new ArrayList<>();
-        for(EmjoyInfo.FaceBean.PublicBean faceBean: faceList) {
+        for (EmjoyInfo.FaceBean.PublicBean faceBean : faceList) {
             byte[] fileContent = getFileContent(context, faceBean.getIcon());
-            patternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent));
+            patternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent, faceBean.getIcon()));
         }
         guardPatternList = new ArrayList<>();
         String guardStrJson = FileUtils.getJson("images/face/guard_face.json", context);
         guardEmjoyInfo = GsonUtils.GsonToBean(guardStrJson, EmjoyInfo.class);
         List<EmjoyInfo.FaceBean.PublicBean> guardFaceLost = guardEmjoyInfo.getFace().getPublicX();
-        for(EmjoyInfo.FaceBean.PublicBean faceBean: guardFaceLost) {
+        for (EmjoyInfo.FaceBean.PublicBean faceBean : guardFaceLost) {
             byte[] fileContent = getFileContent(context, faceBean.getIcon());
-            guardPatternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent));
+            guardPatternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent, faceBean.getIcon()));
         }
 
     }
@@ -74,10 +77,9 @@ public class FaceReplace {
     public void faceReplace(TextView textView, SpannableString spanString, Context context) {
         textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         DrawableCallback callback = new DrawableCallback(textView);
-        for(FacePattern fp : patternList) {
+        for (FacePattern fp : patternList) {
             Matcher m = fp.getPattern().matcher(spanString);
-            //Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(facePath, context);
-            while(m.find()) {
+            while (m.find()) {
                 int start = m.start();
                 int end = m.end();
                 Drawable drawable;
@@ -85,7 +87,8 @@ public class FaceReplace {
                     drawable = new GifDrawable(fp.getFileContent());
                     drawable.setCallback(new DrawableCallback(textView));
                 } catch (Exception ignored) {
-                    break;
+                    Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
+                    drawable = new BitmapDrawable(context.getResources(), bitmap);
                 }
                 if (drawable == null) {
                     break;
@@ -100,10 +103,10 @@ public class FaceReplace {
     public void guardFaceReplace(TextView textView, SpannableString spanString, Context context) {
         textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         DrawableCallback callback = new DrawableCallback(textView);
-        for(FacePattern fp : guardPatternList) {
+        for (FacePattern fp : guardPatternList) {
             Matcher m = fp.getPattern().matcher(spanString);
             //Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(facePath, context);
-            while(m.find()) {
+            while (m.find()) {
                 int start = m.start();
                 int end = m.end();
                 Drawable drawable;
@@ -124,15 +127,15 @@ public class FaceReplace {
     }
 
     private byte[] getFileContent(Context context, String fileName) {
-        try{
+        try {
             InputStream in = context.getResources().getAssets().open(fileName);
             int length = in.available();
-            byte [] buffer = new byte[length];
+            byte[] buffer = new byte[length];
 
             in.read(buffer);
             in.close();
             return buffer;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -141,10 +144,12 @@ public class FaceReplace {
     private class FacePattern {
         private Pattern pattern;
         private byte[] fileContent;
+        private String icon;
 
-        public FacePattern(Pattern pattern, byte[] fileContent) {
+        public FacePattern(Pattern pattern, byte[] fileContent, String icon) {
             this.pattern = pattern;
             this.fileContent = fileContent;
+            this.icon = icon;
         }
 
         public Pattern getPattern() {
@@ -161,6 +166,10 @@ public class FaceReplace {
 
         public void setFileContent(byte[] fileContent) {
             this.fileContent = fileContent;
+        }
+
+        public String getIcon() {
+            return icon;
         }
     }
 }

@@ -21,6 +21,7 @@ import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
+import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseListFragment;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
@@ -72,10 +73,10 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
                 .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
                     @Override
                     public void onSuccess(AudienceListBean.DataBean dataBean) {
-                        if (dataBean == null) {
+                        if (dataBean != null) {
                             loadSuccess(dataBean.getList());
                         } else {
-                            loadSuccess(dataBean.getList());
+                            loadSuccess(null);
                         }
                     }
 
@@ -102,6 +103,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
         @Override
         public void onBindViewHolder(int position) {
             AudienceListBean.AudienceInfoBean audienceInfoBean = mData.get(position);
+            linearLayout.removeAllViews();
             tvName.setText(audienceInfoBean.getName());
             GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
             int identity = audienceInfoBean.getIdentity();
@@ -124,14 +126,14 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
                 for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
                     AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
                     if ("BADGE".equals(medalBean.getGoodsType()) || "GUARD".equals(medalBean.getGoodsType())) {
-                        if (getContext() == null) {
-                            return;
-                        }
                         Glide.with(getContext())
                                 .load(medalBean.getGoodsIcon())
                                 .into(new SimpleTarget<Drawable>() {
                                     @Override
                                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                        if (getContext() == null) {
+                                            return;
+                                        }
                                         int intrinsicHeight = resource.getIntrinsicHeight();
                                         int intrinsicWidth = resource.getIntrinsicWidth();
                                         ImageView imageView = new ImageView(getContext());
@@ -153,7 +155,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             super.onItemClick(view, position);
             AudienceListBean.AudienceInfoBean audienceInfoBean = mData.get(position);
             if (getActivity() != null) {
-                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid());
+                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid(), true);
             }
         }
     }

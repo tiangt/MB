@@ -6,14 +6,19 @@ import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
-import com.whzl.mengbi.util.network.retrofit.ApiResult;
+import com.whzl.mengbi.model.entity.ApiResult;
 
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 
 /**
  * @author shaw
@@ -132,5 +137,17 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> cancleManager(@FieldMap Map<String, String> params);
 
+
+    /**
+     * 上传文件
+     *
+     * @param params
+     * @param parts
+     * @return
+     */
+    @Multipart
+    @POST("v1/user/modify-avatar")
+    Observable<ApiResult<JsonElement>> uploadFile(@PartMap Map<String, RequestBody> params,
+                                                  @Part MultipartBody.Part parts);
 
 }

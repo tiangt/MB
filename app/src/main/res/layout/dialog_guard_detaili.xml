@@ -18,9 +18,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginTop="15dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -41,11 +41,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="11dp"
-                    android:textColor="#646464"
-                    android:textSize="17sp"
-                    android:singleLine="true"
                     android:layout_marginRight="15dp"
-                    android:ellipsize="end"/>
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textColor="#646464"
+                    android:textSize="17sp" />
 
             </LinearLayout>
 
@@ -128,14 +128,20 @@
                     android:textColor="#323232"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:lineSpacingExtra="10dp"
-                    android:text="@string/guard_priority"
-                    android:textColor="#646464"
-                    android:textSize="17sp" />
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:lineSpacingExtra="10dp"
+                        android:text="@string/guard_priority"
+                        android:textColor="#646464"
+                        android:textSize="17sp" />
+                </android.support.v4.widget.NestedScrollView>
 
 
             </LinearLayout>

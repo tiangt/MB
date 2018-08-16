@@ -51,8 +51,8 @@
                             android:layout_marginLeft="6dp"
                             android:layout_marginRight="6dp"
                             android:layout_marginTop="3dp"
-                            android:ellipsize="end"
-                            android:maxEms="7"
+                            android:ellipsize="middle"
+                            android:maxEms="6"
                             android:singleLine="true"
                             android:textColor="#e5e5e5"
                             android:textSize="10sp" />

@@ -47,6 +47,11 @@ public class GlideImageLoader extends ImageLoader {
         Glide.with(context).load(path).into(imageView);
     }
 
+    public void displayImageNoCache(Context context, Object path, ImageView imageView) {
+        RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE);
+        Glide.with(context).load(path).apply(options).into(imageView);
+    }
+
     public void circleCropImage(Context context, Object path, ImageView imageView) {
         //Glide 加载图片简单用法
         RequestOptions options = new RequestOptions().circleCrop();

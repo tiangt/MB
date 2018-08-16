@@ -1,48 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/font_color_49"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/comm_toolbar"/>
+    <include layout="@layout/comm_toolbar" />
 
     <RadioGroup
         android:id="@+id/rg_gender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/font_color_51">
+
         <RadioButton
-            android:id="@+id/rb_men"
+            android:id="@+id/rb_man"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="17dp"
-            android:text="@string/user_info_sex_m"
-            android:textStyle="bold"
-            android:textSize="@dimen/font_size_30px"
-            android:textColor="@color/font_color_47"
+            android:button="@null"
             android:drawableRight="@drawable/selector_pay_way_rb"
-            android:button="@null" />
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:text="@string/user_info_sex_m"
+            android:textColor="@color/font_color_47"
+            android:textSize="@dimen/font_size_30px"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y1"
-            android:background="@color/font_color_49"/>
+            android:layout_height="1dp"
+            android:background="@color/font_color_49" />
 
         <RadioButton
-            android:id="@+id/rb_women"
+            android:id="@+id/rb_woman"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="17dp"
-            android:text="@string/user_info_sex_w"
-            android:textStyle="bold"
-            android:textSize="@dimen/font_size_30px"
-            android:textColor="@color/font_color_47"
+            android:button="@null"
             android:drawableRight="@drawable/selector_pay_way_rb"
-            android:button="@null"/>
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:text="@string/user_info_sex_w"
+            android:textColor="@color/font_color_47"
+            android:textSize="@dimen/font_size_30px"
+            android:textStyle="bold" />
     </RadioGroup>
 </LinearLayout>

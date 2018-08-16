@@ -44,7 +44,7 @@ public class RunWayEvent {
         return giftSpanString;
     }
 
-    public void showRunWay(TextView tvRunWayGift) {
+    public void showRunWay(TextView tvRunWayGift) throws Exception{
         tvRunWayGift.setText(LightSpanString.getLightString(runWayJson.getContext().getNickname(),
                 Color.parseColor("#f1275b")));
         tvRunWayGift.append(LightSpanString.getLightString(" 送 ", Color.parseColor("#faf9f9")));

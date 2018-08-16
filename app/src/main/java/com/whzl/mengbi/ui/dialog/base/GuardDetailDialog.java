@@ -1,5 +1,7 @@
 package com.whzl.mengbi.ui.dialog.base;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +12,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -78,8 +81,10 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
 
                     }
                 });
-        tvNickName.setText(mAnchorBean.getName());
-        GlideImageLoader.getInstace().displayImage(getContext(), mAnchorBean.getAvatar(), ivAvatar);
+        if (mAnchorBean != null) {
+            tvNickName.setText(mAnchorBean.getName());
+            GlideImageLoader.getInstace().displayImage(getContext(), mAnchorBean.getAvatar(), ivAvatar);
+        }
     }
 
 
@@ -90,6 +95,12 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
             return;
         }
         long userId = (long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
+        if (userId == 0) {
+            if (getActivity() != null) {
+                ((LiveDisplayActivity) getActivity()).login();
+                return;
+            }
+        }
         HashMap paramsMap = new HashMap();
         paramsMap.put("goodsId", mGuardPriceBean.goodsId);
         paramsMap.put("count", 1);
@@ -112,4 +123,5 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
                     }
                 });
     }
+
 }

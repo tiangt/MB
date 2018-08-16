@@ -51,8 +51,8 @@ public class PhotoUtil {
         intent.putExtra("crop", "true");
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 100);
-        intent.putExtra("outputY", 100);
+        intent.putExtra("outputX", 200);
+        intent.putExtra("outputY", 200);
         intent.putExtra("scale", true);
         //true返回数据bitmap
         intent.putExtra("return-data", false);
@@ -83,7 +83,7 @@ public class PhotoUtil {
         intent.putExtra("scale", true);
         //true返回数据bitmap
         intent.putExtra("return-data", false);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+//        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(fileOut));
         activity.startActivityForResult(intent, CROP_IMAGE);
     }

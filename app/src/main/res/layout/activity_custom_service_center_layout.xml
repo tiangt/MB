@@ -70,10 +70,4 @@
             android:textColor="@color/font_color_50" />
     </RelativeLayout>
 
-    <View
-        android:id="@+id/user_custom_guild_entered_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y1"
-        android:layout_below="@id/user_custom_guild_entered_rela"
-        android:background="@color/font_color_12" />
 </LinearLayout>

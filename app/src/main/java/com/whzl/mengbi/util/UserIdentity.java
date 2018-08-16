@@ -34,7 +34,7 @@ public class UserIdentity {
                     canChatPrivate = true;
                 }
             }
-            if ("ROYAL".equals(levelMap.get(i).getLevelType())) {
+            if ("ROYAL_LEVEL".equals(levelMap.get(i).getLevelType())) {
                 int levelValue = levelMap.get(i).getLevelValue();
                 if (levelValue > 0) {
                     canChatPrivate = true;

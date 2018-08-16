@@ -1,16 +1,13 @@
 package com.whzl.mengbi.util.network.retrofit;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.ParseException;
 import android.support.v4.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
-import com.whzl.mengbi.chat.room.message.messageJson.SubProgramJson;
-import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
-import com.whzl.mengbi.util.AsyncRun;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.util.GenericUtil;
 import com.whzl.mengbi.util.ToastUtils;
 
@@ -47,7 +44,6 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
     private Fragment fragment;
 
     protected ApiObserver() {
-
     }
 
     protected ApiObserver(Activity activity) {

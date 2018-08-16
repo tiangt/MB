@@ -5,11 +5,13 @@ package com.whzl.mengbi.chat.room.message.events;
  * @date 2018/8/7
  */
 public class GuardOpenEvent {
-    public String Avatar;
+    public String avatar;
     public String nickName;
+    public long userId;
 
-    public GuardOpenEvent(String avatar, String nickName) {
-        Avatar = avatar;
+    public GuardOpenEvent(String avatar, String nickName, long userId) {
+        this.avatar = avatar;
         this.nickName = nickName;
+        this.userId = userId;
     }
 }

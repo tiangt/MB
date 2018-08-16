@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
@@ -70,10 +71,13 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
     TextView tvPrivateChat;
     @BindView(R.id.ll_option_container)
     LinearLayout llOptionContainer;
+    @BindView(R.id.rl_info_container)
+    RelativeLayout rlInfoContainer;
     private RoomUserInfo.DataBean mViewedUser;
     private RoomUserInfo.DataBean mUser;
     private long mViewUserId;
     private int mProgramId;
+    private String mViewUserName;
 
     public static AudienceInfoDialog newInstance(long userId, int programId) {
         AudienceInfoDialog dialog = new AudienceInfoDialog();
@@ -94,6 +98,16 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         return dialog;
     }
 
+    public static AudienceInfoDialog newInstance(String nickName, int programId, RoomUserInfo.DataBean user) {
+        AudienceInfoDialog dialog = new AudienceInfoDialog();
+        Bundle args = new Bundle();
+        args.putString("nickName", nickName);
+        args.putInt("programId", programId);
+        args.putParcelable("user", user);
+        dialog.setArguments(args);
+        return dialog;
+    }
+
     @Override
     public int intLayoutId() {
         return R.layout.dialog_audience_info;
@@ -102,10 +116,26 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         mViewUserId = getArguments().getLong("userId");
+        mViewUserName = getArguments().getString("nickName");
         mProgramId = getArguments().getInt("programId");
         mUser = getArguments().getParcelable("user");
-        if (mUser == null || mUser.getUserId() == 0) {
+        if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mViewUserId) {
             llOptionContainer.setVisibility(View.GONE);
+        }
+        if (mViewUserId == 0) {
+            tvName.setText(mViewUserName);
+            rlInfoContainer.setVisibility(View.GONE);
+            if (mUser != null) {
+                if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER
+                        || mUser.getIdentityId() == UserIdentity.OPTR_MANAGER
+                        || mUser.getIdentityId() == UserIdentity.ANCHOR) {
+                    tvBan.setVisibility(View.VISIBLE);
+                    tvKickOut.setVisibility(View.VISIBLE);
+                    return;
+                }
+            }
+            llOptionContainer.setVisibility(View.GONE);
+            return;
         }
         getUserInfo(mViewUserId, mProgramId);
     }
@@ -125,7 +155,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
                     if (roomUserInfoData.getData() != null) {
                         mViewedUser = roomUserInfoData.getData();
                         setupView(mViewedUser);
-                        if (mUser == null) {
+                        if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mViewUserId) {
                             return;
                         }
                         setupOperations();
@@ -143,40 +173,37 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
 
     private void setupOperations() {
         if (mUser.getIdentityId() == UserIdentity.OPTR_MANAGER) {
-            if (mViewedUser.getIdentityId() == UserIdentity.ANCHOR) {
-                tvPrivateChat.setVisibility(View.VISIBLE);
-            } else {
+            tvPrivateChat.setVisibility(View.VISIBLE);
+            if (mViewedUser.getIdentityId() != UserIdentity.ANCHOR
+                    && mViewedUser.getIdentityId() != UserIdentity.OPTR_MANAGER) {
                 tvBan.setVisibility(View.VISIBLE);
                 tvKickOut.setVisibility(View.VISIBLE);
-                tvPrivateChat.setVisibility(getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
             }
             return;
         }
 
         if (mUser.getIdentityId() == UserIdentity.ANCHOR) {
-            if (mViewedUser.getIdentityId() == UserIdentity.OPTR_MANAGER) {
-                tvPrivateChat.setVisibility(View.VISIBLE);
-            } else {
+            tvPrivateChat.setVisibility(View.VISIBLE);
+            if (mViewedUser.getIdentityId() != UserIdentity.OPTR_MANAGER) {
                 tvBan.setVisibility(View.VISIBLE);
                 tvKickOut.setVisibility(View.VISIBLE);
-                tvPrivateChat.setVisibility(getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
                 tvUpgrade.setVisibility(mViewUserId == 0 ? View.GONE : View.VISIBLE);
             }
             return;
         }
 
         if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER) {
-            if (mViewedUser.getIdentityId() == UserIdentity.OPTR_MANAGER || mViewedUser.getIdentityId() == UserIdentity.ANCHOR) {
-                tvPrivateChat.setVisibility(View.VISIBLE);
-            } else {
+            tvPrivateChat.setVisibility(View.VISIBLE);
+            if (mViewedUser.getIdentityId() != UserIdentity.OPTR_MANAGER
+                    && mViewedUser.getIdentityId() != UserIdentity.ANCHOR
+                    && mViewedUser.getIdentityId() != UserIdentity.ROOM_MANAGER) {
                 tvBan.setVisibility(View.VISIBLE);
                 tvKickOut.setVisibility(View.VISIBLE);
-                tvPrivateChat.setVisibility(getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
             }
             return;
         }
-        llOptionContainer.setVisibility(getCanChatPaivate(mUser) && getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
-        tvPrivateChat.setVisibility(getCanChatPaivate(mUser) && getCanChatPaivate(mViewedUser) ? View.VISIBLE : View.GONE);
+        llOptionContainer.setVisibility(getCanChatPaivate(mUser) ? View.VISIBLE : View.GONE);
+        tvPrivateChat.setVisibility(getCanChatPaivate(mUser) ? View.VISIBLE : View.GONE);
     }
 
     private void setupView(RoomUserInfo.DataBean user) {
@@ -195,7 +222,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         }
         if (user.getDisabledService() != null) {
             for (int i = 0; i < user.getDisabledService().size(); i++) {
-                if ("MUTE".equals(user.getDisabledService().get(i))) {
+                if (2 == user.getDisabledService().get(i)) {
                     tvBan.setText("取消禁言");
                 }
             }
@@ -213,7 +240,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         }
     }
 
-    @OnClick({R.id.btn_dismiss, R.id.tv_private_chat})
+    @OnClick({R.id.btn_dismiss, R.id.tv_private_chat, R.id.tv_kick_out, R.id.tv_ban, R.id.tv_upgrade})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_dismiss:
@@ -227,9 +254,9 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
                 }
                 break;
             case R.id.tv_ban:
-                if (mViewedUser.getDisabledService() != null) {
+                if (mViewedUser != null && mViewedUser.getDisabledService() != null) {
                     for (int i = 0; i < mViewedUser.getDisabledService().size(); i++) {
-                        if ("MUTE".equals(mViewedUser.getDisabledService().get(i))) {
+                        if (2 == (mViewedUser.getDisabledService().get(i))) {
                             severOperate("CANCEL_MUTE");
                             return;
                         }
@@ -265,7 +292,10 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         HashMap paramsMap = new HashMap();
         paramsMap.put("serviceCode", operate);
         paramsMap.put("programId", mProgramId);
-        paramsMap.put("userId", mViewedUser.getUserId());
+        paramsMap.put("userId", mViewUserId);
+        if (!TextUtils.isEmpty(mViewUserName)) {
+            paramsMap.put("nickname", mViewUserName);
+        }
         ApiFactory.getInstance().getApi(Api.class)
                 .serverOprate(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())

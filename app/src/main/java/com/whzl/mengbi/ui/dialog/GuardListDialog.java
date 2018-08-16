@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
@@ -33,12 +34,18 @@ public class GuardListDialog extends BaseAwesomeDialog {
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
+    @BindView(R.id.btn_guard)
+    Button btnGuard;
     private int mProgramId;
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
+    private ArrayList<String> titles;
+    private FragmentPagerAdaper mAdapter;
+    private ArrayList<Fragment> fragments;
 
-    public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, int index) {
+    public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, int index, long audienceCount) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
+        args.putLong("audienceCount", audienceCount);
         args.putInt("index", index);
         args.putParcelable("anchor", anchorBean);
         GuardListDialog dialog = new GuardListDialog();
@@ -54,6 +61,7 @@ public class GuardListDialog extends BaseAwesomeDialog {
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         mProgramId = getArguments().getInt("programId");
+        long audienceCount = getArguments().getLong("audienceCount");
         int index = getArguments().getInt("index");
         mAnchorBean = getArguments().getParcelable("anchor");
         tabLayout.post(() -> {
@@ -62,14 +70,31 @@ public class GuardListDialog extends BaseAwesomeDialog {
             } catch (Exception e) {
             }
         });
-        ArrayList<String> titles = new ArrayList<>();
+        titles = new ArrayList<>();
         titles.add("守护");
-        titles.add("观众");
-        ArrayList<Fragment> fragments = new ArrayList<>();
+        titles.add("观众（" + audienceCount + "）");
+        fragments = new ArrayList<>();
         fragments.add(GuardListFragment.newInstance(mProgramId));
         fragments.add(AudienceListFragment.newInstance(mProgramId));
-        viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
+        mAdapter = new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles);
+        viewpager.setAdapter(mAdapter);
         tabLayout.setupWithViewPager(viewpager);
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                btnGuard.setVisibility(position == 0 ? View.VISIBLE : View.GONE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         viewpager.setCurrentItem(index);
     }
 
@@ -86,12 +111,12 @@ public class GuardListDialog extends BaseAwesomeDialog {
         Class<?> tabLayoutClass = tabLayout.getClass();
         Field tabStrip = tabLayoutClass.getDeclaredField("mTabStrip");
         tabStrip.setAccessible(true);
-        LinearLayout ll_tab = (LinearLayout) tabStrip.get(tabLayout);
-        for (int i = 0; i < ll_tab.getChildCount(); i++) {
-            View child = ll_tab.getChildAt(i);
+        LinearLayout llTab = (LinearLayout) tabStrip.get(tabLayout);
+        for (int i = 0; i < llTab.getChildCount(); i++) {
+            View child = llTab.getChildAt(i);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
             int screenWidth = UIUtil.getScreenWidthPixels(getContext());
-            int indexWidth = UIUtil.dip2px(getContext(), 80);
+            int indexWidth = UIUtil.dip2px(getContext(), 150);
             int leftMargin = (int) ((screenWidth - indexWidth * 2) / 4f + 0.5);
             params.leftMargin = (leftMargin);
             params.rightMargin = (leftMargin);
@@ -99,4 +124,9 @@ public class GuardListDialog extends BaseAwesomeDialog {
             child.invalidate();
         }
     }
+
+    public void setGuardTitle(int size) {
+        tabLayout.getTabAt(0).setText("守护（" + size + "）");
+    }
+
 }

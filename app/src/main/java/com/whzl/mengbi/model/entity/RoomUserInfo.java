@@ -64,11 +64,11 @@ public class RoomUserInfo {
         private List<LevelMapBean> levelList;
         private List<GoodsListBean> goodsList;
 
-        public List<String> getDisabledService() {
+        public List<Integer> getDisabledService() {
             return disabledService;
         }
 
-        private List<String> disabledService;
+        private List<Integer> disabledService;
 
         public DataBean(Parcel in) {
             userId = in.readLong();

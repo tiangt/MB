@@ -26,10 +26,13 @@ import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.UserInfoPresenter;
 import com.whzl.mengbi.presenter.impl.UserInfoPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
+import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
-import com.whzl.mengbi.util.CustomPopWindowUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.JsonUtils;
 import com.whzl.mengbi.util.PhotoUtil;
@@ -85,12 +88,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     ImageView ivUserLevel;
     @BindView(R.id.rl_anchor_container)
     RelativeLayout rlAnchorContainer;
-    private CustomPopWindow mCustomPopWindow;
     private UserInfoPresenter userInfoPresenter;
     private String tempCapturePath;
     private String tempCropPath;
     private UserInfo mUserInfo;
-    private String sex;
+    private String mSex;
     private TimePickerView pvTime;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
@@ -107,7 +109,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     protected void initEnv() {
         super.initEnv();
         Intent intent = getIntent();
-        mUserInfo = (UserInfo) intent.getSerializableExtra("userbean");
+        mUserInfo = intent.getParcelableExtra("userbean");
         userInfoPresenter = new UserInfoPresenterImpl(this);
         initJsonData();
     }
@@ -122,8 +124,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getData().getAvatar(), ivAvatar);
         tvAccount.setText(mUserInfo.getData().getUserId() + "");
         tvNickName.setText(mUserInfo.getData().getNickname());
-        sex = mUserInfo.getData().getGender();
-        setupSex(sex);
+        mSex = mUserInfo.getData().getGender();
+        setupSex(mSex);
         StringBuilder stringBuilder = new StringBuilder();
         if (mUserInfo.getData().getProvince() != null) {
             stringBuilder.append(mUserInfo.getData().getProvince());
@@ -176,16 +178,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
      */
     @OnClick({R.id.rl_avatar_container, R.id.rl_nick_name_container, R.id.rl_gender_container, R.id.rl_address_container, R.id.rl_birthday_container})
     public void onClick(View v) {
-        int width = getResources().getDisplayMetrics().widthPixels;
-        int height = DensityUtil.dp2px(200);
-        Calendar calendar = Calendar.getInstance();
-        long userId = mUserInfo.getData().getUserId();
         switch (v.getId()) {
             case R.id.rl_avatar_container:
-                View view = getLayoutInflater().inflate(R.layout.activity_user_info_photo_pop_layout, null);
-                mCustomPopWindow = CustomPopWindowUtils.profile(this, view, ivAvatar, width, height);
-                //初始化CustomPopWindow控件
-                initPopView(view);
+                showOptionDialog();
                 break;
             case R.id.rl_nick_name_container:
                 Intent nicknameIntent = new Intent(UserInfoActivity.this, NickNameModifyActivity.class);
@@ -194,7 +189,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 break;
             case R.id.rl_gender_container:
                 Intent genderIntent = new Intent(this, GenderModifyActivity.class);
-                genderIntent.putExtra("gender", mUserInfo.getData().getGender());
+                genderIntent.putExtra("gender", mSex);
                 startActivityForResult(genderIntent, GENDER_CODE);
                 break;
             case R.id.rl_address_container:
@@ -206,6 +201,36 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             default:
                 break;
         }
+    }
+
+    private void showOptionDialog() {
+        AwesomeDialog.init()
+                .setLayoutId(R.layout.dialog_modify_avatar)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                        holder.setOnClickListener(R.id.btn_capture, v1 -> {
+                            tempCapturePath = StorageUtil.getTempDir() + File.separator
+                                    + System.currentTimeMillis()
+                                    + "avatar_captured.jpg";
+                            tempCropPath = StorageUtil.getTempDir()
+                                    + File.separator + System.currentTimeMillis()
+                                    + "avatar_crop.jpg";
+                            RxPermisssionsUitls.getPicFromCamera(UserInfoActivity.this, tempCapturePath);
+                            dialog.dismiss();
+                        });
+                        holder.setOnClickListener(R.id.btn_album, v12 -> {
+                            tempCropPath = StorageUtil.getTempDir() + File.separator
+                                    + System.currentTimeMillis()
+                                    + "avatar_crop.jpg";
+                            RxPermisssionsUitls.getPicFromAlbm(UserInfoActivity.this);
+                            dialog.dismiss();
+                        });
+                        holder.setOnClickListener(R.id.btn_cancel, v13 -> dialog.dismiss());
+                    }
+                })
+                .setShowBottom(true)
+                .show(getSupportFragmentManager());
     }
 
     private void showDatePick() {
@@ -265,57 +290,32 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
                 .setSelectOptions(mSelectedPosition1, mSelectedPosition2)
                 .setSubCalSize(15)
-                .setTitleSize(17)//标题文字大小
-                .setSubmitColor(Color.parseColor("#007aff"))//确定按钮文字颜色
-                .setCancelColor(Color.parseColor("#007aff"))//取消按钮文字颜色
+                .setTitleSize(17)
+                .setSubmitColor(Color.parseColor("#007aff"))
+                .setCancelColor(Color.parseColor("#007aff"))
                 .setTitleText("城市选择")
                 .setDividerColor(Color.parseColor("#cdcdcd"))
-                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
+                .setTextColorCenter(Color.BLACK)
                 .setContentTextSize(19)
                 .build();
 
         /*pvOptions.setPicker(options1Items);//一级选择器
         pvOptions.setPicker(options1Items, options2Items);//二级选择器*/
-        pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
+        pvOptions.setPicker(options1Items, options2Items, options3Items);
         pvOptions.show();
-    }
-
-    /**
-     * 更换头像
-     * PopWindows view 事件
-     *
-     * @param view
-     */
-    private void initPopView(View view) {
-        Button butPhoto = view.findViewById(R.id.user_info_photo);
-        Button butAlbum = view.findViewById(R.id.user_info_album);
-        Button butCancel = view.findViewById(R.id.user_info_cancel);
-        //拍照
-        butPhoto.setOnClickListener(v -> {
-            tempCapturePath = StorageUtil.getTempDir() + File.separator + System.currentTimeMillis() + "avatar_captured.jpg";
-            tempCropPath = StorageUtil.getTempDir() + File.separator + System.currentTimeMillis() + "avatar_crop.jpg";
-            RxPermisssionsUitls.getPicFromCamera(UserInfoActivity.this, tempCapturePath);
-            mCustomPopWindow.dissmiss();
-        });
-        butAlbum.setOnClickListener(v -> {
-            tempCropPath = StorageUtil.getTempDir() + File.separator + System.currentTimeMillis() + "avatar_crop.jpg";
-            RxPermisssionsUitls.getPicFromAlbm(UserInfoActivity.this);
-            mCustomPopWindow.dissmiss();
-        });
-        butCancel.setOnClickListener(v -> mCustomPopWindow.dissmiss());
     }
 
 
     @Override
     public void showPortrait(String filename) {
-        GlideImageLoader.getInstace().displayImage(this, filename, ivAvatar);
+        GlideImageLoader.getInstace().displayImageNoCache(this, tempCropPath, ivAvatar);
         EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 
     @Override
     public void showSuccess(String msg) {
         EventBus.getDefault().post(new UserInfoUpdateEvent());
-        setupSex(sex);
+        setupSex(mSex);
     }
 
     @Override
@@ -334,7 +334,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         PhotoUtil.onActivityResult(this, tempCapturePath, tempCropPath, requestCode, resultCode, data,
-                () -> userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId() + "", tempCropPath));
+                () -> {
+                    userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId() + "", tempCropPath);
+                });
         switch (requestCode) {
             case NICKNAME_CODE:
                 if (resultCode == RESULT_OK) {
@@ -344,10 +346,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 break;
             case GENDER_CODE:
                 if (resultCode == RESULT_OK) {
-                    sex = data.getStringExtra("gender");
+                    mSex = data.getStringExtra("gender");
                     HashMap hashMap = new HashMap();
                     hashMap.put("userId", mUserInfo.getData().getUserId());
-                    hashMap.put("sex", sex);
+                    hashMap.put("sex", mSex);
                     userInfoPresenter.onUpdataUserInfo(hashMap);
                 }
                 break;
@@ -367,66 +369,66 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         Observable.just("province.json")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(new Function<String, Object>() {
-                    @Override
-                    public Object apply(String str) throws Exception {
-                        String JsonData = JsonUtils.getJsonFromAssert(UserInfoActivity.this, str);//获取assets目录下的json文件数据
+                .map((Function<String, Object>) str -> {
+                    //获取assets目录下的json文件数据
+                    String JsonData = JsonUtils.getJsonFromAssert(UserInfoActivity.this, str);
+                    //用Gson 转成实体
+                    ArrayList<JsonBean> jsonBean = parseData(JsonData);
 
-                        ArrayList<JsonBean> jsonBean = parseData(JsonData);//用Gson 转成实体
+                    /**
+                     * 添加省份数据
+                     *
+                     * 注意：如果是添加的JavaBean实体，则实体类需要实现 IPickerViewData 接口，
+                     * PickerView会通过getPickerViewText方法获取字符串显示出来。
+                     */
+                    options1Items = jsonBean;
+                    //遍历省份
+                    for (int i = 0; i < jsonBean.size(); i++) {
+                        //该省的城市列表（第二级）
+                        ArrayList<String> CityList = new ArrayList<>();
+                        //该省的所有地区列表（第三极）
+                        ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();
+                        //遍历该省份的所有城市
+                        for (int c = 0; c < jsonBean.get(i).getCityList().size(); c++) {
+                            String CityName = jsonBean.get(i).getCityList().get(c).getName();
+                            //添加城市
+                            CityList.add(CityName);
+                            //该城市的所有地区列表
+                            ArrayList<String> City_AreaList = new ArrayList<>();
 
-                        /**
-                         * 添加省份数据
-                         *
-                         * 注意：如果是添加的JavaBean实体，则实体类需要实现 IPickerViewData 接口，
-                         * PickerView会通过getPickerViewText方法获取字符串显示出来。
-                         */
-                        options1Items = jsonBean;
-
-                        for (int i = 0; i < jsonBean.size(); i++) {//遍历省份
-                            ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
-                            ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
-
-                            for (int c = 0; c < jsonBean.get(i).getCityList().size(); c++) {//遍历该省份的所有城市
-                                String CityName = jsonBean.get(i).getCityList().get(c).getName();
-                                CityList.add(CityName);//添加城市
-                                ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
-
-                                //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
-                                if (jsonBean.get(i).getCityList().get(c).getArea() == null
-                                        || jsonBean.get(i).getCityList().get(c).getArea().size() == 0) {
-                                    City_AreaList.add("");
-                                } else {
-                                    City_AreaList.addAll(jsonBean.get(i).getCityList().get(c).getArea());
-                                }
-                                Province_AreaList.add(City_AreaList);//添加该省所有地区数据
-
-                                if (jsonBean.get(i).getCityList().get(c).getName().equals(mUserInfo.getData().getCity())) {
-                                    mSelectedPosition2 = c;
-                                }
+                            //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
+                            if (jsonBean.get(i).getCityList().get(c).getArea() == null
+                                    || jsonBean.get(i).getCityList().get(c).getArea().size() == 0) {
+                                City_AreaList.add("");
+                            } else {
+                                City_AreaList.addAll(jsonBean.get(i).getCityList().get(c).getArea());
                             }
+                            //添加该省所有地区数据
+                            Province_AreaList.add(City_AreaList);
 
-                            if (jsonBean.get(i).getName().equals(mUserInfo.getData().getProvince())) {
-                                mSelectedPosition1 = i;
+                            if (jsonBean.get(i).getCityList().get(c).getName().equals(mUserInfo.getData().getCity())) {
+                                mSelectedPosition2 = c;
                             }
-                            /**
-                             * 添加城市数据
-                             */
-                            options2Items.add(CityList);
-
-                            /**
-                             * 添加地区数据
-                             */
-                            options3Items.add(Province_AreaList);
                         }
 
-                        return "OK";
-                    }
-                })
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
+                        if (jsonBean.get(i).getName().equals(mUserInfo.getData().getProvince())) {
+                            mSelectedPosition1 = i;
+                        }
+                        /**
+                         * 添加城市数据
+                         */
+                        options2Items.add(CityList);
 
+                        /**
+                         * 添加地区数据
+                         */
+                        options3Items.add(Province_AreaList);
                     }
+
+                    return "OK";
+                })
+                .subscribe(o -> {
+
                 });
     }
 
