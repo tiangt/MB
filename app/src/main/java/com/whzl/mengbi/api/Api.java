@@ -6,7 +6,7 @@ import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
-import com.whzl.mengbi.util.network.retrofit.ApiResult;
+import com.whzl.mengbi.model.entity.ApiResult;
 
 import java.util.Map;
 

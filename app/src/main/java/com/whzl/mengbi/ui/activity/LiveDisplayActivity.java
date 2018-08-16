@@ -248,6 +248,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initPlayer() {
         textureView.setDecodeMode(KSYMediaPlayer.KSYDecodeMode.KSY_DECODE_MODE_AUTO);
         textureView.setOnPreparedListener(iMediaPlayer -> {
+            textureView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
             textureView.start();
         });
@@ -564,6 +565,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mStream = null;
         textureView.stop();
         textureView.reset();
+        textureView.setVisibility(View.INVISIBLE);
         tvStopTip.setVisibility(View.VISIBLE);
     }
 

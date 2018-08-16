@@ -1,4 +1,4 @@
-package com.whzl.mengbi.util.network.retrofit;
+package com.whzl.mengbi.model.entity;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

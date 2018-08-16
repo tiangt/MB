@@ -144,7 +144,15 @@
   -keep public class * extends android.support.v7.**
 
  ## okhttp
- -keep class com.squareup.okhttp.** { *; }
+ -dontwarn com.squareup.okhttp3.**
+ -keep class com.squareup.okhttp3.** { *; }
+ -dontwarn okio.**
+
+# retrofit
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
 
 #gson
 -keepattributes *Annotation*
@@ -164,6 +172,12 @@
 -keep public class * extends android.preference.Preference
 -keep public class * extends android.support.v4.**
 -keep public class com.android.vending.licensing.ILicensingService
+
+#design
+-dontwarn android.support.design.**
+-keep class android.support.design.** { *; }
+-keep interface android.support.design.** { *; }
+-keep public class android.support.design.R$* { *; }
 
 
 #BuildConfig
@@ -276,10 +290,6 @@
 -dontwarn com.sina.**
 -keep class  com.alipay.share.sdk.** {
    *;
-}
-
--keepnames class * implements android.os.Parcelable {
-    public static final ** CREATOR;
 }
 
 -keep class com.linkedin.** { *; }

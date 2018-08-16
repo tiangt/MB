@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
@@ -70,6 +71,8 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
     TextView tvPrivateChat;
     @BindView(R.id.ll_option_container)
     LinearLayout llOptionContainer;
+    @BindView(R.id.rl_info_container)
+    RelativeLayout rlInfoContainer;
     private RoomUserInfo.DataBean mViewedUser;
     private RoomUserInfo.DataBean mUser;
     private long mViewUserId;
@@ -121,6 +124,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         }
         if (mViewUserId == 0) {
             tvName.setText(mViewUserName);
+            rlInfoContainer.setVisibility(View.GONE);
             if (mUser != null) {
                 if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER
                         || mUser.getIdentityId() == UserIdentity.OPTR_MANAGER
@@ -189,6 +193,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         }
 
         if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER) {
+            tvPrivateChat.setVisibility(View.VISIBLE);
             if (mViewedUser.getIdentityId() != UserIdentity.OPTR_MANAGER
                     && mViewedUser.getIdentityId() != UserIdentity.ANCHOR
                     && mViewedUser.getIdentityId() != UserIdentity.ROOM_MANAGER) {
@@ -217,7 +222,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
         }
         if (user.getDisabledService() != null) {
             for (int i = 0; i < user.getDisabledService().size(); i++) {
-                if ("MUTE".equals(user.getDisabledService().get(i))) {
+                if (2 == user.getDisabledService().get(i)) {
                     tvBan.setText("取消禁言");
                 }
             }
@@ -251,7 +256,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
             case R.id.tv_ban:
                 if (mViewedUser != null && mViewedUser.getDisabledService() != null) {
                     for (int i = 0; i < mViewedUser.getDisabledService().size(); i++) {
-                        if ("MUTE".equals(mViewedUser.getDisabledService().get(i))) {
+                        if (2 == (mViewedUser.getDisabledService().get(i))) {
                             severOperate("CANCEL_MUTE");
                             return;
                         }

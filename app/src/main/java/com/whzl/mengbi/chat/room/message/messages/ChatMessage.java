@@ -49,7 +49,6 @@ public class ChatMessage implements FillHolderMessage {
 
         to_nickName = msgJson.getTo_nickname();
         contentString = msgJson.getContent();
-
         try {
             from_uid = Integer.valueOf(msgJson.getFrom_uid());
             to_uid = Integer.valueOf(msgJson.getTo_uid());
@@ -122,7 +121,8 @@ public class ChatMessage implements FillHolderMessage {
                 mholder.textView.append(" ");
             }
         }
-        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname + ": ", from_uid, programId));
+        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId));
+        mholder.textView.append(LightSpanString.getLightString(": ", Color.parseColor("#75bbfb")));
         SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
         //TODO:表情替换
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);

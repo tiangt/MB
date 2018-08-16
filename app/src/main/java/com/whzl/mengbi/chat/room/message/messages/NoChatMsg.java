@@ -9,7 +9,7 @@ import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 
-public class NoChatMsg implements FillHolderMessage{
+public class NoChatMsg implements FillHolderMessage {
     private int fromUid;
     private String fromNickname;
     private int toUid;
@@ -92,7 +92,8 @@ public class NoChatMsg implements FillHolderMessage{
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
         mHolder.textView.setText("");
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname + " 被 ", toUid, programId, WHITE_FONG_COLOR));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId, WHITE_FONG_COLOR));
+        mHolder.textView.append(LightSpanString.getLightString(" 被 ", WHITE_FONG_COLOR));
         mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, Color.parseColor("#20d190")));
         String nochatContent = " 禁止发言" + period + "分钟";
         mHolder.textView.append(LightSpanString.getLightString(nochatContent, Color.parseColor("#ff611b")));
