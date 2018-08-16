@@ -148,6 +148,8 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        cdt.cancel();
+        if (cdt != null) {
+            cdt.cancel();
+        }
     }
 }

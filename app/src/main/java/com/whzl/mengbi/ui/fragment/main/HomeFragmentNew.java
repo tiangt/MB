@@ -215,7 +215,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     public void showBanner(BannerInfo bannerInfo) {
         if (bannerInfo.getData() == null
                 || bannerInfo.getData().getList() == null
-                ||  bannerInfo.getData().getList() .isEmpty()) {
+                || bannerInfo.getData().getList().isEmpty()) {
             bannerLayout.setVisibility(View.GONE);
             return;
         }
