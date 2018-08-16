@@ -14,7 +14,7 @@ public class LoginMessage implements ByteableMessage {
     private String domain;
     private String uid;
     private String token="";
-    private String dev_type="{\"type\":3, \"devType\":1}"; //type是平台类型,devType是设备类型.1是安卓 2是安卓平板
+    private String dev_type="{\"type\":3, \"devType\":1}"; //type是平台类型,devType是设备类型.1是安卓 2是安卓平板, 3是ios
     private short type = 101;
 
     public LoginMessage(String archives_id, String domain, long uid, String token){
