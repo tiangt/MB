@@ -103,58 +103,63 @@
       },
       {
         "value": "/疑问",
-        "icon": "images/face/public/22.gif",
+        "icon": "images/face/public/21.gif",
         "title": "疑问"
       },
       {
         "value": "/生气",
-        "icon": "images/face/public/23.gif",
+        "icon": "images/face/public/22.gif",
         "title": "生气"
       },
       {
         "value": "/晕",
-        "icon": "images/face/public/24.gif",
+        "icon": "images/face/public/23.gif",
         "title": "晕"
       },
       {
         "value": "/闭嘴",
-        "icon": "images/face/public/25.gif",
+        "icon": "images/face/public/24.gif",
         "title": "闭嘴"
       },
       {
         "value": "/月亮",
-        "icon": "images/face/public/26.gif",
+        "icon": "images/face/public/25.gif",
         "title": "月亮"
       },
       {
         "value": "/哈欠",
-        "icon": "images/face/public/27.gif",
+        "icon": "images/face/public/26.gif",
         "title": "哈欠"
       },
       {
         "value": "/OK",
-        "icon": "images/face/public/28.gif",
+        "icon": "images/face/public/27.gif",
         "title": "OK"
       },
       {
         "value": "/投降",
-        "icon": "images/face/public/29.gif",
+        "icon": "images/face/public/28.gif",
         "title": "投降"
       },
       {
         "value": "/生气",
-        "icon": "images/face/public/30.gif",
+        "icon": "images/face/public/29.gif",
         "title": "生气"
       },
       {
         "value": "/惊恐",
-        "icon": "images/face/public/31.gif",
+        "icon": "images/face/public/30.gif",
         "title": "惊恐"
       },
       {
         "value": "/抠鼻",
-        "icon": "images/face/public/32.gif",
+        "icon": "images/face/public/31.gif",
         "title": "抠鼻"
+      },
+      {
+        "value": "/衰",
+        "icon": "images/face/public/32.gif",
+        "title": "衰"
       }
     ]
   }

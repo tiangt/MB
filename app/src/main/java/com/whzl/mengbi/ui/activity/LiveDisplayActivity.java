@@ -810,6 +810,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void onPause() {
         super.onPause();
+        if (isFinishing()) {
+            destroy();
+            return;
+        }
         if (textureView != null) {
             textureView.runInBackground(true);
         }
@@ -823,13 +827,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        destroy();
-        super.onDestroy();
-    }
+//    @Override
+//    protected void onDestroy() {
+//        destroy();
+//        super.onDestroy();
+//    }
 
     private void destroy() {
+        if (textureView != null) {
+            textureView.stop();
+            textureView.release();
+            textureView = null;
+        }
         if (mGifGiftControl != null) {
             mGifGiftControl.destroy();
         }
@@ -841,11 +850,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (mLuckyGiftControl != null) {
             mLuckyGiftControl.destroy();
-        }
-        if (textureView != null) {
-            textureView.stop();
-            textureView.release();
-            textureView = null;
         }
         if (showGuardAnim != null) {
             showGuardAnim.cancel();
@@ -884,10 +888,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         dialog.setMessage(getString(R.string.jump_live_house, nickName));
         dialog.setNegativeButton(R.string.cancel, null);
         dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
+            finish();
             Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, programId);
             startActivity(intent);
-            finish();
         });
         dialog.show();
     }
