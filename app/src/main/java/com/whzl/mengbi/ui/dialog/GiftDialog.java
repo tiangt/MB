@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -296,5 +297,4 @@ public class GiftDialog extends BaseAwesomeDialog {
         mGiftInfo = null;
         fragments = null;
     }
-
 }

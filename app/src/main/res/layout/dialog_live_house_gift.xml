@@ -26,18 +26,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="#d9d9d9"
+        android:layout_marginEnd="15dp"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp" />
+        android:background="#d9d9d9" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="35dp">
 
         <RelativeLayout
+            android:id="@+id/rl_send_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/rl_send_container">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tv_amount"
@@ -94,9 +94,9 @@
                     android:minWidth="57dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="5dp"
+                    android:text="1"
                     android:textColor="#323232"
-                    android:textSize="12dp"
-                    android:text="1" />
+                    android:textSize="12dp" />
 
                 <Button
                     android:id="@+id/btn_send_gift"
@@ -112,37 +112,37 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/ll_count_custom_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:id="@+id/ll_count_custom_container"
+            android:orientation="horizontal"
             android:visibility="gone">
 
             <EditText
                 android:id="@+id/et_count"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="28dp"
-                android:background="@drawable/shape_chat_dialog_edit_bg"
                 android:layout_marginLeft="22dp"
                 android:layout_marginRight="14dp"
-                android:textSize="14sp"
-                android:inputType="number"
+                android:layout_weight="1"
+                android:background="@drawable/shape_chat_dialog_edit_bg"
                 android:hint="@string/gift_custom_hint"
+                android:inputType="number"
+                android:maxLength="4"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:maxLength="4" />
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/btn_count_confirm"
                 android:layout_width="80dp"
                 android:layout_height="28dp"
+                android:layout_marginRight="11dp"
                 android:background="@drawable/shape_dialog_chat_send_btn_bg"
                 android:text="@string/confirm"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                android:layout_marginRight="11dp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
