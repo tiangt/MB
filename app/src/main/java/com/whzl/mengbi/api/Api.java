@@ -139,7 +139,7 @@ public interface Api {
 
 
     /**
-     * 上传文件
+     * 上传头像
      *
      * @param params
      * @param parts
@@ -149,5 +149,15 @@ public interface Api {
     @POST("v1/user/modify-avatar")
     Observable<ApiResult<JsonElement>> uploadFile(@PartMap Map<String, RequestBody> params,
                                                   @Part MultipartBody.Part parts);
+
+    /**
+     * 取消房管
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/rank/rank")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> getRankList(@FieldMap Map<String, String> params);
 
 }

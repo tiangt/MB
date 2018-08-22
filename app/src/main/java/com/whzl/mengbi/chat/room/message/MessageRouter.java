@@ -88,7 +88,7 @@ public class MessageRouter implements MessageCallback {
             case 1102:
                 parseChatMsg(message);
                 break;
-            case 1107: //禁言消息
+            case 1107: // 禁言消息
                 parseNoChatMsg(message);
                 break;
             default:

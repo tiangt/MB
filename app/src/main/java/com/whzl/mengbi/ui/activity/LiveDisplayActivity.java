@@ -45,7 +45,6 @@ import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
-import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -198,12 +197,24 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         setContentView(R.layout.activity_live_display_new);
     }
 
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        initEnv();
-        setupContentView();
-        setupContentView();
+        destroy();
+        textureView.stop();
+        textureView.reset();
+        textureView.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        mProgramId = intent.getIntExtra(BundleConfig.PROGRAM_ID, -1);
+        SPUtils.put(this, "programId", mProgramId);
+        chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
+        isGuard = false;
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.remove(fragments[0]);
+        fragmentTransaction.remove(fragments[1]);
+        fragmentTransaction.commit();
+        initFragment();
         loadData();
     }
 
@@ -250,6 +261,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         textureView.setOnPreparedListener(iMediaPlayer -> {
             textureView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
+            tvStopTip.setVisibility(View.GONE);
             textureView.start();
         });
         textureView.setOnInfoListener((iMediaPlayer, i, i1) -> {
@@ -380,7 +392,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     protected void loadData() {
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
-        SPUtils.put(this, SpConfig.KEY_PRIVATE_CHAT, false);
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
         mDisposable = Observable.interval(0, 20, TimeUnit.SECONDS).subscribe((Long aLong) -> {
@@ -513,14 +524,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnimEvent animEvent) {
-        if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())) {
+        if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())
+                || "DIV".equals(animEvent.getAnimJson().getAnimType())) {
             AnimJson animJson = animEvent.getAnimJson();
             animJson.getContext().setGiftUrl(animEvent.getAnimUrl());
             if (giftControl == null) {
                 giftControl = new GiftControl(LiveDisplayActivity.this);
-                giftControl.setGiftLayout(llGiftContainer, 3).setHideMode(false);
+                giftControl.setGiftLayout(llGiftContainer, 3);
             }
-            giftControl.loadGift(animJson.getContext());
+            giftControl.loadGift(animJson);
         } else {
             if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
                     || "MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
@@ -827,23 +839,25 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-//    @Override
-//    protected void onDestroy() {
-//        destroy();
-//        super.onDestroy();
-//    }
-
-    private void destroy() {
+    @Override
+    protected void onDestroy() {
         if (textureView != null) {
             textureView.stop();
             textureView.release();
             textureView = null;
         }
+        mLivePresenter.onDestory();
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+
+    private void destroy() {
+
         if (mGifGiftControl != null) {
             mGifGiftControl.destroy();
         }
         if (giftControl != null) {
-            giftControl.cleanAll();
+            giftControl.destroy();
         }
         if (mRunWayGiftControl != null) {
             mRunWayGiftControl.destroy();
@@ -859,12 +873,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             hideGuardAnim.cancel();
             hideGuardAnim = null;
         }
-        mLivePresenter.onDestory();
         if (chatRoomPresenter != null) {
             chatRoomPresenter.onChatRoomDestroy();
         }
         mDisposable.dispose();
-        unregisterReceiver(mReceiver);
     }
 
     @Override
@@ -888,7 +900,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         dialog.setMessage(getString(R.string.jump_live_house, nickName));
         dialog.setNegativeButton(R.string.cancel, null);
         dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
-            finish();
             Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, programId);
             startActivity(intent);

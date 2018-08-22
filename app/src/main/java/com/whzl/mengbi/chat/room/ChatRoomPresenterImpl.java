@@ -190,6 +190,7 @@ public class ChatRoomPresenterImpl {
     }
 
     public void onChatRoomDestroy() {
+        connectCallback = null;
         if (null != client) {
             client.closeSocket();
         }

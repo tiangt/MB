@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
-import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
@@ -129,4 +128,10 @@ public class GuardListDialog extends BaseAwesomeDialog {
         tabLayout.getTabAt(0).setText("守护（" + size + "）");
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mAdapter = null;
+        fragments = null;
+    }
 }

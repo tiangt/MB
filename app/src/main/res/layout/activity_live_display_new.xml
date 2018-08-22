@@ -181,19 +181,6 @@
                     android:layout_centerInParent="true" />
 
                 <TextView
-                    android:id="@+id/tv_lucky_gift"
-                    android:layout_width="320dp"
-                    android:layout_height="56dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/lucky_gift_bg"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="25dp"
-                    android:singleLine="true"
-                    android:textColor="#646464"
-                    android:textSize="11sp"
-                    android:visibility="gone" />
-
-                <TextView
                     android:id="@+id/tv_stop_tip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -219,6 +206,19 @@
                     android:orientation="vertical">
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_lucky_gift"
+                    android:layout_width="320dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/lucky_gift_bg"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="25dp"
+                    android:singleLine="true"
+                    android:textColor="#646464"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
 
             </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 

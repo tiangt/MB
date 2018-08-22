@@ -43,6 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private ProgressDialog dialog;
     private boolean isClickable = true;
     private long lastClickTime;
+    protected Toolbar toolbar;
 
     /**
      * 输出日志
@@ -76,7 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void setContentView(int layoutId, int titleRes, int rightMenuRes, boolean isShowBack) {
         super.setContentView(layoutId);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         TextView tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
         tvToolbarTitle.setText(titleRes);
         TextView tvToolbarMenuText = findViewById(R.id.tv_toolbar_menu_text);
