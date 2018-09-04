@@ -105,7 +105,6 @@ public class LuckGiftControl {
             hideAnim.cancel();
             hideAnim = null;
         }
-        giftQueue = null;
-        tvLuckyGift = null;
+        giftQueue.clear();
     }
 }

@@ -35,7 +35,7 @@ public class RunWayGiftControl {
         if (autoScrollView == null) {
             return;
         }
-        if(event.getRunWayJson().getContext().isCacheIt()){
+        if (event.getRunWayJson().getContext().isCacheIt()) {
             cacheEvent = event;
         }
         autoScrollView.setOnClickListener(v -> {
@@ -55,8 +55,11 @@ public class RunWayGiftControl {
     }
 
     public void destroy() {
-        autoScrollView = null;
-        runwayQueue = null;
+        if (autoScrollView != null) {
+            autoScrollView.stopScroll();
+            autoScrollView.dispose();
+        }
+        runwayQueue.clear();
     }
 
     @Override

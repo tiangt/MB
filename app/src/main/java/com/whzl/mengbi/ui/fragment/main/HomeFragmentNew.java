@@ -21,6 +21,7 @@ import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -29,6 +30,7 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -200,9 +202,16 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         //设置自动轮播，默认为true
         banner.isAutoPlay(true);
         //设置轮播时间
-        banner.setDelayTime(2000);
+        banner.setDelayTime(3000);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                Intent intent = new Intent(getContext(), RankListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadData() {
@@ -215,7 +224,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     public void showBanner(BannerInfo bannerInfo) {
         if (bannerInfo.getData() == null
                 || bannerInfo.getData().getList() == null
-                ||  bannerInfo.getData().getList() .isEmpty()) {
+                || bannerInfo.getData().getList().isEmpty()) {
             bannerLayout.setVisibility(View.GONE);
             return;
         }

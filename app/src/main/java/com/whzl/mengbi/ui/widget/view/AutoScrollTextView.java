@@ -88,15 +88,19 @@ public class AutoScrollTextView extends AppCompatTextView {
         step = 0f;
         textLength = paint.measureText(text);
         maxTranslateX = textLength + viewWidth + 50;
-        if (mDispose != null) {
-            mDispose.dispose();
-        }
+        dispose();
         if (event.getRunWayJson().getContext().isCacheIt()) {
             event.setHasRuned(true);
             mDispose = Observable.just(1)
                     .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(integer -> flagIsCacheTimeOut = true);
+        }
+    }
+
+    public void dispose() {
+        if (mDispose != null) {
+            mDispose.dispose();
         }
     }
 
@@ -146,6 +150,7 @@ public class AutoScrollTextView extends AppCompatTextView {
         public static final Parcelable.Creator<SavedState> CREATOR
                 = new Parcelable.Creator<SavedState>() {
 
+            @Override
             public SavedState[] newArray(int size) {
                 return new SavedState[size];
             }
@@ -159,7 +164,11 @@ public class AutoScrollTextView extends AppCompatTextView {
         private SavedState(Parcel in) {
             super(in);
             boolean[] b = null;
-            in.readBooleanArray(b);
+            try {
+                in.readBooleanArray(b);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (b != null && b.length > 0) {
                 isStarting = b[0];
             }

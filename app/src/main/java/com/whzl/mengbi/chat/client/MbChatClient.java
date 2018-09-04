@@ -116,6 +116,7 @@ public class  MbChatClient {
     }
 
     public void closeSocket(){
+        mConnectCallback = null;
         isStoped = true;
         if(socket == null){
             return;
