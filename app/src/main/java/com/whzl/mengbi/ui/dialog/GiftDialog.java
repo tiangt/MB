@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -34,6 +36,7 @@ import com.whzl.mengbi.ui.dialog.fragment.GiftSortMotherFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
@@ -73,6 +76,8 @@ public class GiftDialog extends BaseAwesomeDialog {
     EditText etCount;
     @BindView(R.id.ll_count_custom_container)
     LinearLayout llCountCustomContainer;
+    @BindView(R.id.first_top_up)
+    ConstraintLayout firstTopUp;
     private ArrayList<GiftCountInfoBean> giftCountInfoList;
     private CommonAdapter<GiftCountInfoBean> adapter;
     private PopupWindow popupWindow;
@@ -101,6 +106,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         EventBus.getDefault().unregister(this);
     }
 
+
     @Override
     public int intLayoutId() {
         return R.layout.dialog_live_house_gift;
@@ -109,6 +115,8 @@ public class GiftDialog extends BaseAwesomeDialog {
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         coin = getArguments().getLong("coin");
+        boolean hasTopUp = (boolean) SPUtils.get(getContext(), SpConfig.KEY_HAS_RECHARGED, false);
+        firstTopUp.setVisibility(hasTopUp ? View.GONE : View.VISIBLE);
         mGiftInfo = getArguments().getParcelable("gift_info");
         fragments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
@@ -174,7 +182,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         currentSelectedIndex = index;
     }
 
-    @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm, R.id.tv_top_up})
+    @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm, R.id.tv_top_up, R.id.first_top_up})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_count:
@@ -214,6 +222,11 @@ public class GiftDialog extends BaseAwesomeDialog {
                 break;
             case R.id.tv_top_up:
                 jumpRechargeActivity();
+                break;
+            case R.id.first_top_up:
+                Intent intent = new Intent(getContext(), WXPayEntryActivity.class);
+                startActivity(intent);
+                dismiss();
                 break;
         }
 

@@ -17,9 +17,10 @@ public class RegisterInfo extends ResponseInfo {
 
         private String sessionId;
         private long userId;
-        private String nickName;
+        private String nickname;
         private String avatar;
         private String userType;
+        private String lastRechargeTime;
 
         public String getSessionId() {
             return sessionId;
@@ -34,11 +35,11 @@ public class RegisterInfo extends ResponseInfo {
         }
 
         public String getNickName() {
-            return nickName;
+            return nickname;
         }
 
         public void setNickName(String nickName) {
-            this.nickName = nickName;
+            this.nickname = nickName;
         }
 
         public String getAvatar() {
@@ -55,6 +56,14 @@ public class RegisterInfo extends ResponseInfo {
 
         public void setUserType(String userType) {
             this.userType = userType;
+        }
+
+        public String getLastRechargeTime() {
+            return lastRechargeTime;
+        }
+
+        public void setLastRechargeTime(String lastRechargeTime) {
+            this.lastRechargeTime = lastRechargeTime;
         }
     }
 }

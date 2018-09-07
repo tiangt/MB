@@ -1,9 +1,13 @@
 package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
+import android.util.EventLog;
 
 import com.whzl.mengbi.chat.room.message.events.ProgramFirstNotifyEvent;
+import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.ProgramFirstNotifyJson;
+import com.whzl.mengbi.chat.room.message.messages.ProgramFirstMessage;
+import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.util.GsonUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -19,6 +23,12 @@ public class ProgramFirstAction implements Actions {
         if (notifyJson == null) {
             return;
         }
-        EventBus.getDefault().post(new ProgramFirstNotifyEvent(notifyJson, context));
+        try {
+            long userId = Long.parseLong(notifyJson.getContext().getUserId());
+            ChatRoomInfo.getInstance().setProgramFirstId(userId);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        EventBus.getDefault().post(new UpdatePubChatEvent(new ProgramFirstMessage(notifyJson, context)));
     }
 }

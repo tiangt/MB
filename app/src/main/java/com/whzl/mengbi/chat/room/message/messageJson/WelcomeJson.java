@@ -3,7 +3,7 @@ package com.whzl.mengbi.chat.room.message.messageJson;
 import java.util.List;
 
 public class WelcomeJson {
-    public class WelcomeExpListItem{
+    public class WelcomeExpListItem {
         private int sjExpvalue;
         private int bjExpValue;
         private int userExpSn;
@@ -46,7 +46,7 @@ public class WelcomeJson {
         }
     }
 
-    public class WelcomeLevelListItem{
+    public class WelcomeLevelListItem {
         List<WelcomeExpListItem> levelList;
         String levelName;
         String levelPic;
@@ -79,9 +79,15 @@ public class WelcomeJson {
         }
     }
 
-    public class UserBagItem{
+    public class UserBagItem {
         int equipDay;
         String goodsType;
+
+        public String getPrettyNum() {
+            return prettyNum;
+        }
+
+        String prettyNum;
         String isEquip;
         int goodsPicId;
         String goodsName;
@@ -116,7 +122,7 @@ public class WelcomeJson {
         }
     }
 
-    public class WelcomeInfo{
+    public class WelcomeInfo {
         String nickname;
         String certNum;
         long userId;
@@ -144,9 +150,12 @@ public class WelcomeJson {
         }
     }
 
-    public class WelcomeContext{
+    public class WelcomeContext {
         WelcomeInfo info;
-
+        CarObj carObj;
+        public CarObj getCarObj() {
+            return carObj;
+        }
         public WelcomeInfo getInfo() {
             return info;
         }
@@ -161,5 +170,36 @@ public class WelcomeJson {
 
     public String getEventCode() {
         return eventCode;
+    }
+
+    public class CarObj{
+        public int getCarPicId() {
+            return carPicId;
+        }
+
+        public long getPrettyNumberOrUserId() {
+            if(prettyNumberOrUserId == null){
+                return 0;
+            }
+            return Long.parseLong(prettyNumberOrUserId);
+        }
+
+        public String getGoodsColor() {
+            return goodsColor;
+        }
+
+        public int getCarGoodsId() {
+            return carGoodsId;
+        }
+
+        public String getGoodsName() {
+            return goodsName;
+        }
+
+        private int carPicId;
+        private String prettyNumberOrUserId;
+        private String goodsColor;
+        private int carGoodsId;
+        private String goodsName;
     }
 }

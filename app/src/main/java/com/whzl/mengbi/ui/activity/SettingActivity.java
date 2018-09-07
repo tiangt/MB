@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -25,6 +26,7 @@ import com.whzl.mengbi.util.AsyncRun;
 import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 

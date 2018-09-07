@@ -129,6 +129,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
                 tvEmpty.setVisibility(VISIBLE);
                 tvEmpty.setText("当前列表为空");
                 tvEmpty.setOnClickListener(null);
+                refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(false);
                 break;
             case LOAD_RESULT_ERROR:

@@ -142,23 +142,22 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case RESTART_GIFT_ANIMATION_CODE:
-                tvCount.setText("x " + comboList.get(0));
+                tvComboTime.setText("x " + comboList.get(0));
                 comboList.remove(0);
-                int color = getColor();
-                switch (color) {
-                    case 1:
+                switch (mGift.getCount()) {
+                    case 66:
                         ivBg.setImageResource(R.drawable.combo_gift_66_bg);
                         break;
-                    case 2:
+                    case 99:
                         ivBg.setImageResource(R.drawable.combo_gift_99_bg);
                         break;
-                    case 3:
+                    case 188:
                         ivBg.setImageResource(R.drawable.combo_gift_188_bg);
                         break;
-                    case 4:
+                    case 520:
                         ivBg.setImageResource(R.drawable.combo_gift_520_bg);
                         break;
-                    case 5:
+                    case 1314:
                         ivBg.setImageResource(R.drawable.combo_gift_1314_bg);
                         break;
                 }
@@ -297,29 +296,27 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
      */
     public void initLayoutState() {
         this.setVisibility(View.VISIBLE);
-        tvCount.setText("x" + mGift.getComboTimes());
+        tvComboTime.setText("x" + mGift.getComboTimes());
+        tvCount.setText("x" + mGift.getCount());
         tvFromNickName.setText(mGift.getNickname());
-        tvGiftName.setText("送 ");
-        SpannableString spannableString = StringUtils.spannableStringColor(mGift.getGoodsName(), Color.parseColor("#fe4b21"));
-        tvGiftName.append(spannableString);
+        tvGiftName.setText("送 " + mGift.getGoodsName());
         String avatarUrl = ImageUrl.getAvatarUrl(mGift.getUserId(), "jpg", mGift.getLastUpdateTime());
         GlideImageLoader.getInstace().displayImage(getContext(), avatarUrl, ivAvatar);
         GlideImageLoader.getInstace().displayImage(getContext(), mGift.getGiftUrl(), ivGift);
-        int color = getColor();
-        switch (color) {
-            case 1:
+        switch (mGift.getCount()) {
+            case 66:
                 ivBg.setImageResource(R.drawable.combo_gift_66_1_bg);
                 break;
-            case 2:
+            case 99:
                 ivBg.setImageResource(R.drawable.combo_gift_99_1_bg);
                 break;
-            case 3:
+            case 188:
                 ivBg.setImageResource(R.drawable.combo_gift_188_1_bg);
                 break;
-            case 4:
+            case 520:
                 ivBg.setImageResource(R.drawable.combo_gift_520_1_bg);
                 break;
-            case 5:
+            case 1314:
                 ivBg.setImageResource(R.drawable.combo_gift_1314_1_bg);
                 break;
         }
@@ -384,7 +381,7 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
             comboEndAnim();
         } else {
             //数量增加
-            ObjectAnimator scaleGiftNum = GiftAnimationUtil.scaleGiftNum(tvCount);
+            ObjectAnimator scaleGiftNum = GiftAnimationUtil.scaleGiftNum(tvComboTime);
             scaleGiftNum.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {

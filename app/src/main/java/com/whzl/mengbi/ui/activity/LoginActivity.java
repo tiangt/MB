@@ -215,7 +215,12 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, userInfo.getData().getNickname());
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, userInfo.getData().getLastRechargeTime() != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
+
         if (LiveDisplayActivity.class.toString().equals(activityFrom)) {
+            setResult(RESULT_OK);
+        } else if (userInfo.getData().getCreateTime() != null
+                && userInfo.getData().getCreateTime().equals(userInfo.getData().getLastLoginTime())) {
             setResult(RESULT_OK);
         }
         finish();
@@ -232,7 +237,10 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_REGISTER) {
-            finish();
+            if (resultCode == RESULT_OK) {
+                setResult(RESULT_OK);
+                finish();
+            }
         }
     }
 
@@ -242,10 +250,4 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         umShareAPI.release();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

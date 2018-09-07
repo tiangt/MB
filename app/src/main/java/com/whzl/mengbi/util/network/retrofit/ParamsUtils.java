@@ -39,7 +39,7 @@ public class ParamsUtils {
         return paramsMap;
     }
 
-    public static HashMap<String, RequestBody> getMultiParamsMap(HashMap<String, String> paramsMap){
+    public static HashMap<String, RequestBody> getMultiParamsMap(HashMap<String, String> paramsMap) {
         String sessionId = (String) SPUtils.get(BaseApplication.getInstance(), "sessionId", "");
         long timeDiff = (long) SPUtils.get(BaseApplication.getInstance(), SpConfig.TIME_DIFF, 0L);
         paramsMap.put("appKey", NetConfig.APPKEY);
@@ -53,7 +53,7 @@ public class ParamsUtils {
         paramsMap.remove("appSecret");
         HashMap<String, RequestBody> map = new HashMap<>();
         for (Map.Entry<String, String> entry : paramsMap.entrySet()) {
-           map.put(entry.getKey(), RequestBody.create(MediaType.parse("text/plain"), entry.getValue()));
+            map.put(entry.getKey(), RequestBody.create(MediaType.parse("text/plain"), entry.getValue()));
         }
         return map;
     }

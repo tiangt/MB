@@ -23,6 +23,7 @@ public class RankListBean {
             public String nickname;
             public String avatar;
             public int level;
+            public String levelType;
         }
 
         public class RankBean {
