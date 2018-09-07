@@ -15,6 +15,7 @@ import com.whzl.mengbi.model.entity.RankListBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
+import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -127,7 +128,7 @@ public class RankListFragment extends BasePullListFragment<RankListBean.DetailBe
         @BindView(R.id.iv_rank)
         ImageView ivRank;
         @BindView(R.id.iv_avatar)
-        ImageView ivAvatar;
+        CircleImageView ivAvatar;
         @BindView(R.id.tv_status)
         TextView tvStatus;
         @BindView(R.id.iv_user_level)
@@ -154,12 +155,17 @@ public class RankListFragment extends BasePullListFragment<RankListBean.DetailBe
             rlGapContainer.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
             RankListBean.DetailBean detailBean = mDatas.get(position);
             tvStatus.setVisibility(detailBean.program != null && "T".equals(detailBean.program.status) ? View.VISIBLE : View.GONE);
-            if(detailBean.user != null){
+            ivAvatar.setBorderColor(getResources().getColor(statusColors[position]));
+            if (detailBean.user != null) {
                 GlideImageLoader.getInstace().displayImage(getContext(), detailBean.user.avatar, ivAvatar);
                 tvNickName.setText(detailBean.user.nickname);
-                ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(detailBean.user.level));
+                if ("ANCHOR_LEVEL".equals(detailBean.user.levelType)) {
+                    ivUserLevel.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(detailBean.user.level));
+                } else {
+                    ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(detailBean.user.level));
+                }
             }
-            if(detailBean.rank != null){
+            if (detailBean.rank != null) {
                 tvGap.setText(detailBean.rank.gap + "");
             }
         }
@@ -168,7 +174,7 @@ public class RankListFragment extends BasePullListFragment<RankListBean.DetailBe
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             RankListBean.DetailBean detailBean = mDatas.get(position);
-            if(detailBean.program != null && detailBean.program.programId > 0){
+            if (detailBean.program != null && detailBean.program.programId > 0) {
                 Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
                 intent.putExtra("programId", detailBean.program.programId);
                 startActivity(intent);
@@ -188,6 +194,7 @@ public class RankListFragment extends BasePullListFragment<RankListBean.DetailBe
         TextView tvNickName;
         @BindView(R.id.tv_gap)
         TextView tvGap;
+
         public NormalViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -200,12 +207,16 @@ public class RankListFragment extends BasePullListFragment<RankListBean.DetailBe
             ivStatus.setVisibility(detailBean.program != null && "T".equals(detailBean.program.status) ? View.VISIBLE : View.GONE);
             tvNickName.setTextColor(detailBean.program != null && "T".equals(detailBean.program.status)
                     ? Color.parseColor("#1edd8e")
-                    : Color.parseColor("#404040") );
-            if(detailBean.user != null){
+                    : Color.parseColor("#404040"));
+            if (detailBean.user != null) {
                 tvNickName.setText(detailBean.user.nickname);
-                ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(detailBean.user.level));
+                if ("ANCHOR_LEVEL".equals(detailBean.user.levelType)) {
+                    ivUserLevel.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(detailBean.user.level));
+                } else {
+                    ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(detailBean.user.level));
+                }
             }
-            if(detailBean.rank != null){
+            if (detailBean.rank != null) {
                 tvGap.setText(detailBean.rank.gap + "");
             }
         }
@@ -214,7 +225,7 @@ public class RankListFragment extends BasePullListFragment<RankListBean.DetailBe
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             RankListBean.DetailBean detailBean = mDatas.get(position);
-            if(detailBean.program != null && detailBean.program.programId > 0){
+            if (detailBean.program != null && detailBean.program.programId > 0) {
                 Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
                 intent.putExtra("programId", detailBean.program.programId);
                 startActivity(intent);

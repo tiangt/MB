@@ -65,15 +65,31 @@ public class RankListActivity extends BaseActivity {
         titles.add("明星榜");
         titles.add("富豪榜");
         titles.add("人气榜");
-        titles.add("周星榜");
+//        titles.add("周星榜");
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(RankMotherFragment.newInstance("CELEBRITY"));
         fragments.add(RankMotherFragment.newInstance("RICH"));
         fragments.add(RankMotherFragment.newInstance("POPULAR"));
-        fragments.add(WeekStarFragment.newInstance());
+//        fragments.add(WeekStarFragment.newInstance());
         viewpager.setOffscreenPageLimit(3);
         viewpager.setAdapter(new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles));
         sortTabLayout.setupWithViewPager(viewpager);
+        sortTabLayout.clearOnTabSelectedListeners();
+        sortTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewpager.setCurrentItem(tab.getPosition(), false);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     private void showPopWindow() {

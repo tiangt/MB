@@ -53,7 +53,7 @@ public class FaceReplace {
         patternList = new ArrayList<>();
         for (EmjoyInfo.FaceBean.PublicBean faceBean : faceList) {
             byte[] fileContent = getFileContent(context, faceBean.getIcon());
-            patternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent, faceBean.getIcon()));
+            patternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent, faceBean.getIcon(), faceBean.getValue()));
         }
         guardPatternList = new ArrayList<>();
         String guardStrJson = FileUtils.getJson("images/face/guard_face.json", context);
@@ -61,7 +61,7 @@ public class FaceReplace {
         List<EmjoyInfo.FaceBean.PublicBean> guardFaceLost = guardEmjoyInfo.getFace().getPublicX();
         for (EmjoyInfo.FaceBean.PublicBean faceBean : guardFaceLost) {
             byte[] fileContent = getFileContent(context, faceBean.getIcon());
-            guardPatternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent, faceBean.getIcon()));
+            guardPatternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent, faceBean.getIcon(), faceBean.getValue()));
         }
 
     }
@@ -82,13 +82,19 @@ public class FaceReplace {
             while (m.find()) {
                 int start = m.start();
                 int end = m.end();
-                Drawable drawable;
+                Drawable drawable = null;
                 try {
+                    if ("/顶".equals(fp.getValue()) || "/加油".equals(fp.getValue())) {
+                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
+                        drawable = new BitmapDrawable(context.getResources(), bitmap);
+                        return;
+                    }
                     drawable = new GifDrawable(fp.getFileContent());
                     drawable.setCallback(new DrawableCallback(textView));
                 } catch (Exception ignored) {
-                    Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-                    drawable = new BitmapDrawable(context.getResources(), bitmap);
+//                    Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
+//                    drawable = new BitmapDrawable(context.getResources(), bitmap);
+                    ignored.printStackTrace();
                 }
                 if (drawable == null) {
                     break;
@@ -145,11 +151,13 @@ public class FaceReplace {
         private Pattern pattern;
         private byte[] fileContent;
         private String icon;
+        private String value;
 
-        public FacePattern(Pattern pattern, byte[] fileContent, String icon) {
+        public FacePattern(Pattern pattern, byte[] fileContent, String icon, String value) {
             this.pattern = pattern;
             this.fileContent = fileContent;
             this.icon = icon;
+            this.value = value;
         }
 
         public Pattern getPattern() {
@@ -170,6 +178,10 @@ public class FaceReplace {
 
         public String getIcon() {
             return icon;
+        }
+
+        public String getValue() {
+            return value;
         }
     }
 }

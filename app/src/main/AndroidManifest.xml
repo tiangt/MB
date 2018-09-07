@@ -221,17 +221,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-        <!--账户中心-->
-        <!--设置-->
-        <activity
-            android:name=".ui.activity.SettingsActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <!--意见反馈-->
-        <activity
-            android:name=".ui.activity.FeedBackActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+
         <!--客服中心-->
         <activity
             android:name=".ui.activity.CustomServiceCenterActivity"
@@ -274,12 +264,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.FollowActivity" />
-        <activity android:name=".ui.activity.RegisterActivityNew" />
         <activity android:name=".ui.activity.SettingActivity" />
         <activity android:name=".ui.activity.AboutUsActivity" />
         <activity android:name=".ui.activity.WatchHistoryActivity" />
         <activity android:name=".ui.activity.FeedbackActivity" />
         <activity android:name=".ui.activity.RankListActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".ui.activity.CommWebActivity"
             android:launchMode="singleTop"/>
     </application>
 </manifest>

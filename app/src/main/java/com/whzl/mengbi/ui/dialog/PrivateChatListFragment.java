@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatEvent;
-import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -24,7 +23,6 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
-import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.UIUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -96,7 +94,7 @@ public class PrivateChatListFragment extends BaseFragment {
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View item = LayoutInflater.from(getContext()).inflate(R.layout.chat_text, null);
+                View item = LayoutInflater.from(getContext()).inflate(R.layout.item_priavet_chat_msg, null);
                 return new SingleTextViewHolder(item);
             }
 

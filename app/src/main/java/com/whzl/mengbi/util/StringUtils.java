@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public class StringUtils {
 
-    public static final String PHONE_REGEX = "^1+[34578]+\\d{9}";
+    public static final String PHONE_REGEX = "^1+[345678]+\\d{9}";
     public static final Pattern PHONE_PATTERN = Pattern.compile(PHONE_REGEX);
 
     public static final boolean isPhone(String phone) {

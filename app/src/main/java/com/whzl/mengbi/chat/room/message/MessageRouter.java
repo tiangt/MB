@@ -15,11 +15,13 @@ import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.OpenGuardAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.ProgramFirstAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RunWayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SetManagerAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SubProgramAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.SystemMsgAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UpdateProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
@@ -50,6 +52,7 @@ public class MessageRouter implements MessageCallback {
         EventBus.getDefault().register(context);
     }
 
+    @Override
     public void unregister() {
         EventBus.getDefault().unregister(mContext);
         mContext = null;
@@ -68,6 +71,8 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("RUNWAY", new RunWayAction());
         actionsMap.put("SET_MANAGER", new SetManagerAction());
         actionsMap.put("UPDATE_PROGRAM", new UpdateProgramAction());
+        actionsMap.put("ProgramFirstNotify", new ProgramFirstAction());
+        actionsMap.put("SEND_SYSTEM_MESSAGE", new SystemMsgAction());
     }
 
     private void initChatAction() {

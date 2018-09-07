@@ -22,4 +22,10 @@ public interface LivePresenter {
     void getRunWayList(HashMap paramsMap);
 
     void getGuardList(int programId);
+
+    void getProgramFirst(int programId);
+
+    void getTreasureBoxStatus(long userId);
+
+    void receiveTreasure(long userId);
 }

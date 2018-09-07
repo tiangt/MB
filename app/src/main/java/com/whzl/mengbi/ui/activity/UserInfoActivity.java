@@ -138,12 +138,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
             String levelType = levelList.getLevelType();
             long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
-            if (levelType.equals("ANCHOR_LEVEL") && !levelList.getExpList().isEmpty()) {
+            if ("ANCHOR_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
                 tvAnchorLevel.setText("离升级还差");
                 tvAnchorLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#f1275b")));
                 tvAnchorLevel.append("主播经验");
                 ivAnchorLevel.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelList.getLevelValue()));
-            } else if (levelType.equals("USER_LEVEL") && !levelList.getExpList().isEmpty()) {
+            } else if ("USER_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
                 tvUserLevel.setText("离升级还差");
                 tvUserLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#4facf3")));
                 tvUserLevel.append("富豪经验");

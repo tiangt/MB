@@ -348,6 +348,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
         }
     }
 
+    @Override
     public AnimatorSet endAnmation() {
         ObjectAnimator fadeAnimator = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 0, -100, 300, 0);
         ObjectAnimator fadeAnimator2 = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 100, 0, 0, 0);

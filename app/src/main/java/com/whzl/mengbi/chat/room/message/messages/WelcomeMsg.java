@@ -12,6 +12,7 @@ import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
+import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
 
 import java.util.List;
@@ -23,12 +24,15 @@ public class WelcomeMsg implements FillHolderMessage {
     private List<SpannableString> userSpanList;
     private Context mContext;
     private boolean isAnchor = false;
+    private long prettyNum;
     private boolean hasGuard = false;
     private int programId = 0;
+    private WelcomeJson mWelcomeJson;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
         this.uid = welcomeJson.getContext().getInfo().getUserId();
+        this.mWelcomeJson = welcomeJson;
         mContext = context;
         //TODO:判断主播or用户
         if (ChatRoomInfo.getInstance().getRoomInfoBean() != null) {
@@ -45,14 +49,14 @@ public class WelcomeMsg implements FillHolderMessage {
 
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
-        SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
+        WelcomeTextViewHolder mHolder = (WelcomeTextViewHolder) holder;
         mHolder.textView.setText("");
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         if (uid != 0) {
             int levelIcon = 0;
             if (isAnchor) {
                 levelIcon = ResourceMap.getResourceMap().getAnchorLevelIcon(userLevel);
-            }else {
+            } else {
                 levelIcon = ResourceMap.getResourceMap().getUserLevelIcon(userLevel);
             }
             mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
@@ -62,13 +66,13 @@ public class WelcomeMsg implements FillHolderMessage {
                 mHolder.textView.append(" ");
             }
             if (null != userSpanList) {
-                for(SpannableString spanString : userSpanList) {
+                for (SpannableString spanString : userSpanList) {
                     mHolder.textView.append(spanString);
                     mHolder.textView.append(" ");
                 }
             }
             mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#f4be2c")));
-        }else {
+        } else {
             mHolder.textView.append(LightSpanString.getLightString("欢迎 ", WHITE_FONG_COLOR));
             mHolder.textView.append(LightSpanString.getLightString(nickName, Color.parseColor("#ffffff")));
 
@@ -81,16 +85,26 @@ public class WelcomeMsg implements FillHolderMessage {
         return SINGLE_TEXTVIEW;
     }
 
+
+    public boolean isHasGuard() {
+        return hasGuard;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+
     private int getUserLevel(long uid, List<WelcomeJson.WelcomeLevelListItem> levelList) {
         if (null == levelList) {
             return 0;
         }
         int level = 0;
-        for(WelcomeJson.WelcomeLevelListItem item:levelList) {
+        for (WelcomeJson.WelcomeLevelListItem item : levelList) {
             if (isAnchor && item.getLevelType().equals("ANCHOR_LEVEL")) {
                 level = item.getLevelValue();
                 break;
-            }else if (item.getLevelType().equals("USER_LEVEL")) {
+            } else if (item.getLevelType().equals("USER_LEVEL")) {
                 level = item.getLevelValue();
                 break;
             }
@@ -98,19 +112,53 @@ public class WelcomeMsg implements FillHolderMessage {
         return level;
     }
 
-
     private boolean userHasGuard(List<WelcomeJson.UserBagItem> goodsList) {
         if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
             return false;
         }
         int programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
         boolean hasGuard = false;
-        for(WelcomeJson.UserBagItem bagItem: goodsList) {
+        for (WelcomeJson.UserBagItem bagItem : goodsList) {
             if (bagItem.getGoodsType().equals("GUARD") && bagItem.getBindProgramId() == programId) {
                 hasGuard = true;
                 break;
             }
         }
         return hasGuard;
+    }
+
+    public boolean hasBagCar() {
+        if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public String getCarName() {
+        if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
+            return null;
+        }
+        return mWelcomeJson.getContext().getCarObj().getGoodsName();
+    }
+
+    public int getCarId() {
+        if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
+            return 0;
+        }
+        return mWelcomeJson.getContext().getCarObj().getCarPicId();
+    }
+
+    public long getPrettyNum() {
+        if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
+            return 0;
+        }
+        return mWelcomeJson.getContext().getCarObj().getPrettyNumberOrUserId();
+    }
+
+    public String getGoodsColor(){
+        if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
+            return "default";
+        }
+        return mWelcomeJson.getContext().getCarObj().getGoodsColor();
     }
 }

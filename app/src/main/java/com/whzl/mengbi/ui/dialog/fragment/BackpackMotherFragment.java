@@ -116,10 +116,13 @@ public class BackpackMotherFragment extends BaseFragment {
                 .getBackpack(signPramsMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<BackpackListBean>(this) {
+                .subscribe(new ApiObserver<BackpackListBean>() {
 
                     @Override
                     public void onSuccess(BackpackListBean backpackListBean) {
+                        if(getContext() == null){
+                            return;
+                        }
                         fragments.clear();
                         if (backpackListBean != null && backpackListBean.list != null && backpackListBean.list.size() > 0) {
                             viewPager.setVisibility(View.VISIBLE);
@@ -148,6 +151,9 @@ public class BackpackMotherFragment extends BaseFragment {
 
                     @Override
                     public void onError(int code) {
+                        if(getContext() == null){
+                            return;
+                        }
                         viewPager.setVisibility(View.GONE);
                         tvBackpackEmpty.setVisibility(View.VISIBLE);
                     }

@@ -7,6 +7,7 @@ import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 
 public interface OnLiveFinishedListener {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -24,4 +25,10 @@ public interface OnLiveFinishedListener {
     void onGetRunWayListSuccess(RunWayListBean runWayListBean);
 
     void onGetGuardListSuccess(GuardListBean guardListBean);
+
+    void onGetProgramFirstSuccess(long userId);
+
+    void onTreasureStatusSuccess(TreasureBoxStatusBean treasureBoxStatusBean);
+
+    void onReceiveTreasureSuccess();
 }

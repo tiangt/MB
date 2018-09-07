@@ -23,7 +23,7 @@ public class RankMotherFragment extends BaseFragment {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
-    public static RankMotherFragment newInstance(String rankName){
+    public static RankMotherFragment newInstance(String rankName) {
         Bundle args = new Bundle();
         args.putString("rankName", rankName);
         RankMotherFragment rankMotherFragment = new RankMotherFragment();
@@ -51,11 +51,28 @@ public class RankMotherFragment extends BaseFragment {
         fragments.add(RankListFragment.newInstance(rankName, "DAY", "F"));
         fragments.add(RankListFragment.newInstance(rankName, "WEEK", "F"));
         fragments.add(RankListFragment.newInstance(rankName, "MONTH", "F"));
-        fragments.add(RankListFragment.newInstance(rankName, "DAY",  "T"));
+        fragments.add(RankListFragment.newInstance(rankName, "DAY", "T"));
         fragments.add(RankListFragment.newInstance(rankName, "WEEK", "T"));
         fragments.add(RankListFragment.newInstance(rankName, "MONTH", "T"));
         viewpager.setOffscreenPageLimit(5);
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         periodTab.setupWithViewPager(viewpager);
+        periodTab.clearOnTabSelectedListeners();
+        periodTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewpager.setCurrentItem(tab.getPosition(), false);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 }
