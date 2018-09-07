@@ -206,7 +206,8 @@
         <activity android:name=".ui.activity.camera.Camera2Activity"></activity>
         <activity
             android:name=".ui.activity.LiveDisplayActivity"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            android:launchMode="singleTask">
 
         </activity>
 
@@ -220,17 +221,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-        <!--账户中心-->
-        <!--设置-->
-        <activity
-            android:name=".ui.activity.SettingsActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
-        <!--意见反馈-->
-        <activity
-            android:name=".ui.activity.FeedBackActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+
         <!--客服中心-->
         <activity
             android:name=".ui.activity.CustomServiceCenterActivity"
@@ -260,7 +251,8 @@
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:launchMode="singleTask" />
-        <activity android:name=".ui.activity.LoginActivity" />
+        <activity android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:launchMode="singleTop"
@@ -272,10 +264,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.FollowActivity" />
-        <activity android:name=".ui.activity.RegisterActivityNew" />
         <activity android:name=".ui.activity.SettingActivity" />
         <activity android:name=".ui.activity.AboutUsActivity" />
         <activity android:name=".ui.activity.WatchHistoryActivity" />
         <activity android:name=".ui.activity.FeedbackActivity" />
+        <activity android:name=".ui.activity.RankListActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".ui.activity.CommWebActivity"
+            android:launchMode="singleTop"/>
     </application>
 </manifest>

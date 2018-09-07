@@ -1,5 +1,6 @@
 package com.whzl.mengbi.model.impl;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
@@ -11,6 +12,7 @@ import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.FileUtils;
@@ -20,6 +22,10 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -223,5 +229,76 @@ public class LiveModelImpl implements LiveModel {
                     }
                 });
 
+    }
+
+    @Override
+    public void getProgramFirst(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getProgramFirst(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+
+                    @Override
+                    public void onSuccess(JsonElement jsonElement) {
+                        String jsonStr = jsonElement.toString();
+                        JSONObject jsonObject;
+                        try {
+                            jsonObject = new JSONObject(jsonStr);
+                            long userId = jsonObject.getLong("userId");
+                            listener.onGetProgramFirstSuccess(userId);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+
+    }
+
+    @Override
+    public void getTreasureBox(HashMap paramsMap, OnLiveFinishedListener listener){
+        ApiFactory.getInstance().getApi(Api.class)
+                .getTreasureBoxStatus(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<TreasureBoxStatusBean>() {
+
+
+                    @Override
+                    public void onSuccess(TreasureBoxStatusBean treasureBoxStatusBean) {
+                        listener.onTreasureStatusSuccess(treasureBoxStatusBean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void treceiveTreasure(HashMap paramsMap, OnLiveFinishedListener listener){
+        ApiFactory.getInstance().getApi(Api.class)
+                .receiveTreasure(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+
+
+                    @Override
+                    public void onSuccess(JsonElement jsonElement) {
+                        listener.onReceiveTreasureSuccess();
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
     }
 }

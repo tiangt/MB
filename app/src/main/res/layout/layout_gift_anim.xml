@@ -1,69 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/gift_anim_view"
-    android:layout_width="wrap_content"
-    android:layout_height="37dp"
-    android:layout_marginBottom="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="34dp"
+    android:layout_marginBottom="30dp"
     android:layout_marginLeft="20dp">
 
-    <RelativeLayout
-        android:id="@+id/rl_info_container"
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="34dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="25dp"
-        android:background="@drawable/shape_live_house_gift_anim_bg">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dp"
+        android:src="@drawable/gift_anim_normal_bg"/>
 
-        <com.whzl.mengbi.ui.widget.view.CircleImageView
-            android:id="@+id/iv_anim_gift_avatar"
-            android:layout_width="34dp"
-            android:layout_height="match_parent" />
+    <com.whzl.mengbi.ui.widget.view.CircleImageView
+        android:id="@+id/iv_anim_gift_avatar"
+        android:layout_width="34dp"
+        android:layout_height="match_parent" />
 
 
-        <LinearLayout
+    <LinearLayout
+        android:id="@+id/ll_in_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="6dp"
+        android:layout_toRightOf="@id/iv_anim_gift_avatar"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:minWidth="54dp">
+
+        <TextView
+            android:id="@+id/tv_anim_gift_form"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="6dp"
-            android:layout_toRightOf="@id/iv_anim_gift_avatar"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingRight="83dp">
+            android:layout_height="wrap_content"
+            android:textColor="#f9f9f9"
+            android:textSize="11sp" />
 
-            <TextView
-                android:id="@+id/tv_anim_gift_form"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#f9f9f9"
-                android:textSize="11sp" />
+        <TextView
+            android:id="@+id/tv_anim_gift_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#f9f9f9"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_anim_gift_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#f9f9f9"
-                android:textSize="10sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_anim_gift_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="14dp"
+        android:layout_toRightOf="@id/ll_in_container"/>
 
     <TextView
         android:id="@+id/tv_anim_gift_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/rl_info_container"
         android:layout_centerVertical="true"
-        android:layout_marginRight="2dp"
         android:paddingBottom="2dp"
         android:textColor="#faf9f9"
         android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/iv_anim_gift_icon"
-        android:layout_width="32dp"
-        android:layout_height="match_parent"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/tv_anim_gift_count" />
+        android:textStyle="bold"
+        android:layout_toRightOf="@id/iv_anim_gift_icon"
+        android:layout_marginLeft="5dp"/>
 
 </RelativeLayout>

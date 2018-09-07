@@ -54,10 +54,14 @@ public class GiftSortFragment extends BaseFragment {
         giftAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                giftAdapter.setSelectedPosition(position);
-                GiftInfo.GiftDetailInfoBean giftDetailInfoBean = giftList.get(position);
-                flagOnMessageEvent = false;
-                EventBus.getDefault().post(new GiftSelectedEvent(giftDetailInfoBean));
+                try {
+                    giftAdapter.setSelectedPosition(position);
+                    GiftInfo.GiftDetailInfoBean giftDetailInfoBean = giftList.get(position);
+                    flagOnMessageEvent = false;
+                    EventBus.getDefault().post(new GiftSelectedEvent(giftDetailInfoBean));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -76,7 +80,7 @@ public class GiftSortFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GiftSelectedEvent event) {
-        if(!flagOnMessageEvent){
+        if (!flagOnMessageEvent) {
             flagOnMessageEvent = true;
             return;
         }

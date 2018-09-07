@@ -48,7 +48,6 @@ public class UserInfo extends ResponseInfo implements Parcelable {
         dest.writeParcelable(data, flags);
     }
 
-
     public static class DataBean implements Parcelable {
 
         private long userId;
@@ -62,7 +61,6 @@ public class UserInfo extends ResponseInfo implements Parcelable {
         private String introduce;
         private WealthBean wealth;
         private String sessionId;
-        private List<LevelListBean> levelList;
 
         protected DataBean(Parcel in) {
             userId = in.readLong();
@@ -76,6 +74,9 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             introduce = in.readString();
             wealth = in.readParcelable(WealthBean.class.getClassLoader());
             sessionId = in.readString();
+            lastRechargeTime = in.readString();
+            createTime = in.readString();
+            lastLoginTime = in.readString();
             levelList = in.createTypedArrayList(LevelListBean.CREATOR);
         }
 
@@ -90,6 +91,23 @@ public class UserInfo extends ResponseInfo implements Parcelable {
                 return new DataBean[size];
             }
         };
+
+        public String getLastRechargeTime() {
+            return lastRechargeTime;
+        }
+
+        private String lastRechargeTime;
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public String getLastLoginTime() {
+            return lastLoginTime;
+        }
+
+        private String createTime;
+        private String lastLoginTime;
+        private List<LevelListBean> levelList;
 
         public long getUserId() {
             return userId;
@@ -201,6 +219,9 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             dest.writeString(introduce);
             dest.writeParcelable(wealth, flags);
             dest.writeString(sessionId);
+            dest.writeString(lastRechargeTime);
+            dest.writeString(createTime);
+            dest.writeString(lastLoginTime);
             dest.writeTypedList(levelList);
         }
 
@@ -244,6 +265,7 @@ public class UserInfo extends ResponseInfo implements Parcelable {
                 dest.writeLong(coin);
                 dest.writeLong(chengPonit);
             }
+
         }
 
         public static class LevelListBean implements Parcelable {

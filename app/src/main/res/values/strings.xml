@@ -203,6 +203,29 @@
         <item>一切顺利</item>
         <item>一心一意</item>
     </array>
+    <array name="rank_tip_title">
+        <item>1、明星榜：</item>
+        <item>2、富豪榜：</item>
+        <item>3、人气榜：</item>
+        <item>4、明星榜 - 周榜奖励：</item>
+        <item>5、富豪榜 - 周榜奖励：</item>
+        <item>6、人气榜 - 日榜奖励：</item>
+        <item>7、人气榜 - 周榜奖励：</item>
+        <item>8、人气榜 - 月榜奖励：</item>
+        <item>9、</item>
+    </array>
+
+    <array name="rank_tip_desc">
+        <item>通过主播收到的萌点排名</item>
+        <item>通过用户送出的萌币排名</item>
+        <item>通过主播收到的蓝色妖姬数量排名</item>
+        <item>第一至十名，7天明星勋章</item>
+        <item>第一至十名，7天富豪勋章</item>
+        <item>第一名，开播全局提醒</item>
+        <item>第一至十名，7天人气勋章</item>
+        <item>第一名，30万萌币；第二名，15万萌币；第三名，5万萌币</item>
+        <item>蓝色妖姬通过每日开宝箱和转盘抽奖获得</item>
+    </array>
 
     <string name="audience_count">观众</string>
     <string name="ban">禁言</string>
@@ -258,5 +281,8 @@
     <string name="kick_out_message">你已经被踢出踢出直播间</string>
     <string name="force_kick_out_message">用多个手机打开同一个直播间，强制退出之前的直播间</string>
     <string name="jump_live_house">是否离开当前直播间\n跳转到%1$s直播间</string>
-
+    <string name="rank">榜单</string>
+    <string name="tip">说明</string>
+    <string name="treasure_box_tip">在线时间越长，开到宝箱越高级</string>
+    <string name="two">%1$02d:%2$02d</string>
 </resources>

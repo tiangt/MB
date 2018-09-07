@@ -1,5 +1,6 @@
 package com.whzl.mengbi.chat.room.message.messageJson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnimJson {
@@ -167,6 +168,12 @@ public class AnimJson {
         private int goodsId;
         private int count;
 
+        public void setComboList(ArrayList<Integer> comboList) {
+            this.comboList = comboList;
+        }
+
+        private ArrayList<Integer> comboList;
+
         public int getGiftTotalCount() {
             return giftTotalCount;
         }
@@ -297,5 +304,8 @@ public class AnimJson {
             return goodsName;
         }
 
+        public ArrayList<Integer> getComboList() {
+            return comboList;
+        }
     }
 }

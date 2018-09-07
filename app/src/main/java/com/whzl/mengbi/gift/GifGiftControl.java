@@ -114,7 +114,7 @@ public class GifGiftControl {
     }
 
     public void destroy() {
-        mContext = null;
-        mGifGiftQueue = null;
+        ivGif.setVisibility(View.GONE);
+        mGifGiftQueue.clear();
     }
 }

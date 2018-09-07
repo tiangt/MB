@@ -2,9 +2,12 @@ package com.whzl.mengbi.api;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
+import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
+import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 
@@ -139,7 +142,7 @@ public interface Api {
 
 
     /**
-     * 上传文件
+     * 上传头像
      *
      * @param params
      * @param parts
@@ -149,5 +152,66 @@ public interface Api {
     @POST("v1/user/modify-avatar")
     Observable<ApiResult<JsonElement>> uploadFile(@PartMap Map<String, RequestBody> params,
                                                   @Part MultipartBody.Part parts);
+
+    /**
+     * 取消房管
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/rank/rank")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> getRankList(@FieldMap Map<String, String> params);
+
+    /**
+     * 场榜第一
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/rank/room-rank-one")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> getProgramFirst(@FieldMap Map<String, String> params);
+
+    /**
+     * app
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/common/get-app-html")
+    @FormUrlEncoded
+    Observable<ApiResult<AppDataBean>> getImgUrl(@FieldMap Map<String, String> params);
+
+
+    /**
+     * 在线宝箱状态信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/online-box-status")
+    @FormUrlEncoded
+    Observable<ApiResult<TreasureBoxStatusBean>> getTreasureBoxStatus(@FieldMap Map<String, String> params);
+
+    /**
+     * 在线宝箱状态信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/online-receive")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> receiveTreasure(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取用户详情接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/get-user-info")
+    @FormUrlEncoded
+    Observable<ApiResult<UserInfo.DataBean>> getUserInfo(@FieldMap Map<String, String> params);
 
 }

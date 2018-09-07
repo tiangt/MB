@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="#181818">
 
-
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rootView"
         android:layout_width="match_parent"
@@ -165,10 +164,6 @@
                 android:background="@color/colorblack"
                 app:ratio="1.33">
 
-                <!--<SurfaceView-->
-                <!--android:id="@+id/player_master"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent" />-->
                 <com.ksyun.media.player.KSYTextureView
                     android:id="@+id/texture_view"
                     android:layout_width="match_parent"
@@ -179,19 +174,6 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerInParent="true" />
-
-                <TextView
-                    android:id="@+id/tv_lucky_gift"
-                    android:layout_width="320dp"
-                    android:layout_height="56dp"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/lucky_gift_bg"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="25dp"
-                    android:singleLine="true"
-                    android:textColor="#646464"
-                    android:textSize="11sp"
-                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_stop_tip"
@@ -215,12 +197,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="30dp"
+                    android:layout_marginBottom="10dp"
                     android:orientation="vertical">
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/tv_lucky_gift"
+                    android:layout_width="320dp"
+                    android:layout_height="56dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/lucky_gift_bg"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="25dp"
+                    android:singleLine="true"
+                    android:textColor="#646464"
+                    android:textSize="11sp"
+                    android:visibility="gone" />
+
             </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
+
 
             <FrameLayout
                 android:id="@+id/fragment_container"
@@ -287,6 +283,49 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="18dp">
+
+        <ImageButton
+            android:id="@+id/btn_treasure_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/live_treasure_box_btn_icon" />
+
+        <TextView
+            android:id="@+id/tv_treasure_box_count"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_alignRight="@id/btn_treasure_box"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/shape_red_notify"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="7sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_treasure_timer"
+            android:layout_width="29dp"
+            android:layout_height="11dp"
+            android:layout_below="@id/btn_treasure_box"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/shape_live_treasure_counter_text_bg"
+            android:gravity="center"
+            android:text="开宝箱"
+            android:textColor="@color/white"
+            android:textSize="7sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/rl_guard_success"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -299,7 +338,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/guard_successs_bg" />
+            android:src="@drawable/guard_success_bg" />
 
         <LinearLayout
             android:layout_width="wrap_content"

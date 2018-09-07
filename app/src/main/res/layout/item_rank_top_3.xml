@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="6dp"
+        app:layout_constraintDimensionRatio="H,6.64:1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15.5dp" />
+
+        <RelativeLayout
+            android:id="@+id/avatar_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="13dp"
+            android:layout_toRightOf="@id/iv_rank">
+
+
+            <com.whzl.mengbi.ui.widget.view.CircleImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                app:civ_border_width="0.5dp"/>
+
+            <TextView
+                android:id="@+id/tv_status"
+                android:layout_width="32dp"
+                android:layout_height="12dp"
+                android:layout_alignBottom="@id/iv_avatar"
+                android:gravity="center"
+                android:textSize="9sp"
+                android:text="直播中"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_user_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/avatar_container" />
+
+
+        <TextView
+            android:id="@+id/tv_nick_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/iv_user_level"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:maxEms="7"
+            android:ellipsize="middle"
+            android:singleLine="true"/>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_gap_container"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20.5dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_gap_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="距前一名差"
+                android:textColor="#178196"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_gap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tv_gap_desc"
+                android:textColor="#e72759"
+                android:textSize="12sp" />
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

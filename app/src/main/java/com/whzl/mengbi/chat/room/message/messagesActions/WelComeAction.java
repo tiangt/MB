@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class WelComeAction implements Actions{
+public class WelComeAction implements Actions {
     @Override
     public void performAction(String msgStr, final Context context) {
         WelcomeJson welcomeJson = GsonUtils.GsonToBean(msgStr, WelcomeJson.class);
@@ -42,10 +42,10 @@ public class WelComeAction implements Actions{
         downloadImageFile.doDownload(goodsUrlList, context);
     }
 
-    private boolean getIsGuizu(List<WelcomeJson.WelcomeLevelListItem> levelList){
-        for(WelcomeJson.WelcomeLevelListItem item : levelList){
-            if(item.getLevelType().equals("ROYAL_LEVEL")){
-                if(item.getLevelValue() > 0){
+    private boolean getIsGuizu(List<WelcomeJson.WelcomeLevelListItem> levelList) {
+        for (WelcomeJson.WelcomeLevelListItem item : levelList) {
+            if (item.getLevelType().equals("ROYAL_LEVEL")) {
+                if (item.getLevelValue() > 0) {
                     return true;
                 }
             }
@@ -53,43 +53,33 @@ public class WelComeAction implements Actions{
         return false;
     }
 
-    private int getGuizuLevel(List<WelcomeJson.WelcomeLevelListItem> levelList){
-        for(WelcomeJson.WelcomeLevelListItem item : levelList){
-            if(item.getLevelType().equals("ROYAL_LEVEL")){
+    private int getGuizuLevel(List<WelcomeJson.WelcomeLevelListItem> levelList) {
+        for (WelcomeJson.WelcomeLevelListItem item : levelList) {
+            if (item.getLevelType().equals("ROYAL_LEVEL")) {
                 return item.getLevelValue();
             }
         }
         return 1;
     }
 
-    private int getUserLevel(List<WelcomeJson.WelcomeLevelListItem> levelList){
-        if(levelList == null){
+    private int getUserLevel(List<WelcomeJson.WelcomeLevelListItem> levelList) {
+        if (levelList == null) {
             return 1;
         }
-        for(WelcomeJson.WelcomeLevelListItem item : levelList){
-            if(!TextUtils.isEmpty(item.getLevelType())&&item.getLevelType().equals("USER_LEVEL")){
+        for (WelcomeJson.WelcomeLevelListItem item : levelList) {
+            if (!TextUtils.isEmpty(item.getLevelType()) && item.getLevelType().equals("USER_LEVEL")) {
                 return item.getLevelValue();
             }
         }
         return 1;
     }
-
-    private boolean hasBagCar(List<WelcomeJson.UserBagItem> carList){
-        for(WelcomeJson.UserBagItem bagItem : carList){
-            if(bagItem.getGoodsType().equals("CAR") && bagItem.getIsEquip().equals("T")){
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     private List<String> getGoodsList(List<WelcomeJson.UserBagItem> bagList) {
         List<String> goodsUrlList = new ArrayList<>();
         if (null == bagList) {
             return goodsUrlList;
         }
-        for(WelcomeJson.UserBagItem item : bagList) {
+        for (WelcomeJson.UserBagItem item : bagList) {
             if (item.getGoodsType().equals("BADGE")) {
                 int goodId = item.getGoodsPicId();
                 goodsUrlList.add(ImageUrl.getImageUrl(goodId, "jpg"));

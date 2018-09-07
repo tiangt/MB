@@ -95,7 +95,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
-                        if(isDetached()){
+                        if(getContext() == null || isDetached()){
                             return;
                         }
                         String jsonStr = result.toString();
@@ -105,7 +105,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        if(isDetached()){
+                        if(getContext() == null || isDetached()){
                             return;
                         }
                         refreshLayout.finishRefresh();

@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
@@ -20,21 +22,30 @@ import com.whzl.mengbi.model.entity.LiveShowListInfo;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
+import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 
 
 /**
@@ -60,6 +71,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     private BaseListAdapter recommendAdapter;
     private ArrayList<LiveShowListInfo> mAnchorInfoList = new ArrayList<>();
     private BaseListAdapter anchorAdapter;
+    private List<BannerInfo.DataBean.ListBean> mBannerInfoList;
 
     @Override
     protected void initEnv() {
@@ -92,6 +104,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     private void initRecommendRecycler() {
         recommendRecycler.setNestedScrollingEnabled(false);
         recommendRecycler.setFocusableInTouchMode(false);
+        recommendRecycler.setHasFixedSize(true);
         recommendRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recommendAdapter = new BaseListAdapter() {
 
@@ -112,6 +125,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     private void initAnchorRecycler() {
         anchorRecycler.setNestedScrollingEnabled(false);
         anchorRecycler.setFocusableInTouchMode(false);
+        anchorRecycler.setHasFixedSize(true);
         anchorRecycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         anchorRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
         anchorAdapter = new BaseListAdapter() {
@@ -200,9 +214,33 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         //设置自动轮播，默认为true
         banner.isAutoPlay(true);
         //设置轮播时间
-        banner.setDelayTime(2000);
+        banner.setDelayTime(3000);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
+        banner.setOnBannerListener(position -> {
+            if (mBannerInfoList != null && mBannerInfoList.size() > 0) {
+                BannerInfo.DataBean.ListBean listBean = mBannerInfoList.get(position);
+                if ("rank".equals(listBean.getType())) {
+                    Intent intent = new Intent(getContext(), RankListActivity.class);
+                    startActivity(intent);
+                }
+                if ("room".equals(listBean.getType()) && listBean.getTarget() > 0) {
+                    Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
+                    intent.putExtra("programId", listBean.getTarget());
+                    startActivity(intent);
+                }
+                if ("web".equals(listBean.getType()) && !TextUtils.isEmpty(listBean.getUrl())) {
+                    Intent intent = new Intent(getContext(), CommWebActivity.class);
+                    intent.putExtra("title", listBean.getTitle());
+                    intent.putExtra("url", listBean.getUrl());
+                    startActivity(intent);
+                }
+                if ("recharge".equals(listBean.getType())) {
+                    Intent intent = new Intent(getContext(), WXPayEntryActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     private void loadData() {
@@ -219,11 +257,11 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             bannerLayout.setVisibility(View.GONE);
             return;
         }
-        List<BannerInfo.DataBean.ListBean> bannerInfoList = bannerInfo.getData().getList();
         bannerLayout.setVisibility(View.VISIBLE);
+        mBannerInfoList = bannerInfo.getData().getList();
         ArrayList<String> banners = new ArrayList<>();
-        for (int i = 0; i < bannerInfoList.size(); i++) {
-            banners.add(bannerInfoList.get(i).getImage());
+        for (int i = 0; i < mBannerInfoList.size(); i++) {
+            banners.add(mBannerInfoList.get(i).getImage());
         }
         banner.setImages(banners);
         banner.start();

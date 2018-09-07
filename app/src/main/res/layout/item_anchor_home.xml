@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
-    android:paddingLeft="6dp"
-    android:paddingRight="6dp">
+    android:paddingBottom="10dp">
 
     <ImageView
         android:id="@+id/iv_cover"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent" />
@@ -19,36 +19,41 @@
         android:id="@+id/iv_is_live_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="14dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_home_live_middle"
+        android:visibility="gone"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_anchor_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:textColor="@color/white"
-        android:textSize="12sp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/shape_home_bottom_info_container"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <TextView
-        android:id="@+id/tv_watch_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="10dp"
-        android:drawableLeft="@drawable/ic_home_watch_status"
-        android:drawablePadding="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:textSize="12sp"
-        android:textColor="#F0F0F0"/>
+        <TextView
+            android:id="@+id/tv_anchor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
+        <TextView
+            android:id="@+id/tv_watch_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:drawableLeft="@drawable/ic_home_watch_status"
+            android:drawablePadding="5dp"
+            android:textColor="#F0F0F0"
+            android:textSize="12sp" />
 
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

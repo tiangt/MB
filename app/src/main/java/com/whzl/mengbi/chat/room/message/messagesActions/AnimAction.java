@@ -40,7 +40,7 @@ public class AnimAction implements Actions {
                 Log.e("chatMsg", "resourceId=" + strResId + " error");
                 return;
             }
-        }else if (aniType.equals("TOTAl")) {
+        }else if (aniType.equals("TOTAl") || "DIV".equals(aniType)) {
             imageType = "jpg";
             if (animJson.getContext() == null) {
                 return;

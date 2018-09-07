@@ -43,6 +43,7 @@ public class ChatMessage implements FillHolderMessage {
     private boolean isPrivate = false;
 
     public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList, boolean isPrivate) {
+        this.isPrivate = isPrivate;
         this.mContext = context;
         from_nickname = msgJson.getFrom_nickname();
         this.fromSpanList = fromSpanList;
@@ -65,8 +66,9 @@ public class ChatMessage implements FillHolderMessage {
             programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
         }
         to_level = LevelUtil.getUserLevel(msgJson.getTo_json());
-        hasGuard = userHasGuard(msgJson.getFrom_json().getGoodsList());
-        this.isPrivate = isPrivate;
+        if(msgJson.getFrom_json() != null && msgJson.getFrom_json().getGoodsList() != null){
+            hasGuard = userHasGuard(msgJson.getFrom_json().getGoodsList());
+        }
     }
 
     @Override
@@ -123,7 +125,12 @@ public class ChatMessage implements FillHolderMessage {
         }
         mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId));
         mholder.textView.append(LightSpanString.getLightString(": ", Color.parseColor("#75bbfb")));
-        SpannableString spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
+        SpannableString spanString;
+        if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
+            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#f1275b"));
+        } else {
+            spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
+        }
         //TODO:表情替换
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
         if (hasGuard) {

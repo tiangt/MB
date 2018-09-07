@@ -9,12 +9,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.RegisterInfo;
 import com.whzl.mengbi.presenter.impl.RegisterPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.RegisterView;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
 
 import butterknife.BindView;
@@ -70,6 +73,10 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
 
     @Override
     public void navigateToAll(RegisterInfo registerInfo) {
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, registerInfo.getData().getUserId());
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, registerInfo.getData().getSessionId());
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, registerInfo.getData().getNickName());
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, registerInfo.getData().getLastRechargeTime() != null);
         setResult(RESULT_OK);
         finish();
     }

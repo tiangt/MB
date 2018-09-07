@@ -2,9 +2,11 @@ package com.whzl.mengbi.wxapi;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SDKConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.RechargeChannelListBean;
 import com.whzl.mengbi.model.entity.RechargeInfo;
@@ -37,6 +40,7 @@ import com.whzl.mengbi.presenter.impl.RechargePresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.RechargeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.AmountConversionUitls;
@@ -79,6 +83,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     RecyclerView recycler;
     @BindView(R.id.btn_recharge)
     Button btnRecharge;
+    @BindView(R.id.first_top_up)
+    ConstraintLayout firstTopUp;
     private RechargePresenter mPresent;
     private IWXAPI wxApi;
     private ArrayList<RechargeRuleListBean> aliRechargeRuleList = new ArrayList<>();
@@ -106,6 +112,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     protected void setupView() {
+        boolean hasTopUp = (boolean) SPUtils.get(this, SpConfig.KEY_HAS_RECHARGED, false);
+        firstTopUp.setVisibility(hasTopUp ? View.GONE : View.VISIBLE);
         recycler.setLayoutManager(new GridLayoutManager(this, 3));
         adapter = new BaseListAdapter() {
             @Override
@@ -276,6 +284,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                             showToast(R.string.pay_success);
                             mPresent.getUserInfo(mUserId);
                             EventBus.getDefault().post(new UserInfoUpdateEvent());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
                             break;
                         case NetConfig.CODE_ALI_PAY_CANCEL:
                             showToast(R.string.user_cancel);
@@ -302,6 +311,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                     showToast(R.string.pay_success);
                     mPresent.getUserInfo(mUserId);
                     EventBus.getDefault().post(new UserInfoUpdateEvent());
+                    SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
                     break;
                 case NetConfig.CODE_WE_CHAT_PAY_CANCEL:
                     showToast(R.string.user_cancel);

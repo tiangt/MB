@@ -108,6 +108,7 @@ public class SplashActivity extends BaseActivity {
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, visitorUserInfo.getData().getUserId());
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, visitorUserInfo.getData().getSessionId());
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, visitorUserInfo.getData().getNickname());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, false);
                             delayJumpToHomeActivity(false);
                         } else {
                             delayJumpToHomeActivity(false);
@@ -135,7 +136,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void getTimeDiff() {
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SITE_TIME, RequestManager.TYPE_POST_JSON, new HashMap<>(),
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SITE_TIME, RequestManager.TYPE_GET, new HashMap<>(),
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object object) {
