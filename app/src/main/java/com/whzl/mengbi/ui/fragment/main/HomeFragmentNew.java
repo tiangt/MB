@@ -16,6 +16,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.BannerInfo;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
 import com.whzl.mengbi.model.entity.LiveShowListInfo;
@@ -24,11 +25,13 @@ import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.activity.LoginActivity;
 import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 import com.youth.banner.Banner;
@@ -236,8 +239,14 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                     startActivity(intent);
                 }
                 if ("recharge".equals(listBean.getType())) {
-                    Intent intent = new Intent(getContext(), WXPayEntryActivity.class);
-                    startActivity(intent);
+                    long userId = (long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
+                    if (userId == 0) {
+                        Intent intent = new Intent(getContext(), LoginActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getContext(), WXPayEntryActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });
