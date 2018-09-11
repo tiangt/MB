@@ -79,7 +79,7 @@
     <string name="user_info_sex_w">女</string>
     <!--设置-->
     <string name="user_settings_feed_back">意见反馈</string>
-    <string name="user_settings_custom_service">客服中心</string>
+    <string name="user_settings_custom_service">官方客服</string>
     <string name="user_settings_about">关于我们</string>
     <string name="user_settings_version_update">版本更新</string>
     <string name="user_settings_exit_login">退出登录</string>
@@ -90,7 +90,7 @@
     <string name="user_feed_back_submit">提 交</string>
     <!--客服中心-->
     <string name="user_custom_fficial_service">官方客服</string>
-    <string name="user_custom_fficial_service_qq">QQ：3179747001</string>
+    <string name="user_custom_fficial_service_qq">QQ：800851880</string>
     <string name="user_custom_guild_entered">公会入驻</string>
     <string name="user_custom_guild_entered_qq">QQ：1530675255</string>
     <!--充值-->
@@ -100,7 +100,7 @@
     <string name="recharge_ali_pay">支付宝支付</string>
     <string name="recharge_we_chat_pay">微信支付</string>
     <string name="recharge_money">充值金额：</string>
-    <string name="recharge_hint">充值到账有一定时间延迟，请耐心等待，如长时间未到账，\n请联系客服QQ：3179747001</string>
+    <string name="recharge_hint">充值到账有一定时间延迟，请耐心等待，如长时间未到账，\n请联系客服QQ：800851880</string>
     <!--金山云直播-->
     <string name="text_resolution">请选择合适的分辨率:</string>
     <string name="text_orientation">请选择显示方式:</string>
@@ -264,7 +264,7 @@
     <string name="upgrade">立即更新</string>
     <string name="login_out">退出登录</string>
     <string name="about_us">关于我们</string>
-    <string name="custom">客服中心</string>
+    <string name="custom">官方客服</string>
     <string name="nick_name">昵称</string>
     <string name="save">保存</string>
     <string name="gender">性别</string>
