@@ -305,8 +305,8 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                 refreshLayout.postDelayed(() -> refreshLayout.setEnableLoadMore(false), 300);
             } else {
                 refreshLayout.setEnableLoadMore(true);
-                anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
                 anchorAdapter.notifyDataSetChanged();
+                anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             }
         } else {
             if (mAnchorInfoList.size() > 0) {
