@@ -1,9 +1,7 @@
 package com.whzl.mengbi.ui.dialog;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
-import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -22,10 +18,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.recyclerview.DividerGridItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
-import java.sql.Time;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -114,19 +107,45 @@ public class TreasureBoxDialog extends BaseAwesomeDialog {
                 tvTimeCount.setTextColor(Color.WHITE);
                 ivBox.setImageResource(boxes[position]);
                 tvTimeCount.setVisibility(View.VISIBLE);
+                if (position == 0) {
+                    if (treasureStatusMap.get(6)==0) {
+                        tvTimeCount.setBackgroundResource(R.drawable.shape_treasure_status_timing);
+                        if (mTime > 0) {
+                            tvTimeCount.setText(getString(R.string.two, (59 - mTime) / 60, (59 - mTime) % 60));
+                        }
+                    } else if (treasureStatusMap.get(6) == 1) {
+                        itemView.setEnabled(true);
+                        tvTimeCount.setText("领取");
+                        tvTimeCount.setBackgroundResource(R.drawable.shape_treasure_status_receive);
+                        itemView.setOnClickListener(v -> {
+                            if (onReceiveClick != null) {
+                                itemView.setEnabled(false);
+                                onReceiveClick.onReceive(6 + position);
+                            }
+                        });
+                    } else {
+                        tvTimeCount.setText("已领取");
+                        tvTimeCount.setBackgroundResource(R.drawable.shape_treasure_status_received);
+                    }
+                    return;
+                }
+                //倒计时
                 if (treasureStatusMap.get(6 + position) == 0) {
                     if (treasureStatusMap.get(6 + position - 1) == 3) {
                         tvTimeCount.setBackgroundResource(R.drawable.shape_treasure_status_timing);
                         if (mTime > 0) {
                             tvTimeCount.setText(getString(R.string.two, (599 - mTime) / 60, (599 - mTime) % 60));
                         }
-                    } else {
+                    }
+                    else {
                         tvTimeCount.setBackgroundResource(R.drawable.shape_treasure_status_waiting);
                         tvTimeCount.setTextColor(Color.parseColor("#db7d03"));
                         tvTimeCount.setText("等待");
                     }
 
-                } else if (treasureStatusMap.get(6 + position) == 1) {
+                }
+                //可领
+                else if (treasureStatusMap.get(6 + position) == 1) {
                     itemView.setEnabled(true);
                     tvTimeCount.setText("领取");
                     tvTimeCount.setBackgroundResource(R.drawable.shape_treasure_status_receive);
@@ -136,7 +155,9 @@ public class TreasureBoxDialog extends BaseAwesomeDialog {
                             onReceiveClick.onReceive(6 + position);
                         }
                     });
-                } else if (treasureStatusMap.get(6 + position) == 3) {
+                }
+                //已领
+                else if (treasureStatusMap.get(6 + position) == 3) {
                     tvTimeCount.setText("已领取");
                     tvTimeCount.setBackgroundResource(R.drawable.shape_treasure_status_received);
                 }

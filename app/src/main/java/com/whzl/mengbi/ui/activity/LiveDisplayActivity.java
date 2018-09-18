@@ -761,15 +761,54 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (treasureBoxStatusBean != null && treasureBoxStatusBean.list != null) {
             for (int i = 0; i < treasureBoxStatusBean.list.size(); i++) {
                 TreasureBoxStatusBean.ListBean listBean = treasureBoxStatusBean.list.get(i);
-                if (listBean.maxOnlineTimes == 0) {
-                    if (listBean.taskId == 6) {
+//                if (listBean.maxOnlineTimes == 0) {
+//                    if (listBean.taskId == 6) {
+//                        hasTreasureCanReceive = true;
+//                        mTreasureStatusMap.put(listBean.taskId, 1);
+//                    } else {
+//                        mTreasureStatusMap.put(listBean.taskId, 0);
+//                    }
+//                } else if (listBean.maxUngrandAwardTimes > 0 && listBean.maxUngrandAwardTimes == listBean.maxOnlineTimes) {
+//                    mTreasureStatusMap.put(listBean.taskId, 3);
+//                }
+                if (listBean.taskId == 6) {
+                    if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
+                        // 倒计时
+                        mTreasureStatusMap.put(listBean.taskId, 0);
+                    } else if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes > 0) {
+                        // 可领取
                         hasTreasureCanReceive = true;
                         mTreasureStatusMap.put(listBean.taskId, 1);
                     } else {
-                        mTreasureStatusMap.put(listBean.taskId, 0);
+                        // 已领取
+                        mTreasureStatusMap.put(listBean.taskId, 3);
                     }
-                } else if (listBean.maxUngrandAwardTimes > 0 && listBean.maxUngrandAwardTimes == listBean.maxOnlineTimes) {
-                    mTreasureStatusMap.put(listBean.taskId, 3);
+                } else if (listBean.taskId == 7) {
+                    if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
+                        // 倒计时
+                        mTreasureStatusMap.put(listBean.taskId, 0);
+                    } else if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes > 0) {
+                        // 可领取
+                        hasTreasureCanReceive = true;
+                        mTreasureStatusMap.put(listBean.taskId, 1);
+                    } else {
+                        // 已领取
+                        mTreasureStatusMap.put(listBean.taskId, 3);
+                    }
+
+                } else if (listBean.taskId == 8) {
+                    if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
+                        // 倒计时
+                        mTreasureStatusMap.put(listBean.taskId, 0);
+                    } else if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes > 0) {
+                        // 可领取
+                        hasTreasureCanReceive = true;
+                        mTreasureStatusMap.put(listBean.taskId, 1);
+                    } else {
+                        // 已领取
+                        mTreasureStatusMap.put(listBean.taskId, 3);
+                    }
+
                 }
             }
         }
@@ -779,6 +818,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } else {
             tvTreasureCount.setVisibility(View.GONE);
         }
+        if (mTreasureStatusMap.get(6) == 0) {
+            timer59(6);
+        }else
+        //1 可领 3 已领 0 倒计时
         if ((mTreasureStatusMap.get(6) == 3 && mTreasureStatusMap.get(7) == 0)) {
             timer(7);
         } else if ((mTreasureStatusMap.get(7) == 3 && mTreasureStatusMap.get(8) == 0)) {
@@ -807,6 +850,28 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     mTime = aLong;
                     tvTreasureTimer.setText(getString(R.string.two, (599 - aLong) / 60, (599 - aLong) % 60));
                     if (aLong == 599) {
+                        mTreasureODisposable.dispose();
+                        mTreasureStatusMap.put(id, 1);
+                        tvTreasureCount.setVisibility(View.VISIBLE);
+                        tvTreasureCount.setText("1");
+                        tvTreasureTimer.setText("开宝箱");
+                        if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
+                            mTreasureBoxDialog.setTreasureStatusMap(mTreasureStatusMap);
+                        }
+                    }
+                    if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
+                        mTreasureBoxDialog.setmTime(aLong);
+                    }
+                });
+    }
+
+    private void timer59(int id) {
+        mTreasureODisposable = Observable.interval(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    mTime = aLong;
+                    tvTreasureTimer.setText(getString(R.string.two, (59 - aLong) / 60, (59 - aLong) % 60));
+                    if (aLong == 59) {
                         mTreasureODisposable.dispose();
                         mTreasureStatusMap.put(id, 1);
                         tvTreasureCount.setVisibility(View.VISIBLE);

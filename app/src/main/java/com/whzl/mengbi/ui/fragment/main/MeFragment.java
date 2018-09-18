@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.fragment.main;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,7 +41,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -87,8 +85,9 @@ public class MeFragment extends BaseFragment implements MeView {
         }
         mUserinfo = userInfo;
         GlideImageLoader.getInstace().displayImage(getContext(), userInfo.getData().getAvatar(), ivAvatar);
-        String nickname = SPUtils.get(getContext(), SpConfig.KEY_USER_NAME, "0").toString();
-        tvNickName.setText(nickname);
+//        String nickname = SPUtils.get(getContext(), SpConfig.KEY_USER_NAME, "0").toString();
+        tvNickName.setText(mUserinfo.getData().getNickname().trim());
+        SPUtils.put(getContext(), SpConfig.KEY_USER_NAME, mUserinfo.getData().getNickname().trim());
         tvId.setText("萌号：" + userInfo.getData().getUserId());
         tvMengbiAmount.setText(userInfo.getData().getWealth().getCoin() + "");
         tvMengdouAmount.setText(userInfo.getData().getWealth().getChengPonit() + "");
