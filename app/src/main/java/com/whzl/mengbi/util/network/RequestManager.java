@@ -185,7 +185,7 @@ public class RequestManager {
             paramsMap.put("timestamp", new Date().getTime() / 1000 + "");
             paramsMap.put("appSecret", APPSECRET);
             paramsMap.put("clientType", CLIENTTYPE);
-            paramsMap.put("clientVersion", BuildConfig.VERSION_CODE + "");
+            paramsMap.put("clientVersion", BuildConfig.VERSION_NAME + "");
 
 //            StringBuilder tempParams = new StringBuilder();
 //            int pos = 0;
@@ -398,7 +398,7 @@ public class RequestManager {
             paramsMap.put("appSecret", APPSECRET);
             paramsMap.put("sessionId", sessionId);
             paramsMap.put("clientType", CLIENTTYPE);
-            paramsMap.put("clientVersion", BuildConfig.VERSION_CODE + "");
+            paramsMap.put("clientVersion", BuildConfig.VERSION_NAME + "");
 //            StringBuilder tempParams = new StringBuilder();
 //            int pos = 0;
 //            for (String key : paramsMap.keySet()) {

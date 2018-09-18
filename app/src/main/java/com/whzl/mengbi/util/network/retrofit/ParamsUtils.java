@@ -31,7 +31,7 @@ public class ParamsUtils {
         paramsMap.put("timestamp", System.currentTimeMillis() / 1000 + timeDiff + "");
         paramsMap.put("appSecret", NetConfig.APPSECRET);
         paramsMap.put("clientType", NetConfig.CLIENTTYPE);
-        paramsMap.put("clientVersion", BuildConfig.VERSION_CODE + "");
+        paramsMap.put("clientVersion", BuildConfig.VERSION_NAME + "");
         paramsMap.put("sessionId", sessionId);
         String sign = getSign(paramsMap);
         paramsMap.put("sign", sign);
@@ -46,7 +46,7 @@ public class ParamsUtils {
         paramsMap.put("timestamp", System.currentTimeMillis() / 1000 + timeDiff + "");
         paramsMap.put("appSecret", NetConfig.APPSECRET);
         paramsMap.put("clientType", NetConfig.CLIENTTYPE);
-        paramsMap.put("clientVersion", BuildConfig.VERSION_CODE + "");
+        paramsMap.put("clientVersion", BuildConfig.VERSION_NAME + "");
         paramsMap.put("sessionId", sessionId);
         String sign = getSign(paramsMap);
         paramsMap.put("sign", sign);
