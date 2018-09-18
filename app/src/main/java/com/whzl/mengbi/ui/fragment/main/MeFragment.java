@@ -1,7 +1,10 @@
 package com.whzl.mengbi.ui.fragment.main;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +21,7 @@ import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
+import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.MeView;
@@ -40,7 +44,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -63,6 +69,15 @@ public class MeFragment extends BaseFragment implements MeView {
     TextView tvMengbiAmount;
     @BindView(R.id.tv_mengdou_amount)
     TextView tvMengdouAmount;
+    @BindView(R.id.tv_shop)
+    TextView tvShop;
+    @BindView(R.id.tv_packsack)
+    TextView tvPacksack;
+    @BindView(R.id.tv_welfare)
+    TextView tvWelfare;
+    @BindView(R.id.tv_bill)
+    TextView tvBill;
+    Unbinder unbinder;
     private MePresenter mPresent;
     private UserInfo mUserinfo;
     private String deviceId;
@@ -232,6 +247,21 @@ public class MeFragment extends BaseFragment implements MeView {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             mPresent.getUserInfo();
+        }
+    }
+
+    @OnClick({R.id.tv_shop, R.id.tv_packsack, R.id.tv_welfare, R.id.tv_bill})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_shop:
+                startActivity(new Intent(getMyActivity(), ShopActivity.class));
+                break;
+            case R.id.tv_packsack:
+                break;
+            case R.id.tv_welfare:
+                break;
+            case R.id.tv_bill:
+                break;
         }
     }
 }

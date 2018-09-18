@@ -152,4 +152,6 @@
     <color name="rank_1_nick_name_color">#ffe156</color>
     <color name="rank_2_nick_name_color">#099aff</color>
     <color name="rank_3_nick_name_color">#6562a7</color>
+
+    <color name="orange_shop">#ff9806</color>
 </resources>

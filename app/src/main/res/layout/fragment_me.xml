@@ -129,10 +129,45 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/comm_white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="11dp">
+
+        <TextView
+            android:id="@+id/tv_shop"
+            style="@style/me_tab"
+            android:drawableTop="@drawable/selector_me_shop"
+            android:text="商城" />
+
+        <TextView
+            android:id="@+id/tv_packsack"
+            style="@style/me_tab"
+            android:drawableTop="@drawable/selector_me_packsack"
+            android:text="背包" />
+
+        <TextView
+            android:id="@+id/tv_welfare"
+            style="@style/me_tab"
+            android:drawableTop="@drawable/selector_me_welfare"
+            android:text="福利" />
+
+        <TextView
+            android:id="@+id/tv_bill"
+            style="@style/me_tab"
+            android:drawableTop="@drawable/selector_me_bill"
+            android:text="账单" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/tv_my_follow"
         style="@style/me_option_item"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
         android:drawableLeft="@drawable/mefollow"
         android:text="我的关注" />
 

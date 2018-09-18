@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/comm_toolbar" />
+
+    <RadioGroup
+        android:id="@+id/rg_shop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/comm_white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_vip_shop"
+            style="@style/shop_tab"
+            android:checked="true"
+            android:drawableTop="@drawable/selector_main_tab_home_icon"
+            android:text="VIP" />
+
+        <RadioButton
+            android:id="@+id/rv_guard_shop"
+            style="@style/shop_tab"
+            android:drawableTop="@drawable/selector_main_tab_follow_icon"
+            android:text="守护" />
+
+        <RadioButton
+            android:id="@+id/rb_nobility_shop"
+            style="@style/shop_tab"
+            android:drawableTop="@drawable/selector_main_tab_me_icon"
+            android:text="贵族" />
+
+        <RadioButton
+            android:id="@+id/rb_goodnum_shop"
+            style="@style/shop_tab"
+            android:drawableTop="@drawable/selector_main_tab_me_icon"
+            android:text="靓号" />
+
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/fl_shop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_weight="1"
+        android:background="@color/comm_white" />
+</LinearLayout>
