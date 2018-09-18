@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -130,7 +129,7 @@ public class ChatListFragment extends BaseFragment {
                         tvCarName.setText(welcomeMsg.getCarName());
                         tvPrettyDesc.setText(welcomeMsg.getPrettyNum() == 0 ? "普号" : "靓号");
                         tvPrettyNum.setText(welcomeMsg.getPrettyNum() == 0 ? welcomeMsg.getUid() + "" : welcomeMsg.getPrettyNum() + "");
-                        String imageUrl = ImageUrl.getImageUrl(welcomeMsg.getCarId(), ".jpg");
+                        String imageUrl = ImageUrl.getImageUrl(welcomeMsg.getCarId(), "jpg");
                         GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivCar);
                         String goodsColor = welcomeMsg.getGoodsColor();
                         if ("A".equals(goodsColor)) {
