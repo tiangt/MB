@@ -273,5 +273,7 @@
         <activity android:name=".ui.activity.CommWebActivity"
             android:launchMode="singleTop"/>
         <activity android:name=".ui.activity.me.ShopActivity" />
+        <activity android:name=".ui.activity.me.BuyVipActivity"/>
+        <activity android:name=".ui.activity.me.SendVipActivity"/>
     </application>
 </manifest>

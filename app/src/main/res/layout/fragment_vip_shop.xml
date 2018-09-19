@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_vip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:text="黄金VIP"
+                android:textColor="@color/text_view"
+                android:textSize="17sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="(有效期30天)"
+                android:textColor="#646464"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30000"
+                    android:textColor="#fd580d"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="萌比/天"
+                    android:textColor="#646464"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="51dp"
+            android:layout_marginTop="34dp"
+            android:layout_toLeftOf="@id/ll_vip"
+            android:src="@drawable/ic_vip_vip" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:background="#e5e5e5" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="特权说明"
+        android:textColor="@color/text_view"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.whzl.mengbi.ui.widget.view.AlignTextView
+            android:id="@+id/atv1"
+            android:layout_width="70dp"
+            android:layout_height="17dp" />
+
+        <TextView
+            style="@style/text_note_vip"
+            android:text="拥有黄金VIP尊贵勋章" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.whzl.mengbi.ui.widget.view.AlignTextView
+            android:id="@+id/atv2"
+            android:layout_width="70dp"
+            android:layout_height="17dp" />
+
+        <TextView
+            style="@style/text_note_vip"
+            android:text="用户列表优先排位在普通用户之上" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.whzl.mengbi.ui.widget.view.AlignTextView
+            android:id="@+id/atv3"
+            android:layout_width="70dp"
+            android:layout_height="17dp" />
+
+        <TextView
+            style="@style/text_note_vip"
+            android:text="可以跟主播私聊" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.whzl.mengbi.ui.widget.view.AlignTextView
+            android:id="@+id/atv4"
+            android:layout_width="70dp"
+            android:layout_height="17dp" />
+
+        <TextView
+            style="@style/text_note_vip"
+            android:text="可以防止房管提出房间" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.whzl.mengbi.ui.widget.view.AlignTextView
+            android:id="@+id/atv5"
+            android:layout_width="70dp"
+            android:layout_height="17dp" />
+
+        <TextView
+            style="@style/text_note_vip"
+            android:text="聊天字数上线增加50个" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.whzl.mengbi.ui.widget.view.AlignTextView
+            android:id="@+id/atv6"
+            android:layout_width="70dp"
+            android:layout_height="17dp" />
+
+        <TextView
+            style="@style/text_note_vip"
+            android:text="可以发送VIP专属表情" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.whzl.mengbi.ui.widget.view.AlignTextView
+            android:id="@+id/atv7"
+            android:layout_width="70dp"
+            android:layout_height="17dp" />
+
+        <TextView
+            style="@style/text_note_vip"
+            android:text="每天可以免费领取66个蓝色妖姬" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.whzl.mengbi.ui.widget.view.AlignTextView
+            android:id="@+id/atv8"
+            android:layout_width="70dp"
+            android:layout_height="17dp" />
+
+        <TextView
+            style="@style/text_note_vip"
+            android:text="每天免费领取10张广播卡" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <com.whzl.mengbi.ui.widget.view.AlignTextView
+            android:id="@+id/atv9"
+            android:layout_width="70dp"
+            android:layout_height="17dp" />
+
+        <TextView
+            style="@style/text_note_vip"
+            android:text="炫酷的昵称颜色" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_buy_shop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="74dp"
+        android:background="@drawable/shape_btn_theme"
+        android:text="购买"
+        android:textColor="@color/comm_white"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/btn_send_shop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_btn_orange"
+        android:text="赠送"
+        android:textColor="@color/comm_white"
+        android:textSize="18sp" />
+</LinearLayout>

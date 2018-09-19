@@ -5,12 +5,12 @@ import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 
 /**
  * @author niko
- * @date 2018/9/18
+ * @date 2018/9/19
  */
-public class GuardFragment extends BaseFragment {
+public class GoodnumFragment extends BaseFragment {
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_guard_shop;
+        return R.layout.fragment_goodnum_shop;
     }
 
     @Override

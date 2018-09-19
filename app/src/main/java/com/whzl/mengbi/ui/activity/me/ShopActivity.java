@@ -2,19 +2,14 @@ package com.whzl.mengbi.ui.activity.me;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
-import com.whzl.mengbi.ui.fragment.main.FollowFragment;
-import com.whzl.mengbi.ui.fragment.main.HomeFragmentNew;
-import com.whzl.mengbi.ui.fragment.main.MeFragment;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * @author niko
@@ -44,7 +39,7 @@ public class ShopActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{FollowFragment.newInstance(), FollowFragment.newInstance(), MeFragment.newInstance(), MeFragment.newInstance()};
+        fragments = new Fragment[]{new VipFragment(),new GuardFragment(), new NobilityFragment(), new GoodnumFragment()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fl_shop, fragments[0]).commit();
         rgShop.setOnCheckedChangeListener((group, checkedId) -> {
