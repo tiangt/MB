@@ -1,12 +1,15 @@
 package com.whzl.mengbi.ui.widget.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.graphics.Paint.Style;
+
+import com.whzl.mengbi.R;
 
 /**
  * @author nobody
@@ -20,9 +23,9 @@ public class AlignTextView extends View {
     //文本画笔
     private Paint tPaint = null;
     //字体颜色
-    private int textColor = Color.parseColor("#ff9806");
+    private int textColor = Color.parseColor("#323232");
     //字体大小
-    private float textSize = 13f;
+    private float textSize = 15f;
     //画笔宽度
     private int strokeWidth = 2;
     //字数
@@ -33,6 +36,8 @@ public class AlignTextView extends View {
     private float textH;
     //偏移值
     private float offset;
+    private int color;
+    private String string;
 
     public AlignTextView(Context context) {
         super(context);
@@ -47,10 +52,15 @@ public class AlignTextView extends View {
 
     public AlignTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.AlignTextView);
+//        color = typedArray.getColor(R.styleable.AlignTextView_textColor, Color.parseColor("323232"));
+        string = typedArray.getString(R.styleable.AlignTextView_text);
         init(context);
     }
 
     private void init(Context context) {
+//        textColor = color;
+        text = string;
         _density = context.getResources().getDisplayMetrics().density;
         tPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         tPaint.setColor(textColor);

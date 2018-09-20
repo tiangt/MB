@@ -17,6 +17,7 @@ import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.presenter.MePresenter;
 import com.whzl.mengbi.presenter.impl.MePresenterImpl;
 import com.whzl.mengbi.ui.activity.FollowActivity;
+import com.whzl.mengbi.ui.activity.JsBridgeActivity;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
@@ -257,6 +258,7 @@ public class MeFragment extends BaseFragment implements MeView {
                 startActivity(new Intent(getMyActivity(), ShopActivity.class));
                 break;
             case R.id.tv_packsack:
+                startActivity(new Intent(getMyActivity(), JsBridgeActivity.class));
                 break;
             case R.id.tv_welfare:
                 break;

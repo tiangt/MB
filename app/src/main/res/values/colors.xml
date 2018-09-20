@@ -154,4 +154,7 @@
     <color name="rank_3_nick_name_color">#6562a7</color>
 
     <color name="orange_shop">#ff9806</color>
+    <color name="lever_nobility">#ebeffc</color>
+    <color name="lever_nobility_white">#e5e5e5</color>
+    <color name="text_hint">#909090</color>
 </resources>

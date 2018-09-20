@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.JsBridgeActivity">
+
+    <include layout="@layout/comm_toolbar" />
+
+    <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:id="@+id/JsBridgeWebView"
+        android:layout_width="match_parent"
+        android:layout_height="400dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="給Html发送消息并返回消息" />
+
+</LinearLayout>

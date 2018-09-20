@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.GetVipPriceBean;
+import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -214,4 +216,33 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<UserInfo.DataBean>> getUserInfo(@FieldMap Map<String, String> params);
 
+    /**
+     * 靓号接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/mall/get-prettys")
+    @FormUrlEncoded
+    Observable<ApiResult<GoodNumBean>> getPrettys(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取守护价格接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/mall/get-vip-prices")
+    @FormUrlEncoded
+    Observable<ApiResult<GetVipPriceBean>> getVipprices(@FieldMap Map<String, String> params);
+
+    /**
+     * 商城购买接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/consume/mall-buy")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> mallBuy(@FieldMap Map<String, String> params);
 }

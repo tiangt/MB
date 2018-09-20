@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="HeartLayout">
-        <attr name="initX" format="dimension"/>
-        <attr name="initY" format="dimension"/>
-        <attr name="xRand" format="dimension"/>
-        <attr name="animLengthRand" format="dimension"/>
-        <attr name="xPointFactor" format="dimension"/>
-        <attr name="animLength" format="dimension"/>
-        <attr name="heart_width" format="dimension"/>
-        <attr name="heart_height" format="dimension"/>
-        <attr name="bezierFactor" format="integer"/>
-        <attr name="anim_duration" format="integer"/>
+        <attr name="initX" format="dimension" />
+        <attr name="initY" format="dimension" />
+        <attr name="xRand" format="dimension" />
+        <attr name="animLengthRand" format="dimension" />
+        <attr name="xPointFactor" format="dimension" />
+        <attr name="animLength" format="dimension" />
+        <attr name="heart_width" format="dimension" />
+        <attr name="heart_height" format="dimension" />
+        <attr name="bezierFactor" format="integer" />
+        <attr name="anim_duration" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="ProgressTextView">
-        <attr name="ptv_textColor" format="color"/>
-        <attr name="ptv_thumHeight" format="dimension"/>
-        <attr name="ptv_textSize" format="dimension"/>
-        <attr name="ptv_thumWidth" format="dimension"/>
+        <attr name="ptv_textColor" format="color" />
+        <attr name="ptv_thumHeight" format="dimension" />
+        <attr name="ptv_textSize" format="dimension" />
+        <attr name="ptv_thumWidth" format="dimension" />
     </declare-styleable>
 
     <!--圆形头像-->
@@ -36,6 +36,11 @@
         <attr name="relative" format="integer"></attr>
     </declare-styleable>
 
+    <declare-styleable name="AlignTextView">
+        <attr name="textColor" format="color" />
+        <attr name="text" format="string" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
 
 </resources>
 

@@ -285,4 +285,5 @@
     <string name="tip">说明</string>
     <string name="treasure_box_tip">在线时间越长，开到宝箱越高级</string>
     <string name="two">%1$02d:%2$02d</string>
+    <string name="goodnum">价格：%1$d萌币</string>
 </resources>
