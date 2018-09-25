@@ -76,12 +76,14 @@
         </RadioGroup>
 
         <ImageView
+            android:id="@+id/iv_info"
+            android:scaleType="fitStart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_nobility" />
+            android:src="@drawable/info_qingtong" />
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/comm_white"

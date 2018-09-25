@@ -1,12 +1,20 @@
 package com.whzl.mengbi.ui.activity.me;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * @author niko
@@ -29,6 +37,8 @@ public class NobilityFragment extends BaseFragment {
     RadioButton rbWangzhe;
     @BindView(R.id.rg_nobility)
     RadioGroup rgNobility;
+    @BindView(R.id.iv_info)
+    ImageView ivInfo;
 
     @Override
     public int getLayoutId() {
@@ -41,21 +51,27 @@ public class NobilityFragment extends BaseFragment {
         rgNobility.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.rb_qingtong:
+                    GlideImageLoader.getInstace().displayImage(getContext(),R.drawable.info_qingtong,ivInfo);
                     break;
                 case R.id.rb_baiyin:
+                    GlideImageLoader.getInstace().displayImage(getContext(),R.drawable.info_baiyin,ivInfo);
                     break;
                 case R.id.rb_huangjin:
+                    GlideImageLoader.getInstace().displayImage(getContext(),R.drawable.info_huangjin,ivInfo);
                     break;
                 case R.id.rb_bojin:
+                    GlideImageLoader.getInstace().displayImage(getContext(),R.drawable.info_bojin,ivInfo);
                     break;
                 case R.id.rb_zuanshi:
+                    GlideImageLoader.getInstace().displayImage(getContext(),R.drawable.info_zuanshi,ivInfo);
                     break;
                 case R.id.rb_xingyao:
+                    GlideImageLoader.getInstace().displayImage(getContext(),R.drawable.info_xingyao,ivInfo);
                     break;
                 case R.id.rb_wangzhe:
+                    GlideImageLoader.getInstace().displayImage(getContext(),R.drawable.info_wangzhe,ivInfo);
                     break;
             }
         });
     }
-
 }
