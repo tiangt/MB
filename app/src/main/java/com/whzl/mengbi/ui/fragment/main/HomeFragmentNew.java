@@ -8,10 +8,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
@@ -27,6 +28,7 @@ import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.LoginActivity;
 import com.whzl.mengbi.ui.activity.RankListActivity;
+import com.whzl.mengbi.ui.activity.SearchActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -37,18 +39,13 @@ import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
+import butterknife.OnClick;
 
 
 /**
@@ -68,6 +65,10 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     RecyclerView anchorRecycler;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.ib_search)
+    ImageButton ibSearch;
+    @BindView(R.id.ll_search)
+    LinearLayout llSearch;
     private HomePresenterImpl mHomePresenter;
     private int mCurrentPager = 1;
     private ArrayList<RecommendAnchorInfoBean> mRecommendAnchorInfoList = new ArrayList<>();
@@ -146,6 +147,18 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         };
         anchorRecycler.setAdapter(anchorAdapter);
     }
+
+
+    @OnClick(R.id.ll_search)
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_search:
+                startActivity(new Intent(getMyActivity(), SearchActivity.class));
+                break;
+        }
+    }
+
+
 
     class AnchorInfoViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_cover)

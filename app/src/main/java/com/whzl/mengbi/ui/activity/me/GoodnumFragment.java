@@ -97,7 +97,7 @@ public class GoodnumFragment extends BaseFragment {
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_goodnum_shop, parent, false);
-                return new AnchorViewHolder(itemView);
+                return new AnchorViewHolder(itemView, 5);
             }
         };
         rv5.setAdapter(adapter5);
@@ -113,7 +113,7 @@ public class GoodnumFragment extends BaseFragment {
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_goodnum_shop, parent, false);
-                return new AnchorViewHolder(itemView);
+                return new AnchorViewHolder(itemView, 6);
             }
         };
         rv6.setAdapter(adapter6);
@@ -129,7 +129,7 @@ public class GoodnumFragment extends BaseFragment {
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_goodnum_shop, parent, false);
-                return new AnchorViewHolder(itemView);
+                return new AnchorViewHolder(itemView, 7);
             }
         };
         rv7.setAdapter(adapter7);
@@ -172,15 +172,29 @@ public class GoodnumFragment extends BaseFragment {
         TextView tvBuy;
         @BindView(R.id.tv_send_item_goodnum)
         TextView tvSend;
+        private int i = 0;
+        private GoodNumBean.DigitsBean digitsBean;
 
-        public AnchorViewHolder(View itemView) {
+        public AnchorViewHolder(View itemView, int i) {
             super(itemView);
+            this.i = i;
             ButterKnife.bind(this, itemView);
         }
 
         @Override
         public void onBindViewHolder(int position) {
-            GoodNumBean.DigitsBean digitsBean = list6.get(position);
+            switch (i) {
+                case 5:
+                    digitsBean = list5.get(position);
+                    break;
+                case 6:
+                    digitsBean = list6.get(position);
+                    break;
+                case 7:
+                    digitsBean = list7.get(position);
+                    break;
+            }
+
             tvPrice.setText(getString(R.string.goodnum, digitsBean.rent));
             tvNum.setText(digitsBean.goodsName);
 

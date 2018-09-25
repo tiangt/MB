@@ -277,5 +277,6 @@
         <activity android:name=".ui.activity.me.SendVipActivity"/>
         <activity android:name=".ui.activity.JsBridgeActivity"/>
         <activity android:name=".ui.activity.me.BuyGoodnumActivity"/>
+        <activity android:name=".ui.activity.SearchActivity"/>
     </application>
 </manifest>
