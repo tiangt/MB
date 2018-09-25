@@ -74,6 +74,8 @@ public class GoodnumFragment extends BaseFragment {
     private BaseListAdapter adapter6;
     private BaseListAdapter adapter7;
 
+    private GoodNumBean.DigitsBean digitsBean;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_goodnum_shop;
@@ -173,7 +175,7 @@ public class GoodnumFragment extends BaseFragment {
         @BindView(R.id.tv_send_item_goodnum)
         TextView tvSend;
         private int i = 0;
-        private GoodNumBean.DigitsBean digitsBean;
+
 
         public AnchorViewHolder(View itemView, int i) {
             super(itemView);
@@ -199,15 +201,39 @@ public class GoodnumFragment extends BaseFragment {
             tvNum.setText(digitsBean.goodsName);
 
             tvBuy.setOnClickListener(v -> {
-                startActivity(new Intent(getMyActivity(), BuyGoodnumActivity.class)
+                startActivityForResult(new Intent(getMyActivity(), BuyGoodnumActivity.class)
                         .putExtra("type", "buy")
-                        .putExtra("bean", digitsBean));
+                        .putExtra("bean", digitsBean), 100);
             });
             tvSend.setOnClickListener(v -> {
-                startActivity(new Intent(getMyActivity(), BuyGoodnumActivity.class)
+                startActivityForResult(new Intent(getMyActivity(), BuyGoodnumActivity.class)
                         .putExtra("type", "send")
-                        .putExtra("bean", digitsBean));
+                        .putExtra("bean", digitsBean), 100);
             });
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            if (resultCode == 200) {
+                boolean state = data.getBooleanExtra("state", false);
+                if (state) {
+                    if (list5.contains(digitsBean)) {
+                        list5.remove(digitsBean);
+                        adapter5.notifyDataSetChanged();
+                    }
+                    if (list6.contains(digitsBean)) {
+                        list6.remove(digitsBean);
+                        adapter6.notifyDataSetChanged();
+                    }
+                    if (list7.contains(digitsBean)) {
+                        list7.remove(digitsBean);
+                        adapter7.notifyDataSetChanged();
+                    }
+                }
+            }
         }
     }
 

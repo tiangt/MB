@@ -274,6 +274,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
             tvStopTip.setVisibility(View.GONE);
+            textureView.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
             textureView.start();
         });
         textureView.setOnInfoListener((iMediaPlayer, i, i1) -> {

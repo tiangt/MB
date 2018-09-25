@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -49,6 +50,7 @@ public class BusinessUtils {
     }
 
 
+    //获取用户信息
     public static void getUserInfo(Activity context, String userId, UserInfoListener listener) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", userId);
@@ -70,6 +72,29 @@ public class BusinessUtils {
                 });
     }
 
+    //获取主播信息
+    public static void getAnchorInfo(Activity context, String userId, AnchorInfoListener listener) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("programId", userId);
+        ApiFactory.getInstance().getApi(Api.class)
+                .getRoomInfo(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<AnchorInfo>(context) {
+
+                    @Override
+                    public void onSuccess(AnchorInfo bean) {
+                        listener.onSuccess(bean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                        listener.onError(code);
+                    }
+                });
+    }
+
+
 
     public interface MallBuyListener {
         void onSuccess();
@@ -79,6 +104,12 @@ public class BusinessUtils {
 
     public interface UserInfoListener {
         void onSuccess(UserInfo.DataBean bean);
+
+        void onError(int code);
+    }
+
+    public interface AnchorInfoListener {
+        void onSuccess(AnchorInfo bean);
 
         void onError(int code);
     }
