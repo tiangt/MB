@@ -260,7 +260,7 @@ public class MeFragment extends BaseFragment implements MeView {
                 startActivity(new Intent(getMyActivity(), ShopActivity.class));
                 break;
             case R.id.tv_packsack:
-                startActivity(new Intent(getMyActivity(), JsBridgeActivity.class));
+//                startActivity(new Intent(getMyActivity(), JsBridgeActivity.class));
                 break;
             case R.id.tv_welfare:
                 break;
