@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -89,8 +90,14 @@ public class FaceReplace {
                         drawable = new BitmapDrawable(context.getResources(), bitmap);
                         return;
                     }
-                    drawable = new GifDrawable(fp.getFileContent());
-                    drawable.setCallback(new DrawableCallback(textView));
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                        drawable = new GifDrawable(fp.getFileContent());
+                        drawable.setCallback(new DrawableCallback(textView));
+                    } else {
+                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
+                        drawable = new BitmapDrawable(context.getResources(), bitmap);
+                        return;
+                    }
                 } catch (Exception ignored) {
 //                    Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
 //                    drawable = new BitmapDrawable(context.getResources(), bitmap);

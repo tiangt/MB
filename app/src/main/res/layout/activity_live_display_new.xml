@@ -218,14 +218,28 @@
             </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 
 
-            <FrameLayout
-                android:id="@+id/fragment_container"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#292929">
+                android:layout_height="match_parent">
 
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#292929">
 
+                </FrameLayout>
+
+                <ImageButton
+                    android:id="@+id/ib_luck_wheel"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="27dp"
+                    android:background="@null"
+                    android:src="@mipmap/ic_launcher" />
+            </RelativeLayout>
         </LinearLayout>
 
         <RelativeLayout

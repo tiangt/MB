@@ -1,21 +1,37 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 
-import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.github.lzyzsd.jsbridge.DefaultHandler;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
+
+import java.util.HashMap;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author nobody
@@ -26,6 +42,17 @@ public class JsBridgeActivity extends BaseActivity {
     private Button button;
     private BridgeWebView bridgeWebView;
 
+    private UserInfo.DataBean user;
+    private String anchorId;
+    private String programId;
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        anchorId = getIntent().getStringExtra("anchorId");
+        programId = getIntent().getStringExtra("programId");
+    }
+
     @Override
     protected void setupContentView() {
         setContentView(R.layout.activity_jsbridge, "幸运", true);
@@ -33,8 +60,8 @@ public class JsBridgeActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        button = (Button) findViewById(R.id.button3);
-        bridgeWebView = (BridgeWebView) findViewById(R.id.JsBridgeWebView);
+        button = findViewById(R.id.button3);
+        bridgeWebView = findViewById(R.id.JsBridgeWebView);
 
         bridgeWebView.setDefaultHandler(new DefaultHandler());
         bridgeWebView.setWebChromeClient(new WebChromeClient());
@@ -48,35 +75,100 @@ public class JsBridgeActivity extends BaseActivity {
         }
 
         bridgeWebView.loadUrl("file:///android_asset/test.html");
+        initRegisterHandler();
 
+
+    }
+
+    private void initRegisterHandler() {
         /**
          * 前端发送消息给客户端  submitFromWeb 是js调用的方法名  安卓返回给js
          */
-        bridgeWebView.registerHandler("submitFromWeb", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                //显示接收的消息
-                showToast(data);
-                //返回给html的消息
-                function.onCallBack("返回给Toast的alert");
-            }
+        bridgeWebView.registerHandler("getLoginState", (data, function) -> {
+            //显示接收的消息
+            showToast(data);
+            //返回给html的消息
+            function.onCallBack("返回给web的alert  login state " + checkLogin());
         });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                /**
-                 * 给Html发消息,js接收并返回数据
-                 */
-                bridgeWebView.callHandler("functionInJs", "调用js的方法", new CallBackFunction() {
+        bridgeWebView.registerHandler("getUserInfo", (data, function) -> getUserInfo(function));
 
-                    @Override
-                    public void onCallBack(String data) {
-                        showToast("===" + data);
-                    }
-                });
-            }
+        bridgeWebView.registerHandler("jumpToLoginActivity", (data, function) -> jumpToLoginActivity());
+
+        bridgeWebView.registerHandler("jumpToLiveHouse", (data, function) -> {
+            String[] split = data.split(":");
+            String replace = split[1].replace("}", "").replaceAll("\"", "");
+            LogUtils.e(replace);
+            jumpToLiveHouse(Integer.parseInt(replace));
         });
+
+        bridgeWebView.registerHandler("jumpToRechargeActivity", (data, function) -> jumpToRechargeActivity());
+
+        bridgeWebView.registerHandler("getRoomInfo", (data, function) -> function.onCallBack("anchorId   " + anchorId + "   programId  " + programId));
+
+        button.setOnClickListener(v -> {
+
+            /**
+             * 给Html发消息,js接收并返回数据
+             */
+            bridgeWebView.callHandler("functionInJs", "调用js的方法", new CallBackFunction() {
+
+                @Override
+                public void onCallBack(String data) {
+                    showToast("===" + data);
+                }
+            });
+        });
+    }
+
+    public void jumpToLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void jumpToLiveHouse(int programId) {
+        Intent intent = new Intent(this, LiveDisplayActivity.class);
+        intent.putExtra("programId", programId);
+        startActivity(intent);
+    }
+
+    public void jumpToRechargeActivity() {
+        Intent intent = new Intent(this, WXPayEntryActivity.class);
+        startActivity(intent);
+    }
+
+    private void getUserInfo(CallBackFunction function) {
+        long userId = (long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
+        if (userId > 0) {
+            HashMap paramsMap = new HashMap();
+            paramsMap.put("userId", userId);
+            ApiFactory.getInstance().getApi(Api.class)
+                    .getUserInfo(ParamsUtils.getSignPramsMap(paramsMap))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ApiObserver<UserInfo.DataBean>(this) {
+
+                        @Override
+                        public void onSuccess(UserInfo.DataBean dataBean) {
+                            user = dataBean;
+                            function.onCallBack("返回给web的alert  userInfo " + user.getNickname());
+                        }
+
+                        @Override
+                        public void onError(int code) {
+
+                        }
+                    });
+        }
+    }
+
+    private boolean checkLogin() {
+        String sessionId = (String) SPUtils.get(this, SpConfig.KEY_SESSION_ID, "");
+        long userId = Long.parseLong(SPUtils.get(this, "userId", (long) 0).toString());
+        if (userId == 0 || TextUtils.isEmpty(sessionId)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -111,6 +203,22 @@ public class JsBridgeActivity extends BaseActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (bridgeWebView != null) {
+            ViewParent parent = bridgeWebView.getParent();
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(bridgeWebView);
+            }
+            bridgeWebView.stopLoading();
+            bridgeWebView.getSettings().setJavaScriptEnabled(false);
+            bridgeWebView.removeAllViews();
+            bridgeWebView.destroy();
+            bridgeWebView = null;
         }
     }
 }

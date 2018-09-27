@@ -63,7 +63,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/ll_find"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="找到包含"
+                android:text=""
                 android:textColor="#4b4b4b"
                 android:textSize="14sp" />
 
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@color/orange_shop"
+                android:textColor="#4b4b4b"
                 android:textSize="14sp" />
 
             <TextView
@@ -96,6 +96,7 @@
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp" />

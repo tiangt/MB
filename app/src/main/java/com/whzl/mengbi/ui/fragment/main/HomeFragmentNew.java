@@ -169,6 +169,8 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         TextView tvAnchorName;
         @BindView(R.id.tv_watch_count)
         TextView tvWatchCount;
+        @BindView(R.id.tv_is_live_mark)
+        TextView tvIsLive;
 
         private final int type;
 
@@ -183,14 +185,14 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             switch (type) {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
-                    ivIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
+                    tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
                     tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
                     tvWatchCount.setText(recommendAnchorInfoBean.getRoomUserCount() + "");
                     GlideImageLoader.getInstace().loadRoundImage(getContext(), recommendAnchorInfoBean.getCover(), ivCover, 5);
                     break;
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
-                    ivIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
+                    tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
                     tvAnchorName.setText(liveShowListInfo.getAnchorNickname());
                     tvWatchCount.setText(liveShowListInfo.getRoomUserCount() + "");
                     GlideImageLoader.getInstace().loadRoundImage(getContext(), liveShowListInfo.getCover(), ivCover, 5);

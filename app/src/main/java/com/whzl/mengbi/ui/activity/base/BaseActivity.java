@@ -1,9 +1,8 @@
 package com.whzl.mengbi.ui.activity.base;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,25 +10,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.eventbus.EventBusBean;
-import com.whzl.mengbi.eventbus.EventBusUtils;
 import com.whzl.mengbi.ui.common.ActivityStackManager;
-import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.util.KeyBoardUtil;
-import com.whzl.mengbi.util.SPUtils;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -194,4 +181,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    public Activity getBaseActivity() {
+        return this;
+    }
 }

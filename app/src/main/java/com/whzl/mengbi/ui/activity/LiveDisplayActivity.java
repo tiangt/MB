@@ -33,6 +33,7 @@ import com.ksyun.media.player.KSYTextureView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
+import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
@@ -54,7 +55,6 @@ import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
-import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -165,6 +165,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvTreasureCount;
     @BindView(R.id.tv_treasure_timer)
     TextView tvTreasureTimer;
+    @BindView(R.id.ib_luck_wheel)
+    ImageButton ibLuckWheel;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -437,7 +439,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @OnClick({R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift, R.id.tv_popularity
             , R.id.btn_contribute, R.id.btn_chat, R.id.btn_chat_private, R.id.rootView
             , R.id.fragment_container
-            , R.id.btn_treasure_box})
+            , R.id.btn_treasure_box, R.id.ib_luck_wheel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_follow:
@@ -527,6 +529,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mTreasureBoxDialog.setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
+                break;
+            case R.id.ib_luck_wheel:
+                startActivity(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                .putExtra("anchorId",mAnchorId+"")
+                .putExtra("programId",mProgramId+""));
                 break;
             default:
                 break;
@@ -821,13 +828,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (mTreasureStatusMap.get(6) == 0) {
             timer59(6);
-        }else
-        //1 可领 3 已领 0 倒计时
-        if ((mTreasureStatusMap.get(6) == 3 && mTreasureStatusMap.get(7) == 0)) {
-            timer(7);
-        } else if ((mTreasureStatusMap.get(7) == 3 && mTreasureStatusMap.get(8) == 0)) {
-            timer(8);
-        }
+        } else
+            //1 可领 3 已领 0 倒计时
+            if ((mTreasureStatusMap.get(6) == 3 && mTreasureStatusMap.get(7) == 0)) {
+                timer(7);
+            } else if ((mTreasureStatusMap.get(7) == 3 && mTreasureStatusMap.get(8) == 0)) {
+                timer(8);
+            }
     }
 
     @Override
