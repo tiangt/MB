@@ -4,7 +4,7 @@ package com.whzl.mengbi.chat.room.message.messageJson;
 public class BroadCastJson {
 
     /**
-     * platform : MOBILE
+     * platform : [
      * eventCode : BROADCAST
      * context : {"message":"test88","anchorId":"88833","nickname":"吾意独怜才","userId":11284331,"anchorNickname":"zytest300"}
      * msgType : EVENT

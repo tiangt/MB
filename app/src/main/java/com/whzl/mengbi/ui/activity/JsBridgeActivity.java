@@ -12,15 +12,19 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 
+import com.alibaba.fastjson.JSON;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.github.lzyzsd.jsbridge.DefaultHandler;
+import com.google.gson.Gson;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.UserInfo;
+import com.whzl.mengbi.model.entity.js.LoginStateBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -74,8 +78,8 @@ public class JsBridgeActivity extends BaseActivity {
             bridgeWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }
 
-        bridgeWebView.loadUrl("file:///android_asset/test.html");
         initRegisterHandler();
+        bridgeWebView.loadUrl("file:///android_asset/test5.html");
 
 
     }
@@ -86,9 +90,11 @@ public class JsBridgeActivity extends BaseActivity {
          */
         bridgeWebView.registerHandler("getLoginState", (data, function) -> {
             //显示接收的消息
-            showToast(data);
+            LogUtils.e("ssssssssssssss       " + data);
             //返回给html的消息
-            function.onCallBack("返回给web的alert  login state " + checkLogin());
+            LoginStateBean bean = new LoginStateBean("" + checkLogin());
+            Gson gson = new Gson();
+            function.onCallBack(gson.toJson(bean));
         });
 
         bridgeWebView.registerHandler("getUserInfo", (data, function) -> getUserInfo(function));
@@ -111,7 +117,7 @@ public class JsBridgeActivity extends BaseActivity {
             /**
              * 给Html发消息,js接收并返回数据
              */
-            bridgeWebView.callHandler("functionInJs", "调用js的方法", new CallBackFunction() {
+            bridgeWebView.callHandler("getLoginState", "调用js的方法", new CallBackFunction() {
 
                 @Override
                 public void onCallBack(String data) {
@@ -216,7 +222,6 @@ public class JsBridgeActivity extends BaseActivity {
             }
             bridgeWebView.stopLoading();
             bridgeWebView.getSettings().setJavaScriptEnabled(false);
-            bridgeWebView.removeAllViews();
             bridgeWebView.destroy();
             bridgeWebView = null;
         }

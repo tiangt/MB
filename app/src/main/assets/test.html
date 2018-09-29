@@ -47,12 +47,19 @@
 </p>
 
 <script>
-
-
+            alert(window.WebViewJavascriptBridge);
+            window.WebViewJavascriptBridge.callHandler(
+               'getLoginState'
+               , {'param': '11111'}
+               , function(responseData) {
+                    alert(responseData)
+               }
+           );
          // 发送消息给Android
          function testClick() {
            var data = document.getElementById("hint").value;
           // 调用java中的方法  getLoginState是方法名
+            alert(window.WebViewJavascriptBridge);
             window.WebViewJavascriptBridge.callHandler(
                'getLoginState'
                , {'param': data}
@@ -121,7 +128,7 @@
                }
            );
        }
-
+/*
        // 注册事件监听
        function connectWebViewJavascriptBridge(callback) {
            if (window.WebViewJavascriptBridge) {
@@ -154,7 +161,7 @@
                responseCallback(responseData);
            });
        })
-
+*/
 
 </script>
 </body>

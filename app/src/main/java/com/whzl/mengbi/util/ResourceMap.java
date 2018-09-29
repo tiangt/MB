@@ -6,17 +6,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResourceMap {
-    private Map<Integer,Integer> usersLevelMap = new HashMap<>(); //用户等级
-    private Map<Integer,Integer> anchorLevelMap = new HashMap<>(); //主播等级
+    private Map<Integer, Integer> usersLevelMap = new HashMap<>(); //用户等级
+    private Map<Integer, Integer> anchorLevelMap = new HashMap<>(); //主播等级
+    private Map<Integer, Integer> royalLevelMap = new HashMap<>(); //贵族等级
 
     private static class ResourceMapHolder {
         private static final ResourceMap instance = new ResourceMap();
     }
-    private ResourceMap(){
+
+    private ResourceMap() {
         initUserMap();
         initAnchorMap();
+        initRoyalMap();
     }
-    public static final ResourceMap getResourceMap(){
+
+
+    public static final ResourceMap getResourceMap() {
         return ResourceMapHolder.instance;
     }
 
@@ -114,14 +119,24 @@ public class ResourceMap {
         anchorLevelMap.put(50, R.drawable.anchor_level50);
     }
 
+    private void initRoyalMap() {
+        royalLevelMap.put(1, R.drawable.ic_qingtong);
+        royalLevelMap.put(2, R.drawable.ic_baiyin);
+        royalLevelMap.put(3, R.drawable.ic_huangjin);
+        royalLevelMap.put(4, R.drawable.ic_bojin);
+        royalLevelMap.put(5, R.drawable.ic_zuanshi);
+        royalLevelMap.put(6, R.drawable.ic_xingyao);
+        royalLevelMap.put(7, R.drawable.ic_wangzhe);
+    }
+
     public int getUserLevelIcon(int level) {
         int levelIcon;
         if (usersLevelMap.containsKey(level)) {
             levelIcon = usersLevelMap.get(level);
-        }else {
+        } else {
             if (level > 37) {
                 levelIcon = R.drawable.usergrade37;
-            }else {
+            } else {
                 levelIcon = R.drawable.usergrade;
             }
         }
@@ -132,12 +147,22 @@ public class ResourceMap {
         int levelIcon;
         if (anchorLevelMap.containsKey(anchorLevel)) {
             levelIcon = anchorLevelMap.get(anchorLevel);
-        }else {
+        } else {
             if (anchorLevel > 49) {
                 levelIcon = R.drawable.anchor_level50;
-            }else {
+            } else {
                 levelIcon = R.drawable.anchor_level1;
             }
+        }
+        return levelIcon;
+    }
+
+    public int getRoyalLevelIcon(int level) {
+        int levelIcon;
+        if (royalLevelMap.containsKey(level)) {
+            levelIcon = royalLevelMap.get(level);
+        } else {
+            levelIcon = R.drawable.ic_qingtong;
         }
         return levelIcon;
     }

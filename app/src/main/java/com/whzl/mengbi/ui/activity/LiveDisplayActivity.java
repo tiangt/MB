@@ -32,15 +32,22 @@ import com.ksyun.media.player.KSYMediaPlayer;
 import com.ksyun.media.player.KSYTextureView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
+import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
+import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
 import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
+import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
+import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
+import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
+import com.whzl.mengbi.chat.room.message.messageJson.AnchorLevelChangeJson;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
+import com.whzl.mengbi.chat.room.message.messageJson.BroadCastBottomJson;
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
@@ -52,6 +59,7 @@ import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
+import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -76,6 +84,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
+import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
@@ -167,6 +176,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvTreasureTimer;
     @BindView(R.id.ib_luck_wheel)
     ImageButton ibLuckWheel;
+    @BindView(R.id.tv_run_way_broad)
+    AutoScrollTextView2 runWayBroad;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -202,6 +213,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Disposable mTreasureODisposable;
     private Long mTime;
     private int currentReceiveTreasureId;
+    private RunWayBroadControl mRunWayBroadControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -532,8 +544,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
             case R.id.ib_luck_wheel:
                 startActivity(new Intent(getBaseActivity(), JsBridgeActivity.class)
-                .putExtra("anchorId",mAnchorId+"")
-                .putExtra("programId",mProgramId+""));
+                        .putExtra("anchorId", mAnchorId + "")
+                        .putExtra("programId", mProgramId + ""));
                 break;
             default:
                 break;
@@ -595,6 +607,43 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(RunWayEvent runWayEvent) {
         initRunWay();
         mRunWayGiftControl.load(runWayEvent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UserLevelChangeEvent userLevelChangeEvent) {
+        initRunWayBroad();
+        mRunWayBroadControl.load(userLevelChangeEvent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RoyalLevelChangeEvent royalLevelChangeEvent) {
+        initRunWayBroad();
+        mRunWayBroadControl.load(royalLevelChangeEvent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(AnchorLevelChangeEvent anchorLevelChangeEvent) {
+        initRunWayBroad();
+        mRunWayBroadControl.load(anchorLevelChangeEvent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LuckGiftBigEvent luckGiftBigEvent) {
+        initRunWayBroad();
+        mRunWayBroadControl.load(luckGiftBigEvent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(BroadCastBottomEvent broadCastBottomEvent) {
+        initRunWayBroad();
+        broadCastBottomEvent.setProgramId(mProgramId);
+        mRunWayBroadControl.load(broadCastBottomEvent);
+    }
+
+    private void initRunWayBroad() {
+        if (mRunWayBroadControl == null) {
+            mRunWayBroadControl = new RunWayBroadControl(runWayBroad);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

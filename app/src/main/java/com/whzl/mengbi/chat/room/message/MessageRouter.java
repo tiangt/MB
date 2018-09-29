@@ -8,14 +8,18 @@ import com.whzl.mengbi.chat.client.MessageCallback;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatRoomEventJson;
 import com.whzl.mengbi.chat.room.message.messages.NoChatMsg;
 import com.whzl.mengbi.chat.room.message.messagesActions.Actions;
+import com.whzl.mengbi.chat.room.message.messagesActions.AnchorLevelChangeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.BroadCastAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftBigAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.OpenGuardAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ProgramFirstAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.RoyalLevelChangeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RunWayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SetManagerAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.StartPlayAction;
@@ -23,6 +27,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.StopPlayAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SubProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SystemMsgAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UpdateProgramAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.UserLevelChangeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.util.GsonUtils;
@@ -73,6 +78,11 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("UPDATE_PROGRAM", new UpdateProgramAction());
         actionsMap.put("ProgramFirstNotify", new ProgramFirstAction());
         actionsMap.put("SEND_SYSTEM_MESSAGE", new SystemMsgAction());
+        actionsMap.put("USER_LEVEL_CHANGE_BROADCAST", new UserLevelChangeAction());
+        actionsMap.put("ROYAL_LEVEL_CHANGE_BROADCAST", new RoyalLevelChangeAction());
+        actionsMap.put("ANCHOR_LEVEL_CHANGE_BROADCAST", new AnchorLevelChangeAction());
+        actionsMap.put("LUCK_GIFT_BIG", new LuckGiftBigAction());
+        actionsMap.put("BROADCAST", new BroadCastAction());
     }
 
     private void initChatAction() {
