@@ -47,8 +47,10 @@ public class BroadCastBottomEvent extends BroadEvent {
         SpannableString lightString1 = LightSpanString.getLightString(broadCastBottomJson.context.message,
                 Color.parseColor("#f0f0f0"));
         SpannableStringBuilder string = new SpannableStringBuilder();
-        string.append(lightString).append(lightString1);
+
+        SpannableString lightString2 = LightSpanString.getLightString("(来自" + broadCastBottomJson.context.anchorNickname + "的直播间)", Color.parseColor("#f0f0f0"));
 //        string.setSpan(new RoundBackgroundColorSpan(R.color.orange,R.color.white),0,string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        string.append(lightString).append(lightString1).append(lightString2);
         tvRunWayGift.setText(string);
 
         tvRunWayGift.setOnClickListener(v -> {

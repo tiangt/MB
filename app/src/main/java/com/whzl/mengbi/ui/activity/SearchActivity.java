@@ -1,7 +1,13 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.SpannedString;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +18,35 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.ResourceMap;
+import com.whzl.mengbi.util.SpannableStringUitls;
+import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author nobody
@@ -51,8 +71,12 @@ public class SearchActivity extends BaseActivity {
     LinearLayout llEmpty;
     @BindView(R.id.rv_search)
     RecyclerView rvSearch;
+    @BindView(R.id.srl_search)
+    SmartRefreshLayout refreshLayout;
     private BaseListAdapter anchorAdapter;
-    private List mAnchorInfoList = new ArrayList();
+    private List<SearchAnchorBean.ListBean> mAnchorInfoList = new ArrayList();
+    private int mCurrentPager = 1;
+    private String key;
 
     @Override
     protected void setupContentView() {
@@ -63,18 +87,68 @@ public class SearchActivity extends BaseActivity {
     protected void setupView() {
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                ToastUtils.showToast(etSearch.getText().toString().trim());
+                if (TextUtils.isEmpty(etSearch.getText().toString())) {
+                    return false;
+                }
+                if (mAnchorInfoList.size() > 0) {
+                    mAnchorInfoList.clear();
+                }
+                mCurrentPager = 1;
+                key = etSearch.getText().toString().trim();
+                search(key);
                 KeyBoardUtil.hideInputMethod(this);
             }
             return false;
         });
         initRv();
+
+        initSrl();
+    }
+
+    private void initSrl() {
+        refreshLayout.setOnLoadMoreListener(refreshLayout -> search(key));
+    }
+
+    private void search(String key) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("keyword", key);
+        paramsMap.put("pageSize", 10);
+        paramsMap.put("page", mCurrentPager++);
+        ApiFactory.getInstance().getApi(Api.class)
+                .anchorSearch(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<SearchAnchorBean>(this) {
+
+                    @Override
+                    public void onSuccess(SearchAnchorBean bean) {
+
+                        if (bean.list == null || bean.list.size() == 0) {
+                            llList.setVisibility(View.GONE);
+                            return;
+                        } else {
+                            llList.setVisibility(View.VISIBLE);
+                            SpannableString string = StringUtils.spannableStringColor("找到包含", Color.parseColor("#4b4b4b"));
+                            SpannableString string2 = StringUtils.spannableStringColor("\"" + etSearch.getText().toString().trim() + "\"",
+                                    Color.parseColor("#ff611b"));
+                            SpannableString string3 = StringUtils.spannableStringColor("的主播共" + bean.list.size() + "位",
+                                    Color.parseColor("#4b4b4b"));
+                            tvName.setText(string);
+                            tvName.append(string2);
+                            tvName.append(string3);
+                        }
+                        mAnchorInfoList.addAll(bean.list);
+                        anchorAdapter.notifyDataSetChanged();
+                        refreshLayout.finishLoadMore();
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                    }
+                });
     }
 
     private void initRv() {
-        mAnchorInfoList.add("");
-        mAnchorInfoList.add("");
-        mAnchorInfoList.add("");
         rvSearch.setNestedScrollingEnabled(false);
         rvSearch.setFocusableInTouchMode(false);
         rvSearch.setHasFixedSize(true);
@@ -113,15 +187,19 @@ public class SearchActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(int position) {
-            tvRoom.setText(getString(R.string.search_room, 621211));
-            GlideImageLoader.getInstace().displayImage(getBaseActivity(), ResourceMap.getResourceMap().getAnchorLevelIcon(22), ivLevel);
-
+            tvName.setText(mAnchorInfoList.get(position).anchorNickname);
+            GlideImageLoader.getInstace().displayImage(SearchActivity.this,
+                    ResourceMap.getResourceMap().getAnchorLevelIcon(mAnchorInfoList.get(position).anchorLevelValue), ivLevel);
+            GlideImageLoader.getInstace().displayImage(SearchActivity.this, mAnchorInfoList.get(position).anchorAvatar, ivIcon);
+            tvRoom.setText(getString(R.string.room_num, mAnchorInfoList.get(position).programId));
         }
 
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            ToastUtils.showToast(position + "");
+            Intent intent = new Intent(SearchActivity.this, LiveDisplayActivity.class);
+            intent.putExtra(BundleConfig.PROGRAM_ID, mAnchorInfoList.get(position).programId);
+            startActivity(intent);
         }
     }
 

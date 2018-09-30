@@ -35,7 +35,7 @@
         initCallHandler:null,
         //APP暴露的方法集合['functionInApp1','functionInApp2']
         callList:[],
-        //需要暴露给APP的方法的集合['functionInJs1','functionInJs2']
+        //需要暴露给APP的方法的集合[{handlerName:'functionInJs1',handler:'functionInJs1Handler'}]
         registerHandlers:[],
         bridge:null,
         //初始化方法
@@ -92,7 +92,8 @@
         //JSBridge初始化成功后的函数
         initedJSBridge:function(){
             for(var k in this.registerHandlers) {
-                this.registerHandler(this.registerHandlers[k]);
+                var obj = this.registerHandlers[k];
+                this.registerHandler(obj.handlerName,obj.handler);
             }
             if(this.initCallHandler){
                 this.initCallHandler();
@@ -118,9 +119,17 @@
          * 注册函数
          * handlerName string 函数名
          */
-        registerHandler:function(handler){
-            this.bridge.registerHandler(handler,function(data,responseCallback){
-                responseCallback(data);
+        registerHandler:function(handlerName,callback){
+            this.bridge.registerHandler(handlerName,function(data,responseCallback){
+                if(callback){
+                    if(responseCallback){
+                        responseCallback(callback(data));
+                    }
+                }else{
+                    if(responseCallback){
+                        responseCallback(data);
+                    }
+                }
             });
         },
         //调用APP 方法
@@ -152,9 +161,10 @@
     var getLoginState = function (data) {
         console.log("接收APP的参数：");
         console.log(data);
-        return {isLoginDesc:"这是js的响应信息"};
+        return JSON.stringify({isLoginDesc:"这是js的响应信息"});
     };
-    var params = {initCallHandler:load,registerHandlers:['getLoginState']};
+
+    var params = {initCallHandler:load,registerHandlers:[{handlerName:'getLoginState',handler:'getLoginState'}]};
     MBJsBridge.init(params);
     var init = function () {
         console.log('开始调用获取登录状态');

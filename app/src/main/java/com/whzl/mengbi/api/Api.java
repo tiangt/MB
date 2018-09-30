@@ -9,6 +9,7 @@ import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
@@ -256,4 +257,15 @@ public interface Api {
     @POST("v1/room/get-room-info")
     @FormUrlEncoded
     Observable<ApiResult<AnchorInfo>> getRoomInfo(@FieldMap Map<String, String> params);
+
+    /**
+     * 主页搜索
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/anchor/search")
+    @FormUrlEncoded
+    Observable<ApiResult<SearchAnchorBean>> anchorSearch(@FieldMap Map<String, String> params);
+
 }

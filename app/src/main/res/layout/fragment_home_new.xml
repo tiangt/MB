@@ -11,6 +11,8 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:background="#f9f9f9"
+            android:textColor="#323232"
             style="@style/fragmentTitleText"
             android:text="@string/home_title" />
 

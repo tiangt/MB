@@ -215,6 +215,11 @@
                     android:textSize="11sp"
                     android:visibility="gone" />
 
+                <com.whzl.mengbi.ui.widget.view.PkLayout
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
                 <com.whzl.mengbi.ui.widget.view.AutoScrollTextView2
                     android:id="@+id/tv_run_way_broad"
                     android:layout_width="match_parent"

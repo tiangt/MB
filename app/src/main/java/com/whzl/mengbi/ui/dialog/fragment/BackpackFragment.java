@@ -98,7 +98,7 @@ public class BackpackFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GiftSelectedEvent event) {
-        if(!flagOnMessageEvent){
+        if (!flagOnMessageEvent) {
             flagOnMessageEvent = true;
             return;
         }
@@ -124,7 +124,7 @@ public class BackpackFragment extends BaseFragment {
 
         public GoodsViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this , itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override
@@ -152,7 +152,7 @@ public class BackpackFragment extends BaseFragment {
         }
     }
 
-    private void getBackPack(){
+    private void getBackPack() {
         HashMap params = new HashMap();
         Long userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
         params.put("userId", userId);
@@ -165,14 +165,17 @@ public class BackpackFragment extends BaseFragment {
 
                     @Override
                     public void onSuccess(BackpackListBean backpackListBean) {
-                        if(backpackListBean != null && backpackListBean.list != null){
-                            for (int i = 0; i < backpackListBean.list.size(); i++) {
-                                for (int j = 0; j < mDatas.size(); j++) {
-                                    if(mDatas.get(j).goodsId == backpackListBean.list.get(i).goodsId){
-                                        mDatas.get(j).count = backpackListBean.list.get(i).count;
-                                    }
-                                }
-                            }
+                        if (backpackListBean != null && backpackListBean.list != null) {
+//                            for (int i = 0; i < backpackListBean.list.size(); i++) {
+//                                for (int j = 0; j < mDatas.size(); j++) {
+//                                    if(mDatas.get(j).goodsId == backpackListBean.list.get(i).goodsId){
+//                                        mDatas.get(j).count = backpackListBean.list.get(i).count;
+//                                    }
+//                                }
+//                            }
+                            mDatas.clear();
+                            mDatas.addAll(backpackListBean.list);
+                            selectedPosition = -1;
                             giftAdapter.notifyDataSetChanged();
                         }
                     }

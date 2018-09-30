@@ -42,5 +42,9 @@
         <attr name="textSize" format="dimension" />
     </declare-styleable>
 
+    <declare-styleable name="PkLayout">
+        <attr name="backgroud" format="color"/>
+        <attr name="progress" format="integer"/>
+    </declare-styleable>
 </resources>
 
