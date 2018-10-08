@@ -6,8 +6,10 @@ import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.AudienceCountBean;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
+import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -293,6 +295,48 @@ public class LiveModelImpl implements LiveModel {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
                         listener.onReceiveTreasureSuccess();
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void activityList(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .activityList(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<GetActivityBean>() {
+
+
+                    @Override
+                    public void onSuccess(GetActivityBean jsonElement) {
+                        listener.onActivityListSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void pkInfo(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .pkInfo(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<PkInfoBean>() {
+
+
+                    @Override
+                    public void onSuccess(PkInfoBean jsonElement) {
+                        listener.onPkInfoSuccess(jsonElement);
                     }
 
                     @Override

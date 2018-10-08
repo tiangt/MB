@@ -138,6 +138,9 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
                     }
                 }
             } else {
+                if (body.code == -1241) {
+                    return;
+                }
                 ToastUtils.showToast(body.msg);
                 onError(body.code);
             }

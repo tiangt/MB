@@ -2,11 +2,9 @@ package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.text.SpannedString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.BundleConfig;
@@ -30,9 +26,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.ResourceMap;
-import com.whzl.mengbi.util.SpannableStringUitls;
 import com.whzl.mengbi.util.StringUtils;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -112,7 +106,7 @@ public class SearchActivity extends BaseActivity {
     private void search(String key) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("keyword", key);
-        paramsMap.put("pageSize", 10);
+        paramsMap.put("pageSize", 20);
         paramsMap.put("page", mCurrentPager++);
         ApiFactory.getInstance().getApi(Api.class)
                 .anchorSearch(ParamsUtils.getSignPramsMap(paramsMap))

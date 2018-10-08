@@ -1,9 +1,10 @@
 package com.whzl.mengbi.ui.view;
 
 import com.whzl.mengbi.model.GuardListBean;
-import com.whzl.mengbi.model.entity.EmjoyInfo;
+import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -35,4 +36,8 @@ public interface LiveView {
     void onTreasureSuccess(TreasureBoxStatusBean treasureBoxStatusBean);
 
     void onReceiveTreasureSuccess();
+
+    void onActivityListSuccess(GetActivityBean bean);
+
+    void onPkInfoSuccess(PkInfoBean bean);
 }

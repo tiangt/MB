@@ -5,9 +5,11 @@ import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
+import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -268,4 +270,23 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<SearchAnchorBean>> anchorSearch(@FieldMap Map<String, String> params);
 
+    /**
+     * 直播间的活动（转盘，游戏，等）
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/activity-list")
+    @FormUrlEncoded
+    Observable<ApiResult<GetActivityBean>> activityList(@FieldMap Map<String, String> params);
+
+    /**
+     * 当前房间PK信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/info")
+    @FormUrlEncoded
+    Observable<ApiResult<PkInfoBean>> pkInfo(@FieldMap Map<String, String> params);
 }

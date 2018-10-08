@@ -45,9 +45,7 @@ import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
-import com.whzl.mengbi.chat.room.message.messageJson.AnchorLevelChangeJson;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
-import com.whzl.mengbi.chat.room.message.messageJson.BroadCastBottomJson;
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
@@ -62,8 +60,10 @@ import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
+import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -86,6 +86,7 @@ import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -100,6 +101,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -178,6 +180,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageButton ibLuckWheel;
     @BindView(R.id.tv_run_way_broad)
     AutoScrollTextView2 runWayBroad;
+    @BindView(R.id.pk_layout)
+    PkLayout pkLayout;
+
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -214,6 +219,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Long mTime;
     private int currentReceiveTreasureId;
     private RunWayBroadControl mRunWayBroadControl;
+    private PkInfoBean.userInfoBean myPkInfo;
+    private PkInfoBean.userInfoBean otherPkInfo;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -429,6 +436,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (mUserId > 0) {
             mLivePresenter.getTreasureBoxStatus(mUserId);
         }
+        mLivePresenter.getActivityList();
+        mLivePresenter.getPkInfo(mProgramId);
     }
 
     private void getRoomToken() {
@@ -474,6 +483,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_chat_private:
+                if (mUserId == 0) {
+                    login();
+                    return;
+                }
                 if (!UserIdentity.getCanChatPaivate(mRoomUserInfo)) {
                     showToast(R.string.private_chat_permission_deny);
                     return;
@@ -541,11 +554,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mTreasureBoxDialog.setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
-                break;
-            case R.id.ib_luck_wheel:
-                startActivity(new Intent(getBaseActivity(), JsBridgeActivity.class)
-                        .putExtra("anchorId", mAnchorId + "")
-                        .putExtra("programId", mProgramId + ""));
                 break;
             default:
                 break;
@@ -900,6 +908,80 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
+    @Override
+    public void onActivityListSuccess(GetActivityBean bean) {
+        if (bean.list == null || bean.list.size() == 0) {
+            return;
+        }
+        GlideImageLoader.getInstace().displayImage(this, bean.list.get(0).imageUrl, ibLuckWheel);
+        ibLuckWheel.setOnClickListener(v -> startActivity(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                .putExtra("anchorId", mAnchorId + "")
+                .putExtra("programId", mProgramId + "")
+                .putExtra("url", bean.list.get(0).linkUrl)));
+    }
+
+    @Override
+    public void onPkInfoSuccess(PkInfoBean bean) {
+        if ("T".equals(bean.pkStatus) || "T".equals(bean.punishStatus) || "T".equals(bean.tieStatus)) {
+            pkLayout.setVisibility(View.VISIBLE);
+            if (mProgramId == bean.launchPkUserProgramId) {
+                myPkInfo = bean.launchUserInfo;
+                otherPkInfo = bean.pkUserInfo;
+                pkLayout.setLeftScore(bean.launchPkUserScore + "");
+                pkLayout.setRightScore(bean.pkUserScore + "");
+                if (bean.pkUserScore == 0 && bean.pkUserScore == 0) {
+                    pkLayout.setProgress(50);
+                } else {
+                    double a = bean.launchPkUserScore;
+                    double b = bean.launchPkUserScore + bean.pkUserScore;
+                    double v = (a / b) * 100;
+                    pkLayout.setProgress((int) v);
+                }
+            } else if (mProgramId == bean.pkUserProgramId) {
+                myPkInfo = bean.pkUserInfo;
+                otherPkInfo = bean.launchUserInfo;
+                pkLayout.setLeftScore(bean.pkUserScore + "");
+                pkLayout.setRightScore(bean.launchPkUserScore + "");
+                if (bean.pkUserScore == 0 && bean.pkUserScore == 0) {
+                    pkLayout.setProgress(50);
+                } else {
+                    double a = bean.pkUserScore;
+                    double b = bean.launchPkUserScore + bean.pkUserScore;
+                    double v = (a / b) * 100;
+                    pkLayout.setProgress((int) v);
+                }
+            }
+            pkLayout.setLeftImg(myPkInfo.avatar);
+            pkLayout.setRightImg(otherPkInfo.avatar);
+            pkLayout.setLeftName(myPkInfo.nickname);
+            pkLayout.setRightName(otherPkInfo.nickname);
+            if ("T".equals(bean.pkStatus)) {
+                pkLayout.setStateImg(R.drawable.ic_vs);
+                pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
+                if (pkLayout.getProgressBar().getProgress() > 50) {
+                    pkLayout.setLeftLead();
+                } else if (pkLayout.getProgressBar().getProgress() < 50) {
+                    pkLayout.setRightLead();
+                }
+            }
+            if ("T".equals(bean.punishStatus)) {
+                pkLayout.setStateImg(R.drawable.ic_ko);
+                pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
+                if (pkLayout.getProgressBar().getProgress() > 50) {
+                    pkLayout.setLeftWin();
+                } else if (pkLayout.getProgressBar().getProgress() < 50) {
+                    pkLayout.setRightWin();
+                }
+            }
+            if ("T".equals(bean.tieStatus)) {
+                pkLayout.setStateImg(R.drawable.ic_vs);
+                pkLayout.timer("平局 ", bean.tieSurPlusSecond);
+                pkLayout.setTied();
+            }
+        }
+
+    }
+
     private void timer(int id) {
         mTreasureODisposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1114,6 +1196,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (mTreasureODisposable != null) {
             mTreasureODisposable.dispose();
         }
+        pkLayout.destroy();
     }
 
     @Override
@@ -1144,4 +1227,5 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         });
         dialog.show();
     }
+
 }

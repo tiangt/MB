@@ -1,10 +1,12 @@
 package com.whzl.mengbi.presenter.impl;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
-import com.whzl.mengbi.model.entity.EmjoyInfo;
+import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -16,7 +18,6 @@ import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener {
     private LiveView liveView;
@@ -147,15 +148,29 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
 
     @Override
     public void onTreasureStatusSuccess(TreasureBoxStatusBean treasureBoxStatusBean) {
-        if(liveView != null){
+        if (liveView != null) {
             liveView.onTreasureSuccess(treasureBoxStatusBean);
         }
     }
 
     @Override
     public void onReceiveTreasureSuccess() {
-        if(liveView != null){
+        if (liveView != null) {
             liveView.onReceiveTreasureSuccess();
+        }
+    }
+
+    @Override
+    public void onActivityListSuccess(GetActivityBean bean) {
+        if (liveView != null) {
+            liveView.onActivityListSuccess(bean);
+        }
+    }
+
+    @Override
+    public void onPkInfoSuccess(PkInfoBean bean) {
+        if (liveView != null) {
+            liveView.onPkInfoSuccess(bean);
         }
     }
 
@@ -201,5 +216,20 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("userId", userId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.treceiveTreasure(signPramsMap, this);
+    }
+
+    @Override
+    public void getActivityList() {
+        HashMap map = new HashMap();
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.activityList(signPramsMap, this);
+    }
+
+    @Override
+    public void getPkInfo(int programId) {
+        HashMap map = new HashMap();
+        map.put("programId", programId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.pkInfo(signPramsMap, this);
     }
 }

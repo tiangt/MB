@@ -12,7 +12,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 
-import com.alibaba.fastjson.JSON;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
@@ -24,7 +23,6 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.js.LoginStateBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
-import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -42,6 +40,7 @@ import io.reactivex.schedulers.Schedulers;
  * @date 2018/9/19
  */
 public class JsBridgeActivity extends BaseActivity {
+    private int REQUEST_LOGIN = 120;
 
     private Button button;
     private BridgeWebView bridgeWebView;
@@ -49,12 +48,14 @@ public class JsBridgeActivity extends BaseActivity {
     private UserInfo.DataBean user;
     private String anchorId;
     private String programId;
+    private String url;
 
     @Override
     protected void initEnv() {
         super.initEnv();
         anchorId = getIntent().getStringExtra("anchorId");
         programId = getIntent().getStringExtra("programId");
+        url = getIntent().getStringExtra("url");
     }
 
     @Override
@@ -78,8 +79,9 @@ public class JsBridgeActivity extends BaseActivity {
             bridgeWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         }
 
+//        bridgeWebView.loadUrl("file:///android_asset/test5.html");
+        bridgeWebView.loadUrl(url);
         initRegisterHandler();
-        bridgeWebView.loadUrl("file:///android_asset/test5.html");
 
 
     }
@@ -92,7 +94,7 @@ public class JsBridgeActivity extends BaseActivity {
             //显示接收的消息
             LogUtils.e("ssssssssssssss       " + data);
             //返回给html的消息
-            LoginStateBean bean = new LoginStateBean("" + checkLogin());
+            LoginStateBean bean = new LoginStateBean(checkLogin());
             Gson gson = new Gson();
             function.onCallBack(gson.toJson(bean));
         });
@@ -101,14 +103,14 @@ public class JsBridgeActivity extends BaseActivity {
 
         bridgeWebView.registerHandler("jumpToLoginActivity", (data, function) -> jumpToLoginActivity());
 
-        bridgeWebView.registerHandler("jumpToLiveHouse", (data, function) -> {
+        bridgeWebView.registerHandler("jumpToRoomActivity", (data, function) -> {
             String[] split = data.split(":");
             String replace = split[1].replace("}", "").replaceAll("\"", "");
             LogUtils.e(replace);
             jumpToLiveHouse(Integer.parseInt(replace));
         });
 
-        bridgeWebView.registerHandler("jumpToRechargeActivity", (data, function) -> jumpToRechargeActivity());
+        bridgeWebView.registerHandler("jumpToPayActivity", (data, function) -> jumpToRechargeActivity());
 
         bridgeWebView.registerHandler("getRoomInfo", (data, function) -> function.onCallBack("anchorId   " + anchorId + "   programId  " + programId));
 
@@ -117,19 +119,16 @@ public class JsBridgeActivity extends BaseActivity {
             /**
              * 给Html发消息,js接收并返回数据
              */
-            bridgeWebView.callHandler("getLoginState", "调用js的方法", new CallBackFunction() {
-
-                @Override
-                public void onCallBack(String data) {
-                    showToast("===" + data);
-                }
-            });
+            LoginStateBean bean = new LoginStateBean(checkLogin());
+            Gson gson = new Gson();
+            bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), data -> showToast("===" + data)
+            );
         });
     }
 
     public void jumpToLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_LOGIN);
     }
 
     public void jumpToLiveHouse(int programId) {
@@ -168,13 +167,13 @@ public class JsBridgeActivity extends BaseActivity {
         }
     }
 
-    private boolean checkLogin() {
+    private String checkLogin() {
         String sessionId = (String) SPUtils.get(this, SpConfig.KEY_SESSION_ID, "");
         long userId = Long.parseLong(SPUtils.get(this, "userId", (long) 0).toString());
         if (userId == 0 || TextUtils.isEmpty(sessionId)) {
-            return false;
+            return "F";
         }
-        return true;
+        return "T";
     }
 
     @Override
@@ -224,6 +223,23 @@ public class JsBridgeActivity extends BaseActivity {
             bridgeWebView.getSettings().setJavaScriptEnabled(false);
             bridgeWebView.destroy();
             bridgeWebView = null;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_LOGIN) {
+            if (RESULT_OK == resultCode) {
+                LoginStateBean bean = new LoginStateBean(checkLogin());
+                Gson gson = new Gson();
+                bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), new CallBackFunction() {
+                    @Override
+                    public void onCallBack(String data) {
+
+                    }
+                });
+            }
         }
     }
 }

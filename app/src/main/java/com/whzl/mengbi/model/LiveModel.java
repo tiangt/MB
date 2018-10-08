@@ -25,4 +25,8 @@ public interface LiveModel {
     void getTreasureBox(HashMap paramsMap, OnLiveFinishedListener listener);
 
     void treceiveTreasure(HashMap paramsMap, OnLiveFinishedListener listener);
+
+    void activityList(HashMap paramsMap, OnLiveFinishedListener listener);
+
+    void pkInfo(HashMap paramsMap, OnLiveFinishedListener listener);
 }

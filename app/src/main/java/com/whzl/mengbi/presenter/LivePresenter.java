@@ -28,4 +28,8 @@ public interface LivePresenter {
     void getTreasureBoxStatus(long userId);
 
     void receiveTreasure(long userId);
+
+    void getActivityList();
+
+    void getPkInfo(int programId);
 }

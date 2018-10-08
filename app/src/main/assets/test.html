@@ -8,60 +8,16 @@
     <input type="text" id="hint" value="调用安卓的Toast方法"/>
 </p>
 <p>
-    <input type="button" id="enter" value="获取用户登录状态" onclick="testClick();"/>
+    <input type="button" id="enter" value="调用安卓的方法" onclick="testClick();"/>
 </p>
-
-<p>
-    <input type="text" id="hint2" value="调用安卓的Toast方法"/>
-</p>
-<p>
-    <input type="button" id="enter2" value=" 获取用户信息" onclick="testClick2();"/>
-</p>
-
-<p>
-    <input type="text" id="hint3" value="调用安卓的Toast方法"/>
-</p>
-<p>
-    <input type="button" id="enter3" value="跳转到登录页面" onclick="testClick3();"/>
-</p>
-
-<p>
-    <input type="text" id="hint4" value="100079"/>
-</p>
-<p>
-    <input type="button" id="enter4" value="跳转到直播页面" onclick="testClick4();"/>
-</p>
-
-<p>
-    <input type="text" id="hint5" value="调用安卓的Toast方法"/>
-</p>
-<p>
-    <input type="button" id="enter5" value="跳转到充值页面" onclick="testClick5();"/>
-</p>
-
-<p>
-    <input type="text" id="hint6" value="调用安卓的Toast方法"/>
-</p>
-<p>
-    <input type="button" id="enter6" value="获取房间信息" onclick="testClick6();"/>
-</p>
-
 <script>
-            alert(window.WebViewJavascriptBridge);
-            window.WebViewJavascriptBridge.callHandler(
-               'getLoginState'
-               , {'param': '11111'}
-               , function(responseData) {
-                    alert(responseData)
-               }
-           );
+
          // 发送消息给Android
          function testClick() {
            var data = document.getElementById("hint").value;
-          // 调用java中的方法  getLoginState是方法名
-            alert(window.WebViewJavascriptBridge);
+          // 调用java中的方法  submitFromWeb是方法名
             window.WebViewJavascriptBridge.callHandler(
-               'getLoginState'
+               'submitFromWeb'
                , {'param': data}
                , function(responseData) {
                     alert(responseData)
@@ -69,66 +25,6 @@
            );
        }
 
-       // 发送消息给Android
-         function testClick2() {
-           var data = document.getElementById("hint2").value;
-            window.WebViewJavascriptBridge.callHandler(
-               'getUserInfo'
-               , {'param': data}
-               , function(responseData) {
-                    alert(responseData)
-               }
-           );
-       }
-
-       // 发送消息给Android
-         function testClick3() {
-           var data = document.getElementById("hint3").value;
-            window.WebViewJavascriptBridge.callHandler(
-               'jumpToLoginActivity'
-               , {'param': data}
-               , function(responseData) {
-                    alert(responseData)
-               }
-           );
-       }
-
-        // 发送消息给Android
-         function testClick4() {
-           var data = document.getElementById("hint4").value;
-            window.WebViewJavascriptBridge.callHandler(
-               'jumpToLiveHouse'
-               , {'param': data}
-               , function(responseData) {
-                    alert(responseData)
-               }
-           );
-       }
-
-        // 发送消息给Android
-         function testClick5() {
-           var data = document.getElementById("hint5").value;
-            window.WebViewJavascriptBridge.callHandler(
-               'jumpToRechargeActivity'
-               , {'param': data}
-               , function(responseData) {
-                    alert(responseData)
-               }
-           );
-       }
-
-       // 发送消息给Android
-         function testClick6() {
-           var data = document.getElementById("hint6").value;
-            window.WebViewJavascriptBridge.callHandler(
-               'getRoomInfo'
-               , {'param': data}
-               , function(responseData) {
-                    alert(responseData)
-               }
-           );
-       }
-/*
        // 注册事件监听
        function connectWebViewJavascriptBridge(callback) {
            if (window.WebViewJavascriptBridge) {
@@ -161,8 +57,7 @@
                responseCallback(responseData);
            });
        })
-*/
 
-</script>
+    </script>
 </body>
 </html>

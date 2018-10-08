@@ -216,16 +216,17 @@
                     android:visibility="gone" />
 
                 <com.whzl.mengbi.ui.widget.view.PkLayout
-                    android:layout_alignParentBottom="true"
+                    android:id="@+id/pk_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:visibility="gone" />
 
                 <com.whzl.mengbi.ui.widget.view.AutoScrollTextView2
                     android:id="@+id/tv_run_way_broad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-
                     android:paddingBottom="8dp"
                     android:paddingLeft="7dp"
                     android:paddingRight="7dp"
@@ -256,8 +257,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="15dp"
                     android:layout_marginTop="27dp"
-                    android:background="@null"
-                    android:src="@mipmap/ic_launcher" />
+                    android:background="@null" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -339,9 +339,10 @@
             android:layout_marginTop="7dp"
             android:background="@drawable/shape_red_notify"
             android:gravity="center"
+            android:text="1"
             android:textColor="@color/white"
             android:textSize="7sp"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/tv_treasure_timer"
