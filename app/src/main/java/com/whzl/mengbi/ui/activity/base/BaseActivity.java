@@ -184,4 +184,5 @@ public abstract class BaseActivity extends AppCompatActivity {
     public Activity getBaseActivity() {
         return this;
     }
+
 }

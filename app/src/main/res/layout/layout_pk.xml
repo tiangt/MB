@@ -83,6 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="9dp"
+                android:text="0票"
                 android:textColor="@color/white"
                 android:textSize="7sp" />
 
@@ -93,6 +94,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="9dp"
+                android:text="0票"
                 android:textColor="@color/white"
                 android:textSize="7sp" />
         </RelativeLayout>
@@ -125,8 +127,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_pk_time"
-                android:paddingLeft="6dp"
-                android:paddingRight="6dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="我方"
                 android:textColor="#fff"
                 android:textSize="7sp" />
@@ -169,8 +171,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_pk_time"
-                android:paddingLeft="6dp"
-                android:paddingRight="6dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="对方"
                 android:textColor="#fff"
                 android:textSize="7sp" />

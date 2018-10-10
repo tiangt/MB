@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.widget.view;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.concurrent.TimeUnit;
@@ -47,6 +48,10 @@ public class PkLayout extends LinearLayout {
     private TextView tvLeftScore;
     private TextView tvRightScore;
     private ImageView ivState;
+    private ValueAnimator animator;
+    private TimeDwonListener listener;
+
+
 
     public PkLayout(Context context) {
         this(context, null);
@@ -98,11 +103,11 @@ public class PkLayout extends LinearLayout {
         tvRightName.setText(name);
     }
 
-    public void setLeftScore(String score) {
+    public void setLeftScore(int score) {
         tvLeftScore.setText(score + "票");
     }
 
-    public void setRightScore(String score) {
+    public void setRightScore(int score) {
         tvRightScore.setText(score + "票");
     }
 
@@ -128,6 +133,9 @@ public class PkLayout extends LinearLayout {
                 .subscribe(aLong -> {
 //                    tvTime.setText(context.getString(R.string.pk_time, (9 - aLong) / 60, (9 - aLong) % 60));
                     tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong) / 60, (second - aLong) % 60));
+                    if (aLong == second - 10&&"PK进行中 ".equals(state)) {
+                        listener.onTimeDownListener();
+                    }
                     if (aLong == second) {
                         disposable.dispose();
 //                        ivLeftLead.setVisibility(GONE);
@@ -148,7 +156,11 @@ public class PkLayout extends LinearLayout {
     }
 
     public void setAnimation(final int mProgressBar) {
-        ValueAnimator animator = ValueAnimator.ofInt(initializeProgress, mProgressBar).setDuration(5000);
+        if (animator != null && animator.isRunning()) {
+            animator.end();
+            animator = null;
+        }
+        animator = ValueAnimator.ofInt(initializeProgress, mProgressBar).setDuration(3000);
 
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -172,6 +184,30 @@ public class PkLayout extends LinearLayout {
                 }
             }
         });
+
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                initializeProgress = mProgressBar;
+                LogUtil.e("ssssss " + initializeProgress);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
         animator.start();
     }
 
@@ -196,6 +232,7 @@ public class PkLayout extends LinearLayout {
         ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_lose));
         ivLeftCrown.setVisibility(VISIBLE);
         ivRightCrown.setVisibility(GONE);
+        ivLeftLead.setVisibility(GONE);
     }
 
     public void setRightWin() {
@@ -203,10 +240,20 @@ public class PkLayout extends LinearLayout {
         ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_win));
         ivLeftCrown.setVisibility(GONE);
         ivRightCrown.setVisibility(VISIBLE);
+        ivRightLead.setVisibility(GONE);
     }
 
     public void setTied() {
         ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_ping));
         ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_ping));
+    }
+
+    public void setListener(TimeDwonListener listener) {
+        this.listener = listener;
+    }
+
+
+    public interface TimeDwonListener {
+        void onTimeDownListener();
     }
 }

@@ -39,6 +39,7 @@ import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
+import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
@@ -46,6 +47,7 @@ import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
+import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
@@ -57,6 +59,7 @@ import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
+import com.whzl.mengbi.gift.PkControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
@@ -101,7 +104,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -182,7 +184,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     AutoScrollTextView2 runWayBroad;
     @BindView(R.id.pk_layout)
     PkLayout pkLayout;
-
+    @BindView(R.id.tv_count_down)
+    TextView tvCountDown;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -221,6 +224,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RunWayBroadControl mRunWayBroadControl;
     private PkInfoBean.userInfoBean myPkInfo;
     private PkInfoBean.userInfoBean otherPkInfo;
+    private PkControl pkControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -648,6 +652,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mRunWayBroadControl.load(broadCastBottomEvent);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PkEvent pkEvent) {
+        PkJson.ContextBean bean = pkEvent.getPkJson().context;
+        if (pkControl==null) {
+            pkControl = new PkControl(pkLayout);
+        }
+        pkControl.setBean(bean);
+        pkControl.setmAnchorId(mAnchorId);
+        pkControl.setmProgramId(mProgramId);
+        pkControl.setTvCountDown(tvCountDown);
+        pkControl.init();
+    }
+
     private void initRunWayBroad() {
         if (mRunWayBroadControl == null) {
             mRunWayBroadControl = new RunWayBroadControl(runWayBroad);
@@ -922,64 +939,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onPkInfoSuccess(PkInfoBean bean) {
-        if ("T".equals(bean.pkStatus) || "T".equals(bean.punishStatus) || "T".equals(bean.tieStatus)) {
-            pkLayout.setVisibility(View.VISIBLE);
-            if (mProgramId == bean.launchPkUserProgramId) {
-                myPkInfo = bean.launchUserInfo;
-                otherPkInfo = bean.pkUserInfo;
-                pkLayout.setLeftScore(bean.launchPkUserScore + "");
-                pkLayout.setRightScore(bean.pkUserScore + "");
-                if (bean.pkUserScore == 0 && bean.pkUserScore == 0) {
-                    pkLayout.setProgress(50);
-                } else {
-                    double a = bean.launchPkUserScore;
-                    double b = bean.launchPkUserScore + bean.pkUserScore;
-                    double v = (a / b) * 100;
-                    pkLayout.setProgress((int) v);
-                }
-            } else if (mProgramId == bean.pkUserProgramId) {
-                myPkInfo = bean.pkUserInfo;
-                otherPkInfo = bean.launchUserInfo;
-                pkLayout.setLeftScore(bean.pkUserScore + "");
-                pkLayout.setRightScore(bean.launchPkUserScore + "");
-                if (bean.pkUserScore == 0 && bean.pkUserScore == 0) {
-                    pkLayout.setProgress(50);
-                } else {
-                    double a = bean.pkUserScore;
-                    double b = bean.launchPkUserScore + bean.pkUserScore;
-                    double v = (a / b) * 100;
-                    pkLayout.setProgress((int) v);
-                }
-            }
-            pkLayout.setLeftImg(myPkInfo.avatar);
-            pkLayout.setRightImg(otherPkInfo.avatar);
-            pkLayout.setLeftName(myPkInfo.nickname);
-            pkLayout.setRightName(otherPkInfo.nickname);
-            if ("T".equals(bean.pkStatus)) {
-                pkLayout.setStateImg(R.drawable.ic_vs);
-                pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
-                if (pkLayout.getProgressBar().getProgress() > 50) {
-                    pkLayout.setLeftLead();
-                } else if (pkLayout.getProgressBar().getProgress() < 50) {
-                    pkLayout.setRightLead();
-                }
-            }
-            if ("T".equals(bean.punishStatus)) {
-                pkLayout.setStateImg(R.drawable.ic_ko);
-                pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
-                if (pkLayout.getProgressBar().getProgress() > 50) {
-                    pkLayout.setLeftWin();
-                } else if (pkLayout.getProgressBar().getProgress() < 50) {
-                    pkLayout.setRightWin();
-                }
-            }
-            if ("T".equals(bean.tieStatus)) {
-                pkLayout.setStateImg(R.drawable.ic_vs);
-                pkLayout.timer("平局 ", bean.tieSurPlusSecond);
-                pkLayout.setTied();
-            }
+        if (pkControl==null) {
+            pkControl = new PkControl(pkLayout);
         }
-
+        pkControl.setmAnchorId(mAnchorId);
+        pkControl.setmProgramId(mProgramId);
+        pkControl.setTvCountDown(tvCountDown);
+        pkControl.initNet(bean);
     }
 
     private void timer(int id) {
@@ -1197,6 +1163,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mTreasureODisposable.dispose();
         }
         pkLayout.destroy();
+        if (pkControl!=null) {
+            pkControl.destroy();
+        }
     }
 
     @Override

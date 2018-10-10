@@ -222,6 +222,8 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         } else if (userInfo.getData().getCreateTime() != null
                 && userInfo.getData().getCreateTime().equals(userInfo.getData().getLastLoginTime())) {
             setResult(RESULT_OK);
+        } else if (JsBridgeActivity.class.toString().equals(activityFrom)) {
+            setResult(RESULT_OK);
         }
         finish();
     }

@@ -6,18 +6,20 @@
     android:orientation="vertical"
     tools:context=".ui.activity.JsBridgeActivity">
 
-    <include layout="@layout/comm_toolbar" />
+    <include layout="@layout/comm_lottery_toolbar" />
 
     <com.github.lzyzsd.jsbridge.BridgeWebView
         android:id="@+id/JsBridgeWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:overScrollMode="never" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="給Html发送消息并返回消息" />
+        android:text="給Html发送消息并返回消息"
+        android:visibility="gone" />
 
 </LinearLayout>

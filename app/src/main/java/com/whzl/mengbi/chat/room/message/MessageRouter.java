@@ -13,10 +13,12 @@ import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.BroadCastAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.LotteryAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftBigAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.OpenGuardAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.PkAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ProgramFirstAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RoyalLevelChangeAction;
@@ -83,6 +85,8 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("ANCHOR_LEVEL_CHANGE_BROADCAST", new AnchorLevelChangeAction());
         actionsMap.put("LUCK_GIFT_BIG", new LuckGiftBigAction());
         actionsMap.put("BROADCAST", new BroadCastAction());
+        actionsMap.put("PK", new PkAction());
+        actionsMap.put("AWARD_LOTTERY", new LotteryAction());
     }
 
     private void initChatAction() {

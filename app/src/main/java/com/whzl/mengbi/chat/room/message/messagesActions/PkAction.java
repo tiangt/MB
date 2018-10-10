@@ -1,0 +1,25 @@
+package com.whzl.mengbi.chat.room.message.messagesActions;
+
+import android.content.Context;
+
+import com.whzl.mengbi.chat.room.message.events.PkEvent;
+import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
+import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtil;
+
+import org.greenrobot.eventbus.EventBus;
+
+
+/**
+ * @author nobody
+ */
+public class PkAction implements Actions {
+    @Override
+    public void performAction(String msgStr, Context context) {
+        PkJson pkJson = GsonUtils.GsonToBean(msgStr, PkJson.class);
+        if (null == pkJson || pkJson.context == null) {
+            return;
+        }
+        EventBus.getDefault().post(new PkEvent(pkJson, context));
+    }
+}

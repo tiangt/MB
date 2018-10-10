@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -17,12 +18,19 @@ import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.github.lzyzsd.jsbridge.DefaultHandler;
 import com.google.gson.Gson;
+import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.UserInfo;
+import com.whzl.mengbi.model.entity.js.JumpRoomBean;
+import com.whzl.mengbi.model.entity.js.LoginCallbackBean;
 import com.whzl.mengbi.model.entity.js.LoginStateBean;
+import com.whzl.mengbi.model.entity.js.RoomInfoBean;
+import com.whzl.mengbi.model.entity.js.UserInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -52,7 +60,8 @@ public class JsBridgeActivity extends BaseActivity {
 
     @Override
     protected void initEnv() {
-        super.initEnv();
+        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
+
         anchorId = getIntent().getStringExtra("anchorId");
         programId = getIntent().getStringExtra("programId");
         url = getIntent().getStringExtra("url");
@@ -60,7 +69,7 @@ public class JsBridgeActivity extends BaseActivity {
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_jsbridge, "幸运", true);
+        setContentView(R.layout.activity_jsbridge, "幸运大转盘", true);
     }
 
     @Override
@@ -99,20 +108,33 @@ public class JsBridgeActivity extends BaseActivity {
             function.onCallBack(gson.toJson(bean));
         });
 
-        bridgeWebView.registerHandler("getUserInfo", (data, function) -> getUserInfo(function));
+        bridgeWebView.registerHandler("getUserInfo", (data, function) ->
+//                getUserInfo(function));
+        {
+            Long userId = (Long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
+            String sessionId = (String) SPUtils.get(this, SpConfig.KEY_SESSION_ID, "");
+            String nickname = SPUtils.get(this, SpConfig.KEY_USER_NAME, "").toString();
+            UserInfoBean bean = new UserInfoBean(String.valueOf(userId), sessionId, nickname);
+            Gson gson = new Gson();
+            function.onCallBack(gson.toJson(bean));
+        });
 
-        bridgeWebView.registerHandler("jumpToLoginActivity", (data, function) -> jumpToLoginActivity());
+        bridgeWebView.registerHandler("jumpToLoginActivity", (data, function) ->
+                jumpToLoginActivity());
 
         bridgeWebView.registerHandler("jumpToRoomActivity", (data, function) -> {
-            String[] split = data.split(":");
-            String replace = split[1].replace("}", "").replaceAll("\"", "");
-            LogUtils.e(replace);
-            jumpToLiveHouse(Integer.parseInt(replace));
+            JumpRoomBean jumpRoomBean = GsonUtils.GsonToBean(data, JumpRoomBean.class);
+            jumpToLiveHouse(Integer.parseInt(jumpRoomBean.pId));
         });
 
         bridgeWebView.registerHandler("jumpToPayActivity", (data, function) -> jumpToRechargeActivity());
 
-        bridgeWebView.registerHandler("getRoomInfo", (data, function) -> function.onCallBack("anchorId   " + anchorId + "   programId  " + programId));
+        bridgeWebView.registerHandler("getRoomInfo", (data, function) -> {
+            RoomInfoBean bean = new RoomInfoBean(programId, anchorId);
+            Gson gson = new Gson();
+            function.onCallBack(gson.toJson(bean));
+        });
+
 
         button.setOnClickListener(v -> {
 
@@ -128,7 +150,8 @@ public class JsBridgeActivity extends BaseActivity {
 
     public void jumpToLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
-        startActivityForResult(intent,REQUEST_LOGIN);
+        intent.putExtra("from", this.getClass().toString());
+        startActivityForResult(intent, REQUEST_LOGIN);
     }
 
     public void jumpToLiveHouse(int programId) {
@@ -155,8 +178,9 @@ public class JsBridgeActivity extends BaseActivity {
 
                         @Override
                         public void onSuccess(UserInfo.DataBean dataBean) {
-                            user = dataBean;
-                            function.onCallBack("返回给web的alert  userInfo " + user.getNickname());
+                            UserInfoBean bean = new UserInfoBean(dataBean.getUserId() + "", dataBean.getSessionId(), dataBean.getNickname());
+                            Gson gson = new Gson();
+                            function.onCallBack(gson.toJson(bean));
                         }
 
                         @Override
@@ -231,12 +255,13 @@ public class JsBridgeActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
-                LoginStateBean bean = new LoginStateBean(checkLogin());
+                LoginCallbackBean bean = new LoginCallbackBean(checkLogin());
                 Gson gson = new Gson();
+                LogUtil.e("sssssss    "+gson.toJson(bean));
                 bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), new CallBackFunction() {
                     @Override
                     public void onCallBack(String data) {
-
+                        showToast("===" + data);
                     }
                 });
             }
