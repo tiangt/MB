@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -47,7 +48,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="萌比/天"
+                    android:text="萌币/月"
                     android:textColor="#646464"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -91,7 +92,8 @@
         <com.whzl.mengbi.ui.widget.view.AlignTextView
             android:id="@+id/atv1"
             android:layout_width="70dp"
-            android:layout_height="17dp" />
+            android:layout_height="17dp"
+            app:textColor="#FD840D" />
 
         <TextView
             style="@style/text_note_vip"
@@ -109,7 +111,8 @@
         <com.whzl.mengbi.ui.widget.view.AlignTextView
             android:id="@+id/atv2"
             android:layout_width="70dp"
-            android:layout_height="17dp" />
+            android:layout_height="17dp"
+            app:textColor="#FD840D" />
 
         <TextView
             style="@style/text_note_vip"
@@ -127,7 +130,8 @@
         <com.whzl.mengbi.ui.widget.view.AlignTextView
             android:id="@+id/atv3"
             android:layout_width="70dp"
-            android:layout_height="17dp" />
+            android:layout_height="17dp"
+            app:textColor="#FD840D" />
 
         <TextView
             style="@style/text_note_vip"
@@ -145,7 +149,8 @@
         <com.whzl.mengbi.ui.widget.view.AlignTextView
             android:id="@+id/atv4"
             android:layout_width="70dp"
-            android:layout_height="17dp" />
+            android:layout_height="17dp"
+            app:textColor="#FD840D" />
 
         <TextView
             style="@style/text_note_vip"
@@ -163,7 +168,8 @@
         <com.whzl.mengbi.ui.widget.view.AlignTextView
             android:id="@+id/atv5"
             android:layout_width="70dp"
-            android:layout_height="17dp" />
+            android:layout_height="17dp"
+            app:textColor="#FD840D" />
 
         <TextView
             style="@style/text_note_vip"
@@ -181,7 +187,8 @@
         <com.whzl.mengbi.ui.widget.view.AlignTextView
             android:id="@+id/atv6"
             android:layout_width="70dp"
-            android:layout_height="17dp" />
+            android:layout_height="17dp"
+            app:textColor="#FD840D" />
 
         <TextView
             style="@style/text_note_vip"
@@ -199,7 +206,8 @@
         <com.whzl.mengbi.ui.widget.view.AlignTextView
             android:id="@+id/atv7"
             android:layout_width="70dp"
-            android:layout_height="17dp" />
+            android:layout_height="17dp"
+            app:textColor="#FD840D" />
 
         <TextView
             style="@style/text_note_vip"
@@ -217,7 +225,8 @@
         <com.whzl.mengbi.ui.widget.view.AlignTextView
             android:id="@+id/atv8"
             android:layout_width="70dp"
-            android:layout_height="17dp" />
+            android:layout_height="17dp"
+            app:textColor="#FD840D" />
 
         <TextView
             style="@style/text_note_vip"
@@ -235,7 +244,8 @@
         <com.whzl.mengbi.ui.widget.view.AlignTextView
             android:id="@+id/atv9"
             android:layout_width="70dp"
-            android:layout_height="17dp" />
+            android:layout_height="17dp"
+            app:textColor="#FD840D" />
 
         <TextView
             style="@style/text_note_vip"
@@ -248,7 +258,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="74dp"
+        android:layout_marginTop="60dp"
         android:background="@drawable/shape_btn_theme"
         android:text="购买"
         android:textColor="@color/comm_white"

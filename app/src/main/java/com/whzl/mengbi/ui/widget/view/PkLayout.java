@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.concurrent.TimeUnit;
@@ -36,6 +35,7 @@ public class PkLayout extends LinearLayout {
     private ImageView ivRight;
     private TextView tvTime;
     private Disposable disposable;
+    private Disposable disposable2;
     private int initializeProgress;
     private ImageView ivRightLead;
     private ImageView ivLeftLead;
@@ -50,7 +50,6 @@ public class PkLayout extends LinearLayout {
     private ImageView ivState;
     private ValueAnimator animator;
     private TimeDwonListener listener;
-
 
 
     public PkLayout(Context context) {
@@ -132,11 +131,11 @@ public class PkLayout extends LinearLayout {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
 //                    tvTime.setText(context.getString(R.string.pk_time, (9 - aLong) / 60, (9 - aLong) % 60));
-                    tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong) / 60, (second - aLong) % 60));
-                    if (aLong == second - 10&&"PK进行中 ".equals(state)) {
+                    tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong - 1) / 60, (second - aLong - 1) % 60));
+                    if (aLong == second - 11 && "PK进行中 ".equals(state) && listener != null) {
                         listener.onTimeDownListener();
                     }
-                    if (aLong == second) {
+                    if (aLong == second - 1) {
                         disposable.dispose();
 //                        ivLeftLead.setVisibility(GONE);
 //                        ivRightLead.setVisibility(GONE);
@@ -160,7 +159,7 @@ public class PkLayout extends LinearLayout {
             animator.end();
             animator = null;
         }
-        animator = ValueAnimator.ofInt(initializeProgress, mProgressBar).setDuration(3000);
+        animator = ValueAnimator.ofInt(initializeProgress, mProgressBar).setDuration(2000);
 
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -194,7 +193,6 @@ public class PkLayout extends LinearLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 initializeProgress = mProgressBar;
-                LogUtil.e("ssssss " + initializeProgress);
             }
 
             @Override
@@ -207,13 +205,15 @@ public class PkLayout extends LinearLayout {
 
             }
         });
-
         animator.start();
     }
 
     public void destroy() {
         if (disposable != null) {
             disposable.dispose();
+        }
+        if (disposable2 != null) {
+            disposable2.dispose();
         }
     }
 
@@ -228,6 +228,8 @@ public class PkLayout extends LinearLayout {
     }
 
     public void setLeftWin() {
+        ivLeftResult.setVisibility(VISIBLE);
+        ivRightResult.setVisibility(VISIBLE);
         ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_win));
         ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_lose));
         ivLeftCrown.setVisibility(VISIBLE);
@@ -236,6 +238,8 @@ public class PkLayout extends LinearLayout {
     }
 
     public void setRightWin() {
+        ivLeftResult.setVisibility(VISIBLE);
+        ivRightResult.setVisibility(VISIBLE);
         ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_lose));
         ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_win));
         ivLeftCrown.setVisibility(GONE);
@@ -244,6 +248,8 @@ public class PkLayout extends LinearLayout {
     }
 
     public void setTied() {
+        ivLeftResult.setVisibility(VISIBLE);
+        ivRightResult.setVisibility(VISIBLE);
         ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_ping));
         ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_ping));
     }
@@ -255,5 +261,22 @@ public class PkLayout extends LinearLayout {
 
     public interface TimeDwonListener {
         void onTimeDownListener();
+    }
+
+    public void reset() {
+        setProgress(50);
+        setLeftScore(0);
+        setRightScore(0);
+        setLeftImg(null);
+        setRightImg(null);
+        setLeftName("");
+        setRightName("");
+        ivLeftCrown.setVisibility(GONE);
+        ivRightCrown.setVisibility(GONE);
+        ivLeftLead.setVisibility(GONE);
+        ivRightLead.setVisibility(GONE);
+        ivLeftResult.setVisibility(GONE);
+        ivRightResult.setVisibility(GONE);
+        tvTime.setText("");
     }
 }

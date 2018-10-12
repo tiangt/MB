@@ -86,7 +86,7 @@ public class BuyVipActivity extends BaseActivity {
                 , String.valueOf(priceBean.prices.month.priceId), "1", "", "", "", new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
-                        ToastUtils.showToast("购买成功");
+                        ToastUtils.toastMessage(BuyVipActivity.this,"购买成功");
                     }
 
                     @Override

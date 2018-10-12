@@ -9,6 +9,7 @@ import java.util.List;
 public class SearchAnchorBean {
 
 
+    public int total;
     public List<ListBean> list;
 
     public static class ListBean {

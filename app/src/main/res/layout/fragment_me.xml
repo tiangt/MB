@@ -148,19 +148,22 @@
             android:id="@+id/tv_packsack"
             style="@style/me_tab"
             android:drawableTop="@drawable/selector_me_packsack"
-            android:text="背包" />
+            android:text="背包"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_welfare"
             style="@style/me_tab"
             android:drawableTop="@drawable/selector_me_welfare"
-            android:text="福利" />
+            android:text="福利"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_bill"
             style="@style/me_tab"
             android:drawableTop="@drawable/selector_me_bill"
-            android:text="账单" />
+            android:text="账单"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <TextView

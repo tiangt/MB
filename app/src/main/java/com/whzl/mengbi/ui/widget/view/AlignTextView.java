@@ -53,7 +53,7 @@ public class AlignTextView extends View {
     public AlignTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.AlignTextView);
-//        color = typedArray.getColor(R.styleable.AlignTextView_textColor, Color.parseColor("323232"));
+        color = typedArray.getColor(R.styleable.AlignTextView_textColor, Color.parseColor("#323232"));
         string = typedArray.getString(R.styleable.AlignTextView_text);
         init(context);
     }
@@ -63,7 +63,7 @@ public class AlignTextView extends View {
         text = string;
         _density = context.getResources().getDisplayMetrics().density;
         tPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tPaint.setColor(textColor);
+        tPaint.setColor(color);
         tPaint.setStrokeWidth(strokeWidth);
         tPaint.setTextSize(textSize * _density);
         tPaint.setStyle(Style.FILL);

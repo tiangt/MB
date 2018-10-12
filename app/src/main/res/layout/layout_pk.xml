@@ -54,10 +54,17 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#3c64ed"
             android:layout_marginLeft="35dp"
             android:layout_marginRight="35dp">
 
+            <View
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:background="#f3570e"/>
             <ProgressBar
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:id="@+id/pb_pk"
                 style="@style/StyleProgressBarMini"
                 android:layout_width="match_parent"
@@ -118,6 +125,7 @@
                 android:id="@+id/iv_left"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
+                android:layout_marginBottom="-4dp"
                 android:src="@mipmap/ic_launcher"
                 app:civ_border_color="#f58719"
                 app:civ_border_width="1dp" />
@@ -162,6 +170,7 @@
                 android:id="@+id/iv_right"
                 android:layout_width="34dp"
                 android:layout_height="34dp"
+                android:layout_marginBottom="-4dp"
                 android:src="@mipmap/ic_launcher"
                 app:civ_border_color="#a25df4"
                 app:civ_border_width="1dp" />

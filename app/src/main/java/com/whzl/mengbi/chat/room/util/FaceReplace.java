@@ -12,9 +12,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
+import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtil;
+import com.whzl.mengbi.util.LogUtils;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -85,14 +88,18 @@ public class FaceReplace {
                 int end = m.end();
                 Drawable drawable = null;
                 try {
-                    if ("/顶".equals(fp.getValue()) || "/加油".equals(fp.getValue())) {
-                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-                        drawable = new BitmapDrawable(context.getResources(), bitmap);
-                        return;
-                    }
+//                    if ("/顶你".equals(fp.getValue()) || "/加油".equals(fp.getValue())) {
+//                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
+//                        drawable = new BitmapDrawable(context.getResources(), bitmap);
+//                        return;
+//                    }
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                        if ("/顶你".equals(fp.getValue()) || "/加油".equals(fp.getValue())) {
+                            Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
+                            drawable = new BitmapDrawable(context.getResources(), bitmap);
+                        }else {
                         drawable = new GifDrawable(fp.getFileContent());
-                        drawable.setCallback(new DrawableCallback(textView));
+                        drawable.setCallback(new DrawableCallback(textView));}
                     } else {
                         Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
                         drawable = new BitmapDrawable(context.getResources(), bitmap);
@@ -133,6 +140,32 @@ public class FaceReplace {
                     break;
                 }
                 drawable.setBounds(0, 0, DensityUtil.dp2px(50), DensityUtil.dp2px(50));
+                ImageSpan span = new ImageSpan(drawable);
+                spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            }
+        }
+    }
+
+    public void guardFaceReplace16(TextView textView, SpannableString spanString, Context context) {
+        textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        DrawableCallback callback = new DrawableCallback(textView);
+        for (FacePattern fp : guardPatternList) {
+            Matcher m = fp.getPattern().matcher(spanString);
+            //Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(facePath, context);
+            while (m.find()) {
+                int start = m.start();
+                int end = m.end();
+                Drawable drawable;
+                try {
+                    drawable = new GifDrawable(fp.getFileContent());
+                    drawable.setCallback(new DrawableCallback(textView));
+                } catch (Exception ignored) {
+                    break;
+                }
+                if (drawable == null) {
+                    break;
+                }
+                drawable.setBounds(0, 0, DensityUtil.dp2px(16), DensityUtil.dp2px(16));
                 ImageSpan span = new ImageSpan(drawable);
                 spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             }

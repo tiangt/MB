@@ -1,8 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
-import android.app.Application;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -22,7 +20,6 @@ import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
-import com.whzl.mengbi.ui.common.ActivityStackManager;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.LoginView;
 import com.whzl.mengbi.util.EncryptUtils;
@@ -31,13 +28,11 @@ import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.URLContentUtils;
-import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**

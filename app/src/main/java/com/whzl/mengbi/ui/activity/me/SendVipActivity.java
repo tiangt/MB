@@ -4,7 +4,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,6 +47,7 @@ public class SendVipActivity extends BaseActivity {
     @BindView(R.id.btn_buy_vip)
     Button btnBuyVip;
     private GetVipPriceBean priceBean;
+    private boolean idIsOk = false;
 
     @Override
     protected void setupContentView() {
@@ -56,26 +56,29 @@ public class SendVipActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        etIdSearch.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                if (TextUtils.isEmpty(etIdSearch.getText().toString())) {
-                    return false;
-                }
-                BusinessUtils.getUserInfo(this, etIdSearch.getText().toString().trim(), new BusinessUtils.UserInfoListener() {
-                    @Override
-                    public void onSuccess(UserInfo.DataBean bean) {
-                        ivSearchSuccess.setVisibility(View.VISIBLE);
-                        tvNick.setText(bean.getNickname());
-                    }
-
-                    @Override
-                    public void onError(int code) {
-                        tvSearchFail.setVisibility(View.VISIBLE);
-                    }
-                });
-            }
-            return false;
-        });
+//        etIdSearch.setOnEditorActionListener((v, actionId, event) -> {
+//            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                tvSearchFail.setVisibility(View.GONE);
+//                if (TextUtils.isEmpty(etIdSearch.getText().toString())) {
+//                    return false;
+//                }
+//                BusinessUtils.getUserInfo(this, etIdSearch.getText().toString().trim(), new BusinessUtils.UserInfoListener() {
+//                    @Override
+//                    public void onSuccess(UserInfo.DataBean bean) {
+//                        ivSearchSuccess.setVisibility(View.VISIBLE);
+//                        tvNick.setText(bean.getNickname());
+//                        idIsOk = true;
+//                    }
+//
+//                    @Override
+//                    public void onError(int code) {
+//                        tvSearchFail.setVisibility(View.VISIBLE);
+//                        idIsOk = false;
+//                    }
+//                });
+//            }
+//            return false;
+//        });
 
         etIdSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -90,8 +93,31 @@ public class SendVipActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                tvSearchFail.setVisibility(View.GONE);
-                ivSearchSuccess.setVisibility(View.GONE);
+//                tvSearchFail.setVisibility(View.GONE);
+//                ivSearchSuccess.setVisibility(View.GONE);
+//                tvNick.setText("");
+                if (s.toString().length() == 0) {
+                    tvSearchFail.setVisibility(View.GONE);
+                    return;
+                }
+                BusinessUtils.getUserInfo(SendVipActivity.this, etIdSearch.getText().toString().trim(), new BusinessUtils.UserInfoListener() {
+
+                    @Override
+                    public void onSuccess(UserInfo.DataBean bean) {
+                        tvSearchFail.setVisibility(View.GONE);
+                        ivSearchSuccess.setVisibility(View.VISIBLE);
+                        tvNick.setText(bean.getNickname());
+                        idIsOk = true;
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                        tvSearchFail.setVisibility(View.VISIBLE);
+                        tvNick.setText("");
+                        ivSearchSuccess.setVisibility(View.GONE);
+                        idIsOk = false;
+                    }
+                });
             }
         });
     }
@@ -123,6 +149,17 @@ public class SendVipActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_buy_vip:
+//                if (idIsOk) {
+//                    sendVip();
+//                } else {
+//                    tvSearchFail.setVisibility(View.VISIBLE);
+//                }
+                if (TextUtils.isEmpty(etIdSearch.getText())) {
+                    return;
+                }
+                if (!idIsOk) {
+                    return;
+                }
                 sendVip();
                 break;
         }
@@ -137,7 +174,7 @@ public class SendVipActivity extends BaseActivity {
                 , "", "", new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
-                        ToastUtils.showToast("赠送成功");
+                        ToastUtils.toastMessage(SendVipActivity.this, "赠送成功");
                     }
 
                     @Override
@@ -146,4 +183,64 @@ public class SendVipActivity extends BaseActivity {
                     }
                 });
     }
+
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent event) {
+//        if (event.getAction() == MotionEvent.ACTION_DOWN &&
+//                getCurrentFocus() != null &&
+//                getCurrentFocus().getWindowToken() != null) {
+//
+//            View v = getCurrentFocus();
+//            if (isShouldHideKeyboard(v, event)) {
+//                hideKeyboard(v.getWindowToken());
+//                tvSearchFail.setVisibility(View.GONE);
+//                if (TextUtils.isEmpty(etIdSearch.getText().toString())) {
+//                    return false;
+//                }
+//                BusinessUtils.getUserInfo(this, etIdSearch.getText().toString().trim(), new BusinessUtils.UserInfoListener() {
+//                    @Override
+//                    public void onSuccess(UserInfo.DataBean bean) {
+//                        ivSearchSuccess.setVisibility(View.VISIBLE);
+//                        tvNick.setText(bean.getNickname());
+//                        idIsOk = true;
+//                    }
+//
+//                    @Override
+//                    public void onError(int code) {
+//                        tvSearchFail.setVisibility(View.VISIBLE);
+//                        idIsOk = false;
+//                    }
+//                });
+//            }
+//        }
+//        return super.dispatchTouchEvent(event);
+//    }
+//
+//    /**
+//     * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时则不能隐藏
+//     */
+//    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+//        if (v != null && (v instanceof EditText)) {
+//            int[] l = {0, 0};
+//            v.getLocationOnScreen(l);
+//            int left = l[0],
+//                    top = l[1],
+//                    bottom = top + v.getHeight(),
+//                    right = left + v.getWidth();
+//            return !(event.getRawX() > left && event.getRawX() < right
+//                    && event.getRawY() > top && event.getRawY() < bottom);
+//        }
+//        // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditText上，和用户用轨迹球选择其他的焦点
+//        return false;
+//    }
+//
+//    /**
+//     * 获取InputMethodManager，隐藏软键盘
+//     */
+//    private void hideKeyboard(IBinder token) {
+//        if (token != null) {
+//            InputMethodManager mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//            mInputMethodManager.hideSoftInputFromWindow(token, InputMethodManager.HIDE_NOT_ALWAYS);
+//        }
+//    }
 }

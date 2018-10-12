@@ -14,7 +14,6 @@ import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.presenter.MePresenter;
 import com.whzl.mengbi.presenter.impl.MePresenterImpl;
 import com.whzl.mengbi.ui.activity.FollowActivity;
-import com.whzl.mengbi.ui.activity.JsBridgeActivity;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
@@ -198,6 +197,7 @@ public class MeFragment extends BaseFragment implements MeView {
         if (requestCode == REQUEST_SETTING) {
             if (resultCode == RESULT_OK) {
                 ((MainActivity) getActivity()).setCheck(0);
+                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
                 HashMap paramsMap = new HashMap();
                 paramsMap.put("platform", RequestManager.CLIENTTYPE);
                 RxPermisssionsUitls.getDevice(getMyActivity(), new RxPermisssionsUitls.OnPermissionListener() {
@@ -214,7 +214,7 @@ public class MeFragment extends BaseFragment implements MeView {
                         visitorLogin(paramsMap);
                     }
                 });
-                visitorLogin(paramsMap);
+//                visitorLogin(paramsMap);
             }
         }
     }

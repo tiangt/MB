@@ -931,10 +931,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             return;
         }
         GlideImageLoader.getInstace().displayImage(this, bean.list.get(0).imageUrl, ibLuckWheel);
-        ibLuckWheel.setOnClickListener(v -> startActivity(new Intent(getBaseActivity(), JsBridgeActivity.class)
+        ibLuckWheel.setOnClickListener(v -> startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
                 .putExtra("anchorId", mAnchorId + "")
                 .putExtra("programId", mProgramId + "")
-                .putExtra("url", bean.list.get(0).linkUrl)));
+                .putExtra("url", bean.list.get(0).linkUrl),REQUEST_LOGIN));
     }
 
     @Override

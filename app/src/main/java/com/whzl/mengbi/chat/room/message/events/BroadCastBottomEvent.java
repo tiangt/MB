@@ -12,9 +12,11 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.BroadCastBottomJson;
+import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.util.LogUtils;
 
 public class BroadCastBottomEvent extends BroadEvent {
     private BroadCastBottomJson broadCastBottomJson;
@@ -46,12 +48,15 @@ public class BroadCastBottomEvent extends BroadEvent {
                 Color.parseColor("#33edfe"));
         SpannableString lightString1 = LightSpanString.getLightString(broadCastBottomJson.context.message,
                 Color.parseColor("#f0f0f0"));
-        SpannableStringBuilder string = new SpannableStringBuilder();
+        FaceReplace.getInstance().faceReplace(tvRunWayGift, lightString1, mContext);
+        FaceReplace.getInstance().guardFaceReplace16(tvRunWayGift, lightString1, mContext);
+//        SpannableStringBuilder string = new SpannableStringBuilder();
 
-        SpannableString lightString2 = LightSpanString.getLightString("(来自" + broadCastBottomJson.context.anchorNickname + "的直播间)", Color.parseColor("#f0f0f0"));
 //        string.setSpan(new RoundBackgroundColorSpan(R.color.orange,R.color.white),0,string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        string.append(lightString).append(lightString1).append(lightString2);
-        tvRunWayGift.setText(string);
+//        string.append(lightString).append(lightString1);
+        tvRunWayGift.setText("");
+        tvRunWayGift.append(lightString);
+        tvRunWayGift.append(lightString1);
 
         tvRunWayGift.setOnClickListener(v -> {
             if (programId == broadCastBottomJson.context.programId) {

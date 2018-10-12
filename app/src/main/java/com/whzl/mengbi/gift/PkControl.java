@@ -8,6 +8,7 @@ import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
+import com.whzl.mengbi.util.LogUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -122,9 +123,11 @@ public class PkControl {
                 break;
             case "PK_TIE_FINISH"://平局时间结束
                 pkLayout.setVisibility(View.GONE);
+                pkLayout.reset();
                 break;
             case "PK_PUNISH_FINISH"://惩罚时间结束
                 pkLayout.setVisibility(View.GONE);
+                pkLayout.reset();
                 break;
         }
         pkLayout.setListener(new PkLayout.TimeDwonListener() {
@@ -192,16 +195,23 @@ public class PkControl {
                 pkLayout.timer("平局 ", bean.tieSurPlusSecond);
                 pkLayout.setTied();
             }
+            pkLayout.setListener(new PkLayout.TimeDwonListener() {
+                @Override
+                public void onTimeDownListener() {
+                    startCountDown(10);
+                }
+            });
         }
     }
 
     private void startCountDown(int count) {
         tvCountDown.setVisibility(View.VISIBLE);
+        tvCountDown.setText(String.valueOf(count));
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    tvCountDown.setText(String.valueOf(count-1  - aLong));
-                    if (aLong == count) {
+                    tvCountDown.setText(String.valueOf(count - 1 - aLong));
+                    if (aLong == count - 1) {
                         disposable.dispose();
                         tvCountDown.setVisibility(View.GONE);
                     }

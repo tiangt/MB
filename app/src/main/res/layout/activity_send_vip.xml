@@ -38,12 +38,12 @@
             android:textSize="15sp" />
 
         <EditText
+            android:layout_marginLeft="14dp"
             android:id="@+id/et_id_search"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_send_vip"
             android:gravity="center_vertical"
-            android:imeOptions="actionSearch"
             android:inputType="number"
             android:maxLength="20"
             android:maxLines="1"

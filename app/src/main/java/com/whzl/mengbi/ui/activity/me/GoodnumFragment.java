@@ -3,9 +3,13 @@ package com.whzl.mengbi.ui.activity.me;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +70,8 @@ public class GoodnumFragment extends BaseFragment {
     TextView tvQq;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
+    @BindView(R.id.tv_tips)
+    TextView tvTips;
 
     private List<GoodNumBean.DigitsBean> list6 = new ArrayList();
     private List<GoodNumBean.DigitsBean> list7 = new ArrayList();
@@ -83,8 +89,32 @@ public class GoodnumFragment extends BaseFragment {
 
     @Override
     public void init() {
+        initEdit();
         initRecycler();
         getGoodNumData("");
+    }
+
+    private void initEdit() {
+        etSearchNum.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() >= 2) {
+                    tvTips.setVisibility(View.INVISIBLE);
+                } else {
+                    tvTips.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     private void initRecycler() {
@@ -188,12 +218,18 @@ public class GoodnumFragment extends BaseFragment {
             switch (i) {
                 case 5:
                     digitsBean = list5.get(position);
+                    tvNum.setBackground(ContextCompat.getDrawable(getMyActivity(),R.drawable.bg_5_goodnum));
+                    tvNum.setTextColor(Color.parseColor("#9003e1"));
                     break;
                 case 6:
                     digitsBean = list6.get(position);
+                    tvNum.setBackground(ContextCompat.getDrawable(getMyActivity(),R.drawable.bg_6_goodnum));
+                    tvNum.setTextColor(Color.parseColor("#FFFF6600"));
                     break;
                 case 7:
                     digitsBean = list7.get(position);
+                    tvNum.setBackground(ContextCompat.getDrawable(getMyActivity(),R.drawable.bg_7_goodnum));
+                    tvNum.setTextColor(Color.parseColor("#FFFF001E"));
                     break;
             }
 
@@ -201,11 +237,39 @@ public class GoodnumFragment extends BaseFragment {
             tvNum.setText(digitsBean.goodsName);
 
             tvBuy.setOnClickListener(v -> {
-                startActivityForResult(new Intent(getMyActivity(), BuyGoodnumActivity.class)
-                        .putExtra("type", "buy")
-                        .putExtra("bean", digitsBean), 100);
+                int listKind = 0;
+                switch (i) {
+                    case 5:
+                        digitsBean = list5.get(position);
+                        listKind = 5;
+                        break;
+                    case 6:
+                        digitsBean = list6.get(position);
+                        listKind = 6;
+                        break;
+                    case 7:
+                        digitsBean = list7.get(position);
+                        listKind = 7;
+                        break;
+                }
+                Intent intent = new Intent(getMyActivity(), BuyGoodnumActivity.class);
+                intent.putExtra("type", "buy");
+                intent.putExtra("bean", digitsBean);
+                intent.putExtra("listKind", listKind);
+                startActivityForResult(intent, 100);
             });
             tvSend.setOnClickListener(v -> {
+                switch (i) {
+                    case 5:
+                        digitsBean = list5.get(position);
+                        break;
+                    case 6:
+                        digitsBean = list6.get(position);
+                        break;
+                    case 7:
+                        digitsBean = list7.get(position);
+                        break;
+                }
                 startActivityForResult(new Intent(getMyActivity(), BuyGoodnumActivity.class)
                         .putExtra("type", "send")
                         .putExtra("bean", digitsBean), 100);
@@ -223,14 +287,23 @@ public class GoodnumFragment extends BaseFragment {
                     if (list5.contains(digitsBean)) {
                         list5.remove(digitsBean);
                         adapter5.notifyDataSetChanged();
+                        if (list5.size() == 0) {
+                            ll5.setVisibility(View.GONE);
+                        }
                     }
                     if (list6.contains(digitsBean)) {
                         list6.remove(digitsBean);
                         adapter6.notifyDataSetChanged();
+                        if (list6.size() == 0) {
+                            ll6.setVisibility(View.GONE);
+                        }
                     }
                     if (list7.contains(digitsBean)) {
                         list7.remove(digitsBean);
                         adapter7.notifyDataSetChanged();
+                        if (list7.size() == 0) {
+                            ll7.setVisibility(View.GONE);
+                        }
                     }
                 }
             }

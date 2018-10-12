@@ -20,6 +20,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -106,7 +107,7 @@ public class SearchActivity extends BaseActivity {
     private void search(String key) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("keyword", key);
-        paramsMap.put("pageSize", 20);
+        paramsMap.put("pageSize", NetConfig.DEFAULT_PAGER_SIZE);
         paramsMap.put("page", mCurrentPager++);
         ApiFactory.getInstance().getApi(Api.class)
                 .anchorSearch(ParamsUtils.getSignPramsMap(paramsMap))
@@ -117,7 +118,7 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public void onSuccess(SearchAnchorBean bean) {
 
-                        if (bean.list == null || bean.list.size() == 0) {
+                        if (mCurrentPager==2&& bean.list.size() == 0) {
                             llList.setVisibility(View.GONE);
                             return;
                         } else {
@@ -125,7 +126,7 @@ public class SearchActivity extends BaseActivity {
                             SpannableString string = StringUtils.spannableStringColor("找到包含", Color.parseColor("#4b4b4b"));
                             SpannableString string2 = StringUtils.spannableStringColor("\"" + etSearch.getText().toString().trim() + "\"",
                                     Color.parseColor("#ff611b"));
-                            SpannableString string3 = StringUtils.spannableStringColor("的主播共" + bean.list.size() + "位",
+                            SpannableString string3 = StringUtils.spannableStringColor("的主播共" + bean.total + "位",
                                     Color.parseColor("#4b4b4b"));
                             tvName.setText(string);
                             tvName.append(string2);
@@ -133,7 +134,12 @@ public class SearchActivity extends BaseActivity {
                         }
                         mAnchorInfoList.addAll(bean.list);
                         anchorAdapter.notifyDataSetChanged();
-                        refreshLayout.finishLoadMore();
+
+                        if (bean.list.size() < NetConfig.DEFAULT_PAGER_SIZE) {
+                            refreshLayout.finishLoadMore(500,true,true);
+                        } else {
+                            refreshLayout.finishLoadMore();
+                        }
                     }
 
                     @Override

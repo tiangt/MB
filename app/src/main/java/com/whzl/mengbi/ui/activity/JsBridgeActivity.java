@@ -255,6 +255,7 @@ public class JsBridgeActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
+                setResult(RESULT_OK);
                 LoginCallbackBean bean = new LoginCallbackBean(checkLogin());
                 Gson gson = new Gson();
                 LogUtil.e("sssssss    "+gson.toJson(bean));
