@@ -137,7 +137,7 @@ public class PkLayout extends LinearLayout {
                     if (aLong == second - 11 && "PK进行中 ".equals(state) && listener != null) {
                         listener.onTimeDownListener();
                     }
-                    if (aLong == second - 1) {
+                    if (aLong >= second - 1) {
                         disposable.dispose();
 //                        ivLeftLead.setVisibility(GONE);
 //                        ivRightLead.setVisibility(GONE);

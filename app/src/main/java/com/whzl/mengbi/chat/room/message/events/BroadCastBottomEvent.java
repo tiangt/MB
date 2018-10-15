@@ -62,6 +62,9 @@ public class BroadCastBottomEvent extends BroadEvent {
             if (programId == broadCastBottomJson.context.programId) {
                 return;
             }
+            if (((LiveDisplayActivity) mContext).isFinishing()) {
+                return;
+            }
             AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
             dialog.setTitle(R.string.alert);
             dialog.setMessage(mContext.getString(R.string.jump_live_house, broadCastBottomJson.context.anchorNickname));
@@ -70,6 +73,7 @@ public class BroadCastBottomEvent extends BroadEvent {
                 Intent intent = new Intent(mContext, LiveDisplayActivity.class);
                 intent.putExtra(BundleConfig.PROGRAM_ID, broadCastBottomJson.context.programId);
                 mContext.startActivity(intent);
+                programId = broadCastBottomJson.context.programId;
             });
             dialog.show();
         });

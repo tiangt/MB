@@ -91,7 +91,6 @@ import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
-import com.whzl.mengbi.util.OnMultiClickListener;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -99,6 +98,9 @@ import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -107,6 +109,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -179,14 +182,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvTreasureCount;
     @BindView(R.id.tv_treasure_timer)
     TextView tvTreasureTimer;
-    @BindView(R.id.ib_luck_wheel)
-    ImageButton ibLuckWheel;
     @BindView(R.id.tv_run_way_broad)
     AutoScrollTextView2 runWayBroad;
     @BindView(R.id.pk_layout)
     PkLayout pkLayout;
     @BindView(R.id.tv_count_down)
     TextView tvCountDown;
+    @BindView(R.id.banner)
+    Banner banner;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -226,6 +229,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private PkInfoBean.userInfoBean myPkInfo;
     private PkInfoBean.userInfoBean otherPkInfo;
     private PkControl pkControl;
+    private List<GetActivityBean.ListBean> mBannerInfoList;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -329,6 +333,31 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initPlayer();
         initProtectRecycler();
         initFragment();
+        initBanner();
+    }
+
+    private void initBanner() {
+        //设置banner样式
+        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+        //设置图片加载器
+        banner.setImageLoader(GlideImageLoader.getInstace());
+        //设置banner动画效果
+        banner.setBannerAnimation(Transformer.Default);
+        //设置自动轮播，默认为true
+        banner.isAutoPlay(true);
+        //设置轮播时间
+        banner.setDelayTime(3000);
+        //设置指示器位置（当banner模式中有指示器时）
+        banner.setIndicatorGravity(BannerConfig.CENTER);
+        banner.setOnBannerListener(position -> {
+            if (mBannerInfoList != null && mBannerInfoList.size() > 0) {
+                GetActivityBean.ListBean listBean = mBannerInfoList.get(position);
+                startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                        .putExtra("anchorId", mAnchorId + "")
+                        .putExtra("programId", mProgramId + "")
+                        .putExtra("url", listBean.linkUrl), REQUEST_LOGIN);
+            }
+        });
     }
 
     private void initFragment() {
@@ -466,7 +495,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @OnClick({R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift, R.id.tv_popularity
             , R.id.btn_contribute, R.id.btn_chat, R.id.btn_chat_private, R.id.rootView
             , R.id.fragment_container
-            , R.id.btn_treasure_box, R.id.ib_luck_wheel})
+            , R.id.btn_treasure_box})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_follow:
@@ -657,8 +686,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PkEvent pkEvent) {
         PkJson.ContextBean bean = pkEvent.getPkJson().context;
-        if (pkControl==null) {
-            pkControl = new PkControl(pkLayout,this);
+        if (pkControl == null) {
+            pkControl = new PkControl(pkLayout, this);
         }
         pkControl.setBean(bean);
         pkControl.setmAnchorId(mAnchorId);
@@ -929,30 +958,26 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onActivityListSuccess(GetActivityBean bean) {
-        if (bean.list == null || bean.list.size() == 0) {
+        if (bean == null
+                || bean.list == null
+                || bean.list.isEmpty()) {
+            banner.setVisibility(View.GONE);
             return;
         }
-        GlideImageLoader.getInstace().displayImage(this, bean.list.get(0).imageUrl, ibLuckWheel);
-//        ibLuckWheel.setOnClickListener(v ->
-// startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
-//                .putExtra("anchorId", mAnchorId + "")
-//                .putExtra("programId", mProgramId + "")
-//                .putExtra("url", bean.list.get(0).linkUrl),REQUEST_LOGIN));
-        ibLuckWheel.setOnClickListener(new OnMultiClickListener() {
-            @Override
-            public void onMultiClick(View v) {
-                startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
-                .putExtra("anchorId", mAnchorId + "")
-                .putExtra("programId", mProgramId + "")
-                .putExtra("url", bean.list.get(0).linkUrl),REQUEST_LOGIN);
-            }
-        });
+        banner.setVisibility(View.VISIBLE);
+        mBannerInfoList = bean.list;
+        ArrayList<String> banners = new ArrayList<>();
+        for (int i = 0; i < mBannerInfoList.size(); i++) {
+            banners.add(mBannerInfoList.get(i).imageUrl);
+        }
+        banner.setImages(banners);
+        banner.start();
     }
 
     @Override
     public void onPkInfoSuccess(PkInfoBean bean) {
-        if (pkControl==null) {
-            pkControl = new PkControl(pkLayout,this);
+        if (pkControl == null) {
+            pkControl = new PkControl(pkLayout, this);
         }
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
@@ -1175,7 +1200,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mTreasureODisposable.dispose();
         }
         pkLayout.destroy();
-        if (pkControl!=null) {
+        if (pkControl != null) {
             pkControl.destroy();
         }
     }
@@ -1209,4 +1234,21 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         dialog.show();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //开始轮播
+        if (banner!=null) {
+            banner.startAutoPlay();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //结束轮播
+        if (banner!=null) {
+            banner.stopAutoPlay();
+        }
+    }
 }

@@ -8,7 +8,6 @@ import android.os.Parcelable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadEvent;
@@ -256,8 +255,8 @@ public class AutoScrollTextView2 extends AppCompatTextView {
             return;
         }
         canvas.translate(viewWidth - step, 0);
-        paint.setColor(getResources().getColor(R.color.bg_broadcast_bottom));
-        canvas.drawRoundRect(0,0,textLength+50,getMeasuredHeight(),60,60,paint);
+//        paint.setColor(getResources().getColor(R.color.bg_broadcast_bottom));
+//        canvas.drawRoundRect(0,0,textLength+50,getMeasuredHeight(),60,60,paint);
         super.onDraw(canvas);
         //滚动速度
         if (step <= viewWidth && step + 1.5 > viewWidth) {

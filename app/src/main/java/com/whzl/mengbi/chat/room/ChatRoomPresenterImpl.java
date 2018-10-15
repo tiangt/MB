@@ -68,10 +68,6 @@ public class ChatRoomPresenterImpl {
                 if (netErrorNoticed) {
                     return;
                 }
-                //TODO: toast
-                updateUI(context, "网络连接异常,请检查网络!");
-                netErrorNoticed = true;
-                //ToastUtils.showToast("网络连接异常，请检查网络");
             }
         };
 
