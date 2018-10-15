@@ -34,6 +34,7 @@
                 android:inputType="number"
                 android:maxLines="1"
                 android:paddingLeft="5dp"
+                android:maxLength="7"
                 android:textColor="@color/text_view"
                 android:textColorHint="#e5e5e5"
                 android:textSize="11sp" />

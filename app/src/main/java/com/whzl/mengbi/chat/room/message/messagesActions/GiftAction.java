@@ -41,5 +41,4 @@ public class GiftAction implements Actions {
         });
         downloadImageFile.doDownload(imageUrlList, context);
     }
-
 }

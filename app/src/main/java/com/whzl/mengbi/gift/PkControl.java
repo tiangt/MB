@@ -94,6 +94,9 @@ public class PkControl {
                 }
                 break;
             case "PK_SCORE"://PK分数
+                if (bean.launchPkUserScore == 0 && bean.pkUserScore == 0) {
+                    return;
+                }
                 if (mAnchorId == bean.launchPkUserId) {
                     pkLayout.setLeftScore(bean.launchPkUserScore);
                     pkLayout.setRightScore(bean.pkUserScore);

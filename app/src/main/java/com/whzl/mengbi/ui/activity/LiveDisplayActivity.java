@@ -240,6 +240,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         destroy();
+        pkLayout.setVisibility(View.GONE);
         textureView.stop();
         textureView.reset();
         textureView.setVisibility(View.INVISIBLE);
