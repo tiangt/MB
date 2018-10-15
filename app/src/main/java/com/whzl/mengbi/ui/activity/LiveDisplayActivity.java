@@ -656,7 +656,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(PkEvent pkEvent) {
         PkJson.ContextBean bean = pkEvent.getPkJson().context;
         if (pkControl==null) {
-            pkControl = new PkControl(pkLayout);
+            pkControl = new PkControl(pkLayout,this);
         }
         pkControl.setBean(bean);
         pkControl.setmAnchorId(mAnchorId);
@@ -940,7 +940,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onPkInfoSuccess(PkInfoBean bean) {
         if (pkControl==null) {
-            pkControl = new PkControl(pkLayout);
+            pkControl = new PkControl(pkLayout,this);
         }
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);

@@ -2,18 +2,20 @@ package com.whzl.mengbi.gift;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
+import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
-import com.whzl.mengbi.util.LogUtil;
 
 import java.util.concurrent.TimeUnit;
 
@@ -37,6 +39,11 @@ public class PkControl {
     private PkInfoBean.userInfoBean otherPkInfo;
     private AnimatorSet animatorSetsuofang;
 
+    private int jumpProgramId;
+    private String jumpNick;
+
+    private Activity context;
+
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
     }
@@ -53,8 +60,9 @@ public class PkControl {
         this.mAnchorId = mAnchorId;
     }
 
-    public PkControl(PkLayout pkLayout) {
+    public PkControl(PkLayout pkLayout, Activity context) {
         this.pkLayout = pkLayout;
+        this.context = context;
     }
 
 
@@ -68,6 +76,8 @@ public class PkControl {
                 if (bean.launchUserProgramId == mProgramId) {
                     pkLayout.setLeftName(bean.launchPkUserInfo.nickname);
                     pkLayout.setRightName(bean.pkUserInfo.nickname);
+                    jumpProgramId = bean.pkUserProgramId;
+                    jumpNick = bean.pkUserInfo.nickname;
                     String jpg = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", bean.launchPkUserInfo.lastUpdateTime);
                     pkLayout.setLeftImg(jpg);
                     String jpg2 = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", bean.pkUserInfo.lastUpdateTime);
@@ -75,6 +85,8 @@ public class PkControl {
                 } else if (bean.pkUserProgramId == mProgramId) {
                     pkLayout.setLeftName(bean.pkUserInfo.nickname);
                     pkLayout.setRightName(bean.launchPkUserInfo.nickname);
+                    jumpProgramId = bean.launchUserProgramId;
+                    jumpNick = bean.launchPkUserInfo.nickname;
                     String jpg = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", bean.pkUserInfo.lastUpdateTime);
                     pkLayout.setLeftImg(jpg);
                     String jpg2 = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", bean.launchPkUserInfo.lastUpdateTime);
@@ -142,6 +154,13 @@ public class PkControl {
                 startCountDown(10);
             }
         });
+
+        pkLayout.setRightClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showJumpLiveHouseDialog(jumpProgramId,jumpNick);
+            }
+        });
     }
 
     public void initNet(PkInfoBean bean) {
@@ -152,6 +171,8 @@ public class PkControl {
                 otherPkInfo = bean.pkUserInfo;
                 pkLayout.setLeftScore(bean.launchPkUserScore);
                 pkLayout.setRightScore(bean.pkUserScore);
+                jumpProgramId = bean.pkUserProgramId;
+                jumpNick = bean.pkUserInfo.nickname;
                 if (bean.launchPkUserScore == 0 && bean.pkUserScore == 0) {
                     pkLayout.setProgress(50);
                 } else {
@@ -165,6 +186,8 @@ public class PkControl {
                 otherPkInfo = bean.launchUserInfo;
                 pkLayout.setLeftScore(bean.pkUserScore);
                 pkLayout.setRightScore(bean.launchPkUserScore);
+                jumpProgramId = bean.launchPkUserProgramId;
+                jumpNick = bean.launchUserInfo.nickname;
                 if (bean.pkUserScore == 0 && bean.launchPkUserScore == 0) {
                     pkLayout.setProgress(50);
                 } else {
@@ -207,16 +230,22 @@ public class PkControl {
                     startCountDown(10);
                 }
             });
+            pkLayout.setRightClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showJumpLiveHouseDialog(jumpProgramId,jumpNick);
+                }
+            });
         }
     }
 
     private void startCountDown(int count) {
         //组合动画
-        if (animatorSetsuofang==null) {
+        if (animatorSetsuofang == null) {
             animatorSetsuofang = new AnimatorSet();
         }
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(tvCountDown, "scaleX", 1f, 3f,1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(tvCountDown, "scaleY", 1f, 3f,1f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(tvCountDown, "scaleX", 1f, 3f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(tvCountDown, "scaleY", 1f, 3f, 1f);
 
         animatorSetsuofang.setDuration(500);
         animatorSetsuofang.setInterpolator(new OvershootInterpolator());
@@ -245,5 +274,22 @@ public class PkControl {
             animatorSetsuofang.end();
             animatorSetsuofang = null;
         }
+    }
+
+    private void showJumpLiveHouseDialog(int programId, String nickName) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle(R.string.alert);
+        dialog.setMessage(context.getString(R.string.jump_live_house, nickName));
+        dialog.setNegativeButton(R.string.cancel, null);
+        dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
+            if (disposable!=null) {
+                disposable.dispose();
+            }
+            tvCountDown.setVisibility(View.GONE);
+            Intent intent = new Intent(context, LiveDisplayActivity.class);
+            intent.putExtra(BundleConfig.PROGRAM_ID, programId);
+            context.startActivity(intent);
+        });
+        dialog.show();
     }
 }

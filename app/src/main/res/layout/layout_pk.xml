@@ -54,21 +54,22 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#3c64ed"
             android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp">
+            android:layout_marginRight="35dp"
+            android:background="#3c64ed">
 
             <View
                 android:layout_width="20dp"
                 android:layout_height="15dp"
-                android:background="#f3570e"/>
+                android:background="#f3570e" />
+
             <ProgressBar
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
                 android:id="@+id/pb_pk"
                 style="@style/StyleProgressBarMini"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:background="#3c64ed"
                 android:max="100"
                 android:progress="50" />
@@ -149,6 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="3dp"
             android:src="@drawable/ic_crown_left"
             android:visibility="gone" />
     </RelativeLayout>
@@ -194,6 +196,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="3dp"
             android:src="@drawable/ic_crown_right"
             android:visibility="gone" />
     </RelativeLayout>

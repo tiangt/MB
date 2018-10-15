@@ -131,7 +131,7 @@ public class PkLayout extends LinearLayout {
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    LogUtils.e("ssssss  "+aLong);
+                    LogUtils.e("ssssss  " + aLong);
 //                    tvTime.setText(context.getString(R.string.pk_time, (9 - aLong) / 60, (9 - aLong) % 60));
                     tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong - 1) / 60, (second - aLong - 1) % 60));
                     if (aLong == second - 11 && "PK进行中 ".equals(state) && listener != null) {
@@ -280,9 +280,13 @@ public class PkLayout extends LinearLayout {
         ivLeftResult.setVisibility(GONE);
         ivRightResult.setVisibility(GONE);
         tvTime.setText("");
-        if (disposable!=null) {
+        if (disposable != null) {
             disposable.dispose();
             disposable = null;
         }
+    }
+
+    public void setRightClickListener(OnClickListener listener) {
+        ivRight.setOnClickListener(listener);
     }
 }
