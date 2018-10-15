@@ -91,6 +91,7 @@ import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
+import com.whzl.mengbi.util.OnMultiClickListener;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -931,10 +932,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             return;
         }
         GlideImageLoader.getInstace().displayImage(this, bean.list.get(0).imageUrl, ibLuckWheel);
-        ibLuckWheel.setOnClickListener(v -> startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+//        ibLuckWheel.setOnClickListener(v ->
+// startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+//                .putExtra("anchorId", mAnchorId + "")
+//                .putExtra("programId", mProgramId + "")
+//                .putExtra("url", bean.list.get(0).linkUrl),REQUEST_LOGIN));
+        ibLuckWheel.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
                 .putExtra("anchorId", mAnchorId + "")
                 .putExtra("programId", mProgramId + "")
-                .putExtra("url", bean.list.get(0).linkUrl),REQUEST_LOGIN));
+                .putExtra("url", bean.list.get(0).linkUrl),REQUEST_LOGIN);
+            }
+        });
     }
 
     @Override

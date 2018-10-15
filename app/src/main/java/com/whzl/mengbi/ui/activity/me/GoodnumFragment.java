@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -182,7 +183,7 @@ public class GoodnumFragment extends BaseFragment {
                 }
                 break;
             case R.id.tv_qq:
-                startQQChat("3179747001");
+                startQQChat(NetConfig.CUSTOM_OFFICIAL_SERVICE_QQ);
                 break;
         }
     }

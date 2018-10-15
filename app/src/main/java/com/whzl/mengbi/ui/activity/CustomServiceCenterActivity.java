@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class CustomServiceCenterActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.user_custom_official_service_qq_text:
-                startQQChat("3179747001");
+                startQQChat(NetConfig.CUSTOM_OFFICIAL_SERVICE_QQ);
                 break;
             case R.id.user_custom_guild_entered_qq:
                 startQQChat("1530675255");
