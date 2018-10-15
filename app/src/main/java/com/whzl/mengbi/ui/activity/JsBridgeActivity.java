@@ -143,7 +143,10 @@ public class JsBridgeActivity extends BaseActivity {
              */
             LoginStateBean bean = new LoginStateBean(checkLogin());
             Gson gson = new Gson();
-            bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), data -> showToast("===" + data)
+            bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), data ->{
+
+                    }
+//                    showToast("===" + data)
             );
         });
     }
@@ -262,7 +265,7 @@ public class JsBridgeActivity extends BaseActivity {
                 bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), new CallBackFunction() {
                     @Override
                     public void onCallBack(String data) {
-                        showToast("===" + data);
+//                        showToast("===" + data);
                     }
                 });
             }

@@ -1,6 +1,11 @@
 package com.whzl.mengbi.gift;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
@@ -30,6 +35,7 @@ public class PkControl {
     private Disposable disposable;
     private PkInfoBean.userInfoBean myPkInfo;
     private PkInfoBean.userInfoBean otherPkInfo;
+    private AnimatorSet animatorSetsuofang;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -205,12 +211,25 @@ public class PkControl {
     }
 
     private void startCountDown(int count) {
+        //组合动画
+        if (animatorSetsuofang==null) {
+            animatorSetsuofang = new AnimatorSet();
+        }
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(tvCountDown, "scaleX", 1f, 3f,1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(tvCountDown, "scaleY", 1f, 3f,1f);
+
+        animatorSetsuofang.setDuration(500);
+        animatorSetsuofang.setInterpolator(new OvershootInterpolator());
+        animatorSetsuofang.play(scaleX).with(scaleY);//两个动画同时开始
+
         tvCountDown.setVisibility(View.VISIBLE);
         tvCountDown.setText(String.valueOf(count));
+        animatorSetsuofang.start();
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     tvCountDown.setText(String.valueOf(count - 1 - aLong));
+                    animatorSetsuofang.start();
                     if (aLong == count - 1) {
                         disposable.dispose();
                         tvCountDown.setVisibility(View.GONE);
@@ -221,6 +240,10 @@ public class PkControl {
     public void destroy() {
         if (disposable != null) {
             disposable.dispose();
+        }
+        if (animatorSetsuofang != null) {
+            animatorSetsuofang.end();
+            animatorSetsuofang = null;
         }
     }
 }
