@@ -278,5 +278,6 @@
         <activity android:name=".ui.activity.JsBridgeActivity"/>
         <activity android:name=".ui.activity.me.BuyGoodnumActivity"/>
         <activity android:name=".ui.activity.SearchActivity"/>
+        <activity android:name=".ui.activity.me.PackActivity"/>
     </application>
 </manifest>

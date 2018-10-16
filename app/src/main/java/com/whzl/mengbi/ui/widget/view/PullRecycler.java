@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
     private RecyclerView recycler;
     private TextView tvEmpty;
     private LinearLayout llLoad;
+    private RelativeLayout rlEmpty;
 
     public void setShouldLoadMore(boolean mShouldLoadMore) {
         this.mShouldLoadMore = mShouldLoadMore;
@@ -74,6 +77,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         tvEmpty = findViewById(R.id.tv_empty);
         llLoad = findViewById(R.id.ll_load_layout);
+        rlEmpty = findViewById(R.id.rl_empty);
     }
 
     public void setAdapter(BaseListAdapter adapter) {
@@ -106,7 +110,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
             refreshLayout.setEnableRefresh(false);
             refreshLayout.setEnableLoadMore(false);
             llLoad.setVisibility(VISIBLE);
-            tvEmpty.setVisibility(GONE);
+            rlEmpty.setVisibility(GONE);
             recycler.setVisibility(GONE);
         }
     }
@@ -129,6 +133,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
                 tvEmpty.setVisibility(VISIBLE);
                 tvEmpty.setText("当前列表为空");
                 tvEmpty.setOnClickListener(null);
+                rlEmpty.setVisibility(VISIBLE);
                 refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(false);
                 break;
@@ -145,11 +150,13 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
                         listener.OnLoadAction(ACTION_LOAD_DATA);
                     }
                 });
+                rlEmpty.setVisibility(VISIBLE);
                 break;
             case LOAD_RESULT_SUCCESS:
                 recycler.setVisibility(VISIBLE);
                 llLoad.setVisibility(GONE);
                 tvEmpty.setVisibility(GONE);
+                rlEmpty.setVisibility(GONE);
                 refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(mShouldLoadMore);
                 break;
@@ -157,6 +164,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
                 recycler.setVisibility(VISIBLE);
                 llLoad.setVisibility(GONE);
                 tvEmpty.setVisibility(GONE);
+                rlEmpty.setVisibility(GONE);
                 refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(false);
                 break;
@@ -165,4 +173,9 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
         }
     }
 
+
+    public void setEmptyView(View view) {
+        tvEmpty.setVisibility(GONE);
+        rlEmpty.addView(view);
+    }
 }

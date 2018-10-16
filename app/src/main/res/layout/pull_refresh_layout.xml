@@ -38,16 +38,22 @@
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/tv_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="当前列表为空"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:textColor="#c5c5c5"
-        android:textSize="20sp"
-        android:paddingBottom="50dp" />
+    <RelativeLayout
+        android:id="@+id/rl_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingBottom="50dp"
+            android:text="当前列表为空"
+            android:textColor="#c5c5c5"
+            android:textSize="20sp"
+            android:visibility="visible" />
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.whzl.mengbi.ui.fragment.base;
 
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -18,6 +20,8 @@ import butterknife.BindView;
 public abstract class BasePullListFragment<T> extends BaseFragment {
     @BindView(R.id.pull_recycler)
     PullRecycler pullRecycler;
+    @BindView(R.id.fl_contain)
+    FrameLayout flContain;
     protected ArrayList<T> mDatas = new ArrayList<>();
     private BaseListAdapter mAdapter;
     private boolean mIsViewCreate;
@@ -109,4 +113,16 @@ public abstract class BasePullListFragment<T> extends BaseFragment {
 
     protected abstract BaseViewHolder setViewHolder(ViewGroup parent, int viewType);
 
+    public BaseListAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    public void addHeadTips(View view) {
+        flContain.setVisibility(View.VISIBLE);
+        flContain.addView(view);
+    }
+
+    public void setEmptyView(View view) {
+        pullRecycler.setEmptyView(view);
+    }
 }
