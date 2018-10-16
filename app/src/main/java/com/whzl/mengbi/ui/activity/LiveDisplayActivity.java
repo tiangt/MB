@@ -338,7 +338,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initBanner() {
         //设置banner样式
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+        banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
         //设置图片加载器
         banner.setImageLoader(GlideImageLoader.getInstace());
         //设置banner动画效果
