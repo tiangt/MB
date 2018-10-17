@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.fragment.me;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.PackcarBean;
-import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -41,7 +39,6 @@ import io.reactivex.schedulers.Schedulers;
  * @date 2018/10/16
  */
 public class PackCarFragment extends BasePullListFragment<PackcarBean.ListBean> {
-    private int REQUESTCODE = 200;
     private AwesomeDialog dialog;
 
     @Override
@@ -59,12 +56,7 @@ public class PackCarFragment extends BasePullListFragment<PackcarBean.ListBean> 
         super.init();
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_car_pack, getPullView(), false);
         getAdapter().addHeaderView(view);
-        View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_vip_pack, getPullView(), false);
-        TextView tvOpen = view2.findViewById(R.id.tv_open);
-        tvOpen.setOnClickListener(v -> {
-            Intent intent = new Intent(getMyActivity(), BuyVipActivity.class);
-            startActivityForResult(intent, REQUESTCODE);
-        });
+        View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_car_pack, getPullView(), false);
         setEmptyView(view2);
     }
 
