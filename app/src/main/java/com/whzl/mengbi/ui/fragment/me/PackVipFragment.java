@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
@@ -117,20 +118,46 @@ public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean> 
             PackvipBean.ListBean bean = mDatas.get(position);
             tvName.setText(bean.goodsName);
             tvDay.setText("剩余" + bean.surplusDay + "天");
-            tvReceive.setText(bean.awardReceived ? "已领取" : "领取");
-            tvReceive.setBackgroundResource(bean.awardReceived ? R.drawable.bg_button_pack_gray : R.drawable.bg_button_pack_orange);
-            tvReceive.setClickable(bean.awardReceived ? false : true);
-            tvReceive.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ToastUtils.toastMessage(getMyActivity(), "成功领取");
-                }
-            });
-
             tvAdd.setOnClickListener(v -> {
                 Intent intent = new Intent(getMyActivity(), BuyVipActivity.class);
                 startActivityForResult(intent, REQUESTCODE);
             });
+
+            if (bean.surplusDay == 0) {
+                tvReceive.setText("领取");
+                tvReceive.setBackgroundResource(R.drawable.bg_button_pack_gray);
+            } else {
+                tvReceive.setText(bean.awardReceived ? "已领取" : "领取");
+                tvReceive.setBackgroundResource(bean.awardReceived ? R.drawable.bg_button_pack_gray : R.drawable.bg_button_pack_orange);
+                tvReceive.setEnabled(bean.awardReceived ? false : true);
+                tvReceive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        HashMap paramsMap = new HashMap();
+                        paramsMap.put("userId", SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L));
+                        paramsMap.put("goodsId", bean.goodsId);
+                        ApiFactory.getInstance().getApi(Api.class)
+                                .vipAward(ParamsUtils.getSignPramsMap(paramsMap))
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new ApiObserver<JsonElement>(PackVipFragment.this) {
+
+                                    @Override
+                                    public void onSuccess(JsonElement bean) {
+                                        tvReceive.setText("已领取");
+                                        tvReceive.setBackgroundResource(R.drawable.bg_button_pack_gray);
+                                        tvReceive.setEnabled(false);
+                                        ToastUtils.showCustomToast(getMyActivity(), "成功领取蓝色妖姬×66，广播卡×1");
+                                    }
+
+                                    @Override
+                                    public void onError(int code) {
+
+                                    }
+                                });
+                    }
+                });
+            }
         }
     }
 

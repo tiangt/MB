@@ -150,6 +150,10 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
                     onError(body.code);
                     return;
                 }
+                if (body.code == 503 && "装备位已用完，无法装备".equals(body.msg)) {
+                    onError(body.code);
+                    return;
+                }
                 ToastUtils.showToast(body.msg);
                 onError(body.code);
             }

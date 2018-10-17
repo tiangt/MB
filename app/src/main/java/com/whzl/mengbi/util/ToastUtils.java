@@ -48,4 +48,16 @@ public class ToastUtils {
         toast.setView(view);
         toast.show();
     }
+
+    public static void showCustomToast(Activity activity, String content) {
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View view = inflater.inflate(R.layout.toast_custom, null);
+        TextView tv = view.findViewById(R.id.tv_content);
+        tv.setText(content);
+        Toast toast = new Toast(activity);
+        toast.setGravity(Gravity.BOTTOM, 0, UIUtil.dip2px(activity, 100));
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(view);
+        toast.show();
+    }
 }

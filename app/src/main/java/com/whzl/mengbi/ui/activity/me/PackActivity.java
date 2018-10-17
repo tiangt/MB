@@ -13,6 +13,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.RankListFragment;
+import com.whzl.mengbi.ui.fragment.me.PackCarFragment;
 import com.whzl.mengbi.ui.fragment.me.PackVipFragment;
 import com.whzl.mengbi.ui.fragment.me.PropFragment;
 import com.whzl.mengbi.ui.fragment.me.TestFragment;
@@ -63,7 +64,7 @@ public class PackActivity extends BaseActivity {
         fragments.add(PropFragment.newInstance());
         fragments.add(PackVipFragment.newInstance());
         fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));
-        fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));
+        fragments.add(PackCarFragment.newInstance());
         fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));
         viewpager.setOffscreenPageLimit(5);
         viewpager.setAdapter(new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles));

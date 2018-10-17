@@ -9,6 +9,7 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
+import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PropBean;
@@ -311,4 +312,34 @@ public interface Api {
     @POST("v1/my/vip")
     @FormUrlEncoded
     Observable<ApiResult<PackvipBean>> myVip(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的座驾
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/card")
+    @FormUrlEncoded
+    Observable<ApiResult<PackcarBean>> myCard(@FieldMap Map<String, String> params);
+
+    /**
+     * 装备物品
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/equip")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> equip(@FieldMap Map<String, String> params);
+
+    /**
+     * VIP每日奖励
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/vip-award")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> vipAward(@FieldMap Map<String, String> params);
 }
