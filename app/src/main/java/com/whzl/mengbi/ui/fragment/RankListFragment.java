@@ -17,6 +17,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -72,7 +73,8 @@ public class RankListFragment extends BasePullListFragment<RankListBean.DetailBe
     }
 
     @Override
-    protected void loadData(int action) {
+    protected void loadData(int action,int page) {
+        LogUtils.e("sssss   "+page);
         if (action == PullRecycler.ACTION_LOAD_DATA || action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             HashMap paramsMap = new HashMap();
             paramsMap.put("rankName", rankName);

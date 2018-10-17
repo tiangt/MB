@@ -130,9 +130,9 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
             case LOAD_RESULT_EMPTY:
                 recycler.setVisibility(GONE);
                 llLoad.setVisibility(GONE);
-                tvEmpty.setVisibility(VISIBLE);
+//                tvEmpty.setVisibility(VISIBLE);
                 tvEmpty.setText("当前列表为空");
-                tvEmpty.setOnClickListener(null);
+//                tvEmpty.setOnClickListener(null);
                 rlEmpty.setVisibility(VISIBLE);
                 refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(false);
@@ -142,7 +142,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
                 refreshLayout.setEnableRefresh(false);
                 refreshLayout.setEnableLoadMore(false);
                 llLoad.setVisibility(GONE);
-                tvEmpty.setVisibility(VISIBLE);
+//                tvEmpty.setVisibility(VISIBLE);
                 tvEmpty.setText("出错了，点我重试");
                 tvEmpty.setOnClickListener(v -> {
                     if (listener != null) {
@@ -155,7 +155,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
             case LOAD_RESULT_SUCCESS:
                 recycler.setVisibility(VISIBLE);
                 llLoad.setVisibility(GONE);
-                tvEmpty.setVisibility(GONE);
+//                tvEmpty.setVisibility(GONE);
                 rlEmpty.setVisibility(GONE);
                 refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(mShouldLoadMore);
@@ -163,7 +163,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
             case LOAD_RESULT_LOAD_MORE_END:
                 recycler.setVisibility(VISIBLE);
                 llLoad.setVisibility(GONE);
-                tvEmpty.setVisibility(GONE);
+//                tvEmpty.setVisibility(GONE);
                 rlEmpty.setVisibility(GONE);
                 refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(false);

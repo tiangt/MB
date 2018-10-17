@@ -10,6 +10,7 @@ import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -289,4 +290,14 @@ public interface Api {
     @POST("v1/pk/info")
     @FormUrlEncoded
     Observable<ApiResult<PkInfoBean>> pkInfo(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的服务（道具）
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/service")
+    @FormUrlEncoded
+    Observable<ApiResult<PropBean>> myService(@FieldMap Map<String, String> params);
 }

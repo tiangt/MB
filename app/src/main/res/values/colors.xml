@@ -160,4 +160,5 @@
     <color name="text_pk_count_down">#fbcf03</color>
     <color name="bg_broadcast_bottom">#702d2933</color>
     <color name="toast_shop">#d9d9d9</color>
+    <color name="divider_color_pack">#e5e5e5</color>
 </resources>

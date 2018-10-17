@@ -149,7 +149,7 @@
             style="@style/me_tab"
             android:drawableTop="@drawable/selector_me_packsack"
             android:text="背包"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/tv_welfare"
