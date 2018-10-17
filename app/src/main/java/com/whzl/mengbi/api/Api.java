@@ -6,9 +6,12 @@ import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
+import com.whzl.mengbi.model.entity.MyCouponBean;
+import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
@@ -342,4 +345,34 @@ public interface Api {
     @POST("v1/my/vip-award")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> vipAward(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的服务（道具）
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/coupon")
+    @FormUrlEncoded
+    Observable<ApiResult<MyCouponBean>> myCoupon(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的靓号
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/pretty")
+    @FormUrlEncoded
+    Observable<ApiResult<PackPrettyBean>> pretty(@FieldMap Map<String, String> params);
+
+    /**
+     * 靓号价格接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/get-pretty-prices")
+    @FormUrlEncoded
+    Observable<ApiResult<GetPrettyBean>> getprettyprices(@FieldMap Map<String, String> params);
 }

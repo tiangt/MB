@@ -6,26 +6,25 @@ import java.util.List;
  * @author nobody
  * @date 2018/10/17
  */
-public class PackcarBean {
+public class PackPrettyBean {
+
 
     public List<ListBean> list;
 
     public static class ListBean {
         /**
-         * goodsSn : 2518
-         * goodsId : 94314
-         * goodsType : CAR
-         * goodsName : 首充座驾
-         * goodsPic : https://test-img.mengbitv.com/default/000/00/01/10.jpg
-         * isEquip : F
-         * surplusDay : 21
+         * goodsSn : 2094
+         * goodsId : 94451
+         * goodsType : PRETTY_NUM
+         * goodsName : 7891234
+         * isEquip : T
+         * surplusDay : 68
          */
 
         public long goodsSn;
         public int goodsId;
         public String goodsType;
         public String goodsName;
-        public String goodsPic;
         public String isEquip;
         public int surplusDay;
     }

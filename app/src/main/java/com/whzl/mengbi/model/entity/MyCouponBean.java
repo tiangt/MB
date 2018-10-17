@@ -6,18 +6,18 @@ import java.util.List;
  * @author nobody
  * @date 2018/10/17
  */
-public class PackcarBean {
+public class MyCouponBean  {
 
     public List<ListBean> list;
 
     public static class ListBean {
         /**
-         * goodsSn : 2518
-         * goodsId : 94314
-         * goodsType : CAR
-         * goodsName : 首充座驾
-         * goodsPic : https://test-img.mengbitv.com/default/000/00/01/10.jpg
-         * isEquip : F
+         * goodsSn : 2521
+         * goodsId : 94338
+         * goodsType : COUPON
+         * goodsName : 3%返利券
+         * goodsPic : https://test-img.mengbitv.com/default/000/00/01/48.jpg
+         * identifyCode : ZWEXOB
          * surplusDay : 21
          */
 
@@ -26,7 +26,8 @@ public class PackcarBean {
         public String goodsType;
         public String goodsName;
         public String goodsPic;
-        public String isEquip;
+        public String identifyCode;
         public int surplusDay;
+        public int goodsSum;
     }
 }
