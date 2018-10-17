@@ -29,7 +29,7 @@ public abstract class BasePullListFragment<T> extends BaseFragment {
     private boolean mIsViewCreate;
     private boolean hasLoadData;
 
-    private int mPage = 1;
+    protected int mPage = 1;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

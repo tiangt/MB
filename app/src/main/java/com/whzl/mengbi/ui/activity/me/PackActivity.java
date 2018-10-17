@@ -13,6 +13,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.RankListFragment;
+import com.whzl.mengbi.ui.fragment.me.PackVipFragment;
 import com.whzl.mengbi.ui.fragment.me.PropFragment;
 import com.whzl.mengbi.ui.fragment.me.TestFragment;
 import com.whzl.mengbi.util.ToastUtils;
@@ -60,7 +61,7 @@ public class PackActivity extends BaseActivity {
         titles.add("优惠券");
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(PropFragment.newInstance());
-        fragments.add(new TestFragment());
+        fragments.add(PackVipFragment.newInstance());
         fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));
         fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));
         fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));

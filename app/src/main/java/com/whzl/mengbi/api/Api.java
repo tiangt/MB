@@ -9,6 +9,7 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
+import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -300,4 +301,14 @@ public interface Api {
     @POST("v1/my/service")
     @FormUrlEncoded
     Observable<ApiResult<PropBean>> myService(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的VIP
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/vip")
+    @FormUrlEncoded
+    Observable<ApiResult<PackvipBean>> myVip(@FieldMap Map<String, String> params);
 }

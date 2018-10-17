@@ -46,7 +46,7 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean> {
         super.init();
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_prop, getPullView(), false);
         getAdapter().addHeaderView(view);
-        View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_prop, getPullView(),false);
+        View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_prop_pack, getPullView(),false);
         setEmptyView(view2);
     }
 
@@ -85,7 +85,7 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean> {
 
     @Override
     protected BaseViewHolder setViewHolder(ViewGroup parent, int viewType) {
-        View itemView = getLayoutInflater().inflate(R.layout.item_prop_me, parent, false);
+        View itemView = getLayoutInflater().inflate(R.layout.item_prop_pack, parent, false);
         return new ViewHolder(itemView);
     }
 

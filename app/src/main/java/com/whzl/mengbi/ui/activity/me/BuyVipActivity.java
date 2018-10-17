@@ -87,6 +87,7 @@ public class BuyVipActivity extends BaseActivity {
                     @Override
                     public void onSuccess() {
                         ToastUtils.toastMessage(BuyVipActivity.this,"购买成功");
+                        setResult(RESULT_OK);
                     }
 
                     @Override
