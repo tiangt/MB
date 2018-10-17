@@ -57,7 +57,7 @@ public class URLContentUtils {
     /**
      * 礼物展示接口
      */
-    public static final String GIFT_LIST = "v1/gift/gift-list";
+    public static final String GIFT_LIST = "v1/gift/gifts";
 
     /**
      * 获取直播间token接口
