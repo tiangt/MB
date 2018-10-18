@@ -372,7 +372,7 @@ public interface Api {
      * @param params
      * @return
      */
-    @POST("v1/my/get-pretty-prices")
+    @POST("v1/mall/get-pretty-prices")
     @FormUrlEncoded
     Observable<ApiResult<GetPrettyBean>> getprettyprices(@FieldMap Map<String, String> params);
 }
