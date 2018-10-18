@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.RankListBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -35,7 +36,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author shaw
  * @date 2018/8/22
  */
-public class RankListFragment extends BasePullListFragment<RankListBean.DetailBean> {
+public class RankListFragment extends BasePullListFragment<RankListBean.DetailBean,BasePresenter> {
 
     private String rankName;
     private String rankType;

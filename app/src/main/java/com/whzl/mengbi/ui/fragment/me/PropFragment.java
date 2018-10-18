@@ -10,6 +10,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
@@ -30,7 +31,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author nobody
  * @date 2018/10/16
  */
-public class PropFragment extends BasePullListFragment<PropBean.ListBean> {
+public class PropFragment extends BasePullListFragment<PropBean.ListBean,BasePresenter> {
     @Override
     protected boolean setLoadMoreEndShow() {
         return false;

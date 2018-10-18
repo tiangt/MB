@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
+import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
@@ -19,12 +20,12 @@ import butterknife.BindView;
  * @author shaw
  * @date 2018/8/22
  */
-public abstract class BasePullListFragment<T> extends BaseFragment {
+public abstract class BasePullListFragment<K,T extends BasePresenter> extends BaseFragment<T> {
     @BindView(R.id.pull_recycler)
     PullRecycler pullRecycler;
     @BindView(R.id.fl_contain)
     FrameLayout flContain;
-    protected ArrayList<T> mDatas = new ArrayList<>();
+    protected ArrayList<K> mDatas = new ArrayList<>();
     private BaseListAdapter mAdapter;
     private boolean mIsViewCreate;
     private boolean hasLoadData;
@@ -105,7 +106,7 @@ public abstract class BasePullListFragment<T> extends BaseFragment {
         return true;
     }
 
-    public void loadSuccess(List<T> data) {
+    public void loadSuccess(List<K> data) {
         hasLoadData = true;
         if (mPage == 1) {
             mDatas.clear();

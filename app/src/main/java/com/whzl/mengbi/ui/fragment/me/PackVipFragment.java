@@ -11,6 +11,7 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -33,7 +34,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author nobody
  * @date 2018/10/16
  */
-public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean> {
+public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean,BasePresenter> {
     private int REQUESTCODE = 200;
 
     @Override
