@@ -1,8 +1,8 @@
 package com.whzl.mengbi.ui.fragment.base;
 
 import android.app.Activity;
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.AutoDisposeConverter;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.contract.BaseView;
 
@@ -85,5 +88,17 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
             mPresenter.detachView();
         }
         super.onDestroyView();
+    }
+
+    /**
+     * 绑定生命周期 防止MVP内存泄漏
+     *
+     * @param <T>
+     * @return
+     */
+    @Override
+    public <T> AutoDisposeConverter<T> bindAutoDispose() {
+        return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider
+                .from(this, Lifecycle.Event.ON_DESTROY));
     }
 }

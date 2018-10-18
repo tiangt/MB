@@ -3,6 +3,7 @@ package com.whzl.mengbi.presenter;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.contract.WelfareContract;
 import com.whzl.mengbi.model.WelfateModel;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 
@@ -23,9 +24,13 @@ public class WelfarePresenter extends BasePresenter<WelfareContract.View> implem
 
     @Override
     public void pretty(String userId, int page, int pageSize) {
+        if (!isViewAttached()) {
+            return;
+        }
         welfateModel.pretty(userId, page, pageSize)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(mView.<ApiResult<PackPrettyBean>>bindAutoDispose())
                 .subscribe(new ApiObserver<PackPrettyBean>() {
 
                     @Override
