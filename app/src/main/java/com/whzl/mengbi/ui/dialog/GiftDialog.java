@@ -7,10 +7,12 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +64,8 @@ public class GiftDialog extends BaseAwesomeDialog {
     private long coin;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+    @BindView(R.id.container)
+    ViewPager viewpager;
     //    @BindView(R.id.viewpager)
 //    NoScrollViewPager viewpager;
     @BindView(R.id.tv_count)
@@ -123,7 +127,6 @@ public class GiftDialog extends BaseAwesomeDialog {
         fragments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
 
-        //modify by cliang on 2018/10/17
         List<GiftInfo.DataBean.ListBean> listBeans = mGiftInfo.getData().getList();
         for (int i = 0; i < listBeans.size(); i++) {
             if (listBeans.get(i).getGroup() != null) {
@@ -156,8 +159,15 @@ public class GiftDialog extends BaseAwesomeDialog {
 
         fragments.add(BackpackMotherFragment.newInstance());
         tabLayout.addTab(tabLayout.newTab().setText("背包"));
-//        viewpager.setOffscreenPageLimit(titles.size());
-//        viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
+        titles.add("背包");
+
+        viewpager.setOffscreenPageLimit(titles.size());
+        viewpager.setAdapter(new GiftPagerAdapter(getChildFragmentManager(), fragments, titles));
+        //设置TabLayout内容超过屏幕宽度时可以横向滑动
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        //关联TabLayout和ViewPager
+        tabLayout.setupWithViewPager(viewpager);
+
         tvAmount.setText(coin + "");
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -176,9 +186,10 @@ public class GiftDialog extends BaseAwesomeDialog {
             }
         });
 
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.container, fragments.get(0));
-        fragmentTransaction.commit();
+//        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+//        fragmentTransaction.add(R.id.container, fragments.get(0));
+//        fragmentTransaction.commit();
+
     }
 
     private void setTabChange(int index) {
@@ -324,4 +335,37 @@ public class GiftDialog extends BaseAwesomeDialog {
         mGiftInfo = null;
         fragments = null;
     }
+
+    /**
+     * TabLayout+ViewPager+Fragment滑动
+     */
+    private class GiftPagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> list;
+        ArrayList<String> titles;
+
+        public GiftPagerAdapter(FragmentManager fm, List<Fragment> list, ArrayList<String> titles) {
+            super(fm);
+            this.list = list;
+            this.titles = titles;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles.get(position);
+        }
+    }
+
+
 }
