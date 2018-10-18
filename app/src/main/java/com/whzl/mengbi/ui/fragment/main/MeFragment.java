@@ -18,10 +18,12 @@ import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
+import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.activity.me.PackActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.ui.fragment.me.WelfareFragment;
 import com.whzl.mengbi.ui.view.MeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.DeviceUtils;
@@ -264,6 +266,8 @@ public class MeFragment extends BaseFragment implements MeView {
                 startActivity(new Intent(getMyActivity(), PackActivity.class));
                 break;
             case R.id.tv_welfare:
+                startActivity(new Intent(getMyActivity(), FrgActivity.class)
+                        .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
                 break;
             case R.id.tv_bill:
                 break;

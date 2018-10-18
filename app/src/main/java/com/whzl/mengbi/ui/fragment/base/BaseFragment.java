@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.whzl.mengbi.contract.BasePresenter;
+import com.whzl.mengbi.contract.BaseView;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -17,8 +20,8 @@ import butterknife.Unbinder;
  * @author shaw
  * @date 18/7/07
  */
-public abstract class BaseFragment extends Fragment {
-
+public abstract class BaseFragment<T extends BasePresenter> extends Fragment implements BaseView {
+    protected T mPresenter;
 
     protected Activity mActivity;
     protected View rootView;
@@ -73,5 +76,14 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
+        super.onDestroyView();
     }
 }
