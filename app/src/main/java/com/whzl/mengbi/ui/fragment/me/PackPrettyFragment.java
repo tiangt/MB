@@ -6,7 +6,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
@@ -16,16 +15,15 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
-import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
+import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
-import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -164,6 +162,12 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                                             dialog.dismiss();
                                         }
                                     });
+                                    holder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            dialog.dismiss();
+                                        }
+                                    });
                                 }
                             }).show(getFragmentManager());
                 }
@@ -197,7 +201,23 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                                         holder.setOnClickListener(R.id.tv_confirm, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                Long userid = (Long) SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L);
+                                                BusinessUtils.mallBuy(getMyActivity(), String.valueOf(userid), String.valueOf(bean.goodsId)
+                                                        , String.valueOf(bean.prices.month.priceId), "1", "", "", "",
+                                                        new BusinessUtils.MallBuyListener() {
+                                                            @Override
+                                                            public void onSuccess() {
+                                                                dialog.dismiss();
+                                                                ToastUtils.showCustomToast(getMyActivity(), "续费成功！");
+                                                                mPage = 1;
+                                                                loadData(PullRecycler.ACTION_PULL_TO_REFRESH, mPage);
+                                                            }
 
+                                                            @Override
+                                                            public void onError() {
+
+                                                            }
+                                                        });
                                             }
                                         });
                                     }
