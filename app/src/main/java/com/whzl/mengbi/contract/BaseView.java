@@ -1,5 +1,7 @@
 package com.whzl.mengbi.contract;
 
+import com.uber.autodispose.AutoDisposeConverter;
+
 /**
  * @author nobody
  * @date 2018/10/18
@@ -28,4 +30,5 @@ public interface BaseView {
      * @param <T>
      * @return
      */
+    <T> AutoDisposeConverter<T> bindAutoDispose();
 }

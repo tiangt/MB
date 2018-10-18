@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.activity.base;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Lifecycle;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +14,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.AutoDisposeConverter;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.contract.BasePresenter;
+import com.whzl.mengbi.contract.BaseView;
 import com.whzl.mengbi.ui.common.ActivityStackManager;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.util.KeyBoardUtil;
@@ -25,7 +31,8 @@ import butterknife.Unbinder;
 /**
  * @author shaw
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView{
+    protected T mPresenter;
 
     private static final String TAG_LOADING_DIALOG = "dialogLoading";
     private Unbinder mBinder;
@@ -118,6 +125,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
         super.onDestroy();
         mBinder.unbind();
         ActivityStackManager.getInstance().popActivity(this);
@@ -183,6 +193,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public Activity getBaseActivity() {
         return this;
+    }
+
+    /**
+     * 绑定生命周期 防止MVP内存泄漏
+     *
+     * @param <T>
+     * @return
+     */
+    @Override
+    public <T> AutoDisposeConverter<T> bindAutoDispose() {
+        return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider
+                .from(this, Lifecycle.Event.ON_DESTROY));
     }
 
 }

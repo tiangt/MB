@@ -165,6 +165,11 @@ dependencies {
 
     implementation files('libs/tecent_x5_webview.jar')
     implementation 'com.github.lzyzsd:jsbridge:1.0.4'
+
+    //AutoDispose解决RxJava内存泄漏
+    implementation 'com.uber.autodispose:autodispose:0.7.0'
+    implementation 'com.uber.autodispose:autodispose-android:0.7.0'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.7.0'
 }
 
 protobuf {

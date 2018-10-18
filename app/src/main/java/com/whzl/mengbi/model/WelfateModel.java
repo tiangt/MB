@@ -1,8 +1,9 @@
-package com.whzl.mengbi.contract;
+package com.whzl.mengbi.model;
 
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.contract.WelfareContract;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.ui.common.BaseApplication;

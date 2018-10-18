@@ -1,5 +1,8 @@
-package com.whzl.mengbi.contract;
+package com.whzl.mengbi.presenter;
 
+import com.whzl.mengbi.contract.BasePresenter;
+import com.whzl.mengbi.contract.WelfareContract;
+import com.whzl.mengbi.model.WelfateModel;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 
