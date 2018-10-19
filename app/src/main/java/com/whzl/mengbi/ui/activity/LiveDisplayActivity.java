@@ -355,6 +355,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
                         .putExtra("anchorId", mAnchorId + "")
                         .putExtra("programId", mProgramId + "")
+                        .putExtra("title", listBean.name)
                         .putExtra("url", listBean.linkUrl), REQUEST_LOGIN);
             }
         });
@@ -1238,7 +1239,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     protected void onStart() {
         super.onStart();
         //开始轮播
-        if (banner!=null) {
+        if (banner != null) {
             banner.startAutoPlay();
         }
     }
@@ -1247,7 +1248,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     protected void onStop() {
         super.onStop();
         //结束轮播
-        if (banner!=null) {
+        if (banner != null) {
             banner.stopAutoPlay();
         }
     }
