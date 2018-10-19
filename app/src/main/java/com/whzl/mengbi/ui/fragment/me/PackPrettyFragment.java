@@ -60,6 +60,7 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
         getAdapter().addHeaderView(view);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_car_pack, getPullView(), false);
         setEmptyView(view2);
+        getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
 
     public static PackPrettyFragment newInstance() {

@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.fragment.me;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,7 @@ public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean,B
             startActivityForResult(intent, REQUESTCODE);
         });
         setEmptyView(view2);
+        getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
 
     public static PackVipFragment newInstance() {
