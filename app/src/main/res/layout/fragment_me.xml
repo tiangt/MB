@@ -163,7 +163,7 @@
             style="@style/me_tab"
             android:drawableTop="@drawable/selector_me_bill"
             android:text="账单"
-            android:visibility="invisible" />
+            android:visibility="visible" />
     </LinearLayout>
 
     <TextView

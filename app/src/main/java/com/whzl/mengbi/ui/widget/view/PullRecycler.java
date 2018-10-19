@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +33,11 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
     public void setShouldLoadMore(boolean mShouldLoadMore) {
         this.mShouldLoadMore = mShouldLoadMore;
         refreshLayout.setEnableLoadMore(mShouldLoadMore);
+    }
+
+    public void setShouldRefresh(boolean mShouldRefresh) {
+        this.mShouldRefresh = mShouldRefresh;
+        refreshLayout.setEnableLoadMore(mShouldRefresh);
     }
 
     private boolean mShouldLoadMore = false;
@@ -178,4 +182,5 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
         tvEmpty.setVisibility(GONE);
         rlEmpty.addView(view);
     }
+
 }

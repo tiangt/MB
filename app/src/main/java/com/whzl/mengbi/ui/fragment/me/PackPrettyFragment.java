@@ -45,7 +45,7 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
 
     @Override
     protected boolean setLoadMoreEndShow() {
-        return false;
+        return true;
     }
 
     @Override

@@ -57,6 +57,7 @@ public class JsBridgeActivity extends BaseActivity {
     private String anchorId;
     private String programId;
     private String url;
+    private String title;
 
     @Override
     protected void initEnv() {
@@ -65,11 +66,12 @@ public class JsBridgeActivity extends BaseActivity {
         anchorId = getIntent().getStringExtra("anchorId");
         programId = getIntent().getStringExtra("programId");
         url = getIntent().getStringExtra("url");
+        title = getIntent().getStringExtra("title");
     }
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_jsbridge, "幸运大转盘", true);
+        setContentView(R.layout.activity_jsbridge, title, true);
     }
 
     @Override
@@ -143,7 +145,7 @@ public class JsBridgeActivity extends BaseActivity {
              */
             LoginStateBean bean = new LoginStateBean(checkLogin());
             Gson gson = new Gson();
-            bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), data ->{
+            bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), data -> {
 
                     }
 //                    showToast("===" + data)
@@ -261,7 +263,7 @@ public class JsBridgeActivity extends BaseActivity {
                 setResult(RESULT_OK);
                 LoginCallbackBean bean = new LoginCallbackBean(checkLogin());
                 Gson gson = new Gson();
-                LogUtil.e("sssssss    "+gson.toJson(bean));
+                LogUtil.e("sssssss    " + gson.toJson(bean));
                 bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), new CallBackFunction() {
                     @Override
                     public void onCallBack(String data) {

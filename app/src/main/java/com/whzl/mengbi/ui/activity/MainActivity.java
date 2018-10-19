@@ -16,7 +16,6 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.AppDataBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -132,6 +131,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void loadData() {
+        if (!checkLogin() && !checkAwardHasShowed()) {
+            getNewUserAward(false);
+        } else {
+            getUpdate();
+        }
+    }
+
+    private void getUpdate() {
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_UPDATE, RequestManager.TYPE_POST_JSON, new HashMap<>(), new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
@@ -148,9 +155,6 @@ public class MainActivity extends BaseActivity {
                 LogUtils.d(errorMsg);
             }
         });
-        if (!checkLogin() && !checkAwardHasShowed()) {
-            getNewUserAward(false);
-        }
     }
 
     private boolean checkAwardHasShowed() {
@@ -176,11 +180,12 @@ public class MainActivity extends BaseActivity {
                                 showGiftDialog(appDataBean.newUserAward.loginUserAward, isLogin);
                             }
                         }
+                        getUpdate();
                     }
 
                     @Override
                     public void onError(int code) {
-
+                        getUpdate();
                     }
                 });
     }
