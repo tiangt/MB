@@ -27,9 +27,16 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
 
     public void addHeaderView(View headerView) {
         mHeaderView = headerView;
-        notifyItemInserted(0);
+//        notifyItemInserted(0);
+        mHeaderView.setVisibility(View.GONE);
     }
 
+    public View getHeadView() {
+        if (mHeaderView != null) {
+            return mHeaderView;
+        }
+        return null;
+    }
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_HEADER) {

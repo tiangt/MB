@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment.me;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +50,7 @@ public class PackDiscountFragment extends BasePullListFragment<MyCouponBean.List
         getAdapter().addHeaderView(view);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_discount_pack, getPullView(), false);
         setEmptyView(view2);
+        getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
 
     public static PackDiscountFragment newInstance() {
