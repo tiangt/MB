@@ -283,7 +283,7 @@
         <activity android:name=".ui.activity.SearchActivity" />
         <activity android:name=".ui.activity.me.PackActivity" />
         <activity android:name=".ui.activity.base.FrgActivity" />
-        <activity android:name=".ui.activity.me.BillActivity" /
+        <activity android:name=".ui.activity.me.BillActivity" />
         <activity android:name=".ui.activity.ForgetPasswordActivity"/>
         <activity android:name=".ui.activity.ResetPasswordActivity"/>
         <activity android:name=".ui.activity.RetrievePasswordActivity"/>
