@@ -100,6 +100,7 @@ public class ChatMessage implements FillHolderMessage {
         if (hasGuard) {
             FaceReplace.getInstance().guardFaceReplace(mholder.textView, spanString, mContext);
         }
+        FaceReplace.getInstance().vipFaceReplace(mholder.textView, spanString, mContext);
         mholder.textView.append(spanString);
     }
 
@@ -136,6 +137,7 @@ public class ChatMessage implements FillHolderMessage {
         if (hasGuard) {
             FaceReplace.getInstance().guardFaceReplace(mholder.textView, spanString, mContext);
         }
+        FaceReplace.getInstance().vipFaceReplace(mholder.textView, spanString, mContext);
         mholder.textView.append(spanString);
     }
 
@@ -157,6 +159,7 @@ public class ChatMessage implements FillHolderMessage {
         if (hasGuard) {
             FaceReplace.getInstance().guardFaceReplace(mholder.textView, spanString, mContext);
         }
+        FaceReplace.getInstance().vipFaceReplace(mholder.textView, spanString, mContext);
         mholder.textView.append(spanString);
     }
 

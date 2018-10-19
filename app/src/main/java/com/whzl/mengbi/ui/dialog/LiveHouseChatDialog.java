@@ -24,6 +24,7 @@ import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.CommonEmojiMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GuardEmojiFragment;
+import com.whzl.mengbi.ui.dialog.fragment.VipEmojiFragment;
 import com.whzl.mengbi.util.KeyBoardUtil;
 
 import butterknife.BindView;
@@ -107,6 +108,9 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 case R.id.rb_guard:
                     setTabChange(1);
                     break;
+                case R.id.rb_vip:
+                    setTabChange(2);
+                    break;
                 default:
                     break;
             }
@@ -118,11 +122,15 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         commonEmojiMotherFragment.setEtContent(etContent);
         GuardEmojiFragment guardEmojiFragment = GuardEmojiFragment.newInstance(isGuard);
         guardEmojiFragment.setMessageEditText(etContent);
+        //VIP表情
+        VipEmojiFragment vipEmojiFragment = VipEmojiFragment.newInstance(true);
+        vipEmojiFragment.setMessageEditText(etContent);
+
         guardEmojiFragment.setListener(() -> {
             GuardDetailDialog.newInstance(mProgramId, mAnchorBean).setShowBottom(true).setDimAmount(0).show(getFragmentManager());
             dismiss();
         });
-        fragments = new Fragment[]{commonEmojiMotherFragment, guardEmojiFragment};
+        fragments = new Fragment[]{commonEmojiMotherFragment, guardEmojiFragment, vipEmojiFragment};
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.commit();

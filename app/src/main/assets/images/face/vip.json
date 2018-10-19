@@ -1,0 +1,56 @@
+{
+  "face": {
+    "public": [
+      {
+        "icon": "/images/face/vip/bing.gif",
+        "value": "/vbing",
+        "title": "bing"
+      },
+      {
+        "icon": "/images/face/vip/biubiu.gif",
+        "value": "/vbiubiu",
+        "title": "biubiu"
+      },
+      {
+        "icon": "/images/face/vip/yeye.gif",
+        "value": "/vyeye",
+        "title": "yeye"
+      },
+      {
+        "icon": "/images/face/vip/bian.gif",
+        "value": "/v变",
+        "title": "变"
+      },
+      {
+        "icon": "/images/face/vip/chi.gif",
+        "value": "/v吃",
+        "title": "吃"
+      },
+      {
+        "icon": "/images/face/vip/guji.gif",
+        "value": "/v咕叽",
+        "title": "咕叽"
+      },
+      {
+        "icon": "/images/face/vip/hahaha.gif",
+        "value": "/v哈哈哈",
+        "title": "哈哈哈"
+      },
+      {
+        "icon": "/images/face/vip/taoyan.gif",
+        "value": "/v讨厌",
+        "title": "讨厌"
+      },
+      {
+        "icon": "/images/face/vip/tiaowu.gif",
+        "value": "/v跳舞",
+        "title": "跳舞"
+      },
+      {
+        "icon": "/images/face/vip/xin.gif",
+        "value": "/v心",
+        "title": "心"
+      }
+    ]
+  }
+}

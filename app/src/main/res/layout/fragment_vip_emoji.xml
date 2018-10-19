@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="23.5dp"
+        android:layout_height="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/emoji_delete_icon" />
+
+    <LinearLayout
+        android:id="@+id/ll_not_enable_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="VIP专属表情"
+            android:textColor="@color/white"
+            android:textSize="26sp"/>
+
+        <Button
+            android:id="@+id/btn_vip"
+            android:layout_width="164dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/shape_vip_emoji_vip_btn_bg"
+            android:text="开通VIP"
+            android:textSize="21sp"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
