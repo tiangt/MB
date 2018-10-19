@@ -206,8 +206,8 @@
         <activity android:name=".ui.activity.camera.Camera2Activity"></activity>
         <activity
             android:name=".ui.activity.LiveDisplayActivity"
-            android:windowSoftInputMode="adjustNothing"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustNothing">
 
         </activity>
 
@@ -251,8 +251,9 @@
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:launchMode="singleTask" />
-        <activity android:name=".ui.activity.LoginActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:launchMode="singleTop"
@@ -268,17 +269,20 @@
         <activity android:name=".ui.activity.AboutUsActivity" />
         <activity android:name=".ui.activity.WatchHistoryActivity" />
         <activity android:name=".ui.activity.FeedbackActivity" />
-        <activity android:name=".ui.activity.RankListActivity"
-            android:launchMode="singleTop"/>
-        <activity android:name=".ui.activity.CommWebActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".ui.activity.RankListActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.activity.CommWebActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".ui.activity.me.ShopActivity" />
-        <activity android:name=".ui.activity.me.BuyVipActivity"/>
-        <activity android:name=".ui.activity.me.SendVipActivity"/>
-        <activity android:name=".ui.activity.JsBridgeActivity"/>
-        <activity android:name=".ui.activity.me.BuyGoodnumActivity"/>
-        <activity android:name=".ui.activity.SearchActivity"/>
-        <activity android:name=".ui.activity.me.PackActivity"/>
-        <activity android:name=".ui.activity.base.FrgActivity"/>
+        <activity android:name=".ui.activity.me.BuyVipActivity" />
+        <activity android:name=".ui.activity.me.SendVipActivity" />
+        <activity android:name=".ui.activity.JsBridgeActivity" />
+        <activity android:name=".ui.activity.me.BuyGoodnumActivity" />
+        <activity android:name=".ui.activity.SearchActivity" />
+        <activity android:name=".ui.activity.me.PackActivity" />
+        <activity android:name=".ui.activity.base.FrgActivity" />
+        <activity android:name=".ui.activity.me.BillActivity" />
     </application>
 </manifest>

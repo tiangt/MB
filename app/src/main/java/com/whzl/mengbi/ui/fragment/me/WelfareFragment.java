@@ -35,8 +35,14 @@ import butterknife.ButterKnife;
  */
 public class WelfareFragment extends BasePullListFragment<Object, WelfarePresenter> implements WelfareContract.View {
     private Map<Integer, Integer> map = new HashMap<>();
+
     @Override
     protected boolean setLoadMoreEndShow() {
+        return false;
+    }
+
+    @Override
+    protected boolean setShouldRefresh() {
         return false;
     }
 
@@ -45,7 +51,7 @@ public class WelfareFragment extends BasePullListFragment<Object, WelfarePresent
         super.initEnv();
         StatusBarUtil.setColorNoTranslucent(getMyActivity(), Color.parseColor("#252525"));
         ((FrgActivity) getMyActivity()).setTitle("新手任务");
-        ((FrgActivity) getMyActivity()).setTitleColor(ContextCompat.getColor(getMyActivity(),R.color.comm_white));
+        ((FrgActivity) getMyActivity()).setTitleColor(ContextCompat.getColor(getMyActivity(), R.color.comm_white));
         ((FrgActivity) getMyActivity()).setTitleBlack();
         mPresenter = new WelfarePresenter();
         mPresenter.attachView(this);
@@ -112,7 +118,7 @@ public class WelfareFragment extends BasePullListFragment<Object, WelfarePresent
 
         @Override
         public void onBindViewHolder(int position) {
-            GlideImageLoader.getInstace().displayImage(getMyActivity(),map.get(position),ivIcon);
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), map.get(position), ivIcon);
         }
     }
 

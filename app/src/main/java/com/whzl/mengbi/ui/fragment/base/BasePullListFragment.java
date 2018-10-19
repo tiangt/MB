@@ -20,7 +20,7 @@ import butterknife.BindView;
  * @author shaw
  * @date 2018/8/22
  */
-public abstract class BasePullListFragment<K,T extends BasePresenter> extends BaseFragment<T> {
+public abstract class BasePullListFragment<K, T extends BasePresenter> extends BaseFragment<T> {
     @BindView(R.id.pull_recycler)
     PullRecycler pullRecycler;
     @BindView(R.id.fl_contain)
@@ -52,6 +52,7 @@ public abstract class BasePullListFragment<K,T extends BasePresenter> extends Ba
 
     @Override
     public void init() {
+        pullRecycler.setShouldRefresh(setShouldRefresh());
         pullRecycler.setShouldLoadMore(setShouldLoadMore());
         mAdapter = new BaseListAdapter() {
             @Override
@@ -102,9 +103,14 @@ public abstract class BasePullListFragment<K,T extends BasePresenter> extends Ba
         return false;
     }
 
+    protected boolean setShouldRefresh() {
+        return true;
+    }
+
     protected boolean setLoadMoreEndShow() {
         return true;
     }
+
 
     public void loadSuccess(List<K> data) {
         hasLoadData = true;

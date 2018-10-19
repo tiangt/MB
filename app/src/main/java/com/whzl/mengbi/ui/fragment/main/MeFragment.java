@@ -19,6 +19,7 @@ import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
+import com.whzl.mengbi.ui.activity.me.BillActivity;
 import com.whzl.mengbi.ui.activity.me.PackActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -270,6 +271,7 @@ public class MeFragment extends BaseFragment implements MeView {
                         .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
                 break;
             case R.id.tv_bill:
+                startActivity(new Intent(getMyActivity(), BillActivity.class));
                 break;
         }
     }
