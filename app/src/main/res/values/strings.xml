@@ -288,4 +288,13 @@
     <string name="goodnum">价格：%1$d萌币</string>
     <string name="search_room">房间号：%1$d</string>
     <string name="pk_time">%1$02d:%2$02d</string>
+
+    <!-- 忘记密码 -->
+    <string name="forget_psw">忘记密码</string>
+    <string name="reset_psw">重置密码</string>
+    <string name="input_new_psw">请输入新密码(长度6-16位，非纯数字)</string>
+    <string name="input_psw_again">再次输入密码</string>
+    <string name="next">下一步</string>
+    <string name="confirm_reset">确认重置</string>
+    <string name="retrieve_psw">找回密码</string>
 </resources>

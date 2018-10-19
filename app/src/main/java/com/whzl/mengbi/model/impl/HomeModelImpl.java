@@ -1,5 +1,7 @@
 package com.whzl.mengbi.model.impl;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.model.HomeModel;
 import com.whzl.mengbi.model.entity.BannerInfo;

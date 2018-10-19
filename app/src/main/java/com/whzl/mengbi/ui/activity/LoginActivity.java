@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -25,6 +26,7 @@ import com.whzl.mengbi.ui.view.LoginView;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.OnMultiClickListener;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -50,6 +52,8 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     Button btnLogin;
     @BindView(R.id.rg_env_switch)
     RadioGroup rgEnvSwitch;
+    @BindView(R.id.tv_forget_psw)
+    TextView tvForgetPsw;
     private LoginPresent mLoginPresent;
     private UMShareAPI umShareAPI;
 
@@ -144,6 +148,14 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         etPhone.addTextChangedListener(this);
 
         etPassword.addTextChangedListener(this);
+
+        tvForgetPsw.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/comm_black_toolbar" />
+
+    <LinearLayout
+        android:layout_width="290dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/login_edit_text_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/ic_login_phone" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="23dp"
+            android:layout_marginLeft="9dp"
+            android:background="@color/colorCommNotActive" />
+
+        <EditText
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="@string/phone_number_hint"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:textColorHint="#B9B9B9"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp">
+
+        <LinearLayout
+            android:layout_width="290dp"
+            android:layout_height="44dp"
+            android:background="@drawable/login_edit_text_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/ic_register_email" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="23dp"
+                android:layout_marginLeft="6dp"
+                android:background="@color/colorCommNotActive" />
+
+            <EditText
+                android:id="@+id/et_verify_code"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/verify_code_hint"
+                android:inputType="phone"
+                android:maxLength="6"
+                android:textColorHint="#B9B9B9"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btn_get_verify_code"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:background="@drawable/selector_register_verify_code_bg"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginRight="1dp"
+                android:text="@string/get_verify_code"
+                android:textSize="14sp"
+                android:textColor="#FEFEFE"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_phone_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="该手机号码不存在"
+            android:visibility="invisible"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#ff611b"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="290dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/selector_comm_btn_bg"
+        android:enabled="false"
+        android:text="@string/next"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+</LinearLayout>
