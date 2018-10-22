@@ -208,7 +208,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ArrayList<GuardListBean.GuardDetailBean> mGuardList;
     private BaseListAdapter mGuardAdapter;
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
-    private boolean isGuard;
+    public boolean isGuard;
+    private boolean isVip;
     private Disposable mDisposable;
     private int currentSelectedIndex;
     private Fragment[] fragments;
@@ -239,7 +240,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         setContentView(R.layout.activity_live_display_new);
     }
 
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -253,6 +253,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         SPUtils.put(this, "programId", mProgramId);
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
         isGuard = false;
+        isVip = false;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(fragments[0]);
         fragmentTransaction.remove(fragments[1]);
@@ -513,7 +514,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (mChatDialog != null && mChatDialog.isAdded()) {
                     return;
                 }
-                mChatDialog = LiveHouseChatDialog.newInstance(isGuard, mProgramId, mAnchor)
+                mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, mAnchor)
                         .setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
@@ -808,9 +809,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         isGuard = true;
                         ((PrivateChatListFragment) fragments[1]).setIsGuard(isGuard);
                     }
+
+                    //是否为VIP用户
+                    if("VIP".equals(data.getGoodsList().get(i).getGoodsType())){
+                        isVip = true;
+                    }
                 }
             }
-
         }
     }
 
@@ -1155,6 +1160,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView != null) {
             textureView.runInForeground();
         }
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
     }
 
     @Override
@@ -1215,6 +1221,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
                 mLivePresenter.getTreasureBoxStatus(mUserId);
+                isVip = true;
             }
         }
     }

@@ -105,7 +105,7 @@
                 android:layout_width="45dp"
                 android:layout_height="match_parent"
                 android:button="@null"
-                android:drawableLeft="@drawable/selector_guard_emoji_switch_rb"
+                android:drawableLeft="@drawable/selector_vip_emoji_switch_rb"
                 android:paddingLeft="12dp"
                 android:background="@drawable/selector_emoji_selected_rb_bg" />
 

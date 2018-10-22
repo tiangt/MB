@@ -1,9 +1,11 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
 import android.graphics.Bitmap;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * VIP表情
@@ -87,7 +90,7 @@ public class VipEmojiFragment extends BaseFragment {
         recycler.setAdapter(chatEmojiAdapter);
     }
 
-    class EmojiViewHolder extends BaseViewHolder{
+    class EmojiViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_emoji)
         ImageView ivEmoji;
 
@@ -109,5 +112,34 @@ public class VipEmojiFragment extends BaseFragment {
             String emojiDesc = publicBeans.get(position).getValue();
             messageEditText.append(emojiDesc);
         }
+    }
+
+    @OnClick({R.id.btn_delete, R.id.btn_vip, R.id.ll_not_enable_container})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_delete:
+                //模拟软键盘删除
+                int keyCode = KeyEvent.KEYCODE_DEL;
+                KeyEvent keyEventDown = new KeyEvent(KeyEvent.ACTION_DOWN, keyCode);
+                KeyEvent keyEventUp = new KeyEvent(KeyEvent.ACTION_UP, keyCode);
+                messageEditText.onKeyDown(keyCode, keyEventDown);
+                messageEditText.onKeyUp(keyCode, keyEventUp);
+                break;
+            case R.id.btn_vip:
+                if(listener != null){
+                    listener.onVipClick();
+                }
+                break;
+        }
+    }
+
+    public void setVipListener(OnVipClickListener listener){
+        this.listener = listener;
+    }
+
+    private OnVipClickListener listener;
+
+    public interface OnVipClickListener{
+        void onVipClick();
     }
 }
