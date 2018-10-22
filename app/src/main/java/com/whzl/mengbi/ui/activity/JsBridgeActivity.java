@@ -87,7 +87,7 @@ public class JsBridgeActivity extends BaseActivity {
         // 需要在androidManifest.xml文件中声明联网权限
         // <uses-permission android:name="android.permission.INTERNET"/>
         if (Build.VERSION.SDK_INT >= 19) {
-            bridgeWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            bridgeWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         }
 
 //        bridgeWebView.loadUrl("file:///android_asset/test5.html");

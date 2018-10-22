@@ -113,18 +113,12 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
 
 
     public void loadSuccess(List<K> data) {
-        if (mAdapter.getHeadView() != null) {
-            mAdapter.getHeadView().setVisibility(View.VISIBLE);
-        }
         hasLoadData = true;
         if (mPage == 1) {
             mDatas.clear();
         }
         if (mPage == 1) {
             if (data == null || data.size() == 0) {
-                if (mAdapter.getHeadView() != null) {
-                    mAdapter.getHeadView().setVisibility(View.GONE);
-                }
                 mAdapter.notifyDataSetChanged();
                 pullRecycler.OnActionComplete(PullRecycler.LOAD_RESULT_EMPTY);
                 return;
