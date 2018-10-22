@@ -12,8 +12,13 @@ import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.util.StringUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,6 +42,7 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
     protected void initEnv() {
         super.initEnv();
         StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -97,8 +103,18 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
                 }
                 Intent intent = new Intent(ResetPasswordActivity.this, RetrievePasswordActivity.class);
                 startActivity(intent);
-                finish();
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityFinishEvent event){
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

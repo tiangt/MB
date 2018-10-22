@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.KeyBoardUtil;
@@ -22,6 +23,10 @@ import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
@@ -51,6 +56,7 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     protected void initEnv() {
         super.initEnv();
         StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -84,7 +90,6 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
             case R.id.btn_next:
                 Intent intent = new Intent(getBaseContext(), ResetPasswordActivity.class);
                 startActivity(intent);
-                finish();
                 break;
         }
     }
@@ -158,8 +163,14 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         if (cdt != null) {
             cdt.cancel();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityFinishEvent event){
+        finish();
     }
 }
