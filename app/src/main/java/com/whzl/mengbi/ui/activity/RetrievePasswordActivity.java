@@ -6,7 +6,10 @@ import android.widget.Button;
 
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,6 +50,7 @@ public class RetrievePasswordActivity extends BaseActivity {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.btn_back_login:
+                EventBus.getDefault().post(new ActivityFinishEvent());
                 finish();
                 break;
         }

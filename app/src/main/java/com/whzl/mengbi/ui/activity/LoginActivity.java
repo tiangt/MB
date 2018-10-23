@@ -17,6 +17,7 @@ import com.whzl.mengbi.BuildConfig;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
@@ -30,6 +31,10 @@ import com.whzl.mengbi.util.OnMultiClickListener;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.URLContentUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -126,6 +131,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         activityFrom = getIntent().getStringExtra("from");
         umShareAPI = UMShareAPI.get(this);
         mLoginPresent = new LoginPresenterImpl(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -257,6 +263,11 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     protected void onDestroy() {
         super.onDestroy();
         umShareAPI.release();
+        EventBus.getDefault().unregister(this);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(ActivityFinishEvent event){
+
+    }
 }
