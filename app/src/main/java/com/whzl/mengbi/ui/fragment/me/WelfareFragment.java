@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment.me;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -8,22 +9,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.WelfareContract;
-import com.whzl.mengbi.model.entity.PackPrettyBean;
+import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
+import com.whzl.mengbi.model.entity.NewTaskBean;
 import com.whzl.mengbi.presenter.WelfarePresenter;
+import com.whzl.mengbi.ui.activity.MainActivity;
+import com.whzl.mengbi.ui.activity.NickNameModifyActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -33,8 +38,9 @@ import butterknife.ButterKnife;
  * @author nobody
  * @date 2018/10/18
  */
-public class WelfareFragment extends BasePullListFragment<Object, WelfarePresenter> implements WelfareContract.View {
+public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, WelfarePresenter> implements WelfareContract.View {
     private Map<Integer, Integer> map = new HashMap<>();
+    private String[] strings;
 
     @Override
     protected boolean setLoadMoreEndShow() {
@@ -60,14 +66,16 @@ public class WelfareFragment extends BasePullListFragment<Object, WelfarePresent
     @Override
     public void init() {
         super.init();
+        getPullView().setRefBackgroud(ContextCompat.getColor(getMyActivity(), R.color.comm_white));
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_walfare, getPullView(), false);
         getAdapter().addHeaderView(view);
         initIcon();
+        strings = getResources().getStringArray(R.array.new_task);
     }
 
     private void initIcon() {
         map.put(0, R.drawable.ic_walfare_0);
-        map.put(1, R.drawable.ic_walfare_0);
+        map.put(1, R.drawable.ic_walfare_1);
         map.put(2, R.drawable.ic_walfare_2);
         map.put(3, R.drawable.ic_walfare_3);
         map.put(4, R.drawable.ic_walfare_4);
@@ -76,21 +84,12 @@ public class WelfareFragment extends BasePullListFragment<Object, WelfarePresent
         map.put(7, R.drawable.ic_walfare_7);
         map.put(8, R.drawable.ic_walfare_8);
         map.put(9, R.drawable.ic_walfare_9);
+
     }
 
     @Override
     protected void loadData(int action, int mPage) {
-        List list = new ArrayList();
-        list.add("sss");
-        list.add("sss");
-        list.add("sss");
-        list.add("sss");
-        list.add("sss");
-        list.add("sss");
-        list.add("sss");
-        list.add("sss");
-        loadSuccess(list);
-        mPresenter.pretty(SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L) + "", 1, 20);
+        mPresenter.newTask(SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L) + "");
     }
 
     @Override
@@ -118,13 +117,99 @@ public class WelfareFragment extends BasePullListFragment<Object, WelfarePresent
 
         @Override
         public void onBindViewHolder(int position) {
+            NewTaskBean.ListBean bean = mDatas.get(position);
             GlideImageLoader.getInstace().displayImage(getMyActivity(), map.get(position), ivIcon);
+            tvName.setText(bean.awardName);
+            if (position < 6) {
+                tvNum.setText("+8 萌币");
+            } else {
+                tvNum.setText("+500 萌币");
+            }
+            tvState.setText(strings[position]);
+            tvProgress.setText("");
+            tvProgress.append(String.valueOf(bean.completion));
+            tvProgress.append("/");
+            tvProgress.append(String.valueOf(bean.needCompletion));
+            switch (bean.status) {
+                case "INACTIVE":
+                    tvState.setBackgroundResource(R.drawable.btn_normal_walfare);
+                    tvState.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            initEvent(position);
+                        }
+                    });
+                    break;
+                //可领取
+                case "UNGRANT":
+                    tvState.setText("领取");
+                    tvState.setBackgroundResource(R.drawable.btn_can_receive_walfare);
+                    tvState.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mPresenter.receive(tvState, SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L) + "", bean.awardSn);
+                        }
+                    });
+                    break;
+                //已领取
+                case "GRANT":
+                    tvState.setText("已领取");
+                    tvState.setBackgroundResource(R.drawable.btn_have_receive_walfare);
+                    tvState.setEnabled(false);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void initEvent(int position) {
+        switch (position) {
+            case 1:
+                startActivity(new Intent(getMyActivity(), NickNameModifyActivity.class));
+                break;
+            case 2:
+                startActivity(new Intent(getMyActivity(), MainActivity.class));
+                EventBus.getDefault().postSticky(new JumpMainActivityEvent(0));
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                startActivity(new Intent(getMyActivity(), MainActivity.class));
+                EventBus.getDefault().postSticky(new JumpMainActivityEvent(0));
+                break;
+            case 6:
+                startActivity(new Intent(getMyActivity(), WXPayEntryActivity.class));
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            default:
+                break;
         }
     }
 
     @Override
-    public void onPrettySuccess(PackPrettyBean bean) {
-        ToastUtils.toastMessage(getMyActivity(), "sssss");
+    public void onNewTask(NewTaskBean bean) {
+        loadSuccess(bean.list);
+    }
+
+    @Override
+    public void onReceiveSuccess(TextView tv, JsonElement jsonElement) {
+        tv.setText("已领取");
+        tv.setBackgroundResource(R.drawable.btn_have_receive_walfare);
+        tv.setEnabled(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.newTask(SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L) + "");
     }
 
 }

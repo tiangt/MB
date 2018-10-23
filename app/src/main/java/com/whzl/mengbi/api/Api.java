@@ -6,6 +6,7 @@ import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
@@ -375,4 +376,44 @@ public interface Api {
     @POST("v1/mall/get-pretty-prices")
     @FormUrlEncoded
     Observable<ApiResult<GetPrettyBean>> getprettyprices(@FieldMap Map<String, String> params);
+
+    /**
+     * 新手任务活动信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/new-task")
+    @FormUrlEncoded
+    Observable<ApiResult<GetPrettyBean>> newTask(@FieldMap Map<String, String> params);
+
+    /**
+     * 通过奖励序列号领奖
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/receive")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> receive(@FieldMap Map<String, String> params);
+
+    /**
+     * 修改昵称接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/modify-nickname")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> nickName(@FieldMap Map<String, String> params);
+
+    /**
+     * 新手任务可领任务数量
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/new-task-num")
+    @FormUrlEncoded
+    Observable<ApiResult<GetNewTaskBean>> getNewTask(@FieldMap Map<String, String> params);
 }

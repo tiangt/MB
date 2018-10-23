@@ -15,6 +15,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -33,12 +34,16 @@ import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -63,6 +68,12 @@ public class MainActivity extends BaseActivity {
     private ProgressDialog progressDialog;
     private boolean isExit;
     private AwesomeDialog awesomeDialog;
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     protected void setupContentView() {
@@ -125,7 +136,7 @@ public class MainActivity extends BaseActivity {
         } else {
             fragmentTransaction.add(R.id.fragment_container, fragments[index]);
         }
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
         currentSelectedIndex = index;
     }
 
@@ -360,5 +371,12 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         awesomeDialog = null;
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onMessageEvent(JumpMainActivityEvent event) {
+        setTabChange(event.check);
+        setCheck(event.check);
     }
 }

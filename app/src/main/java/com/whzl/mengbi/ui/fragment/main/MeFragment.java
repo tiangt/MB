@@ -9,6 +9,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.presenter.MePresenter;
@@ -77,6 +78,8 @@ public class MeFragment extends BaseFragment implements MeView {
     TextView tvWelfare;
     @BindView(R.id.tv_bill)
     TextView tvBill;
+    @BindView(R.id.view_notify)
+    View viewNotify;
     Unbinder unbinder;
     private MePresenter mPresent;
     private UserInfo mUserinfo;
@@ -121,6 +124,15 @@ public class MeFragment extends BaseFragment implements MeView {
                     break;
                 }
             }
+        }
+    }
+
+    @Override
+    public void getNewTask(GetNewTaskBean bean) {
+        if (bean.awardUngrant == 0) {
+            viewNotify.setVisibility(View.INVISIBLE);
+        } else {
+            viewNotify.setVisibility(View.VISIBLE);
         }
     }
 
@@ -255,6 +267,7 @@ public class MeFragment extends BaseFragment implements MeView {
     public void onResume() {
         super.onResume();
         mPresent.getUserInfo();
+        mPresent.getNewTask();
     }
 
     @OnClick({R.id.tv_shop, R.id.tv_packsack, R.id.tv_welfare, R.id.tv_bill})

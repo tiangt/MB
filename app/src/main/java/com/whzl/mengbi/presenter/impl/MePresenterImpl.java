@@ -1,6 +1,7 @@
 package com.whzl.mengbi.presenter.impl;
 
 import com.whzl.mengbi.model.MeModel;
+import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.impl.MeModelImpl;
 import com.whzl.mengbi.presenter.MePresenter;
@@ -29,7 +30,19 @@ public class MePresenterImpl implements MePresenter,OnMeFinishedListener{
     }
 
     @Override
+    public void onNewTaskSuccess(GetNewTaskBean bean) {
+        if(meView != null){
+            meView.getNewTask(bean);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         meView = null;
+    }
+
+    @Override
+    public void getNewTask() {
+        meModel.doNewTask(this);
     }
 }

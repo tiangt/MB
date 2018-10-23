@@ -30,7 +30,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="11dp"
-                android:text="注册萌比"
                 android:textColor="@color/text_view"
                 android:textSize="15sp" />
 
@@ -38,7 +37,6 @@
                 android:id="@+id/tv_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+8"
                 android:textColor="@color/text_hint"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -52,19 +50,18 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="109dp"
-            android:text="1/23"
             android:textColor="@color/text_hint"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:gravity="center"
+            android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:background="@drawable/btn_normal_walfare"
-            android:text="领取"
             android:textColor="@color/white"
             android:textSize="15sp" />
 

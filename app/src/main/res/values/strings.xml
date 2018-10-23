@@ -297,4 +297,18 @@
     <string name="next">下一步</string>
     <string name="confirm_reset">确认重置</string>
     <string name="retrieve_psw">找回密码</string>
+
+    <array name="new_task">
+        <item>领取</item>
+        <item>改昵称</item>
+        <item>去关注</item>
+        <item>去聊天</item>
+        <item>去送礼</item>
+        <item>去观看</item>
+        <item>去充值</item>
+        <item>去发布</item>
+        <item>去送礼</item>
+        <item>去抽奖</item>
+        <item>领取</item>
+    </array>
 </resources>

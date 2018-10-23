@@ -1,10 +1,11 @@
 package com.whzl.mengbi.model;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.WelfareContract;
 import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.NewTaskBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.SPUtils;
@@ -21,12 +22,19 @@ import io.reactivex.Observable;
  */
 public class WelfateModel implements WelfareContract.Model {
     @Override
-    public Observable<ApiResult<PackPrettyBean>> pretty(String userId, int page, int pageSize) {
+    public Observable<ApiResult<NewTaskBean>> newTask(String userId) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
-        paramsMap.put("page", page);
-        paramsMap.put("pageSize", NetConfig.DEFAULT_PAGER_SIZE);
         return ApiFactory.getInstance().getApi(Api.class)
-                .pretty(ParamsUtils.getSignPramsMap(paramsMap));
+                .newTask(ParamsUtils.getSignPramsMap(paramsMap));
+    }
+
+    @Override
+    public Observable<ApiResult<JsonElement>> receive(String userId, String awardSn) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
+        paramsMap.put("awardSn", awardSn);
+        return ApiFactory.getInstance().getApi(Api.class)
+                .receive(ParamsUtils.getSignPramsMap(paramsMap));
     }
 }

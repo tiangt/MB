@@ -1,7 +1,10 @@
 package com.whzl.mengbi.contract;
 
+import android.widget.TextView;
+
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.entity.ApiResult;
-import com.whzl.mengbi.model.entity.PackPrettyBean;
+import com.whzl.mengbi.model.entity.NewTaskBean;
 
 import io.reactivex.Observable;
 
@@ -11,15 +14,18 @@ import io.reactivex.Observable;
  */
 public interface WelfareContract {
     interface Model {
-        Observable<ApiResult<PackPrettyBean>> pretty(String userId, int page, int pageSize);
+        Observable<ApiResult<NewTaskBean>> newTask(String userId);
+        Observable<ApiResult<JsonElement>> receive(String userId,String awardSn);
     }
 
     interface View extends BaseView {
-        void onPrettySuccess(PackPrettyBean bean);
+        void onNewTask(NewTaskBean bean);
+        void onReceiveSuccess(TextView tv,JsonElement jsonElement);
     }
 
     interface Presenter {
-        void pretty(String userId, int page, int pageSize);
+        void newTask(String userId);
+        void receive(TextView tv,String userId, String awardSn);
     }
 
 }

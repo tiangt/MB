@@ -4,11 +4,30 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.EditText;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
+import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
+import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author shaw
@@ -39,6 +58,25 @@ public class NickNameModifyActivity extends BaseActivity {
             showToast("昵称不能为空");
             return;
         }
+        HashMap hashMap = new HashMap();
+        hashMap.put("userId", SPUtils.get(this, SpConfig.KEY_USER_ID, 0L));
+        hashMap.put("nickname", nickname);
+        ApiFactory.getInstance().getApi(Api.class)
+                .nickName(ParamsUtils.getSignPramsMap(hashMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>(this) {
+
+                    @Override
+                    public void onSuccess(JsonElement bean) {
+
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
         Intent intent = new Intent();
         intent.putExtra("nickname", nickname);
         setResult(RESULT_OK, intent);

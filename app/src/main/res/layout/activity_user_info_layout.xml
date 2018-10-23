@@ -53,8 +53,7 @@
             android:drawableRight="@null" />
     </RelativeLayout>
 
-    <View
-        style="@style/user_info_option_divider" />
+    <View style="@style/user_info_option_divider" />
 
     <RelativeLayout
         android:id="@+id/rl_nick_name_container"
@@ -196,5 +195,64 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp" />
+    </RelativeLayout>
+
+    <View style="@style/user_info_option_divider" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:background="@color/comm_white">
+
+        <TextView
+            android:id="@+id/tv_loyal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="3dp"
+            android:text="贵族等级"
+            android:textColor="@color/font_color_47"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_loyal"
+            android:layout_marginLeft="19dp"
+            android:textColor="#646464"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_update"
+            android:layout_marginLeft="19dp"
+            android:textColor="#646464"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_royal"
+            android:layout_width="23dp"
+            android:layout_height="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:id="@+id/tv_chongzhi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginRight="15dp"
+            android:drawablePadding="4dp"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:text="去充值"
+            android:textColor="#316aeb"
+            android:textSize="15sp" />
     </RelativeLayout>
 </LinearLayout>
