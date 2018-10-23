@@ -173,4 +173,14 @@ public class URLContentUtils {
     public static String getBaseImageUrl() {
         return isDebug ? DEBUG_BASE_IMAGE_URL : RELEASE_BASE_IMAGE_URL;
     }
+
+    /**
+     * 忘记密码发送验证码
+     */
+    public static final String FORGET_PASS_CODE = "v1/user/forget-pass-code";
+
+    /**
+     * 重置密码
+     */
+    public static final String RESET_PSW = "v1/user/reset-pass";
 }
