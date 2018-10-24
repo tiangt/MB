@@ -24,6 +24,7 @@ import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.UserInfoPresenter;
 import com.whzl.mengbi.presenter.impl.UserInfoPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
@@ -31,7 +32,9 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.DateUtils;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.JsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.PhotoUtil;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
@@ -39,9 +42,13 @@ import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StorageUtil;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
 import java.io.File;
@@ -115,6 +122,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     @Override
     protected void initEnv() {
         super.initEnv();
+        EventBus.getDefault().register(this);
         Intent intent = getIntent();
         mUserInfo = intent.getParcelableExtra("userbean");
         userInfoPresenter = new UserInfoPresenterImpl(this);
@@ -156,15 +164,14 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 tvUserLevel.append("富豪经验");
                 int userLevel = levelList.getLevelValue();
                 ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(userLevel));
-            }
-            else if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
+            } else if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
                 tvUpdate.setText("离升级还需充值");
-                tvUpdate.append(LightSpanString.getLightString( sjNeedValue+ "", Color.parseColor("#FF7901")));
+                tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
                 tvUpdate.append("元");
                 int userLevel = levelList.getLevelValue();
                 ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
                 tvTotal.setText("本月已累计充值");
-                tvTotal.append(LightSpanString.getLightString( levelList.getExpList().get(0).getSjExpvalue()+ "", Color.parseColor("#FF7901")));
+                tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));
                 tvTotal.append("元");
             }
         }
@@ -476,5 +483,41 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     protected void onDestroy() {
         super.onDestroy();
         userInfoPresenter.onDestory();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UserInfoUpdateEvent userInfoUpdateEvent) {
+        HashMap paramsMap = new HashMap();
+        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+        paramsMap.put("userId", userId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap,
+                new RequestManager.ReqCallBack() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        UserInfo userInfo = GsonUtils.GsonToBean(result.toString(), UserInfo.class);
+                        if (userInfo.getCode() == 200) {
+                            for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
+                                String levelType = levelList.getLevelType();
+                                long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
+                                if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
+                                    tvUpdate.setText("离升级还需充值");
+                                    tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
+                                    tvUpdate.append("元");
+                                    int userLevel = levelList.getLevelValue();
+                                    ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+                                    tvTotal.setText("本月已累计充值");
+                                    tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));
+                                    tvTotal.append("元");
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("onReqFailed" + errorMsg);
+                    }
+                });
     }
 }
