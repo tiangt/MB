@@ -12,11 +12,14 @@ import android.widget.TextView;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.WelfareContract;
 import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
+import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.NewTaskBean;
 import com.whzl.mengbi.presenter.WelfarePresenter;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.NickNameModifyActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
@@ -132,6 +135,7 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
             tvProgress.append(String.valueOf(bean.needCompletion));
             switch (bean.status) {
                 case "INACTIVE":
+                    tvState.setEnabled(true);
                     tvState.setBackgroundResource(R.drawable.btn_normal_walfare);
                     tvState.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -142,6 +146,7 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
                     break;
                 //可领取
                 case "UNGRANT":
+                    tvState.setEnabled(true);
                     tvState.setText("领取");
                     tvState.setBackgroundResource(R.drawable.btn_can_receive_walfare);
                     tvState.setOnClickListener(new View.OnClickListener() {
@@ -172,10 +177,6 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
                 startActivity(new Intent(getMyActivity(), MainActivity.class));
                 EventBus.getDefault().postSticky(new JumpMainActivityEvent(0));
                 break;
-            case 3:
-                break;
-            case 4:
-                break;
             case 5:
                 startActivity(new Intent(getMyActivity(), MainActivity.class));
                 EventBus.getDefault().postSticky(new JumpMainActivityEvent(0));
@@ -183,15 +184,20 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
             case 6:
                 startActivity(new Intent(getMyActivity(), WXPayEntryActivity.class));
                 break;
+            case 3:
+            case 4:
             case 7:
-                break;
             case 8:
-                break;
             case 9:
+                jumpRandomLiveRoom();
                 break;
             default:
                 break;
         }
+    }
+
+    private void jumpRandomLiveRoom() {
+        mPresenter.jump();
     }
 
     @Override
@@ -204,6 +210,13 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
         tv.setText("已领取");
         tv.setBackgroundResource(R.drawable.btn_have_receive_walfare);
         tv.setEnabled(false);
+    }
+
+    @Override
+    public void onJumpRandom(JumpRandomRoomBean bean) {
+        Intent intent = new Intent(getMyActivity(), LiveDisplayActivity.class);
+        intent.putExtra(BundleConfig.PROGRAM_ID, bean.programId);
+        startActivity(intent);
     }
 
     @Override

@@ -186,4 +186,8 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
     public void setRefBackgroud(int color) {
         refreshLayout.setBackgroundColor(color);
     }
+
+    public RecyclerView getRecyclerView() {
+        return recycler;
+    }
 }

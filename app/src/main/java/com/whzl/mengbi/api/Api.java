@@ -5,6 +5,9 @@ import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.BillAwardBean;
+import com.whzl.mengbi.model.entity.BillGiftBean;
+import com.whzl.mengbi.model.entity.BillPayBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
@@ -416,4 +419,44 @@ public interface Api {
     @POST("v1/activity/new-task-num")
     @FormUrlEncoded
     Observable<ApiResult<GetNewTaskBean>> getNewTask(@FieldMap Map<String, String> params);
+
+    /**
+     * 随机获取一个正在直播的主播
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/anchor/random")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> random(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的消费记录
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/bill/consume")
+    @FormUrlEncoded
+    Observable<ApiResult<BillPayBean>> billConsume(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的送礼记录
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/bill/send-gift")
+    @FormUrlEncoded
+    Observable<ApiResult<BillGiftBean>> sendGift(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的奖励记录
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/bill/award")
+    @FormUrlEncoded
+    Observable<ApiResult<BillAwardBean>> billAward(@FieldMap Map<String, String> params);
 }

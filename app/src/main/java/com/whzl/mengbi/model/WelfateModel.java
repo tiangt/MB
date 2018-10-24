@@ -5,6 +5,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.WelfareContract;
 import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.NewTaskBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -36,5 +37,12 @@ public class WelfateModel implements WelfareContract.Model {
         paramsMap.put("awardSn", awardSn);
         return ApiFactory.getInstance().getApi(Api.class)
                 .receive(ParamsUtils.getSignPramsMap(paramsMap));
+    }
+
+    @Override
+    public Observable<ApiResult<JumpRandomRoomBean>> jumpRandom() {
+        HashMap paramsMap = new HashMap();
+        return ApiFactory.getInstance().getApi(Api.class)
+                .random(ParamsUtils.getSignPramsMap(paramsMap));
     }
 }
