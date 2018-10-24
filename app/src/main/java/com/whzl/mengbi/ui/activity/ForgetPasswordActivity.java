@@ -42,11 +42,15 @@ import butterknife.OnClick;
 public class ForgetPasswordActivity extends BaseActivity implements TextWatcher {
     @BindView(R.id.et_phone)
     EditText etPhone;
+    @BindView(R.id.et_verify_code)
+    EditText etVerifyCode;
+    @BindView(R.id.btn_get_verify_code)
+    Button btnGetVerifyCode;
     @BindView(R.id.tv_phone_msg)
     TextView tvPhoneMsg;
     @BindView(R.id.btn_next)
     Button btnNext;
-    private String phone;
+    private CountDownTimer cdt;
 
     @Override
     protected void initEnv() {
@@ -63,6 +67,8 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     @Override
     protected void setupView() {
         etPhone.addTextChangedListener(this);
+        etVerifyCode.addTextChangedListener(this);
+
     }
 
     @Override
@@ -70,12 +76,21 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
 
     }
 
-    @OnClick({R.id.btn_next})
+    @OnClick({R.id.btn_get_verify_code, R.id.btn_next})
     public void onClick(View view) {
         KeyBoardUtil.hideInputMethod(this);
         switch (view.getId()) {
-            case R.id.btn_next:
+            case R.id.btn_get_verify_code:
+                String phone = etPhone.getText().toString().trim();
+                if (!StringUtils.isPhone(phone)) {
+                    showToast("请输入正确的手机号");
+                    return;
+                }
                 getVerifyCode(phone);
+                break;
+            case R.id.btn_next:
+                Intent intent = new Intent(getBaseContext(), ResetPasswordActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -87,53 +102,61 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        tvPhoneMsg.setVisibility(View.INVISIBLE);
+
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        phone = etPhone.getText().toString().trim();
-        boolean isPhone = StringUtils.isPhone(phone);
-        if (isPhone) {
+        boolean isPhone = StringUtils.isPhone(etPhone.getText().toString().trim());
+        String verifyCode = etVerifyCode.getText().toString().trim();
+        if (isPhone && !TextUtils.isEmpty(verifyCode) && verifyCode.length() == 6) {
             btnNext.setEnabled(true);
         } else {
-            if (phone.length() == 11) {
-                tvPhoneMsg.setVisibility(View.VISIBLE);
-                tvPhoneMsg.setText("请输入正确的手机号");
-            }
             btnNext.setEnabled(false);
         }
     }
 
     /**
-     * 忘记密码--验证码
-     * <p>
-     * 验证手机
+     * 获取验证码倒计时
      */
-    private void getVerifyCode(String mobile) {
+    private void startTimer() {
+        btnGetVerifyCode.setEnabled(false);
+        cdt = new CountDownTimer(60000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                btnGetVerifyCode.setText(millisUntilFinished / 1000 + "秒");
+            }
+
+            @Override
+            public void onFinish() {
+                btnGetVerifyCode.setEnabled(true);
+                btnGetVerifyCode.setText("获取验证码");
+            }
+        };
+        cdt.start();
+    }
+
+    /**
+     * 获取验证码
+     */
+    private void getVerifyCode(String mobile){
+        startTimer();
         HashMap paramsMapMobile = new HashMap();
-        paramsMapMobile.put("mobile", mobile);
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.FORGET_PASS_CODE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
+        paramsMapMobile.put("mobile",mobile);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SEND_CODE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
                         JSONObject jsonObject = JSON.parseObject(result.toString());
                         String code = jsonObject.get("code").toString();
-                        if (code.equals("200")) {
-                            Intent intent = new Intent(getBaseContext(), ResetPasswordActivity.class);
-                            intent.putExtra("mobile", phone);
-                            startActivity(intent);
-                        } else if (code.equals("-1231")) {
-                            tvPhoneMsg.setVisibility(View.VISIBLE);
-                            tvPhoneMsg.setText("该手机号不存在");
-                        } else if (code.equals("-1240")) {
-                            showToast("当日短信发送达到上限");
+                        if(!code.equals(200)){
+                            String msg = jsonObject.get("msg").toString();
                         }
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        LogUtils.d("errorMsg" + errorMsg.toString());
+                        LogUtils.d("errorMsg"+errorMsg.toString());
                     }
                 });
     }
@@ -142,10 +165,13 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (cdt != null) {
+            cdt.cancel();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActivityFinishEvent event) {
+    public void onEvent(ActivityFinishEvent event){
         finish();
     }
 }
