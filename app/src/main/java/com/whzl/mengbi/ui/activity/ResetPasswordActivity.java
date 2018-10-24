@@ -227,6 +227,7 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
                     @Override
                     public void onReqFailed(String errorMsg) {
                         LogUtils.d("errorMsg" + errorMsg.toString());
+
                     }
                 });
     }
