@@ -811,7 +811,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     }
 
                     //是否为VIP用户
-                    if("VIP".equals(data.getGoodsList().get(i).getGoodsType())){
+                    if ("VIP".equals(data.getGoodsList().get(i).getGoodsType())) {
                         isVip = true;
                     }
                 }
@@ -927,7 +927,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         // 已领取
                         mTreasureStatusMap.put(listBean.taskId, 3);
                     }
-
                 }
             }
         }
@@ -1221,7 +1220,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
                 mLivePresenter.getTreasureBoxStatus(mUserId);
-                isVip = true;
             }
         }
     }
