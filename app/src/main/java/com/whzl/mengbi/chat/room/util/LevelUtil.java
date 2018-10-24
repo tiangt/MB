@@ -48,6 +48,24 @@ public class LevelUtil {
         return -1;
     }
 
+    public static int getRoyalLevel(FromJson fromJson){
+        if(fromJson == null){
+            return -1;
+        }
+        List<FromJson.Level> levelList = fromJson.getLevelList();
+        if (levelList == null) {
+            return -1;
+        }
+        for(FromJson.Level levelItem : levelList){
+            if(levelItem.getLevelType().equals("ROYAL_LEVEL")){
+                int levelValue = levelItem.getLevelValue();
+                return levelValue;
+            }
+        }
+        return -1;
+    }
+
+
     /**
      * 根据图片资源获取spanString
      * @param context

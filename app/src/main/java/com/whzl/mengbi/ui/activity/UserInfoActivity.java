@@ -169,7 +169,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
                 tvUpdate.append("元");
                 int userLevel = levelList.getLevelValue();
-                ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+                if (userLevel != 0) {
+                    ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+                }
                 tvTotal.setText("本月已累计充值");
                 tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));
                 tvTotal.append("元");
@@ -505,7 +507,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                                     tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
                                     tvUpdate.append("元");
                                     int userLevel = levelList.getLevelValue();
-                                    ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+                                    if (userLevel != 0) {
+                                        ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+                                    }
                                     tvTotal.setText("本月已累计充值");
                                     tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));
                                     tvTotal.append("元");

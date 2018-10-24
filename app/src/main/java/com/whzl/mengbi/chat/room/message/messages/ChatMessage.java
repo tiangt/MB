@@ -25,6 +25,7 @@ import java.util.List;
 
 public class ChatMessage implements FillHolderMessage {
     private int from_level;
+    private int royal_level;
     private int from_uid;
     private String from_nickname;
 
@@ -37,6 +38,7 @@ public class ChatMessage implements FillHolderMessage {
 
     private boolean isAnchor = false;
     private boolean hasGuard = false;
+    private boolean hasVip = false;
     private int programId = 0;
     private SingleTextViewHolder mholder;
     private List<SpannableString> fromSpanList;
@@ -57,6 +59,7 @@ public class ChatMessage implements FillHolderMessage {
             e.printStackTrace();
         }
         from_level = LevelUtil.getUserLevel(msgJson.getFrom_json());
+        royal_level = LevelUtil.getRoyalLevel(msgJson.getFrom_json());
         if (ChatRoomInfo.getInstance().getRoomInfoBean() != null) {
             int anchorUid = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getAnchor().getId();
             if (anchorUid == from_uid) {
@@ -68,6 +71,7 @@ public class ChatMessage implements FillHolderMessage {
         to_level = LevelUtil.getUserLevel(msgJson.getTo_json());
         if(msgJson.getFrom_json() != null && msgJson.getFrom_json().getGoodsList() != null){
             hasGuard = userHasGuard(msgJson.getFrom_json().getGoodsList());
+            hasVip = userHasVip(msgJson.getFrom_json().getGoodsList());
         }
     }
 
@@ -86,6 +90,10 @@ public class ChatMessage implements FillHolderMessage {
     }
 
     private void parsePrivateMessage() {
+        if (royal_level != 0) {
+            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
+            mholder.textView.append(" ");
+        }
         long userId = (long) SPUtils.get(mContext, SpConfig.KEY_USER_ID, 0L);
         if (from_uid != 0) {
             mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
@@ -106,6 +114,10 @@ public class ChatMessage implements FillHolderMessage {
 
     private void parseNoRecieverMessage() {
         //非游客发言
+        if (royal_level != 0) {
+            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
+            mholder.textView.append(" ");
+        }
         if (from_uid != 0) {
             if (isAnchor) {
                 mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getAnchorLevelIcon(from_level)));
@@ -116,6 +128,10 @@ public class ChatMessage implements FillHolderMessage {
         }
         if (hasGuard) {
             mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.guard));
+            mholder.textView.append(" ");
+        }
+        if (hasVip) {
+            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip_chat));
             mholder.textView.append(" ");
         }
         if (fromSpanList != null) {
@@ -142,6 +158,10 @@ public class ChatMessage implements FillHolderMessage {
     }
 
     private void parseHasRecieverMessage() {
+        if (royal_level != 0) {
+            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
+            mholder.textView.append(" ");
+        }
         if (from_uid != 0) {
             mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getUserLevelIcon(from_level)));
         }
@@ -195,5 +215,19 @@ public class ChatMessage implements FillHolderMessage {
             }
         }
         return hasGuard;
+    }
+
+    private boolean userHasVip(List<FromJson.Good> goodsList) {
+        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
+            return false;
+        }
+        boolean hasVip = false;
+        for (FromJson.Good good : goodsList) {
+            if (good.getGoodsType().equals("VIP")) {
+                hasVip = true;
+                break;
+            }
+        }
+        return hasVip;
     }
 }
