@@ -68,7 +68,6 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     protected void setupView() {
         etPhone.addTextChangedListener(this);
         etVerifyCode.addTextChangedListener(this);
-
     }
 
     @Override
