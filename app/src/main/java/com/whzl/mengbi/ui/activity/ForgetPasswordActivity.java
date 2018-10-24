@@ -142,6 +142,7 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
