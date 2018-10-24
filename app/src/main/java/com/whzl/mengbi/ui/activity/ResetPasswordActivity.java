@@ -130,8 +130,6 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
                     return;
                 }
                 resetPsw(phone, verifyCode, mPassword);
-//                Intent intent = new Intent(ResetPasswordActivity.this, RetrievePasswordActivity.class);
-//                startActivity(intent);
                 break;
         }
     }
