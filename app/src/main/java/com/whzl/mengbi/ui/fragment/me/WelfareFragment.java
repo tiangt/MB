@@ -44,6 +44,7 @@ import butterknife.ButterKnife;
 public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, WelfarePresenter> implements WelfareContract.View {
     private Map<Integer, Integer> map = new HashMap<>();
     private String[] strings;
+    private String[] names;
 
     @Override
     protected boolean setLoadMoreEndShow() {
@@ -74,6 +75,7 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
         getAdapter().addHeaderView(view);
         initIcon();
         strings = getResources().getStringArray(R.array.new_task);
+        names = getResources().getStringArray(R.array.new_task_names);
     }
 
     private void initIcon() {
@@ -122,7 +124,7 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
         public void onBindViewHolder(int position) {
             NewTaskBean.ListBean bean = mDatas.get(position);
             GlideImageLoader.getInstace().displayImage(getMyActivity(), map.get(position), ivIcon);
-            tvName.setText(bean.awardName);
+            tvName.setText(names[position]);
             if (position < 6) {
                 tvNum.setText("+8 萌币");
             } else {
