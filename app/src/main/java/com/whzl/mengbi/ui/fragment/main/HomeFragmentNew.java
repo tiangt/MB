@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.ScrollBoundaryDecider;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
@@ -103,6 +106,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         loadData();
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             refreshLayout.setEnableLoadMore(true);
+            anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             mCurrentPager = 1;
             mHomePresenter.getBanner();
             mHomePresenter.getRecommend();
@@ -140,6 +144,21 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         anchorRecycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         anchorRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
         anchorRecycler.addItemDecoration(new SpacesItemDecoration(4));
+
+        //RecyclerView缓存，预防OOM
+        RecyclerView.RecycledViewPool pool = new RecyclerView.RecycledViewPool() {
+            @Override
+            public void putRecycledView(RecyclerView.ViewHolder scrap) {
+                super.putRecycledView(scrap);
+            }
+
+            @Override
+            public RecyclerView.ViewHolder getRecycledView(int viewType) {
+                final RecyclerView.ViewHolder recycledView = super.getRecycledView(viewType);
+                return recycledView;
+            }
+        };
+
         anchorAdapter = new BaseListAdapter() {
 
             @Override
@@ -154,6 +173,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             }
         };
         anchorRecycler.setAdapter(anchorAdapter);
+        pool.setMaxRecycledViews(anchorAdapter.getItemViewType(0), 10);
     }
 
 
@@ -165,7 +185,6 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                 break;
         }
     }
-
 
 
     class AnchorInfoViewHolder extends BaseViewHolder {
@@ -329,7 +348,6 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             } else {
                 refreshLayout.setEnableLoadMore(true);
                 anchorAdapter.notifyDataSetChanged();
-//                anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             }
         } else {
             if (mAnchorInfoList.size() > 0) {
@@ -353,4 +371,5 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         super.onDestroy();
         mHomePresenter.onDestroy();
     }
+
 }

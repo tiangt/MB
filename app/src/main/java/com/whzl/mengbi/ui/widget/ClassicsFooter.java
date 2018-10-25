@@ -35,14 +35,17 @@ public class ClassicsFooter extends LinearLayout implements RefreshFooter {
         super(context);
         initView(context);
     }
+
     public ClassicsFooter(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.initView(context);
     }
+
     public ClassicsFooter(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.initView(context);
     }
+
     @SuppressLint("ResourceAsColor")
     private void initView(Context context) {
         setGravity(Gravity.CENTER);
@@ -53,21 +56,26 @@ public class ClassicsFooter extends LinearLayout implements RefreshFooter {
         addView(mFooterText, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         setMinimumHeight(DensityUtil.dp2px(60));
     }
+
     @NonNull
     public View getView() {
         return this;//真实的视图就是自己，不能返回null
     }
+
     @Override
     public SpinnerStyle getSpinnerStyle() {
         return SpinnerStyle.Translate;//指定为平移，不能null
     }
+
     @Override
     public void onStartAnimator(RefreshLayout layout, int headHeight, int maxDragHeight) {
     }
+
     @Override
     public int onFinish(RefreshLayout layout, boolean success) {
         return 500;//延迟500毫秒之后再弹回
     }
+
     @SuppressLint("ResourceAsColor")
     @Override
     public void onStateChanged(RefreshLayout refreshLayout, RefreshState oldState, RefreshState newState) {
@@ -78,18 +86,21 @@ public class ClassicsFooter extends LinearLayout implements RefreshFooter {
                 break;
             case Loading:
                 mFooterText.setText("加载更多…");
-                mFooterText.setPadding(12,0,0,0);
-                mFooterText.setTextColor(Color.argb(255,185,185,185));
+                mFooterText.setPadding(12, 0, 0, 0);
+                mFooterText.setTextColor(Color.argb(255, 185, 185, 185));
                 mProgressView.setVisibility(VISIBLE);//显示加载动画
                 break;
             case ReleaseToLoad:
                 break;
+
         }
     }
+
     @Override
     public boolean isSupportHorizontalDrag() {
         return false;
     }
+
     @Override
     public void onInitialized(RefreshKernel kernel, int height, int maxDragHeight) {
     }
@@ -109,12 +120,13 @@ public class ClassicsFooter extends LinearLayout implements RefreshFooter {
     }
 
     @Override
-    public void setPrimaryColors(@ColorInt int ... colors){
+    public void setPrimaryColors(@ColorInt int... colors) {
     }
 
     @Override
     public boolean setNoMoreData(boolean noMoreData) {
         return false;
     }
+
 
 }

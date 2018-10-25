@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBg"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -11,10 +11,10 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:background="#f9f9f9"
-            android:textColor="#323232"
             style="@style/fragmentTitleText"
-            android:text="@string/home_title" />
+            android:background="#f9f9f9"
+            android:text="@string/home_title"
+            android:textColor="#323232" />
 
         <LinearLayout
             android:id="@+id/ll_search"
@@ -38,7 +38,8 @@
 
         <com.whzl.mengbi.ui.widget.ClassicsHeader
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/scroll_view"
@@ -56,17 +57,17 @@
                     android:id="@+id/bannerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="9dp"
                     android:focusableInTouchMode="true">
 
                     <com.youth.banner.Banner
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        app:indicator_width="7dp"
-                        app:indicator_height="7dp"
+                        android:layout_margin="2dp"
                         app:indicator_drawable_selected="@drawable/home_indicator_selected"
                         app:indicator_drawable_unselected="@drawable/home_indicator_unselected"
+                        app:indicator_height="7dp"
+                        app:indicator_width="7dp"
                         app:layout_constraintDimensionRatio="H,3:1"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintLeft_toRightOf="parent" />
@@ -77,10 +78,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="38dp"
                     android:background="@color/white"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="4dp"
                     android:drawableLeft="@drawable/home_title_recommended"
                     android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="4dp"
                     android:text="小编推荐"
                     android:textColor="#323232"
                     android:textSize="16sp"
@@ -102,10 +103,10 @@
                     android:layout_height="38dp"
                     android:layout_marginTop="12dp"
                     android:background="@color/white"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="4dp"
                     android:drawableLeft="@drawable/home_title_live"
                     android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="4dp"
                     android:text="精彩直播"
                     android:textColor="#323232"
                     android:textSize="16sp"
@@ -118,8 +119,7 @@
                     android:layout_gravity="center_vertical"
                     android:background="@color/white"
                     android:focusableInTouchMode="false"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingBottom="14dp"  >
+                    android:nestedScrollingEnabled="false">
 
                 </android.support.v7.widget.RecyclerView>
 
@@ -129,7 +129,9 @@
 
         <com.whzl.mengbi.ui.widget.ClassicsFooter
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@color/white" />
+
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

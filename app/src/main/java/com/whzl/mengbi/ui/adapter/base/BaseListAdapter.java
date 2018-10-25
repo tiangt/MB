@@ -6,6 +6,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.whzl.mengbi.R;
 
 
@@ -22,6 +23,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
     private int loadMoreFooterState = LOAD_MORE_STATE_END_HIDE;
 
     public View mHeaderView;
+    public View mFooterView;
 
     private View loadMoreEndLayout;
 
@@ -36,6 +38,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
         }
         return null;
     }
+
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_HEADER) {
@@ -172,6 +175,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
 
     protected BaseViewHolder onCreateLoadMoreFooterViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_load_more_end, parent, false);
+        mFooterView = view;
         return new LoadMoreFooterViewHolder(view);
     }
 
@@ -192,6 +196,6 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
         public void onItemClick(View view, int position) {
             // 设置点击效果，比如加载失败，点击重试
         }
-
     }
+
 }
