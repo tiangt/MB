@@ -2,6 +2,7 @@ package com.whzl.mengbi.api;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
+import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
@@ -459,4 +460,14 @@ public interface Api {
     @POST("v1/bill/award")
     @FormUrlEncoded
     Observable<ApiResult<BillAwardBean>> billAward(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间的活动（常规活动）
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/activity-grand")
+    @FormUrlEncoded
+    Observable<ApiResult<ActivityGrandBean>> activityGrand(@FieldMap Map<String, String> params);
 }

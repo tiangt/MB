@@ -49,7 +49,7 @@ public class ApiFactory {
     //  ------- retrofit2.0 -------
     public void build(Context context, String serverUrl, Interceptor interceptor) {
         HttpLoggingInterceptor httpLoggingInterceptor = null;
-        httpLoggingInterceptor = new HttpLoggingInterceptor(message -> LogUtil.d("okhttp", message));
+        httpLoggingInterceptor = new HttpLoggingInterceptor(message -> LogUtils.d2(message));
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 

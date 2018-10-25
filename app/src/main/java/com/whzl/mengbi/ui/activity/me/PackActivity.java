@@ -17,7 +17,6 @@ import com.whzl.mengbi.ui.fragment.me.PackDiscountFragment;
 import com.whzl.mengbi.ui.fragment.me.PackPrettyFragment;
 import com.whzl.mengbi.ui.fragment.me.PackVipFragment;
 import com.whzl.mengbi.ui.fragment.me.PropFragment;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.lang.reflect.Field;
@@ -43,13 +42,7 @@ public class PackActivity extends BaseActivity {
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_pack, "背包", "说明", true);
-    }
-
-    @Override
-    protected void onToolbarMenuClick() {
-        super.onToolbarMenuClick();
-        ToastUtils.showToast("说明");
+        setContentView(R.layout.activity_pack, "背包", true);
     }
 
     @Override

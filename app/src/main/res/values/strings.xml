@@ -311,6 +311,18 @@
         <item>去发布</item>
         <item>去送礼</item>
         <item>去抽奖</item>
-        <item>领取</item>
+    </array>
+
+    <array name="new_task_names">
+        <item>注册萌比直播账号</item>
+        <item>取个霸气的昵称</item>
+        <item>关注3名主播</item>
+        <item>对主播说3句话</item>
+        <item>送给主播99朵蓝色妖姬</item>
+        <item>观看直播满10分钟</item>
+        <item>首次充值</item>
+        <item>发布3条世界广播</item>
+        <item>送给主播66个幸运黄瓜</item>
+        <item>幸运转盘抽奖1次</item>
     </array>
 </resources>

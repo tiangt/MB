@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -63,6 +64,7 @@ import com.whzl.mengbi.gift.PkControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
+import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -74,6 +76,7 @@ import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.adapter.CircleFragmentPagerAdaper;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
@@ -85,12 +88,14 @@ import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.TreasureBoxDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
+import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -190,6 +195,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvCountDown;
     @BindView(R.id.banner)
     Banner banner;
+    @BindView(R.id.vp_activity)
+    ViewPager vpActivity;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -231,6 +238,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private PkInfoBean.userInfoBean otherPkInfo;
     private PkControl pkControl;
     private List<GetActivityBean.ListBean> mBannerInfoList;
+    private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
+    private CircleFragmentPagerAdaper mGrandAdaper;
+    private Disposable grandDisposable;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -335,6 +345,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initProtectRecycler();
         initFragment();
         initBanner();
+        initVp();
+    }
+
+    private void initVp() {
+        mGrandAdaper = new CircleFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
+        vpActivity.setAdapter(mGrandAdaper);
     }
 
     private void initBanner() {
@@ -770,6 +786,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 progressBar.setVisibility(View.GONE);
             }
         }
+        mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -811,7 +828,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     }
 
                     //是否为VIP用户
-                    if("VIP".equals(data.getGoodsList().get(i).getGoodsType())){
+                    if ("VIP".equals(data.getGoodsList().get(i).getGoodsType())) {
                         isVip = true;
                     }
                 }
@@ -989,6 +1006,45 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
         pkControl.initNet(bean);
+    }
+
+    @Override
+    public void onActivityGrandSuccess(ActivityGrandBean bean) {
+        if (bean.list != null && bean.list.size() != 0) {
+            vpActivity.setVisibility(View.VISIBLE);
+            vpActivity.setOffscreenPageLimit(bean.list.size());
+            for (int i = 0; i < bean.list.size(); i++) {
+                ActivityGrandBean.ListBean listBean = bean.list.get(i);
+                LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl);
+                liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
+                    @Override
+                    public void clickListener() {
+                        startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                                .putExtra("anchorId", mAnchorId + "")
+                                .putExtra("programId", mProgramId + "")
+                                .putExtra("title", listBean.name)
+                                .putExtra("url", listBean.linkUrl), REQUEST_LOGIN);
+                    }
+                });
+                mActivityGrands.add(liveWebFragment);
+            }
+            mGrandAdaper.notifyDataSetChanged();
+            if (bean.list.size() > 1) {
+                timerGrand(bean.list.size());
+            }
+        }
+
+    }
+
+    private void timerGrand(int i) {
+        grandDisposable = Observable.interval(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    LogUtils.e("ssssss  " + aLong);
+                    long l = aLong / i % i;
+                    vpActivity.setCurrentItem((int) l);
+                    LogUtils.e("ssssss  " + l);
+                });
     }
 
     private void timer(int id) {
@@ -1209,6 +1265,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkLayout.destroy();
         if (pkControl != null) {
             pkControl.destroy();
+        }
+        if (grandDisposable != null) {
+            grandDisposable.dispose();
         }
     }
 

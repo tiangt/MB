@@ -154,20 +154,32 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             String levelType = levelList.getLevelType();
             long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
             if ("ANCHOR_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                tvAnchorLevel.setText("离升级还差");
-                tvAnchorLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#f1275b")));
-                tvAnchorLevel.append("主播经验");
+                if (sjNeedValue >= 0) {
+                    tvAnchorLevel.setText("离升级还差");
+                    tvAnchorLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#f1275b")));
+                    tvAnchorLevel.append("主播经验");
+                } else {
+                    tvAnchorLevel.setText("您已达到最高主播等级");
+                }
                 ivAnchorLevel.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelList.getLevelValue()));
             } else if ("USER_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                tvUserLevel.setText("离升级还差");
-                tvUserLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#4facf3")));
-                tvUserLevel.append("富豪经验");
+                if (sjNeedValue >= 0) {
+                    tvUserLevel.setText("离升级还差");
+                    tvUserLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#4facf3")));
+                    tvUserLevel.append("富豪经验");
+                } else {
+                    tvUserLevel.setText("您已达到最高用户等级");
+                }
                 int userLevel = levelList.getLevelValue();
                 ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(userLevel));
             } else if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                tvUpdate.setText("离升级还需充值");
-                tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
-                tvUpdate.append("元");
+                if (sjNeedValue >= 0) {
+                    tvUpdate.setText("离升级还需充值");
+                    tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
+                    tvUpdate.append("元");
+                } else {
+                    tvUpdate.setText("您已达到最高贵族等级");
+                }
                 int userLevel = levelList.getLevelValue();
                 if (userLevel != 0) {
                     ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
@@ -503,9 +515,13 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                                 String levelType = levelList.getLevelType();
                                 long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
                                 if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                                    tvUpdate.setText("离升级还需充值");
-                                    tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
-                                    tvUpdate.append("元");
+                                    if (sjNeedValue >= 0) {
+                                        tvUpdate.setText("离升级还需充值");
+                                        tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
+                                        tvUpdate.append("元");
+                                    } else {
+                                        tvUpdate.setText("您已达到最高贵族等级");
+                                    }
                                     int userLevel = levelList.getLevelValue();
                                     if (userLevel != 0) {
                                         ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));

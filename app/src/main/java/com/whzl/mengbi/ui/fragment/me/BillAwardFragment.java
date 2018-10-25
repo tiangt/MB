@@ -183,6 +183,10 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
         } else {
             calendar.setTimeInMillis(endDate);
         }
+        Calendar start = Calendar.getInstance();
+        Calendar end = Calendar.getInstance();
+        end.setTimeInMillis(System.currentTimeMillis());
+        start.setTimeInMillis(System.currentTimeMillis()-30 * 24 * 60 * 60 * 1000L);
         pvTime = new TimePickerBuilder(getMyActivity(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
@@ -203,7 +207,7 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
                 .setSubmitText("完成")//确认按钮文字
                 .setTitleSize(17)//标题文字大小
                 .setTitleText("日期选择")//标题文字
-                .isCyclic(true)//是否循环滚动
+                .isCyclic(false)//是否循环滚动
                 .setTitleColor(Color.BLACK)//标题文字颜色
                 .setSubmitColor(Color.parseColor("#007aff"))//确定按钮文字颜色
                 .setCancelColor(Color.parseColor("#007aff"))//取消按钮文字颜色
@@ -214,6 +218,7 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
                 .setLabel("", "", "", "时", "分", "秒")//默认设置为年月日时分秒
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .isDialog(false)//是否显示为对话框样式
+                .setRangDate(start,end)
                 .build();
 
         pvTime.show();
