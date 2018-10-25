@@ -129,7 +129,7 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
                     tvPswMsg.setText("两次输入的密码不一致，请重新输入");
                     return;
                 }
-                resetPsw(phone, verifyCode, mPassword);
+                resetPsw(phone, mPassword, verifyCode);
                 break;
         }
     }

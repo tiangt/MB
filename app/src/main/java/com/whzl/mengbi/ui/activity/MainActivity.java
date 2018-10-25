@@ -24,6 +24,7 @@ import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.ui.fragment.RankFragment;
 import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 import com.whzl.mengbi.ui.fragment.main.HomeFragmentNew;
 import com.whzl.mengbi.ui.fragment.main.MeFragment;
@@ -34,7 +35,6 @@ import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{new HomeFragmentNew(), FollowFragment.newInstance(), MeFragment.newInstance()};
+        fragments = new Fragment[]{new HomeFragmentNew(), RankFragment.newInstance(), FollowFragment.newInstance(), MeFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
         rgTab.setOnCheckedChangeListener((group, checkedId) -> {
@@ -90,16 +90,23 @@ public class MainActivity extends BaseActivity {
                 case R.id.rb_home:
                     setTabChange(0);
                     break;
-                case R.id.rb_follow:
+                case R.id.rb_rank:
                     if (checkLogin()) {
                         setTabChange(1);
                         return;
                     }
                     login();
                     break;
-                case R.id.rb_me:
+                case R.id.rb_follow:
                     if (checkLogin()) {
                         setTabChange(2);
+                        return;
+                    }
+                    login();
+                    break;
+                case R.id.rb_me:
+                    if (checkLogin()) {
+                        setTabChange(3);
                         return;
                     }
                     login();

@@ -53,7 +53,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     public void onAttach(Context context) {
         super.onAttach(context);
         mActivity = getActivity();
-
     }
 
     public abstract void init();

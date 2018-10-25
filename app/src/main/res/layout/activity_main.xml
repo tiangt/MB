@@ -33,6 +33,12 @@
             android:text="@string/home_title" />
 
         <RadioButton
+            android:id="@+id/rb_rank"
+            style="@style/main_tab"
+            android:drawableTop="@drawable/selector_main_tab_rank_icon"
+            android:text="@string/rank_title" />
+
+        <RadioButton
             android:id="@+id/rb_follow"
             style="@style/main_tab"
             android:drawableTop="@drawable/selector_main_tab_follow_icon"

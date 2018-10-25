@@ -36,6 +36,8 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
+import com.whzl.mengbi.ui.widget.recyclerview.GridSpacingItemDecoration;
+import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
@@ -114,6 +116,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         recommendRecycler.setFocusableInTouchMode(false);
         recommendRecycler.setHasFixedSize(true);
         recommendRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recommendRecycler.addItemDecoration(new SpacesItemDecoration(4));
         recommendAdapter = new BaseListAdapter() {
 
             @Override
@@ -136,6 +139,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         anchorRecycler.setHasFixedSize(true);
         anchorRecycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         anchorRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        anchorRecycler.addItemDecoration(new SpacesItemDecoration(4));
         anchorAdapter = new BaseListAdapter() {
 
             @Override
@@ -173,8 +177,8 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         TextView tvAnchorName;
         @BindView(R.id.tv_watch_count)
         TextView tvWatchCount;
-        @BindView(R.id.tv_is_live_mark)
-        TextView tvIsLive;
+//        @BindView(R.id.tv_is_live_mark)
+//        TextView tvIsLive;
 
         private final int type;
 
@@ -189,14 +193,14 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             switch (type) {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
-                    tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
+//                    tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
                     tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
                     tvWatchCount.setText(recommendAnchorInfoBean.getRoomUserCount() + "");
                     GlideImageLoader.getInstace().loadRoundImage(getContext(), recommendAnchorInfoBean.getCover(), ivCover, 5);
                     break;
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
-                    tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
+//                    tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
                     tvAnchorName.setText(liveShowListInfo.getAnchorNickname());
                     tvWatchCount.setText(liveShowListInfo.getRoomUserCount() + "");
                     GlideImageLoader.getInstace().loadRoundImage(getContext(), liveShowListInfo.getCover(), ivCover, 5);

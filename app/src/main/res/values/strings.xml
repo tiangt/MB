@@ -37,6 +37,7 @@
     <string name="home_title">首页</string>
     <string name="home_recommend">首页</string>
     <string name="home_">首页</string>
+
     <!--直播间-->
     <string name="live_display_anchornickname">主播昵称</string>
     <string name="live_display_fans">粉丝：</string>
@@ -238,10 +239,11 @@
     <string name="phone_number_hint">请输入您的手机号码</string>
     <string name="password_hint">请输入密码</string>
     <string name="nothing" />
+    <string name="rank_title">榜单</string>
     <string name="follow_title">关注</string>
     <string name="me_title">我的</string>
     <string name="login_success">登录成功</string>
-    <string name="load_more_end"><![CDATA[ 别拖了     到底了]]></string>
+    <string name="load_more_end"><![CDATA[ 别拖了     到底啦]]></string>
     <string name="personal">个人中心</string>
     <string name="recharge_type">充值方式</string>
     <string name="recharge_amount">充值金额</string>
