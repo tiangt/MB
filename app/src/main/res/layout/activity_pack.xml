@@ -18,6 +18,7 @@
         app:tabMode="scrollable"
         app:tabSelectedTextColor="#20c78a"
         app:tabTextAppearance="@style/PackTab"
+        app:tabBackground="@android:color/transparent"
         app:tabTextColor="#646464" />
     <View
         android:layout_width="match_parent"

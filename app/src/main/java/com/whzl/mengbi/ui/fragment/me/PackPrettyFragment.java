@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment.me;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +17,7 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
+import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -40,12 +42,13 @@ import io.reactivex.schedulers.Schedulers;
  * @author nobody
  * @date 2018/10/16
  */
-public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.ListBean,BasePresenter> {
+public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.ListBean, BasePresenter> {
+    private int REQUESTCODE = 201;
     private AwesomeDialog dialog;
 
     @Override
     protected boolean setLoadMoreEndShow() {
-        return true;
+        return false;
     }
 
     @Override
@@ -58,7 +61,12 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
         super.init();
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_pretty_pack, getPullView(), false);
         getAdapter().addHeaderView(view);
-        View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_car_pack, getPullView(), false);
+        View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_pretty_pack, getPullView(), false);
+        TextView tvOpen = view2.findViewById(R.id.tv_open);
+        tvOpen.setOnClickListener(v -> {
+            Intent intent = new Intent(getMyActivity(), BuyVipActivity.class);
+            startActivityForResult(intent, REQUESTCODE);
+        });
         setEmptyView(view2);
         getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
@@ -156,10 +164,10 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                                         public void onClick(View v) {
                                             if ("T".equals(bean.isEquip)) {
                                                 //暂停
-                                                control("F", bean.goodsSn, tvState, tvControl);
+                                                control("F", bean, tvState, tvControl);
                                             } else {
                                                 //使用
-                                                control("T", bean.goodsSn, tvState, tvControl);
+                                                control("T", bean, tvState, tvControl);
                                             }
                                             dialog.dismiss();
                                         }
@@ -222,6 +230,12 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                                                         });
                                             }
                                         });
+                                        holder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                dialog.dismiss();
+                                            }
+                                        });
                                     }
                                 }).show(getFragmentManager());
                     }
@@ -233,10 +247,10 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                 });
     }
 
-    private void control(String t, long goodsSn, TextView tvState, TextView tvControl) {
+    private void control(String t, PackPrettyBean.ListBean listBean, TextView tvState, TextView tvControl) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L));
-        paramsMap.put("goodsSn", goodsSn);
+        paramsMap.put("goodsSn", listBean.goodsSn);
         paramsMap.put("equip", t);
         ApiFactory.getInstance().getApi(Api.class)
                 .equip(ParamsUtils.getSignPramsMap(paramsMap))
@@ -247,12 +261,14 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                     @Override
                     public void onSuccess(JsonElement bean) {
                         if ("T".equals(t)) {
+                            listBean.isEquip = "T";
                             ToastUtils.showCustomToast(getMyActivity(), "靓号启用成功！");
                             tvState.setText("使用中");
                             tvState.setTextColor(Color.parseColor("#2cd996"));
                             tvControl.setText("暂停");
                             tvControl.setBackgroundResource(R.drawable.bg_button_pack_orange);
                         } else {
+                            listBean.isEquip = "F";
                             ToastUtils.showCustomToast(getMyActivity(), "靓号暂停成功");
                             tvState.setText("闲置");
                             tvState.setTextColor(Color.parseColor("#ff611b"));
@@ -270,5 +286,14 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                 });
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUESTCODE) {
+            if (resultCode == getMyActivity().RESULT_OK) {
+                mPage = 1;
+                loadData(PullRecycler.ACTION_PULL_TO_REFRESH, mPage);
+            }
+        }
+    }
 }

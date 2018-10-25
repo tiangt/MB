@@ -155,10 +155,10 @@ public class PackCarFragment extends BasePullListFragment<PackcarBean.ListBean,B
                                         public void onClick(View v) {
                                             if ("T".equals(bean.isEquip)) {
                                                 //暂停
-                                                control("F", bean.goodsSn, tvState, tvControl);
+                                                control("F", bean, tvState, tvControl);
                                             } else {
                                                 //使用
-                                                control("T", bean.goodsSn, tvState, tvControl);
+                                                control("T", bean, tvState, tvControl);
                                             }
                                             dialog.dismiss();
                                         }
@@ -171,10 +171,10 @@ public class PackCarFragment extends BasePullListFragment<PackcarBean.ListBean,B
         }
     }
 
-    private void control(String t, long goodsSn, TextView tvState, TextView tvControl) {
+    private void control(String t, PackcarBean.ListBean listBean, TextView tvState, TextView tvControl) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L));
-        paramsMap.put("goodsSn", goodsSn);
+        paramsMap.put("goodsSn", listBean.goodsSn);
         paramsMap.put("equip", t);
         ApiFactory.getInstance().getApi(Api.class)
                 .equip(ParamsUtils.getSignPramsMap(paramsMap))
@@ -185,12 +185,14 @@ public class PackCarFragment extends BasePullListFragment<PackcarBean.ListBean,B
                     @Override
                     public void onSuccess(JsonElement bean) {
                         if ("T".equals(t)) {
+                            listBean.isEquip = "T";
                             ToastUtils.showCustomToast(getMyActivity(), "座驾启用成功！");
                             tvState.setText("使用中");
                             tvState.setTextColor(Color.parseColor("#2cd996"));
                             tvControl.setText("暂停");
                             tvControl.setBackgroundResource(R.drawable.bg_button_pack_orange);
                         } else {
+                            listBean.isEquip = "F";
                             ToastUtils.showCustomToast(getMyActivity(), "座驾暂停成功");
                             tvState.setText("闲置");
                             tvState.setTextColor(Color.parseColor("#ff611b"));

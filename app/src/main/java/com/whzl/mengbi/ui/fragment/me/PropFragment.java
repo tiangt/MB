@@ -32,7 +32,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author nobody
  * @date 2018/10/16
  */
-public class PropFragment extends BasePullListFragment<PropBean.ListBean,BasePresenter> {
+public class PropFragment extends BasePullListFragment<PropBean.ListBean, BasePresenter> {
     @Override
     protected boolean setLoadMoreEndShow() {
         return false;
@@ -48,7 +48,7 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean,BasePre
         super.init();
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_prop, getPullView(), false);
         getAdapter().addHeaderView(view);
-        View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_prop_pack, getPullView(),false);
+        View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_prop_pack, getPullView(), false);
         setEmptyView(view2);
         getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
@@ -111,7 +111,7 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean,BasePre
             PropBean.ListBean bean = mDatas.get(position);
             tvName.setText(bean.goodsName);
             tvNum.setText(String.valueOf(bean.goodsSum));
-            tvTime.setText(String.valueOf(bean.surplusDay));
+            tvTime.setText("剩余" + String.valueOf(bean.surplusDay) + "天");
         }
 
     }
