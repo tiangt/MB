@@ -32,4 +32,6 @@ public interface LivePresenter {
     void getActivityList();
 
     void getPkInfo(int programId);
+
+    void getActivityGrand(int programId,int anchorId);
 }

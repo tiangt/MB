@@ -3,6 +3,7 @@ package com.whzl.mengbi.presenter.impl;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
+import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -175,6 +176,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
+    public void onActivityGrandSuccess(ActivityGrandBean bean) {
+        if (liveView != null) {
+            liveView.onActivityGrandSuccess(bean);
+        }
+    }
+
+    @Override
     public void followHost(long userId, int mProgramId) {
         liveModel.doFollowHost(userId, mProgramId, this);
     }
@@ -231,5 +239,14 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("programId", programId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.pkInfo(signPramsMap, this);
+    }
+
+    @Override
+    public void getActivityGrand(int programId, int anchorId) {
+        HashMap map = new HashMap();
+        map.put("programId", programId);
+        map.put("anchorId", anchorId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.activityGrand(signPramsMap, this);
     }
 }

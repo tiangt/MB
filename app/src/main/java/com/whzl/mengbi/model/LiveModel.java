@@ -29,4 +29,6 @@ public interface LiveModel {
     void activityList(HashMap paramsMap, OnLiveFinishedListener listener);
 
     void pkInfo(HashMap paramsMap, OnLiveFinishedListener listener);
+
+    void activityGrand(HashMap paramsMap, OnLiveFinishedListener listener);
 }
