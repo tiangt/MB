@@ -106,7 +106,14 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             linearLayout.removeAllViews();
             tvName.setText(audienceInfoBean.getName());
             GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
+            ImageView royalImg = new ImageView(getContext());
             int identity = audienceInfoBean.getIdentity();
+            if (identity != 10 && audienceInfoBean.getLevelMap().getROYAL_LEVEL() != 0) {
+                royalImg.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL()));
+            }
+            LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            linearLayout.addView(royalImg, rparams);
+
             ImageView imageView = new ImageView(getContext());
             if (identity == 10) {
                 imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(audienceInfoBean.getLevelMap().getANCHOR_LEVEL()));
@@ -125,7 +132,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             if (audienceInfoBean.getMedal() != null) {
                 for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
                     AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
-                    if ("BADGE".equals(medalBean.getGoodsType()) || "GUARD".equals(medalBean.getGoodsType())) {
+                    if ("BADGE".equals(medalBean.getGoodsType()) || "GUARD".equals(medalBean.getGoodsType())|| "VIP".equals(medalBean.getGoodsType())) {
                         Glide.with(getContext())
                                 .load(medalBean.getGoodsIcon())
                                 .into(new SimpleTarget<Drawable>() {

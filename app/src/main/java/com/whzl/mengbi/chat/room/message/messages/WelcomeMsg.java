@@ -28,6 +28,8 @@ public class WelcomeMsg implements FillHolderMessage {
     private boolean hasGuard = false;
     private int programId = 0;
     private WelcomeJson mWelcomeJson;
+    private int royalLevel;
+    private boolean hasVip = false;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
@@ -45,12 +47,18 @@ public class WelcomeMsg implements FillHolderMessage {
         this.userLevel = getUserLevel(uid, welcomeJson.getContext().getInfo().getLevelList());
         this.userSpanList = userSpanList;
         this.hasGuard = userHasGuard(welcomeJson.getContext().getInfo().getUserBagList());
+        this.royalLevel = getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
+        this.hasVip = userHasVip(welcomeJson.getContext().getInfo().getUserBagList());
     }
 
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
         WelcomeTextViewHolder mHolder = (WelcomeTextViewHolder) holder;
         mHolder.textView.setText("");
+        if (royalLevel!=0) {
+        mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royalLevel)));
+        mHolder.textView.append(" ");
+        }
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         if (uid != 0) {
             int levelIcon = 0;
@@ -63,6 +71,10 @@ public class WelcomeMsg implements FillHolderMessage {
             mHolder.textView.append(" ");
             if (hasGuard) {
                 mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.guard));
+                mHolder.textView.append(" ");
+            }
+            if (hasVip) {
+                mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip_chat));
                 mHolder.textView.append(" ");
             }
             if (null != userSpanList) {
@@ -112,6 +124,20 @@ public class WelcomeMsg implements FillHolderMessage {
         return level;
     }
 
+    private int getRoyalLevel(List<WelcomeJson.WelcomeLevelListItem> levelList) {
+        if (null == levelList) {
+            return 0;
+        }
+        int level = 0;
+        for (WelcomeJson.WelcomeLevelListItem item : levelList) {
+            if (item.getLevelType().equals("ROYAL_LEVEL")) {
+                level = item.getLevelValue();
+                break;
+            }
+        }
+        return level;
+    }
+
     private boolean userHasGuard(List<WelcomeJson.UserBagItem> goodsList) {
         if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
             return false;
@@ -125,6 +151,20 @@ public class WelcomeMsg implements FillHolderMessage {
             }
         }
         return hasGuard;
+    }
+
+    private boolean userHasVip(List<WelcomeJson.UserBagItem> goodsList) {
+        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
+            return false;
+        }
+        boolean hasVip = false;
+        for (WelcomeJson.UserBagItem bagItem : goodsList) {
+            if (bagItem.getGoodsType().equals("VIP")) {
+                hasVip = true;
+                break;
+            }
+        }
+        return hasVip;
     }
 
     public boolean hasBagCar() {
@@ -155,7 +195,7 @@ public class WelcomeMsg implements FillHolderMessage {
         return mWelcomeJson.getContext().getCarObj().getPrettyNumberOrUserId();
     }
 
-    public String getGoodsColor(){
+    public String getGoodsColor() {
         if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
             return "default";
         }

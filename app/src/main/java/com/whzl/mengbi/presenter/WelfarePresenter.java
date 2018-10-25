@@ -7,6 +7,7 @@ import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.contract.WelfareContract;
 import com.whzl.mengbi.model.WelfateModel;
 import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.NewTaskBean;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 
@@ -62,6 +63,29 @@ public class WelfarePresenter extends BasePresenter<WelfareContract.View> implem
                     @Override
                     public void onSuccess(JsonElement bean) {
                         mView.onReceiveSuccess(tv,bean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void jump() {
+        if (!isViewAttached()) {
+            return;
+        }
+        welfateModel.jumpRandom()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(mView.<ApiResult<JumpRandomRoomBean>>bindAutoDispose())
+                .subscribe(new ApiObserver<JumpRandomRoomBean>() {
+
+                    @Override
+                    public void onSuccess(JumpRandomRoomBean bean) {
+                        mView.onJumpRandom(bean);
                     }
 
                     @Override

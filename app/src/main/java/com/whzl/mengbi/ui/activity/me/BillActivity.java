@@ -46,7 +46,7 @@ public class BillActivity extends BaseActivity {
     @Override
     protected void setupView() {
         ArrayList<String> titles = new ArrayList<>();
-        titles.add("充值记录");
+        titles.add("消费记录");
         titles.add("送礼记录");
         titles.add("奖励记录");
         ArrayList<Fragment> fragments = new ArrayList<>();
