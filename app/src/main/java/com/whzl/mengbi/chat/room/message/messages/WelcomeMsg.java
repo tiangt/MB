@@ -15,6 +15,7 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
 
+import java.io.IOException;
 import java.util.List;
 
 public class WelcomeMsg implements FillHolderMessage {
@@ -56,8 +57,12 @@ public class WelcomeMsg implements FillHolderMessage {
         WelcomeTextViewHolder mHolder = (WelcomeTextViewHolder) holder;
         mHolder.textView.setText("");
         if (royalLevel!=0) {
-        mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royalLevel)));
-        mHolder.textView.append(" ");
+            try {
+                mHolder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royalLevel),mHolder.textView));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mHolder.textView.append(" ");
         }
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         if (uid != 0) {

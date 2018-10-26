@@ -14,6 +14,7 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
@@ -182,7 +183,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 }
                 int userLevel = levelList.getLevelValue();
                 if (userLevel != 0) {
-                    ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+//                    ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+                    Glide.with(this).asGif().load(ResourceMap.getResourceMap().
+                            getRoyalLevelIcon(userLevel)).into(ivRoyal);
                 }
                 tvTotal.setText("本月已累计充值");
                 tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));
@@ -524,7 +527,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                                     }
                                     int userLevel = levelList.getLevelValue();
                                     if (userLevel != 0) {
-                                        ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+//                                        ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+                                        Glide.with(UserInfoActivity.this).asGif().load(ResourceMap.getResourceMap().
+                                                getRoyalLevelIcon(userLevel)).into(ivRoyal);
                                     }
                                     tvTotal.setText("本月已累计充值");
                                     tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));

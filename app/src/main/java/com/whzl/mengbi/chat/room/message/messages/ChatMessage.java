@@ -20,6 +20,7 @@ import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.UIUtil;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -91,7 +92,13 @@ public class ChatMessage implements FillHolderMessage {
 
     private void parsePrivateMessage() {
         if (royal_level != 0) {
-            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
+//            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
+            try {
+                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext,
+                        ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level),mholder.textView));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mholder.textView.append(" ");
         }
         long userId = (long) SPUtils.get(mContext, SpConfig.KEY_USER_ID, 0L);
@@ -115,7 +122,13 @@ public class ChatMessage implements FillHolderMessage {
     private void parseNoRecieverMessage() {
         //非游客发言
         if (royal_level != 0) {
-            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
+//            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
+            try {
+                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext,
+                        ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level),mholder.textView));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mholder.textView.append(" ");
         }
         if (from_uid != 0) {
@@ -159,7 +172,13 @@ public class ChatMessage implements FillHolderMessage {
 
     private void parseHasRecieverMessage() {
         if (royal_level != 0) {
-            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
+//            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
+            try {
+                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext,
+                        ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level),mholder.textView));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mholder.textView.append(" ");
         }
         if (from_uid != 0) {

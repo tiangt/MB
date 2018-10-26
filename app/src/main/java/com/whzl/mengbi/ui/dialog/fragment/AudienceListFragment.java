@@ -109,9 +109,11 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             ImageView royalImg = new ImageView(getContext());
             int identity = audienceInfoBean.getIdentity();
             if (identity != 10 && audienceInfoBean.getLevelMap().getROYAL_LEVEL() != 0) {
-                royalImg.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL()));
+                Glide.with(getMyActivity()).asGif().load(ResourceMap.getResourceMap().
+                        getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
+//                royalImg.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL()));
             }
-            LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(),30), UIUtil.dip2px(getMyActivity(),11));
             linearLayout.addView(royalImg, rparams);
 
             ImageView imageView = new ImageView(getContext());
