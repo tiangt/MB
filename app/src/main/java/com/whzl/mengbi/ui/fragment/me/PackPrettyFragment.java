@@ -15,9 +15,10 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
+import com.whzl.mengbi.eventbus.event.BuyGoodNumEvent;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
-import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
+import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -31,6 +32,10 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -43,7 +48,6 @@ import io.reactivex.schedulers.Schedulers;
  * @date 2018/10/16
  */
 public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.ListBean, BasePresenter> {
-    private int REQUESTCODE = 201;
     private AwesomeDialog dialog;
 
     @Override
@@ -57,6 +61,12 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
     }
 
     @Override
+    protected void initEnv() {
+        super.initEnv();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     public void init() {
         super.init();
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_pretty_pack, getPullView(), false);
@@ -64,8 +74,8 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_pretty_pack, getPullView(), false);
         TextView tvOpen = view2.findViewById(R.id.tv_open);
         tvOpen.setOnClickListener(v -> {
-            Intent intent = new Intent(getMyActivity(), BuyVipActivity.class);
-            startActivityForResult(intent, REQUESTCODE);
+            Intent intent = new Intent(getMyActivity(), ShopActivity.class).putExtra("select", 3);
+            startActivity(intent);
         });
         setEmptyView(view2);
         getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
@@ -286,14 +296,15 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                 });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(BuyGoodNumEvent event) {
+        mPage = 1;
+        loadData(PullRecycler.ACTION_PULL_TO_REFRESH, mPage);
+    }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUESTCODE) {
-            if (resultCode == getMyActivity().RESULT_OK) {
-                mPage = 1;
-                loadData(PullRecycler.ACTION_PULL_TO_REFRESH, mPage);
-            }
-        }
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

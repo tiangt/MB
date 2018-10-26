@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.BuyGoodNumEvent;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.UserInfo;
@@ -23,6 +24,8 @@ import com.whzl.mengbi.ui.widget.view.AlignTextView;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -294,6 +297,7 @@ public class BuyGoodnumActivity extends BaseActivity {
                         Intent intent = new Intent();
                         intent.putExtra("state", true);
                         setResult(200, intent);
+                        EventBus.getDefault().post(new BuyGoodNumEvent());
                     }
 
                     @Override
