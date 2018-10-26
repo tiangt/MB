@@ -43,6 +43,7 @@ import com.whzl.mengbi.ui.widget.recyclerview.GridSpacingItemDecoration;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.glide.RoundImageLoader;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -253,7 +254,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         //设置图片加载器
-        banner.setImageLoader(GlideImageLoader.getInstace());
+        banner.setImageLoader(RoundImageLoader.getInstace());
         //设置banner动画效果
         banner.setBannerAnimation(Transformer.Default);
         //设置自动轮播，默认为true
@@ -317,6 +318,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         banner.setImages(banners);
         banner.start();
     }
+
 
     @Override
     public void showRecommend(RecommendInfo recommendInfo) {

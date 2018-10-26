@@ -38,8 +38,7 @@
 
         <com.whzl.mengbi.ui.widget.ClassicsHeader
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white" />
+            android:layout_height="wrap_content" />
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/scroll_view"
@@ -63,7 +62,7 @@
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_margin="2dp"
+                        android:layout_margin="3dp"
                         app:indicator_drawable_selected="@drawable/home_indicator_selected"
                         app:indicator_drawable_unselected="@drawable/home_indicator_unselected"
                         app:indicator_height="7dp"
@@ -77,7 +76,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="38dp"
-                    android:background="@color/white"
                     android:drawableLeft="@drawable/home_title_recommended"
                     android:drawablePadding="4dp"
                     android:gravity="center_vertical"
@@ -91,7 +89,6 @@
                     android:id="@+id/recommend_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
                     android:focusableInTouchMode="false"
                     android:nestedScrollingEnabled="false"
                     android:paddingBottom="14dp">
@@ -102,7 +99,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="38dp"
                     android:layout_marginTop="12dp"
-                    android:background="@color/white"
                     android:drawableLeft="@drawable/home_title_live"
                     android:drawablePadding="4dp"
                     android:gravity="center_vertical"
@@ -117,7 +113,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/white"
                     android:focusableInTouchMode="false"
                     android:nestedScrollingEnabled="false">
 
@@ -129,8 +124,7 @@
 
         <com.whzl.mengbi.ui.widget.ClassicsFooter
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white" />
+            android:layout_height="wrap_content" />
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
