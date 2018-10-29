@@ -7,6 +7,7 @@ public interface RechargePresenter {
     void getOrderInfo(HashMap hashMap);
 
     void getUserInfo(long userId);
+    void getCoupon(long userId);
 
     void onDestroy();
 }

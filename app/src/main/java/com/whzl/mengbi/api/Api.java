@@ -21,6 +21,7 @@ import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PropBean;
+import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -470,4 +471,14 @@ public interface Api {
     @POST("v1/room/activity-grand")
     @FormUrlEncoded
     Observable<ApiResult<ActivityGrandBean>> activityGrand(@FieldMap Map<String, String> params);
+
+    /**
+     * 有效返利券查找
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/recharge/find-coupon")
+    @FormUrlEncoded
+    Observable<ApiResult<RebateBean>> findCoupon(@FieldMap Map<String, String> params);
 }

@@ -1015,7 +1015,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             vpActivity.setOffscreenPageLimit(bean.list.size());
             for (int i = 0; i < bean.list.size(); i++) {
                 ActivityGrandBean.ListBean listBean = bean.list.get(i);
-                LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl);
+                LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
                 liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
                     @Override
                     public void clickListener() {
@@ -1023,7 +1023,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                 .putExtra("anchorId", mAnchorId + "")
                                 .putExtra("programId", mProgramId + "")
                                 .putExtra("title", listBean.name)
-                                .putExtra("url", listBean.linkUrl), REQUEST_LOGIN);
+                                .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
                     }
                 });
                 mActivityGrands.add(liveWebFragment);

@@ -9,4 +9,5 @@ public interface RechargeModel {
     void doUserInfo(long usetId, OnRechargeFinishedListener listener);
     void doRechargeChannel(HashMap hashMap, OnRechargeFinishedListener listener);
     void doRechargeOrder(HashMap hashMap,OnRechargeFinishedListener listener);
+    void doCoupon(long usetId, OnRechargeFinishedListener listener);
 }

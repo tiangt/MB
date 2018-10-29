@@ -75,14 +75,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginTop="12dp"
                 android:background="#f9f9f9"
                 android:gravity="center_vertical"
                 android:paddingLeft="14dp"
                 android:text="@string/recharge_type"
                 android:textColor="#323232"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginTop="12dp"/>
+                android:textStyle="bold" />
 
             <View style="@style/recharge_divider_style" />
 
@@ -99,7 +99,7 @@
                     android:drawableLeft="@drawable/alipay"
                     android:drawableRight="@drawable/selector_pay_way_rb"
                     android:text="@string/recharge_ali_pay"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <View style="@style/recharge_divider_style" />
 
@@ -108,20 +108,20 @@
                     style="@style/recharge_pay_way_rb"
                     android:drawableLeft="@drawable/wechat"
                     android:text="@string/recharge_we_chat_pay"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
             </RadioGroup>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:layout_marginTop="5dp"
                 android:background="#f9f9f9"
                 android:gravity="center_vertical"
                 android:paddingLeft="14dp"
                 android:text="@string/recharge_amount"
                 android:textColor="#323232"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginTop="5dp"/>
+                android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler"
@@ -136,8 +136,48 @@
 
             </android.support.v7.widget.RecyclerView>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/comm_white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="11dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:text="返利充值:"
+                    android:textColor="@color/text_view"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_rebate_ticket"
+                    android:layout_width="160dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_rebate"
+                    android:drawableRight="@drawable/arrow_down"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@color/text_hint"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_rebate_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:singleLine="true"
+                    android:textColor="#909090"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
             <Button
                 android:id="@+id/btn_recharge"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginLeft="12dp"
@@ -150,8 +190,7 @@
                 android:textColor="#f9f9f9"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:visibility="gone"
-                style="?android:attr/borderlessButtonStyle" />
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -159,10 +198,10 @@
                 android:layout_marginLeft="17dp"
                 android:layout_marginTop="11dp"
                 android:lineSpacingExtra="3dp"
+                android:paddingBottom="10dp"
                 android:text="@string/recharge_hint"
                 android:textColor="#646464"
-                android:textSize="12sp"
-                android:paddingBottom="10dp"/>
+                android:textSize="12sp" />
 
         </LinearLayout>
 
