@@ -25,6 +25,7 @@ import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -98,6 +99,10 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
         if (endDate < startDate) {
             return;
         }
+        if (endDate - startDate > 30 * 24 * 60 * 60 * 1000L) {
+            ToastUtils.showToast("查询间隔不能超过30天");
+            return;
+        }
         mPage = 1;
         loadData(PullRecycler.ACTION_PULL_TO_REFRESH, mPage);
     }
@@ -136,7 +141,7 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
 
                     @Override
                     public void onError(int code) {
-
+                        getRefreshLayout().finishLoadMore(false);
                     }
                 });
     }
@@ -218,7 +223,7 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
                 .setLabel("", "", "", "时", "分", "秒")//默认设置为年月日时分秒
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .isDialog(false)//是否显示为对话框样式
-                .setRangDate(start,end)
+//                .setRangDate(start,end)
                 .build();
 
         pvTime.show();

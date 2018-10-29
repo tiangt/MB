@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.contract.BasePresenter;
@@ -169,5 +170,9 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
 
     public void setHeadTipsVisibility(int visibility) {
         flContain.setVisibility(visibility);
+    }
+
+    public SmartRefreshLayout getRefreshLayout() {
+        return getPullView().getSmartRefreshLayout();
     }
 }

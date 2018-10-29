@@ -190,4 +190,8 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
     public RecyclerView getRecyclerView() {
         return recycler;
     }
+
+    public SmartRefreshLayout getSmartRefreshLayout() {
+        return refreshLayout;
+    }
 }
