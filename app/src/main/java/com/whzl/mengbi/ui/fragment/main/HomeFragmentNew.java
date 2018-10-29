@@ -4,26 +4,20 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.ScrollBoundaryDecider;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
-import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.BannerInfo;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
@@ -40,8 +34,6 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
-import com.whzl.mengbi.ui.widget.ClassicsFooter;
-import com.whzl.mengbi.ui.widget.recyclerview.GridSpacingItemDecoration;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -258,7 +250,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     private void initBanner() {
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-        //设置图片加载器
+//        //设置图片加载器
         banner.setImageLoader(RoundImageLoader.getInstace());
         //设置banner动画效果
         banner.setBannerAnimation(Transformer.Default);

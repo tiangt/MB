@@ -71,7 +71,6 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
     protected void setupView() {
         etPassword.addTextChangedListener(this);
         etPassWordAgain.addTextChangedListener(this);
-        startTimer();
     }
 
     @Override

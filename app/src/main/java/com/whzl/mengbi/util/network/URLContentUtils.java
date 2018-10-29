@@ -183,4 +183,10 @@ public class URLContentUtils {
      * 重置密码
      */
     public static final String RESET_PSW = "v1/user/reset-pass";
+
+
+    /**
+     * 验证手机号是否存在
+     */
+    public static final String IS_PHONE = "v1/user/check-identify-code";
 }

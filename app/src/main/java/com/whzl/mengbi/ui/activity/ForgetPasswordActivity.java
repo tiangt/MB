@@ -106,14 +106,14 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     }
 
     /**
-     * 忘记密码--验证码
+     * 验证手机号是否存在
      * <p>
      * 验证手机
      */
     private void getVerifyCode(String mobile) {
         HashMap paramsMapMobile = new HashMap();
-        paramsMapMobile.put("mobile", mobile);
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.FORGET_PASS_CODE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
+        paramsMapMobile.put("identifyCode", mobile);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.IS_PHONE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
@@ -126,8 +126,6 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
                         } else if (code.equals("-1231")) {
                             tvPhoneMsg.setVisibility(View.VISIBLE);
                             tvPhoneMsg.setText("该手机号不存在");
-                        } else if (code.equals("-1240")) {
-                            showToast("当日短信发送达到上限");
                         }
                     }
 

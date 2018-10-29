@@ -52,31 +52,27 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/bannerLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true">
 
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/bannerLayout"
+                    <com.youth.banner.Banner
+                        android:id="@+id/banner"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusableInTouchMode="true">
+                        android:layout_height="0dp"
+                        android:layout_margin="4dp"
+                        android:background="@drawable/shape_rounded_rectangle"
+                        app:indicator_drawable_selected="@drawable/home_indicator_selected"
+                        app:indicator_drawable_unselected="@drawable/home_indicator_unselected"
+                        app:indicator_height="7dp"
+                        app:indicator_width="7dp"
+                        app:layout_constraintDimensionRatio="H,3:1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintLeft_toRightOf="parent" />
 
-                        <com.youth.banner.Banner
-                            android:id="@+id/banner"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_margin="5dp"
-                            app:indicator_drawable_selected="@drawable/home_indicator_selected"
-                            app:indicator_drawable_unselected="@drawable/home_indicator_unselected"
-                            app:indicator_height="7dp"
-                            app:indicator_width="7dp"
-                            app:layout_constraintDimensionRatio="H,3:1"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintLeft_toRightOf="parent" />
-
-                    </android.support.constraint.ConstraintLayout>
-                </RelativeLayout>
+                </android.support.constraint.ConstraintLayout>
 
                 <TextView
                     android:layout_width="match_parent"
