@@ -188,7 +188,7 @@ public class FaceReplace {
                 if (drawable == null) {
                     break;
                 }
-                drawable.setBounds(0, 0, DensityUtil.dp2px(16), DensityUtil.dp2px(16));
+                drawable.setBounds(0, 0, DensityUtil.dp2px(20), DensityUtil.dp2px(20));
                 ImageSpan span = new ImageSpan(drawable);
                 spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             }
@@ -214,6 +214,31 @@ public class FaceReplace {
                     break;
                 }
                 drawable.setBounds(0,0,DensityUtil.dp2px(50),DensityUtil.dp2px(50));
+                ImageSpan span = new ImageSpan(drawable);
+                spanString.setSpan(span,start,end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            }
+        }
+    }
+
+    public void vipFaceReplace16(TextView textView, SpannableString spanString, Context context) {
+        textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        DrawableCallback callback = new DrawableCallback(textView);
+        for (FacePattern fp : vipPatternList) {
+            Matcher m = fp.getPattern().matcher(spanString);
+            while (m.find()){
+                int start = m.start();
+                int end = m.end();
+                Drawable drawable;
+                try {
+                    drawable = new GifDrawable(fp.getFileContent());
+                    drawable.setCallback(new DrawableCallback(textView));
+                } catch (Exception e) {
+                    break;
+                }
+                if (drawable == null){
+                    break;
+                }
+                drawable.setBounds(0,0,DensityUtil.dp2px(20),DensityUtil.dp2px(20));
                 ImageSpan span = new ImageSpan(drawable);
                 spanString.setSpan(span,start,end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             }

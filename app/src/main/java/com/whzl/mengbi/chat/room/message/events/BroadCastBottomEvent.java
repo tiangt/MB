@@ -49,7 +49,12 @@ public class BroadCastBottomEvent extends BroadEvent {
         SpannableString lightString1 = LightSpanString.getLightString(broadCastBottomJson.context.message,
                 Color.parseColor("#f0f0f0"));
         FaceReplace.getInstance().faceReplace(tvRunWayGift, lightString1, mContext);
-        FaceReplace.getInstance().guardFaceReplace16(tvRunWayGift, lightString1, mContext);
+        if (broadCastBottomJson.context.isGuard) {
+            FaceReplace.getInstance().guardFaceReplace16(tvRunWayGift, lightString1, mContext);
+        }
+        if (broadCastBottomJson.context.isVip) {
+            FaceReplace.getInstance().vipFaceReplace16(tvRunWayGift,lightString1,mContext);
+        }
 //        SpannableStringBuilder string = new SpannableStringBuilder();
 
 //        string.setSpan(new RoundBackgroundColorSpan(R.color.orange,R.color.white),0,string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
