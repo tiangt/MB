@@ -98,6 +98,7 @@ public class BillGiftFragment extends BasePullListFragment<BillGiftBean.ListBean
             return;
         }
         if (endDate < startDate) {
+            ToastUtils.showToast("开始日期不能大于结束日期");
             return;
         }
         if (endDate - startDate > 30 * 24 * 60 * 60 * 1000L) {
