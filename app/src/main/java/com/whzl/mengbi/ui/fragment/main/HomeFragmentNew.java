@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.ScrollBoundaryDecider;
@@ -39,6 +40,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
+import com.whzl.mengbi.ui.widget.ClassicsFooter;
 import com.whzl.mengbi.ui.widget.recyclerview.GridSpacingItemDecoration;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.SPUtils;
@@ -105,6 +107,9 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         initRecommendRecycler();
         initAnchorRecycler();
         loadData();
+        refreshLayout.setFooterMaxDragRate(1);
+        refreshLayout.setReboundDuration(0);
+        refreshLayout.setEnablePureScrollMode(false);
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             refreshLayout.setEnableLoadMore(true);
             anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
@@ -121,7 +126,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         recommendRecycler.setFocusableInTouchMode(false);
         recommendRecycler.setHasFixedSize(true);
         recommendRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recommendRecycler.addItemDecoration(new SpacesItemDecoration(4));
+        recommendRecycler.addItemDecoration(new SpacesItemDecoration(5));
         recommendAdapter = new BaseListAdapter() {
 
             @Override
@@ -144,7 +149,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         anchorRecycler.setHasFixedSize(true);
         anchorRecycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         anchorRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        anchorRecycler.addItemDecoration(new SpacesItemDecoration(4));
+        anchorRecycler.addItemDecoration(new SpacesItemDecoration(5));
 
         //RecyclerView缓存，预防OOM
         RecyclerView.RecycledViewPool pool = new RecyclerView.RecycledViewPool() {
@@ -331,15 +336,17 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
 
     @Override
     public void showLiveShow(LiveShowInfo liveShowInfo) {
+        //自动加载更多
+//        refreshLayout.setEnableAutoLoadMore(false);
         if (liveShowInfo != null && liveShowInfo.getData() != null && liveShowInfo.getData().getList() != null) {
             if (mCurrentPager == 2) {
                 mAnchorInfoList.clear();
                 refreshLayout.finishRefresh();
             } else {
-                refreshLayout.finishLoadMore();
+                refreshLayout.finishLoadMore(0);
             }
             mAnchorInfoList.addAll(liveShowInfo.getData().getList());
-            if (liveShowInfo.getData().getList() == null || liveShowInfo.getData().getList().size() < NetConfig.DEFAULT_PAGER_SIZE) {
+            if (liveShowInfo.getData().getList() == null || liveShowInfo.getData().getList().size() < 50) {
                 anchorAdapter.notifyDataSetChanged();
                 if (mAnchorInfoList.size() > 0) {
                     anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);

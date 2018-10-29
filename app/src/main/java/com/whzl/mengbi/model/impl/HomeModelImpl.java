@@ -31,7 +31,7 @@ public class HomeModelImpl implements HomeModel {
                         BannerInfo bannerInfo = GsonUtils.GsonToBean(result.toString(), BannerInfo.class);
                         if (bannerInfo.getCode() == 200) {
                             listenter.onBannerSuccess(bannerInfo);
-                        }else {
+                        } else {
                             listenter.onError(bannerInfo.getMsg());
                         }
                     }
@@ -55,7 +55,7 @@ public class HomeModelImpl implements HomeModel {
                         RecommendInfo recommendInfo = JSON.parseObject(jsonStr, RecommendInfo.class);
                         if (recommendInfo.getCode() == 200) {
                             listenter.onRecommendSuccess(recommendInfo);
-                        }else {
+                        } else {
                             listenter.onError(recommendInfo.getMsg());
                         }
                     }
@@ -72,14 +72,15 @@ public class HomeModelImpl implements HomeModel {
     public void doAnchorList(int pager, final OnHomeFinishedListener listenter) {
         HashMap liveMap = new HashMap();
         liveMap.put("page", pager);
+        liveMap.put("pageSize", 50);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SHOW_ANCHOR, RequestManager.TYPE_POST_JSON, liveMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
                         LiveShowInfo liveShowInfo = JSON.parseObject(result.toString(), LiveShowInfo.class);
-                        if(liveShowInfo.getCode() == 200){
+                        if (liveShowInfo.getCode() == 200) {
                             listenter.onLiveShowSuccess(liveShowInfo);
-                        }else {
+                        } else {
                             listenter.onError(liveShowInfo.getMsg());
                         }
 

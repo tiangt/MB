@@ -22,7 +22,7 @@ import android.widget.ImageView;
 public class RoundImageView extends ImageView {
 
     //圆角大小，默认为10
-    private int mBorderRadius = 5;
+    private int mBorderRadius = 10;
 
     private Paint mPaint;
 

@@ -65,7 +65,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="3dp"
-            android:textColor="#F0F0F0"
+            android:textColor="@color/white"
             android:textSize="14sp" />
 
     </RelativeLayout>
