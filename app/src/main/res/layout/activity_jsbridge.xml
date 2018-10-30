@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".ui.activity.JsBridgeActivity">
 
-    <include layout="@layout/comm_lottery_toolbar" />
+    <include layout="@layout/comm_white_toolbar" />
 
     <com.github.lzyzsd.jsbridge.BridgeWebView
         android:id="@+id/JsBridgeWebView"
