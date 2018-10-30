@@ -56,6 +56,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="6dp"
             android:textColor="@color/white"
+            android:maxLength="12"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textSize="14sp" />
 
         <TextView
