@@ -94,6 +94,7 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
 
     private void search(long startDate, long endDate) {
         if (startDate > DateUtils.dateStrToMillis(DateUtils.getStringDateYMD()) || endDate > DateUtils.dateStrToMillis(DateUtils.getStringDateYMD())) {
+            ToastUtils.showToast("查询日期不能大于当前日期");
             return;
         }
         if (endDate < startDate) {
