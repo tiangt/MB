@@ -48,7 +48,6 @@ import com.whzl.mengbi.ui.view.RechargeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -206,6 +205,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             tvRebateMoney.setVisibility(View.GONE);
             return;
         }
+        list.clear();
         tvRebateMoney.setVisibility(View.VISIBLE);
         scale = rebateBean.list.get(0).scale;
         identifyCode = rebateBean.list.get(0).identifyCode;
@@ -351,6 +351,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                         case NetConfig.CODE_ALI_PAY_SUCCESS:
                             showToast(R.string.pay_success);
                             mPresent.getUserInfo(mUserId);
+                            mPresent.getCoupon(mUserId);
                             EventBus.getDefault().post(new UserInfoUpdateEvent());
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
                             break;
@@ -378,6 +379,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                 case NetConfig.CODE_WE_CHAT_PAY_SUCCESS:
                     showToast(R.string.pay_success);
                     mPresent.getUserInfo(mUserId);
+                    mPresent.getCoupon(mUserId);
                     EventBus.getDefault().post(new UserInfoUpdateEvent());
                     SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
                     break;
@@ -406,4 +408,5 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         mPresent.onDestroy();
         wxApi.unregisterApp();
     }
+
 }

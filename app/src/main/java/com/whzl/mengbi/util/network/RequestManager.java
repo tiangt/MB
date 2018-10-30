@@ -412,6 +412,7 @@ public class RequestManager {
             paramsMap.put("sign", sign);
             paramsMap.remove("appSecret");
             String params = JSON.toJSONString(paramsMap);
+            LogUtils.e2(paramsMap.toString());
             RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, params);
             String requestUrl = String.format("%s/%s", URLContentUtils.getBaseUrl(), actionUrl);
             final CacheControl.Builder builder = new CacheControl.Builder();

@@ -11,6 +11,7 @@ import com.whzl.mengbi.presenter.OnRechargeFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -75,10 +76,12 @@ public class RechargeModelImpl implements RechargeModel {
                         JSONObject jsonObject = JSON.parseObject(resultStr);
                         int code = Integer.parseInt(jsonObject.get("code").toString());
                         JSONObject dataJson = jsonObject.getJSONObject("data");
-                        if(code == RequestManager.RESPONSE_CODE){
+                        if (code == RequestManager.RESPONSE_CODE) {
                             int orderId = Integer.parseInt(dataJson.get("orderId").toString());
                             String token = dataJson.get("token").toString();
-                            listener.onOrderSuccess(orderId,token);
+                            listener.onOrderSuccess(orderId, token);
+                        } else {
+                            ToastUtils.showToast(jsonObject.get("msg").toString());
                         }
                     }
 
