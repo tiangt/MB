@@ -73,7 +73,7 @@ public class ClassicsFooter extends LinearLayout implements RefreshFooter {
 
     @Override
     public int onFinish(RefreshLayout layout, boolean success) {
-        return 0;//延迟300毫秒之后再弹回
+        return 300;//延迟300毫秒之后再弹回
     }
 
     @SuppressLint("ResourceAsColor")

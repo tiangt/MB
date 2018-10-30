@@ -250,7 +250,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
     private void initBanner() {
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-//        //设置图片加载器
+        //设置图片加载器
         banner.setImageLoader(RoundImageLoader.getInstace());
         //设置banner动画效果
         banner.setBannerAnimation(Transformer.Default);
@@ -335,7 +335,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                 mAnchorInfoList.clear();
                 refreshLayout.finishRefresh();
             } else {
-                refreshLayout.finishLoadMore(0);
+                refreshLayout.finishLoadMore();
             }
             mAnchorInfoList.addAll(liveShowInfo.getData().getList());
             if (liveShowInfo.getData().getList() == null || liveShowInfo.getData().getList().size() < 50) {
@@ -372,5 +372,6 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         super.onDestroy();
         mHomePresenter.onDestroy();
     }
+
 
 }
