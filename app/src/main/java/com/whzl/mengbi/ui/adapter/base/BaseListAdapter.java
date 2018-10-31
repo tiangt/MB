@@ -1,12 +1,15 @@
 package com.whzl.mengbi.ui.adapter.base;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 
 
@@ -26,6 +29,8 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
     public View mFooterView;
 
     private View loadMoreEndLayout;
+
+    protected boolean isScrolling = false;
 
     public void addHeaderView(View headerView) {
         mHeaderView = headerView;
@@ -198,4 +203,7 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
         }
     }
 
+    public void setScrolling(boolean scrolling) {
+        isScrolling = scrolling;
+    }
 }

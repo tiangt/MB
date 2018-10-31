@@ -172,29 +172,6 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                 return new AnchorInfoViewHolder(itemView, TYPE_ANCHOR);
             }
         };
-
-        anchorRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState){
-                    case RecyclerView.SCROLL_STATE_IDLE: // The RecyclerView is not currently scrolling.
-                        //对于滚动不加载图片的尝试
-//                        anchorAdapter.setScrolling(false);
-                        Glide.with(getContext()).pauseRequests();
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING: // The RecyclerView is currently being dragged by outside input such as user touch input.
-//                        anchorAdapter.setScrolling(false);
-                        Glide.with(getContext()).pauseRequests();
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING: // The RecyclerView is currently animating to a final position while not under
-//                        anchorAdapter.setScrolling(true);
-                        Glide.with(getContext()).resumeRequests();
-                        break;
-                }
-
-            }
-        });
         anchorRecycler.setAdapter(anchorAdapter);
         pool.setMaxRecycledViews(anchorAdapter.getItemViewType(0), 10);
     }
@@ -219,8 +196,8 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         TextView tvAnchorName;
         @BindView(R.id.tv_watch_count)
         TextView tvWatchCount;
-//        @BindView(R.id.tv_is_live_mark)
-//        TextView tvIsLive;
+        @BindView(R.id.tv_is_live_mark)
+        TextView tvIsLive;
 
         private final int type;
 
@@ -235,7 +212,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             switch (type) {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
-//                    tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
+                    tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
                     String recommendName = recommendAnchorInfoBean.getAnchorNickname();
                     if(recommendName.length() > 8){
                         tvAnchorName.setText(recommendName.substring(0,8)+"...");
@@ -247,7 +224,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                     break;
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
-//                    tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
+                    tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
                     String anchorName = liveShowListInfo.getAnchorNickname();
                     if(anchorName.length() > 8){
                         tvAnchorName.setText(anchorName.substring(0,8)+"...");

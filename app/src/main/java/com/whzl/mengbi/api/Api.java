@@ -481,4 +481,8 @@ public interface Api {
     @POST("v1/recharge/find-coupon")
     @FormUrlEncoded
     Observable<ApiResult<RebateBean>> findCoupon(@FieldMap Map<String, String> params);
+
+    @POST("v1/anchor/show-anchor")
+    @FormUrlEncoded
+    Observable<ApiResult<RebateBean>> getAnchorInfo(@FieldMap Map<String, String> params);
 }

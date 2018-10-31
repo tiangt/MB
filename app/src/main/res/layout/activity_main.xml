@@ -14,7 +14,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/colorCommNotActive" />
+        android:background="@color/colorLine" />
 
     <RadioGroup
         android:id="@+id/rg_tab"
