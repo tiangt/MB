@@ -94,8 +94,7 @@ public class ChatMessage implements FillHolderMessage {
         if (royal_level != 0) {
 //            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
             try {
-                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext,
-                        ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level),mholder.textView));
+                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, royal_level,mholder.textView));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -120,12 +119,12 @@ public class ChatMessage implements FillHolderMessage {
     }
 
     private void parseNoRecieverMessage() {
-        //非游客发言
+//        非游客发言
         if (royal_level != 0) {
 //            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
             try {
                 mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext,
-                        ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level),mholder.textView));
+                        royal_level,mholder.textView));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -174,8 +173,7 @@ public class ChatMessage implements FillHolderMessage {
         if (royal_level != 0) {
 //            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
             try {
-                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext,
-                        ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level),mholder.textView));
+                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, royal_level,mholder.textView));
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -3,6 +3,7 @@ package com.whzl.mengbi.model.impl;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.MeModel;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.OnMeFinishedListener;
@@ -62,8 +63,7 @@ public class MeModelImpl implements MeModel {
                     }
 
                     @Override
-                    public void onError(int code) {
-
+                    public void onError(ApiResult<GetNewTaskBean> body) {
                     }
                 });
     }

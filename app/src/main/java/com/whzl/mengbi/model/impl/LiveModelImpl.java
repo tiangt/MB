@@ -5,6 +5,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceCountBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -338,7 +339,7 @@ public class LiveModelImpl implements LiveModel {
                     }
 
                     @Override
-                    public void onError(int code) {
+                    public void onError(ApiResult<PkInfoBean> body) {
 
                     }
                 });

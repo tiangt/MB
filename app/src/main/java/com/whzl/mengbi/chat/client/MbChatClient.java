@@ -72,6 +72,8 @@ public class  MbChatClient {
                             try{
                                 listenThread.join();
                                 socket.shutdownSocket();
+                                in.close();
+                                out.close();
                                 isReconnect = true;
                             }catch (InterruptedException e) {
 

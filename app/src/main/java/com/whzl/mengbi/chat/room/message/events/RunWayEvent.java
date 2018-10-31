@@ -56,7 +56,9 @@ public class RunWayEvent {
                 Color.parseColor("#faf9f9")));
         tvRunWayGift.append(LightSpanString.getLightString(" ",
                 Color.parseColor("#faf9f9")));
-        tvRunWayGift.append(getGiftSpanString());
+        if (getGiftSpanString()!=null) {
+            tvRunWayGift.append(getGiftSpanString());
+        }
     }
 
     /*

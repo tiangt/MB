@@ -1052,6 +1052,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     mTime = aLong;
+                    if (tvTreasureTimer == null||tvTreasureTimer.getVisibility()==View.GONE) {
+                        return;
+                    }
                     tvTreasureTimer.setText(getString(R.string.two, (599 - aLong) / 60, (599 - aLong) % 60));
                     if (aLong == 599) {
                         mTreasureODisposable.dispose();
@@ -1074,6 +1077,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     mTime = aLong;
+                    if (tvTreasureTimer == null||tvTreasureTimer.getVisibility()==View.GONE) {
+                        return;
+                    }
                     tvTreasureTimer.setText(getString(R.string.two, (59 - aLong) / 60, (59 - aLong) % 60));
                     if (aLong == 59) {
                         mTreasureODisposable.dispose();
