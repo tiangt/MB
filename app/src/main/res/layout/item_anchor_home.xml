@@ -12,25 +12,24 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/tv_is_live_mark"-->
-        <!--android:visibility="gone"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginRight="12dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:background="@drawable/bg_home_state"-->
-        <!--android:drawableLeft="@drawable/point_green"-->
-        <!--android:drawablePadding="5dp"-->
-        <!--android:paddingBottom="2dp"-->
-        <!--android:paddingLeft="4dp"-->
-        <!--android:paddingRight="4dp"-->
-        <!--android:paddingTop="2dp"-->
-        <!--android:text="直播"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="11sp"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent" />-->
+    <TextView
+        android:id="@+id/tv_is_live_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/bg_home_state"
+        android:drawablePadding="5dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="2dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="2dp"
+        android:text="直播中"
+        android:textColor="@color/white"
+        android:textSize="9sp"
+        android:visibility="gone"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv_is_live_mark"
