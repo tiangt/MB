@@ -78,7 +78,6 @@ public class BaseApplication extends Application {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         int heapSize = manager.getMemoryClass();
         int maxHeapSize = manager.getLargeMemoryClass();
-        Log.d("chenliang", "heapSize = " + heapSize + ", maxHeapSize = " + maxHeapSize);
     }
 
     private void initBaiduStatistic() {

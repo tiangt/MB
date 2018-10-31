@@ -18,8 +18,10 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.OnMultiClickListener;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -63,6 +65,12 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     @Override
     protected void setupView() {
         etPhone.addTextChangedListener(this);
+//        btnNext.setOnClickListener(new OnMultiClickListener() {
+//            @Override
+//            public void onMultiClick(View v) {
+//                getVerifyCode(phone);
+//            }
+//        });
     }
 
     @Override
@@ -75,7 +83,9 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
         KeyBoardUtil.hideInputMethod(this);
         switch (view.getId()) {
             case R.id.btn_next:
-                getVerifyCode(phone);
+                if(ClickUtil.isFastClick()){
+                    getVerifyCode(phone);
+                }
                 break;
         }
     }

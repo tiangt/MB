@@ -8,6 +8,7 @@ import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.util.ClickUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -28,7 +29,7 @@ public class RetrievePasswordActivity extends BaseActivity {
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this,Color.parseColor("#252525"));
+        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 
     @Override
@@ -47,11 +48,13 @@ public class RetrievePasswordActivity extends BaseActivity {
     }
 
     @OnClick(R.id.btn_back_login)
-    public void onClick(View view){
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.btn_back_login:
-                EventBus.getDefault().post(new ActivityFinishEvent());
-                finish();
+                if (ClickUtil.isFastClick()) {
+                    EventBus.getDefault().post(new ActivityFinishEvent());
+                    finish();
+                }
                 break;
         }
     }

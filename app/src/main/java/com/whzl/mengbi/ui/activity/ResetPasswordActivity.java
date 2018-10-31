@@ -18,6 +18,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.StringUtils;
@@ -103,7 +104,9 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_get_verify_code:
-                getVerifyCode(phone);
+                if(ClickUtil.isFastClick()){
+                    getVerifyCode(phone);
+                }
                 break;
 
             case R.id.btn_confirm_reset:
@@ -128,7 +131,9 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
                     tvPswMsg.setText("两次输入的密码不一致，请重新输入");
                     return;
                 }
-                resetPsw(phone, mPassword, verifyCode);
+                if (ClickUtil.isFastClick()){
+                    resetPsw(phone, mPassword, verifyCode);
+                }
                 break;
         }
     }
