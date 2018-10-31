@@ -5,6 +5,7 @@ import android.app.Activity;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.AnchorInfo;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -66,9 +67,10 @@ public class BusinessUtils {
                     }
 
                     @Override
-                    public void onError(int code) {
-                        listener.onError(code);
+                    public void onError(ApiResult<UserInfo.DataBean> body) {
+                        listener.onError(body.code);
                     }
+
                 });
     }
 

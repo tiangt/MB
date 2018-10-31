@@ -12,6 +12,10 @@ import java.lang.reflect.Type;
  */
 
 public class ApiResult<T> {
+    public ApiResult(int code) {
+        this.code = code;
+    }
+
     public static final int REQUEST_SUCCESS = 200;
 
     public int code;

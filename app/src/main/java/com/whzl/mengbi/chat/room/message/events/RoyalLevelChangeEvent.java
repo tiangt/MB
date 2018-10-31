@@ -42,8 +42,7 @@ public class RoyalLevelChangeEvent extends BroadEvent {
                 tvRunWayGift.append(LightSpanString.getLightString(royalLevelChangeJson.context.levels.get(i).levelName,
                         Color.parseColor("#f0f0f0")));
 //                tvRunWayGift.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royalLevelChangeJson.context.levels.get(i).levelValue)));
-                tvRunWayGift.append(LevelUtil.getRoyalImageResourceSpan(mContext,
-                        ResourceMap.getResourceMap().getRoyalLevelIcon(royalLevelChangeJson.context.levels.get(i).levelValue),tvRunWayGift));
+                tvRunWayGift.append(LevelUtil.getRoyalImageResourceSpan(mContext, royalLevelChangeJson.context.levels.get(i).levelValue,tvRunWayGift));
                 break;
             }
         }
