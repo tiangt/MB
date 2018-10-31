@@ -91,7 +91,7 @@ public class ChatMessage implements FillHolderMessage {
     }
 
     private void parsePrivateMessage() {
-        if (royal_level != 0) {
+        if (royal_level > 0) {
 //            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
             try {
                 mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, royal_level,mholder.textView));
@@ -120,7 +120,7 @@ public class ChatMessage implements FillHolderMessage {
 
     private void parseNoRecieverMessage() {
 //        非游客发言
-        if (royal_level != 0) {
+        if (royal_level > 0) {
 //            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
             try {
                 mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext,
@@ -170,7 +170,7 @@ public class ChatMessage implements FillHolderMessage {
     }
 
     private void parseHasRecieverMessage() {
-        if (royal_level != 0) {
+        if (royal_level > 0) {
 //            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
             try {
                 mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, royal_level,mholder.textView));

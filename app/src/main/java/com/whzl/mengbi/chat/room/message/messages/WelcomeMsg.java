@@ -56,7 +56,7 @@ public class WelcomeMsg implements FillHolderMessage {
     public void fillHolder(RecyclerView.ViewHolder holder) {
         WelcomeTextViewHolder mHolder = (WelcomeTextViewHolder) holder;
         mHolder.textView.setText("");
-        if (royalLevel != 0) {
+        if (royalLevel > 0) {
             try {
                 mHolder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, royalLevel, mHolder.textView));
             } catch (IOException e) {

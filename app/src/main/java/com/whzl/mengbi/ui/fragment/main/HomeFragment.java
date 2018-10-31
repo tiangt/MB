@@ -58,10 +58,6 @@ import butterknife.OnClick;
 public class HomeFragment extends BaseFragment implements HomeView {
     private static final int TYPE_RECOMMEND = 250;
     private static final int TYPE_ANCHOR = 520;
-    @BindView(R.id.bannerLayout)
-    ConstraintLayout bannerLayout;
-    @BindView(R.id.banner)
-    Banner banner;
     @BindView(R.id.anchor_recycler)
     RecyclerView anchorRecycler;
     @BindView(R.id.refresh_layout)
@@ -72,9 +68,14 @@ public class HomeFragment extends BaseFragment implements HomeView {
     LinearLayout llSearch;
     private HomePresenterImpl mHomePresenter;
     private int mCurrentPager = 1;
+    private ArrayList<RecommendAnchorInfoBean> mRecommendAnchorInfoList = new ArrayList<>();
+    private BaseListAdapter recommendAdapter;
     private ArrayList<LiveShowListInfo> mAnchorInfoList = new ArrayList<>();
     private BaseListAdapter anchorAdapter;
     private List<BannerInfo.DataBean.ListBean> mBannerInfoList;
+    private Banner banner;
+    private ConstraintLayout bannerLayout;
+    private RecyclerView recommendRecycler;
 
     @Override
     protected void initEnv() {
@@ -91,12 +92,13 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void init() {
         StatusBarUtil.setColor(getMyActivity(), Color.parseColor("#23273e"));
-        initBanner();
+//        initBanner();
         initAnchorRecycler();
         loadData();
-        refreshLayout.setFooterMaxDragRate(1);
         refreshLayout.setReboundDuration(0);
         refreshLayout.setEnablePureScrollMode(false);
+        refreshLayout.setEnableOverScrollBounce(true);
+        refreshLayout.setEnableOverScrollDrag(true);
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             refreshLayout.setEnableLoadMore(true);
             anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
@@ -108,6 +110,27 @@ public class HomeFragment extends BaseFragment implements HomeView {
         refreshLayout.setOnLoadMoreListener(refreshLayout -> mHomePresenter.getAnchorList(mCurrentPager++));
     }
 
+    private void initRecommendRecycler() {
+        recommendRecycler.setNestedScrollingEnabled(false);
+        recommendRecycler.setFocusableInTouchMode(false);
+        recommendRecycler.setHasFixedSize(true);
+        recommendRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recommendRecycler.addItemDecoration(new SpacesItemDecoration(5));
+        recommendAdapter = new BaseListAdapter() {
+
+            @Override
+            protected int getDataCount() {
+                return mRecommendAnchorInfoList == null ? 0 : mRecommendAnchorInfoList.size();
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_anchor_home, null);
+                return new AnchorInfoViewHolder(itemView, TYPE_RECOMMEND);
+            }
+        };
+        recommendRecycler.setAdapter(recommendAdapter);
+    }
 
     private void initAnchorRecycler() {
         anchorRecycler.setNestedScrollingEnabled(false);
@@ -146,6 +169,18 @@ public class HomeFragment extends BaseFragment implements HomeView {
         };
         anchorRecycler.setAdapter(anchorAdapter);
         pool.setMaxRecycledViews(anchorAdapter.getItemViewType(0), 10);
+
+        View view=LayoutInflater.from(getMyActivity()).inflate(R.layout.head_home,refreshLayout , false);
+        anchorAdapter.addHeaderView(view);
+        initHead(view);
+    }
+
+    private void initHead(View view) {
+        banner = view.findViewById(R.id.banner);
+        bannerLayout = view.findViewById(R.id.bannerLayout);
+        recommendRecycler = view.findViewById(R.id.recommend_recycler);
+        initRecommendRecycler();
+        initBanner();
     }
 
 
@@ -168,8 +203,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
         TextView tvAnchorName;
         @BindView(R.id.tv_watch_count)
         TextView tvWatchCount;
-//        @BindView(R.id.tv_is_live_mark)
-//        TextView tvIsLive;
+        @BindView(R.id.tv_is_live_mark)
+        TextView tvIsLive;
 
         private final int type;
 
@@ -182,11 +217,27 @@ public class HomeFragment extends BaseFragment implements HomeView {
         @Override
         public void onBindViewHolder(int position) {
             switch (type) {
-
+                case TYPE_RECOMMEND:
+                    RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
+                    tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
+                    String recommendName = recommendAnchorInfoBean.getAnchorNickname();
+                    if(recommendName.length() > 8){
+                        tvAnchorName.setText(recommendName.substring(0,8)+"...");
+                    }else{
+                        tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
+                    }
+                    tvWatchCount.setText(recommendAnchorInfoBean.getRoomUserCount() + "");
+                    GlideImageLoader.getInstace().loadRoundImage(getContext(), recommendAnchorInfoBean.getCover(), ivCover, 5);
+                    break;
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
-//                    tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
-                    tvAnchorName.setText(liveShowListInfo.getAnchorNickname());
+                    tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
+                    String anchorName = liveShowListInfo.getAnchorNickname();
+                    if(anchorName.length() > 8){
+                        tvAnchorName.setText(anchorName.substring(0,8)+"...");
+                    }else{
+                        tvAnchorName.setText(liveShowListInfo.getAnchorNickname());
+                    }
                     tvWatchCount.setText(liveShowListInfo.getRoomUserCount() + "");
                     GlideImageLoader.getInstace().loadRoundImage(getContext(), liveShowListInfo.getCover(), ivCover, 5);
                     break;
@@ -200,6 +251,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
             super.onItemClick(view, position);
             Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
             switch (type) {
+                case TYPE_RECOMMEND:
+                    RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
+                    intent.putExtra(BundleConfig.PROGRAM_ID, recommendAnchorInfoBean.getProgramId());
+                    break;
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
                     intent.putExtra(BundleConfig.PROGRAM_ID, liveShowListInfo.getProgramId());
@@ -283,6 +338,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void showRecommend(RecommendInfo recommendInfo) {
+        if (recommendInfo != null && recommendInfo.getData() != null) {
+            mRecommendAnchorInfoList.clear();
+            mRecommendAnchorInfoList.addAll(recommendInfo.getData().getList());
+            recommendAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

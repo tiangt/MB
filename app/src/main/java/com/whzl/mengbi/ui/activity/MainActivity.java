@@ -26,6 +26,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.fragment.RankFragment;
 import com.whzl.mengbi.ui.fragment.main.FollowFragment;
+import com.whzl.mengbi.ui.fragment.main.HomeFragment;
 import com.whzl.mengbi.ui.fragment.main.HomeFragmentNew;
 import com.whzl.mengbi.ui.fragment.main.MeFragment;
 import com.whzl.mengbi.util.AppUtils;
@@ -82,7 +83,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{new HomeFragmentNew(), RankFragment.newInstance(), FollowFragment.newInstance(), MeFragment.newInstance()};
+        fragments = new Fragment[]{new HomeFragment(), RankFragment.newInstance(), FollowFragment.newInstance(), MeFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
         rgTab.setOnCheckedChangeListener((group, checkedId) -> {
