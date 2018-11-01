@@ -107,7 +107,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             tvName.setText(audienceInfoBean.getName());
             GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
             int identity = audienceInfoBean.getIdentity();
-            if (identity != 10 && audienceInfoBean.getLevelMap().getROYAL_LEVEL() != 0) {
+            if ( audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
                 ImageView royalImg = new ImageView(getContext());
                 Glide.with(getMyActivity()).asGif().load(ResourceMap.getResourceMap().
                         getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);

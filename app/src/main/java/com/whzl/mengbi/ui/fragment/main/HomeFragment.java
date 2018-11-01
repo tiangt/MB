@@ -170,7 +170,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         anchorRecycler.setAdapter(anchorAdapter);
         pool.setMaxRecycledViews(anchorAdapter.getItemViewType(0), 10);
 
-        View view=LayoutInflater.from(getMyActivity()).inflate(R.layout.head_home,refreshLayout , false);
+        View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_home, refreshLayout, false);
         anchorAdapter.addHeaderView(view);
         initHead(view);
     }
@@ -221,9 +221,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
                     tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
                     String recommendName = recommendAnchorInfoBean.getAnchorNickname();
-                    if(recommendName.length() > 8){
-                        tvAnchorName.setText(recommendName.substring(0,8)+"...");
-                    }else{
+                    if (recommendName.length() > 8) {
+                        tvAnchorName.setText(recommendName.substring(0, 8) + "...");
+                    } else {
                         tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
                     }
                     tvWatchCount.setText(recommendAnchorInfoBean.getRoomUserCount() + "");
@@ -233,9 +233,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
                     tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
                     String anchorName = liveShowListInfo.getAnchorNickname();
-                    if(anchorName.length() > 8){
-                        tvAnchorName.setText(anchorName.substring(0,8)+"...");
-                    }else{
+                    if (anchorName.length() > 8) {
+                        tvAnchorName.setText(anchorName.substring(0, 8) + "...");
+                    } else {
                         tvAnchorName.setText(liveShowListInfo.getAnchorNickname());
                     }
                     tvWatchCount.setText(liveShowListInfo.getRoomUserCount() + "");
@@ -256,7 +256,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     intent.putExtra(BundleConfig.PROGRAM_ID, recommendAnchorInfoBean.getProgramId());
                     break;
                 case TYPE_ANCHOR:
-                    LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
+                    LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position - 1);
                     intent.putExtra(BundleConfig.PROGRAM_ID, liveShowListInfo.getProgramId());
                     break;
                 default:
