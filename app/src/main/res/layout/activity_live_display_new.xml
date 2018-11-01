@@ -290,7 +290,7 @@
                     android:id="@+id/fragment_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#292929">
+                    android:background="#343a42">
 
                 </FrameLayout>
 
@@ -326,7 +326,7 @@
             android:id="@+id/rl_bottom_container"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#292929">
+            android:background="#343a42">
 
             <ImageButton
                 android:id="@+id/btn_chat"
