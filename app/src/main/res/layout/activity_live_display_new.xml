@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#181818">
+    android:background="#343a42">
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rootView"
@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="6dp"
                     android:background="@drawable/shape_host_info_bg">
 
                     <com.whzl.mengbi.ui.widget.view.CircleImageView
@@ -53,7 +53,7 @@
                             android:ellipsize="middle"
                             android:maxEms="6"
                             android:singleLine="true"
-                            android:textColor="#e5e5e5"
+                            android:textColor="@color/white"
                             android:textSize="10sp" />
 
                         <TextView
@@ -66,44 +66,48 @@
                             android:layout_marginRight="6dp"
                             android:layout_marginTop="6.5dp"
                             android:singleLine="true"
-                            android:textColor="#e5e5e5"
+                            android:textColor="@color/white"
                             android:textSize="10sp" />
                     </RelativeLayout>
 
-                    <ImageButton
+                    <TextView
                         android:id="@+id/btn_follow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="45dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="4dp"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="1dp"
                         android:layout_toRightOf="@id/rl_host_info"
-                        android:background="@null"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_live_follow" />
+                        android:text="关注"
+                        android:gravity="center"
+                        android:textSize="13sp"
+                        android:textColor="#323232"
+                        android:background="@drawable/shape_live_follow_button" />
 
                 </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/guard_recycler"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@id/tv_popularity">
+                    android:layout_toLeftOf="@id/tv_popularity"
+                    android:layout_toRightOf="@id/rl_anchor_info"
+                    android:layout_marginLeft="8dp">
 
                 </android.support.v7.widget.RecyclerView>
 
 
                 <TextView
                     android:id="@+id/tv_popularity"
-                    android:layout_width="50dp"
-                    android:layout_height="29dp"
+                    android:layout_width="31dp"
+                    android:layout_height="31dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="4dp"
                     android:background="@drawable/shape_live_display_populartity_bg"
                     android:gravity="center"
-                    android:textColor="#f0f0f0"
-                    android:textSize="10sp" />
+                    android:textColor="@color/white"
+                    android:textSize="9sp" />
 
             </RelativeLayout>
 
@@ -111,21 +115,42 @@
                 android:id="@+id/rl_contribution_container"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
+                android:layout_marginLeft="6dp"
                 android:layout_marginTop="6.5dp">
 
                 <Button
                     android:id="@+id/btn_contribute"
-                    android:layout_width="61dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="16dp"
                     android:background="@drawable/shape_live_display_contribution_btn_bg"
                     android:drawableRight="@drawable/live_display_arrow"
+                    android:drawableLeft="@drawable/live_display_cup"
+                    android:drawablePadding="6dp"
                     android:gravity="center"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
+                    android:paddingLeft="9dp"
+                    android:paddingRight="9dp"
                     android:text="@string/live_display_contribution"
-                    android:textColor="#f0f0f0"
-                    android:textSize="10sp" />
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_guard_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/btn_contribute"
+                    android:layout_marginLeft="13dp">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/live_display_guard_num"/>
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/iv_live_rocket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/rl_guard_number"
+                    android:src="@drawable/live_display_rocket"/>
 
                 <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"
@@ -133,7 +158,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="40dp"
-                    android:layout_toRightOf="@id/btn_contribute">
+                    android:layout_toRightOf="@id/iv_live_rocket">
 
                     <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
                         android:id="@+id/tv_run_way_gift"

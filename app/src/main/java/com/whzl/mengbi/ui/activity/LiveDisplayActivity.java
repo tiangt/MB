@@ -134,7 +134,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.tv_host_name)
     TextView tvHostName;
     @BindView(R.id.btn_follow)
-    ImageButton btnFollow;
+    TextView btnFollow;
     @BindView(R.id.rl_contribution_container)
     RelativeLayout rlContributionContainer;
     @BindView(R.id.texture_view)
