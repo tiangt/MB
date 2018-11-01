@@ -115,6 +115,7 @@ public class LevelUtil {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             Bitmap bitmap = FileUtils.readBitmapFromAssetsFile("images/face/royal/royal_" + resourceId + ".gif", context);
             drawable = new BitmapDrawable(context.getResources(), bitmap);
+            bitmap.recycle();
         } else {
             drawable = new GifDrawable(getFileContent(context, "images/face/royal/royal_" + resourceId + ".gif"));
             drawable.setCallback(new DrawableCallback(textView));

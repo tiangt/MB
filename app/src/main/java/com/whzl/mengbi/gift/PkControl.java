@@ -16,6 +16,7 @@ import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
+import com.whzl.mengbi.util.LogUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -260,9 +261,11 @@ public class PkControl {
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
+                    LogUtils.e("ssssssss  animal"+aLong);
                     tvCountDown.setText(String.valueOf(count - 1 - aLong));
                     animatorSetsuofang.start();
-                    if (aLong == count - 1) {
+                    if (aLong >= count - 1) {
+                        LogUtils.e("ssssssss  animal  dispose");
                         disposable.dispose();
                         tvCountDown.setVisibility(View.GONE);
                     }

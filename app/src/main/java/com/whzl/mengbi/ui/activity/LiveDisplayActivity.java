@@ -1045,10 +1045,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         grandDisposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    LogUtils.e("ssssss  " + aLong);
+                    LogUtils.e("ssssss  timerGrand" + aLong);
                     long l = aLong / i % i;
                     vpActivity.setCurrentItem((int) l);
-                    LogUtils.e("ssssss  " + l);
                 });
     }
 
@@ -1279,6 +1278,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (grandDisposable != null) {
             grandDisposable.dispose();
+            LogUtils.e("ssssss  timerGrand dispose");
         }
     }
 
