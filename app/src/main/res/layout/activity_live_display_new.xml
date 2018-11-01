@@ -157,7 +157,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="40dp"
                     android:layout_toRightOf="@id/iv_live_rocket">
 
                     <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
@@ -168,17 +167,6 @@
                         android:textSize="12sp"
                         android:visibility="gone" />
                 </android.support.design.widget.CoordinatorLayout>
-
-                <Button
-                    android:id="@+id/btn_close"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/close_icon"
-                    android:paddingLeft="10dp" />
-
             </RelativeLayout>
 
             <com.whzl.mengbi.ui.widget.view.RatioRelativeLayout
@@ -330,24 +318,24 @@
 
             <ImageButton
                 android:id="@+id/btn_chat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="77dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="17.5dp"
+                android:layout_marginLeft="12dp"
                 android:background="@null"
                 android:src="@drawable/ic_live_display_talk" />
 
 
             <ImageButton
                 android:id="@+id/btn_chat_private"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="7dp"
                 android:layout_toRightOf="@id/btn_chat"
-                android:background="@drawable/private_chat_btn_bg"
+                android:background="@null"
+                android:scaleType="centerCrop"
                 android:src="@drawable/private_chat_icon" />
-
 
             <View
                 android:id="@+id/view_message_notify"
@@ -360,14 +348,56 @@
                 android:background="@drawable/shape_red_notify"
                 android:visibility="gone" />
 
+            <ImageButton
+                android:id="@+id/btn_close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_live_close" />
+
+            <ImageButton
+                android:id="@+id/btn_share"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:layout_toLeftOf="@id/btn_close"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/ic_live_share"/>
+
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:layout_toLeftOf="@id/btn_share"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/ic_live_more"/>
+
+            <ImageButton
+                android:id="@+id/btn_free_gift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:layout_toLeftOf="@id/btn_more"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/ic_live_free_gift"/>
 
             <ImageButton
                 android:id="@+id/btn_send_gift"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="17.5dp"
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_live_display_gift" />
@@ -382,13 +412,14 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="50dp"
-        android:layout_marginRight="18dp">
+        android:layout_marginRight="12dp">
 
         <ImageButton
             android:id="@+id/btn_treasure_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@null"
+            android:scaleType="centerCrop"
             android:src="@drawable/live_treasure_box_btn_icon" />
 
         <TextView
@@ -396,8 +427,8 @@
             android:layout_width="11dp"
             android:layout_height="11dp"
             android:layout_alignRight="@id/btn_treasure_box"
-            android:layout_marginRight="7dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/shape_red_notify"
             android:gravity="center"
             android:text="1"

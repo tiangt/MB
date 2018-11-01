@@ -154,7 +154,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.btn_contribute)
     Button btnContribute;
     @BindView(R.id.btn_close)
-    Button btnClose;
+    ImageButton btnClose;
     @BindView(R.id.iv_gift_gif)
     ImageView ivGiftGif;
     @BindView(R.id.tv_stop_tip)
