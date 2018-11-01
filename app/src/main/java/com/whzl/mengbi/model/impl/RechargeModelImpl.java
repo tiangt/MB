@@ -2,17 +2,27 @@ package com.whzl.mengbi.model.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.RechargeModel;
+import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RechargeInfo;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.OnRechargeFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.HashMap;
+import java.util.Map;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class RechargeModelImpl implements RechargeModel {
 
@@ -66,16 +76,41 @@ public class RechargeModelImpl implements RechargeModel {
                         JSONObject jsonObject = JSON.parseObject(resultStr);
                         int code = Integer.parseInt(jsonObject.get("code").toString());
                         JSONObject dataJson = jsonObject.getJSONObject("data");
-                        if(code == RequestManager.RESPONSE_CODE){
+                        if (code == RequestManager.RESPONSE_CODE) {
                             int orderId = Integer.parseInt(dataJson.get("orderId").toString());
                             String token = dataJson.get("token").toString();
-                            listener.onOrderSuccess(orderId,token);
+                            listener.onOrderSuccess(orderId, token);
+                        } else {
+                            ToastUtils.showToast(jsonObject.get("msg").toString());
                         }
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
                         LogUtils.d(errorMsg);
+                    }
+                });
+    }
+
+    @Override
+    public void doCoupon(long usetId, OnRechargeFinishedListener listener) {
+        HashMap params = new HashMap();
+        params.put("userId", usetId);
+        Map signPramsMap = ParamsUtils.getSignPramsMap(params);
+        ApiFactory.getInstance().getApi(Api.class)
+                .findCoupon(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<RebateBean>() {
+
+                    @Override
+                    public void onSuccess(RebateBean rebateBean) {
+                        listener.onGetCoupon(rebateBean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
                     }
                 });
     }

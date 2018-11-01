@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +33,11 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
     public void setShouldLoadMore(boolean mShouldLoadMore) {
         this.mShouldLoadMore = mShouldLoadMore;
         refreshLayout.setEnableLoadMore(mShouldLoadMore);
+    }
+
+    public void setShouldRefresh(boolean mShouldRefresh) {
+        this.mShouldRefresh = mShouldRefresh;
+        refreshLayout.setEnableLoadMore(mShouldRefresh);
     }
 
     private boolean mShouldLoadMore = false;
@@ -130,9 +134,9 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
             case LOAD_RESULT_EMPTY:
                 recycler.setVisibility(GONE);
                 llLoad.setVisibility(GONE);
-                tvEmpty.setVisibility(VISIBLE);
+//                tvEmpty.setVisibility(VISIBLE);
                 tvEmpty.setText("当前列表为空");
-                tvEmpty.setOnClickListener(null);
+//                tvEmpty.setOnClickListener(null);
                 rlEmpty.setVisibility(VISIBLE);
                 refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(false);
@@ -142,7 +146,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
                 refreshLayout.setEnableRefresh(false);
                 refreshLayout.setEnableLoadMore(false);
                 llLoad.setVisibility(GONE);
-                tvEmpty.setVisibility(VISIBLE);
+//                tvEmpty.setVisibility(VISIBLE);
                 tvEmpty.setText("出错了，点我重试");
                 tvEmpty.setOnClickListener(v -> {
                     if (listener != null) {
@@ -155,7 +159,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
             case LOAD_RESULT_SUCCESS:
                 recycler.setVisibility(VISIBLE);
                 llLoad.setVisibility(GONE);
-                tvEmpty.setVisibility(GONE);
+//                tvEmpty.setVisibility(GONE);
                 rlEmpty.setVisibility(GONE);
                 refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(mShouldLoadMore);
@@ -163,7 +167,7 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
             case LOAD_RESULT_LOAD_MORE_END:
                 recycler.setVisibility(VISIBLE);
                 llLoad.setVisibility(GONE);
-                tvEmpty.setVisibility(GONE);
+//                tvEmpty.setVisibility(GONE);
                 rlEmpty.setVisibility(GONE);
                 refreshLayout.setEnableRefresh(mShouldRefresh);
                 refreshLayout.setEnableLoadMore(false);
@@ -177,5 +181,17 @@ public class PullRecycler extends RelativeLayout implements OnRefreshListener, O
     public void setEmptyView(View view) {
         tvEmpty.setVisibility(GONE);
         rlEmpty.addView(view);
+    }
+
+    public void setRefBackgroud(int color) {
+        refreshLayout.setBackgroundColor(color);
+    }
+
+    public RecyclerView getRecyclerView() {
+        return recycler;
+    }
+
+    public SmartRefreshLayout getSmartRefreshLayout() {
+        return refreshLayout;
     }
 }

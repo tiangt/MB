@@ -58,6 +58,7 @@ public class PrivateChatListFragment extends BaseFragment {
     private boolean isRecyclerScrolling;
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     private boolean isGuard;
+    private boolean isVip;
     private int mProgramId;
     private PopupWindow popupWindow;
     private ArrayList<RoomUserInfo.DataBean> roomUsers = new ArrayList<>();
@@ -177,6 +178,10 @@ public class PrivateChatListFragment extends BaseFragment {
         this.isGuard = isGuard;
     }
 
+    public void setIsVip(boolean isVip) {
+        this.isVip = isVip;
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -190,7 +195,7 @@ public class PrivateChatListFragment extends BaseFragment {
                 if (mChatDialog != null && mChatDialog.isAdded()) {
                     return;
                 }
-                mChatDialog = LiveHouseChatDialog.newInstance(isGuard, mProgramId, mAnchor, mCurrentChatToUser)
+                mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, mAnchor, mCurrentChatToUser)
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getFragmentManager());

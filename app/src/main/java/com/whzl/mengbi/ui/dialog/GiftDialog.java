@@ -7,7 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -46,6 +49,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -60,6 +64,8 @@ public class GiftDialog extends BaseAwesomeDialog {
     private long coin;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
+    @BindView(R.id.container)
+    ViewPager viewpager;
     //    @BindView(R.id.viewpager)
 //    NoScrollViewPager viewpager;
     @BindView(R.id.tv_count)
@@ -120,30 +126,48 @@ public class GiftDialog extends BaseAwesomeDialog {
         mGiftInfo = getArguments().getParcelable("gift_info");
         fragments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
-        if (mGiftInfo.getData().getRecommend() != null) {
-            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getRecommend()));
-            titles.add("推荐");
-            tabLayout.addTab(tabLayout.newTab().setText("推荐"));
+
+        List<GiftInfo.DataBean.ListBean> listBeans = mGiftInfo.getData().getList();
+        for (int i = 0; i < listBeans.size(); i++) {
+            if (listBeans.get(i).getGroup() != null) {
+                fragments.add(GiftSortMotherFragment.newInstance(listBeans.get(i).getGroupList()));
+                titles.add(listBeans.get(i).getGroup());
+                tabLayout.addTab(tabLayout.newTab().setText(listBeans.get(i).getGroup()));
+            }
         }
-        if (mGiftInfo.getData().getLucky() != null) {
-            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLucky()));
-            titles.add("幸运");
-            tabLayout.addTab(tabLayout.newTab().setText("幸运"));
-        }
-        if (mGiftInfo.getData().getCommon() != null) {
-            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getCommon()));
-            titles.add("普通");
-            tabLayout.addTab(tabLayout.newTab().setText("普通"));
-        }
-        if (mGiftInfo.getData().getLuxury() != null) {
-            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLuxury()));
-            titles.add("豪华");
-            tabLayout.addTab(tabLayout.newTab().setText("豪华"));
-        }
+
+//        if (mGiftInfo.getData().getRecommend() != null) {
+//            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getRecommend()));
+//            titles.add("推荐");
+//            tabLayout.addTab(tabLayout.newTab().setText("推荐"));
+//        }
+//        if (mGiftInfo.getData().getLucky() != null) {
+//            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLucky()));
+//            titles.add("幸运");
+//            tabLayout.addTab(tabLayout.newTab().setText("幸运"));
+//        }
+//        if (mGiftInfo.getData().getCommon() != null) {
+//            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getCommon()));
+//            titles.add("普通");
+//            tabLayout.addTab(tabLayout.newTab().setText("普通"));
+//        }
+//        if (mGiftInfo.getData().getLuxury() != null) {
+//            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLuxury()));
+//            titles.add("豪华");
+//            tabLayout.addTab(tabLayout.newTab().setText("豪华"));
+//        }
+
         fragments.add(BackpackMotherFragment.newInstance());
         tabLayout.addTab(tabLayout.newTab().setText("背包"));
-//        viewpager.setOffscreenPageLimit(titles.size());
-//        viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
+        titles.add("背包");
+
+        viewpager.setOffscreenPageLimit(titles.size());
+        viewpager.setAdapter(new GiftPagerAdapter(getChildFragmentManager(), fragments, titles));
+        //设置TabLayout内容超过屏幕宽度时可以横向滑动
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        //关联TabLayout和ViewPager
+        tabLayout.setupWithViewPager(viewpager);
+
         tvAmount.setText(coin + "");
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -162,9 +186,10 @@ public class GiftDialog extends BaseAwesomeDialog {
             }
         });
 
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.container, fragments.get(0));
-        fragmentTransaction.commit();
+//        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+//        fragmentTransaction.add(R.id.container, fragments.get(0));
+//        fragmentTransaction.commit();
+
     }
 
     private void setTabChange(int index) {
@@ -310,4 +335,37 @@ public class GiftDialog extends BaseAwesomeDialog {
         mGiftInfo = null;
         fragments = null;
     }
+
+    /**
+     * TabLayout+ViewPager+Fragment滑动
+     */
+    private class GiftPagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> list;
+        ArrayList<String> titles;
+
+        public GiftPagerAdapter(FragmentManager fm, List<Fragment> list, ArrayList<String> titles) {
+            super(fm);
+            this.list = list;
+            this.titles = titles;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles.get(position);
+        }
+    }
+
+
 }

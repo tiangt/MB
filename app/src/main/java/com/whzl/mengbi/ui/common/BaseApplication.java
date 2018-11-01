@@ -1,8 +1,10 @@
 package com.whzl.mengbi.ui.common;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.util.Log;
 
 import com.baidu.mobstat.StatService;
 import com.lht.paintview.util.LogUtil;
@@ -73,6 +75,9 @@ public class BaseApplication extends Application {
         initUM();
         initApi();
         initBaiduStatistic();
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        int heapSize = manager.getMemoryClass();
+        int maxHeapSize = manager.getLargeMemoryClass();
     }
 
     private void initBaiduStatistic() {

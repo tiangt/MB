@@ -9,6 +9,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.presenter.MePresenter;
@@ -18,10 +19,13 @@ import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
+import com.whzl.mengbi.ui.activity.base.FrgActivity;
+import com.whzl.mengbi.ui.activity.me.BillActivity;
 import com.whzl.mengbi.ui.activity.me.PackActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.ui.fragment.me.WelfareFragment;
 import com.whzl.mengbi.ui.view.MeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.DeviceUtils;
@@ -74,6 +78,8 @@ public class MeFragment extends BaseFragment implements MeView {
     TextView tvWelfare;
     @BindView(R.id.tv_bill)
     TextView tvBill;
+    @BindView(R.id.view_notify)
+    View viewNotify;
     Unbinder unbinder;
     private MePresenter mPresent;
     private UserInfo mUserinfo;
@@ -118,6 +124,15 @@ public class MeFragment extends BaseFragment implements MeView {
                     break;
                 }
             }
+        }
+    }
+
+    @Override
+    public void getNewTask(GetNewTaskBean bean) {
+        if (bean.awardUngrant == 0) {
+            viewNotify.setVisibility(View.INVISIBLE);
+        } else {
+            viewNotify.setVisibility(View.VISIBLE);
         }
     }
 
@@ -252,6 +267,7 @@ public class MeFragment extends BaseFragment implements MeView {
     public void onResume() {
         super.onResume();
         mPresent.getUserInfo();
+        mPresent.getNewTask();
     }
 
     @OnClick({R.id.tv_shop, R.id.tv_packsack, R.id.tv_welfare, R.id.tv_bill})
@@ -264,8 +280,11 @@ public class MeFragment extends BaseFragment implements MeView {
                 startActivity(new Intent(getMyActivity(), PackActivity.class));
                 break;
             case R.id.tv_welfare:
+                startActivity(new Intent(getMyActivity(), FrgActivity.class)
+                        .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
                 break;
             case R.id.tv_bill:
+                startActivity(new Intent(getMyActivity(), BillActivity.class));
                 break;
         }
     }

@@ -19,6 +19,7 @@ public class StringUtils {
 
     public static final String PHONE_REGEX = "^1+[1234567890]+\\d{9}";
     public static final Pattern PHONE_PATTERN = Pattern.compile(PHONE_REGEX);
+    public static final String NUMBAER = "^[0-9]*$";
 
     public static final boolean isPhone(String phone) {
         Matcher matcher = PHONE_PATTERN.matcher(phone);
@@ -99,5 +100,10 @@ public class StringUtils {
         return string;
     }
 
+    public static boolean isNumber(String str){
+        Pattern pattern = Pattern.compile(NUMBAER);
+        Matcher matcher = pattern.matcher(str);
+        return matcher.matches();
+    }
 
 }

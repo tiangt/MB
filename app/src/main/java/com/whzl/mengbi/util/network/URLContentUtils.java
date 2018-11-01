@@ -57,7 +57,7 @@ public class URLContentUtils {
     /**
      * 礼物展示接口
      */
-    public static final String GIFT_LIST = "v1/gift/gift-list";
+    public static final String GIFT_LIST = "v1/gift/gifts";
 
     /**
      * 获取直播间token接口
@@ -173,4 +173,20 @@ public class URLContentUtils {
     public static String getBaseImageUrl() {
         return isDebug ? DEBUG_BASE_IMAGE_URL : RELEASE_BASE_IMAGE_URL;
     }
+
+    /**
+     * 忘记密码发送验证码
+     */
+    public static final String FORGET_PASS_CODE = "v1/user/forget-pass-code";
+
+    /**
+     * 重置密码
+     */
+    public static final String RESET_PSW = "v1/user/reset-pass";
+
+
+    /**
+     * 验证手机号是否存在
+     */
+    public static final String IS_PHONE = "v1/user/check-identify-code";
 }

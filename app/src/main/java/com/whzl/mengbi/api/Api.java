@@ -2,14 +2,26 @@ package com.whzl.mengbi.api;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
+import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.BillAwardBean;
+import com.whzl.mengbi.model.entity.BillGiftBean;
+import com.whzl.mengbi.model.entity.BillPayBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetNewTaskBean;
+import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
+import com.whzl.mengbi.model.entity.MyCouponBean;
+import com.whzl.mengbi.model.entity.PackPrettyBean;
+import com.whzl.mengbi.model.entity.PackcarBean;
+import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.model.entity.PropBean;
+import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -289,4 +301,188 @@ public interface Api {
     @POST("v1/pk/info")
     @FormUrlEncoded
     Observable<ApiResult<PkInfoBean>> pkInfo(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的服务（道具）
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/service")
+    @FormUrlEncoded
+    Observable<ApiResult<PropBean>> myService(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的VIP
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/vip")
+    @FormUrlEncoded
+    Observable<ApiResult<PackvipBean>> myVip(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的座驾
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/card")
+    @FormUrlEncoded
+    Observable<ApiResult<PackcarBean>> myCard(@FieldMap Map<String, String> params);
+
+    /**
+     * 装备物品
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/equip")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> equip(@FieldMap Map<String, String> params);
+
+    /**
+     * VIP每日奖励
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/vip-award")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> vipAward(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的服务（道具）
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/coupon")
+    @FormUrlEncoded
+    Observable<ApiResult<MyCouponBean>> myCoupon(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的靓号
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/pretty")
+    @FormUrlEncoded
+    Observable<ApiResult<PackPrettyBean>> pretty(@FieldMap Map<String, String> params);
+
+    /**
+     * 靓号价格接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/mall/get-pretty-prices")
+    @FormUrlEncoded
+    Observable<ApiResult<GetPrettyBean>> getprettyprices(@FieldMap Map<String, String> params);
+
+    /**
+     * 新手任务活动信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/new-task")
+    @FormUrlEncoded
+    Observable<ApiResult<GetPrettyBean>> newTask(@FieldMap Map<String, String> params);
+
+    /**
+     * 通过奖励序列号领奖
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/receive")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> receive(@FieldMap Map<String, String> params);
+
+    /**
+     * 修改昵称接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/modify-nickname")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> nickName(@FieldMap Map<String, String> params);
+
+    /**
+     * 新手任务可领任务数量
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/new-task-num")
+    @FormUrlEncoded
+    Observable<ApiResult<GetNewTaskBean>> getNewTask(@FieldMap Map<String, String> params);
+
+    /**
+     * 随机获取一个正在直播的主播
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/anchor/random")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> random(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的消费记录
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/bill/consume")
+    @FormUrlEncoded
+    Observable<ApiResult<BillPayBean>> billConsume(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的送礼记录
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/bill/send-gift")
+    @FormUrlEncoded
+    Observable<ApiResult<BillGiftBean>> sendGift(@FieldMap Map<String, String> params);
+
+    /**
+     * 我的奖励记录
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/bill/award")
+    @FormUrlEncoded
+    Observable<ApiResult<BillAwardBean>> billAward(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间的活动（常规活动）
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/activity-grand")
+    @FormUrlEncoded
+    Observable<ApiResult<ActivityGrandBean>> activityGrand(@FieldMap Map<String, String> params);
+
+    /**
+     * 有效返利券查找
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/recharge/find-coupon")
+    @FormUrlEncoded
+    Observable<ApiResult<RebateBean>> findCoupon(@FieldMap Map<String, String> params);
+
+    @POST("v1/anchor/show-anchor")
+    @FormUrlEncoded
+    Observable<ApiResult<RebateBean>> getAnchorInfo(@FieldMap Map<String, String> params);
 }

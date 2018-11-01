@@ -16,7 +16,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
         android:gravity="center"
-        android:text="您还没有道具"
+        android:text="您还没有座驾！"
+        android:textColor="@color/colorCommNotActive"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="升级到贵族，即可拥有专属座驾！"
         android:textColor="@color/colorCommNotActive"
         android:textSize="20sp" />
 </LinearLayout>

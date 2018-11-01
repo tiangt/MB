@@ -12,9 +12,11 @@ import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
-import com.whzl.mengbi.ui.fragment.RankListFragment;
+import com.whzl.mengbi.ui.fragment.me.PackCarFragment;
+import com.whzl.mengbi.ui.fragment.me.PackDiscountFragment;
+import com.whzl.mengbi.ui.fragment.me.PackPrettyFragment;
+import com.whzl.mengbi.ui.fragment.me.PackVipFragment;
 import com.whzl.mengbi.ui.fragment.me.PropFragment;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.lang.reflect.Field;
@@ -40,13 +42,7 @@ public class PackActivity extends BaseActivity {
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_pack, "背包", "说明", true);
-    }
-
-    @Override
-    protected void onToolbarMenuClick() {
-        super.onToolbarMenuClick();
-        ToastUtils.showToast("说明");
+        setContentView(R.layout.activity_pack, "背包", true);
     }
 
     @Override
@@ -59,10 +55,10 @@ public class PackActivity extends BaseActivity {
         titles.add("优惠券");
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(PropFragment.newInstance());
-        fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));
-        fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));
-        fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));
-        fragments.add(RankListFragment.newInstance("RICH", "DAY", "F"));
+        fragments.add(PackVipFragment.newInstance());
+        fragments.add(PackPrettyFragment.newInstance());
+        fragments.add(PackCarFragment.newInstance());
+        fragments.add(PackDiscountFragment.newInstance());
         viewpager.setOffscreenPageLimit(5);
         viewpager.setAdapter(new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles));
         setTabWidth(tabLayout, UIUtil.dip2px(this, 18));

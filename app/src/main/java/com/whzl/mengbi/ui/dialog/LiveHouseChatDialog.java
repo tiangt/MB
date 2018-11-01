@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -19,11 +20,14 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
+import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.CommonEmojiMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GuardEmojiFragment;
+import com.whzl.mengbi.ui.dialog.fragment.VipEmojiFragment;
 import com.whzl.mengbi.util.KeyBoardUtil;
 
 import butterknife.BindView;
@@ -51,24 +55,27 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     private int currentSelectedIndex;
     private Fragment[] fragments;
     private boolean isGuard;
+    private boolean isVip;
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
     private int mProgramId;
     private RoomUserInfo.DataBean mChatToUser;
 
-    public static BaseAwesomeDialog newInstance(boolean isGuard, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
+    public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
         Bundle args = new Bundle();
         args.putBoolean("isGuard", isGuard);
+        args.putBoolean("isVip", isVip);
         args.putInt("programId", programId);
         args.putParcelable("anchor", anchorBean);
         liveHouseChatDialog.setArguments(args);
         return liveHouseChatDialog;
     }
 
-    public static BaseAwesomeDialog newInstance(boolean isGuard, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, RoomUserInfo.DataBean dateBean) {
+    public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, RoomUserInfo.DataBean dateBean) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
         Bundle args = new Bundle();
         args.putBoolean("isGuard", isGuard);
+        args.putBoolean("isVip", isVip);
         args.putInt("programId", programId);
         args.putParcelable("anchor", anchorBean);
         args.putParcelable("chatToUser", dateBean);
@@ -84,6 +91,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         isGuard = getArguments().getBoolean("isGuard");
+        isVip = getArguments().getBoolean("isVip");
         mProgramId = getArguments().getInt("programId");
         mAnchorBean = getArguments().getParcelable("anchor");
         mChatToUser = getArguments().getParcelable("chatToUser");
@@ -107,6 +115,9 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 case R.id.rb_guard:
                     setTabChange(1);
                     break;
+                case R.id.rb_vip:
+                    setTabChange(2);
+                    break;
                 default:
                     break;
             }
@@ -118,11 +129,22 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         commonEmojiMotherFragment.setEtContent(etContent);
         GuardEmojiFragment guardEmojiFragment = GuardEmojiFragment.newInstance(isGuard);
         guardEmojiFragment.setMessageEditText(etContent);
+        //VIP表情
+        VipEmojiFragment vipEmojiFragment = VipEmojiFragment.newInstance(isVip);
+        vipEmojiFragment.setMessageEditText(etContent);
+
         guardEmojiFragment.setListener(() -> {
             GuardDetailDialog.newInstance(mProgramId, mAnchorBean).setShowBottom(true).setDimAmount(0).show(getFragmentManager());
             dismiss();
         });
-        fragments = new Fragment[]{commonEmojiMotherFragment, guardEmojiFragment};
+
+        vipEmojiFragment.setVipListener(() -> {
+            Intent intent = new Intent(getContext(), BuyVipActivity.class);
+            startActivity(intent);
+            dismiss();
+        });
+
+        fragments = new Fragment[]{commonEmojiMotherFragment, guardEmojiFragment, vipEmojiFragment};
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.commit();
@@ -226,5 +248,4 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
         super.onDestroyView();
     }
-
 }

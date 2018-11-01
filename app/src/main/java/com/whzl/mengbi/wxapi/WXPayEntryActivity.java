@@ -6,7 +6,6 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -30,6 +32,7 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SDKConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RechargeChannelListBean;
 import com.whzl.mengbi.model.entity.RechargeInfo;
 import com.whzl.mengbi.model.entity.RechargeRuleListBean;
@@ -85,6 +88,10 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     Button btnRecharge;
     @BindView(R.id.first_top_up)
     ConstraintLayout firstTopUp;
+    @BindView(R.id.tv_rebate_ticket)
+    TextView tvRebateTicket;
+    @BindView(R.id.tv_rebate_money)
+    TextView tvRebateMoney;
     private RechargePresenter mPresent;
     private IWXAPI wxApi;
     private ArrayList<RechargeRuleListBean> aliRechargeRuleList = new ArrayList<>();
@@ -94,6 +101,10 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     private BaseListAdapter adapter;
     private int mRuleId = -1;
     private long mUserId;
+    private List<RebateBean.ListBean> list = new ArrayList<>();
+    private String identifyCode = "";
+    private int scale = 100;
+    private int chengCount;
 
     @Override
     protected void setupContentView() {
@@ -130,6 +141,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         recycler.setAdapter(adapter);
     }
 
+
     class RuleViewHolder extends BaseViewHolder {
         @BindView(R.id.tv_desc)
         TextView tvDesc;
@@ -161,6 +173,11 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             adapter.notifyDataSetChanged();
             btnRecharge.setEnabled(true);
             btnRecharge.setText(getString(R.string.recharge_confirm, rechargeRuleListBean.getRechargeCount() / 100f));
+            tvRebateMoney.setText("额外返利");
+            chengCount = currentRuleList.get(position).getChengCount();
+            tvRebateMoney.append(StringUtils.spannableStringColor(
+                    String.valueOf(chengCount / 100 * scale), Color.parseColor("#ffa800")));
+            tvRebateMoney.append("萌币");
         }
     }
 
@@ -168,6 +185,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     protected void loadData() {
         mPresent.getUserInfo(mUserId);
         mPresent.getChannelInfo(new HashMap());
+        mPresent.getCoupon(mUserId);
     }
 
     @Override
@@ -177,6 +195,22 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         tvLeftAmount.setText(R.string.mengbi_left);
         SpannableString spannableString = StringUtils.spannableStringColor(userInfo.getData().getWealth().getCoin() + "", Color.parseColor("#ffa800"));
         tvLeftAmount.append(spannableString);
+    }
+
+    @Override
+    public void onGetCoupon(RebateBean rebateBean) {
+        if (rebateBean.list == null || rebateBean.list.size() == 0) {
+            tvRebateTicket.setText("暂无返利券");
+            tvRebateTicket.setEnabled(false);
+            tvRebateMoney.setVisibility(View.GONE);
+            return;
+        }
+        list.clear();
+        tvRebateMoney.setVisibility(View.VISIBLE);
+        scale = rebateBean.list.get(0).scale;
+        identifyCode = rebateBean.list.get(0).identifyCode;
+        tvRebateTicket.setText(rebateBean.list.get(0).goodsName + "(" + rebateBean.list.get(0).identifyCode + ")");
+        list.addAll(rebateBean.list);
     }
 
     @Override
@@ -216,6 +250,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             mRuleId = -1;
             btnRecharge.setEnabled(false);
             btnRecharge.setText(R.string.recharge_tip);
+            tvRebateMoney.setText("");
             switch (checkedId) {
                 case R.id.rb_ali_pay:
                     currentRuleList.clear();
@@ -252,18 +287,51 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         }
     }
 
-    @OnClick(R.id.btn_recharge)
-    public void onClick() {
+
+    @OnClick({R.id.tv_rebate_ticket, R.id.btn_recharge})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_rebate_ticket:
+                showSelect();
+                break;
+            case R.id.btn_recharge:
+                getOrderInfo(identifyCode);
+                break;
+        }
+    }
+
+    private void getOrderInfo(String identifyCode) {
         int channelId = channelIdMap.get(rgPayWay.getCheckedRadioButtonId());
         mUserId = Long.parseLong(SPUtils.get(this, "userId", (long) 0).toString());
         //long mUserId = (long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
-        HashMap<String, Long> paramsMap = new HashMap();
+        HashMap paramsMap = new HashMap();
         paramsMap.put("channelId", (long) channelId);
         paramsMap.put("ruleId", (long) mRuleId);
         paramsMap.put("userId", mUserId);
         paramsMap.put("toUserId", mUserId);
         paramsMap.put("proxyUserId", (long) 0);
+        paramsMap.put("identifyCode", identifyCode);
         mPresent.getOrderInfo(paramsMap);
+    }
+
+    private void showSelect() {
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+                tvRebateTicket.setText(list.get(options1).goodsName + "(" + list.get(options1).identifyCode + ")");
+                identifyCode = list.get(options1).identifyCode;
+                scale = list.get(options1).scale;
+                tvRebateMoney.setText("额外返利");
+                tvRebateMoney.append(StringUtils.spannableStringColor(
+                        String.valueOf(chengCount / 100 * scale), Color.parseColor("#ffa800")));
+                tvRebateMoney.append("萌币");
+            }
+        }).setTitleText("选择返利券").setSelectOptions(0).isRestoreItem(false).build();
+        pvOptions.setPicker(list);
+        pvOptions.show();
     }
 
     /**
@@ -283,6 +351,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                         case NetConfig.CODE_ALI_PAY_SUCCESS:
                             showToast(R.string.pay_success);
                             mPresent.getUserInfo(mUserId);
+                            mPresent.getCoupon(mUserId);
                             EventBus.getDefault().post(new UserInfoUpdateEvent());
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
                             break;
@@ -310,6 +379,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                 case NetConfig.CODE_WE_CHAT_PAY_SUCCESS:
                     showToast(R.string.pay_success);
                     mPresent.getUserInfo(mUserId);
+                    mPresent.getCoupon(mUserId);
                     EventBus.getDefault().post(new UserInfoUpdateEvent());
                     SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
                     break;
@@ -338,4 +408,5 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         mPresent.onDestroy();
         wxApi.unregisterApp();
     }
+
 }

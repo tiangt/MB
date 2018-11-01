@@ -37,6 +37,7 @@
     <string name="home_title">首页</string>
     <string name="home_recommend">首页</string>
     <string name="home_">首页</string>
+
     <!--直播间-->
     <string name="live_display_anchornickname">主播昵称</string>
     <string name="live_display_fans">粉丝：</string>
@@ -238,10 +239,11 @@
     <string name="phone_number_hint">请输入您的手机号码</string>
     <string name="password_hint">请输入密码</string>
     <string name="nothing" />
+    <string name="rank_title">榜单</string>
     <string name="follow_title">关注</string>
     <string name="me_title">我的</string>
     <string name="login_success">登录成功</string>
-    <string name="load_more_end"><![CDATA[ 别拖了     到底了]]></string>
+    <string name="load_more_end"><![CDATA[ 别拖了     到底啦]]></string>
     <string name="personal">个人中心</string>
     <string name="recharge_type">充值方式</string>
     <string name="recharge_amount">充值金额</string>
@@ -288,4 +290,39 @@
     <string name="goodnum">价格：%1$d萌币</string>
     <string name="search_room">房间号：%1$d</string>
     <string name="pk_time">%1$02d:%2$02d</string>
+
+    <!-- 忘记密码 -->
+    <string name="forget_psw">忘记密码</string>
+    <string name="reset_psw">重置密码</string>
+    <string name="input_new_psw">请输入新密码(长度6-16位，非纯数字)</string>
+    <string name="input_psw_again">再次输入密码</string>
+    <string name="next">下一步</string>
+    <string name="confirm_reset">确认重置</string>
+    <string name="retrieve_psw">找回密码</string>
+
+    <array name="new_task">
+        <item>领取</item>
+        <item>改昵称</item>
+        <item>去关注</item>
+        <item>去聊天</item>
+        <item>去送礼</item>
+        <item>去观看</item>
+        <item>去充值</item>
+        <item>去发布</item>
+        <item>去送礼</item>
+        <item>去抽奖</item>
+    </array>
+
+    <array name="new_task_names">
+        <item>注册萌比直播账号</item>
+        <item>取个霸气的昵称</item>
+        <item>关注3名主播</item>
+        <item>对主播说3句话</item>
+        <item>送给主播99朵蓝色妖姬</item>
+        <item>观看直播满10分钟</item>
+        <item>首次充值</item>
+        <item>发布3条世界广播</item>
+        <item>送给主播66个幸运黄瓜</item>
+        <item>幸运转盘抽奖1次</item>
+    </array>
 </resources>

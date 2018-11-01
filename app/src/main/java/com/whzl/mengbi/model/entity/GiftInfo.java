@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GiftInfo extends ResponseInfo implements Parcelable {
 
@@ -41,45 +42,79 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
     }
 
-    public class DataBean {
-        private ArrayList<GiftDetailInfoBean> 推荐;
-        private ArrayList<GiftDetailInfoBean> 豪华;
-        private ArrayList<GiftDetailInfoBean> 幸运;
-        private ArrayList<GiftDetailInfoBean> 普通;
+//    public class DataBean {
+//        private ArrayList<GiftDetailInfoBean> 推荐;
+//        private ArrayList<GiftDetailInfoBean> 豪华;
+//        private ArrayList<GiftDetailInfoBean> 幸运;
+//        private ArrayList<GiftDetailInfoBean> 普通;
+//
+//        public ArrayList<GiftDetailInfoBean> getRecommend() {
+//            return 推荐;
+//        }
+//
+//        public void setRecommend(ArrayList<GiftDetailInfoBean> recommend) {
+//            this.推荐 = 推荐;
+//        }
+//
+//        public ArrayList<GiftDetailInfoBean> getLuxury() {
+//            return 豪华;
+//        }
+//
+//        public void setLuxury(ArrayList<GiftDetailInfoBean> 豪华) {
+//            this.豪华 = 豪华;
+//        }
+//
+//        public ArrayList<GiftDetailInfoBean> getLucky() {
+//            return 幸运;
+//        }
+//
+//        public void setLucky(ArrayList<GiftDetailInfoBean> 幸运) {
+//            this.幸运 = 幸运;
+//        }
+//
+//        public ArrayList<GiftDetailInfoBean> getCommon() {
+//            return 普通;
+//        }
+//
+//        public void setCommon(ArrayList<GiftDetailInfoBean> 普通) {
+//            this.普通 = 普通;
+//        }
+//
+//
+//    }
 
-        public ArrayList<GiftDetailInfoBean> getRecommend() {
-            return 推荐;
+    public class  DataBean{
+        private List<DataBean.ListBean> list;
+
+        public List<DataBean.ListBean> getList() {
+            return list;
         }
 
-        public void setRecommend(ArrayList<GiftDetailInfoBean> recommend) {
-            this.推荐 = 推荐;
+        public void setList(List<DataBean.ListBean> list) {
+            this.list = list;
         }
 
-        public ArrayList<GiftDetailInfoBean> getLuxury() {
-            return 豪华;
+        public class ListBean {
+
+            private String group;
+            private ArrayList<GiftDetailInfoBean> groupList;
+
+            public String getGroup() {
+                return group;
+            }
+
+            public void setGroup(String group) {
+                this.group = group;
+            }
+
+            public ArrayList<GiftDetailInfoBean> getGroupList() {
+                return groupList;
+            }
+
+            public void setGroupList(ArrayList<GiftDetailInfoBean> groupList) {
+                this.groupList = groupList;
+            }
         }
-
-        public void setLuxury(ArrayList<GiftDetailInfoBean> 豪华) {
-            this.豪华 = 豪华;
-        }
-
-        public ArrayList<GiftDetailInfoBean> getLucky() {
-            return 幸运;
-        }
-
-        public void setLucky(ArrayList<GiftDetailInfoBean> 幸运) {
-            this.幸运 = 幸运;
-        }
-
-        public ArrayList<GiftDetailInfoBean> getCommon() {
-            return 普通;
-        }
-
-        public void setCommon(ArrayList<GiftDetailInfoBean> 普通) {
-            this.普通 = 普通;
-        }
-
-
     }
 
     public static class GiftDetailInfoBean implements Parcelable {
@@ -233,4 +268,6 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
             dest.writeString(goodPic);
         }
     }
+
+
 }

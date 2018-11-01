@@ -11,6 +11,7 @@ import com.whzl.mengbi.chat.room.util.DownloadEvent;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,8 +22,9 @@ import java.util.List;
 public class WelComeAction implements Actions {
     @Override
     public void performAction(String msgStr, final Context context) {
+        LogUtils.e2(msgStr);
         WelcomeJson welcomeJson = GsonUtils.GsonToBean(msgStr, WelcomeJson.class);
-        if (null == welcomeJson) {
+        if (null == welcomeJson||welcomeJson.getContext()==null||welcomeJson.getContext().getInfo()==null||welcomeJson.getContext().getInfo().getLevelList()==null) {
             return;
         }
         List<String> goodsUrlList = getGoodsList(welcomeJson.getContext().getInfo().getUserBagList());

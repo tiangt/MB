@@ -3,6 +3,7 @@
     <color name="colorPrimary">#21D790</color>
     <color name="colorPrimaryDark">#20D790</color>
     <color name="colorCommNotActive">#B9B9B9</color>
+    <color name="colorLine">#F0F0F0</color>
 
     <color name="tab_checked">#21D996</color>
     <color name="tab_unchecked">#B9B9B9</color>
@@ -160,4 +161,8 @@
     <color name="text_pk_count_down">#fbcf03</color>
     <color name="bg_broadcast_bottom">#702d2933</color>
     <color name="toast_shop">#d9d9d9</color>
+    <color name="divider_color_pack">#e5e5e5</color>
+    <color name="text_color_use_pack">#2cd996</color>
+    <color name="text_color_wait_pack">#ff611b</color>
+
 </resources>

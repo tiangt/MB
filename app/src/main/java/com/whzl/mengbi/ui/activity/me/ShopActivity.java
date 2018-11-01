@@ -30,7 +30,15 @@ public class ShopActivity extends BaseActivity {
     RadioGroup rgShop;
 
     private Fragment[] fragments;
+    private int[] ids;
     private int currentSelectedIndex = 0;
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        int select = getIntent().getIntExtra("select", 0);
+        currentSelectedIndex = select;
+    }
 
     @Override
     protected void setupContentView() {
@@ -39,9 +47,11 @@ public class ShopActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{new VipFragment(),new GuardFragment(), new NobilityFragment(), new GoodnumFragment()};
+        fragments = new Fragment[]{new VipFragment(), new GuardFragment(), new NobilityFragment(), new GoodnumFragment()};
+        ids = new int[]{R.id.rb_vip_shop, R.id.rv_guard_shop, R.id.rb_nobility_shop, R.id.rb_goodnum_shop};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fl_shop, fragments[0]).commit();
+        fragmentTransaction.add(R.id.fl_shop, fragments[currentSelectedIndex]).commit();
+        rgShop.check(ids[currentSelectedIndex]);
         rgShop.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.rb_vip_shop:

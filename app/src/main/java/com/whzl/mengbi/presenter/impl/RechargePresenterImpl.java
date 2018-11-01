@@ -1,6 +1,7 @@
 package com.whzl.mengbi.presenter.impl;
 
 import com.whzl.mengbi.model.RechargeModel;
+import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RechargeInfo;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.impl.RechargeModelImpl;
@@ -36,6 +37,11 @@ public class RechargePresenterImpl implements RechargePresenter, OnRechargeFinis
     }
 
     @Override
+    public void getCoupon(long userId) {
+        rechargeModel.doCoupon(userId, this);
+    }
+
+    @Override
     public void onChannelSuccess(RechargeInfo rechargeInfo) {
         if (rechargeView != null) {
             rechargeView.onGetChannelInfoSuccess(rechargeInfo);
@@ -53,6 +59,13 @@ public class RechargePresenterImpl implements RechargePresenter, OnRechargeFinis
     public void onGetUserInfoSuccess(UserInfo userInfo) {
         if (rechargeView != null) {
             rechargeView.onGetUserInfoSuccess(userInfo);
+        }
+    }
+
+    @Override
+    public void onGetCoupon(RebateBean rebateBean) {
+        if (rechargeView != null) {
+            rechargeView.onGetCoupon(rebateBean);
         }
     }
 

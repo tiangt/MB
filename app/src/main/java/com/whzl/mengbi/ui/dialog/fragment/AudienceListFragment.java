@@ -107,6 +107,15 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             tvName.setText(audienceInfoBean.getName());
             GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
             int identity = audienceInfoBean.getIdentity();
+            if ( audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
+                ImageView royalImg = new ImageView(getContext());
+                Glide.with(getMyActivity()).asGif().load(ResourceMap.getResourceMap().
+                        getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
+//                royalImg.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL()));
+                LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(),30), UIUtil.dip2px(getMyActivity(),11));
+                linearLayout.addView(royalImg, rparams);
+            }
+
             ImageView imageView = new ImageView(getContext());
             if (identity == 10) {
                 imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(audienceInfoBean.getLevelMap().getANCHOR_LEVEL()));
@@ -125,7 +134,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             if (audienceInfoBean.getMedal() != null) {
                 for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
                     AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
-                    if ("BADGE".equals(medalBean.getGoodsType()) || "GUARD".equals(medalBean.getGoodsType())) {
+                    if ("BADGE".equals(medalBean.getGoodsType()) || "GUARD".equals(medalBean.getGoodsType())|| "VIP".equals(medalBean.getGoodsType())) {
                         Glide.with(getContext())
                                 .load(medalBean.getGoodsIcon())
                                 .into(new SimpleTarget<Drawable>() {

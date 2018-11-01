@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.view;
 
 import com.whzl.mengbi.model.GuardListBean;
+import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -40,4 +41,6 @@ public interface LiveView {
     void onActivityListSuccess(GetActivityBean bean);
 
     void onPkInfoSuccess(PkInfoBean bean);
+
+    void onActivityGrandSuccess(ActivityGrandBean bean);
 }

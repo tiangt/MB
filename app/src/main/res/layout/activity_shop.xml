@@ -16,7 +16,6 @@
         <RadioButton
             android:id="@+id/rb_vip_shop"
             style="@style/shop_tab"
-            android:checked="true"
             android:drawableTop="@drawable/selector_shop_tab_vip_icon"
             android:text="VIP" />
 

@@ -100,6 +100,15 @@
                 android:paddingLeft="12dp"
                 android:background="@drawable/selector_emoji_selected_rb_bg" />
 
+            <RadioButton
+                android:id="@+id/rb_vip"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:button="@null"
+                android:drawableLeft="@drawable/selector_vip_emoji_switch_rb"
+                android:paddingLeft="12dp"
+                android:background="@drawable/selector_emoji_selected_rb_bg" />
+
         </RadioGroup>
 
     </LinearLayout>

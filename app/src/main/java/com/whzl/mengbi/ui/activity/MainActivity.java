@@ -15,8 +15,8 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
 import com.whzl.mengbi.model.entity.AppDataBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -24,7 +24,9 @@ import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.ui.fragment.RankFragment;
 import com.whzl.mengbi.ui.fragment.main.FollowFragment;
+import com.whzl.mengbi.ui.fragment.main.HomeFragment;
 import com.whzl.mengbi.ui.fragment.main.HomeFragmentNew;
 import com.whzl.mengbi.ui.fragment.main.MeFragment;
 import com.whzl.mengbi.util.AppUtils;
@@ -40,6 +42,9 @@ import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -66,13 +71,19 @@ public class MainActivity extends BaseActivity {
     private AwesomeDialog awesomeDialog;
 
     @Override
+    protected void initEnv() {
+        super.initEnv();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void setupContentView() {
         setContentView(R.layout.activity_main);
     }
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{new HomeFragmentNew(), FollowFragment.newInstance(), MeFragment.newInstance()};
+        fragments = new Fragment[]{new HomeFragment(), RankFragment.newInstance(), FollowFragment.newInstance(), MeFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
         rgTab.setOnCheckedChangeListener((group, checkedId) -> {
@@ -80,16 +91,23 @@ public class MainActivity extends BaseActivity {
                 case R.id.rb_home:
                     setTabChange(0);
                     break;
-                case R.id.rb_follow:
+                case R.id.rb_rank:
                     if (checkLogin()) {
                         setTabChange(1);
                         return;
                     }
                     login();
                     break;
-                case R.id.rb_me:
+                case R.id.rb_follow:
                     if (checkLogin()) {
                         setTabChange(2);
+                        return;
+                    }
+                    login();
+                    break;
+                case R.id.rb_me:
+                    if (checkLogin()) {
+                        setTabChange(3);
                         return;
                     }
                     login();
@@ -126,12 +144,20 @@ public class MainActivity extends BaseActivity {
         } else {
             fragmentTransaction.add(R.id.fragment_container, fragments[index]);
         }
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
         currentSelectedIndex = index;
     }
 
     @Override
     protected void loadData() {
+        if (!checkLogin() && !checkAwardHasShowed()) {
+            getNewUserAward(false);
+        } else {
+            getUpdate();
+        }
+    }
+
+    private void getUpdate() {
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_UPDATE, RequestManager.TYPE_POST_JSON, new HashMap<>(), new RequestManager.ReqCallBack() {
             @Override
             public void onReqSuccess(Object result) {
@@ -148,9 +174,6 @@ public class MainActivity extends BaseActivity {
                 LogUtils.d(errorMsg);
             }
         });
-        if (!checkLogin() && !checkAwardHasShowed()) {
-            getNewUserAward(false);
-        }
     }
 
     private boolean checkAwardHasShowed() {
@@ -176,11 +199,12 @@ public class MainActivity extends BaseActivity {
                                 showGiftDialog(appDataBean.newUserAward.loginUserAward, isLogin);
                             }
                         }
+                        getUpdate();
                     }
 
                     @Override
                     public void onError(int code) {
-
+                        getUpdate();
                     }
                 });
     }
@@ -355,5 +379,12 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         awesomeDialog = null;
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onMessageEvent(JumpMainActivityEvent event) {
+        setTabChange(event.check);
+        setCheck(event.check);
     }
 }

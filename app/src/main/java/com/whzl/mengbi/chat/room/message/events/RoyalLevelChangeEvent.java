@@ -8,7 +8,6 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.RoyalLevelChangeJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
-import com.whzl.mengbi.util.ResourceMap;
 
 public class RoyalLevelChangeEvent extends BroadEvent {
     private RoyalLevelChangeJson royalLevelChangeJson;
@@ -41,7 +40,10 @@ public class RoyalLevelChangeEvent extends BroadEvent {
             if ("ROYAL_LEVEL".equals(royalLevelChangeJson.context.levels.get(i).levelType)) {
                 tvRunWayGift.append(LightSpanString.getLightString(royalLevelChangeJson.context.levels.get(i).levelName,
                         Color.parseColor("#f0f0f0")));
-                tvRunWayGift.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royalLevelChangeJson.context.levels.get(i).levelValue)));
+//                tvRunWayGift.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royalLevelChangeJson.context.levels.get(i).levelValue)));
+                if (royalLevelChangeJson.context.levels.get(i).levelValue > 0) {
+                    tvRunWayGift.append(LevelUtil.getRoyalImageResourceSpan(mContext, royalLevelChangeJson.context.levels.get(i).levelValue, tvRunWayGift));
+                }
                 break;
             }
         }

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/fragmentTitleText"
+            android:background="#f9f9f9"
+            android:text="@string/home_title"
+            android:textColor="#323232" />
+
+        <LinearLayout
+            android:id="@+id/ll_search"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/ib_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_search_home" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.whzl.mengbi.ui.widget.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <!--&lt;!&ndash;<android.support.v4.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/bannerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true">
+
+                    <com.youth.banner.Banner
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_margin="5dp"
+                        app:indicator_drawable_selected="@drawable/home_indicator_selected"
+                        app:indicator_drawable_unselected="@drawable/home_indicator_unselected"
+                        app:indicator_height="7dp"
+                        app:indicator_width="7dp"
+                        app:layout_constraintDimensionRatio="H,3:1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintLeft_toRightOf="parent" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:drawableLeft="@drawable/home_title_recommended"
+                    android:drawablePadding="4dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="小编推荐"
+                    android:textColor="#323232"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recommend_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="false"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp">&ndash;&gt;
+
+                </android.support.v7.widget.RecyclerView>-->
+
+
+        <!--<TextView
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:drawableLeft="@drawable/home_title_live"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="4dp"
+            android:text="精彩直播"
+            android:textColor="#323232"
+            android:textSize="16sp"
+            android:textStyle="bold" />-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/anchor_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:focusableInTouchMode="false"
+            android:nestedScrollingEnabled="false"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp" />
+
+
+        <!--</LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>-->
+
+        <com.whzl.mengbi.ui.widget.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srlFinishDuration="0" />
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</LinearLayout>

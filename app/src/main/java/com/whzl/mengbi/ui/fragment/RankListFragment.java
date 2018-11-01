@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.RankListBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -34,7 +36,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author shaw
  * @date 2018/8/22
  */
-public class RankListFragment extends BasePullListFragment<RankListBean.DetailBean> {
+public class RankListFragment extends BasePullListFragment<RankListBean.DetailBean,BasePresenter> {
 
     private String rankName;
     private String rankType;
@@ -72,7 +74,8 @@ public class RankListFragment extends BasePullListFragment<RankListBean.DetailBe
     }
 
     @Override
-    protected void loadData(int action) {
+    protected void loadData(int action,int page) {
+        LogUtils.e("sssss   "+page);
         if (action == PullRecycler.ACTION_LOAD_DATA || action == PullRecycler.ACTION_PULL_TO_REFRESH) {
             HashMap paramsMap = new HashMap();
             paramsMap.put("rankName", rankName);

@@ -14,11 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.sendtion.xrichtext.GlideApp;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
-import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.BannerInfo;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
@@ -35,8 +36,10 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
+import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.glide.RoundImageLoader;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -98,8 +101,12 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         initRecommendRecycler();
         initAnchorRecycler();
         loadData();
+        refreshLayout.setReboundDuration(0);
+        refreshLayout.setEnablePureScrollMode(false);
+        refreshLayout.setEnableOverScrollBounce(true);
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             refreshLayout.setEnableLoadMore(true);
+            anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             mCurrentPager = 1;
             mHomePresenter.getBanner();
             mHomePresenter.getRecommend();
@@ -113,6 +120,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         recommendRecycler.setFocusableInTouchMode(false);
         recommendRecycler.setHasFixedSize(true);
         recommendRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recommendRecycler.addItemDecoration(new SpacesItemDecoration(5));
         recommendAdapter = new BaseListAdapter() {
 
             @Override
@@ -135,6 +143,22 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         anchorRecycler.setHasFixedSize(true);
         anchorRecycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         anchorRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        anchorRecycler.addItemDecoration(new SpacesItemDecoration(5));
+
+        //RecyclerView缓存，预防OOM
+        RecyclerView.RecycledViewPool pool = new RecyclerView.RecycledViewPool() {
+            @Override
+            public void putRecycledView(RecyclerView.ViewHolder scrap) {
+                super.putRecycledView(scrap);
+            }
+
+            @Override
+            public RecyclerView.ViewHolder getRecycledView(int viewType) {
+                final RecyclerView.ViewHolder recycledView = super.getRecycledView(viewType);
+                return recycledView;
+            }
+        };
+
         anchorAdapter = new BaseListAdapter() {
 
             @Override
@@ -149,6 +173,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             }
         };
         anchorRecycler.setAdapter(anchorAdapter);
+        pool.setMaxRecycledViews(anchorAdapter.getItemViewType(0), 10);
     }
 
 
@@ -160,7 +185,6 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                 break;
         }
     }
-
 
 
     class AnchorInfoViewHolder extends BaseViewHolder {
@@ -189,14 +213,24 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
                     tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
-                    tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
+                    String recommendName = recommendAnchorInfoBean.getAnchorNickname();
+                    if(recommendName.length() > 8){
+                        tvAnchorName.setText(recommendName.substring(0,8)+"...");
+                    }else{
+                        tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
+                    }
                     tvWatchCount.setText(recommendAnchorInfoBean.getRoomUserCount() + "");
                     GlideImageLoader.getInstace().loadRoundImage(getContext(), recommendAnchorInfoBean.getCover(), ivCover, 5);
                     break;
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
                     tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
-                    tvAnchorName.setText(liveShowListInfo.getAnchorNickname());
+                    String anchorName = liveShowListInfo.getAnchorNickname();
+                    if(anchorName.length() > 8){
+                        tvAnchorName.setText(anchorName.substring(0,8)+"...");
+                    }else{
+                        tvAnchorName.setText(liveShowListInfo.getAnchorNickname());
+                    }
                     tvWatchCount.setText(liveShowListInfo.getRoomUserCount() + "");
                     GlideImageLoader.getInstace().loadRoundImage(getContext(), liveShowListInfo.getCover(), ivCover, 5);
                     break;
@@ -229,7 +263,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         //设置banner样式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         //设置图片加载器
-        banner.setImageLoader(GlideImageLoader.getInstace());
+        banner.setImageLoader(RoundImageLoader.getInstace());
         //设置banner动画效果
         banner.setBannerAnimation(Transformer.Default);
         //设置自动轮播，默认为true
@@ -294,6 +328,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         banner.start();
     }
 
+
     @Override
     public void showRecommend(RecommendInfo recommendInfo) {
         if (recommendInfo != null && recommendInfo.getData() != null) {
@@ -305,6 +340,8 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
 
     @Override
     public void showLiveShow(LiveShowInfo liveShowInfo) {
+        //自动加载更多
+//        refreshLayout.setEnableAutoLoadMore(false);
         if (liveShowInfo != null && liveShowInfo.getData() != null && liveShowInfo.getData().getList() != null) {
             if (mCurrentPager == 2) {
                 mAnchorInfoList.clear();
@@ -313,7 +350,7 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
                 refreshLayout.finishLoadMore();
             }
             mAnchorInfoList.addAll(liveShowInfo.getData().getList());
-            if (liveShowInfo.getData().getList() == null || liveShowInfo.getData().getList().size() < NetConfig.DEFAULT_PAGER_SIZE) {
+            if (liveShowInfo.getData().getList() == null || liveShowInfo.getData().getList().size() < 50) {
                 anchorAdapter.notifyDataSetChanged();
                 if (mAnchorInfoList.size() > 0) {
                     anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
@@ -324,7 +361,6 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
             } else {
                 refreshLayout.setEnableLoadMore(true);
                 anchorAdapter.notifyDataSetChanged();
-//                anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             }
         } else {
             if (mAnchorInfoList.size() > 0) {
@@ -348,4 +384,6 @@ public class HomeFragmentNew extends BaseFragment implements HomeView {
         super.onDestroy();
         mHomePresenter.onDestroy();
     }
+
+
 }

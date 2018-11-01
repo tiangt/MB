@@ -154,4 +154,10 @@ public class DateUtils {
         long currentMillis = System.currentTimeMillis();
         return (currentMillis - millis) / 1000 / 60 / 60 / 24 / 365;
     }
+
+    public static String getDateToString(long milSecond, String pattern) {
+        Date date = new Date(milSecond);
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        return format.format(date);
+    }
 }

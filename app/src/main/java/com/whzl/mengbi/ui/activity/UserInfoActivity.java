@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,8 +14,8 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
-import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
@@ -26,15 +25,17 @@ import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.UserInfoPresenter;
 import com.whzl.mengbi.presenter.impl.UserInfoPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
-import com.whzl.mengbi.ui.widget.view.CustomPopWindow;
 import com.whzl.mengbi.util.DateUtils;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.JsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.PhotoUtil;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
@@ -42,8 +43,13 @@ import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StorageUtil;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
 import java.io.File;
@@ -56,7 +62,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -88,6 +93,16 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     ImageView ivUserLevel;
     @BindView(R.id.rl_anchor_container)
     RelativeLayout rlAnchorContainer;
+    @BindView(R.id.tv_loyal)
+    TextView tvLoyal;
+    @BindView(R.id.tv_update)
+    TextView tvUpdate;
+    @BindView(R.id.tv_total)
+    TextView tvTotal;
+    @BindView(R.id.iv_royal)
+    ImageView ivRoyal;
+    @BindView(R.id.tv_chongzhi)
+    TextView tvChongzhi;
     private UserInfoPresenter userInfoPresenter;
     private String tempCapturePath;
     private String tempCropPath;
@@ -108,6 +123,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     @Override
     protected void initEnv() {
         super.initEnv();
+        EventBus.getDefault().register(this);
         Intent intent = getIntent();
         mUserInfo = intent.getParcelableExtra("userbean");
         userInfoPresenter = new UserInfoPresenterImpl(this);
@@ -139,21 +155,53 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             String levelType = levelList.getLevelType();
             long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
             if ("ANCHOR_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                tvAnchorLevel.setText("离升级还差");
-                tvAnchorLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#f1275b")));
-                tvAnchorLevel.append("主播经验");
+                if (sjNeedValue >= 0) {
+                    tvAnchorLevel.setText("离升级还差");
+                    tvAnchorLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#f1275b")));
+                    tvAnchorLevel.append("主播经验");
+                } else {
+                    tvAnchorLevel.setText("您已达到最高主播等级");
+                }
                 ivAnchorLevel.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelList.getLevelValue()));
             } else if ("USER_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                tvUserLevel.setText("离升级还差");
-                tvUserLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#4facf3")));
-                tvUserLevel.append("富豪经验");
+                if (sjNeedValue >= 0) {
+                    tvUserLevel.setText("离升级还差");
+                    tvUserLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#4facf3")));
+                    tvUserLevel.append("富豪经验");
+                } else {
+                    tvUserLevel.setText("您已达到最高用户等级");
+                }
                 int userLevel = levelList.getLevelValue();
                 ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(userLevel));
+            } else if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
+                if (sjNeedValue >= 0) {
+                    tvUpdate.setText("离升级还需充值");
+                    tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
+                    tvUpdate.append("元");
+                } else {
+                    tvUpdate.setText("您已达到最高贵族等级");
+                }
+                int userLevel = levelList.getLevelValue();
+                if (userLevel != 0) {
+//                    ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+                    Glide.with(this).asGif().load(ResourceMap.getResourceMap().
+                            getRoyalLevelIcon(userLevel)).into(ivRoyal);
+                }
+                tvTotal.setText("本月已累计充值");
+                tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));
+                tvTotal.append("元");
             }
         }
         if (mUserInfo.getData().getUserType().equals("VIEWER")) {
             rlAnchorContainer.setVisibility(View.GONE);
         }
+
+        tvChongzhi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UserInfoActivity.this, WXPayEntryActivity.class));
+            }
+        });
     }
 
     private void setupSex(String sex) {
@@ -452,5 +500,49 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     protected void onDestroy() {
         super.onDestroy();
         userInfoPresenter.onDestory();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UserInfoUpdateEvent userInfoUpdateEvent) {
+        HashMap paramsMap = new HashMap();
+        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+        paramsMap.put("userId", userId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap,
+                new RequestManager.ReqCallBack() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        UserInfo userInfo = GsonUtils.GsonToBean(result.toString(), UserInfo.class);
+                        if (userInfo.getCode() == 200) {
+                            for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
+                                String levelType = levelList.getLevelType();
+                                long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
+                                if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
+                                    if (sjNeedValue >= 0) {
+                                        tvUpdate.setText("离升级还需充值");
+                                        tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
+                                        tvUpdate.append("元");
+                                    } else {
+                                        tvUpdate.setText("您已达到最高贵族等级");
+                                    }
+                                    int userLevel = levelList.getLevelValue();
+                                    if (userLevel != 0) {
+//                                        ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
+                                        Glide.with(UserInfoActivity.this).asGif().load(ResourceMap.getResourceMap().
+                                                getRoyalLevelIcon(userLevel)).into(ivRoyal);
+                                    }
+                                    tvTotal.setText("本月已累计充值");
+                                    tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));
+                                    tvTotal.append("元");
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("onReqFailed" + errorMsg);
+                    }
+                });
     }
 }

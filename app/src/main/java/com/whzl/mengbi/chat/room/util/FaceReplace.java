@@ -19,6 +19,7 @@ import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.LogUtils;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,7 @@ import pl.droidsonroids.gif.GifDrawable;
 public class FaceReplace {
     private List<FacePattern> patternList = null;
     private List<FacePattern> guardPatternList = null;
+    private List<FacePattern> vipPatternList = null;
     private EmjoyInfo emjoyInfo = null;
 
     public void setGuardEmjoyInfo(EmjoyInfo guardEmjoyInfo) {
@@ -38,6 +40,17 @@ public class FaceReplace {
     }
 
     private EmjoyInfo guardEmjoyInfo = null;
+
+    //add by chen on 2018/10/19
+    private EmjoyInfo vipEmojiInfo = null;
+
+    public void setVipEmojiInfo(EmjoyInfo vipEmojiInfo) {
+        this.vipEmojiInfo = vipEmojiInfo;
+    }
+
+    public EmjoyInfo getVipEmojiInfo() {
+        return vipEmojiInfo;
+    }
 
     private static class FaceReplaceHolder {
         private static final FaceReplace instance = new FaceReplace();
@@ -68,6 +81,15 @@ public class FaceReplace {
             guardPatternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent, faceBean.getIcon(), faceBean.getValue()));
         }
 
+        //VIP表情
+        vipPatternList = new ArrayList<>();
+        String vipStrJson = FileUtils.getJson("images/face/vip.json", context);
+        vipEmojiInfo = GsonUtils.GsonToBean(vipStrJson, EmjoyInfo.class);
+        List<EmjoyInfo.FaceBean.PublicBean> vipList = vipEmojiInfo.getFace().getPublicX();
+        for (EmjoyInfo.FaceBean.PublicBean faceBean : vipList) {
+            byte[] fileContent = getFileContent(context, faceBean.getIcon());
+            vipPatternList.add(new FacePattern(Pattern.compile(faceBean.getValue()), fileContent, faceBean.getIcon(), faceBean.getValue()));
+        }
     }
 
     public EmjoyInfo getGuardEmjoyInfo() {
@@ -97,9 +119,10 @@ public class FaceReplace {
                         if ("/顶你".equals(fp.getValue()) || "/加油".equals(fp.getValue())) {
                             Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
                             drawable = new BitmapDrawable(context.getResources(), bitmap);
-                        }else {
-                        drawable = new GifDrawable(fp.getFileContent());
-                        drawable.setCallback(new DrawableCallback(textView));}
+                        } else {
+                            drawable = new GifDrawable(fp.getFileContent());
+                            drawable.setCallback(new DrawableCallback(textView));
+                        }
                     } else {
                         Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
                         drawable = new BitmapDrawable(context.getResources(), bitmap);
@@ -165,9 +188,59 @@ public class FaceReplace {
                 if (drawable == null) {
                     break;
                 }
-                drawable.setBounds(0, 0, DensityUtil.dp2px(16), DensityUtil.dp2px(16));
+                drawable.setBounds(0, 0, DensityUtil.dp2px(20), DensityUtil.dp2px(20));
                 ImageSpan span = new ImageSpan(drawable);
                 spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            }
+        }
+    }
+
+    public void vipFaceReplace(TextView textView, SpannableString spanString, Context context) {
+        textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        DrawableCallback callback = new DrawableCallback(textView);
+        for (FacePattern fp : vipPatternList) {
+            Matcher m = fp.getPattern().matcher(spanString);
+            while (m.find()){
+                int start = m.start();
+                int end = m.end();
+                Drawable drawable;
+                try {
+                    drawable = new GifDrawable(fp.getFileContent());
+                    drawable.setCallback(new DrawableCallback(textView));
+                } catch (Exception e) {
+                    break;
+                }
+                if (drawable == null){
+                    break;
+                }
+                drawable.setBounds(0,0,DensityUtil.dp2px(50),DensityUtil.dp2px(50));
+                ImageSpan span = new ImageSpan(drawable);
+                spanString.setSpan(span,start,end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            }
+        }
+    }
+
+    public void vipFaceReplace16(TextView textView, SpannableString spanString, Context context) {
+        textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        DrawableCallback callback = new DrawableCallback(textView);
+        for (FacePattern fp : vipPatternList) {
+            Matcher m = fp.getPattern().matcher(spanString);
+            while (m.find()){
+                int start = m.start();
+                int end = m.end();
+                Drawable drawable;
+                try {
+                    drawable = new GifDrawable(fp.getFileContent());
+                    drawable.setCallback(new DrawableCallback(textView));
+                } catch (Exception e) {
+                    break;
+                }
+                if (drawable == null){
+                    break;
+                }
+                drawable.setBounds(0,0,DensityUtil.dp2px(20),DensityUtil.dp2px(20));
+                ImageSpan span = new ImageSpan(drawable);
+                spanString.setSpan(span,start,end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             }
         }
     }

@@ -76,7 +76,7 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
                 case BAD_GATEWAY:
                 case SERVICE_UNAVAILABLE:
                     ToastUtils.showToast("服务端开小差了，请稍后再试");
-                    onError(0);
+                    onError(new ApiResult<>(0));
                     break;
                 case UNAUTHORIZED:
                 case FORBIDDEN:
@@ -102,7 +102,7 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
             //未知错误
             ToastUtils.showToast("网络连接失败，请检查网络设置");
         }
-        onError(0);
+        onError(new ApiResult<>(0));
     }
 
     @Override
@@ -113,7 +113,7 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
 
         if (body == null) {
             ToastUtils.showToast("数据异常，请稍后再试");
-            onError(0);
+            onError(new ApiResult<>(0));
             return;
         } else {
             if (body.code == ApiResult.REQUEST_SUCCESS) {
@@ -138,20 +138,12 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
                     }
                 }
             } else {
-                if (body.code == -1241) {
-                    onError(body.code);
+                if (body.code == 503 && "装备位已用完，无法装备".equals(body.msg)) {
+                    onError(body);
                     return;
                 }
-                if (body.code == -1210) {
-                    onError(body.code);
-                    return;
-                }
-                if (body.code == -13) {
-                    onError(body.code);
-                    return;
-                }
-                ToastUtils.showToast(body.msg);
-                onError(body.code);
+//                ToastUtils.showToast(body.msg);
+                onError(body);
             }
         }
     }
@@ -169,8 +161,14 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
 
     public abstract void onSuccess(T t);
 
-    public abstract void onError(int code);
+    public void onError(ApiResult<T> body){
+        ToastUtils.showToast(body.msg);
+        onError(body.code);
+    }
 
+    public void onError(int code) {
+
+    }
     /**
      * 检查是否继续，比如activiy已经结束
      *

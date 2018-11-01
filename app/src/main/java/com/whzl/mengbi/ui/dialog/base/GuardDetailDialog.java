@@ -114,6 +114,7 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
                 .subscribe(new ApiObserver<JsonElement>(this) {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
+                        ((LiveDisplayActivity)getActivity()).isGuard = true;
                         dismiss();
                     }
 

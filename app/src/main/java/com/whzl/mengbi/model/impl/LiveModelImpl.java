@@ -4,8 +4,9 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
+import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceCountBean;
-import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -17,14 +18,12 @@ import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -337,6 +336,27 @@ public class LiveModelImpl implements LiveModel {
                     @Override
                     public void onSuccess(PkInfoBean jsonElement) {
                         listener.onPkInfoSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(ApiResult<PkInfoBean> body) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void activityGrand(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .activityGrand(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<ActivityGrandBean>() {
+
+
+                    @Override
+                    public void onSuccess(ActivityGrandBean jsonElement) {
+                        listener.onActivityGrandSuccess(jsonElement);
                     }
 
                     @Override

@@ -14,7 +14,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/colorCommNotActive" />
+        android:background="@color/colorLine" />
 
     <RadioGroup
         android:id="@+id/rg_tab"
@@ -31,6 +31,12 @@
             android:checked="true"
             android:drawableTop="@drawable/selector_main_tab_home_icon"
             android:text="@string/home_title" />
+
+        <RadioButton
+            android:id="@+id/rb_rank"
+            style="@style/main_tab"
+            android:drawableTop="@drawable/selector_main_tab_rank_icon"
+            android:text="@string/rank_title" />
 
         <RadioButton
             android:id="@+id/rb_follow"

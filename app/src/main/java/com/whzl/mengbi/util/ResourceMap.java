@@ -120,13 +120,13 @@ public class ResourceMap {
     }
 
     private void initRoyalMap() {
-        royalLevelMap.put(1, R.drawable.ic_qingtong);
-        royalLevelMap.put(2, R.drawable.ic_baiyin);
-        royalLevelMap.put(3, R.drawable.ic_huangjin);
-        royalLevelMap.put(4, R.drawable.ic_bojin);
-        royalLevelMap.put(5, R.drawable.ic_zuanshi);
-        royalLevelMap.put(6, R.drawable.ic_xingyao);
-        royalLevelMap.put(7, R.drawable.ic_wangzhe);
+        royalLevelMap.put(1, R.drawable.royal_1);
+        royalLevelMap.put(2, R.drawable.royal_2);
+        royalLevelMap.put(3, R.drawable.royal_3);
+        royalLevelMap.put(4, R.drawable.royal_4);
+        royalLevelMap.put(5, R.drawable.royal_5);
+        royalLevelMap.put(6, R.drawable.royal_6);
+        royalLevelMap.put(7, R.drawable.royal_7);
     }
 
     public int getUserLevelIcon(int level) {
