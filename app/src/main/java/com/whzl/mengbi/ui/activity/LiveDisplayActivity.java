@@ -857,7 +857,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 for (int i = 0; i < runWayListBean.list.size(); i++) {
                     RunWayJson runWayJson = new RunWayJson();
                     runWayJson.setContext(runWayListBean.list.get(i));
-                    RunWayEvent event = new RunWayEvent(runWayJson, imageSpanList.get(i));
+                    RunWayEvent event;
+                    if (imageSpanList == null) {
+                        event = new RunWayEvent(runWayJson, null);
+                    } else {
+                        event = new RunWayEvent(runWayJson, imageSpanList.get(i));
+                    }
                     initRunWay();
                     mRunWayGiftControl.load(event);
                 }
@@ -1052,7 +1057,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     mTime = aLong;
-                    if (tvTreasureTimer == null||tvTreasureTimer.getVisibility()==View.GONE) {
+                    if (tvTreasureTimer == null || tvTreasureTimer.getVisibility() == View.GONE) {
                         return;
                     }
                     tvTreasureTimer.setText(getString(R.string.two, (599 - aLong) / 60, (599 - aLong) % 60));
@@ -1077,7 +1082,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     mTime = aLong;
-                    if (tvTreasureTimer == null||tvTreasureTimer.getVisibility()==View.GONE) {
+                    if (tvTreasureTimer == null || tvTreasureTimer.getVisibility() == View.GONE) {
                         return;
                     }
                     tvTreasureTimer.setText(getString(R.string.two, (59 - aLong) / 60, (59 - aLong) % 60));
