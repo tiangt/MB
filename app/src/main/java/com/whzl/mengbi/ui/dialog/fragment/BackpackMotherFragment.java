@@ -43,6 +43,8 @@ public class BackpackMotherFragment extends BaseFragment {
     LinearLayout pagerIndexContainer;
     @BindView(R.id.tv_backpack_empty)
     TextView tvBackpackEmpty;
+    @BindView(R.id.ll_backpack_empty)
+    LinearLayout llBackPack;
     private int pagers;
     private FragmentPagerAdaper adapter;
     private ArrayList<Fragment> fragments = new ArrayList<>();
@@ -126,7 +128,7 @@ public class BackpackMotherFragment extends BaseFragment {
                         fragments.clear();
                         if (backpackListBean != null && backpackListBean.list != null && backpackListBean.list.size() > 0) {
                             viewPager.setVisibility(View.VISIBLE);
-                            tvBackpackEmpty.setVisibility(View.GONE);
+                            llBackPack.setVisibility(View.GONE);
                             pagers = (int) Math.ceil(backpackListBean.list.size() / 10f);
                             setupPagerIndex(pagers);
                             for (int i = 0; i < pagers; i++) {
@@ -144,7 +146,7 @@ public class BackpackMotherFragment extends BaseFragment {
                             }
                         } else {
                             viewPager.setVisibility(View.GONE);
-                            tvBackpackEmpty.setVisibility(View.VISIBLE);
+                            llBackPack.setVisibility(View.VISIBLE);
                         }
                         adapter.notifyDataSetChanged();
                     }
@@ -155,7 +157,7 @@ public class BackpackMotherFragment extends BaseFragment {
                             return;
                         }
                         viewPager.setVisibility(View.GONE);
-                        tvBackpackEmpty.setVisibility(View.VISIBLE);
+                        llBackPack.setVisibility(View.VISIBLE);
                     }
                 });
     }
