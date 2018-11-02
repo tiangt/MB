@@ -165,4 +165,7 @@
     <color name="text_color_use_pack">#2cd996</color>
     <color name="text_color_wait_pack">#ff611b</color>
 
+    <color name="bg_welcome_hasguard">#5d5584</color>
+    <color name="bg_welcome_noguard">#242b35</color>
+
 </resources>

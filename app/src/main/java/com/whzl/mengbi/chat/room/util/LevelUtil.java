@@ -95,7 +95,7 @@ public class LevelUtil {
         float dpHeight = ImageUrl.IMAGE_HIGHT;
         float dpWidth = originWidth * dpHeight / originHeight;
         levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
-        CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
+        ImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
         levelIcon.setSpan(imageSpan, 0, levelIcon.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return levelIcon;
@@ -121,8 +121,8 @@ public class LevelUtil {
             drawable.setCallback(new DrawableCallback(textView));
         }
         if (drawable != null) {
-            drawable.setBounds(0, 0, DensityUtil.dp2px(30), DensityUtil.dp2px(11));
-            ImageSpan span = new CenterAlignImageSpan(drawable);
+            drawable.setBounds(0, 0, DensityUtil.dp2px(28), DensityUtil.dp2px(11));
+            ImageSpan span = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
             levelIcon.setSpan(span, 0, levelIcon.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
 
@@ -157,5 +157,4 @@ public class LevelUtil {
             return null;
         }
     }
-
 }

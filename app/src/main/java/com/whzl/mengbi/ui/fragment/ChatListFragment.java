@@ -118,39 +118,39 @@ public class ChatListFragment extends BaseFragment {
                 message.fillHolder(holder);
                 holder.itemView.setOnClickListener(null);
                 if (getItemViewType(position) == 1 || getItemViewType(position) == 2) {
-                    WelcomeMsg welcomeMsg = (WelcomeMsg) message;
-                    RelativeLayout rlCarContainer = holder.itemView.findViewById(R.id.rl_car_container);
-                    if (welcomeMsg.hasBagCar()) {
-                        rlCarContainer.setVisibility(View.VISIBLE);
-                        ImageView ivCar = holder.itemView.findViewById(R.id.iv_car);
-                        TextView tvCarName = holder.itemView.findViewById(R.id.tv_car_name);
-                        TextView tvPrettyDesc = holder.itemView.findViewById(R.id.tv_pretty_num_desc);
-                        TextView tvPrettyNum = holder.itemView.findViewById(R.id.tv_pretty_num);
-                        tvCarName.setText(welcomeMsg.getCarName());
-                        tvPrettyDesc.setText(welcomeMsg.getPrettyNum() == 0 ? "普号" : "靓号");
-                        tvPrettyNum.setText(welcomeMsg.getPrettyNum() == 0 ? welcomeMsg.getUid() + "" : welcomeMsg.getPrettyNum() + "");
-                        String imageUrl = ImageUrl.getImageUrl(welcomeMsg.getCarId(), "jpg");
-                        GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivCar);
-                        String goodsColor = welcomeMsg.getGoodsColor();
-                        if ("A".equals(goodsColor)) {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
-                        } else if ("B".equals(goodsColor)) {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
-                        } else if ("C".equals(goodsColor)) {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
-                        } else if ("D".equals(goodsColor)) {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
-                        } else {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
-                        }
-                    } else {
-                        rlCarContainer.setVisibility(View.GONE);
-                    }
+//                    WelcomeMsg welcomeMsg = (WelcomeMsg) message;
+//                    RelativeLayout rlCarContainer = holder.itemView.findViewById(R.id.rl_car_container);
+//                    if (welcomeMsg.hasBagCar()) {
+//                        rlCarContainer.setVisibility(View.VISIBLE);
+//                        ImageView ivCar = holder.itemView.findViewById(R.id.iv_car);
+//                        TextView tvCarName = holder.itemView.findViewById(R.id.tv_car_name);
+//                        TextView tvPrettyDesc = holder.itemView.findViewById(R.id.tv_pretty_num_desc);
+//                        TextView tvPrettyNum = holder.itemView.findViewById(R.id.tv_pretty_num);
+//                        tvCarName.setText(welcomeMsg.getCarName());
+//                        tvPrettyDesc.setText(welcomeMsg.getPrettyNum() == 0 ? "普号" : "靓号");
+//                        tvPrettyNum.setText(welcomeMsg.getPrettyNum() == 0 ? welcomeMsg.getUid() + "" : welcomeMsg.getPrettyNum() + "");
+//                        String imageUrl = ImageUrl.getImageUrl(welcomeMsg.getCarId(), "jpg");
+//                        GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivCar);
+//                        String goodsColor = welcomeMsg.getGoodsColor();
+//                        if ("A".equals(goodsColor)) {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
+//                        } else if ("B".equals(goodsColor)) {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
+//                        } else if ("C".equals(goodsColor)) {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
+//                        } else if ("D".equals(goodsColor)) {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
+//                        } else {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
+//                        }
+//                    } else {
+//                        rlCarContainer.setVisibility(View.GONE);
+//                    }
 
                 } else {
                     ImageView ivAnnounce = holder.itemView.findViewById(R.id.iv_announce);
