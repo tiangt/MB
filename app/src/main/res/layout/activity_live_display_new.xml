@@ -104,6 +104,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="4dp"
+                    android:layout_marginLeft="4dp"
                     android:background="@drawable/shape_live_display_populartity_bg"
                     android:gravity="center"
                     android:textColor="@color/white"
@@ -114,14 +115,14 @@
             <RelativeLayout
                 android:id="@+id/rl_contribution_container"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="28dp"
                 android:layout_marginLeft="6dp"
                 android:layout_marginTop="6.5dp">
 
-                <Button
-                    android:id="@+id/btn_contribute"
+                <TextView
+                    android:id="@+id/tv_contribute"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="25dp"
                     android:background="@drawable/shape_live_display_contribution_btn_bg"
                     android:drawableRight="@drawable/live_display_arrow"
                     android:drawableLeft="@drawable/live_display_cup"
@@ -129,6 +130,7 @@
                     android:gravity="center"
                     android:paddingLeft="9dp"
                     android:paddingRight="9dp"
+                    android:layout_centerVertical="true"
                     android:text="@string/live_display_contribution"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
@@ -137,36 +139,53 @@
                     android:id="@+id/rl_guard_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/btn_contribute"
-                    android:layout_marginLeft="13dp">
+                    android:layout_toRightOf="@id/tv_contribute"
+                    android:layout_marginLeft="6dp">
+
                     <ImageView
+                        android:layout_width="33dp"
+                        android:layout_height="28dp"
+                        android:src="@drawable/live_display_guard_num" />
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/live_display_guard_num"/>
+                        android:text="233"
+                        android:textSize="5sp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/white"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_supercar_track"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/rl_guard_number">
+
+                    <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
+                        android:id="@+id/tv_run_way_gift"
+                        android:layout_width="match_parent"
+                        android:layout_height="22dp"
+                        android:singleLine="true"
+                        android:textSize="12sp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_centerVertical="true" />
                 </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/iv_live_rocket"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/rl_guard_number"
-                    android:src="@drawable/live_display_rocket"/>
-
-                <android.support.design.widget.CoordinatorLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_toRightOf="@id/iv_live_rocket">
-
-                    <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
-                        android:id="@+id/tv_run_way_gift"
-                        android:layout_width="1000dp"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
-                </android.support.design.widget.CoordinatorLayout>
+                    android:visibility="gone"
+                    android:layout_toLeftOf="@id/rl_supercar_track"
+                    android:src="@drawable/live_display_rocket"/>
             </RelativeLayout>
 
             <com.whzl.mengbi.ui.widget.view.RatioRelativeLayout
@@ -319,7 +338,7 @@
             <ImageButton
                 android:id="@+id/btn_chat"
                 android:layout_width="77dp"
-                android:layout_height="30dp"
+                android:layout_height="38dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
                 android:background="@null"
@@ -328,8 +347,8 @@
 
             <ImageButton
                 android:id="@+id/btn_chat_private"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="7dp"
                 android:layout_toRightOf="@id/btn_chat"
@@ -350,8 +369,8 @@
 
             <ImageButton
                 android:id="@+id/btn_close"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
@@ -361,8 +380,8 @@
 
             <ImageButton
                 android:id="@+id/btn_share"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:layout_toLeftOf="@id/btn_close"
@@ -372,8 +391,8 @@
 
             <ImageButton
                 android:id="@+id/btn_more"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:layout_toLeftOf="@id/btn_share"
@@ -383,8 +402,8 @@
 
             <ImageButton
                 android:id="@+id/btn_free_gift"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="33dp"
+                android:layout_height="35dp"
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:layout_toLeftOf="@id/btn_more"
@@ -394,8 +413,8 @@
 
             <ImageButton
                 android:id="@+id/btn_send_gift"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
                 android:background="@null"

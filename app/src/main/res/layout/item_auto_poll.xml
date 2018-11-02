@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.whzl.mengbi.ui.widget.view.CircleRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/circle_head"
+    android:layout_width="31dp"
+    android:layout_height="31dp"
+    android:layout_margin="3dp"
+    android:background="@drawable/shape_online_head">
+
+    <com.whzl.mengbi.ui.widget.view.CircleImageView
+        android:id="@+id/iv_circle_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"/>
+
+    <ImageView
+        android:id="@+id/iv_royal_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</com.whzl.mengbi.ui.widget.view.CircleRelativeLayout>

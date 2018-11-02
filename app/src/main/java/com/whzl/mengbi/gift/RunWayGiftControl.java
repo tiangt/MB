@@ -1,5 +1,9 @@
 package com.whzl.mengbi.gift;
 
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 
@@ -11,11 +15,20 @@ import java.util.ArrayList;
  */
 public class RunWayGiftControl {
     private AutoScrollTextView autoScrollView;
+    private RelativeLayout relativeLayout;
+    private ImageView imageView;
     private ArrayList<RunWayEvent> runwayQueue = new ArrayList<>();
     private RunWayEvent cacheEvent;
+    private TrackAnim trackAnim;
 
     public RunWayGiftControl(AutoScrollTextView autoScrollTextView) {
         this.autoScrollView = autoScrollTextView;
+    }
+
+    public RunWayGiftControl(AutoScrollTextView autoScrollTextView, RelativeLayout relativeLayout, ImageView imageView) {
+        this.autoScrollView = autoScrollTextView;
+        this.relativeLayout = relativeLayout;
+        this.imageView = imageView;
     }
 
     public void load(RunWayEvent event) {
@@ -25,6 +38,10 @@ public class RunWayGiftControl {
             return;
         }
         if (!autoScrollView.isStarting) {
+            relativeLayout.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            trackAnim = new TrackAnim(relativeLayout, imageView);
+            trackAnim.startAnim();
             startRun(event);
             return;
         }
@@ -58,6 +75,9 @@ public class RunWayGiftControl {
         if (autoScrollView != null) {
             autoScrollView.stopScroll();
             autoScrollView.dispose();
+            trackAnim.stopAnim();
+            relativeLayout.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
         }
         runwayQueue.clear();
     }

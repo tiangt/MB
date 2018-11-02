@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -90,6 +91,8 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.view.LiveView;
+import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
+import com.whzl.mengbi.ui.widget.recyclerview.AutoPollRecyclerView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
@@ -151,8 +154,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageButton btnSendGift;
     @BindView(R.id.ll_gift_container)
     LinearLayout llGiftContainer;
-    @BindView(R.id.btn_contribute)
-    Button btnContribute;
+    @BindView(R.id.tv_contribute)
+    TextView tvContribute;
     @BindView(R.id.btn_close)
     ImageButton btnClose;
     @BindView(R.id.iv_gift_gif)
@@ -197,6 +200,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     Banner banner;
     @BindView(R.id.vp_activity)
     ViewPager vpActivity;
+    @BindView(R.id.rl_supercar_track)
+    RelativeLayout rlSupercarTrack;
+    @BindView(R.id.iv_live_rocket)
+    ImageView ivRocket;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -241,6 +248,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
     private CircleFragmentPagerAdaper mGrandAdaper;
     private Disposable grandDisposable;
+    private AutoPollAdapter pollAdapter;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -419,19 +427,43 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mGuardRecycler.setLayoutManager(layoutManager);
-        mGuardAdapter = new BaseListAdapter() {
-            @Override
-            protected int getDataCount() {
-                return mGuardList == null ? 0 : 3;
-            }
+//        mGuardAdapter = new BaseListAdapter() {
+//            @Override
+//            protected int getDataCount() {
+//                return mGuardList == null ? 0 : 3;
+//            }
+//
+//            @Override
+//            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+//                View itemView = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.item_protect, parent, false);
+//                return new GuardViewHolder(itemView);
+//            }
+//        };
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 50; ) {
+            list.add(" Item: " + ++i);
+        }
+        if(list != null){
+            pollAdapter = new AutoPollAdapter(this,list);
+            mGuardRecycler.setAdapter(pollAdapter);
+            pollAdapter.setOnItemClickListener(new AutoPollAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View viewById, int pos) {
+                    Toast.makeText(LiveDisplayActivity.this, "第" + pos + "个", Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.item_protect, parent, false);
-                return new GuardViewHolder(itemView);
-            }
-        };
-        mGuardRecycler.setAdapter(mGuardAdapter);
+                @Override
+                public void onItemLongClick(View viewById, int pos) {
+
+                }
+            });
+        }
+
+
+
+
+//        mGuardRecycler.setAdapter(mGuardAdapter);
+
     }
 
     public void showMessageNotify() {
@@ -511,7 +543,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @OnClick({R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift, R.id.tv_popularity
-            , R.id.btn_contribute, R.id.btn_chat, R.id.btn_chat_private, R.id.rootView
+            , R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private, R.id.rootView
             , R.id.fragment_container
             , R.id.btn_treasure_box})
     public void onClick(View view) {
@@ -578,7 +610,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
 
-            case R.id.btn_contribute:
+            case R.id.tv_contribute:
                 if (mRankDialog != null && mRankDialog.isAdded()) {
                     return;
                 }
@@ -873,7 +905,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initRunWay() {
         if (mRunWayGiftControl == null) {
-            mRunWayGiftControl = new RunWayGiftControl(runWayText);
+//            mRunWayGiftControl = new RunWayGiftControl(runWayText);
+            rlSupercarTrack.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+            mRunWayGiftControl = new RunWayGiftControl(runWayText, rlSupercarTrack, ivRocket);
             mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
         }
     }
@@ -887,7 +921,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (guardListBean != null) {
             mGuardList.addAll(guardListBean.list);
         }
-        mGuardAdapter.notifyDataSetChanged();
+//        mGuardAdapter.notifyDataSetChanged();
+        pollAdapter.notifyDataSetChanged();
     }
 
     @Override

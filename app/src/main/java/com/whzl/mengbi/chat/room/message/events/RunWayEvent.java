@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
+import com.whzl.mengbi.util.DateUtils;
 
 public class RunWayEvent {
     private Context mContext;
@@ -45,11 +46,13 @@ public class RunWayEvent {
     }
 
     public void showRunWay(TextView tvRunWayGift) throws Exception{
-        tvRunWayGift.setText(LightSpanString.getLightString(runWayJson.getContext().getNickname(),
-                Color.parseColor("#f1275b")));
+        tvRunWayGift.setText(LightSpanString.getLightString(DateUtils.longToDate(runWayJson.getContext().getDateLong())+" ",
+                Color.parseColor("#faf9f9")));
+        tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getNickname(),
+                Color.parseColor("#fff00a")));
         tvRunWayGift.append(LightSpanString.getLightString(" 送 ", Color.parseColor("#faf9f9")));
         tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getToNickname(),
-                Color.parseColor("#f1275b")));
+                Color.parseColor("#fff00a")));
         tvRunWayGift.append(LightSpanString.getLightString(" " + runWayJson.getContext().getCount(),
                 Color.parseColor("#faf9f9")));
         tvRunWayGift.append(LightSpanString.getLightString("个" + runWayJson.getContext().getGoodsName(),
@@ -59,6 +62,10 @@ public class RunWayEvent {
         if (getGiftSpanString()!=null) {
             tvRunWayGift.append(getGiftSpanString());
         }
+        tvRunWayGift.append(LightSpanString.getLightString("攻占超跑",
+                Color.parseColor("#faf9f9")));
+        tvRunWayGift.append(LightSpanString.getLightString(" "+"围观ing",
+                Color.parseColor("#fff00a")));
     }
 
     /*
