@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/shape_dialog_top_corner_bg"
+    android:background="@drawable/bg_dialog_gift_live"
     android:orientation="vertical">
 
     <android.support.constraint.ConstraintLayout
@@ -25,17 +25,17 @@
         android:id="@+id/tab_layout"
         style="@style/LiveHouseDialogTab"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginLeft="10dp" />
+        android:layout_height="30dp" />
 
-
-    <include layout="@layout/common_divider" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#10ffffff" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="270dp"
-        android:layout_marginTop="8dp">
+        android:layout_height="270dp">
 
     </android.support.v4.view.ViewPager>
 
@@ -56,39 +56,45 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/tv_mengbi"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="12dp"
+                android:gravity="center"
+                android:text="萌币:"
+                android:textColor="#fefefe"
+                android:textSize="@dimen/text_size_dialog_gift" />
+
+            <TextView
                 android:id="@+id/tv_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:drawableLeft="@drawable/mengbi_big_icon"
+                android:layout_toRightOf="@id/tv_mengbi"
                 android:drawablePadding="15dp"
                 android:gravity="center"
                 android:text="0"
-                android:textColor="#fd9f0a"
-                android:textSize="16sp"
+                android:textColor="#ffeb00"
+                android:textSize="@dimen/text_size_dialog_gift"
                 android:textStyle="bold" />
 
-            <View
-                android:id="@+id/view_divider"
-                android:layout_width="0.5dp"
-                android:layout_height="14dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@id/tv_amount"
-                android:background="#f1275b" />
 
             <TextView
                 android:id="@+id/tv_top_up"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="7.5dp"
-                android:layout_toRightOf="@id/view_divider"
+                android:layout_toRightOf="@id/tv_amount"
+                android:background="@drawable/btn_dialog_gift_recharge"
                 android:gravity="center_vertical"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:paddingRight="6dp"
+                android:paddingLeft="6dp"
                 android:text="充值>"
-                android:textColor="#f1275b"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="#fefefe"
+                android:textSize="9sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -111,7 +117,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="5dp"
                     android:text="1"
-                    android:textColor="#323232"
+                    android:textColor="#ffffff"
                     android:textSize="12dp" />
 
                 <Button

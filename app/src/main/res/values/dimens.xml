@@ -60,4 +60,5 @@
 
     <dimen name="text_chat_size">12sp</dimen>
     <dimen name="margin_right_chat">100dp</dimen>
+    <dimen name="text_size_dialog_gift">12sp</dimen>
 </resources>

@@ -10,18 +10,19 @@
         android:layout_width="46dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:gravity="right"
-        android:textColor="#323232"
-        android:textSize="14sp" />
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="9sp" />
 
     <TextView
         android:id="@+id/tv_count_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="15dp"
         android:layout_toRightOf="@id/tv_count"
-        android:textColor="#323232" />
+        android:textSize="9sp"
+        android:textColor="#ffffff" />
 
     <View
         android:id="@+id/view_divider"
@@ -30,6 +31,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="6.5dp"
         android:layout_marginRight="6.5dp"
-        android:background="@color/divider_color" />
+        android:background="#10ffffff" />
 
 </RelativeLayout>

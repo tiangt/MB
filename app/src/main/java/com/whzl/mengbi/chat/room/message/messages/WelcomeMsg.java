@@ -31,7 +31,7 @@ public class WelcomeMsg implements FillHolderMessage {
     private WelcomeJson mWelcomeJson;
     private int royalLevel;
     private boolean hasVip = false;
-    private final String prettyNumberOrUserId;
+    private String prettyNumberOrUserId;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
@@ -51,7 +51,6 @@ public class WelcomeMsg implements FillHolderMessage {
         this.hasGuard = userHasGuard(welcomeJson.getContext().getInfo().getUserBagList());
         this.royalLevel = getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
         this.hasVip = userHasVip(welcomeJson.getContext().getInfo().getUserBagList());
-        prettyNumberOrUserId = welcomeJson.getContext().getCarObj().prettyNumberOrUserId;
     }
 
     @Override

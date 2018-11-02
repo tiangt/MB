@@ -76,15 +76,15 @@
 
     <!--tab-->
     <style name="LiveHouseDialogTab" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">#20c78a</item>
+        <item name="tabIndicatorColor">#ff2b3f</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="android:textAllCaps">true</item>
         <!--<selectedItem name="tabIndicatorColor">@android:color/white</selectedItem>-->
         <!--<item name="tabPaddingStart">15dp</item>-->
         <!--<item name="tabPaddingEnd">15dp</item>-->
-        <item name="tabBackground">@color/white</item>
+        <item name="tabBackground">@color/transparent</item>
         <item name="tabTextAppearance">@style/LiveHouseDialogTabText</item>
-        <item name="tabSelectedTextColor">#20c78a</item>
+        <item name="tabSelectedTextColor">#ff2b3f</item>
         <item name="tabGravity">fill</item>
     </style>
 
@@ -115,8 +115,8 @@
     </style>
 
     <style name="LiveHouseDialogTabText" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">17sp</item>
-        <item name="android:textColor">#646464</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#fefefe</item>
         <!--<selectedItem name="android:textColor">@android:color/white</selectedItem>-->
         <item name="textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
