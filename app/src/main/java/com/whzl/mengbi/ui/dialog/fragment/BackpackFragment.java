@@ -1,10 +1,8 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +14,12 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
-import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
-import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -55,6 +50,8 @@ public class BackpackFragment extends BaseFragment {
     private ArrayList<BackpackListBean.GoodsDetailBean> mDatas = new ArrayList<>();
     private int selectedPosition = -1;
 
+    private int selectId = -1;
+
 
     public static BackpackFragment newInstance(ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList) {
         BackpackFragment fragment = new BackpackFragment();
@@ -74,7 +71,7 @@ public class BackpackFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         mDatas = getArguments().getParcelableArrayList("data");
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        recycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        recycler.setLayoutManager(new GridLayoutManager(getContext(), 5));
         giftAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
@@ -132,9 +129,9 @@ public class BackpackFragment extends BaseFragment {
             BackpackListBean.GoodsDetailBean goodsDetailBean = mDatas.get(position);
             GlideImageLoader.getInstace().displayImage(getContext(), goodsDetailBean.goodsPic, ivGift);
             tvGiftName.setText(goodsDetailBean.goodsName);
-            tvCost.setText("数量 ");
-            SpannableString spannableString = StringUtils.spannableStringColor(goodsDetailBean.count + "", Color.parseColor("#fdc809"));
-            tvCost.append(spannableString);
+//            tvCost.setText("数量 ");
+//            SpannableString spannableString = StringUtils.spannableStringColor(goodsDetailBean.count + "", Color.parseColor("#fdc809"));
+            tvCost.setText(goodsDetailBean.count + "");
             selectedMark.setSelected(position == selectedPosition);
         }
 
@@ -146,6 +143,7 @@ public class BackpackFragment extends BaseFragment {
             giftAdapter.notifyDataSetChanged();
             GiftInfo.GiftDetailInfoBean giftDetailInfoBean = new GiftInfo.GiftDetailInfoBean();
             giftDetailInfoBean.setGoodsId(goodsDetailBean.goodsId);
+            selectId = goodsDetailBean.goodsId;
             giftDetailInfoBean.setBackpack(true);
             flagOnMessageEvent = false;
             EventBus.getDefault().post(new GiftSelectedEvent(giftDetailInfoBean));
@@ -173,9 +171,12 @@ public class BackpackFragment extends BaseFragment {
 //                                    }
 //                                }
 //                            }
+                            if (mDatas.size() != backpackListBean.list.size()) {
+                                selectedPosition = -1;
+                                EventBus.getDefault().post(new GiftSelectedEvent(null));
+                            }
                             mDatas.clear();
                             mDatas.addAll(backpackListBean.list);
-                            selectedPosition = -1;
                             giftAdapter.notifyDataSetChanged();
                         }
                     }

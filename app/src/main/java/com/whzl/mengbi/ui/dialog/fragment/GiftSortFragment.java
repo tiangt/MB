@@ -49,7 +49,7 @@ public class GiftSortFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         ArrayList<GiftInfo.GiftDetailInfoBean> giftList = getArguments().getParcelableArrayList("gifts");
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        recycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        recycler.setLayoutManager(new GridLayoutManager(getContext(), 5));
         giftAdapter = new LiveHouseGiftAdapter(getContext(), R.layout.item_live_house_gift, giftList);
         giftAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
