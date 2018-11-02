@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 
 import com.whzl.mengbi.R;
@@ -30,6 +31,7 @@ public class WelcomeMsg implements FillHolderMessage {
     private WelcomeJson mWelcomeJson;
     private int royalLevel;
     private boolean hasVip = false;
+    private final String prettyNumberOrUserId;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
@@ -49,12 +51,13 @@ public class WelcomeMsg implements FillHolderMessage {
         this.hasGuard = userHasGuard(welcomeJson.getContext().getInfo().getUserBagList());
         this.royalLevel = getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
         this.hasVip = userHasVip(welcomeJson.getContext().getInfo().getUserBagList());
+        prettyNumberOrUserId = welcomeJson.getContext().getCarObj().prettyNumberOrUserId;
     }
 
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
         WelcomeTextViewHolder mHolder = (WelcomeTextViewHolder) holder;
-        mHolder.textView.setBackgroundResource(R.drawable.bg_welcome_noguard);
+        mHolder.linearLayout.setBackgroundResource(R.drawable.bg_welcome_noguard);
         mHolder.textView.setText("");
         if (royalLevel > 0) {
             try {
@@ -75,7 +78,7 @@ public class WelcomeMsg implements FillHolderMessage {
             mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
             mHolder.textView.append(" ");
             if (hasGuard) {
-                mHolder.textView.setBackgroundResource(R.drawable.bg_welcome_hasguard);
+                mHolder.linearLayout.setBackgroundResource(R.drawable.bg_welcome_hasguard);
                 mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.guard));
                 mHolder.textView.append(" ");
             }
@@ -89,8 +92,24 @@ public class WelcomeMsg implements FillHolderMessage {
                     mHolder.textView.append(" ");
                 }
             }
+            if (!TextUtils.isEmpty(prettyNumberOrUserId)) {
+//                switch (prettyNumberOrUserId.length()) {
+//                    case 5:
+//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
+//                        mHolder.textView.append(" ");
+//                        break;
+//                    case 6:
+//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
+//                        mHolder.textView.append(" ");
+//                        break;
+//                    case 7:
+//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
+//                        mHolder.textView.append(" ");
+//                        break;
+//                }
+            }
             mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#d9d9d9")));
-            if (royalLevel>0) {
+            if (royalLevel > 0) {
                 mHolder.textView.append(LightSpanString.getLightString(" 闪亮登场", Color.parseColor("#d9d9d9")));
             } else {
                 mHolder.textView.append(LightSpanString.getLightString(" 精彩亮相", Color.parseColor("#d9d9d9")));

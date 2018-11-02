@@ -2,10 +2,12 @@ package com.whzl.mengbi.chat.room.message.messages;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 
+import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.GiftJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
@@ -53,20 +55,21 @@ public class GiftMsg implements FillHolderMessage {
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
+        mHolder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
         mHolder.textView.setText("");
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         if (isAnchor) {
             mHolder.textView.append(LevelUtil.getImageResourceSpan(context, ResourceMap.getResourceMap().getAnchorLevelIcon(fromLevel)));
-        }else {
+        } else {
             mHolder.textView.append(LevelUtil.getImageResourceSpan(context, ResourceMap.getResourceMap().getUserLevelIcon(fromLevel)));
         }
         mHolder.textView.append(" ");
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickName, fromUid, programId));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickName, fromUid, programId, ContextCompat.getColor(context, R.color.text_color_sendgif)));
         mHolder.textView.append(" ");
-        mHolder.textView.append(LightSpanString.getLightString("赠送给 主播 ", WHITE_FONG_COLOR));
+        mHolder.textView.append(LightSpanString.getLightString(" 送 主播 ", ContextCompat.getColor(context, R.color.text_color_sendgif)));
         //mHolder.textView.append(getNickNameSpan(toNickName,toUid));
-        mHolder.textView.append(LightSpanString.getLightString(giftCount +"", Color.parseColor("#f1275b")));
-        mHolder.textView.append(LightSpanString.getLightString("个" + giftName, WHITE_FONG_COLOR));
+        mHolder.textView.append(LightSpanString.getLightString(giftCount + " ",ContextCompat.getColor(context, R.color.text_color_sendgif)));
+        mHolder.textView.append(LightSpanString.getLightString("个 " + giftName, ContextCompat.getColor(context, R.color.text_color_sendgif)));
         if (giftPicSpan != null) {
             mHolder.textView.append(" ");
             mHolder.textView.append(giftPicSpan);
@@ -84,7 +87,7 @@ public class GiftMsg implements FillHolderMessage {
         if (levelList == null) {
             return fromLevel;
         }
-        for(GiftJson.LevelEntity levelEntity: levelList) {
+        for (GiftJson.LevelEntity levelEntity : levelList) {
             if (levelEntity.getLevelType().equals("ANCHOR_LEVEL")) {
                 fromLevel = levelEntity.getLevelValue();
             }

@@ -162,7 +162,7 @@ public class FaceReplace {
                 if (drawable == null) {
                     break;
                 }
-                drawable.setBounds(0, 0, DensityUtil.dp2px(50), DensityUtil.dp2px(50));
+                drawable.setBounds(0, 0, DensityUtil.dp2px(31), DensityUtil.dp2px(31));
                 ImageSpan span = new ImageSpan(drawable);
                 spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             }

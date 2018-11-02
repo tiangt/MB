@@ -59,4 +59,5 @@
     <dimen name="grid_expected_size">120dp</dimen>
 
     <dimen name="text_chat_size">12sp</dimen>
+    <dimen name="margin_right_chat">100dp</dimen>
 </resources>

@@ -18,7 +18,6 @@ import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.UIUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -70,7 +69,7 @@ public class ChatMessage implements FillHolderMessage {
             programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
         }
         to_level = LevelUtil.getUserLevel(msgJson.getTo_json());
-        if(msgJson.getFrom_json() != null && msgJson.getFrom_json().getGoodsList() != null){
+        if (msgJson.getFrom_json() != null && msgJson.getFrom_json().getGoodsList() != null) {
             hasGuard = userHasGuard(msgJson.getFrom_json().getGoodsList());
             hasVip = userHasVip(msgJson.getFrom_json().getGoodsList());
         }
@@ -94,7 +93,7 @@ public class ChatMessage implements FillHolderMessage {
         if (royal_level > 0) {
 //            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
             try {
-                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, royal_level,mholder.textView));
+                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, royal_level, mholder.textView));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -119,12 +118,17 @@ public class ChatMessage implements FillHolderMessage {
     }
 
     private void parseNoRecieverMessage() {
+        if (hasGuard) {
+            mholder.textView.setBackgroundResource(R.drawable.bg_welcome_hasguard);
+        } else {
+            mholder.textView.setBackgroundResource(R.drawable.bg_welcome_noguard);
+        }
 //        非游客发言
         if (royal_level > 0) {
 //            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
             try {
                 mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext,
-                        royal_level,mholder.textView));
+                        royal_level, mholder.textView));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -152,15 +156,21 @@ public class ChatMessage implements FillHolderMessage {
                 mholder.textView.append(" ");
             }
         }
-        mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId));
-        mholder.textView.append(LightSpanString.getLightString(": ", Color.parseColor("#75bbfb")));
+        if (hasVip) {
+            mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#fff607")));
+        } else if (from_uid == 0) {
+            mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#d9d9d9")));
+        } else {
+            mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#2da8ee")));
+        }
+
+        mholder.textView.append(LightSpanString.getLightString("  ", Color.parseColor("#75bbfb")));
         SpannableString spanString;
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
-            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#f1275b"));
+            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#f9f9f9"));
         } else {
-            spanString = LightSpanString.getLightString(contentString, WHITE_FONG_COLOR);
+            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#f9f9f9"));
         }
-        //TODO:表情替换
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
         if (hasGuard) {
             FaceReplace.getInstance().guardFaceReplace(mholder.textView, spanString, mContext);
@@ -173,7 +183,7 @@ public class ChatMessage implements FillHolderMessage {
         if (royal_level > 0) {
 //            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, ResourceMap.getResourceMap().getRoyalLevelIcon(royal_level)));
             try {
-                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, royal_level,mholder.textView));
+                mholder.textView.append(LevelUtil.getRoyalImageResourceSpan(mContext, royal_level, mholder.textView));
             } catch (IOException e) {
                 e.printStackTrace();
             }

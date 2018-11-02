@@ -197,7 +197,7 @@ public class WelcomeJson {
         }
 
         private int carPicId;
-        private String prettyNumberOrUserId;
+        public String prettyNumberOrUserId;
         private String goodsColor;
         private int carGoodsId;
         private String goodsName;

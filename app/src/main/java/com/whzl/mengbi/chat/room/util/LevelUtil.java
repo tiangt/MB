@@ -121,7 +121,11 @@ public class LevelUtil {
             drawable.setCallback(new DrawableCallback(textView));
         }
         if (drawable != null) {
-            drawable.setBounds(0, 0, DensityUtil.dp2px(28), DensityUtil.dp2px(11));
+            int originWidth = drawable.getIntrinsicWidth();
+            int originHeight = drawable.getIntrinsicHeight();
+            float dpHeight = 13;
+            float dpWidth = originWidth * dpHeight / originHeight;
+            drawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
             ImageSpan span = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
             levelIcon.setSpan(span, 0, levelIcon.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
