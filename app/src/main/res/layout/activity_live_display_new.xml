@@ -87,8 +87,8 @@
                 </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/guard_recycler"
-                    android:layout_width="match_parent"
+                    android:id="@+id/audience_recycler"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_toLeftOf="@id/tv_popularity"
                     android:layout_toRightOf="@id/rl_anchor_info"
@@ -170,12 +170,13 @@
                     <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
                         android:id="@+id/tv_run_way_gift"
                         android:layout_width="match_parent"
-                        android:layout_height="22dp"
+                        android:layout_height="20dp"
                         android:singleLine="true"
-                        android:textSize="12sp"
                         android:layout_marginRight="5dp"
                         android:layout_marginLeft="5dp"
-                        android:layout_centerVertical="true" />
+                        android:layout_marginBottom="2dp"
+                        android:gravity="center_vertical"
+                        android:textSize="12sp"/>
                 </RelativeLayout>
 
                 <ImageView
@@ -338,7 +339,7 @@
             <ImageButton
                 android:id="@+id/btn_chat"
                 android:layout_width="77dp"
-                android:layout_height="38dp"
+                android:layout_height="32dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
                 android:background="@null"
@@ -347,8 +348,8 @@
 
             <ImageButton
                 android:id="@+id/btn_chat_private"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="7dp"
                 android:layout_toRightOf="@id/btn_chat"
@@ -369,8 +370,8 @@
 
             <ImageButton
                 android:id="@+id/btn_close"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="12dp"
@@ -380,41 +381,44 @@
 
             <ImageButton
                 android:id="@+id/btn_share"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:layout_toLeftOf="@id/btn_close"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="6dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_live_share"/>
 
             <ImageButton
                 android:id="@+id/btn_more"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:layout_toLeftOf="@id/btn_share"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="6dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_live_more"/>
 
             <ImageButton
                 android:id="@+id/btn_free_gift"
-                android:layout_width="33dp"
-                android:layout_height="35dp"
+                android:layout_width="31dp"
+                android:layout_height="33dp"
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:layout_toLeftOf="@id/btn_more"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="6dp"
+                android:visibility="gone"
                 android:src="@drawable/ic_live_free_gift"/>
 
             <ImageButton
                 android:id="@+id/btn_send_gift"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
                 android:background="@null"
@@ -435,8 +439,8 @@
 
         <ImageButton
             android:id="@+id/btn_treasure_box"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:background="@null"
             android:scaleType="centerCrop"
             android:src="@drawable/live_treasure_box_btn_icon" />

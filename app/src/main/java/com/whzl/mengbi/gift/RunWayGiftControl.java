@@ -45,6 +45,7 @@ public class RunWayGiftControl {
             startRun(event);
             return;
         }
+
         runwayQueue.add(event);
     }
 
@@ -73,8 +74,8 @@ public class RunWayGiftControl {
 
     public void destroy() {
         if (autoScrollView != null) {
-            autoScrollView.stopScroll();
-            autoScrollView.dispose();
+//            autoScrollView.stopScroll();
+//            autoScrollView.dispose();
             trackAnim.stopAnim();
             relativeLayout.setVisibility(View.GONE);
             imageView.setVisibility(View.GONE);
@@ -97,3 +98,4 @@ public class RunWayGiftControl {
         void onClick(int programId, String nickname);
     }
 }
+

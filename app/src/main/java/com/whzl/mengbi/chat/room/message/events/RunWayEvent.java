@@ -3,6 +3,7 @@ package com.whzl.mengbi.chat.room.message.events;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableString;
+import android.view.View;
 import android.widget.TextView;
 
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;

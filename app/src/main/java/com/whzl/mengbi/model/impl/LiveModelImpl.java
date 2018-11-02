@@ -7,6 +7,7 @@ import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceCountBean;
+import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -24,6 +25,7 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -357,6 +359,27 @@ public class LiveModelImpl implements LiveModel {
                     @Override
                     public void onSuccess(ActivityGrandBean jsonElement) {
                         listener.onActivityGrandSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getAudienceList(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getAudienceList(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
+                    @Override
+                    public void onSuccess(AudienceListBean.DataBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetAudienceListSuccess(dataBean);
+                        }
                     }
 
                     @Override

@@ -14,11 +14,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -66,6 +64,7 @@ import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -92,7 +91,6 @@ import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
-import com.whzl.mengbi.ui.widget.recyclerview.AutoPollRecyclerView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
@@ -168,8 +166,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     AutoScrollTextView runWayText;
     @BindView(R.id.tv_lucky_gift)
     TextView tvLuckyGift;
-    @BindView(R.id.guard_recycler)
-    RecyclerView mGuardRecycler;
+    @BindView(R.id.audience_recycler)
+    RecyclerView mAudienceRcycler;
     @BindView(R.id.view_message_notify)
     View viewMessageNotify;
     @BindView(R.id.fragment_container)
@@ -249,6 +247,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private CircleFragmentPagerAdaper mGrandAdaper;
     private Disposable grandDisposable;
     private AutoPollAdapter pollAdapter;
+    private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -350,7 +349,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void setupView() {
         initPlayer();
-        initProtectRecycler();
+//        initProtectRecycler();
         initFragment();
         initBanner();
         initVp();
@@ -426,7 +425,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initProtectRecycler() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mGuardRecycler.setLayoutManager(layoutManager);
+        layoutManager.setAutoMeasureEnabled(true);
+        mAudienceRcycler.setLayoutManager(layoutManager);
 //        mGuardAdapter = new BaseListAdapter() {
 //            @Override
 //            protected int getDataCount() {
@@ -439,17 +439,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //                return new GuardViewHolder(itemView);
 //            }
 //        };
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 50; ) {
-            list.add(" Item: " + ++i);
-        }
-        if(list != null){
-            pollAdapter = new AutoPollAdapter(this,list);
-            mGuardRecycler.setAdapter(pollAdapter);
+
+        if (mAudienceList != null) {
+            pollAdapter = new AutoPollAdapter(this, mAudienceList);
+            mAudienceRcycler.setAdapter(pollAdapter);
             pollAdapter.setOnItemClickListener(new AutoPollAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View viewById, int pos) {
-                    Toast.makeText(LiveDisplayActivity.this, "第" + pos + "个", Toast.LENGTH_SHORT).show();
+                    long userId = mAudienceList.get(pos).getUserid();
+                    showAudienceInfoDialog(userId, false);
                 }
 
                 @Override
@@ -458,8 +456,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             });
         }
-
-
 
 
 //        mGuardRecycler.setAdapter(mGuardAdapter);
@@ -523,6 +519,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         mLivePresenter.getActivityList();
         mLivePresenter.getPkInfo(mProgramId);
+        mLivePresenter.getAudienceList(mProgramId);
     }
 
     private void getRoomToken() {
@@ -542,12 +539,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-    @OnClick({R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift, R.id.tv_popularity
-            , R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private, R.id.rootView
-            , R.id.fragment_container
-            , R.id.btn_treasure_box})
+    @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
+            , R.id.tv_popularity, R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private
+            , R.id.rootView, R.id.fragment_container, R.id.btn_treasure_box})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_host_avatar:
+                if (mUserId == 0) {
+                    login();
+                    return;
+                }
+                showAudienceInfoDialog(mAnchorId, false);
+                //主播信息
+                break;
             case R.id.btn_follow:
                 if (mUserId == 0) {
                     login();
@@ -922,7 +926,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mGuardList.addAll(guardListBean.list);
         }
 //        mGuardAdapter.notifyDataSetChanged();
-        pollAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -1074,6 +1077,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
         }
 
+    }
+
+    @Override
+    public void onGetAudienceListSuccess(AudienceListBean.DataBean bean) {
+        if (mAudienceList == null) {
+            mAudienceList = new ArrayList<>();
+        }
+        if (bean.getList() != null && bean.getList().size() != 0) {
+            if (bean.getList().size() > 50) {
+                for (int i = 1; i < 51; i++) {
+                    //i=0为主播信息
+                    AudienceListBean.AudienceInfoBean audienceInfoBean = bean.getList().get(i);
+                    mAudienceList.add(audienceInfoBean);
+                }
+            } else {
+                for (int i = 1; i < bean.getList().size(); i++) {
+                    AudienceListBean.AudienceInfoBean audienceInfoBean = bean.getList().get(i);
+                    mAudienceList.add(audienceInfoBean);
+                }
+            }
+        }
+        initProtectRecycler();
+        pollAdapter.notifyDataSetChanged();
     }
 
     private void timerGrand(int i) {

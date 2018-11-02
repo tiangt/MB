@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -140,6 +141,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
+
     @Override
     public void onGetProgramFirstSuccess(long userId) {
         if (liveView != null) {
@@ -179,6 +181,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
         if (liveView != null) {
             liveView.onActivityGrandSuccess(bean);
+        }
+    }
+
+    @Override
+    public void onGetAudienceListSuccess(AudienceListBean.DataBean bean) {
+        if (liveView != null) {
+            liveView.onGetAudienceListSuccess(bean);
         }
     }
 
@@ -249,4 +258,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.activityGrand(signPramsMap, this);
     }
+
+    @Override
+    public void getAudienceList(int programId) {
+        HashMap map = new HashMap();
+        map.put("programId", programId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getAudienceList(signPramsMap, this);
+    }
+
 }

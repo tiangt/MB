@@ -10,6 +10,7 @@ import com.whzl.mengbi.model.entity.ContributeDataBean;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
+import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class AudienceContributeListAdapter<T> extends CommonAdapter<ContributeDa
             ivRank.setImageResource(rankIcons[position]);
         }
         holder.setText(R.id.tv_name, userInfoBean.nickname);
-        holder.setText(R.id.tv_amount, userInfoBean.value + "");
+        holder.setText(R.id.tv_amount, StringUtils.formatNumber(userInfoBean.value) + "");
         GlideImageLoader.getInstace().displayImage(mContext, userInfoBean.avatar, holder.getView(R.id.iv_avatar));
         int userLevelIcon = ResourceMap.getResourceMap().getUserLevelIcon(userInfoBean.level);
         holder.setImageResource(R.id.iv_level_icon, userLevelIcon);

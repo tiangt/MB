@@ -1,4 +1,4 @@
-package com.whzl.mengbi.chat.room.message;
+package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
