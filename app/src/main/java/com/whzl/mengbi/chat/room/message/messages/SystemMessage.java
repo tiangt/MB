@@ -1,7 +1,7 @@
 package com.whzl.mengbi.chat.room.message.messages;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 
@@ -46,10 +46,12 @@ public class SystemMessage implements FillHolderMessage {
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder viewHolder = (SingleTextViewHolder) holder;
+        viewHolder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
         viewHolder.textView.setText("");
         viewHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         viewHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.system_msg));
-        viewHolder.textView.append(LightSpanString.getLightString(" " + msg.replaceAll("\n", ""), Color.parseColor("#fac91e")));
+        viewHolder.textView.append(LightSpanString.getLightString(" " + msg.replaceAll("\n", ""),
+                ContextCompat.getColor(mContext, R.color.text_color_system)));
     }
 
     @Override

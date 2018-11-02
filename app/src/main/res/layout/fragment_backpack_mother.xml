@@ -27,13 +27,27 @@
 
     </LinearLayout>
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/tv_backpack_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/empty_backpack"
-        android:textSize="22sp"
-        android:textColor="#c5c5c5"/>
+    <LinearLayout
+        android:id="@+id/ll_backpack_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="17dp"
+            android:src="@drawable/ic_empty_pack_live" />
+
+        <TextView
+            android:id="@+id/tv_backpack_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/empty_backpack"
+            android:textColor="#ffffff"
+            android:textSize="10sp" />
+    </LinearLayout>
 </RelativeLayout>

@@ -30,7 +30,7 @@ public class LiveHouseGiftAdapter extends CommonAdapter<GiftInfo.GiftDetailInfoB
     protected void convert(ViewHolder holder, GiftInfo.GiftDetailInfoBean giftDetailInfoBean, int position) {
         GlideImageLoader.getInstace().displayImage(mContext, giftDetailInfoBean.getGoodPic(), holder.getView(R.id.iv_gift));
         holder.setText(R.id.tv_gift_name, giftDetailInfoBean.getGoodsName());
-        holder.setText(R.id.tv_cost, giftDetailInfoBean.getRent() + "");
+        holder.setText(R.id.tv_cost, giftDetailInfoBean.getRent() + "萌币");
         holder.getView(R.id.view_select_mark).setSelected(position == selectedPosition);
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 
 import com.whzl.mengbi.R;
@@ -11,7 +12,6 @@ import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
-import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
 
@@ -31,6 +31,7 @@ public class WelcomeMsg implements FillHolderMessage {
     private WelcomeJson mWelcomeJson;
     private int royalLevel;
     private boolean hasVip = false;
+    private String prettyNumberOrUserId;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
@@ -55,6 +56,7 @@ public class WelcomeMsg implements FillHolderMessage {
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
         WelcomeTextViewHolder mHolder = (WelcomeTextViewHolder) holder;
+        mHolder.linearLayout.setBackgroundResource(R.drawable.bg_welcome_noguard);
         mHolder.textView.setText("");
         if (royalLevel > 0) {
             try {
@@ -75,6 +77,7 @@ public class WelcomeMsg implements FillHolderMessage {
             mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
             mHolder.textView.append(" ");
             if (hasGuard) {
+                mHolder.linearLayout.setBackgroundResource(R.drawable.bg_welcome_hasguard);
                 mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.guard));
                 mHolder.textView.append(" ");
             }
@@ -88,13 +91,33 @@ public class WelcomeMsg implements FillHolderMessage {
                     mHolder.textView.append(" ");
                 }
             }
-            mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#f4be2c")));
+            if (!TextUtils.isEmpty(prettyNumberOrUserId)) {
+//                switch (prettyNumberOrUserId.length()) {
+//                    case 5:
+//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
+//                        mHolder.textView.append(" ");
+//                        break;
+//                    case 6:
+//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
+//                        mHolder.textView.append(" ");
+//                        break;
+//                    case 7:
+//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
+//                        mHolder.textView.append(" ");
+//                        break;
+//                }
+            }
+            mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#d9d9d9")));
+            if (royalLevel > 0) {
+                mHolder.textView.append(LightSpanString.getLightString(" 闪亮登场", Color.parseColor("#d9d9d9")));
+            } else {
+                mHolder.textView.append(LightSpanString.getLightString(" 精彩亮相", Color.parseColor("#d9d9d9")));
+            }
         } else {
-            mHolder.textView.append(LightSpanString.getLightString("欢迎 ", WHITE_FONG_COLOR));
-            mHolder.textView.append(LightSpanString.getLightString(nickName, Color.parseColor("#ffffff")));
-
+            mHolder.textView.append(LightSpanString.getLightString(nickName, Color.parseColor("#d9d9d9")));
+            mHolder.textView.append(LightSpanString.getLightString(" 入场", WHITE_FONG_COLOR));
         }
-        mHolder.textView.append(LightSpanString.getLightString(" 进入直播间", WHITE_FONG_COLOR));
+
     }
 
     @Override
