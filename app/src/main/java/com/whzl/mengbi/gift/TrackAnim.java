@@ -4,22 +4,22 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 /**
  * @author cliang
  * @date 2018.11.1
  */
 public class TrackAnim {
-    private RelativeLayout mRelative;
+    private FrameLayout mFrame;
     private ImageView mImageView;
     private OnTrackAnimListener mListener;
     private TranslateAnimation translate;
     private AlphaAnimation alpha;
 
-    public TrackAnim(RelativeLayout relative, ImageView imageView) {
-        this.mRelative = relative;
+    public TrackAnim(FrameLayout frameLayout, ImageView imageView) {
+        this.mFrame = frameLayout;
         this.mImageView = imageView;
     }
 
@@ -52,6 +52,7 @@ public class TrackAnim {
                 alpha.setDuration(1000);
                 alpha.setFillAfter(true);
                 mImageView.setAnimation(alpha);
+                setTrackListener();
             }
 
             @Override
@@ -60,28 +61,41 @@ public class TrackAnim {
             }
         });
         mImageView.startAnimation(translate);
-        mRelative.startAnimation(translate);
-        if (translate.hasStarted() && mListener != null) {
-            mListener.onAnimationStart(TrackAnim.this);
-        }
-        if (translate.hasEnded() && alpha.hasEnded() && mListener != null) {
-            mListener.onAnimationEnd(TrackAnim.this);
-
-        }
+        mFrame.startAnimation(translate);
     }
 
     public void stopAnim() {
         mImageView.clearAnimation();
-        mRelative.clearAnimation();
+        mFrame.clearAnimation();
     }
 
     public static interface OnTrackAnimListener {
-        void onAnimationStart(TrackAnim trackAnim);
 
-        void onAnimationEnd(TrackAnim trackAnim);
+        void onAnimationEnd();
     }
 
     public void setTrackAnimListener(OnTrackAnimListener listener) {
         this.mListener = listener;
+    }
+
+    private void setTrackListener(){
+        alpha.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if(mListener != null){
+                    mListener.onAnimationEnd();
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }

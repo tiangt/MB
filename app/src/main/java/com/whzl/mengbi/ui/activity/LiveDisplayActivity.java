@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -198,8 +199,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     Banner banner;
     @BindView(R.id.vp_activity)
     ViewPager vpActivity;
-    @BindView(R.id.rl_supercar_track)
-    RelativeLayout rlSupercarTrack;
+    @BindView(R.id.frame_supercar_track)
+    FrameLayout frameSupercarTrack;
     @BindView(R.id.iv_live_rocket)
     ImageView ivRocket;
 
@@ -910,8 +911,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initRunWay() {
         if (mRunWayGiftControl == null) {
 //            mRunWayGiftControl = new RunWayGiftControl(runWayText);
-            rlSupercarTrack.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-            mRunWayGiftControl = new RunWayGiftControl(runWayText, rlSupercarTrack, ivRocket);
+            frameSupercarTrack.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+            mRunWayGiftControl = new RunWayGiftControl(runWayText, frameSupercarTrack, ivRocket);
             mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
         }
     }

@@ -1,8 +1,8 @@
 package com.whzl.mengbi.gift;
 
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class RunWayGiftControl {
     private AutoScrollTextView autoScrollView;
-    private RelativeLayout relativeLayout;
+    private FrameLayout frameLayout;
     private ImageView imageView;
     private ArrayList<RunWayEvent> runwayQueue = new ArrayList<>();
     private RunWayEvent cacheEvent;
@@ -25,9 +25,9 @@ public class RunWayGiftControl {
         this.autoScrollView = autoScrollTextView;
     }
 
-    public RunWayGiftControl(AutoScrollTextView autoScrollTextView, RelativeLayout relativeLayout, ImageView imageView) {
+    public RunWayGiftControl(AutoScrollTextView autoScrollTextView, FrameLayout frameLayout, ImageView imageView) {
         this.autoScrollView = autoScrollTextView;
-        this.relativeLayout = relativeLayout;
+        this.frameLayout = frameLayout;
         this.imageView = imageView;
     }
 
@@ -38,11 +38,17 @@ public class RunWayGiftControl {
             return;
         }
         if (!autoScrollView.isStarting) {
-            relativeLayout.setVisibility(View.VISIBLE);
+            frameLayout.setVisibility(View.VISIBLE);
             imageView.setVisibility(View.VISIBLE);
-            trackAnim = new TrackAnim(relativeLayout, imageView);
+            trackAnim = new TrackAnim(frameLayout, imageView);
             trackAnim.startAnim();
-            startRun(event);
+            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
+                @Override
+                public void onAnimationEnd() {
+                    startRun(event);
+                }
+            });
+//            startRun(event);
             return;
         }
 
@@ -77,7 +83,7 @@ public class RunWayGiftControl {
 //            autoScrollView.stopScroll();
 //            autoScrollView.dispose();
             trackAnim.stopAnim();
-            relativeLayout.setVisibility(View.GONE);
+            frameLayout.setVisibility(View.GONE);
             imageView.setVisibility(View.GONE);
         }
         runwayQueue.clear();

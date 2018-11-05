@@ -156,28 +156,34 @@
                         android:paddingBottom="5dp"
                         android:textColor="@color/white"/>
                 </RelativeLayout>
+                
+                <FrameLayout
+                    android:id="@+id/frame_supercar_track"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:visibility="gone"
+                    android:layout_marginLeft="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/rl_guard_number"></FrameLayout>
 
-                <RelativeLayout
-                    android:id="@+id/rl_supercar_track"
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="5dp"
                     android:layout_toRightOf="@id/rl_guard_number">
 
                     <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
                         android:id="@+id/tv_run_way_gift"
-                        android:layout_width="match_parent"
+                        android:layout_width="1000dp"
                         android:layout_height="20dp"
                         android:singleLine="true"
-                        android:layout_marginRight="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginBottom="2dp"
                         android:gravity="center_vertical"
                         android:textSize="12sp"/>
-                </RelativeLayout>
+                </android.support.constraint.ConstraintLayout>
 
                 <ImageView
                     android:id="@+id/iv_live_rocket"
@@ -185,7 +191,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:visibility="gone"
-                    android:layout_toLeftOf="@id/rl_supercar_track"
+                    android:layout_toLeftOf="@id/frame_supercar_track"
                     android:src="@drawable/live_display_rocket"/>
             </RelativeLayout>
 
