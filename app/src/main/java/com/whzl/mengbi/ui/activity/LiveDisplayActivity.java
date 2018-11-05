@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.os.Handler;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -91,12 +93,15 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.view.LiveView;
+import com.whzl.mengbi.ui.widget.recyclerview.AdaptiveLayoutManager;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.MarqueeTextView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
+import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -115,8 +120,11 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -134,7 +142,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
     @BindView(R.id.tv_host_name)
-    TextView tvHostName;
+    MarqueeTextView tvHostName;
     @BindView(R.id.btn_follow)
     TextView btnFollow;
     @BindView(R.id.rl_contribution_container)
@@ -168,7 +176,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.tv_lucky_gift)
     TextView tvLuckyGift;
     @BindView(R.id.audience_recycler)
-    RecyclerView mAudienceRcycler;
+    RecyclerView mAudienceRecycler;
     @BindView(R.id.view_message_notify)
     View viewMessageNotify;
     @BindView(R.id.fragment_container)
@@ -203,6 +211,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     FrameLayout frameSupercarTrack;
     @BindView(R.id.iv_live_rocket)
     ImageView ivRocket;
+    @BindView(R.id.tv_guard_count)
+    TextView tvGuardCount;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -249,6 +259,26 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Disposable grandDisposable;
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList;
+
+    private final Timer mTimer = new Timer();
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1 && tvHostName != null) {
+                tvHostName.startScrollShow();
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    private TimerTask mTimerTask = new TimerTask() {
+        @Override
+        public void run() {
+            Message message = new Message();
+            message.what = 1;
+            mHandler.sendMessage(message);
+        }
+    };
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -425,9 +455,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initProtectRecycler() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        layoutManager.setOrientation(AdaptiveLayoutManager.HORIZONTAL);
         layoutManager.setAutoMeasureEnabled(true);
-        mAudienceRcycler.setLayoutManager(layoutManager);
+        mAudienceRecycler.setLayoutManager(layoutManager);
 //        mGuardAdapter = new BaseListAdapter() {
 //            @Override
 //            protected int getDataCount() {
@@ -443,7 +473,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         if (mAudienceList != null) {
             pollAdapter = new AutoPollAdapter(this, mAudienceList);
-            mAudienceRcycler.setAdapter(pollAdapter);
+            mAudienceRecycler.setAdapter(pollAdapter);
             pollAdapter.setOnItemClickListener(new AutoPollAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View viewById, int pos) {
@@ -805,6 +835,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 fragment.setUpWithAnchor(mAnchor);
                 GlideImageLoader.getInstace().circleCropImage(this, mAnchor.getAvatar(), ivHostAvatar);
                 tvHostName.setText(mAnchor.getName());
+                mTimer.schedule(mTimerTask, 5000, 5000);
             }
             if (roomInfoBean.getData().getStream() != null) {
                 setupPlayerSize(roomInfoBean.getData().getStream().getHeight(), roomInfoBean.getData().getStream().getWidth());
@@ -910,7 +941,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initRunWay() {
         if (mRunWayGiftControl == null) {
-//            mRunWayGiftControl = new RunWayGiftControl(runWayText);
             frameSupercarTrack.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
             mRunWayGiftControl = new RunWayGiftControl(runWayText, frameSupercarTrack, ivRocket);
             mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
@@ -1342,6 +1372,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             grandDisposable.dispose();
             LogUtils.e("ssssss  timerGrand dispose");
         }
+        mTimer.cancel();
     }
 
     @Override
