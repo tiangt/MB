@@ -28,6 +28,11 @@ public class WelcomeMsg implements FillHolderMessage {
     private long prettyNum;
     private boolean hasGuard = false;
     private int programId = 0;
+
+    public WelcomeJson getmWelcomeJson() {
+        return mWelcomeJson;
+    }
+
     private WelcomeJson mWelcomeJson;
     private int royalLevel;
     private boolean hasVip = false;
@@ -152,7 +157,7 @@ public class WelcomeMsg implements FillHolderMessage {
         return level;
     }
 
-    private int getRoyalLevel(List<WelcomeJson.WelcomeLevelListItem> levelList) {
+    public int getRoyalLevel(List<WelcomeJson.WelcomeLevelListItem> levelList) {
         if (null == levelList) {
             return 0;
         }

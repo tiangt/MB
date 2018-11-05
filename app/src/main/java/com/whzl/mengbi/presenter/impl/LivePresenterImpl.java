@@ -1,6 +1,5 @@
 package com.whzl.mengbi.presenter.impl;
 
-import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;

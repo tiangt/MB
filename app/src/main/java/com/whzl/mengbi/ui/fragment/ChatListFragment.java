@@ -10,16 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
+import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
+import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
@@ -45,10 +46,15 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 public class ChatListFragment extends BaseFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.ll_enter)
+    LinearLayout llEnter;
+    @BindView(R.id.tv_enter)
+    TextView tvEnter;
     private RecyclerView.Adapter chatAdapter;
     private static final int TOTAL_CHAT_MSG = 100;
     private boolean isRecyclerScrolling;
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
+    private RoyalEnterControl royalEnterControl;
 
 
     public static ChatListFragment newInstance() {
@@ -79,7 +85,22 @@ public class ChatListFragment extends BaseFragment {
                 recycler.smoothScrollToPosition(chatList.size() - 1);
             }
         }
+
+        WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
+        int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
+        if (royalLevel > 0) {
+            if (royalEnterControl == null) {
+                royalEnterControl = new RoyalEnterControl();
+                royalEnterControl.setLlEnter(llEnter);
+                royalEnterControl.setTvEnter(tvEnter);
+                royalEnterControl.setContext(getMyActivity());
+            }
+            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
+        }
     }
+
+
+
 
     private void initChatRecycler() {
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
