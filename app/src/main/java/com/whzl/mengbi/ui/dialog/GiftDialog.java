@@ -125,6 +125,10 @@ public class GiftDialog extends BaseAwesomeDialog {
         fragments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
 
+//        fragments.add(AlwaysMotherFragment.newInstance());
+//        tabLayout.addTab(tabLayout.newTab().setText("常用"));
+//        titles.add("常用");
+
         List<GiftInfo.DataBean.ListBean> listBeans = mGiftInfo.getData().getList();
         for (int i = 0; i < listBeans.size(); i++) {
             if (listBeans.get(i).getGroup() != null) {
@@ -166,6 +170,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         //关联TabLayout和ViewPager
         setTabWidth(tabLayout, UIUtil.dip2px(getActivity(), 18));
         tabLayout.setupWithViewPager(viewpager);
+        viewpager.setCurrentItem(0);
 
         tvAmount.setText(coin + "");
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

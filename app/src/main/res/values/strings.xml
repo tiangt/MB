@@ -325,4 +325,6 @@
         <item>送给主播66个幸运黄瓜</item>
         <item>幸运转盘抽奖1次</item>
     </array>
+
+    <string name="empty_always">还没有送过礼物，快去送个礼物给主播吧！</string>
 </resources>

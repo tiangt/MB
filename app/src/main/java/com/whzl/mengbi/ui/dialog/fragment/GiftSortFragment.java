@@ -1,9 +1,14 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
@@ -29,6 +34,7 @@ public class GiftSortFragment extends BaseFragment {
     RecyclerView recycler;
     private LiveHouseGiftAdapter giftAdapter;
     private boolean flagOnMessageEvent = true;
+    private int currentPosition = -1;
 
 
     public static GiftSortFragment newInstance(ArrayList<GiftInfo.GiftDetailInfoBean> giftList) {
@@ -54,8 +60,12 @@ public class GiftSortFragment extends BaseFragment {
         giftAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                if (currentPosition == position) {
+                    return;
+                }
                 try {
-                    giftAdapter.setSelectedPosition(position);
+                    currentPosition = position;
+                    startAnimal(view.findViewById(R.id.iv_gift), position);
                     GiftInfo.GiftDetailInfoBean giftDetailInfoBean = giftList.get(position);
                     flagOnMessageEvent = false;
                     EventBus.getDefault().post(new GiftSelectedEvent(giftDetailInfoBean));
@@ -70,6 +80,26 @@ public class GiftSortFragment extends BaseFragment {
             }
         });
         recycler.setAdapter(giftAdapter);
+    }
+
+    public void startAnimal(View imageView, int position) {
+
+        AnimatorSet animatorSetsuofang = new AnimatorSet();
+
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 1.5f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 1.5f, 1f);
+
+        animatorSetsuofang.setDuration(300);
+        animatorSetsuofang.setInterpolator(new OvershootInterpolator());
+        animatorSetsuofang.play(scaleX).with(scaleY);//两个动画同时开始
+        animatorSetsuofang.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                giftAdapter.setSelectedPosition(position);
+            }
+        });
+        animatorSetsuofang.start();
     }
 
     @Override

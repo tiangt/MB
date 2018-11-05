@@ -29,27 +29,25 @@ import io.reactivex.schedulers.Schedulers;
  * @author shaw
  * @date 2018/7/8
  */
-public class BackpackMotherFragment extends BaseFragment {
+public class AlwaysMotherFragment extends BaseFragment {
 
     @BindView(R.id.view_pager)
     ViewPager viewPager;
     @BindView(R.id.pager_index_container)
     LinearLayout pagerIndexContainer;
-    @BindView(R.id.tv_backpack_empty)
-    TextView tvBackpackEmpty;
-    @BindView(R.id.ll_backpack_empty)
-   public LinearLayout llBackPack;
+    @BindView(R.id.ll_always_empty)
+    public LinearLayout llAwaysEmpty;
     private int pagers;
     private FragmentPagerAdaper adapter;
     private ArrayList<Fragment> fragments = new ArrayList<>();
 
-    public static BackpackMotherFragment newInstance() {
-        return new BackpackMotherFragment();
+    public static AlwaysMotherFragment newInstance() {
+        return new AlwaysMotherFragment();
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_backpack_mother;
+        return R.layout.fragment_always_mother;
     }
 
     @Override
@@ -116,42 +114,42 @@ public class BackpackMotherFragment extends BaseFragment {
 
                     @Override
                     public void onSuccess(BackpackListBean backpackListBean) {
-                        if(getContext() == null){
+                        if (getContext() == null) {
                             return;
                         }
                         fragments.clear();
                         if (backpackListBean != null && backpackListBean.list != null && backpackListBean.list.size() > 0) {
                             viewPager.setVisibility(View.VISIBLE);
-                            llBackPack.setVisibility(View.GONE);
+                            llAwaysEmpty.setVisibility(View.GONE);
                             pagers = (int) Math.ceil(backpackListBean.list.size() / 10f);
                             setupPagerIndex(pagers);
                             for (int i = 0; i < pagers; i++) {
-                                BackpackFragment fragment;
+                                AlwaysFragment fragment;
                                 if (i == pagers - 1) {
                                     ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
                                     pagerGiftList.addAll(backpackListBean.list.subList(i * 10, backpackListBean.list.size()));
-                                    fragment = BackpackFragment.newInstance(pagerGiftList);
+                                    fragment = AlwaysFragment.newInstance(pagerGiftList);
                                 } else {
                                     ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
                                     pagerGiftList.addAll(backpackListBean.list.subList(i * 10, (i + 1) * 10));
-                                    fragment = BackpackFragment.newInstance(pagerGiftList);
+                                    fragment = AlwaysFragment.newInstance(pagerGiftList);
                                 }
                                 fragments.add(fragment);
                             }
                         } else {
                             viewPager.setVisibility(View.GONE);
-                            llBackPack.setVisibility(View.VISIBLE);
+                            llAwaysEmpty.setVisibility(View.VISIBLE);
                         }
                         adapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(int code) {
-                        if(getContext() == null){
+                        if (getContext() == null) {
                             return;
                         }
                         viewPager.setVisibility(View.GONE);
-                        llBackPack.setVisibility(View.VISIBLE);
+                        llAwaysEmpty.setVisibility(View.VISIBLE);
                     }
                 });
     }

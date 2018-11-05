@@ -20,7 +20,7 @@ public class ProgramFirstAction implements Actions {
     @Override
     public void performAction(String msgStr, Context context) {
         ProgramFirstNotifyJson notifyJson = GsonUtils.GsonToBean(msgStr, ProgramFirstNotifyJson.class);
-        if (notifyJson == null) {
+        if (notifyJson == null||notifyJson.getContext()==null||notifyJson.getContext().getUserId()==null) {
             return;
         }
         try {

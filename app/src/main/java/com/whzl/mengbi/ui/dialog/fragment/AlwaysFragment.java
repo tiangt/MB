@@ -1,18 +1,12 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
@@ -35,7 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,13 +37,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import pl.droidsonroids.gif.GifDrawable;
 
 /**
  * @author shaw
  * @date 2018/7/9
  */
-public class BackpackFragment extends BaseFragment {
+public class AlwaysFragment extends BaseFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
     private BaseListAdapter giftAdapter;
@@ -61,8 +53,8 @@ public class BackpackFragment extends BaseFragment {
     private int selectId = -1;
 
 
-    public static BackpackFragment newInstance(ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList) {
-        BackpackFragment fragment = new BackpackFragment();
+    public static AlwaysFragment newInstance(ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList) {
+        AlwaysFragment fragment = new AlwaysFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList("data", pagerGiftList);
         fragment.setArguments(args);
@@ -88,7 +80,7 @@ public class BackpackFragment extends BaseFragment {
 
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_live_house_backpack, parent, false);
+                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_live_house_gift, parent, false);
                 return new GoodsViewHolder(itemView);
             }
         };
@@ -126,8 +118,6 @@ public class BackpackFragment extends BaseFragment {
         TextView tvCost;
         @BindView(R.id.view_select_mark)
         View selectedMark;
-        @BindView(R.id.rl)
-        RelativeLayout rl;
 
         public GoodsViewHolder(View itemView) {
             super(itemView);
@@ -142,29 +132,15 @@ public class BackpackFragment extends BaseFragment {
 //            tvCost.setText("数量 ");
 //            SpannableString spannableString = StringUtils.spannableStringColor(goodsDetailBean.count + "", Color.parseColor("#fdc809"));
             tvCost.setText(goodsDetailBean.count + "");
-//            selectedMark.setSelected(position == selectedPosition);
-            if (position == selectedPosition) {
-                try {
-                    GifDrawable drawable = new GifDrawable(getResources(),R.drawable.bg_live_house_select);
-                    rl.setBackground(drawable);
-//                ((ImageView) holder.getView(R.id.iv)).setImageDrawable(drawable);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-//            holder.getView(R.id.rl).setBackground();
-            } else {
-                rl.setBackground(null);
-            }
+            selectedMark.setSelected(position == selectedPosition);
         }
 
         @Override
         public void onItemClick(View view, int position) {
             super.onItemLongClick(view, position);
-            if (selectedPosition == position) {
-                return;
-            }
-            startAnimal(ivGift, position);
             BackpackListBean.GoodsDetailBean goodsDetailBean = mDatas.get(position);
+            selectedPosition = position;
+            giftAdapter.notifyDataSetChanged();
             GiftInfo.GiftDetailInfoBean giftDetailInfoBean = new GiftInfo.GiftDetailInfoBean();
             giftDetailInfoBean.setGoodsId(goodsDetailBean.goodsId);
             selectId = goodsDetailBean.goodsId;
@@ -172,27 +148,6 @@ public class BackpackFragment extends BaseFragment {
             flagOnMessageEvent = false;
             EventBus.getDefault().post(new GiftSelectedEvent(giftDetailInfoBean));
         }
-    }
-
-    public void startAnimal(View imageView, int position) {
-
-        AnimatorSet animatorSetsuofang = new AnimatorSet();
-
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 2f, 1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 2f, 1f);
-
-        animatorSetsuofang.setDuration(300);
-        animatorSetsuofang.setInterpolator(new OvershootInterpolator());
-        animatorSetsuofang.play(scaleX).with(scaleY);//两个动画同时开始
-        animatorSetsuofang.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                selectedPosition = position;
-                giftAdapter.notifyDataSetChanged();
-            }
-        });
-        animatorSetsuofang.start();
     }
 
     private void getBackPack() {

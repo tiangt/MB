@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="67dp"
-        android:layout_height="82dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl"
+    android:layout_width="67dp"
+    android:layout_height="82dp">
 
-        <View
-            android:id="@+id/view_select_mark"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/selector_live_house_gift_bg" />
 
-        <ImageView
-            android:id="@+id/iv_gift"
-            android:layout_width="30dp"
-            android:layout_height="35dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp" />
+    <ImageView
+        android:id="@+id/iv_gift"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:layout_marginTop="15dp" />
 
-        <TextView
-            android:id="@+id/tv_gift_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/tv_cost"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:textColor="#fefefe"
-            android:textSize="8sp" />
+    <TextView
+        android:id="@+id/tv_gift_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tv_cost"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:textColor="#fefefe"
+        android:textSize="8sp" />
 
-        <TextView
-            android:id="@+id/tv_cost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="4dp"
-            android:gravity="center_vertical"
-            android:textColor="#40ffffff"
-            android:textSize="8sp" />
+    <TextView
+        android:id="@+id/tv_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        android:textColor="#40ffffff"
+        android:textSize="8sp" />
 
-    </RelativeLayout>
+    <View
+        android:id="@+id/view_select_mark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_live_house_gift_bg" />
+</RelativeLayout>
 
 
