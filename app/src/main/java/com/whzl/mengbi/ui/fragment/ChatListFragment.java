@@ -25,6 +25,7 @@ import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
+import com.whzl.mengbi.ui.widget.view.RollTextView;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,10 +47,24 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 public class ChatListFragment extends BaseFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    @BindView(R.id.ll_enter)
+//    @BindView(R.id.ll_enter)
     LinearLayout llEnter;
-    @BindView(R.id.tv_enter)
-    TextView tvEnter;
+//    @BindView(R.id.tv_enter)
+    RollTextView tvEnter;
+    ImageView ivEnter;
+
+    public void setIvEnter(ImageView ivEnter) {
+        this.ivEnter = ivEnter;
+    }
+
+    public void setLlEnter(LinearLayout llEnter) {
+        this.llEnter = llEnter;
+    }
+
+    public void setTvEnter(RollTextView tvEnter) {
+        this.tvEnter = tvEnter;
+    }
+
     private RecyclerView.Adapter chatAdapter;
     private static final int TOTAL_CHAT_MSG = 100;
     private boolean isRecyclerScrolling;
@@ -93,9 +108,13 @@ public class ChatListFragment extends BaseFragment {
                 royalEnterControl = new RoyalEnterControl();
                 royalEnterControl.setLlEnter(llEnter);
                 royalEnterControl.setTvEnter(tvEnter);
+                royalEnterControl.setIvEnter(ivEnter);
                 royalEnterControl.setContext(getMyActivity());
             }
-            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
+//            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
+//            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
+//            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
+            royalEnterControl.showEnter((WelcomeMsg) message);
         }
     }
 
