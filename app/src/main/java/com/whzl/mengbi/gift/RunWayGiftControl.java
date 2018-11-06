@@ -48,7 +48,6 @@ public class RunWayGiftControl {
                     startRun(event);
                 }
             });
-//            startRun(event);
             return;
         }
 
@@ -83,8 +82,6 @@ public class RunWayGiftControl {
 //            autoScrollView.stopScroll();
 //            autoScrollView.dispose();
             trackAnim.stopAnim();
-            frameLayout.setVisibility(View.GONE);
-            imageView.setVisibility(View.GONE);
         }
         runwayQueue.clear();
     }

@@ -43,28 +43,39 @@
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@id/iv_host_avatar">
 
-                        <TextView
+                        <!--<TextView-->
+                        <!--android:id="@+id/tv_host_name"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="6dp"-->
+                        <!--android:layout_marginTop="3dp"-->
+                        <!--android:layout_marginRight="6dp"-->
+                        <!--android:ellipsize="middle"-->
+                        <!--android:maxEms="6"-->
+                        <!--android:singleLine="true"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:textSize="10sp" />-->
+                        <com.whzl.mengbi.ui.widget.view.MarqueeTextView
                             android:id="@+id/tv_host_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="6dp"
-                            android:layout_marginRight="6dp"
                             android:layout_marginTop="3dp"
-                            android:ellipsize="middle"
-                            android:maxEms="6"
+                            android:layout_marginRight="6dp"
                             android:singleLine="true"
                             android:textColor="@color/white"
                             android:textSize="10sp" />
+
 
                         <TextView
                             android:id="@+id/tv_fans_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginBottom="2dp"
                             android:layout_marginLeft="6dp"
-                            android:layout_marginRight="6dp"
                             android:layout_marginTop="6.5dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginBottom="2dp"
                             android:singleLine="true"
                             android:textColor="@color/white"
                             android:textSize="10sp" />
@@ -86,17 +97,6 @@
 
                 </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/audience_recycler"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp"
-                    android:layout_toLeftOf="@id/tv_popularity"
-                    android:layout_toRightOf="@id/rl_anchor_info">
-
-                </android.support.v7.widget.RecyclerView>
-
-
                 <TextView
                     android:id="@+id/tv_popularity"
                     android:layout_width="31dp"
@@ -109,6 +109,21 @@
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="9sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toLeftOf="@id/tv_popularity"
+                    android:layout_toRightOf="@id/rl_anchor_info">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/audience_recycler"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -126,8 +141,8 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/shape_live_display_contribution_btn_bg"
                     android:drawableLeft="@drawable/live_display_cup"
-                    android:drawablePadding="6dp"
                     android:drawableRight="@drawable/live_display_arrow"
+                    android:drawablePadding="6dp"
                     android:gravity="center"
                     android:paddingLeft="9dp"
                     android:paddingRight="9dp"
@@ -148,12 +163,12 @@
                         android:src="@drawable/live_display_guard_num" />
 
                     <TextView
+                        android:id="@+id/tv_guard_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
                         android:paddingBottom="5dp"
-                        android:text="233"
                         android:textColor="@color/white"
                         android:textSize="5sp" />
                 </RelativeLayout>
@@ -165,7 +180,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/rl_guard_number"
-                    android:visibility="gone"></FrameLayout>
+                    android:visibility="gone" />
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -179,8 +194,8 @@
                         android:id="@+id/tv_run_way_gift"
                         android:layout_width="1000dp"
                         android:layout_height="20dp"
-                        android:layout_marginBottom="2dp"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="2dp"
                         android:gravity="center_vertical"
                         android:singleLine="true"
                         android:textSize="12sp" />
@@ -275,10 +290,10 @@
                         android:layout_alignParentBottom="true"
                         android:background="#702d2933"
                         android:gravity="center_vertical"
-                        android:paddingBottom="3dp"
                         android:paddingLeft="7dp"
-                        android:paddingRight="7dp"
                         android:paddingTop="2dp"
+                        android:paddingRight="7dp"
+                        android:paddingBottom="3dp"
                         android:singleLine="true"
                         android:textSize="12sp"
                         android:visibility="gone" />
@@ -353,15 +368,15 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="7dp"
-                    android:layout_marginTop="9dp" />
+                    android:layout_marginTop="9dp"
+                    android:layout_marginRight="7dp" />
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/vp_activity"
                     android:layout_width="61dp"
                     android:layout_height="108dp"
-                    android:layout_alignParentRight="true"
                     android:layout_below="@id/banner"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/bg_liveweb"
                     android:visibility="gone" />
@@ -399,10 +414,10 @@
                 android:id="@+id/view_message_notify"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
-                android:layout_alignRight="@id/btn_chat_private"
                 android:layout_alignTop="@id/btn_chat_private"
-                android:layout_marginRight="9dp"
+                android:layout_alignRight="@id/btn_chat_private"
                 android:layout_marginTop="9dp"
+                android:layout_marginRight="9dp"
                 android:background="@drawable/shape_red_notify"
                 android:visibility="gone" />
 
@@ -470,10 +485,10 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="12dp">
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="50dp">
 
         <ImageButton
             android:id="@+id/btn_treasure_box"
@@ -488,8 +503,8 @@
             android:layout_width="11dp"
             android:layout_height="11dp"
             android:layout_alignRight="@id/btn_treasure_box"
-            android:layout_marginRight="4dp"
             android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
             android:background="@drawable/shape_red_notify"
             android:gravity="center"
             android:text="1"

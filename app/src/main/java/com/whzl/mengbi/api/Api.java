@@ -482,7 +482,14 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<RebateBean>> findCoupon(@FieldMap Map<String, String> params);
 
+    /**
+     * 主播展示
+     *
+     * @param params
+     * @return
+     */
     @POST("v1/anchor/show-anchor")
     @FormUrlEncoded
     Observable<ApiResult<RebateBean>> getAnchorInfo(@FieldMap Map<String, String> params);
+
 }
