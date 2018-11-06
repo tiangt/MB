@@ -333,7 +333,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="marquee"
                         android:marqueeRepeatLimit="1"
-                        android:padding="10dp"
+                        android:padding="6dp"
                         android:singleLine="true"
                         android:textColor="#ffffff"
                         android:textSize="12sp" />

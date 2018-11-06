@@ -19,6 +19,7 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.widget.view.RollTextView;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.UIUtil;
@@ -173,6 +174,7 @@ public class RoyalEnterControl {
 //                }
             }
             tvEnter.append(LightSpanString.getNickNameSpan(context, welcomeMsg.nickName, welcomeMsg.uid, welcomeMsg.programId, Color.parseColor("#ffffff")));
+            LogUtils.e("ssssssssss  "+welcomeMsg.nickName);
             if (welcomeMsg.royalLevel > 0) {
                 tvEnter.append(LightSpanString.getLightString(" 闪亮登场", Color.parseColor("#ffffff")));
             } else {
@@ -191,10 +193,12 @@ public class RoyalEnterControl {
                 super.onAnimationEnd(animation);
                 list.remove(0);
                 if (list.size() > 0) {
+                    tvEnter.setText(null);
                     startAnimal(ll);
                 } else {
                     isPlay = false;
                     tvEnter.setSelected(false);
+                    tvEnter.setText(null);
                     ll.setVisibility(View.GONE);
                 }
             }
