@@ -101,20 +101,22 @@ public class ChatListFragment extends BaseFragment {
             }
         }
 
-        WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
-        int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
-        if (royalLevel > 0) {
-            if (royalEnterControl == null) {
-                royalEnterControl = new RoyalEnterControl();
-                royalEnterControl.setLlEnter(llEnter);
-                royalEnterControl.setTvEnter(tvEnter);
-                royalEnterControl.setIvEnter(ivEnter);
-                royalEnterControl.setContext(getMyActivity());
-            }
+        if (message instanceof WelcomeMsg) {
+            WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
+            int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
+            if (royalLevel > 0) {
+                if (royalEnterControl == null) {
+                    royalEnterControl = new RoyalEnterControl();
+                    royalEnterControl.setLlEnter(llEnter);
+                    royalEnterControl.setTvEnter(tvEnter);
+                    royalEnterControl.setIvEnter(ivEnter);
+                    royalEnterControl.setContext(getMyActivity());
+                }
 //            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
 //            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
 //            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
-            royalEnterControl.showEnter((WelcomeMsg) message);
+                royalEnterControl.showEnter((WelcomeMsg) message);
+            }
         }
     }
 

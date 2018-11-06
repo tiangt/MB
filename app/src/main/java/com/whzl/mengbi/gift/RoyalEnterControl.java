@@ -59,7 +59,7 @@ public class RoyalEnterControl {
 
     private boolean isPlay = false;
 
-    public void showEnter(WelcomeMsg welcomeMsg) {
+    public synchronized void showEnter(WelcomeMsg welcomeMsg) {
         list.add(welcomeMsg);
         if (!isPlay && list.size() != 0) {
             startAnimal(llEnter);
@@ -69,9 +69,10 @@ public class RoyalEnterControl {
 
     private void startAnimal(final LinearLayout ll) {
         isPlay = true;
-        ll.setVisibility(View.VISIBLE);
+
 //        tvEnter.setText(list.get(0).getmWelcomeJson().getContext().getInfo().getNickname());
         initTv(list.get(0));
+        ll.setVisibility(View.VISIBLE);
         String imageUrl = ImageUrl.getImageUrl(list.get(0).getCarId(), "jpg");
         GlideImageLoader.getInstace().displayImage(context, imageUrl, ivEnter);
         tvEnter.setSelected(false);
@@ -95,7 +96,7 @@ public class RoyalEnterControl {
         translationX.start();
     }
 
-    private void initTv(WelcomeMsg welcomeMsg) {
+    private synchronized void initTv(WelcomeMsg welcomeMsg) {
         tvEnter.setText("");
         if (welcomeMsg.royalLevel > 0) {
             switch (welcomeMsg.royalLevel) {
@@ -119,6 +120,8 @@ public class RoyalEnterControl {
                     break;
                 case 7:
                     tvEnter.setBackgroundResource(R.drawable.bg_royal_enter_7);
+                    break;
+                default:
                     break;
             }
             try {
