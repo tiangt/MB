@@ -103,6 +103,7 @@ import com.whzl.mengbi.ui.widget.view.MarqueeTextView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.util.DateUtils;
+import com.whzl.mengbi.ui.widget.view.RollTextView;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -214,6 +215,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageView ivRocket;
     @BindView(R.id.tv_guard_count)
     TextView tvGuardCount;
+    @BindView(R.id.ll_enter)
+    LinearLayout llEnter;
+    @BindView(R.id.tv_enter)
+    RollTextView tvEnter;
+    @BindView(R.id.iv_enter_car)
+    ImageView ivEnterCar;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -420,7 +427,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragments = new Fragment[]{ChatListFragment.newInstance(), PrivateChatListFragment.newInstance(mProgramId)};
+        ChatListFragment chatListFragment = ChatListFragment.newInstance();
+        chatListFragment.setLlEnter(llEnter);
+        chatListFragment.setTvEnter(tvEnter);
+        chatListFragment.setIvEnter(ivEnterCar);
+        fragments = new Fragment[]{chatListFragment, PrivateChatListFragment.newInstance(mProgramId)};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.add(R.id.fragment_container, fragments[1]);
         fragmentTransaction.hide(fragments[1]);

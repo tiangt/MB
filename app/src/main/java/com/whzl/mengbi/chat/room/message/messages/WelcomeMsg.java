@@ -19,24 +19,24 @@ import java.io.IOException;
 import java.util.List;
 
 public class WelcomeMsg implements FillHolderMessage {
-    private String nickName;
-    private long uid;
-    private int userLevel;
-    private List<SpannableString> userSpanList;
+    public String nickName;
+    public long uid;
+    public int userLevel;
+    public List<SpannableString> userSpanList;
     private Context mContext;
-    private boolean isAnchor = false;
+    public boolean isAnchor = false;
     private long prettyNum;
-    private boolean hasGuard = false;
-    private int programId = 0;
+    public boolean hasGuard = false;
+    public int programId = 0;
 
     public WelcomeJson getmWelcomeJson() {
         return mWelcomeJson;
     }
 
     private WelcomeJson mWelcomeJson;
-    private int royalLevel;
-    private boolean hasVip = false;
-    private String prettyNumberOrUserId;
+    public int royalLevel;
+    public boolean hasVip = false;
+    public String prettyNumberOrUserId;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();

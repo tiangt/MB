@@ -307,6 +307,36 @@
                     android:textStyle="bold"
                     android:visibility="gone" />
 
+                <LinearLayout
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/ll_enter"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:scaleType="fitEnd"
+                        android:id="@+id/iv_enter_car"
+                        android:layout_width="64dp"
+                        android:layout_height="40dp" />
+
+                    <com.whzl.mengbi.ui.widget.view.RollTextView
+                        android:gravity="center_vertical"
+                        android:id="@+id/tv_enter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit="1"
+                        android:padding="6dp"
+                        android:singleLine="true"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
             </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 
 
