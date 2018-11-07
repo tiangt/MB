@@ -71,7 +71,7 @@ public class PkLayout extends LinearLayout {
 
     private void init(Context context) {
         LayoutInflater from = LayoutInflater.from(context);
-        View inflate = from.inflate(R.layout.layout_pk, this, false);
+        View inflate = from.inflate(R.layout.layout_pk_new, this, false);
         addView(inflate);
         progressBar = inflate.findViewById(R.id.pb_pk);
         ivFount = inflate.findViewById(R.id.iv_left);
@@ -81,10 +81,10 @@ public class PkLayout extends LinearLayout {
         ivLeftLead = inflate.findViewById(R.id.iv_left_lead);
         ivLeftResult = inflate.findViewById(R.id.iv_left_result);
         ivRightResult = inflate.findViewById(R.id.iv_right_result);
-        ivRightCrown = inflate.findViewById(R.id.iv_right_crown);
-        ivLeftCrown = inflate.findViewById(R.id.iv_left_crown);
-        tvLeftName = inflate.findViewById(R.id.tv_left_name);
-        tvRightName = inflate.findViewById(R.id.tv_right_name);
+//        ivRightCrown = inflate.findViewById(R.id.iv_right_crown);
+//        ivLeftCrown = inflate.findViewById(R.id.iv_left_crown);
+//        tvLeftName = inflate.findViewById(R.id.tv_left_name);
+//        tvRightName = inflate.findViewById(R.id.tv_right_name);
         tvLeftScore = inflate.findViewById(R.id.tv_left_score);
         tvRightScore = inflate.findViewById(R.id.tv_right_score);
         ivState = inflate.findViewById(R.id.iv_state);

@@ -128,7 +128,7 @@ public class URLContentUtils {
     /**
      * 直播间贡献排行
      */
-    public static final String CONTRIBUTION_LIST = "v1/rank/room-rank";
+    public static final String CONTRIBUTION_LIST = "v1/rank/room-rank-new";
 
     /**
      * 直播间贡献排行

@@ -6,6 +6,7 @@ import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -191,6 +192,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
+    public void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean) {
+        if (liveView != null) {
+            liveView.onGetTotalGuardSuccess(bean);
+        }
+    }
+
+    @Override
     public void followHost(long userId, int mProgramId) {
         liveModel.doFollowHost(userId, mProgramId, this);
     }
@@ -264,6 +272,14 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("programId", programId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getAudienceList(signPramsMap, this);
+    }
+
+    @Override
+    public void getGuardTotal(int programId) {
+        HashMap map = new HashMap();
+        map.put("programId", programId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getTotalGuard(signPramsMap, this);
     }
 
 }

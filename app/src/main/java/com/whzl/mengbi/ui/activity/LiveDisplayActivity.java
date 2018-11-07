@@ -33,6 +33,10 @@ import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.ksyun.media.player.KSYTextureView;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
@@ -70,6 +74,7 @@ import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -119,6 +124,7 @@ import com.youth.banner.Transformer;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -221,6 +227,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RollTextView tvEnter;
     @BindView(R.id.iv_enter_car)
     ImageView ivEnterCar;
+    @BindView(R.id.svga_start_pk)
+    SVGAImageView svgaStartPk;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -273,7 +281,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1 && tvHostName != null) {
-                tvHostName.init(getWindowManager());
+                tvHostName.init(getWindowManager(), getMarqueeWidth());
                 tvHostName.startScroll();
             }
             super.handleMessage(msg);
@@ -317,6 +325,28 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         fragmentTransaction.commit();
         initFragment();
         loadData();
+        initPKAnim();
+    }
+
+    private void initPKAnim() {
+        SVGAParser parser = new SVGAParser(this);
+        try {
+            parser.parse("start_pk.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    svgaStartPk.setImageDrawable(drawable);
+                    svgaStartPk.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
     }
 
     @Override
@@ -573,6 +603,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getActivityList();
         mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getAudienceList(mProgramId);
+        mLivePresenter.getGuardTotal(mProgramId);
     }
 
     private void getRoomToken() {
@@ -858,7 +889,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 GlideImageLoader.getInstace().circleCropImage(this, mAnchor.getAvatar(), ivHostAvatar);
 
                 tvHostName.setText(mAnchor.getName());
-                tvHostName.init(getWindowManager());
+                tvHostName.init(getWindowManager(), getMarqueeWidth());
                 tvHostName.setTextColor(Color.WHITE);
                 tvHostName.startScroll();
 //                mTimer.schedule(mTimerTask, 5000, 5000);
@@ -899,8 +930,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onAudienceSuccess(long count) {
-        tvPopularity.setText(getString(R.string.audience, count));
-        mAudienceCount = count;
+//        tvPopularity.setText(getString(R.string.audience, count));
+//        mAudienceCount = count;
     }
 
     @Override
@@ -1148,6 +1179,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mAudienceList = new ArrayList<>();
         }
         if (bean.getList() != null && bean.getList().size() != 0) {
+            tvPopularity.setText(getString(R.string.audience, bean.total));
+            mAudienceCount = bean.total;
             if (bean.getList().size() > 50) {
                 for (int i = 1; i < 51; i++) {
                     //i=0为主播信息
@@ -1163,6 +1196,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         initProtectRecycler();
         pollAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onGetTotalGuardSuccess(GuardTotalBean.DataBean guardTotalBean) {
+        tvGuardCount.setText(guardTotalBean.guardTotal + "");
     }
 
     private void timerGrand(int i) {

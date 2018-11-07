@@ -492,4 +492,8 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<RebateBean>> getAnchorInfo(@FieldMap Map<String, String> params);
 
+
+    @POST("v1/room/total-guard")
+    @FormUrlEncoded
+    Observable<ApiResult<RebateBean>> getTotalGuard(@FieldMap Map<String, String> params);
 }

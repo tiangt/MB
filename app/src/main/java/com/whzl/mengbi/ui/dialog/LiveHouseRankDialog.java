@@ -50,7 +50,7 @@ public class LiveHouseRankDialog extends BaseAwesomeDialog {
         titles.add("7日榜");
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(ContributeRankFragment.newInstance("day", programId));
-        fragments.add(ContributeRankFragment.newInstance("week", programId));
+        fragments.add(ContributeRankFragment.newInstance("sevenDay", programId));
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         viewpager.setCurrentItem(1);
         tabLayout.post(() -> {
