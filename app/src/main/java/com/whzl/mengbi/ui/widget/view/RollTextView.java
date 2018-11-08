@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 
 
 public class RollTextView extends android.support.v7.widget.AppCompatTextView {
-    private boolean aBoolean;
     public RollTextView(Context context) {
         super(context);
     }
@@ -23,12 +22,6 @@ public class RollTextView extends android.support.v7.widget.AppCompatTextView {
     public RollTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
-
-//    @Override
-//    public boolean isFocused() {
-//        return aBoolean;
-//    }
-
 
     @Override
     public boolean isFocused() {
@@ -43,7 +36,4 @@ public class RollTextView extends android.support.v7.widget.AppCompatTextView {
     public void onWindowFocusChanged(boolean hasWindowFocus) {
     }
 
-    public void setFoucu(boolean bo) {
-        aBoolean = bo;
-    }
 }

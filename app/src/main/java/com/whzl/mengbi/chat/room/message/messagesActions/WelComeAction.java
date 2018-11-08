@@ -24,7 +24,7 @@ public class WelComeAction implements Actions {
     public void performAction(String msgStr, final Context context) {
         LogUtils.e2(msgStr);
         WelcomeJson welcomeJson = GsonUtils.GsonToBean(msgStr, WelcomeJson.class);
-        if (null == welcomeJson||welcomeJson.getContext()==null||welcomeJson.getContext().getInfo()==null||welcomeJson.getContext().getInfo().getLevelList()==null) {
+        if (null == welcomeJson||welcomeJson.getContext()==null||welcomeJson.getContext().getInfo()==null) {
             return;
         }
         List<String> goodsUrlList = getGoodsList(welcomeJson.getContext().getInfo().getUserBagList());

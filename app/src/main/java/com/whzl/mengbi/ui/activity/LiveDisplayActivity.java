@@ -48,11 +48,15 @@ import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
+import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
+import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
+import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
@@ -63,6 +67,7 @@ import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.PkControl;
+import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
@@ -288,6 +293,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mHandler.sendMessage(message);
         }
     };
+    private RoyalEnterControl royalEnterControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -428,9 +434,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         ChatListFragment chatListFragment = ChatListFragment.newInstance();
-        chatListFragment.setLlEnter(llEnter);
-        chatListFragment.setTvEnter(tvEnter);
-        chatListFragment.setIvEnter(ivEnterCar);
+//        chatListFragment.setLlEnter(llEnter);
+//        chatListFragment.setTvEnter(tvEnter);
+//        chatListFragment.setIvEnter(ivEnterCar);
         fragments = new Fragment[]{chatListFragment, PrivateChatListFragment.newInstance(mProgramId)};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.add(R.id.fragment_container, fragments[1]);
@@ -1452,6 +1458,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         //结束轮播
         if (banner != null) {
             banner.stopAutoPlay();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
+        FillHolderMessage message = updatePubChatEvent.getMessage();
+
+        if (message instanceof WelcomeMsg) {
+            WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
+            int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
+            if (royalLevel > 0) {
+                if (royalEnterControl == null) {
+                    royalEnterControl = new RoyalEnterControl();
+                    royalEnterControl.setLlEnter(llEnter);
+                    royalEnterControl.setTvEnter(tvEnter);
+                    royalEnterControl.setIvEnter(ivEnterCar);
+                    royalEnterControl.setContext(this);
+                }
+//            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
+//            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
+//            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
+                royalEnterControl.showEnter((WelcomeMsg) message);
+            }
         }
     }
 }
