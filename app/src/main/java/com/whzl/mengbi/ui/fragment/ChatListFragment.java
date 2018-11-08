@@ -15,17 +15,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
-import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
-import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
-import com.whzl.mengbi.ui.widget.view.RollTextView;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,26 +47,26 @@ public class ChatListFragment extends BaseFragment {
 //    @BindView(R.id.ll_enter)
     LinearLayout llEnter;
 //    @BindView(R.id.tv_enter)
-    RollTextView tvEnter;
-    ImageView ivEnter;
+//    RollTextView tvEnter;
+//    ImageView ivEnter;
 
-    public void setIvEnter(ImageView ivEnter) {
-        this.ivEnter = ivEnter;
-    }
-
-    public void setLlEnter(LinearLayout llEnter) {
-        this.llEnter = llEnter;
-    }
-
-    public void setTvEnter(RollTextView tvEnter) {
-        this.tvEnter = tvEnter;
-    }
+//    public void setIvEnter(ImageView ivEnter) {
+//        this.ivEnter = ivEnter;
+//    }
+//
+//    public void setLlEnter(LinearLayout llEnter) {
+//        this.llEnter = llEnter;
+//    }
+//
+//    public void setTvEnter(RollTextView tvEnter) {
+//        this.tvEnter = tvEnter;
+//    }
 
     private RecyclerView.Adapter chatAdapter;
     private static final int TOTAL_CHAT_MSG = 100;
     private boolean isRecyclerScrolling;
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
-    private RoyalEnterControl royalEnterControl;
+//    private RoyalEnterControl royalEnterControl;
 
 
     public static ChatListFragment newInstance() {
@@ -101,23 +98,23 @@ public class ChatListFragment extends BaseFragment {
             }
         }
 
-        if (message instanceof WelcomeMsg) {
-            WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
-            int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
-            if (royalLevel > 0) {
-                if (royalEnterControl == null) {
-                    royalEnterControl = new RoyalEnterControl();
-                    royalEnterControl.setLlEnter(llEnter);
-                    royalEnterControl.setTvEnter(tvEnter);
-                    royalEnterControl.setIvEnter(ivEnter);
-                    royalEnterControl.setContext(getMyActivity());
-                }
-//            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
-//            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
-//            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
-                royalEnterControl.showEnter((WelcomeMsg) message);
-            }
-        }
+//        if (message instanceof WelcomeMsg) {
+//            WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
+//            int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
+//            if (royalLevel > 0) {
+//                if (royalEnterControl == null) {
+//                    royalEnterControl = new RoyalEnterControl();
+//                    royalEnterControl.setLlEnter(llEnter);
+//                    royalEnterControl.setTvEnter(tvEnter);
+//                    royalEnterControl.setIvEnter(ivEnter);
+//                    royalEnterControl.setContext(getMyActivity());
+//                }
+////            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
+////            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
+////            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
+//                royalEnterControl.showEnter((WelcomeMsg) message);
+//            }
+//        }
     }
 
 

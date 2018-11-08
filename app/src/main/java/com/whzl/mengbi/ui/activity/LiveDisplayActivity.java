@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.os.Handler;
-import android.os.Message;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -27,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -52,11 +48,15 @@ import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
+import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
+import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
+import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
@@ -67,6 +67,7 @@ import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.PkControl;
+import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.GuardListBean;
@@ -104,11 +105,9 @@ import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
-import com.whzl.mengbi.ui.widget.view.MarqueeTextView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
-import com.whzl.mengbi.util.DateUtils;
-import com.whzl.mengbi.ui.widget.view.RollTextView;
+import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -128,11 +127,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -224,7 +220,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.ll_enter)
     LinearLayout llEnter;
     @BindView(R.id.tv_enter)
-    RollTextView tvEnter;
+    RoyalEnterView tvEnter;
     @BindView(R.id.iv_enter_car)
     ImageView ivEnterCar;
     @BindView(R.id.svga_start_pk)
@@ -275,6 +271,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Disposable grandDisposable;
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList;
+    private RoyalEnterControl royalEnterControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -437,9 +434,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         ChatListFragment chatListFragment = ChatListFragment.newInstance();
-        chatListFragment.setLlEnter(llEnter);
-        chatListFragment.setTvEnter(tvEnter);
-        chatListFragment.setIvEnter(ivEnterCar);
+//        chatListFragment.setLlEnter(llEnter);
+//        chatListFragment.setTvEnter(tvEnter);
+//        chatListFragment.setIvEnter(ivEnterCar);
         fragments = new Fragment[]{chatListFragment, PrivateChatListFragment.newInstance(mProgramId)};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.add(R.id.fragment_container, fragments[1]);
@@ -1468,6 +1465,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         //结束轮播
         if (banner != null) {
             banner.stopAutoPlay();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
+        FillHolderMessage message = updatePubChatEvent.getMessage();
+
+        if (message instanceof WelcomeMsg) {
+            WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
+            int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
+            if (royalLevel > 0) {
+                if (royalEnterControl == null) {
+                    royalEnterControl = new RoyalEnterControl();
+                    royalEnterControl.setLlEnter(llEnter);
+                    royalEnterControl.setTvEnter(tvEnter);
+                    royalEnterControl.setIvEnter(ivEnterCar);
+                    royalEnterControl.setContext(this);
+                }
+//            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
+//            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
+//            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
+                royalEnterControl.showEnter((WelcomeMsg) message);
+            }
         }
     }
 }

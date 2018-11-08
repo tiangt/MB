@@ -4,22 +4,16 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Color;
 import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
-import com.whzl.mengbi.chat.room.util.LightSpanString;
-import com.whzl.mengbi.ui.widget.view.RollTextView;
-import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.UIUtil;
@@ -35,7 +29,7 @@ import java.util.List;
  */
 public class RoyalEnterControl {
     LinearLayout llEnter;
-    RollTextView tvEnter;
+    RoyalEnterView tvEnter;
     ImageView ivEnter;
 
     public void setIvEnter(ImageView ivEnter) {
@@ -52,7 +46,7 @@ public class RoyalEnterControl {
         this.llEnter = llEnter;
     }
 
-    public void setTvEnter(RollTextView tvEnter) {
+    public void setTvEnter(RoyalEnterView tvEnter) {
         this.tvEnter = tvEnter;
     }
 
@@ -60,36 +54,34 @@ public class RoyalEnterControl {
 
     private boolean isPlay = false;
 
-    public synchronized void showEnter(WelcomeMsg welcomeMsg) {
+    public void showEnter(WelcomeMsg welcomeMsg) {
         list.add(welcomeMsg);
         if (!isPlay && list.size() != 0) {
-            startAnimal(llEnter);
+            startAnimal();
         }
 
     }
 
-    private void startAnimal(final LinearLayout ll) {
+    private void startAnimal() {
         isPlay = true;
-
-//        tvEnter.setText(list.get(0).getmWelcomeJson().getContext().getInfo().getNickname());
+        llEnter.setVisibility(View.VISIBLE);
         initTv(list.get(0));
-        ll.setVisibility(View.VISIBLE);
+        tvEnter.init();
         String imageUrl = ImageUrl.getImageUrl(list.get(0).getCarId(), "jpg");
         GlideImageLoader.getInstace().displayImage(context, imageUrl, ivEnter);
-        tvEnter.setSelected(false);
 
-        ObjectAnimator translationX = new ObjectAnimator().ofFloat(ll, "translationX",
+        ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
                 -UIUtil.dip2px(context, 255), 0);
         translationX.setDuration(1000);  //设置动画时间
         translationX.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                tvEnter.setSelected(true);
+                tvEnter.startScroll();
                 RxTimerUtil.timer(3000, new RxTimerUtil.IRxNext() {
                     @Override
                     public void doNext(long number) {
-                        outAnim(ll);
+                        outAnim();
                     }
                 });
             }
@@ -97,8 +89,7 @@ public class RoyalEnterControl {
         translationX.start();
     }
 
-    private synchronized void initTv(WelcomeMsg welcomeMsg) {
-        tvEnter.setText("");
+    private void initTv(WelcomeMsg welcomeMsg) {
         if (welcomeMsg.royalLevel > 0) {
             switch (welcomeMsg.royalLevel) {
                 case 1:
@@ -132,7 +123,7 @@ public class RoyalEnterControl {
             }
             tvEnter.append(" ");
         }
-        tvEnter.setMovementMethod(LinkMovementMethod.getInstance());
+//        tvEnter.setMovementMethod(LinkMovementMethod.getInstance());
         if (welcomeMsg.uid != 0) {
             int levelIcon = 0;
             if (welcomeMsg.isAnchor) {
@@ -157,7 +148,7 @@ public class RoyalEnterControl {
                     tvEnter.append(" ");
                 }
             }
-            if (!TextUtils.isEmpty(welcomeMsg.prettyNumberOrUserId)) {
+//            if (!TextUtils.isEmpty(welcomeMsg.prettyNumberOrUserId)) {
 //                switch (prettyNumberOrUserId.length()) {
 //                    case 5:
 //                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
@@ -172,19 +163,19 @@ public class RoyalEnterControl {
 //                        mHolder.textView.append(" ");
 //                        break;
 //                }
-            }
-            tvEnter.append(LightSpanString.getNickNameSpan(context, welcomeMsg.nickName, welcomeMsg.uid, welcomeMsg.programId, Color.parseColor("#ffffff")));
-            LogUtils.e("ssssssssss  "+welcomeMsg.nickName);
+//            }
+//            tvEnter.append(LightSpanString.getNickNameSpan(context, welcomeMsg.nickName, welcomeMsg.uid, welcomeMsg.programId, Color.parseColor("#ffffff")));
+            tvEnter.append( welcomeMsg.nickName);
             if (welcomeMsg.royalLevel > 0) {
-                tvEnter.append(LightSpanString.getLightString(" 闪亮登场", Color.parseColor("#ffffff")));
+                tvEnter.append(" 闪亮登场");
             } else {
-                tvEnter.append(LightSpanString.getLightString(" 精彩亮相", Color.parseColor("#ffffff")));
+                tvEnter.append(" 精彩亮相");
             }
         }
     }
 
-    private void outAnim(final LinearLayout ll) {
-        ObjectAnimator translationX = new ObjectAnimator().ofFloat(ll, "translationX",
+    private void outAnim() {
+        ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
                 0, -UIUtil.dip2px(context, 255));
         translationX.setDuration(1000);
         translationX.addListener(new AnimatorListenerAdapter() {
@@ -192,14 +183,13 @@ public class RoyalEnterControl {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 list.remove(0);
+                tvEnter.stopScroll();
+                tvEnter.setText("");
                 if (list.size() > 0) {
-                    tvEnter.setText(null);
-                    startAnimal(ll);
+                    startAnimal();
                 } else {
                     isPlay = false;
-                    tvEnter.setSelected(false);
-                    tvEnter.setText(null);
-                    ll.setVisibility(View.GONE);
+                    llEnter.setVisibility(View.GONE);
                 }
             }
         });
