@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.os.Handler;
-import android.os.Message;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -27,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -87,6 +83,7 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.CircleFragmentPagerAdaper;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
@@ -104,17 +101,18 @@ import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
-import com.whzl.mengbi.ui.widget.view.MarqueeTextView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
-import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.ui.widget.view.RollTextView;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
 import com.youth.banner.Banner;
@@ -128,11 +126,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -143,10 +138,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 /**
- * @author shaw
- * @date 2018/7/6
+ * test
+ *
+ * @author cliang
+ * @date 2018/11/8
  */
-public class LiveDisplayActivity extends BaseActivity implements LiveView {
+public class LiveDisplayNewActivity extends BaseActivity implements LiveView {
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
     @BindView(R.id.tv_host_name)
@@ -157,6 +154,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlContributionContainer;
     @BindView(R.id.texture_view)
     KSYTextureView textureView;
+    @BindView(R.id.texture_view2)
+    KSYTextureView live2;
+
     @BindView(R.id.tv_fans_count)
     TextView tvFansCount;
     @BindView(R.id.tv_popularity)
@@ -291,6 +291,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkLayout.setVisibility(View.GONE);
         textureView.stop();
         textureView.reset();
+        live2.stop();
+        live2.reset();
+
         textureView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         mProgramId = intent.getIntExtra(BundleConfig.PROGRAM_ID, -1);
@@ -542,11 +545,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         @Override
         public void onBindViewHolder(int position) {
             if (position > mGuardList.size() - 1) {
-                GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, R.drawable.guard_default_icon, ivGuardAvatar);
+                GlideImageLoader.getInstace().displayImage(LiveDisplayNewActivity.this, R.drawable.guard_default_icon, ivGuardAvatar);
                 tvGuard.setVisibility(View.VISIBLE);
                 ivGuardAvatar.setAlpha(1f);
             } else {
-                GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, mGuardList.get(position).avatar, ivGuardAvatar);
+                GlideImageLoader.getInstace().displayImage(LiveDisplayNewActivity.this, mGuardList.get(position).avatar, ivGuardAvatar);
                 ivGuardAvatar.setAlpha(mGuardList.get(position).isOnline == 1 ? 1f : 0.5f);
                 tvGuard.setVisibility(View.GONE);
             }
@@ -583,6 +586,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getAudienceList(mProgramId);
         mLivePresenter.getGuardTotal(mProgramId);
+        getLive2();
     }
 
     private void getRoomToken() {
@@ -721,7 +725,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo) {
-        chatRoomPresenter.setupConnection(liveRoomTokenInfo, LiveDisplayActivity.this);
+        chatRoomPresenter.setupConnection(liveRoomTokenInfo, LiveDisplayNewActivity.this);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -747,7 +751,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             AnimJson animJson = animEvent.getAnimJson();
             animJson.getContext().setGiftUrl(animEvent.getAnimUrl());
             if (giftControl == null) {
-                giftControl = new GiftControl(LiveDisplayActivity.this);
+                giftControl = new GiftControl(LiveDisplayNewActivity.this);
                 giftControl.setGiftLayout(llGiftContainer, 3);
             }
             giftControl.loadGift(animJson);
@@ -1377,6 +1381,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView.release();
             textureView = null;
         }
+
+        if(live2 != null){
+            live2.stop();
+            live2.release();
+            live2 = null;
+        }
         mLivePresenter.onDestory();
         super.onDestroy();
         unregisterReceiver(mReceiver);
@@ -1446,7 +1456,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         dialog.setMessage(getString(R.string.jump_live_house, nickName));
         dialog.setNegativeButton(R.string.cancel, null);
         dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
-            Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
+            Intent intent = new Intent(LiveDisplayNewActivity.this, LiveDisplayNewActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, programId);
             startActivity(intent);
         });
@@ -1468,6 +1478,57 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         //结束轮播
         if (banner != null) {
             banner.stopAutoPlay();
+        }
+    }
+
+    /**
+     * PK
+     */
+    private void getLive2() {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("programId", "6127088"); //test
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                RoomInfoBean roomInfoBean2 = GsonUtils.GsonToBean(result.toString(), RoomInfoBean.class);
+                if (roomInfoBean2.getCode() == 200) {
+                    if (roomInfoBean2.getData().getStream().getStreamAddress() != null) {
+                        if (roomInfoBean2.getData().getStream().getStreamAddress().getFlv() != null) {
+                            setDateSourceForPlayer2(roomInfoBean2.getData().getStream().getStreamAddress().getFlv());
+                        } else if (roomInfoBean2.getData().getStream().getStreamAddress().getRtmp() != null) {
+                            setDateSourceForPlayer2(roomInfoBean2.getData().getStream().getStreamAddress().getRtmp());
+                        } else if (roomInfoBean2.getData().getStream().getStreamAddress().getHls() != null) {
+                            setDateSourceForPlayer2(roomInfoBean2.getData().getStream().getStreamAddress().getHls());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+
+        live2.setDecodeMode(KSYMediaPlayer.KSYDecodeMode.KSY_DECODE_MODE_AUTO);
+        live2.setOnPreparedListener(iMediaPlayer -> {
+            live2.setVisibility(View.VISIBLE);
+            live2.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+            live2.start();
+        });
+
+        live2.setOnCompletionListener(iMediaPlayer -> {
+            live2.stop();
+            live2.release();
+        });
+    }
+
+    private void setDateSourceForPlayer2(String stream) {
+        try {
+            live2.setDataSource(stream);
+            live2.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -217,11 +217,24 @@
                 android:background="@color/colorblack"
                 app:ratio="1.33">
 
-
-                <com.ksyun.media.player.KSYTextureView
-                    android:id="@+id/texture_view"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.ksyun.media.player.KSYTextureView
+                        android:id="@+id/texture_view"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <com.ksyun.media.player.KSYTextureView
+                        android:id="@+id/texture_view2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary" />
+                </LinearLayout>
 
                 <ProgressBar
                     android:id="@+id/progressbar"
@@ -273,8 +286,7 @@
                     android:id="@+id/pk_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:visibility="gone" />
+                    android:layout_alignParentBottom="true" />
 
                 <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"

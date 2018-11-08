@@ -27,6 +27,7 @@ import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.activity.LiveDisplayNewActivity;
 import com.whzl.mengbi.ui.activity.LoginActivity;
 import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.activity.SearchActivity;
@@ -249,7 +250,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
+            Intent intent = new Intent(getContext(), LiveDisplayNewActivity.class);
             switch (type) {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
