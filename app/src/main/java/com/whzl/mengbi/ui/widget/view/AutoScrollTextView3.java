@@ -64,10 +64,10 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         paint = getPaint();
         text = getText().toString();
         textLength = paint.measureText(text);
-        viewWidth = width;
+//        viewWidth = width;
         step = 0f;
-        temp_view_plus_text_length = width + textLength + 50;
-        temp_view_plus_two_text_length = width + textLength * 3;
+//        temp_view_plus_text_length = width + textLength + 50;
+//        temp_view_plus_two_text_length = width + textLength * 3;
         y = getTextSize() + getPaddingTop();
     }
 
@@ -82,23 +82,29 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
 
     }
 
-    /**
-     * Set the text size, if this value is < 0, set to the default size
-     *
-     * @param textSize
-     */
-    public void setTextSize(float textSize) {
-        this.mTextSize = textSize;
-        paint.setTextSize(mTextSize <= 0 ? DEF_TEXT_SIZE : mTextSize);
-        requestLayout();
-        invalidate();
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        viewWidth = MeasureSpec.getSize(widthMeasureSpec);
     }
 
-    public void setTextColor(int textColor) {
-        this.mTextColor = textColor;
-        paint.setColor(mTextColor);
-        invalidate();
-    }
+    //    /**
+//     * Set the text size, if this value is < 0, set to the default size
+//     *
+//     * @param textSize
+//     */
+//    public void setTextSize(float textSize) {
+//        this.mTextSize = textSize;
+//        paint.setTextSize(mTextSize <= 0 ? DEF_TEXT_SIZE : UIUtil.sp2px(getContext(),mTextSize));
+//        requestLayout();
+////        invalidate();
+//    }
+//
+//    public void setTextColor(int textColor) {
+//        this.mTextColor = textColor;
+//        paint.setColor(mTextColor);
+//        invalidate();
+//    }
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {
@@ -173,13 +179,13 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
     @Override
     public void onDraw(Canvas canvas) {
         if (paint != null && scrollTimes < 3) {
-            canvas.drawText(text, temp_view_plus_text_length - step, y, paint);
+            canvas.drawText(text, viewWidth - step, y, paint);
         }
         if (paint != null && scrollTimes == 3) {
             if (text.length() > 5) {
-                canvas.drawText(text.substring(0, 5) + "...", temp_view_plus_text_length - step, y, paint);
+                canvas.drawText(text.substring(0, 5) + "...", viewWidth - step, y, paint);
             } else {
-                canvas.drawText(text, temp_view_plus_text_length - step, y, paint);
+                canvas.drawText(text, viewWidth - step, y, paint);
             }
         }
         if (!isStarting) {
@@ -187,13 +193,13 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         }
         step += 1.0;
         if (scrollTimes < 3) {
-            if (step > temp_view_plus_two_text_length) {
-                step = textLength;
+            if (step > viewWidth+textLength) {
+                step = 0;
                 scrollTimes += 1;
             }
         } else {
-            if (step == temp_view_plus_text_length) {
-                step = temp_view_plus_text_length;
+            if (step == viewWidth) {
+                step = viewWidth;
                 if (listener != null) {
                     listener.stopScroll();
                 }

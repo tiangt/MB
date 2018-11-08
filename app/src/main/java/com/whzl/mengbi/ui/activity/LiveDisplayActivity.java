@@ -866,7 +866,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
                 tvHostName.setText(mAnchor.getName());
                 tvHostName.init(getWindowManager(), getMarqueeWidth());
-                tvHostName.setTextColor(Color.WHITE);
+//                tvHostName.setTextColor(Color.WHITE);
                 tvHostName.startScroll();
 //                mTimer.schedule(mTimerTask, 5000, 5000);
                 tvHostName.setOnMarqueeListener(new AutoScrollTextView3.MarqueeStateListener() {

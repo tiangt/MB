@@ -250,7 +250,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            Intent intent = new Intent(getContext(), LiveDisplayNewActivity.class);
+            Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
             switch (type) {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
