@@ -229,7 +229,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.ll_enter)
     LinearLayout llEnter;
     @BindView(R.id.tv_enter)
-    RollTextView tvEnter;
+    TextView tvEnter;
     @BindView(R.id.iv_enter_car)
     ImageView ivEnterCar;
     @BindView(R.id.svga_start_pk)

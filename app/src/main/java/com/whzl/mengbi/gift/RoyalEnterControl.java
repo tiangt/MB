@@ -4,10 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Color;
-import android.text.SpannableString;
-import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,7 +13,6 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
-import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.widget.view.RollTextView;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
@@ -35,7 +30,7 @@ import java.util.List;
  */
 public class RoyalEnterControl {
     LinearLayout llEnter;
-    RollTextView tvEnter;
+    TextView tvEnter;
     ImageView ivEnter;
 
     public void setIvEnter(ImageView ivEnter) {
@@ -52,7 +47,7 @@ public class RoyalEnterControl {
         this.llEnter = llEnter;
     }
 
-    public void setTvEnter(RollTextView tvEnter) {
+    public void setTvEnter(TextView tvEnter) {
         this.tvEnter = tvEnter;
     }
 
@@ -72,7 +67,6 @@ public class RoyalEnterControl {
         isPlay = true;
         llEnter.setVisibility(View.VISIBLE);
         initTv(list.get(0));
-        tvEnter.setSelected(false);
         String imageUrl = ImageUrl.getImageUrl(list.get(0).getCarId(), "jpg");
         GlideImageLoader.getInstace().displayImage(context, imageUrl, ivEnter);
 
@@ -83,7 +77,6 @@ public class RoyalEnterControl {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                tvEnter.setSelected(true);
                 RxTimerUtil.timer(3000, new RxTimerUtil.IRxNext() {
                     @Override
                     public void doNext(long number) {
@@ -196,7 +189,6 @@ public class RoyalEnterControl {
                 } else {
                     isPlay = false;
                     llEnter.setVisibility(View.GONE);
-                    tvEnter.setSelected(false);
                 }
             }
         });

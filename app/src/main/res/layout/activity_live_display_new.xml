@@ -325,13 +325,11 @@
                         android:layout_width="64dp"
                         android:layout_height="40dp" />
 
-                    <com.whzl.mengbi.ui.widget.view.RollTextView
+                    <TextView
                         android:id="@+id/tv_enter"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ellipsize="marquee"
                         android:gravity="center_vertical"
-                        android:marqueeRepeatLimit="1"
                         android:padding="6dp"
                         android:singleLine="true"
                         android:textColor="#ffffff"
