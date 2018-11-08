@@ -36,4 +36,6 @@ public interface LivePresenter {
     void getActivityGrand(int programId,int anchorId);
 
     void getAudienceList(int programId);
+
+    void getGuardTotal(int programId);
 }

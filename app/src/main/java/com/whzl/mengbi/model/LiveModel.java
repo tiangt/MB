@@ -33,4 +33,6 @@ public interface LiveModel {
     void activityGrand(HashMap paramsMap, OnLiveFinishedListener listener);
 
     void getAudienceList(HashMap paramsMap, OnLiveFinishedListener listener);
+
+    void getTotalGuard(HashMap paramsMap, OnLiveFinishedListener listener);
 }

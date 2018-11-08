@@ -62,7 +62,7 @@
                             android:layout_marginLeft="6dp"
                             android:layout_marginTop="3dp"
                             android:layout_marginRight="6dp"
-                            android:textSize="11sp"/>
+                            android:textSize="11sp" />
 
 
                         <TextView
@@ -135,7 +135,7 @@
                 <TextView
                     android:id="@+id/tv_contribute"
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
+                    android:layout_height="20dp"
                     android:layout_centerVertical="true"
                     android:background="@drawable/shape_live_display_contribution_btn_bg"
                     android:drawableLeft="@drawable/live_display_cup"
@@ -216,6 +216,7 @@
                 android:layout_marginTop="7dp"
                 android:background="@color/colorblack"
                 app:ratio="1.33">
+
 
                 <com.ksyun.media.player.KSYTextureView
                     android:id="@+id/texture_view"
@@ -308,11 +309,11 @@
                     android:visibility="gone" />
 
                 <LinearLayout
-                    android:layout_marginLeft="5dp"
                     android:id="@+id/ll_enter"
                     android:layout_width="255dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="5dp"
                     android:layout_marginBottom="20dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
@@ -329,12 +330,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="marquee"
-                        android:singleLine="true"
+                        android:gravity="center_vertical"
                         android:marqueeRepeatLimit="1"
                         android:padding="6dp"
+                        android:singleLine="true"
                         android:textColor="#ffffff"
                         android:textSize="12sp" />
                 </LinearLayout>
+
+                <com.opensource.svgaplayer.SVGAImageView
+                    android:id="@+id/svga_start_pk"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    app:autoPlay="true" />
 
             </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 

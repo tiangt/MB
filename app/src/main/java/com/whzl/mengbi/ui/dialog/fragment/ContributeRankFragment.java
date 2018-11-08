@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.ContributeDataBean;
+import com.whzl.mengbi.model.entity.RoomRankBean;
 import com.whzl.mengbi.ui.adapter.AudienceContributeListAdapter;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
@@ -29,7 +30,7 @@ import butterknife.BindView;
 public class ContributeRankFragment extends BaseFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
-    private ArrayList<ContributeDataBean.DataBean.UserInfoBean> mDatas = new ArrayList<>();
+    private ArrayList<RoomRankBean.DataBean.ListBean> mDatas = new ArrayList<>();
     private String mType;
     private AudienceContributeListAdapter mAdapter;
 
@@ -55,7 +56,7 @@ public class ContributeRankFragment extends BaseFragment {
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                ContributeDataBean.DataBean.UserInfoBean userInfoBean = mDatas.get(position);
+                RoomRankBean.DataBean.ListBean userInfoBean = mDatas.get(position);
                 AudienceInfoDialog.newInstance(userInfoBean.userId, programId)
                         .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                         .setDimAmount(0)
@@ -87,14 +88,14 @@ public class ContributeRankFragment extends BaseFragment {
                 if (getContext() == null) {
                     return;
                 }
-                ContributeDataBean contributeDataBean = GsonUtils.GsonToBean(result.toString(), ContributeDataBean.class);
-                if (contributeDataBean.code == 200) {
-                    if ("day".equals(type)) {
-                        mAdapter.setDatas(contributeDataBean.data.day);
-                    } else {
-                        mAdapter.setDatas(contributeDataBean.data.week);
-                    }
-
+                RoomRankBean roomRankBean = GsonUtils.GsonToBean(result.toString(), RoomRankBean.class);
+                if (roomRankBean.code == 200) {
+//                    if ("day".equals(type)) {
+//                        mAdapter.setDatas(contributeDataBean.data.day);
+//                    } else {
+//                        mAdapter.setDatas(contributeDataBean.data.week);
+//                    }
+                    mAdapter.setDatas(roomRankBean.data.list);
                 }
             }
 

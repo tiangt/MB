@@ -10,6 +10,7 @@ import com.whzl.mengbi.model.entity.AudienceCountBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
@@ -379,6 +380,27 @@ public class LiveModelImpl implements LiveModel {
                     public void onSuccess(AudienceListBean.DataBean dataBean) {
                         if (dataBean != null) {
                             listener.onGetAudienceListSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getTotalGuard(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getTotalGuard(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<GuardTotalBean.DataBean>() {
+                    @Override
+                    public void onSuccess(GuardTotalBean.DataBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetTotalGuardSuccess(dataBean);
                         }
                     }
 

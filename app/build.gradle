@@ -170,6 +170,9 @@ dependencies {
     implementation 'com.uber.autodispose:autodispose:0.7.0'
     implementation 'com.uber.autodispose:autodispose-android:0.7.0'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.7.0'
+
+    //SVGA动画
+    implementation 'com.github.yyued:SVGAPlayer-Android:2.1.9'
 }
 
 protobuf {

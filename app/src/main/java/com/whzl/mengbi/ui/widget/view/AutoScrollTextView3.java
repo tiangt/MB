@@ -7,6 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Display;
 import android.view.View;
@@ -52,7 +53,6 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
     public AutoScrollTextView3(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initView();
-        viewWidth = UIUtil.getScreenWidthPixels(getContext()) - UIUtil.dip2px(getContext(), 120);
     }
 
 
@@ -60,13 +60,14 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         setOnClickListener(this);
     }
 
-    public void init(WindowManager windowManager) {
+    public void init(WindowManager windowManager, int width) {
         paint = getPaint();
         text = getText().toString();
         textLength = paint.measureText(text);
+        viewWidth = width;
         step = 0f;
-        temp_view_plus_text_length = textLength * 2;
-        temp_view_plus_two_text_length = textLength * 3;
+        temp_view_plus_text_length = width + textLength + 50;
+        temp_view_plus_two_text_length = width + textLength * 3;
         y = getTextSize() + getPaddingTop();
     }
 
@@ -171,8 +172,15 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
     @Nullable
     @Override
     public void onDraw(Canvas canvas) {
-        if (paint != null) {
+        if (paint != null && scrollTimes < 3) {
             canvas.drawText(text, temp_view_plus_text_length - step, y, paint);
+        }
+        if (paint != null && scrollTimes == 3) {
+            if (text.length() > 5) {
+                canvas.drawText(text.substring(0, 5) + "...", temp_view_plus_text_length - step, y, paint);
+            } else {
+                canvas.drawText(text, temp_view_plus_text_length - step, y, paint);
+            }
         }
         if (!isStarting) {
             return;

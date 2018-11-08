@@ -5,12 +5,15 @@ import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
+
+import java.util.HashMap;
 
 public interface OnLiveFinishedListener {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -42,4 +45,6 @@ public interface OnLiveFinishedListener {
     void onActivityGrandSuccess(ActivityGrandBean bean);
 
     void onGetAudienceListSuccess(AudienceListBean.DataBean audienceListBean);
+
+    void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean);
 }
