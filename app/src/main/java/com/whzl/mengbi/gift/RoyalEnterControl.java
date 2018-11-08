@@ -4,17 +4,16 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
-import com.whzl.mengbi.ui.widget.view.RollTextView;
-import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.UIUtil;
@@ -30,7 +29,7 @@ import java.util.List;
  */
 public class RoyalEnterControl {
     LinearLayout llEnter;
-    TextView tvEnter;
+    RoyalEnterView tvEnter;
     ImageView ivEnter;
 
     public void setIvEnter(ImageView ivEnter) {
@@ -47,7 +46,7 @@ public class RoyalEnterControl {
         this.llEnter = llEnter;
     }
 
-    public void setTvEnter(TextView tvEnter) {
+    public void setTvEnter(RoyalEnterView tvEnter) {
         this.tvEnter = tvEnter;
     }
 
@@ -67,6 +66,7 @@ public class RoyalEnterControl {
         isPlay = true;
         llEnter.setVisibility(View.VISIBLE);
         initTv(list.get(0));
+        tvEnter.init();
         String imageUrl = ImageUrl.getImageUrl(list.get(0).getCarId(), "jpg");
         GlideImageLoader.getInstace().displayImage(context, imageUrl, ivEnter);
 
@@ -77,6 +77,7 @@ public class RoyalEnterControl {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
+                tvEnter.startScroll();
                 RxTimerUtil.timer(3000, new RxTimerUtil.IRxNext() {
                     @Override
                     public void doNext(long number) {
@@ -141,12 +142,12 @@ public class RoyalEnterControl {
                 tvEnter.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_vip_chat));
                 tvEnter.append(" ");
             }
-//            if (null != welcomeMsg.userSpanList) {
-//                for (SpannableString spanString :welcomeMsg. userSpanList) {
-//                    tvEnter.append(spanString);
-//                    tvEnter.append(" ");
-//                }
-//            }
+            if (null != welcomeMsg.userSpanList) {
+                for (SpannableString spanString :welcomeMsg. userSpanList) {
+                    tvEnter.append(spanString);
+                    tvEnter.append(" ");
+                }
+            }
 //            if (!TextUtils.isEmpty(welcomeMsg.prettyNumberOrUserId)) {
 //                switch (prettyNumberOrUserId.length()) {
 //                    case 5:
@@ -165,7 +166,6 @@ public class RoyalEnterControl {
 //            }
 //            tvEnter.append(LightSpanString.getNickNameSpan(context, welcomeMsg.nickName, welcomeMsg.uid, welcomeMsg.programId, Color.parseColor("#ffffff")));
             tvEnter.append( welcomeMsg.nickName);
-            LogUtils.e("ssssssssss  "+welcomeMsg.nickName);
             if (welcomeMsg.royalLevel > 0) {
                 tvEnter.append(" 闪亮登场");
             } else {
@@ -183,6 +183,7 @@ public class RoyalEnterControl {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 list.remove(0);
+                tvEnter.stopScroll();
                 tvEnter.setText("");
                 if (list.size() > 0) {
                     startAnimal();

@@ -112,6 +112,7 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.MarqueeTextView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
+import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.ui.widget.view.RollTextView;
 import com.whzl.mengbi.util.LogUtils;
@@ -229,7 +230,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.ll_enter)
     LinearLayout llEnter;
     @BindView(R.id.tv_enter)
-    TextView tvEnter;
+    RoyalEnterView tvEnter;
     @BindView(R.id.iv_enter_car)
     ImageView ivEnterCar;
     @BindView(R.id.svga_start_pk)
