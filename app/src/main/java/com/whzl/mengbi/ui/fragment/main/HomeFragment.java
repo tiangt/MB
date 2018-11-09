@@ -27,7 +27,6 @@ import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.ui.activity.LiveDisplayNewActivity;
 import com.whzl.mengbi.ui.activity.LoginActivity;
 import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.activity.SearchActivity;
