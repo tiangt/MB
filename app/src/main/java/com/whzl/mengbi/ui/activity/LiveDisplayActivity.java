@@ -225,6 +225,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageView ivEnterCar;
     @BindView(R.id.svga_start_pk)
     SVGAImageView svgaStartPk;
+    @BindView(R.id.rl_treasure_box)
+    RelativeLayout rlTreasureBox;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -272,6 +274,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList;
     private RoyalEnterControl royalEnterControl;
+    private boolean showActivityGrand = false;
+    private boolean showBanner = false;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -302,6 +306,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initFragment();
         loadData();
         initPKAnim();
+        showActivityGrand = false;
+        showBanner = false;
     }
 
     private void initPKAnim() {
@@ -641,10 +647,26 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     return;
                 }
                 setTabChange(1);
+
+                rlTreasureBox.setVisibility(View.GONE);
+                if (showActivityGrand) {
+                    vpActivity.setVisibility(View.GONE);
+                }
+                if (showBanner) {
+                    banner.setVisibility(View.GONE);
+                }
                 break;
             case R.id.rootView:
                 if (currentSelectedIndex == 1) {
                     setTabChange(0);
+
+                    rlTreasureBox.setVisibility(View.VISIBLE);
+                    if (showActivityGrand) {
+                        vpActivity.setVisibility(View.VISIBLE);
+                    }
+                    if (showBanner) {
+                        banner.setVisibility(View.VISIBLE);
+                    }
                 }
                 break;
             case R.id.btn_send_gift:
@@ -1098,8 +1120,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 || bean.list == null
                 || bean.list.isEmpty()) {
             banner.setVisibility(View.GONE);
+            showBanner = false;
             return;
         }
+        showBanner = true;
         banner.setVisibility(View.VISIBLE);
         mBannerInfoList = bean.list;
         ArrayList<String> banners = new ArrayList<>();
@@ -1123,7 +1147,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
+        if (mActivityGrands != null) {
+            mActivityGrands.clear();
+        }
         if (bean.list != null && bean.list.size() != 0) {
+            showActivityGrand = true;
             vpActivity.setVisibility(View.VISIBLE);
             vpActivity.setOffscreenPageLimit(bean.list.size());
             for (int i = 0; i < bean.list.size(); i++) {
