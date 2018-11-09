@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.text.SpannableString;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,6 +32,11 @@ public class RoyalEnterControl {
     LinearLayout llEnter;
     RoyalEnterView tvEnter;
     ImageView ivEnter;
+    ConstraintLayout clEnter;
+
+    public void setClEnter(ConstraintLayout clEnter) {
+        this.clEnter = clEnter;
+    }
 
     public void setIvEnter(ImageView ivEnter) {
         this.ivEnter = ivEnter;
@@ -93,25 +99,25 @@ public class RoyalEnterControl {
         if (welcomeMsg.royalLevel > 0) {
             switch (welcomeMsg.royalLevel) {
                 case 1:
-                    tvEnter.setBackgroundResource(R.drawable.bg_royal_enter_1);
+                    clEnter.setBackgroundResource(R.drawable.bg_royal_enter_1);
                     break;
                 case 2:
-                    tvEnter.setBackgroundResource(R.drawable.bg_royal_enter_2);
+                    clEnter.setBackgroundResource(R.drawable.bg_royal_enter_2);
                     break;
                 case 3:
-                    tvEnter.setBackgroundResource(R.drawable.bg_royal_enter_3);
+                    clEnter.setBackgroundResource(R.drawable.bg_royal_enter_3);
                     break;
                 case 4:
-                    tvEnter.setBackgroundResource(R.drawable.bg_royal_enter_4);
+                    clEnter.setBackgroundResource(R.drawable.bg_royal_enter_4);
                     break;
                 case 5:
-                    tvEnter.setBackgroundResource(R.drawable.bg_royal_enter_5);
+                    clEnter.setBackgroundResource(R.drawable.bg_royal_enter_5);
                     break;
                 case 6:
-                    tvEnter.setBackgroundResource(R.drawable.bg_royal_enter_6);
+                    clEnter.setBackgroundResource(R.drawable.bg_royal_enter_6);
                     break;
                 case 7:
-                    tvEnter.setBackgroundResource(R.drawable.bg_royal_enter_7);
+                    clEnter.setBackgroundResource(R.drawable.bg_royal_enter_7);
                     break;
                 default:
                     break;

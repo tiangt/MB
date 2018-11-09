@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -227,6 +228,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     SVGAImageView svgaStartPk;
     @BindView(R.id.rl_treasure_box)
     RelativeLayout rlTreasureBox;
+    @BindView(R.id.cl_entenr)
+    ConstraintLayout clEnter;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -1510,6 +1513,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     royalEnterControl.setTvEnter(tvEnter);
                     royalEnterControl.setIvEnter(ivEnterCar);
                     royalEnterControl.setContext(this);
+                    royalEnterControl.setClEnter(clEnter);
                 }
 //            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
 //            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
