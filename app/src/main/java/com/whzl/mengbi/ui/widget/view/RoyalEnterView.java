@@ -8,15 +8,10 @@ import android.os.Parcelable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.UIUtil;
-
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 
 public class RoyalEnterView extends AppCompatTextView {
     public final static String TAG = RoyalEnterView.class.getSimpleName();
@@ -57,6 +52,7 @@ public class RoyalEnterView extends AppCompatTextView {
         String text = getText().toString();
         step = 0f;
         textLength = paint.measureText(text);
+        viewWidth = UIUtil.dip2px(getContext(), 255);
     }
 
 
@@ -86,7 +82,6 @@ public class RoyalEnterView extends AppCompatTextView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        viewWidth = MeasureSpec.getSize(widthMeasureSpec);
     }
 
     public static class SavedState extends BaseSavedState {
@@ -153,7 +148,7 @@ public class RoyalEnterView extends AppCompatTextView {
         if (!isStarting) {
             return;
         }
-        canvas.translate(- step, 0);
+        canvas.translate(-step, 0);
         super.onDraw(canvas);
         if (viewWidth > textLength) {
             return;
@@ -161,7 +156,7 @@ public class RoyalEnterView extends AppCompatTextView {
         Observable.just(1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(integer -> {
-                    if (textLength > viewWidth && textLength - step <= viewWidth) {
+                    if (textLength > viewWidth && textLength - step + 100 <= viewWidth) {
                         return;
                     }
                     step += 1.5;
