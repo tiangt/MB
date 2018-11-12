@@ -75,6 +75,39 @@ public class LevelUtil {
         return -1;
     }
 
+    public static String getPrettyNumColor(FromJson fromJson) {
+        if (fromJson == null) {
+            return "";
+        }
+        List<FromJson.Good> goodsList = fromJson.getGoodsList();
+        if (goodsList == null) {
+            return "";
+        }
+        for (FromJson.Good good : goodsList) {
+            if (good.getGoodsType().equals("PRETTY_NUM")) {
+                String goodsColor = good.goodsColor;
+                return goodsColor;
+            }
+        }
+        return "";
+    }
+
+    public static String getPrettyNum(FromJson fromJson) {
+        if (fromJson == null) {
+            return "";
+        }
+        List<FromJson.Good> goodsList = fromJson.getGoodsList();
+        if (goodsList == null) {
+            return "";
+        }
+        for (FromJson.Good good : goodsList) {
+            if (good.getGoodsType().equals("PRETTY_NUM")) {
+                String goodsColor = good.getGoodsName();
+                return goodsColor;
+            }
+        }
+        return "";
+    }
 
     /**
      * 根据图片资源获取spanString

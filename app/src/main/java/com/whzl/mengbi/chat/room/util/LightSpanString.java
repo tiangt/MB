@@ -2,7 +2,7 @@ package com.whzl.mengbi.chat.room.util;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
+import com.whzl.mengbi.util.UIUtil;
 
 public class LightSpanString {
     public static SpannableString getLightString(String content, int color) {
@@ -41,5 +41,19 @@ public class LightSpanString {
 
         nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return nickSpan;
+    }
+
+    public static SpannableString getPrettyNumSpan(Context context,String num, int bgColor, int textColor) {
+        SpannableString spannableString = new SpannableString(num);
+        RoundBackgroundColorSpan span = new RoundBackgroundColorSpan(context,bgColor, textColor, UIUtil.dip2px(context,1));
+        spannableString.setSpan(span, 0, num.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
+    public static SpannableString getPrettyNumBgSpan(Context context,String num, int bgColor, int textColor) {
+        SpannableString spannableString = new SpannableString(num);
+        RoundBackgroundColorSpan2 span = new RoundBackgroundColorSpan2(context,bgColor, textColor, UIUtil.dip2px(context,1));
+        spannableString.setSpan(span, 0, num.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
     }
 }
