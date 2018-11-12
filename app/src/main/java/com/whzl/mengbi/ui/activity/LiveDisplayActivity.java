@@ -8,20 +8,28 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.PopupWindowCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -102,10 +110,12 @@ import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.recyclerview.AdaptiveLayoutManager;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
+import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.MVPPopupWindow;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
@@ -280,6 +290,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private boolean showActivityGrand = false;
     private boolean showBanner = false;
     private String runWayType;
+    private BaseAwesomeDialog pkEndDialog;
+    private PopupWindow pkResultPop;
+    private PopupWindow mvpWindow;
+    private ImageView ivClose;
+    private RecyclerView rvPunishment;
+    private Button btnPunishment;
+    private ArrayList<String> list;
+    private ArrayList<Boolean> mSelectedList;
+    private BaseListAdapter mvpAdapter;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -400,6 +419,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView.stop();
             textureView.release();
         });
+
     }
 
     @Override
@@ -409,6 +429,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initFragment();
         initBanner();
         initVp();
+//        showPKResult();
+        showPunishment();
     }
 
     private void initVp() {
@@ -1453,6 +1475,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             grandDisposable.dispose();
             LogUtils.e("ssssss  timerGrand dispose");
         }
+
+        if(pkResultPop.isShowing()){
+            pkResultPop.dismiss();
+        }
+
+        if(mvpWindow.isShowing()){
+            mvpWindow.dismiss();
+        }
     }
 
     @Override
@@ -1525,5 +1555,144 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 royalEnterControl.showEnter((WelcomeMsg) message);
             }
         }
+    }
+
+    /**
+     * PK结束
+     */
+    private void showPKResult() {
+        View popView = LayoutInflater.from(this).inflate(R.layout.pop_pk_end, null);
+        pkResultPop = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        pkResultPop.setOutsideTouchable(true);
+        pkResultPop.setFocusable(true);
+        pkResultPop.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+
+        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        popView.measure(width, height);
+        pkLayout.measure(width, height);
+        int offsetX = Math.abs(popView.getMeasuredWidth() - pkLayout.getMeasuredWidth()) / 2;
+        int offsetY = -(popView.getMeasuredHeight() + pkLayout.getMeasuredHeight() + 10);
+
+        pkLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    PopupWindowCompat.showAsDropDown(pkResultPop, pkLayout, offsetX, offsetY, Gravity.START);
+                }
+            }
+        });
+    }
+
+    /**
+     * 惩罚
+     */
+    private void showPunishment() {
+        View popView = LayoutInflater.from(this).inflate(R.layout.pop_mvp, null);
+        mvpWindow = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        mvpWindow.setOutsideTouchable(false);
+        mvpWindow.setFocusable(false);
+        mvpWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+
+        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        popView.measure(width, height);
+        pkLayout.measure(width, height);
+        int offsetX = Math.abs(popView.getMeasuredWidth() - pkLayout.getMeasuredWidth()) / 2;
+        int offsetY = -(popView.getMeasuredHeight() + pkLayout.getMeasuredHeight() - 130);
+
+        ivClose = popView.findViewById(R.id.iv_close_mvp);
+        rvPunishment = popView.findViewById(R.id.rv_punishment);
+        btnPunishment = popView.findViewById(R.id.btn_punishment);
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mvpWindow.dismiss();
+            }
+        });
+
+        pkLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    PopupWindowCompat.showAsDropDown(mvpWindow, pkLayout, offsetX, offsetY, Gravity.START);
+                }
+            }
+        });
+
+        initRecy();
+    }
+
+    private void initRecy() {
+        list = new ArrayList<>();
+        mSelectedList = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            list.add("第" + i + "种方式");
+            mSelectedList.add(false);
+        }
+        rvPunishment.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        rvPunishment.setFocusableInTouchMode(false);
+        rvPunishment.setHasFixedSize(true);
+        rvPunishment.setLayoutManager(new GridLayoutManager(this, 3));
+        rvPunishment.addItemDecoration(new SpacesItemDecoration(20));
+        mvpAdapter = new BaseListAdapter() {
+            @Override
+            protected int getDataCount() {
+                return list == null ? 0 : list.size();
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.item_punishment, parent, false);
+                return new MVPViewHolder(itemView);
+            }
+        };
+        rvPunishment.setAdapter(mvpAdapter);
+    }
+
+
+    class MVPViewHolder extends BaseViewHolder {
+        TextView tvPunishment;
+
+        public MVPViewHolder(View itemView) {
+            super(itemView);
+            tvPunishment = itemView.findViewById(R.id.tv_punishment);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            tvPunishment.setText(list.get(position));
+            if (mSelectedList.get(position)) {
+                tvPunishment.setBackgroundResource(R.drawable.shape_item_2);
+                tvPunishment.setTextColor(Color.WHITE);
+            } else {
+                tvPunishment.setBackgroundResource(R.drawable.shape_item_1);
+                tvPunishment.setTextColor(Color.argb(255, 42, 46, 54));
+            }
+            tvPunishment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i < mSelectedList.size(); i++) {
+                        mSelectedList.set(i, false);
+                    }
+                    mSelectedList.set(position, true);
+                    showToast(position + "");
+                    btnPunishment.setVisibility(View.VISIBLE);
+                    mvpAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+
     }
 }

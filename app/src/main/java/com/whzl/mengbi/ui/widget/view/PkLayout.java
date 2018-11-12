@@ -98,7 +98,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private void init(Context context) {
         LayoutInflater from = LayoutInflater.from(context);
         inflate = from.inflate(R.layout.layout_pk_new, this, false);
-        inflate = from.inflate(R.layout.layout_pk_new, this, false);
+//        inflate = from.inflate(R.layout.layout_pk_new, this, false);
         addView(inflate);
         progressBar = inflate.findViewById(R.id.pb_pk);
         ivFount = inflate.findViewById(R.id.iv_left);
@@ -134,6 +134,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
         LinearLayoutManager followManager = new LinearLayoutManager(context);
         followManager.setOrientation(HORIZONTAL);
+        followManager.setStackFromEnd(true);
         followManager.setReverseLayout(true);
         myFollow.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         myFollow.setLayoutManager(followManager);

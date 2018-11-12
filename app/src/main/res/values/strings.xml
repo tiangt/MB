@@ -327,4 +327,6 @@
     </array>
 
     <string name="empty_always">还没有送过礼物，快去送个礼物给主播吧！</string>
+    <string name="mvp_privilege">胜方最佳MVP特权</string>
+    <string name="pk_punishment_description">说明：惩罚为胜方最佳MVP选择，不选由主播自行定义</string>
 </resources>

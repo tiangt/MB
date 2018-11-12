@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,8 @@ public abstract class BaseAwesomeDialog extends DialogFragment {
     @LayoutRes
     protected int layoutId;
     private Unbinder unbinder;
+
+    private int position = 0;
 
     public abstract int intLayoutId();
 
@@ -114,6 +118,12 @@ public abstract class BaseAwesomeDialog extends DialogFragment {
                 }
             }
 
+            if(position > 0){
+//                Display d = window.getWindowManager().getDefaultDisplay();
+                lp.y = position;
+                window.setGravity(Gravity.CENTER_VERTICAL);
+            }
+
             //设置dialog宽度
             if (width == 0) {
                 lp.width = UIUtil.getScreenWidthPixels(getContext()) - 2 * UIUtil.dip2px(getContext(), margin);
@@ -168,6 +178,11 @@ public abstract class BaseAwesomeDialog extends DialogFragment {
 
     public BaseAwesomeDialog setAnimStyle(@StyleRes int animStyle) {
         this.animStyle = animStyle;
+        return this;
+    }
+
+    public BaseAwesomeDialog setPosition(int position) {
+        this.position = position;
         return this;
     }
 
