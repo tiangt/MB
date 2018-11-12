@@ -8,12 +8,7 @@ import android.os.Parcelable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
-import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadEvent;
-import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
-import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
-import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -75,88 +70,120 @@ public class AutoScrollTextView2 extends AppCompatTextView {
     }
 
     public void init(BroadEvent event, RunStateListener listener) {
-        if (event instanceof UserLevelChangeEvent) {
-            broadEvent = event;
-            this.listener = listener;
-            setVisibility(GONE);
-            try {
-                ((UserLevelChangeEvent)event).showRunWay(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            paint = getPaint();
-            String text = getText().toString();
-            step = 0f;
-            textLength = paint.measureText(text);
-            maxTranslateX = textLength + viewWidth + 50;
-            dispose();
+        broadEvent = event;
+        this.listener = listener;
+        setVisibility(GONE);
+        try {
+            event.showRunWay(this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (event instanceof RoyalLevelChangeEvent) {
-            broadEvent = event;
-            this.listener = listener;
-            setVisibility(GONE);
-            try {
-                ((RoyalLevelChangeEvent)event).showRunWay(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            paint = getPaint();
-            String text = getText().toString();
-            step = 0f;
-            textLength = paint.measureText(text);
-            maxTranslateX = textLength + viewWidth + 50;
-            dispose();
-        }
-        if (event instanceof AnchorLevelChangeEvent) {
-            broadEvent = event;
-            this.listener = listener;
-            setVisibility(GONE);
-            try {
-                ((AnchorLevelChangeEvent)event).showRunWay(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            paint = getPaint();
-            String text = getText().toString();
-            step = 0f;
-            textLength = paint.measureText(text);
-            maxTranslateX = textLength + viewWidth + 50;
-            dispose();
-        }
+        paint = getPaint();
+        String text = getText().toString();
+        step = 0f;
+        textLength = paint.measureText(text);
+        maxTranslateX = textLength + viewWidth + 50;
+        dispose();
 
-        if (event instanceof LuckGiftBigEvent) {
-            broadEvent = event;
-            this.listener = listener;
-            setVisibility(GONE);
-            try {
-                ((LuckGiftBigEvent)event).showRunWay(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            paint = getPaint();
-            String text = getText().toString();
-            step = 0f;
-            textLength = paint.measureText(text);
-            maxTranslateX = textLength + viewWidth + 50;
-            dispose();
-        }
-
-        if (event instanceof BroadCastBottomEvent) {
-            broadEvent = event;
-            this.listener = listener;
-            setVisibility(GONE);
-            try {
-                ((BroadCastBottomEvent)event).showRunWay(this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            paint = getPaint();
-            String text = getText().toString();
-            step = 0f;
-            textLength = paint.measureText(text);
-            maxTranslateX = textLength + viewWidth + 50;
-            dispose();
-        }
+//        if (event instanceof UserLevelChangeEvent) {
+//            broadEvent = event;
+//            this.listener = listener;
+//            setVisibility(GONE);
+//            try {
+//                ((UserLevelChangeEvent) event).showRunWay(this);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            paint = getPaint();
+//            String text = getText().toString();
+//            step = 0f;
+//            textLength = paint.measureText(text);
+//            maxTranslateX = textLength + viewWidth + 50;
+//            dispose();
+//        }
+//        if (event instanceof RoyalLevelChangeEvent) {
+//            broadEvent = event;
+//            this.listener = listener;
+//            setVisibility(GONE);
+//            try {
+//                ((RoyalLevelChangeEvent) event).showRunWay(this);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            paint = getPaint();
+//            String text = getText().toString();
+//            step = 0f;
+//            textLength = paint.measureText(text);
+//            maxTranslateX = textLength + viewWidth + 50;
+//            dispose();
+//        }
+//        if (event instanceof AnchorLevelChangeEvent) {
+//            broadEvent = event;
+//            this.listener = listener;
+//            setVisibility(GONE);
+//            try {
+//                ((AnchorLevelChangeEvent) event).showRunWay(this);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            paint = getPaint();
+//            String text = getText().toString();
+//            step = 0f;
+//            textLength = paint.measureText(text);
+//            maxTranslateX = textLength + viewWidth + 50;
+//            dispose();
+//        }
+//
+//        if (event instanceof LuckGiftBigEvent) {
+//            broadEvent = event;
+//            this.listener = listener;
+//            setVisibility(GONE);
+//            try {
+//                ((LuckGiftBigEvent) event).showRunWay(this);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            paint = getPaint();
+//            String text = getText().toString();
+//            step = 0f;
+//            textLength = paint.measureText(text);
+//            maxTranslateX = textLength + viewWidth + 50;
+//            dispose();
+//        }
+//
+//        if (event instanceof BroadCastBottomEvent) {
+//            broadEvent = event;
+//            this.listener = listener;
+//            setVisibility(GONE);
+//            try {
+//                ((BroadCastBottomEvent) event).showRunWay(this);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            paint = getPaint();
+//            String text = getText().toString();
+//            step = 0f;
+//            textLength = paint.measureText(text);
+//            maxTranslateX = textLength + viewWidth + 50;
+//            dispose();
+//        }
+//
+//        if (event instanceof PkEvent) {
+//            broadEvent = event;
+//            this.listener = listener;
+//            setVisibility(GONE);
+//            try {
+//                ((PkEvent) event).showRunWay(this);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            paint = getPaint();
+//            String text = getText().toString();
+//            step = 0f;
+//            textLength = paint.measureText(text);
+//            maxTranslateX = textLength + viewWidth + 50;
+//            dispose();
+//        }
     }
 
     public void dispose() {

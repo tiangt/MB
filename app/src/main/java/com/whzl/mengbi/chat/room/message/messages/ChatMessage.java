@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 
 import com.whzl.mengbi.R;
@@ -43,6 +44,8 @@ public class ChatMessage implements FillHolderMessage {
     private SingleTextViewHolder mholder;
     private List<SpannableString> fromSpanList;
     private boolean isPrivate = false;
+    private final String prettyNumColor;
+    private final String prettyNum;
 
     public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList, boolean isPrivate) {
         this.isPrivate = isPrivate;
@@ -60,6 +63,9 @@ public class ChatMessage implements FillHolderMessage {
         }
         from_level = LevelUtil.getUserLevel(msgJson.getFrom_json());
         royal_level = LevelUtil.getRoyalLevel(msgJson.getFrom_json());
+        prettyNumColor = LevelUtil.getPrettyNumColor(msgJson.getFrom_json());
+        prettyNum = LevelUtil.getPrettyNum(msgJson.getFrom_json());
+
         if (ChatRoomInfo.getInstance().getRoomInfoBean() != null) {
             int anchorUid = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getAnchor().getId();
             if (anchorUid == from_uid) {
@@ -155,6 +161,19 @@ public class ChatMessage implements FillHolderMessage {
                 mholder.textView.append(spanString);
                 mholder.textView.append(" ");
             }
+        }
+        if (!TextUtils.isEmpty(prettyNumColor)) {
+            if ("A".equals(prettyNumColor)) {
+                mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
+                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
+            } else if ("B".equals(prettyNumColor)) {
+                mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe7a2a"), Color.parseColor("#ffffff")));
+                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe7a2a"), Color.parseColor("#fe7a2a")));
+            } else if ("C".equals(prettyNumColor)) {
+                mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
+                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
+            }
+            mholder.textView.append(" ");
         }
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
             mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#2da8ee")));

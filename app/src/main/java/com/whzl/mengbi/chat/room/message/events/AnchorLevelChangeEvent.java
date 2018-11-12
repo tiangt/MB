@@ -10,7 +10,7 @@ import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.util.ResourceMap;
 
-public class AnchorLevelChangeEvent extends BroadEvent {
+public class AnchorLevelChangeEvent implements BroadEvent {
     private AnchorLevelChangeJson anchorLevelChangeJson;
     private Context mContext;
 

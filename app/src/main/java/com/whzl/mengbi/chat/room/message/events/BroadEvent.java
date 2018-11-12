@@ -1,4 +1,7 @@
 package com.whzl.mengbi.chat.room.message.events;
 
-public class BroadEvent {
+import android.widget.TextView;
+
+public interface BroadEvent {
+    void showRunWay(TextView textView) throws Exception;
 }

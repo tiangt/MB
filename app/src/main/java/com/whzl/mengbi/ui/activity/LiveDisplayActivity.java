@@ -65,6 +65,7 @@ import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
@@ -465,7 +466,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        ChatListFragment chatListFragment = ChatListFragment.newInstance();
+        ChatListFragment chatListFragment = ChatListFragment.newInstance(mProgramId);
 //        chatListFragment.setLlEnter(llEnter);
 //        chatListFragment.setTvEnter(tvEnter);
 //        chatListFragment.setIvEnter(ivEnterCar);
@@ -1554,6 +1555,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
                 royalEnterControl.showEnter((WelcomeMsg) message);
             }
+        } else if (message instanceof PkMessage && ((PkMessage) message).pkJson.context.busiCode.equals("PK_RECORD")) {
+            initRunWayBroad();
+            PkEvent pkEvent = new PkEvent(((PkMessage) message).pkJson, this);
+            mRunWayBroadControl.load(pkEvent);
         }
     }
 

@@ -261,9 +261,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         if (aLong == second - 11 && "PK进行中 ".equals(state) && listener != null) {
                             listener.onTimeDownListener();
                         }
-                        if (aLong >= second - 1) {
-                            LogUtils.e("ssssss  state dispose");
-                            disposable.dispose();
+
+                    }else if (aLong >= second - 1) {
+                        LogUtils.e("ssssss  state dispose");
+                        disposable.dispose();
 //                        ivLeftLead.setVisibility(GONE);
 //                        ivRightLead.setVisibility(GONE);
 //                        if (progressBar.getProgress() == 50) {
@@ -276,7 +277,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 //                        if (progressBar.getProgress() > 50) {
 //                            setLeftWin();
 //                            ivLeftCrown.setVisibility(VISIBLE);
-                        }
                     }
                 });
 
