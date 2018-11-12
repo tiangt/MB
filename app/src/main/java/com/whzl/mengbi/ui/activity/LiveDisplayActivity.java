@@ -279,6 +279,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RoyalEnterControl royalEnterControl;
     private boolean showActivityGrand = false;
     private boolean showBanner = false;
+    private String runWayType;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -787,6 +788,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RunWayEvent runWayEvent) {
+//        frameSupercarTrack.setVisibility(View.GONE);
+//        runWayText.setVisibility(View.GONE);
+//        ivRocket.setVisibility(View.GONE);
         initRunWay();
         mRunWayGiftControl.load(runWayEvent);
     }
@@ -891,15 +895,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
                 tvHostName.setText(mAnchor.getName());
                 tvHostName.init(getWindowManager(), getMarqueeWidth());
-//                tvHostName.setTextColor(Color.WHITE);
+                tvHostName.setTextColor(Color.WHITE);
                 tvHostName.startScroll();
 //                mTimer.schedule(mTimerTask, 5000, 5000);
-                tvHostName.setOnMarqueeListener(new AutoScrollTextView3.MarqueeStateListener() {
-                    @Override
-                    public void stopScroll() {
-
-                    }
-                });
+//                tvHostName.setOnMarqueeListener(new AutoScrollTextView3.MarqueeStateListener() {
+//                    @Override
+//                    public void stopScroll() {
+//
+//                    }
+//                });
             }
             if (roomInfoBean.getData().getStream() != null) {
                 setupPlayerSize(roomInfoBean.getData().getStream().getHeight(), roomInfoBean.getData().getStream().getWidth());
@@ -984,6 +988,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             ArrayList<String> imageUrlList = new ArrayList<>();
             for (int i = 0; i < runWayListBean.list.size(); i++) {
                 imageUrlList.add(runWayListBean.list.get(i).getGoodsPic());
+                runWayType = runWayListBean.list.get(i).getRunwayType();
             }
             DownloadImageFile downloadImageFile = new DownloadImageFile(imageSpanList -> {
                 for (int i = 0; i < runWayListBean.list.size(); i++) {
@@ -1005,7 +1010,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initRunWay() {
         if (mRunWayGiftControl == null) {
-            frameSupercarTrack.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
             mRunWayGiftControl = new RunWayGiftControl(runWayText, frameSupercarTrack, ivRocket);
             mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
         }

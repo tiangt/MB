@@ -100,11 +100,11 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
 ////        invalidate();
 //    }
 //
-//    public void setTextColor(int textColor) {
-//        this.mTextColor = textColor;
-//        paint.setColor(mTextColor);
-//        invalidate();
-//    }
+    public void setTextColor(int textColor) {
+        this.mTextColor = textColor;
+        paint.setColor(mTextColor);
+        invalidate();
+    }
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {

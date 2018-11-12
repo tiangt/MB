@@ -25,6 +25,7 @@ public class RunWayListBean {
          * seconds : 57
          * dateLong : 1532943409984
          * programId : 100079
+         * runwayType:跑道类型（destory 攻占标志、getOn 登上标志）
          */
 
         public int userId;
@@ -38,5 +39,6 @@ public class RunWayListBean {
         public int seconds;
         public long dateLong;
         public int programId;
+        public String runwayType;
     }
 }

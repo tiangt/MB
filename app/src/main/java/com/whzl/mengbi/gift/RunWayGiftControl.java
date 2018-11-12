@@ -1,9 +1,11 @@
 package com.whzl.mengbi.gift;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 
@@ -37,10 +39,17 @@ public class RunWayGiftControl {
                 || autoScrollView == null) {
             return;
         }
+        String type = event.getRunWayJson().getContext().getRunwayType();
+        trackAnim = new TrackAnim(frameLayout, imageView);
         if (!autoScrollView.isStarting) {
             frameLayout.setVisibility(View.VISIBLE);
+            if (type.equals("destroy")) {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+            } else if (type.equals("getOn")) {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+            }
+            autoScrollView.setVisibility(View.VISIBLE);
             imageView.setVisibility(View.VISIBLE);
-            trackAnim = new TrackAnim(frameLayout, imageView);
             trackAnim.startAnim();
             trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
                 @Override
@@ -48,9 +57,26 @@ public class RunWayGiftControl {
                     startRun(event);
                 }
             });
-            return;
         }
 
+        if(autoScrollView.isStarting){
+            frameLayout.clearAnimation();
+            frameLayout.setVisibility(View.VISIBLE);
+            if (type.equals("destroy")) {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+            } else if (type.equals("getOn")) {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+            }
+            autoScrollView.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            trackAnim.startAnim();
+            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
+                @Override
+                public void onAnimationEnd() {
+                    startRun(event);
+                }
+            });
+        }
         runwayQueue.add(event);
     }
 

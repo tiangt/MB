@@ -45,26 +45,34 @@ public class RunWayEvent {
         return giftSpanString;
     }
 
-    public void showRunWay(TextView tvRunWayGift) throws Exception{
-        tvRunWayGift.setText(LightSpanString.getLightString(DateUtils.longToDate(runWayJson.getContext().getDateLong())+" ",
-                Color.parseColor("#faf9f9")));
+    public void showRunWay(TextView tvRunWayGift) throws Exception {
+        String type = runWayJson.getContext().getRunwayType();
+        tvRunWayGift.setText(LightSpanString.getLightString(DateUtils.longToDate(runWayJson.getContext().getDateLong()) + " ",
+                Color.parseColor("#faf9f9"))); //时间
         tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getNickname(),
-                Color.parseColor("#fff00a")));
+                Color.parseColor("#fff00a"))); //用户
         tvRunWayGift.append(LightSpanString.getLightString(" 送 ", Color.parseColor("#faf9f9")));
         tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getToNickname(),
-                Color.parseColor("#fff00a")));
-        tvRunWayGift.append(LightSpanString.getLightString(" " + runWayJson.getContext().getCount(),
-                Color.parseColor("#faf9f9")));
-        tvRunWayGift.append(LightSpanString.getLightString("个" + runWayJson.getContext().getGoodsName(),
-                Color.parseColor("#faf9f9")));
+                Color.parseColor("#fff00a"))); //昵称
         tvRunWayGift.append(LightSpanString.getLightString(" ",
                 Color.parseColor("#faf9f9")));
-        if (getGiftSpanString()!=null) {
-            tvRunWayGift.append(getGiftSpanString());
-        }
-        tvRunWayGift.append(LightSpanString.getLightString("攻占超跑",
+        tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getGoodsName(),
+                Color.parseColor("#faf9f9"))); //昵称
+        tvRunWayGift.append(LightSpanString.getLightString(" + ",
                 Color.parseColor("#faf9f9")));
-        tvRunWayGift.append(LightSpanString.getLightString(" "+"围观ing",
+        if (getGiftSpanString() != null) {
+            tvRunWayGift.append(getGiftSpanString());//礼物
+        }
+        tvRunWayGift.append(LightSpanString.getLightString(" x" + runWayJson.getContext().getCount(),
+                Color.parseColor("#faf9f9"))); //个数
+        if ("destroy".equals(type)) {
+            tvRunWayGift.append(LightSpanString.getLightString(" 攻占超跑，",
+                    Color.parseColor("#faf9f9")));
+        } else if ("getOn".equals(type)) {
+            tvRunWayGift.append(LightSpanString.getLightString(" 登上超跑，",
+                    Color.parseColor("#faf9f9")));
+        }
+        tvRunWayGift.append(LightSpanString.getLightString(" " + "围观ing",
                 Color.parseColor("#fff00a")));
     }
 
