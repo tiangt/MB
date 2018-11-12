@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
@@ -66,11 +68,17 @@ public class ChatListFragment extends BaseFragment {
     private static final int TOTAL_CHAT_MSG = 100;
     private boolean isRecyclerScrolling;
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
-//    private RoyalEnterControl royalEnterControl;
+    //    private RoyalEnterControl royalEnterControl;
+    private int mProgramId;
 
 
-    public static ChatListFragment newInstance() {
-        return new ChatListFragment();
+
+    public static ChatListFragment newInstance(int programId) {
+        Bundle args = new Bundle();
+        args.putInt("programId", programId);
+        ChatListFragment chatListFragment = new ChatListFragment();
+        chatListFragment.setArguments(args);
+        return chatListFragment;
     }
 
     @Override
@@ -82,6 +90,7 @@ public class ChatListFragment extends BaseFragment {
     public void init() {
         initChatRecycler();
         EventBus.getDefault().register(this);
+        mProgramId = getArguments().getInt("programId");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -155,6 +164,9 @@ public class ChatListFragment extends BaseFragment {
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 FillHolderMessage message = chatList.get(position);
+                if (message instanceof PkMessage) {
+                    ((PkMessage) message).setProgramId(mProgramId);
+                }
                 message.fillHolder(holder);
                 holder.itemView.setOnClickListener(null);
                 if (getItemViewType(position) == 1 || getItemViewType(position) == 2) {

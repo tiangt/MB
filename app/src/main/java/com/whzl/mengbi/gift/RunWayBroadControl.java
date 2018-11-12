@@ -4,10 +4,10 @@ import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
+import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
-import com.whzl.mengbi.util.LogUtil;
 
 import java.util.ArrayList;
 
@@ -69,6 +69,15 @@ public class RunWayBroadControl {
                 return;
             }
             runwayQueue.add((BroadCastBottomEvent) event);
+        } else if (event instanceof PkEvent) {
+            if (((PkEvent) event).getmContext() == null || ((PkEvent) event).getPkJson() == null || autoScrollView == null) {
+                return;
+            }
+            if (!autoScrollView.isStarting) {
+                startRun((PkEvent) event);
+                return;
+            }
+            runwayQueue.add((PkEvent) event);
         }
     }
 

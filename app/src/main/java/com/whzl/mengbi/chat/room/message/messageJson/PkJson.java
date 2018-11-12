@@ -34,6 +34,18 @@ public class PkJson {
         public int pkPunishSurplusSecond;
         public long launchPkUserId;
         public long pkUserId;
+        /**
+         * firstBloodUserDto : {"nickname":"zhansan","userId":"137068","lastUpdateTime":"2018-10-30 11:11:11"}
+         * programId : 100079
+         */
+
+        public FirstBloodUserDtoBean firstBloodUserDto;
+        public int programId;
+
+        public String mvpNickname;
+        public String result;
+        public String launchPkUserNickname;
+        public String pkUserNickname;
 
         public static class LaunchPkUserInfoBean {
             /**
@@ -45,6 +57,19 @@ public class PkJson {
             public long lastUpdateTime;
             public String nickname;
             public int userId;
+        }
+
+
+        public static class FirstBloodUserDtoBean {
+            /**
+             * nickname : zhansan
+             * userId : 137068
+             * lastUpdateTime : 2018-10-30 11:11:11
+             */
+
+            public String nickname;
+            public String userId;
+            public String lastUpdateTime;
         }
     }
 }

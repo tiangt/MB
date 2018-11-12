@@ -194,4 +194,22 @@ public class LevelUtil {
             return null;
         }
     }
+
+    public static SpannableString getImageResourceSpanByHeight(Context context, int resourceId,int height) {
+        SpannableString levelIcon = new SpannableString("icon");
+        Resources res = context.getResources();
+        Drawable levelIconDrawable = res.getDrawable(resourceId);
+        if (levelIconDrawable == null) {
+            return levelIcon;
+        }
+        int originWidth = levelIconDrawable.getIntrinsicWidth();
+        int originHeight = levelIconDrawable.getIntrinsicHeight();
+        float dpHeight = height;
+        float dpWidth = originWidth * dpHeight / originHeight;
+        levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
+        ImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
+        levelIcon.setSpan(imageSpan, 0, levelIcon.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return levelIcon;
+    }
 }
