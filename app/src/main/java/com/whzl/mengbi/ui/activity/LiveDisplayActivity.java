@@ -1435,6 +1435,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.onDestory();
         super.onDestroy();
         unregisterReceiver(mReceiver);
+
+        if (pkResultPop != null && pkResultPop.isShowing()) {
+            pkResultPop.dismiss();
+        }
+
+        if (mvpWindow != null && mvpWindow.isShowing()) {
+            mvpWindow.dismiss();
+        }
     }
 
     private void destroy() {
@@ -1475,14 +1483,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (grandDisposable != null) {
             grandDisposable.dispose();
             LogUtils.e("ssssss  timerGrand dispose");
-        }
-
-        if(pkResultPop.isShowing()){
-            pkResultPop.dismiss();
-        }
-
-        if(mvpWindow.isShowing()){
-            mvpWindow.dismiss();
         }
     }
 

@@ -229,12 +229,44 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1" />
 
-                    <com.ksyun.media.player.KSYTextureView
-                        android:id="@+id/texture_view2"
+                    <RelativeLayout
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@color/colorPrimary" />
+                        android:layout_weight="1">
+
+                        <com.ksyun.media.player.KSYTextureView
+                            android:id="@+id/texture_view2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorPrimary" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="34dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="10dp">
+
+                            <com.whzl.mengbi.ui.widget.view.CircleImageView
+                                android:id="@+id/circle_other_side"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_centerVertical="true"
+                                android:src="@color/white"/>
+
+                            <TextView
+                                android:id="@+id/tv_other_side"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="昵称"
+                                android:textColor="@color/white"
+                                android:textSize="10sp"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_toRightOf="@id/circle_other_side"/>
+                        </RelativeLayout>
+                    </RelativeLayout>
+                    
                 </LinearLayout>
 
                 <ProgressBar
