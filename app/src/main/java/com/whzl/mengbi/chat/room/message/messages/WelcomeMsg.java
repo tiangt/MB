@@ -112,16 +112,16 @@ public class WelcomeMsg implements FillHolderMessage {
                 }
                 mHolder.textView.append(" ");
             }
-            mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#d9d9d9")));
+            mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#999999")));
             if (royalLevel > 0) {
-                mHolder.textView.append(LightSpanString.getLightString(" 闪亮登场", Color.parseColor("#d9d9d9")));
+                mHolder.textView.append(LightSpanString.getLightString(" 闪亮登场", Color.parseColor("#999999")));
             } else {
-                mHolder.textView.append(LightSpanString.getLightString(" 精彩亮相", Color.parseColor("#d9d9d9")));
+                mHolder.textView.append(LightSpanString.getLightString(" 精彩亮相", Color.parseColor("#999999")));
             }
         } else {
-            mHolder.textView.append(LightSpanString.getLightString("欢迎 ", Color.parseColor("#d9d9d9")));
-            mHolder.textView.append(LightSpanString.getLightString(nickName, Color.parseColor("#d9d9d9")));
-            mHolder.textView.append(LightSpanString.getLightString(" 入场", Color.parseColor("#d9d9d9")));
+            mHolder.textView.append(LightSpanString.getLightString("欢迎 ", Color.parseColor("#999999")));
+            mHolder.textView.append(LightSpanString.getLightString(nickName, Color.parseColor("#999999")));
+            mHolder.textView.append(LightSpanString.getLightString(" 入场", Color.parseColor("#999999")));
         }
 
     }

@@ -80,7 +80,7 @@ public class RoundBackgroundColorSpan extends ReplacementSpan {
         paint.setStrokeWidth(defaultStrokeWidth);
 
         paint.setTypeface(font);
-        canvas.drawText(text, start, end, x + mRadius, y, paint);//此处mRadius为文字右移距离
+        canvas.drawText(text, start, end, x + mRadius, y + 1, paint);//此处mRadius为文字右移距离
 
 
         paint.setColor(defaultColor);//恢复画笔的文字颜色

@@ -173,7 +173,7 @@ public class ChatMessage implements FillHolderMessage {
                 mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
                 mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
             }
-            mholder.textView.append(" ");
+            mholder.textView.append("  ");
         }
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
             mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#2da8ee")));
@@ -190,9 +190,9 @@ public class ChatMessage implements FillHolderMessage {
         mholder.textView.append(LightSpanString.getLightString("  ", Color.parseColor("#75bbfb")));
         SpannableString spanString;
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
-            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#f9f9f9"));
+            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
         } else {
-            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#f9f9f9"));
+            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
         }
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
         if (hasGuard) {
