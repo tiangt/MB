@@ -25,7 +25,8 @@ public class WelcomeMsg implements FillHolderMessage {
     public List<SpannableString> userSpanList;
     private Context mContext;
     public boolean isAnchor = false;
-    private long prettyNum;
+    private String prettyNum;
+    private String prettyNumColor;
     public boolean hasGuard = false;
     public int programId = 0;
 
@@ -56,6 +57,8 @@ public class WelcomeMsg implements FillHolderMessage {
         this.hasGuard = userHasGuard(welcomeJson.getContext().getInfo().getUserBagList());
         this.royalLevel = getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
         this.hasVip = userHasVip(welcomeJson.getContext().getInfo().getUserBagList());
+        this.prettyNumColor = getPrettyNumColor(welcomeJson.getContext().getInfo().getUserBagList());
+        this.prettyNum = getPrettyNumString(welcomeJson.getContext().getInfo().getUserBagList());
     }
 
     @Override
@@ -96,21 +99,18 @@ public class WelcomeMsg implements FillHolderMessage {
                     mHolder.textView.append(" ");
                 }
             }
-            if (!TextUtils.isEmpty(prettyNumberOrUserId)) {
-//                switch (prettyNumberOrUserId.length()) {
-//                    case 5:
-//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
-//                        mHolder.textView.append(" ");
-//                        break;
-//                    case 6:
-//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
-//                        mHolder.textView.append(" ");
-//                        break;
-//                    case 7:
-//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
-//                        mHolder.textView.append(" ");
-//                        break;
-//                }
+            if (!TextUtils.isEmpty(prettyNum)) {
+                if ("A".equals(prettyNumColor)) {
+                    mHolder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
+                    mHolder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
+                } else if ("B".equals(prettyNumColor)) {
+                    mHolder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe7a2a"), Color.parseColor("#ffffff")));
+                    mHolder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe7a2a"), Color.parseColor("#fe7a2a")));
+                } else if ("C".equals(prettyNumColor)) {
+                    mHolder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
+                    mHolder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
+                }
+                mHolder.textView.append(" ");
             }
             mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#d9d9d9")));
             if (royalLevel > 0) {
@@ -221,17 +221,32 @@ public class WelcomeMsg implements FillHolderMessage {
         return mWelcomeJson.getContext().getCarObj().getCarPicId();
     }
 
-    public long getPrettyNum() {
-        if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
-            return 0;
+
+    public String getPrettyNumColor(List<WelcomeJson.UserBagItem> userBagList) {
+        if (userBagList == null) {
+            return "A";
         }
-        return mWelcomeJson.getContext().getCarObj().getPrettyNumberOrUserId();
+        String string = "A";
+        for (WelcomeJson.UserBagItem bagItem : userBagList) {
+            if (bagItem.getGoodsType().equals("PRETTY_NUM") && bagItem.getIsEquip().equals("T") && bagItem.goodsColor != null) {
+                string = bagItem.goodsColor;
+                break;
+            }
+        }
+        return string;
     }
 
-    public String getGoodsColor() {
-        if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
-            return "default";
+    public String getPrettyNumString(List<WelcomeJson.UserBagItem> userBagList) {
+        if (userBagList == null) {
+            return "";
         }
-        return mWelcomeJson.getContext().getCarObj().getGoodsColor();
+        String string = "";
+        for (WelcomeJson.UserBagItem bagItem : userBagList) {
+            if (bagItem.getGoodsType().equals("PRETTY_NUM") && bagItem.getIsEquip().equals("T")) {
+                string = bagItem.getGoodsName();
+                break;
+            }
+        }
+        return string;
     }
 }

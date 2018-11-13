@@ -176,6 +176,6 @@
     <color name="text_color_lottery">#fe3f7e</color>
     <color name="text_color_system">#acd3ff</color>
     <color name="text_color_sendgif">#FFFE3F7E</color>
-    <color name="bg_dialog_gift_live">#902a2e36</color>
+    <color name="bg_dialog_gift_live">#2a2e36</color>
 
 </resources>

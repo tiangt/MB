@@ -44,8 +44,8 @@ public class ChatMessage implements FillHolderMessage {
     private SingleTextViewHolder mholder;
     private List<SpannableString> fromSpanList;
     private boolean isPrivate = false;
-    private final String prettyNumColor;
-    private final String prettyNum;
+    private String prettyNumColor;
+    private String prettyNum;
 
     public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList, boolean isPrivate) {
         this.isPrivate = isPrivate;
@@ -162,7 +162,7 @@ public class ChatMessage implements FillHolderMessage {
                 mholder.textView.append(" ");
             }
         }
-        if (!TextUtils.isEmpty(prettyNumColor)) {
+        if (!TextUtils.isEmpty(prettyNum)) {
             if ("A".equals(prettyNumColor)) {
                 mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
                 mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));

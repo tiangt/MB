@@ -24,7 +24,7 @@ public class WelComeAction implements Actions {
     public void performAction(String msgStr, final Context context) {
         LogUtils.e2(msgStr);
         WelcomeJson welcomeJson = GsonUtils.GsonToBean(msgStr, WelcomeJson.class);
-        if (null == welcomeJson||welcomeJson.getContext()==null||welcomeJson.getContext().getInfo()==null) {
+        if (null == welcomeJson || welcomeJson.getContext() == null || welcomeJson.getContext().getInfo() == null) {
             return;
         }
         List<String> goodsUrlList = getGoodsList(welcomeJson.getContext().getInfo().getUserBagList());
@@ -82,7 +82,7 @@ public class WelComeAction implements Actions {
             return goodsUrlList;
         }
         for (WelcomeJson.UserBagItem item : bagList) {
-            if (item.getGoodsType().equals("BADGE")) {
+            if (item.getGoodsType().equals("BADGE") && item.getIsEquip().equals("T")) {
                 int goodId = item.getGoodsPicId();
                 goodsUrlList.add(ImageUrl.getImageUrl(goodId, "jpg"));
             }
