@@ -77,6 +77,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private RecyclerView myFollow;
     private RecyclerView oppositeSide;
     private List<String> list;
+    private TextView tvPkTitle;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -115,6 +116,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         tvLeftScore = inflate.findViewById(R.id.tv_left_score);
         tvRightScore = inflate.findViewById(R.id.tv_right_score);
         ivState = inflate.findViewById(R.id.iv_state);
+        tvPkTitle = inflate.findViewById(R.id.tv_pk_title);
         setProgress(initializeProgress);
     }
 
@@ -256,6 +258,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
                     if (aLong < second - 1) {
                         if (aLong < second - 1) {
+                            tvPkTitle.setVisibility(GONE);
                             tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong - 1) / 60, (second - aLong - 1) % 60));
                         }
                         if (aLong == second - 11 && "PK进行中 ".equals(state) && listener != null) {

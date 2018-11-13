@@ -242,9 +242,10 @@
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="34dp"
+                            android:layout_height="20dp"
                             android:layout_marginLeft="6dp"
-                            android:layout_marginTop="10dp">
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/shape_other_side">
 
                             <com.whzl.mengbi.ui.widget.view.CircleImageView
                                 android:id="@+id/circle_other_side"
@@ -352,6 +353,12 @@
                     android:textSize="55sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_count_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
 
                 <LinearLayout
                     android:id="@+id/ll_enter"
