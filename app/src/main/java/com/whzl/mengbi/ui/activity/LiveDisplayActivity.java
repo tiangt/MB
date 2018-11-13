@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
@@ -241,6 +242,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlTreasureBox;
     @BindView(R.id.cl_entenr)
     ConstraintLayout clEnter;
+    @BindView(R.id.iv_count_down)
+    ImageView ivCountDown;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -353,6 +356,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } catch (Exception e) {
             System.out.print(true);
         }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        ivCountDown.setImageResource(R.drawable.anim_pk_countdown);
+        AnimationDrawable animationDrawable = (AnimationDrawable) ivCountDown.getDrawable();
+        animationDrawable.start();
     }
 
     @Override
