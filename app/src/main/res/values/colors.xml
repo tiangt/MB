@@ -165,17 +165,17 @@
     <color name="text_color_use_pack">#2cd996</color>
     <color name="text_color_wait_pack">#ff611b</color>
 
-    <color name="bg_welcome_hasguard">#5d5584</color>
+    <color name="bg_welcome_hasguard">#903a4f69</color>
     <color name="bg_welcome_noguard">#242b35</color>
     <color name="text_color_nochat_bei">#f9f9f9</color>
-    <color name="text_color_nochat_people">#f9f9f9</color>
+    <color name="text_color_nochat_people">#FFFF709F</color>
     <color name="text_color_nochat">#ff709f</color>
     <color name="text_color_focus_nick">#fdfcfa</color>
     <color name="text_color_focus">#ffeca8</color>
     <color name="text_color_open_guard">#dd6eff</color>
     <color name="text_color_lottery">#fe3f7e</color>
     <color name="text_color_system">#acd3ff</color>
-    <color name="text_color_sendgif">#ff3312</color>
+    <color name="text_color_sendgif">#FFFE3F7E</color>
     <color name="bg_dialog_gift_live">#902a2e36</color>
 
 </resources>

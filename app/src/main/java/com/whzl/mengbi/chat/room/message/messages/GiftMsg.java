@@ -64,12 +64,12 @@ public class GiftMsg implements FillHolderMessage {
             mHolder.textView.append(LevelUtil.getImageResourceSpan(context, ResourceMap.getResourceMap().getUserLevelIcon(fromLevel)));
         }
         mHolder.textView.append(" ");
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickName, fromUid, programId, ContextCompat.getColor(context, R.color.text_color_sendgif)));
-        mHolder.textView.append(" ");
-        mHolder.textView.append(LightSpanString.getLightString(" 送 主播 ", ContextCompat.getColor(context, R.color.text_color_sendgif)));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickName, fromUid, programId, Color.parseColor("#FF2DA8EE")));
+        mHolder.textView.append(LightSpanString.getLightString(" 送 ", Color.parseColor("#ffffff")));
+        mHolder.textView.append(LightSpanString.getLightString("主播 ", ContextCompat.getColor(context, R.color.text_color_sendgif)));
         //mHolder.textView.append(getNickNameSpan(toNickName,toUid));
-        mHolder.textView.append(LightSpanString.getLightString(giftCount + " ",ContextCompat.getColor(context, R.color.text_color_sendgif)));
-        mHolder.textView.append(LightSpanString.getLightString("个 " + giftName, ContextCompat.getColor(context, R.color.text_color_sendgif)));
+        mHolder.textView.append(LightSpanString.getLightString(giftCount + " 个 ", Color.parseColor("#ffffff")));
+        mHolder.textView.append(LightSpanString.getLightString(giftName, ContextCompat.getColor(context, R.color.text_color_sendgif)));
         if (giftPicSpan != null) {
             mHolder.textView.append(" ");
             mHolder.textView.append(giftPicSpan);

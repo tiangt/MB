@@ -266,7 +266,7 @@
                                 android:layout_toRightOf="@id/circle_other_side"/>
                         </RelativeLayout>
                     </RelativeLayout>
-                    
+
                 </LinearLayout>
 
                 <ProgressBar
@@ -436,6 +436,12 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/bg_liveweb"
                     android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_chat_top_translate"
+                    android:layout_height="26dp"
+                    android:layout_alignParentTop="true"/>
             </RelativeLayout>
         </LinearLayout>
 
