@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.text.style.ReplacementSpan;
 
 import com.whzl.mengbi.util.UIUtil;
@@ -20,6 +21,7 @@ public class RoundBackgroundColorSpan extends ReplacementSpan {
     private int textColor;
     private int mSize;
     private Context context;
+    private final Typeface font;
 
     public RoundBackgroundColorSpan(Context context, int bgColor,
                                     int textColor,
@@ -29,6 +31,7 @@ public class RoundBackgroundColorSpan extends ReplacementSpan {
         this.textColor = textColor;
         this.mRadius = radius;
         this.context = context;
+        font = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
     }
 
     /**
@@ -65,16 +68,18 @@ public class RoundBackgroundColorSpan extends ReplacementSpan {
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(UIUtil.dip2px(context, 1));
         paint.setAntiAlias(true);
-        RectF rectF = new RectF(x - 2.5f, y + 2.5f + paint.ascent(), x + mSize, y + paint.descent());
+        RectF rectF = new RectF(x - 2.5f, y + 2.5f + paint.ascent(), x + mSize + 10, y + paint.descent());
         //设置文字背景矩形，x为span其实左上角相对整个TextView的x值，y为span左上角相对整个View的y值。
         // paint.ascent()获得文字上边缘，paint.descent()获得文字下边缘
         //x+2.5f解决线条粗细不一致问题
-        canvas.drawRoundRect(rectF, mRadius, mRadius, paint);
+        canvas.drawRoundRect(rectF, 0, mRadius, paint);
 
         //绘制文字
         paint.setColor(textColor);
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(defaultStrokeWidth);
+
+        paint.setTypeface(font);
         canvas.drawText(text, start, end, x + mRadius, y, paint);//此处mRadius为文字右移距离
 
 
