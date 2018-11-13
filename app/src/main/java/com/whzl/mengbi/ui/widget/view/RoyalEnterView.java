@@ -156,7 +156,7 @@ public class RoyalEnterView extends AppCompatTextView {
         Observable.just(1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(integer -> {
-                    if (textLength > viewWidth && textLength - step + 100 <= viewWidth) {
+                    if (textLength > viewWidth && textLength - step + 130 <= viewWidth) {
                         return;
                     }
                     step += 1.5;
