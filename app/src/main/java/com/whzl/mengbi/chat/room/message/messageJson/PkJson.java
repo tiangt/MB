@@ -1,5 +1,7 @@
 package com.whzl.mengbi.chat.room.message.messageJson;
 
+import java.util.List;
+
 /**
  * @author nobody
  * @date 2018/9/27
@@ -46,6 +48,13 @@ public class PkJson {
         public String result;
         public String launchPkUserNickname;
         public String pkUserNickname;
+        /**
+         * pkUserLiveAndStreamAddress : {"liveTypeId":1,"showStreams":[{"streamType":"rtmp","streamAddress":"rtmp://livedown.mengbitv.com/live/100144"},{"streamType":"flv","streamAddress":"http://livedown.mengbitv.com/live/100144.flv"},{"streamType":"hls","streamAddress":"http://livedown.mengbitv.com/live/100144/playlist.m3u8"}],"liveType":"PC","platformType":"ENT","width":800,"height":600}
+         */
+
+        public PkUserLiveAndStreamAddressBean pkUserLiveAndStreamAddress;
+        public PkUserLiveAndStreamAddressBean launchPkUserLiveAndStreamAddress;
+
 
         public static class LaunchPkUserInfoBean {
             /**
@@ -70,6 +79,34 @@ public class PkJson {
             public String nickname;
             public String userId;
             public String lastUpdateTime;
+        }
+
+        public static class PkUserLiveAndStreamAddressBean {
+            /**
+             * liveTypeId : 1
+             * showStreams : [{"streamType":"rtmp","streamAddress":"rtmp://livedown.mengbitv.com/live/100144"},{"streamType":"flv","streamAddress":"http://livedown.mengbitv.com/live/100144.flv"},{"streamType":"hls","streamAddress":"http://livedown.mengbitv.com/live/100144/playlist.m3u8"}]
+             * liveType : PC
+             * platformType : ENT
+             * width : 800
+             * height : 600
+             */
+
+            public int liveTypeId;
+            public String liveType;
+            public String platformType;
+            public int width;
+            public int height;
+            public List<ShowStreamsBean> showStreams;
+
+            public static class ShowStreamsBean {
+                /**
+                 * streamType : rtmp
+                 * streamAddress : rtmp://livedown.mengbitv.com/live/100144
+                 */
+
+                public String streamType;
+                public String streamAddress;
+            }
         }
     }
 }
