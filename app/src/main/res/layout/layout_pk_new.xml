@@ -26,7 +26,6 @@
                     android:id="@+id/tv_pk_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PK倒计时"
                     android:textColor="@color/white"
                     android:textSize="10sp" />
 
@@ -92,6 +91,16 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:text="对方"
+                        android:textColor="@color/white"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tv_right_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/tv_other_side"
+                        android:text="0票"
                         android:textColor="@color/white"
                         android:textSize="9sp" />
                 </RelativeLayout>

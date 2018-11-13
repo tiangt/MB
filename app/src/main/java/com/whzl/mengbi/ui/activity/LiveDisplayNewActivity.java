@@ -72,7 +72,9 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -266,8 +268,8 @@ public class LiveDisplayNewActivity extends BaseActivity implements LiveView {
     private Long mTime;
     private int currentReceiveTreasureId;
     private RunWayBroadControl mRunWayBroadControl;
-    private PkInfoBean.userInfoBean myPkInfo;
-    private PkInfoBean.userInfoBean otherPkInfo;
+    private PKResultBean.UserInfoBean myPkInfo;
+    private PKResultBean.UserInfoBean otherPkInfo;
     private PkControl pkControl;
     private List<GetActivityBean.ListBean> mBannerInfoList;
     private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
@@ -1118,7 +1120,7 @@ public class LiveDisplayNewActivity extends BaseActivity implements LiveView {
     }
 
     @Override
-    public void onPkInfoSuccess(PkInfoBean bean) {
+    public void onPkInfoSuccess(PKResultBean bean) {
         if (pkControl == null) {
             pkControl = new PkControl(pkLayout, this);
         }
@@ -1184,6 +1186,11 @@ public class LiveDisplayNewActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetTotalGuardSuccess(GuardTotalBean.DataBean guardTotalBean) {
         tvGuardCount.setText(guardTotalBean.guardTotal + "");
+    }
+
+    @Override
+    public void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean) {
+
     }
 
     private void timerGrand(int i) {

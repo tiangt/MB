@@ -8,7 +8,9 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -171,7 +173,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void onPkInfoSuccess(PkInfoBean bean) {
+    public void onPkInfoSuccess(PKResultBean bean) {
         if (liveView != null) {
             liveView.onPkInfoSuccess(bean);
         }
@@ -195,6 +197,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     public void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean) {
         if (liveView != null) {
             liveView.onGetTotalGuardSuccess(bean);
+        }
+    }
+
+    @Override
+    public void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean) {
+        if (liveView != null) {
+            liveView.onGetPunishWaysSuccess(bean);
         }
     }
 
@@ -280,6 +289,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("programId", programId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getTotalGuard(signPramsMap, this);
+    }
+
+    @Override
+    public void getPunishWays() {
+        HashMap map = new HashMap();
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getPunishWays(signPramsMap, this);
     }
 
 }

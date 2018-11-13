@@ -33,6 +33,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_left_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
@@ -43,6 +44,7 @@
                     android:layout_marginRight="35dp"/>
 
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
+                    android:id="@+id/iv_left_head"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"
@@ -61,6 +63,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_right_result"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -70,6 +73,7 @@
                     android:textSize="12sp" />
 
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
+                    android:id="@+id/iv_right_head"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"
@@ -112,6 +116,7 @@
                 android:layout_marginLeft="5dp">
 
                 <TextView
+                    android:id="@+id/tv_mvp_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"

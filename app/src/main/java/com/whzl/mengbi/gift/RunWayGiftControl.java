@@ -43,9 +43,9 @@ public class RunWayGiftControl {
         trackAnim = new TrackAnim(frameLayout, imageView);
         if (!autoScrollView.isStarting) {
             frameLayout.setVisibility(View.VISIBLE);
-            if (type.equals("destroy")) {
+            if ("destroy".equals(type)) {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-            } else if (type.equals("getOn")) {
+            } else if ("getOn".equals(type)) {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
             }
             autoScrollView.setVisibility(View.VISIBLE);
@@ -62,9 +62,9 @@ public class RunWayGiftControl {
         if(autoScrollView.isStarting){
             frameLayout.clearAnimation();
             frameLayout.setVisibility(View.VISIBLE);
-            if (type.equals("destroy")) {
+            if ("destroy".equals(type)) {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-            } else if (type.equals("getOn")) {
+            } else if ("getOn".equals(type)) {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
             }
             autoScrollView.setVisibility(View.VISIBLE);

@@ -5,24 +5,54 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.v4.widget.PopupWindowCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
+import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
+import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+
+import static com.whzl.mengbi.util.ToastUtils.showToast;
 
 /**
  * @author nobody
@@ -36,14 +66,27 @@ public class PkControl {
     private int mAnchorId;
     private TextView tvCountDown;
     private Disposable disposable;
-    private PkInfoBean.userInfoBean myPkInfo;
-    private PkInfoBean.userInfoBean otherPkInfo;
+    private PKResultBean.UserInfoBean myPkInfo;
+    private PKResultBean.UserInfoBean otherPkInfo;
     private AnimatorSet animatorSetsuofang;
 
     private int jumpProgramId;
     private String jumpNick;
 
     private Activity context;
+
+    private RelativeLayout layout;
+    private CircleImageView ivRightHead;
+    private TextView tvRightName;
+    private PopupWindow pkResultPop;
+    private SVGAImageView svgaImageView;
+    private PopupWindow mvpWindow;
+    private ArrayList<String> list;
+    private List<Boolean> mSelectedList;
+    private ImageView ivClose;
+    private RecyclerView rvPunishment;
+    private Button btnPunishment;
+    private BaseListAdapter mvpAdapter;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -61,22 +104,34 @@ public class PkControl {
         this.mAnchorId = mAnchorId;
     }
 
+    public void setRightInfo(RelativeLayout layout,CircleImageView ivRightHead, TextView tvRightName){
+        this.layout = layout;
+        this.ivRightHead = ivRightHead;
+        this.tvRightName = tvRightName;
+    }
+
     public PkControl(PkLayout pkLayout, Activity context) {
         this.pkLayout = pkLayout;
         this.context = context;
     }
 
+    public void setStartAnim(SVGAImageView svgaImageView) {
+        this.svgaImageView = svgaImageView;
+    }
 
     public void init() {
         switch (bean.busiCode) {
             case "PK_ACCEPT_REQUEST": //接收PK请求
                 pkLayout.setVisibility(View.VISIBLE);
+                startPKAnim();
                 startCountDown(5);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
-                pkLayout.setStateImg(R.drawable.ic_vs);
+//                pkLayout.setStateImg(R.drawable.ic_vs);
                 if (bean.launchUserProgramId == mProgramId) {
-                    pkLayout.setLeftName(bean.launchPkUserInfo.nickname);
-                    pkLayout.setRightName(bean.pkUserInfo.nickname);
+//                    pkLayout.setLeftName(bean.launchPkUserInfo.nickname);
+//                    pkLayout.setRightName(bean.pkUserInfo.nickname);
+                    GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
+                    tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
                     jumpNick = bean.pkUserInfo.nickname;
                     String jpg = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", bean.launchPkUserInfo.lastUpdateTime);
@@ -84,8 +139,10 @@ public class PkControl {
                     String jpg2 = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", bean.pkUserInfo.lastUpdateTime);
                     pkLayout.setRightImg(jpg2);
                 } else if (bean.pkUserProgramId == mProgramId) {
-                    pkLayout.setLeftName(bean.pkUserInfo.nickname);
-                    pkLayout.setRightName(bean.launchPkUserInfo.nickname);
+//                    pkLayout.setLeftName(bean.pkUserInfo.nickname);
+//                    pkLayout.setRightName(bean.launchPkUserInfo.nickname);
+                    GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, ivRightHead);
+                    tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
                     jumpNick = bean.launchPkUserInfo.nickname;
                     String jpg = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", bean.pkUserInfo.lastUpdateTime);
@@ -115,41 +172,56 @@ public class PkControl {
                 }
                 break;
             case "PK_RESULT"://PK结果
+                layout.setVisibility(View.GONE);
                 if (bean.launchPkUserId == mAnchorId) {
                     if (bean.launchPkUserScore == bean.pkUserScore) {
-                        pkLayout.setTied();
+//                        pkLayout.setTied();
+                        showPKResult(0);
                     } else if (bean.launchPkUserScore > bean.pkUserScore) {
-                        pkLayout.setLeftWin();
+//                        pkLayout.setLeftWin();
+                        showPKResult(1);
                     } else if (bean.launchPkUserScore < bean.pkUserScore) {
-                        pkLayout.setRightWin();
+//                        pkLayout.setRightWin();
+                        showPKResult(2);
                     }
                 } else if (bean.pkUserId == mAnchorId) {
                     if (bean.launchPkUserScore == bean.pkUserScore) {
-                        pkLayout.setTied();
+//                        pkLayout.setTied();
+                        showPKResult(0);
                     } else if (bean.pkUserScore > bean.launchPkUserScore) {
-                        pkLayout.setLeftWin();
+//                        pkLayout.setLeftWin();
+                        showPKResult(1);
                     } else if (bean.pkUserScore < bean.launchPkUserScore) {
-                        pkLayout.setRightWin();
+//                        pkLayout.setRightWin();
+                        showPKResult(1);
                     }
                 }
                 break;
             case "PK_TIE_START"://平局时间开始
                 pkLayout.setVisibility(View.VISIBLE);
                 pkLayout.timer("平局 ", bean.pkTieSurplusSecond);
-                pkLayout.setStateImg(R.drawable.ic_vs);
+                layout.setVisibility(View.GONE);
+//                pkLayout.setStateImg(R.drawable.ic_vs);
                 break;
             case "PK_PUNISH_START"://惩罚时间开始
                 pkLayout.setVisibility(View.VISIBLE);
                 pkLayout.timer("惩罚时刻 ", bean.pkPunishSurplusSecond);
-                pkLayout.setStateImg(R.drawable.ic_ko);
+//                pkLayout.setStateImg(R.drawable.ic_ko);
+                layout.setVisibility(View.GONE);
+                if(null != pkResultPop){
+                    pkResultPop.dismiss();
+                }
+                showPunishment();
                 break;
             case "PK_TIE_FINISH"://平局时间结束
                 pkLayout.setVisibility(View.GONE);
                 pkLayout.reset();
+                layout.setVisibility(View.GONE);
                 break;
             case "PK_PUNISH_FINISH"://惩罚时间结束
                 pkLayout.setVisibility(View.GONE);
                 pkLayout.reset();
+                layout.setVisibility(View.GONE);
                 break;
         }
         pkLayout.setListener(new PkLayout.TimeDwonListener() {
@@ -162,17 +234,19 @@ public class PkControl {
         pkLayout.setRightClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showJumpLiveHouseDialog(jumpProgramId,jumpNick);
+                showJumpLiveHouseDialog(jumpProgramId, jumpNick);
             }
         });
     }
 
-    public void initNet(PkInfoBean bean) {
+    public void initNet(PKResultBean bean) {
         if ("T".equals(bean.pkStatus) || "T".equals(bean.punishStatus) || "T".equals(bean.tieStatus)) {
             pkLayout.setVisibility(View.VISIBLE);
             if (mProgramId == bean.launchPkUserProgramId) {
                 myPkInfo = bean.launchUserInfo;
                 otherPkInfo = bean.pkUserInfo;
+                GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
+                tvRightName.setText(bean.pkUserInfo.nickname);
                 pkLayout.setLeftScore(bean.launchPkUserScore);
                 pkLayout.setRightScore(bean.pkUserScore);
                 jumpProgramId = bean.pkUserProgramId;
@@ -188,6 +262,8 @@ public class PkControl {
             } else if (mProgramId == bean.pkUserProgramId) {
                 myPkInfo = bean.pkUserInfo;
                 otherPkInfo = bean.launchUserInfo;
+                GlideImageLoader.getInstace().displayImage(context, bean.launchUserInfo.avatar, ivRightHead);
+                tvRightName.setText(bean.launchUserInfo.nickname);
                 pkLayout.setLeftScore(bean.pkUserScore);
                 pkLayout.setRightScore(bean.launchPkUserScore);
                 jumpProgramId = bean.launchPkUserProgramId;
@@ -201,32 +277,34 @@ public class PkControl {
                     pkLayout.setProgress((int) v);
                 }
             }
-            pkLayout.setLeftImg(myPkInfo.avatar);
-            pkLayout.setRightImg(otherPkInfo.avatar);
-            pkLayout.setLeftName(myPkInfo.nickname);
-            pkLayout.setRightName(otherPkInfo.nickname);
+//            pkLayout.setLeftImg(myPkInfo.avatar);
+//            pkLayout.setRightImg(otherPkInfo.avatar);
+//            pkLayout.setLeftName(myPkInfo.nickname);
+//            pkLayout.setRightName(otherPkInfo.nickname);
             if ("T".equals(bean.pkStatus)) {
-                pkLayout.setStateImg(R.drawable.ic_vs);
+//                pkLayout.setStateImg(R.drawable.ic_vs);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
-                    pkLayout.setLeftLead();
+//                    pkLayout.setLeftLead();
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
-                    pkLayout.setRightLead();
+//                    pkLayout.setRightLead();
                 }
             }
             if ("T".equals(bean.punishStatus)) {
-                pkLayout.setStateImg(R.drawable.ic_ko);
+//                pkLayout.setStateImg(R.drawable.ic_ko);
                 pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
-                    pkLayout.setLeftWin();
+//                    pkLayout.setLeftWin();
+                    showPunishment();
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
-                    pkLayout.setRightWin();
+//                    pkLayout.setRightWin();
+                    showPunishment();
                 }
             }
             if ("T".equals(bean.tieStatus)) {
-                pkLayout.setStateImg(R.drawable.ic_vs);
+//                pkLayout.setStateImg(R.drawable.ic_vs);
                 pkLayout.timer("平局 ", bean.tieSurPlusSecond);
-                pkLayout.setTied();
+//                pkLayout.setTied();
             }
             pkLayout.setListener(new PkLayout.TimeDwonListener() {
                 @Override
@@ -237,7 +315,7 @@ public class PkControl {
             pkLayout.setRightClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showJumpLiveHouseDialog(jumpProgramId,jumpNick);
+                    showJumpLiveHouseDialog(jumpProgramId, jumpNick);
                 }
             });
         }
@@ -261,7 +339,7 @@ public class PkControl {
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    LogUtils.e("ssssssss  animal"+aLong);
+                    LogUtils.e("ssssssss  animal" + aLong);
                     tvCountDown.setText(String.valueOf(count - 1 - aLong));
                     animatorSetsuofang.start();
                     if (aLong >= count - 1) {
@@ -288,7 +366,7 @@ public class PkControl {
         dialog.setMessage(context.getString(R.string.jump_live_house, nickName));
         dialog.setNegativeButton(R.string.cancel, null);
         dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
-            if (disposable!=null) {
+            if (disposable != null) {
                 disposable.dispose();
             }
             tvCountDown.setVisibility(View.GONE);
@@ -297,5 +375,179 @@ public class PkControl {
             context.startActivity(intent);
         });
         dialog.show();
+    }
+
+    /**
+     * PK结束
+     */
+    private void showPKResult(int status) {
+        View popView = LayoutInflater.from(context).inflate(R.layout.pop_pk_end, null);
+        pkResultPop = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        pkResultPop.setOutsideTouchable(true);
+        pkResultPop.setFocusable(true);
+        pkResultPop.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+
+        TextView leftResult = popView.findViewById(R.id.tv_left_result);
+        TextView rightResult = popView.findViewById(R.id.tv_right_result);
+        CircleImageView leftHead = popView.findViewById(R.id.iv_left_head);
+        CircleImageView rightHead = popView.findViewById(R.id.iv_right_head);
+        if(status == 0){
+            leftResult.setText("平");
+            rightResult.setText("平");
+        }else if(status == 1){
+            leftResult.setText("胜");
+            rightResult.setText("败");
+        }else if(status == 2){
+            leftResult.setText("败");
+            rightResult.setText("胜");
+        }
+
+        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        popView.measure(width, height);
+        pkLayout.measure(width, height);
+        int offsetX = Math.abs(popView.getMeasuredWidth() - pkLayout.getMeasuredWidth()) / 2;
+        int offsetY = -(popView.getMeasuredHeight() + pkLayout.getMeasuredHeight() + 10);
+
+        pkLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    PopupWindowCompat.showAsDropDown(pkResultPop, pkLayout, offsetX, offsetY, Gravity.START);
+                }
+            }
+        });
+    }
+
+    /**
+     * 惩罚
+     */
+    private void showPunishment() {
+        View popView = LayoutInflater.from(context).inflate(R.layout.pop_mvp, null);
+        mvpWindow = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        mvpWindow.setOutsideTouchable(false);
+        mvpWindow.setFocusable(false);
+        mvpWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+
+        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        popView.measure(width, height);
+        pkLayout.measure(width, height);
+        int offsetX = Math.abs(popView.getMeasuredWidth() - pkLayout.getMeasuredWidth()) / 2;
+        int offsetY = -(popView.getMeasuredHeight() + pkLayout.getMeasuredHeight() - 130);
+
+        ivClose = popView.findViewById(R.id.iv_close_mvp);
+        rvPunishment = popView.findViewById(R.id.rv_punishment);
+        btnPunishment = popView.findViewById(R.id.btn_punishment);
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mvpWindow.dismiss();
+            }
+        });
+
+        pkLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    PopupWindowCompat.showAsDropDown(mvpWindow, pkLayout, offsetX, offsetY, Gravity.START);
+                }
+            }
+        });
+
+        initRecy();
+    }
+
+    private void initRecy() {
+        list = new ArrayList<>();
+        mSelectedList = new ArrayList<Boolean>();
+        for (int i = 0; i < 12; i++) {
+            list.add("第" + i + "种方式");
+            mSelectedList.add(false);
+        }
+        rvPunishment.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        rvPunishment.setFocusableInTouchMode(false);
+        rvPunishment.setHasFixedSize(true);
+        rvPunishment.setLayoutManager(new GridLayoutManager(context, 3));
+        rvPunishment.addItemDecoration(new SpacesItemDecoration(20));
+        mvpAdapter = new BaseListAdapter() {
+            @Override
+            protected int getDataCount() {
+                return list == null ? 0 : list.size();
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(context).inflate(R.layout.item_punishment, parent, false);
+                return new MVPViewHolder(itemView);
+            }
+        };
+        rvPunishment.setAdapter(mvpAdapter);
+    }
+
+
+    class MVPViewHolder extends BaseViewHolder {
+        TextView tvPunishment;
+
+        public MVPViewHolder(View itemView) {
+            super(itemView);
+            tvPunishment = itemView.findViewById(R.id.tv_punishment);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            tvPunishment.setText(list.get(position));
+            if (mSelectedList.get(position)) {
+                tvPunishment.setBackgroundResource(R.drawable.shape_item_2);
+                tvPunishment.setTextColor(Color.WHITE);
+            } else {
+                tvPunishment.setBackgroundResource(R.drawable.shape_item_1);
+                tvPunishment.setTextColor(Color.argb(255, 42, 46, 54));
+            }
+            tvPunishment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i < mSelectedList.size(); i++) {
+                        mSelectedList.set(i, false);
+                    }
+                    mSelectedList.set(position, true);
+                    showToast(position + "");
+                    btnPunishment.setVisibility(View.VISIBLE);
+                    mvpAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
+    private void startPKAnim(){
+        svgaImageView.setLoops(1);
+        SVGAParser parser = new SVGAParser(context);
+        try {
+            parser.parse("start_pk.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    svgaImageView.setImageDrawable(drawable);
+                    svgaImageView.startAnimation();
+                }
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
     }
 }

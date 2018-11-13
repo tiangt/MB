@@ -88,7 +88,9 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -142,6 +144,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -244,6 +248,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ConstraintLayout clEnter;
     @BindView(R.id.iv_count_down)
     ImageView ivCountDown;
+    @BindView(R.id.rl_other_side)
+    RelativeLayout rlOtherSide;
+    @BindView(R.id.texture_view2)
+    KSYTextureView textureView2;
+    @BindView(R.id.circle_other_side)
+    CircleImageView ivOtherSide;
+    @BindView(R.id.tv_other_side)
+    TextView tvOtherSide;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -281,8 +293,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Long mTime;
     private int currentReceiveTreasureId;
     private RunWayBroadControl mRunWayBroadControl;
-    private PkInfoBean.userInfoBean myPkInfo;
-    private PkInfoBean.userInfoBean otherPkInfo;
+    private PKResultBean.UserInfoBean myPkInfo;
+    private PKResultBean.UserInfoBean otherPkInfo;
     private PkControl pkControl;
     private List<GetActivityBean.ListBean> mBannerInfoList;
     private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
@@ -319,6 +331,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkLayout.setVisibility(View.GONE);
         textureView.stop();
         textureView.reset();
+        textureView2.stop();
+        textureView2.reset();
+
         textureView.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         mProgramId = intent.getIntExtra(BundleConfig.PROGRAM_ID, -1);
@@ -332,12 +347,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         fragmentTransaction.commit();
         initFragment();
         loadData();
-        initPKAnim();
         showActivityGrand = false;
         showBanner = false;
     }
 
     private void initPKAnim() {
+        svgaStartPk.setLoops(1);
         SVGAParser parser = new SVGAParser(this);
         try {
             parser.parse("start_pk.svga", new SVGAParser.ParseCompletion() {
@@ -361,9 +376,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        ivCountDown.setImageResource(R.drawable.anim_pk_countdown);
-        AnimationDrawable animationDrawable = (AnimationDrawable) ivCountDown.getDrawable();
-        animationDrawable.start();
+//        ivCountDown.setImageResource(R.drawable.anim_pk_countdown);
+//        AnimationDrawable animationDrawable = (AnimationDrawable) ivCountDown.getDrawable();
+//        animationDrawable.start();
     }
 
     @Override
@@ -442,7 +457,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initBanner();
         initVp();
 //        showPKResult();
-        showPunishment();
+//        showPunishment();
     }
 
     private void initVp() {
@@ -624,6 +639,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getAudienceList(mProgramId);
         mLivePresenter.getGuardTotal(mProgramId);
+        mLivePresenter.getPunishWays();
     }
 
     private void getRoomToken() {
@@ -864,12 +880,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(PkEvent pkEvent) {
         PkJson.ContextBean bean = pkEvent.getPkJson().context;
         if (pkControl == null) {
+            rlOtherSide.setVisibility(View.VISIBLE);
             pkControl = new PkControl(pkLayout, this);
         }
+        pkControl.setStartAnim(svgaStartPk);
         pkControl.setBean(bean);
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
+        pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
         pkControl.init();
     }
 
@@ -1176,14 +1195,39 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @Override
-    public void onPkInfoSuccess(PkInfoBean bean) {
+    public void onPkInfoSuccess(PKResultBean bean) {
         if (pkControl == null) {
+            rlOtherSide.setVisibility(View.VISIBLE);
             pkControl = new PkControl(pkLayout, this);
         }
+        pkControl.setStartAnim(svgaStartPk);
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
+        pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
+
+        if (bean.otherStream != null) {
+            List<String> rtmpList = bean.otherStream.getRtmp();
+            List<String> flvList = bean.otherStream.getFlv();
+            List<String> hlsList = bean.otherStream.getHls();
+            if (rtmpList != null) {
+                for (int i = 0; i < rtmpList.size(); i++) {
+                    setDateSourceForPlayer2(rtmpList.get(i));
+                }
+            } else if (flvList != null) {
+                for (int i = 0; i < flvList.size(); i++) {
+                    setDateSourceForPlayer2(flvList.get(i));
+                }
+            } else if (hlsList != null) {
+                for (int i = 0; i < hlsList.size(); i++) {
+                    setDateSourceForPlayer2(hlsList.get(i));
+                }
+            }
+        }
+        otherSideLive();
+
         pkControl.initNet(bean);
+
     }
 
     @Override
@@ -1246,6 +1290,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetTotalGuardSuccess(GuardTotalBean.DataBean guardTotalBean) {
         tvGuardCount.setText(guardTotalBean.guardTotal + "");
+    }
+
+    @Override
+    public void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean) {
+
     }
 
     private void timerGrand(int i) {
@@ -1442,6 +1491,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView.stop();
             textureView.release();
             textureView = null;
+        }
+        if (textureView2 != null) {
+            textureView2.stop();
+            textureView2.release();
+            textureView2 = null;
         }
         mLivePresenter.onDestory();
         super.onDestroy();
@@ -1710,5 +1764,28 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             });
         }
 
+    }
+
+    private void otherSideLive() {
+        textureView2.setDecodeMode(KSYMediaPlayer.KSYDecodeMode.KSY_DECODE_MODE_AUTO);
+        textureView2.setOnPreparedListener(iMediaPlayer -> {
+            textureView2.setVisibility(View.VISIBLE);
+            textureView2.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+            textureView2.start();
+        });
+
+        textureView2.setOnCompletionListener(iMediaPlayer -> {
+            textureView2.stop();
+            textureView2.release();
+        });
+    }
+
+    private void setDateSourceForPlayer2(String stream) {
+        try {
+            textureView2.setDataSource(stream);
+            textureView2.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

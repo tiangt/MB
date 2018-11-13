@@ -35,4 +35,6 @@ public interface LiveModel {
     void getAudienceList(HashMap paramsMap, OnLiveFinishedListener listener);
 
     void getTotalGuard(HashMap paramsMap, OnLiveFinishedListener listener);
+
+    void getPunishWays(HashMap paramsMap, OnLiveFinishedListener listener);
 }

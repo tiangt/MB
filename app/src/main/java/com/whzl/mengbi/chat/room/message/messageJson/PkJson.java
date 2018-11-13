@@ -52,11 +52,13 @@ public class PkJson {
              * lastUpdateTime : 1529054670000
              * nickname : 土豪30000149
              * userId : 30000149
+             * avatar: "http://test-img.mengbitv.com/avatar/030/00/00/12_100x100.jpg?1529897703"
              */
 
             public long lastUpdateTime;
             public String nickname;
             public int userId;
+            public String avatar;
         }
 
 

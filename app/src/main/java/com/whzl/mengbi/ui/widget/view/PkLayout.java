@@ -58,20 +58,19 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private Disposable disposable;
     private Disposable disposable2;
     private int initializeProgress;
-    private ImageView ivRightLead;
-    private ImageView ivLeftLead;
-    private ImageView ivLeftResult;
-    private ImageView ivRightResult;
-    private ImageView ivRightCrown;
-    private ImageView ivLeftCrown;
-    private TextView tvLeftName;
-    private TextView tvRightName;
+//    private ImageView ivRightLead;
+//    private ImageView ivLeftLead;
+//    private ImageView ivLeftResult;
+//    private ImageView ivRightResult;
+//    private ImageView ivRightCrown;
+//    private ImageView ivLeftCrown;
+//    private TextView tvLeftName;
+//    private TextView tvRightName;
     private TextView tvLeftScore;
     private TextView tvRightScore;
-    private ImageView ivState;
+//    private ImageView ivState;
     private ValueAnimator animator;
     private TimeDwonListener listener;
-
     private RelativeLayout rlPkProgress;
     private PopupWindow popupWindow;
     private RecyclerView myFollow;
@@ -105,17 +104,17 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         ivFount = inflate.findViewById(R.id.iv_left);
         ivRight = inflate.findViewById(R.id.iv_right);
         tvTime = inflate.findViewById(R.id.tv_time_pk);
-        ivRightLead = inflate.findViewById(R.id.iv_right_lead);
-        ivLeftLead = inflate.findViewById(R.id.iv_left_lead);
-        ivLeftResult = inflate.findViewById(R.id.iv_left_result);
-        ivRightResult = inflate.findViewById(R.id.iv_right_result);
+//        ivRightLead = inflate.findViewById(R.id.iv_right_lead);
+//        ivLeftLead = inflate.findViewById(R.id.iv_left_lead);
+//        ivLeftResult = inflate.findViewById(R.id.iv_left_result);
+//        ivRightResult = inflate.findViewById(R.id.iv_right_result);
 //        ivRightCrown = inflate.findViewById(R.id.iv_right_crown);
 //        ivLeftCrown = inflate.findViewById(R.id.iv_left_crown);
 //        tvLeftName = inflate.findViewById(R.id.tv_left_name);
 //        tvRightName = inflate.findViewById(R.id.tv_right_name);
         tvLeftScore = inflate.findViewById(R.id.tv_left_score);
         tvRightScore = inflate.findViewById(R.id.tv_right_score);
-        ivState = inflate.findViewById(R.id.iv_state);
+//        ivState = inflate.findViewById(R.id.iv_state);
         tvPkTitle = inflate.findViewById(R.id.tv_pk_title);
         setProgress(initializeProgress);
     }
@@ -213,24 +212,24 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    public void setStateImg(Object object) {
-        GlideImageLoader.getInstace().displayImage(context, object, ivState);
-    }
+//    public void setStateImg(Object object) {
+//        GlideImageLoader.getInstace().displayImage(context, object, ivState);
+//    }
 
-    public void setLeftName(String name) {
-        tvLeftName.setText(name);
-    }
-
-    public void setRightName(String name) {
-        tvRightName.setText(name);
-    }
+//    public void setLeftName(String name) {
+//        tvLeftName.setText(name);
+//    }
+//
+//    public void setRightName(String name) {
+//        tvRightName.setText(name);
+//    }
 
     public void setLeftScore(int score) {
-        tvLeftScore.setText(score + "票");
+        tvLeftScore.setText(score + "");
     }
 
     public void setRightScore(int score) {
-        tvRightScore.setText(score + "票");
+        tvRightScore.setText(score + "");
     }
 
     public void setProgress(int progress) {
@@ -255,16 +254,25 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                 .subscribe(aLong -> {
                     LogUtils.e("ssssss  state" + aLong);
 //                    tvTime.setText(context.getString(R.string.pk_time, (9 - aLong) / 60, (9 - aLong) % 60));
-
                     if (aLong < second - 1) {
                         if (aLong < second - 1) {
-                            tvPkTitle.setVisibility(GONE);
-                            tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong - 1) / 60, (second - aLong - 1) % 60));
+//                            tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong - 1) / 60, (second - aLong - 1) % 60));
+                            if("惩罚时刻 ".equals(state)){
+                                tvPkTitle.setText(state+" ^ ");
+                                tvTime.setText((second - aLong - 1)+"s");
+                            }else{
+                                tvPkTitle.setText(state);
+                                tvTime.setText((second - aLong - 1)+"s");
+                            }
                         }
                         if (aLong == second - 11 && "PK进行中 ".equals(state) && listener != null) {
                             listener.onTimeDownListener();
                         }
 
+                        if ("PK进行中 ".equals(state)) {
+                            tvPkTitle.setText(state);
+                            tvTime.setText((second - aLong - 1)+"s");
+                        }
                     }else if (aLong >= second - 1) {
                         LogUtils.e("ssssss  state dispose");
                         disposable.dispose();
@@ -296,22 +304,22 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 setProgress((int) valueAnimator.getAnimatedValue());
-                if (progressBar.getProgress() == 50) {
-                    if (ivLeftLead.getVisibility() == VISIBLE) {
-                        ivLeftLead.setVisibility(GONE);
-                    }
-                    if (ivRightLead.getVisibility() == VISIBLE) {
-                        ivRightLead.setVisibility(GONE);
-                    }
-                }
-                if (progressBar.getProgress() < 50) {
-                    ivRightLead.setVisibility(VISIBLE);
-                    ivLeftLead.setVisibility(GONE);
-                }
-                if (progressBar.getProgress() > 50) {
-                    ivLeftLead.setVisibility(VISIBLE);
-                    ivRightLead.setVisibility(GONE);
-                }
+//                if (progressBar.getProgress() == 50) {
+//                    if (ivLeftLead.getVisibility() == VISIBLE) {
+//                        ivLeftLead.setVisibility(GONE);
+//                    }
+//                    if (ivRightLead.getVisibility() == VISIBLE) {
+//                        ivRightLead.setVisibility(GONE);
+//                    }
+//                }
+//                if (progressBar.getProgress() < 50) {
+//                    ivRightLead.setVisibility(VISIBLE);
+//                    ivLeftLead.setVisibility(GONE);
+//                }
+//                if (progressBar.getProgress() > 50) {
+//                    ivLeftLead.setVisibility(VISIBLE);
+//                    ivRightLead.setVisibility(GONE);
+//                }
             }
         });
 
@@ -352,42 +360,42 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    public void setLeftLead() {
-        ivLeftLead.setVisibility(VISIBLE);
-        ivRightLead.setVisibility(GONE);
-    }
-
-    public void setRightLead() {
-        ivLeftLead.setVisibility(GONE);
-        ivRightLead.setVisibility(VISIBLE);
-    }
-
-    public void setLeftWin() {
-        ivLeftResult.setVisibility(VISIBLE);
-        ivRightResult.setVisibility(VISIBLE);
-        ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_win));
-        ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_lose));
-        ivLeftCrown.setVisibility(VISIBLE);
-        ivRightCrown.setVisibility(GONE);
-        ivLeftLead.setVisibility(GONE);
-    }
-
-    public void setRightWin() {
-        ivLeftResult.setVisibility(VISIBLE);
-        ivRightResult.setVisibility(VISIBLE);
-        ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_lose));
-        ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_win));
-        ivLeftCrown.setVisibility(GONE);
-        ivRightCrown.setVisibility(VISIBLE);
-        ivRightLead.setVisibility(GONE);
-    }
-
-    public void setTied() {
-        ivLeftResult.setVisibility(VISIBLE);
-        ivRightResult.setVisibility(VISIBLE);
-        ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_ping));
-        ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_ping));
-    }
+//    public void setLeftLead() {
+//        ivLeftLead.setVisibility(VISIBLE);
+//        ivRightLead.setVisibility(GONE);
+//    }
+//
+//    public void setRightLead() {
+//        ivLeftLead.setVisibility(GONE);
+//        ivRightLead.setVisibility(VISIBLE);
+//    }
+//
+//    public void setLeftWin() {
+//        ivLeftResult.setVisibility(VISIBLE);
+//        ivRightResult.setVisibility(VISIBLE);
+//        ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_win));
+//        ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_lose));
+//        ivLeftCrown.setVisibility(VISIBLE);
+//        ivRightCrown.setVisibility(GONE);
+//        ivLeftLead.setVisibility(GONE);
+//    }
+//
+//    public void setRightWin() {
+//        ivLeftResult.setVisibility(VISIBLE);
+//        ivRightResult.setVisibility(VISIBLE);
+//        ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_lose));
+//        ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_win));
+//        ivLeftCrown.setVisibility(GONE);
+//        ivRightCrown.setVisibility(VISIBLE);
+//        ivRightLead.setVisibility(GONE);
+//    }
+//
+//    public void setTied() {
+//        ivLeftResult.setVisibility(VISIBLE);
+//        ivRightResult.setVisibility(VISIBLE);
+//        ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_ping));
+//        ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_ping));
+//    }
 
     public void setListener(TimeDwonListener listener) {
         this.listener = listener;
@@ -411,7 +419,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
     public interface TimeDwonListener {
         void onTimeDownListener();
-
     }
 
     public void reset() {
@@ -420,14 +427,14 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         setRightScore(0);
         setLeftImg(null);
         setRightImg(null);
-        setLeftName("");
-        setRightName("");
-        ivLeftCrown.setVisibility(GONE);
-        ivRightCrown.setVisibility(GONE);
-        ivLeftLead.setVisibility(GONE);
-        ivRightLead.setVisibility(GONE);
-        ivLeftResult.setVisibility(GONE);
-        ivRightResult.setVisibility(GONE);
+//        setLeftName("");
+//        setRightName("");
+//        ivLeftCrown.setVisibility(GONE);
+//        ivRightCrown.setVisibility(GONE);
+//        ivLeftLead.setVisibility(GONE);
+//        ivRightLead.setVisibility(GONE);
+//        ivLeftResult.setVisibility(GONE);
+//        ivRightResult.setVisibility(GONE);
         tvTime.setText("");
         if (disposable != null) {
             disposable.dispose();
@@ -438,7 +445,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     public void setRightClickListener(OnClickListener listener) {
         ivRight.setOnClickListener(listener);
     }
-
 
     private void showPopupWindow(View view) {
         popupWindow.setOutsideTouchable(false);
@@ -465,5 +471,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                 break;
         }
     }
+
 }
 

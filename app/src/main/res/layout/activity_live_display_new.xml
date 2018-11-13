@@ -230,15 +230,16 @@
                         android:layout_weight="1" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_other_side"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:visibility="gone"
                         android:layout_weight="1">
 
                         <com.ksyun.media.player.KSYTextureView
                             android:id="@+id/texture_view2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/colorPrimary" />
+                            android:layout_height="match_parent" />
 
                         <RelativeLayout
                             android:layout_width="wrap_content"
@@ -258,9 +259,11 @@
                                 android:id="@+id/tv_other_side"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="昵称"
                                 android:textColor="@color/white"
                                 android:textSize="10sp"
+                                android:singleLine="true"
+                                android:maxLength="5"
+                                android:ellipsize="end"
                                 android:layout_centerInParent="true"
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginRight="8dp"
@@ -320,7 +323,8 @@
                     android:id="@+id/pk_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true" />
+                    android:layout_alignParentBottom="true"
+                    android:visibility="gone"/>
 
                 <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"

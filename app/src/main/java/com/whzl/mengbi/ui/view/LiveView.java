@@ -7,7 +7,9 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -42,11 +44,13 @@ public interface LiveView {
 
     void onActivityListSuccess(GetActivityBean bean);
 
-    void onPkInfoSuccess(PkInfoBean bean);
+    void onPkInfoSuccess(PKResultBean bean);
 
     void onActivityGrandSuccess(ActivityGrandBean bean);
 
     void onGetAudienceListSuccess(AudienceListBean.DataBean audienceListBean);
 
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean guardTotalBean);
+
+    void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean);
 }

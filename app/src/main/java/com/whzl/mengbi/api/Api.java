@@ -15,12 +15,15 @@ import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
+import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.MyCouponBean;
+import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PropBean;
+import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
@@ -300,7 +303,7 @@ public interface Api {
      */
     @POST("v1/pk/info")
     @FormUrlEncoded
-    Observable<ApiResult<PkInfoBean>> pkInfo(@FieldMap Map<String, String> params);
+    Observable<ApiResult<PKResultBean>> pkInfo(@FieldMap Map<String, String> params);
 
     /**
      * 我的服务（道具）
@@ -492,8 +495,23 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<RebateBean>> getAnchorInfo(@FieldMap Map<String, String> params);
 
-
+    /**
+     * 直播间的守护人数
+     *
+     * @param params
+     * @return
+     */
     @POST("v1/room/total-guard")
     @FormUrlEncoded
-    Observable<ApiResult<RebateBean>> getTotalGuard(@FieldMap Map<String, String> params);
+    Observable<ApiResult<GuardTotalBean>> getTotalGuard(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取惩罚方式
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/punish-ways")
+    @FormUrlEncoded
+    Observable<ApiResult<PunishWaysBean>> getPunishWays(@FieldMap Map<String, String> params);
 }

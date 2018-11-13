@@ -12,7 +12,9 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -333,16 +335,14 @@ public class LiveModelImpl implements LiveModel {
                 .pkInfo(paramsMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<PkInfoBean>() {
-
-
+                .subscribe(new ApiObserver<PKResultBean>() {
                     @Override
-                    public void onSuccess(PkInfoBean jsonElement) {
+                    public void onSuccess(PKResultBean jsonElement) {
                         listener.onPkInfoSuccess(jsonElement);
                     }
 
                     @Override
-                    public void onError(ApiResult<PkInfoBean> body) {
+                    public void onError(ApiResult<PKResultBean> body) {
 
                     }
                 });
@@ -401,6 +401,27 @@ public class LiveModelImpl implements LiveModel {
                     public void onSuccess(GuardTotalBean.DataBean dataBean) {
                         if (dataBean != null) {
                             listener.onGetTotalGuardSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getPunishWays(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getPunishWays(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<PunishWaysBean.ListBean>() {
+                    @Override
+                    public void onSuccess(PunishWaysBean.ListBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetPunishWaysSuccess(dataBean);
                         }
                     }
 

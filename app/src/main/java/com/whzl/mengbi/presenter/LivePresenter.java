@@ -38,4 +38,6 @@ public interface LivePresenter {
     void getAudienceList(int programId);
 
     void getGuardTotal(int programId);
+
+    void getPunishWays();
 }
