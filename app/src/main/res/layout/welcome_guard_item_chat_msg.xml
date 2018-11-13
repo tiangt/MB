@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="@dimen/margin_right_chat"
-    android:layout_marginTop="4dp"
+    android:layout_marginTop="8dp"
     android:orientation="vertical">
     <!--
         android:background="@drawable/guard_enter_room_bg"
@@ -22,10 +22,10 @@
     </TextView>
 
     <LinearLayout
-        android:layout_marginTop="5dp"
         android:id="@+id/ll_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 

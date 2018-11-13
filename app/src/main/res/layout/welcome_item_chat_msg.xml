@@ -4,24 +4,25 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
-    android:layout_marginRight="50dp"
-    android:layout_marginTop="2dp"
+    android:layout_marginRight="@dimen/margin_right_chat"
+    android:layout_marginTop="8dp"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/chat_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:lineSpacingExtra="2dp"
         android:maxLines="100"
         android:textSize="@dimen/text_chat_size">
 
     </TextView>
 
     <LinearLayout
-        android:layout_marginTop="5dp"
         android:id="@+id/ll_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 

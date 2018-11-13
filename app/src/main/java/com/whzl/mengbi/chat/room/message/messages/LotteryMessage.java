@@ -1,7 +1,7 @@
 package com.whzl.mengbi.chat.room.message.messages;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 
 import com.whzl.mengbi.R;
@@ -29,13 +29,14 @@ public class LotteryMessage implements FillHolderMessage {
         viewHolder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
         viewHolder.textView.setText("");
         viewHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_lottery));
-        viewHolder.textView.append(LightSpanString.getLightString(" 恭喜 ", ContextCompat.getColor(mContext, R.color.text_color_lottery)));
-        viewHolder.textView.append(LightSpanString.getLightString(mLotteryJson.context.nickname, ContextCompat.getColor(mContext, R.color.text_color_lottery)));
-        viewHolder.textView.append(LightSpanString.getLightString(" 被幸运女神眷顾，抽中 ", ContextCompat.getColor(mContext, R.color.text_color_lottery)));
-        viewHolder.textView.append(LightSpanString.getLightString(mLotteryJson.context.awardContentNum, ContextCompat.getColor(mContext, R.color.text_color_lottery)));
-        viewHolder.textView.append(LightSpanString.getLightString(" 个", ContextCompat.getColor(mContext, R.color.text_color_lottery)));
-        viewHolder.textView.append(LightSpanString.getLightString(mLotteryJson.context.awardContentName + "，", ContextCompat.getColor(mContext, R.color.text_color_lottery)));
-        viewHolder.textView.append(LightSpanString.getLightString("我也要抽奖！", ContextCompat.getColor(mContext, R.color.text_color_lottery)));
+        viewHolder.textView.append(LightSpanString.getLightString(" 恭喜 ", Color.parseColor("#f9f9f9")));
+        viewHolder.textView.append(LightSpanString.getLightString(mLotteryJson.context.nickname, Color.parseColor("#2DA8EE")));
+        viewHolder.textView.append(LightSpanString.getLightString(" 被幸运女神眷顾，", Color.parseColor("#f9f9f9")));
+        viewHolder.textView.append(LightSpanString.getLightString("抽中 ", Color.parseColor("#F8C330")));
+        viewHolder.textView.append(LightSpanString.getLightString(mLotteryJson.context.awardContentNum, Color.parseColor("#f9f9f9")));
+        viewHolder.textView.append(LightSpanString.getLightString(" 个", Color.parseColor("#f9f9f9")));
+        viewHolder.textView.append(LightSpanString.getLightString(mLotteryJson.context.awardContentName + "，", Color.parseColor("#F8C330")));
+        viewHolder.textView.append(LightSpanString.getLightString("我也要抽奖！", Color.parseColor("#F8C330")));
     }
 
     @Override

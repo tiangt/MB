@@ -36,7 +36,7 @@ public class RunWayGiftControl {
     public void load(RunWayEvent event) {
         if (event == null || event.getRunWayJson() == null
                 || event.getRunWayJson().getContext() == null
-                || autoScrollView == null) {
+                || autoScrollView == null || event.getRunWayJson().getContext().getRunwayType() == null) {
             return;
         }
         String type = event.getRunWayJson().getContext().getRunwayType();
@@ -59,7 +59,7 @@ public class RunWayGiftControl {
             });
         }
 
-        if(autoScrollView.isStarting){
+        if (autoScrollView.isStarting) {
             frameLayout.clearAnimation();
             frameLayout.setVisibility(View.VISIBLE);
             if ("destroy".equals(type)) {
@@ -104,7 +104,7 @@ public class RunWayGiftControl {
     }
 
     public void destroy() {
-        if (autoScrollView != null) {
+        if (autoScrollView != null && trackAnim != null) {
 //            autoScrollView.stopScroll();
 //            autoScrollView.dispose();
             trackAnim.stopAnim();

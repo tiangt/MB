@@ -4,16 +4,20 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxTimerUtil;
@@ -33,6 +37,7 @@ public class RoyalEnterControl {
     RoyalEnterView tvEnter;
     ImageView ivEnter;
     ConstraintLayout clEnter;
+
 
     public void setClEnter(ConstraintLayout clEnter) {
         this.clEnter = clEnter;
@@ -96,6 +101,8 @@ public class RoyalEnterControl {
     }
 
     private void initTv(WelcomeMsg welcomeMsg) {
+        String prettyNumColor = getPrettyNumColor(welcomeMsg.getmWelcomeJson().getContext().getInfo().getUserBagList());
+        String prettyNum = getPrettyNumString(welcomeMsg.getmWelcomeJson().getContext().getInfo().getUserBagList());
         if (welcomeMsg.royalLevel > 0) {
             switch (welcomeMsg.royalLevel) {
                 case 1:
@@ -149,29 +156,25 @@ public class RoyalEnterControl {
                 tvEnter.append(" ");
             }
             if (null != welcomeMsg.userSpanList) {
-                for (SpannableString spanString :welcomeMsg. userSpanList) {
+                for (SpannableString spanString : welcomeMsg.userSpanList) {
                     tvEnter.append(spanString);
                     tvEnter.append(" ");
                 }
             }
-//            if (!TextUtils.isEmpty(welcomeMsg.prettyNumberOrUserId)) {
-//                switch (prettyNumberOrUserId.length()) {
-//                    case 5:
-//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
-//                        mHolder.textView.append(" ");
-//                        break;
-//                    case 6:
-//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
-//                        mHolder.textView.append(" ");
-//                        break;
-//                    case 7:
-//                        mHolder.textView.append(LightSpanString.getLightString(prettyNumberOrUserId, Color.parseColor("#8bc1fe")));
-//                        mHolder.textView.append(" ");
-//                        break;
-//                }
-//            }
-//            tvEnter.append(LightSpanString.getNickNameSpan(context, welcomeMsg.nickName, welcomeMsg.uid, welcomeMsg.programId, Color.parseColor("#ffffff")));
-            tvEnter.append( welcomeMsg.nickName);
+            if (!TextUtils.isEmpty(prettyNum)) {
+                if ("A".equals(prettyNumColor)) {
+                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
+                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
+                } else if ("B".equals(prettyNumColor)) {
+                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#fe7a2a"), Color.parseColor("#ffffff")));
+                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#fe7a2a"), Color.parseColor("#fe7a2a")));
+                } else if ("C".equals(prettyNumColor)) {
+                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
+                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
+                }
+                tvEnter.append(" ");
+            }
+            tvEnter.append(welcomeMsg.nickName);
             if (welcomeMsg.royalLevel > 0) {
                 tvEnter.append(" 闪亮登场");
             } else {
@@ -200,5 +203,33 @@ public class RoyalEnterControl {
             }
         });
         translationX.start();
+    }
+
+    public String getPrettyNumColor(List<WelcomeJson.UserBagItem> userBagList) {
+        if (userBagList == null) {
+            return "A";
+        }
+        String string = "A";
+        for (WelcomeJson.UserBagItem bagItem : userBagList) {
+            if (bagItem.getGoodsType().equals("PRETTY_NUM") && bagItem.getIsEquip().equals("T") && bagItem.goodsColor != null) {
+                string = bagItem.goodsColor;
+                break;
+            }
+        }
+        return string;
+    }
+
+    public String getPrettyNumString(List<WelcomeJson.UserBagItem> userBagList) {
+        if (userBagList == null) {
+            return "";
+        }
+        String string = "";
+        for (WelcomeJson.UserBagItem bagItem : userBagList) {
+            if (bagItem.getGoodsType().equals("PRETTY_NUM") && bagItem.getIsEquip().equals("T")) {
+                string = bagItem.getGoodsName();
+                break;
+            }
+        }
+        return string;
     }
 }

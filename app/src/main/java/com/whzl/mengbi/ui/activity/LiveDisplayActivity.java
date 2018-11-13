@@ -509,7 +509,24 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (index == 1) {
             viewMessageNotify.setVisibility(View.GONE);
+
+            rlTreasureBox.setVisibility(View.GONE);
+            if (showActivityGrand) {
+                vpActivity.setVisibility(View.GONE);
+            }
+            if (showBanner) {
+                banner.setVisibility(View.GONE);
+            }
         }
+//        else {
+//            rlTreasureBox.setVisibility(View.VISIBLE);
+//            if (showActivityGrand) {
+//                vpActivity.setVisibility(View.VISIBLE);
+//            }
+//            if (showBanner) {
+//                banner.setVisibility(View.VISIBLE);
+//            }
+//        }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
         if (fragments[index].isAdded()) {
@@ -702,13 +719,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
                 setTabChange(1);
 
-                rlTreasureBox.setVisibility(View.GONE);
-                if (showActivityGrand) {
-                    vpActivity.setVisibility(View.GONE);
-                }
-                if (showBanner) {
-                    banner.setVisibility(View.GONE);
-                }
+
                 break;
             case R.id.rootView:
                 if (currentSelectedIndex == 1) {

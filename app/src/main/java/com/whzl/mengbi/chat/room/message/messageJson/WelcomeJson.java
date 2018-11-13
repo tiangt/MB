@@ -92,6 +92,7 @@ public class WelcomeJson {
         int goodsPicId;
         String goodsName;
         int bindProgramId = 0;
+        public String goodsColor;
 
         public int getBindProgramId() {
             return bindProgramId;

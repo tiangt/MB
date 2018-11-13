@@ -44,8 +44,8 @@ public class ChatMessage implements FillHolderMessage {
     private SingleTextViewHolder mholder;
     private List<SpannableString> fromSpanList;
     private boolean isPrivate = false;
-    private final String prettyNumColor;
-    private final String prettyNum;
+    private String prettyNumColor;
+    private String prettyNum;
 
     public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList, boolean isPrivate) {
         this.isPrivate = isPrivate;
@@ -162,7 +162,7 @@ public class ChatMessage implements FillHolderMessage {
                 mholder.textView.append(" ");
             }
         }
-        if (!TextUtils.isEmpty(prettyNumColor)) {
+        if (!TextUtils.isEmpty(prettyNum)) {
             if ("A".equals(prettyNumColor)) {
                 mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
                 mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
@@ -173,7 +173,7 @@ public class ChatMessage implements FillHolderMessage {
                 mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
                 mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
             }
-            mholder.textView.append(" ");
+            mholder.textView.append("  ");
         }
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
             mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#2da8ee")));
@@ -190,9 +190,9 @@ public class ChatMessage implements FillHolderMessage {
         mholder.textView.append(LightSpanString.getLightString("  ", Color.parseColor("#75bbfb")));
         SpannableString spanString;
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
-            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#fc8f7a"));
+            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
         } else {
-            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#f9f9f9"));
+            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
         }
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
         if (hasGuard) {

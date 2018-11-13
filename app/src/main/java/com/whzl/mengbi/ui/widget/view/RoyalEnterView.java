@@ -150,13 +150,13 @@ public class RoyalEnterView extends AppCompatTextView {
         }
         canvas.translate(-step, 0);
         super.onDraw(canvas);
-        if (viewWidth > textLength) {
+        if (viewWidth > textLength + 30) {
             return;
         }
         Observable.just(1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(integer -> {
-                    if (textLength > viewWidth && textLength - step + 100 <= viewWidth) {
+                    if (textLength > viewWidth && textLength - step + 130 <= viewWidth) {
                         return;
                     }
                     step += 1.5;

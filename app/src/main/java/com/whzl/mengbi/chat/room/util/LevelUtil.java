@@ -77,19 +77,19 @@ public class LevelUtil {
 
     public static String getPrettyNumColor(FromJson fromJson) {
         if (fromJson == null) {
-            return "";
+            return "A";
         }
         List<FromJson.Good> goodsList = fromJson.getGoodsList();
         if (goodsList == null) {
-            return "";
+            return "A";
         }
         for (FromJson.Good good : goodsList) {
-            if (good.getGoodsType().equals("PRETTY_NUM")) {
+            if (good.getGoodsType().equals("PRETTY_NUM") && good.goodsColor != null) {
                 String goodsColor = good.goodsColor;
                 return goodsColor;
             }
         }
-        return "";
+        return "A";
     }
 
     public static String getPrettyNum(FromJson fromJson) {
@@ -156,10 +156,10 @@ public class LevelUtil {
         if (drawable != null) {
             int originWidth = drawable.getIntrinsicWidth();
             int originHeight = drawable.getIntrinsicHeight();
-            float dpHeight = 13;
+            float dpHeight = 12;
             float dpWidth = originWidth * dpHeight / originHeight;
             drawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
-            ImageSpan span = new ImageSpan(drawable,ImageSpan.ALIGN_BOTTOM);
+            ImageSpan span = new CenterAlignImageSpan(drawable);
             levelIcon.setSpan(span, 0, levelIcon.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
 
@@ -195,7 +195,7 @@ public class LevelUtil {
         }
     }
 
-    public static SpannableString getImageResourceSpanByHeight(Context context, int resourceId,int height) {
+    public static SpannableString getImageResourceSpanByHeight(Context context, int resourceId, int height) {
         SpannableString levelIcon = new SpannableString("icon");
         Resources res = context.getResources();
         Drawable levelIconDrawable = res.getDrawable(resourceId);
