@@ -193,5 +193,5 @@ public class URLContentUtils {
     /**
      * MVP设置惩罚方式
      */
-    public static final String PUNISH_WAY = "set-punish-way";
+    public static final String PUNISH_WAY = "/v1/pk/set-punish-way";
 }
