@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.BillAwardBean;
@@ -21,16 +22,15 @@ import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
-import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RebateBean;
+import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
-import com.whzl.mengbi.model.entity.ApiResult;
 
 import java.util.Map;
 
@@ -514,4 +514,14 @@ public interface Api {
     @POST("v1/pk/punish-ways")
     @FormUrlEncoded
     Observable<ApiResult<PunishWaysBean>> getPunishWays(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间指定类型的榜单的总值
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/rank/room-rank-total")
+    @FormUrlEncoded
+    Observable<ApiResult<RoomRankTotalBean>> getRoomRankTotal(@FieldMap Map<String, String> params);
 }

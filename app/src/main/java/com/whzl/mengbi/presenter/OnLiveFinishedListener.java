@@ -8,14 +8,12 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
-
-import java.util.HashMap;
 
 public interface OnLiveFinishedListener {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -51,4 +49,6 @@ public interface OnLiveFinishedListener {
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean);
 
     void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean);
+
+    void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
 }

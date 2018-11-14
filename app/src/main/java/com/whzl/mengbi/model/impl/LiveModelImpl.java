@@ -13,10 +13,10 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -28,7 +28,6 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -422,6 +421,27 @@ public class LiveModelImpl implements LiveModel {
                     public void onSuccess(PunishWaysBean.ListBean dataBean) {
                         if (dataBean != null) {
                             listener.onGetPunishWaysSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getRoomRankTotal(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getRoomRankTotal(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<RoomRankTotalBean>() {
+                    @Override
+                    public void onSuccess(RoomRankTotalBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetRoomRankTotalSuccess(dataBean);
                         }
                     }
 

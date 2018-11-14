@@ -9,9 +9,9 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -208,6 +208,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
+    public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
+        if (liveView != null) {
+            liveView.onGetRoomRankTotalSuccess(bean);
+        }
+    }
+
+    @Override
     public void followHost(long userId, int mProgramId) {
         liveModel.doFollowHost(userId, mProgramId, this);
     }
@@ -296,6 +303,15 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         HashMap map = new HashMap();
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getPunishWays(signPramsMap, this);
+    }
+
+    @Override
+    public void getRoomRankTotal(int mProgramId, String type) {
+        HashMap map = new HashMap();
+        map.put("programId", mProgramId);
+        map.put("type", type);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getRoomRankTotal(signPramsMap, this);
     }
 
 }
