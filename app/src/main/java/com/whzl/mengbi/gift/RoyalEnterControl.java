@@ -18,6 +18,7 @@ import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxTimerUtil;
@@ -37,7 +38,11 @@ public class RoyalEnterControl {
     RoyalEnterView tvEnter;
     ImageView ivEnter;
     ConstraintLayout clEnter;
+    private final int screenWidthPixels;
 
+    public RoyalEnterControl() {
+        screenWidthPixels = UIUtil.getScreenWidthPixels(BaseApplication.getInstance());
+    }
 
     public void setClEnter(ConstraintLayout clEnter) {
         this.clEnter = clEnter;
@@ -81,8 +86,10 @@ public class RoyalEnterControl {
         String imageUrl = ImageUrl.getImageUrl(list.get(0).getCarId(), "jpg");
         GlideImageLoader.getInstace().displayImage(context, imageUrl, ivEnter);
 
+//        ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
+//                -UIUtil.dip2px(context, 255), 0);
         ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
-                -UIUtil.dip2px(context, 255), 0);
+                screenWidthPixels, screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2);
         translationX.setDuration(1000);  //设置动画时间
         translationX.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -184,8 +191,10 @@ public class RoyalEnterControl {
     }
 
     private void outAnim() {
+//        ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
+//                0, -UIUtil.dip2px(context, 255));
         ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
-                0, -UIUtil.dip2px(context, 255));
+                screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2, -UIUtil.dip2px(context, 255));
         translationX.setDuration(1000);
         translationX.addListener(new AnimatorListenerAdapter() {
             @Override
