@@ -41,6 +41,7 @@ public class AudienceContributeListAdapter<T> extends CommonAdapter<RoomRankBean
 //        ivRank.setVisibility(position < 5 ? View.VISIBLE : View.INVISIBLE);
         if (position < 3) {
             ivRank.setBackgroundResource(rankIcons[position]);
+            ivRank.setText("");
         } else {
             ivRank.setBackgroundResource(R.drawable.bg_contribute_rank);
             ivRank.setText(String.valueOf(position + 1));
