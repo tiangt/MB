@@ -8,12 +8,12 @@
 
     <ImageView
         android:id="@+id/iv_gift"
-        android:layout_width="30dp"
-        android:layout_height="35dp"
+        android:layout_width="35dp"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/tv_gift_name"
@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/tv_cost"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
         android:textColor="#fefefe"
         android:textSize="8sp" />
 
@@ -32,9 +31,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
-        android:layout_marginTop="4dp"
         android:gravity="center_vertical"
-        android:textColor="#40ffffff"
+        android:textColor="#80ffffff"
         android:textSize="8sp" />
 
     <View

@@ -30,8 +30,8 @@ public class ProgramFirstMessage implements FillHolderMessage {
         mHolder.textView.setText("");
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.congratulation));
-        mHolder.textView.append(LightSpanString.getLightString("  恭喜 ", Color.parseColor("#fc8f7a")));
-        mHolder.textView.append(LightSpanString.getLightString(nickname, Color.parseColor("#fc8f7a")));
+        mHolder.textView.append(LightSpanString.getLightString("  恭喜 ", Color.parseColor("#FFF9F9F9")));
+        mHolder.textView.append(LightSpanString.getLightString(nickname, Color.parseColor("#FF2DA8EE")));
         mHolder.textView.append(LightSpanString.getLightString(" 成为本场第一富豪", Color.parseColor("#fc8f7a")));
     }
 
