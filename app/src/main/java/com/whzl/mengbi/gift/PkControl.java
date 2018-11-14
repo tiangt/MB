@@ -270,12 +270,6 @@ public class PkControl {
             }
         });
 
-//        pkLayout.setRightClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showJumpLiveHouseDialog(jumpProgramId, jumpNick);
-//            }
-//        });
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -356,12 +350,6 @@ public class PkControl {
                     endPkCountDown();
                 }
             });
-//            pkLayout.setRightClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    showJumpLiveHouseDialog(jumpProgramId, jumpNick);
-//                }
-//            });
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
