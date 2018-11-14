@@ -101,7 +101,7 @@ public class PkControl {
     private PopupWindow pkResultPop;
     private SVGAImageView svgaImageView;
     private PopupWindow mvpWindow;
-    private List<Boolean> mSelectedList;
+
     private ImageView ivClose;
     private RecyclerView rvPunishment;
     private Button btnPunishment;
@@ -113,6 +113,7 @@ public class PkControl {
     private String streamType;
     private ImageView ivCountDown;
     private List<PunishWaysBean.ListBean> punishWays = new ArrayList<>();
+    private List<Boolean> mSelectedList;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -544,6 +545,8 @@ public class PkControl {
         rvPunishment = popView.findViewById(R.id.rv_punishment);
         btnPunishment = popView.findViewById(R.id.btn_punishment);
 
+        initRecy();
+
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -693,7 +696,6 @@ public class PkControl {
                                 punishWays.add(dataBean.getList().get(i));
                                 mSelectedList.add(false);
                             }
-                            initRecy();
                             mvpAdapter.notifyDataSetChanged();
                         }
                     }

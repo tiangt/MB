@@ -52,6 +52,7 @@ public interface LiveView {
 
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean guardTotalBean);
 
+
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
 
     void onGetPunishWaysSuccess(PunishWaysBean bean);
