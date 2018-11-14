@@ -114,7 +114,7 @@ public class PkJson {
             }
         }
 
-        public MvpUserBean mvpUserBean;
+        public MvpUserBean mvpUser;
         public static class MvpUserBean {
             /**
              * userId : 30000607
