@@ -90,42 +90,21 @@
             android:textColor="#EDFF00"
             android:textSize="12sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="11dp"
-            android:orientation="horizontal">
-
             <RelativeLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:id="@+id/iv_user_level"
-                    android:layout_width="21dp"
-                    android:layout_height="10dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/royal_1" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="5dp">
+                android:layout_marginTop="11dp">
 
                 <TextView
                     android:id="@+id/tv_mvp_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
                     android:text="昵称"
                     android:textSize="10sp"
                     android:singleLine="true"
                     android:textColor="#FF4676" />
             </RelativeLayout>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

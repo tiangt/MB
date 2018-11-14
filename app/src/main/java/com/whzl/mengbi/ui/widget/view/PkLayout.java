@@ -6,9 +6,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +24,12 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -51,24 +49,13 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
     private View inflate;
     private ProgressBar progressBar;
-    private ImageView ivFount;
     private Context context;
-    private ImageView ivRight;
     private TextView tvTime;
     private Disposable disposable;
     private Disposable disposable2;
     private int initializeProgress;
-//    private ImageView ivRightLead;
-//    private ImageView ivLeftLead;
-//    private ImageView ivLeftResult;
-//    private ImageView ivRightResult;
-//    private ImageView ivRightCrown;
-//    private ImageView ivLeftCrown;
-//    private TextView tvLeftName;
-//    private TextView tvRightName;
     private TextView tvLeftScore;
     private TextView tvRightScore;
-//    private ImageView ivState;
     private ValueAnimator animator;
     private TimeDwonListener listener;
     private RelativeLayout rlPkProgress;
@@ -77,6 +64,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private RecyclerView oppositeSide;
     private List<String> list;
     private TextView tvPkTitle;
+    private List<PkJson.ContextBean.LaunchPkUserFansBean> pkUserFansBeans;
+    private List<PkJson.ContextBean.LaunchPkUserFansBean> launchPkUserFansBeans;
+    private String punishWayName;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -98,25 +88,24 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private void init(Context context) {
         LayoutInflater from = LayoutInflater.from(context);
         inflate = from.inflate(R.layout.layout_pk_new, this, false);
-//        inflate = from.inflate(R.layout.layout_pk_new, this, false);
         addView(inflate);
         progressBar = inflate.findViewById(R.id.pb_pk);
-        ivFount = inflate.findViewById(R.id.iv_left);
-        ivRight = inflate.findViewById(R.id.iv_right);
         tvTime = inflate.findViewById(R.id.tv_time_pk);
-//        ivRightLead = inflate.findViewById(R.id.iv_right_lead);
-//        ivLeftLead = inflate.findViewById(R.id.iv_left_lead);
-//        ivLeftResult = inflate.findViewById(R.id.iv_left_result);
-//        ivRightResult = inflate.findViewById(R.id.iv_right_result);
-//        ivRightCrown = inflate.findViewById(R.id.iv_right_crown);
-//        ivLeftCrown = inflate.findViewById(R.id.iv_left_crown);
-//        tvLeftName = inflate.findViewById(R.id.tv_left_name);
-//        tvRightName = inflate.findViewById(R.id.tv_right_name);
         tvLeftScore = inflate.findViewById(R.id.tv_left_score);
         tvRightScore = inflate.findViewById(R.id.tv_right_score);
-//        ivState = inflate.findViewById(R.id.iv_state);
         tvPkTitle = inflate.findViewById(R.id.tv_pk_title);
         setProgress(initializeProgress);
+    }
+
+    public void setPkFanRank(List<PkJson.ContextBean.LaunchPkUserFansBean> pkUserFansBeans,
+                             List<PkJson.ContextBean.LaunchPkUserFansBean> launchPkUserFansBeans) {
+
+        this.pkUserFansBeans = pkUserFansBeans;
+        this.launchPkUserFansBeans = launchPkUserFansBeans;
+    }
+
+    public void setPunishWayName(String punishWayName){
+        this.punishWayName = punishWayName;
     }
 
     private void initPop(Context context) {
@@ -127,11 +116,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         rlPkProgress.setOnClickListener(this::onClick);
         myFollow = popView.findViewById(R.id.rv_my_follow);
         oppositeSide = popView.findViewById(R.id.rv_opposite_side);
-
-        list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(i + "");
-        }
 
         LinearLayoutManager followManager = new LinearLayoutManager(context);
         followManager.setOrientation(HORIZONTAL);
@@ -147,7 +131,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         BaseListAdapter myFollowAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return list == null ? 0 : 5;
+                return pkUserFansBeans == null ? 0 : 5;
             }
 
             @Override
@@ -161,7 +145,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         BaseListAdapter oppositeAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return list == null ? 0 : 5;
+                return launchPkUserFansBeans == null ? 0 : 5;
             }
 
             @Override
@@ -188,7 +172,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(int position) {
-            tvPkCount.setText(list.get(position));
+            tvPkCount.setText(pkUserFansBeans.get(position).nickname);
             showRanking(position, ivPkLevel);
         }
     }
@@ -207,22 +191,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(int position) {
-            tvPkCount.setText(list.get(position));
+            tvPkCount.setText(launchPkUserFansBeans.get(position).nickname);
             showRanking(position, ivPkLevel);
         }
     }
-
-//    public void setStateImg(Object object) {
-//        GlideImageLoader.getInstace().displayImage(context, object, ivState);
-//    }
-
-//    public void setLeftName(String name) {
-//        tvLeftName.setText(name);
-//    }
-//
-//    public void setRightName(String name) {
-//        tvRightName.setText(name);
-//    }
 
     public void setLeftScore(int score) {
         tvLeftScore.setText(score + "");
@@ -240,14 +212,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         return progressBar;
     }
 
-    public void setLeftImg(Object object) {
-        GlideImageLoader.getInstace().displayImage(context, object, ivFount);
-    }
-
-    public void setRightImg(Object object) {
-        GlideImageLoader.getInstace().displayImage(context, object, ivRight);
-    }
-
     public void timer(String state, int second) {
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -257,12 +221,22 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                     if (aLong < second - 1) {
                         if (aLong < second - 1) {
 //                            tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong - 1) / 60, (second - aLong - 1) % 60));
-                            if("惩罚时刻 ".equals(state)){
-                                tvPkTitle.setText(state+" ^ ");
-                                tvTime.setText((second - aLong - 1)+"s");
-                            }else{
+                            if ("惩罚时刻 ".equals(state)) {
+                                if ((second - aLong - 1) > (second - 61)) {
+                                    if(TextUtils.isEmpty(punishWayName)){
+                                        tvPkTitle.setText(punishWayName);
+                                        tvTime.setText((second - aLong - 1) + "s");
+                                    }else{
+                                        tvPkTitle.setText("MVP挑选惩罚^ ");
+                                        tvTime.setText((second - aLong - 1) + "s");
+                                    }
+                                }else{
+                                    tvPkTitle.setText(state + " ^ ");
+                                    tvTime.setText((second - aLong - 1) + "s");
+                                }
+                            } else {
                                 tvPkTitle.setText(state);
-                                tvTime.setText((second - aLong - 1)+"s");
+                                tvTime.setText((second - aLong - 1) + "s");
                             }
                         }
                         if (aLong == second - 11 && "PK进行中 ".equals(state) && listener != null) {
@@ -271,23 +245,11 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
                         if ("PK进行中 ".equals(state)) {
                             tvPkTitle.setText(state);
-                            tvTime.setText((second - aLong - 1)+"s");
+                            tvTime.setText((second - aLong - 1) + "s");
                         }
-                    }else if (aLong >= second - 1) {
+                    } else if (aLong >= second - 1) {
                         LogUtils.e("ssssss  state dispose");
                         disposable.dispose();
-//                        ivLeftLead.setVisibility(GONE);
-//                        ivRightLead.setVisibility(GONE);
-//                        if (progressBar.getProgress() == 50) {
-//                            setTied();
-//                        }
-//                        if (progressBar.getProgress() < 50) {
-//                            setRightWin();
-//                            ivRightCrown.setVisibility(VISIBLE);
-//                        }
-//                        if (progressBar.getProgress() > 50) {
-//                            setLeftWin();
-//                            ivLeftCrown.setVisibility(VISIBLE);
                     }
                 });
 
@@ -304,22 +266,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 setProgress((int) valueAnimator.getAnimatedValue());
-//                if (progressBar.getProgress() == 50) {
-//                    if (ivLeftLead.getVisibility() == VISIBLE) {
-//                        ivLeftLead.setVisibility(GONE);
-//                    }
-//                    if (ivRightLead.getVisibility() == VISIBLE) {
-//                        ivRightLead.setVisibility(GONE);
-//                    }
-//                }
-//                if (progressBar.getProgress() < 50) {
-//                    ivRightLead.setVisibility(VISIBLE);
-//                    ivLeftLead.setVisibility(GONE);
-//                }
-//                if (progressBar.getProgress() > 50) {
-//                    ivLeftLead.setVisibility(VISIBLE);
-//                    ivRightLead.setVisibility(GONE);
-//                }
             }
         });
 
@@ -354,48 +300,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         if (disposable2 != null) {
             disposable2.dispose();
         }
-
         if (popupWindow != null) {
             popupWindow.dismiss();
         }
     }
-
-//    public void setLeftLead() {
-//        ivLeftLead.setVisibility(VISIBLE);
-//        ivRightLead.setVisibility(GONE);
-//    }
-//
-//    public void setRightLead() {
-//        ivLeftLead.setVisibility(GONE);
-//        ivRightLead.setVisibility(VISIBLE);
-//    }
-//
-//    public void setLeftWin() {
-//        ivLeftResult.setVisibility(VISIBLE);
-//        ivRightResult.setVisibility(VISIBLE);
-//        ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_win));
-//        ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_lose));
-//        ivLeftCrown.setVisibility(VISIBLE);
-//        ivRightCrown.setVisibility(GONE);
-//        ivLeftLead.setVisibility(GONE);
-//    }
-//
-//    public void setRightWin() {
-//        ivLeftResult.setVisibility(VISIBLE);
-//        ivRightResult.setVisibility(VISIBLE);
-//        ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_lose));
-//        ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_win));
-//        ivLeftCrown.setVisibility(GONE);
-//        ivRightCrown.setVisibility(VISIBLE);
-//        ivRightLead.setVisibility(GONE);
-//    }
-//
-//    public void setTied() {
-//        ivLeftResult.setVisibility(VISIBLE);
-//        ivRightResult.setVisibility(VISIBLE);
-//        ivLeftResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_left_ping));
-//        ivRightResult.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_right_ping));
-//    }
 
     public void setListener(TimeDwonListener listener) {
         this.listener = listener;
@@ -425,16 +333,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         setProgress(50);
         setLeftScore(0);
         setRightScore(0);
-        setLeftImg(null);
-        setRightImg(null);
-//        setLeftName("");
-//        setRightName("");
-//        ivLeftCrown.setVisibility(GONE);
-//        ivRightCrown.setVisibility(GONE);
-//        ivLeftLead.setVisibility(GONE);
-//        ivRightLead.setVisibility(GONE);
-//        ivLeftResult.setVisibility(GONE);
-//        ivRightResult.setVisibility(GONE);
         tvTime.setText("");
         if (disposable != null) {
             disposable.dispose();
@@ -443,7 +341,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void setRightClickListener(OnClickListener listener) {
-        ivRight.setOnClickListener(listener);
+//        ivRight.setOnClickListener(listener);
     }
 
     private void showPopupWindow(View view) {

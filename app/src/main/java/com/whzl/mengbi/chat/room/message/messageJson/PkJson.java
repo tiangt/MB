@@ -1,5 +1,7 @@
 package com.whzl.mengbi.chat.room.message.messageJson;
 
+import com.whzl.mengbi.model.entity.PKResultBean;
+
 import java.util.List;
 
 /**
@@ -110,5 +112,87 @@ public class PkJson {
                 public String streamAddress;
             }
         }
+
+        public PunishWaysBean punishWaysBean;
+
+        public static class PunishWaysBean {
+
+            private List<com.whzl.mengbi.model.entity.PunishWaysBean.ListBean> list;
+
+            public List<com.whzl.mengbi.model.entity.PunishWaysBean.ListBean> getList() {
+                return list;
+            }
+
+            public void setList(List<com.whzl.mengbi.model.entity.PunishWaysBean.ListBean> list) {
+                this.list = list;
+            }
+
+            public class ListBean {
+                /**
+                 * id : 1
+                 * name : S蹲
+                 */
+
+                private int id;
+                private String name;
+
+                public int getId() {
+                    return id;
+                }
+
+                public void setId(int id) {
+                    this.id = id;
+                }
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+            }
+        }
+
+        public MvpUserBean mvpUserBean;
+        public static class MvpUserBean {
+            /**
+             * userId : 30000607
+             * nickname : 萌友30000607
+             * avatar : http://test-img.mengbitv.com/avatar/030/00/06/07_100x100.jpg?1532419849
+             */
+
+            public int userId;
+            public String nickname;
+            public String avatar;
+        }
+
+        public LaunchPkUserFansBean launchPkUserFansBean;
+        public LaunchPkUserFansBean pkUserFansBean;
+
+        public List<LaunchPkUserFansBean> launchPkUserFans;
+        public List<LaunchPkUserFansBean> pkUserFans;
+
+        public List<LaunchPkUserFansBean> getLaunchPkUserFans() {
+            return launchPkUserFans;
+        }
+
+        public List<LaunchPkUserFansBean> getPkUserFans() {
+            return pkUserFans;
+        }
+        public static class LaunchPkUserFansBean {
+            /**
+             * userId : 30000607
+             * nickname : 萌友30000607
+             * avatar : http://test-img.mengbitv.com/avatar/030/00/06/07_100x100.jpg?1532419849
+             * score : 1
+             */
+
+            public int userId;
+            public String nickname;
+            public String avatar;
+            public double score;
+        }
+
     }
 }

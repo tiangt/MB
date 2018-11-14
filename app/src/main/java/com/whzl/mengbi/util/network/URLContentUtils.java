@@ -189,4 +189,9 @@ public class URLContentUtils {
      * 验证手机号是否存在
      */
     public static final String IS_PHONE = "v1/user/check-identify-code";
+
+    /**
+     * MVP设置惩罚方式
+     */
+    public static final String PUNISH_WAY = "set-punish-way";
 }

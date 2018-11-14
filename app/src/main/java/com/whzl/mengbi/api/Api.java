@@ -514,4 +514,5 @@ public interface Api {
     @POST("v1/pk/punish-ways")
     @FormUrlEncoded
     Observable<ApiResult<PunishWaysBean>> getPunishWays(@FieldMap Map<String, String> params);
+
 }

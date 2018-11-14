@@ -50,5 +50,5 @@ public interface OnLiveFinishedListener {
 
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean);
 
-    void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean);
+    void onGetPunishWaysSuccess(PunishWaysBean bean);
 }

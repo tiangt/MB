@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -349,36 +350,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         loadData();
         showActivityGrand = false;
         showBanner = false;
-    }
-
-    private void initPKAnim() {
-        svgaStartPk.setLoops(1);
-        SVGAParser parser = new SVGAParser(this);
-        try {
-            parser.parse("start_pk.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    svgaStartPk.setImageDrawable(drawable);
-                    svgaStartPk.startAnimation();
-                }
-
-                @Override
-                public void onError() {
-
-                }
-            });
-        } catch (Exception e) {
-            System.out.print(true);
-        }
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-//        ivCountDown.setImageResource(R.drawable.anim_pk_countdown);
-//        AnimationDrawable animationDrawable = (AnimationDrawable) ivCountDown.getDrawable();
-//        animationDrawable.start();
     }
 
     @Override
@@ -895,11 +866,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             pkControl = new PkControl(pkLayout, this);
         }
         pkControl.setStartAnim(svgaStartPk);
+        pkControl.setIvCountDown(ivCountDown);
         pkControl.setBean(bean);
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
         pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
+        pkControl.setOtherLive(textureView2);
         pkControl.init();
     }
 
@@ -1212,10 +1185,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             pkControl = new PkControl(pkLayout, this);
         }
         pkControl.setStartAnim(svgaStartPk);
+        pkControl.setIvCountDown(ivCountDown);
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
         pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
+        pkControl.setOtherLive(textureView2);
 
         if (bean.otherStream != null) {
             List<String> rtmpList = bean.otherStream.getRtmp();
@@ -1304,8 +1279,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @Override
-    public void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean) {
-
+    public void onGetPunishWaysSuccess(PunishWaysBean bean) {
+        pkControl = new PkControl(pkLayout, this);
     }
 
     private void timerGrand(int i) {
@@ -1485,6 +1460,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView != null) {
             textureView.runInBackground(true);
         }
+        if (textureView2 != null) {
+            textureView2.runInBackground(true);
+        }
     }
 
     @Override
@@ -1492,6 +1470,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         super.onResume();
         if (textureView != null) {
             textureView.runInForeground();
+        }
+        if (textureView2 != null) {
+            textureView2.runInForeground();
         }
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
     }
@@ -1636,145 +1617,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             PkEvent pkEvent = new PkEvent(((PkMessage) message).pkJson, this);
             mRunWayBroadControl.load(pkEvent);
         }
-    }
-
-    /**
-     * PK结束
-     */
-    private void showPKResult() {
-        View popView = LayoutInflater.from(this).inflate(R.layout.pop_pk_end, null);
-        pkResultPop = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        pkResultPop.setOutsideTouchable(true);
-        pkResultPop.setFocusable(true);
-        pkResultPop.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
-
-        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        popView.measure(width, height);
-        pkLayout.measure(width, height);
-        int offsetX = Math.abs(popView.getMeasuredWidth() - pkLayout.getMeasuredWidth()) / 2;
-        int offsetY = -(popView.getMeasuredHeight() + pkLayout.getMeasuredHeight() + 10);
-
-        pkLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    PopupWindowCompat.showAsDropDown(pkResultPop, pkLayout, offsetX, offsetY, Gravity.START);
-                }
-            }
-        });
-    }
-
-    /**
-     * 惩罚
-     */
-    private void showPunishment() {
-        View popView = LayoutInflater.from(this).inflate(R.layout.pop_mvp, null);
-        mvpWindow = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        mvpWindow.setOutsideTouchable(false);
-        mvpWindow.setFocusable(false);
-        mvpWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
-
-        int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
-        popView.measure(width, height);
-        pkLayout.measure(width, height);
-        int offsetX = Math.abs(popView.getMeasuredWidth() - pkLayout.getMeasuredWidth()) / 2;
-        int offsetY = -(popView.getMeasuredHeight() + pkLayout.getMeasuredHeight() - 130);
-
-        ivClose = popView.findViewById(R.id.iv_close_mvp);
-        rvPunishment = popView.findViewById(R.id.rv_punishment);
-        btnPunishment = popView.findViewById(R.id.btn_punishment);
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mvpWindow.dismiss();
-            }
-        });
-
-        pkLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    PopupWindowCompat.showAsDropDown(mvpWindow, pkLayout, offsetX, offsetY, Gravity.START);
-                }
-            }
-        });
-
-        initRecy();
-    }
-
-    private void initRecy() {
-        list = new ArrayList<>();
-        mSelectedList = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            list.add("第" + i + "种方式");
-            mSelectedList.add(false);
-        }
-        rvPunishment.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        rvPunishment.setFocusableInTouchMode(false);
-        rvPunishment.setHasFixedSize(true);
-        rvPunishment.setLayoutManager(new GridLayoutManager(this, 3));
-        rvPunishment.addItemDecoration(new SpacesItemDecoration(20));
-        mvpAdapter = new BaseListAdapter() {
-            @Override
-            protected int getDataCount() {
-                return list == null ? 0 : list.size();
-            }
-
-            @Override
-            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.item_punishment, parent, false);
-                return new MVPViewHolder(itemView);
-            }
-        };
-        rvPunishment.setAdapter(mvpAdapter);
-    }
-
-
-    class MVPViewHolder extends BaseViewHolder {
-        TextView tvPunishment;
-
-        public MVPViewHolder(View itemView) {
-            super(itemView);
-            tvPunishment = itemView.findViewById(R.id.tv_punishment);
-        }
-
-        @Override
-        public void onBindViewHolder(int position) {
-            tvPunishment.setText(list.get(position));
-            if (mSelectedList.get(position)) {
-                tvPunishment.setBackgroundResource(R.drawable.shape_item_2);
-                tvPunishment.setTextColor(Color.WHITE);
-            } else {
-                tvPunishment.setBackgroundResource(R.drawable.shape_item_1);
-                tvPunishment.setTextColor(Color.argb(255, 42, 46, 54));
-            }
-            tvPunishment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    for (int i = 0; i < mSelectedList.size(); i++) {
-                        mSelectedList.set(i, false);
-                    }
-                    mSelectedList.set(position, true);
-                    showToast(position + "");
-                    btnPunishment.setVisibility(View.VISIBLE);
-                    mvpAdapter.notifyDataSetChanged();
-                }
-            });
-        }
-
     }
 
     private void otherSideLive() {

@@ -201,7 +201,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean) {
+    public void onGetPunishWaysSuccess(PunishWaysBean bean) {
         if (liveView != null) {
             liveView.onGetPunishWaysSuccess(bean);
         }

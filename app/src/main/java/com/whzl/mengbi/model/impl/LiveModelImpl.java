@@ -417,9 +417,9 @@ public class LiveModelImpl implements LiveModel {
                 .getPunishWays(paramsMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<PunishWaysBean.ListBean>() {
+                .subscribe(new ApiObserver<PunishWaysBean>() {
                     @Override
-                    public void onSuccess(PunishWaysBean.ListBean dataBean) {
+                    public void onSuccess(PunishWaysBean dataBean) {
                         if (dataBean != null) {
                             listener.onGetPunishWaysSuccess(dataBean);
                         }

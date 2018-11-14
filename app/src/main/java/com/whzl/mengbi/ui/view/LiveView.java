@@ -52,5 +52,5 @@ public interface LiveView {
 
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean guardTotalBean);
 
-    void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean);
+    void onGetPunishWaysSuccess(PunishWaysBean bean);
 }
