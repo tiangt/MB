@@ -29,9 +29,10 @@ public class LiveHouseRankDialog extends BaseAwesomeDialog {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
-    public static BaseAwesomeDialog newInstance(int programId) {
+    public static BaseAwesomeDialog newInstance(int programId, String title) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
+        args.putString("title", title);
         LiveHouseRankDialog dialog = new LiveHouseRankDialog();
         dialog.setArguments(args);
         return dialog;
@@ -45,6 +46,7 @@ public class LiveHouseRankDialog extends BaseAwesomeDialog {
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         int programId = getArguments().getInt("programId");
+        String title = getArguments().getString("title");
         ArrayList<String> titles = new ArrayList<>();
         titles.add("本场榜");
         titles.add("七日榜");
@@ -52,7 +54,12 @@ public class LiveHouseRankDialog extends BaseAwesomeDialog {
         fragments.add(ContributeRankFragment.newInstance("day", programId));
         fragments.add(ContributeRankFragment.newInstance("sevenDay", programId));
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
-        viewpager.setCurrentItem(1);
+        if (title.equals("day")) {
+            viewpager.setCurrentItem(0);
+        } else if (title.equals("sevenDay")) {
+            viewpager.setCurrentItem(1);
+        }
+
         tabLayout.post(() -> {
             try {
                 settab(tabLayout);

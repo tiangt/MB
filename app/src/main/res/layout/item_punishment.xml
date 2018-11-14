@@ -8,9 +8,10 @@
         android:layout_width="80dp"
         android:layout_height="30dp"
         android:textColor="#2a2e36"
-        android:textSize="13sp"
+        android:textSize="10sp"
         android:text="2w12"
         android:gravity="center"
+        android:singleLine="true"
         android:background="@drawable/selector_punishment"/>
 
 </RelativeLayout>

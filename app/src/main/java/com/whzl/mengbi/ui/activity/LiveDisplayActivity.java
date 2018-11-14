@@ -254,6 +254,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     CircleImageView ivOtherSide;
     @BindView(R.id.tv_other_side)
     TextView tvOtherSide;
+    @BindView(R.id.rl_guard_number)
+    RelativeLayout rlGuardNumber;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -646,7 +648,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private
-            , R.id.rootView, R.id.fragment_container, R.id.btn_treasure_box})
+            , R.id.rootView, R.id.fragment_container, R.id.btn_treasure_box, R.id.rl_guard_number})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
@@ -733,7 +735,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (mRankDialog != null && mRankDialog.isAdded()) {
                     return;
                 }
-                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
+                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId, "sevenDay")
                         .setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
@@ -756,6 +758,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     mLivePresenter.receiveTreasure(mUserId);
                 });
                 mTreasureBoxDialog.setDimAmount(0)
+                        .setShowBottom(true)
+                        .show(getSupportFragmentManager());
+                break;
+            case R.id.rl_guard_number:
+                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId, "day")
+                        .setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
                 break;

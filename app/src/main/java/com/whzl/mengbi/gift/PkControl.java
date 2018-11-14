@@ -282,6 +282,7 @@ public class PkControl {
     public void initNet(PKResultBean bean) {
         if ("T".equals(bean.pkStatus) || "T".equals(bean.punishStatus) || "T".equals(bean.tieStatus)) {
             pkLayout.setVisibility(View.VISIBLE);
+            startPKAnim();
             if (mProgramId == bean.launchPkUserProgramId) {
                 myPkInfo = bean.launchUserInfo;
                 otherPkInfo = bean.pkUserInfo;
@@ -563,7 +564,6 @@ public class PkControl {
             }
         });
 
-//        initRecy();
         getPunishWays();
     }
 
