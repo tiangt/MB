@@ -145,7 +145,6 @@
                     android:gravity="center"
                     android:paddingLeft="9dp"
                     android:paddingRight="9dp"
-                    android:text="@string/live_display_contribution"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 
@@ -369,11 +368,10 @@
                     android:layout_width="255dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="5dp"
                     android:layout_marginBottom="20dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/iv_enter_car"
@@ -386,6 +384,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:paddingTop="3dp"
                         android:paddingBottom="4dp">
 

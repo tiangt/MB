@@ -3,20 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="62dp">
 
-    <ImageView
+    <TextView
         android:id="@+id/iv_rank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp" />
+        android:layout_marginLeft="15dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="#909090" />
 
     <com.whzl.mengbi.ui.widget.view.CircleImageView
         android:id="@+id/iv_avatar"
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_centerVertical="true"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="6.5dp" />
+        android:layout_marginLeft="6.5dp"
+        android:layout_marginStart="48dp" />
 
     <TextView
         android:id="@+id/tv_name"
@@ -42,11 +45,11 @@
         android:id="@+id/tv_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="22.5dp"
         android:layout_centerVertical="true"
+        android:layout_marginRight="22.5dp"
+        android:textColor="#f1275b"
         android:textSize="16sp"
-        android:textColor="#f1275b" />
+        android:textStyle="bold" />
 
 </RelativeLayout>

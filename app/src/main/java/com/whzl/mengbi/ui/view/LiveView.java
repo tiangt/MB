@@ -8,9 +8,9 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -52,5 +52,8 @@ public interface LiveView {
 
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean guardTotalBean);
 
+    void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean);
+
+    void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
     void onGetPunishWaysSuccess(PunishWaysBean bean);
 }

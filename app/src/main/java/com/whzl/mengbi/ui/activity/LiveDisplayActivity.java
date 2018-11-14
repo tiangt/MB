@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Handler;
@@ -90,9 +89,9 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -120,7 +119,6 @@ import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
-import com.whzl.mengbi.ui.widget.view.MVPPopupWindow;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
@@ -142,11 +140,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -628,6 +625,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getAudienceList(mProgramId);
         mLivePresenter.getGuardTotal(mProgramId);
         mLivePresenter.getPunishWays();
+        mLivePresenter.getRoomRankTotal(mProgramId, "sevenDay");
     }
 
     private void getRoomToken() {
@@ -1281,6 +1279,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetPunishWaysSuccess(PunishWaysBean bean) {
         pkControl = new PkControl(pkLayout, this);
+    }
+
+    @Override
+    public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
+        if (bean.total.compareTo(new BigDecimal(10000)) < 0) {
+            tvContribute.setText(bean.total + "");
+        } else {
+            BigDecimal divide = bean.total.divide(new BigDecimal(10000), 1, BigDecimal.ROUND_HALF_DOWN);
+            tvContribute.setText(divide + "万");
+        }
     }
 
     private void timerGrand(int i) {

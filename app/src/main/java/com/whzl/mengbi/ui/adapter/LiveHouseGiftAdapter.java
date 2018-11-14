@@ -35,15 +35,15 @@ public class LiveHouseGiftAdapter extends CommonAdapter<GiftInfo.GiftDetailInfoB
 //        holder.getView(R.id.view_select_mark).setSelected(position == selectedPosition);
         if (position == selectedPosition) {
             try {
-                GifDrawable drawable = new GifDrawable(context.getResources(),R.drawable.bg_live_house_select);
-                ( holder.getView(R.id.rl)).setBackground(drawable);
+                GifDrawable drawable = new GifDrawable(context.getResources(), R.drawable.bg_live_house_select);
+                (holder.getView(R.id.rl)).setBackground(drawable);
 //                ((ImageView) holder.getView(R.id.iv)).setImageDrawable(drawable);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 //            holder.getView(R.id.rl).setBackground();
         } else {
-            ( holder.getView(R.id.rl)).setBackground(null);
+            (holder.getView(R.id.rl)).setBackground(null);
         }
     }
 

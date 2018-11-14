@@ -40,4 +40,6 @@ public interface LivePresenter {
     void getGuardTotal(int programId);
 
     void getPunishWays();
+
+    void getRoomRankTotal(int mProgramId, String type);
 }
