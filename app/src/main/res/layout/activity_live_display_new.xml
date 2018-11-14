@@ -145,7 +145,6 @@
                     android:gravity="center"
                     android:paddingLeft="9dp"
                     android:paddingRight="9dp"
-                    android:text="@string/live_display_contribution"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
 
