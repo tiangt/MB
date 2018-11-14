@@ -42,5 +42,7 @@ public class PunishWaysBean {
         public void setName(String name) {
             this.name = name;
         }
+
+        public boolean select = false;
     }
 }

@@ -33,6 +33,7 @@ import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
@@ -52,6 +53,9 @@ import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -65,6 +69,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.whzl.mengbi.util.ToastUtils.showToast;
 
@@ -96,7 +101,7 @@ public class PkControl {
     private PopupWindow pkResultPop;
     private SVGAImageView svgaImageView;
     private PopupWindow mvpWindow;
-    private List<Boolean> mSelectedList;
+
     private ImageView ivClose;
     private RecyclerView rvPunishment;
     private Button btnPunishment;
@@ -107,6 +112,8 @@ public class PkControl {
     private String streamAddress;
     private String streamType;
     private ImageView ivCountDown;
+    private List<PunishWaysBean.ListBean> punishWays = new ArrayList<>();
+    private List<Boolean> mSelectedList;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -155,6 +162,7 @@ public class PkControl {
         switch (bean.busiCode) {
             case "PK_ACCEPT_REQUEST": //接收PK请求
                 pkLayout.setVisibility(View.VISIBLE);
+                layout.setVisibility(View.VISIBLE);
                 startPKAnim();
                 startCountDown(5);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
@@ -238,14 +246,15 @@ public class PkControl {
                 if (null != pkResultPop) {
                     pkResultPop.dismiss();
                 }
-                if (null != bean.mvpUserBean) {
-                    if (mUserId == bean.mvpUserBean.userId) {
-                        showPunishment();
-                    }
-                }
+//                if (null != bean.mvpUserBean) {
+//                    if (mUserId == bean.mvpUserBean.userId) {
+                showPunishment();
+//                    }
+//                }
                 break;
             case "PK_TIE_FINISH"://平局时间结束
                 layout.setVisibility(View.GONE);
+                pkResultPop.dismiss();
                 pkLayout.setVisibility(View.GONE);
                 pkLayout.reset();
                 break;
@@ -262,7 +271,13 @@ public class PkControl {
             }
         });
 
-        pkLayout.setRightClickListener(new View.OnClickListener() {
+//        pkLayout.setRightClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showJumpLiveHouseDialog(jumpProgramId, jumpNick);
+//            }
+//        });
+        layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showJumpLiveHouseDialog(jumpProgramId, jumpNick);
@@ -321,15 +336,15 @@ public class PkControl {
                 pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
                     if (null != bean.mvpUser) {
-                        if (mUserId == bean.mvpUser.userId) {
-                            showPunishment();
-                        }
+//                        if (mUserId == bean.mvpUser.userId) {
+                        showPunishment();
+//                        }
                     }
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
                     if (null != bean.mvpUser) {
-                        if (mUserId == bean.mvpUser.userId) {
-                            showPunishment();
-                        }
+//                        if (mUserId == bean.mvpUser.userId) {
+                        showPunishment();
+//                        }
                     }
                 }
             }
@@ -342,7 +357,13 @@ public class PkControl {
                     endPkCountDown();
                 }
             });
-            pkLayout.setRightClickListener(new View.OnClickListener() {
+//            pkLayout.setRightClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    showJumpLiveHouseDialog(jumpProgramId, jumpNick);
+//                }
+//            });
+            layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showJumpLiveHouseDialog(jumpProgramId, jumpNick);
@@ -467,6 +488,7 @@ public class PkControl {
 
         TextView leftResult = popView.findViewById(R.id.tv_left_result);
         TextView rightResult = popView.findViewById(R.id.tv_right_result);
+        TextView mvpTitle = popView.findViewById(R.id.tv_mvp_title);
         CircleImageView leftHead = popView.findViewById(R.id.iv_left_head);
         CircleImageView rightHead = popView.findViewById(R.id.iv_right_head);
         TextView mvpName = popView.findViewById(R.id.tv_mvp_name);
@@ -485,12 +507,14 @@ public class PkControl {
                 }
             }
         });
+        showToast("MVP = "+bean.mvpUserBean.nickname);
         if (null != bean.mvpUserBean) {
-            mvpName.setText(bean.mvpNickname);
+            mvpName.setText(bean.mvpUserBean.nickname);
         }
         if (status == 0) {
             leftResult.setText("平");
             rightResult.setText("平");
+            mvpTitle.setVisibility(View.INVISIBLE);
             GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, leftHead);
             GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, rightHead);
         } else if (status == 1) {
@@ -533,6 +557,8 @@ public class PkControl {
         rvPunishment = popView.findViewById(R.id.rv_punishment);
         btnPunishment = popView.findViewById(R.id.btn_punishment);
 
+        initRecy();
+
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -549,18 +575,12 @@ public class PkControl {
             }
         });
 
-        initRecy();
+//        initRecy();
+        getPunishWays();
     }
 
     private void initRecy() {
         mSelectedList = new ArrayList<Boolean>();
-        if (null != bean.punishWaysBean.getList()) {
-            for (int i = 0; i < bean.punishWaysBean.getList().size(); i++) {
-                punishWayId = bean.punishWaysBean.getList().get(i).getId();
-                punishWayName = bean.punishWaysBean.getList().get(i).getName();
-                mSelectedList.add(false);
-            }
-        }
         rvPunishment.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         rvPunishment.setFocusableInTouchMode(false);
         rvPunishment.setHasFixedSize(true);
@@ -569,7 +589,7 @@ public class PkControl {
         mvpAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return bean.punishWaysBean.getList() == null ? 0 : bean.punishWaysBean.getList().size();
+                return punishWays == null ? 0 : punishWays.size();
             }
 
             @Override
@@ -592,7 +612,7 @@ public class PkControl {
 
         @Override
         public void onBindViewHolder(int position) {
-            tvPunishment.setText(bean.punishWaysBean.getList().get(position).getName());
+            tvPunishment.setText(punishWays.get(position).getName());
             if (mSelectedList.get(position)) {
                 tvPunishment.setBackgroundResource(R.drawable.shape_item_2);
                 tvPunishment.setTextColor(Color.WHITE);
@@ -612,8 +632,8 @@ public class PkControl {
                     btnPunishment.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            setMVPPunishment(bean.punishWaysBean.getList().get(position).getId(),
-                                    bean.punishWaysBean.getList().get(position).getName());
+                            setMVPPunishment(punishWays.get(position).getId(),
+                                    punishWays.get(position).getName());
                         }
                     });
                     mvpAdapter.notifyDataSetChanged();
@@ -662,6 +682,7 @@ public class PkControl {
                             showToast("Success");
                             //选择惩罚方式
                             pkLayout.setPunishWayName(punishWayName);
+                            mvpWindow.dismiss();
                         }
                     }
 
@@ -672,4 +693,29 @@ public class PkControl {
                 });
     }
 
+    private void getPunishWays() {
+        HashMap map = new HashMap();
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        ApiFactory.getInstance().getApi(Api.class)
+                .getPunishWays(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<PunishWaysBean>() {
+                    @Override
+                    public void onSuccess(PunishWaysBean dataBean) {
+                        if (dataBean != null) {
+                            for (int i = 0; i < dataBean.getList().size(); i++) {
+                                punishWays.add(dataBean.getList().get(i));
+                                mSelectedList.add(false);
+                            }
+                            mvpAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
 }

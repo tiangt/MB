@@ -411,27 +411,6 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void getPunishWays(HashMap paramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .getPunishWays(paramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<PunishWaysBean>() {
-                    @Override
-                    public void onSuccess(PunishWaysBean dataBean) {
-                        if (dataBean != null) {
-                            listener.onGetPunishWaysSuccess(dataBean);
-                        }
-                    }
-
-                    @Override
-                    public void onError(int code) {
-
-                    }
-                });
-    }
-
-    @Override
     public void getRoomRankTotal(HashMap signPramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .getRoomRankTotal(signPramsMap)

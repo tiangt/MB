@@ -54,5 +54,6 @@ public interface LiveView {
 
 
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
+
     void onGetPunishWaysSuccess(PunishWaysBean bean);
 }

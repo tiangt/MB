@@ -624,7 +624,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getAudienceList(mProgramId);
         mLivePresenter.getGuardTotal(mProgramId);
-        mLivePresenter.getPunishWays();
         mLivePresenter.getRoomRankTotal(mProgramId, "sevenDay");
     }
 
@@ -1179,7 +1178,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onPkInfoSuccess(PKResultBean bean) {
         if (pkControl == null) {
-            rlOtherSide.setVisibility(View.VISIBLE);
             pkControl = new PkControl(pkLayout, this);
         }
         pkControl.setStartAnim(svgaStartPk);
@@ -1191,6 +1189,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setOtherLive(textureView2);
 
         if (bean.otherStream != null) {
+            rlOtherSide.setVisibility(View.VISIBLE);
             List<String> rtmpList = bean.otherStream.getRtmp();
             List<String> flvList = bean.otherStream.getFlv();
             List<String> hlsList = bean.otherStream.getHls();

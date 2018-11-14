@@ -201,13 +201,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void onGetPunishWaysSuccess(PunishWaysBean bean) {
-        if (liveView != null) {
-            liveView.onGetPunishWaysSuccess(bean);
-        }
-    }
-
-    @Override
     public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
         if (liveView != null) {
             liveView.onGetRoomRankTotalSuccess(bean);
@@ -298,12 +291,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         liveModel.getTotalGuard(signPramsMap, this);
     }
 
-    @Override
-    public void getPunishWays() {
-        HashMap map = new HashMap();
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        liveModel.getPunishWays(signPramsMap, this);
-    }
 
     @Override
     public void getRoomRankTotal(int mProgramId, String type) {

@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -67,6 +68,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private List<PkJson.ContextBean.LaunchPkUserFansBean> pkUserFansBeans;
     private List<PkJson.ContextBean.LaunchPkUserFansBean> launchPkUserFansBeans;
     private String punishWayName;
+    private String punishWay;
+    private BaseListAdapter myFollowAdapter;
+    private BaseListAdapter oppositeAdapter;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -99,9 +103,11 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
     public void setPkFanRank(List<PkJson.ContextBean.LaunchPkUserFansBean> pkUserFansBeans,
                              List<PkJson.ContextBean.LaunchPkUserFansBean> launchPkUserFansBeans) {
-
         this.pkUserFansBeans = pkUserFansBeans;
         this.launchPkUserFansBeans = launchPkUserFansBeans;
+        Log.d("chen",pkUserFansBeans+"");
+        oppositeAdapter.notifyDataSetChanged();
+        myFollowAdapter.notifyDataSetChanged();
     }
 
     public void setPunishWayName(String punishWayName){
@@ -128,7 +134,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         oppositeSide.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         oppositeSide.setLayoutManager(oppositeManager);
 
-        BaseListAdapter myFollowAdapter = new BaseListAdapter() {
+        myFollowAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
                 return pkUserFansBeans == null ? 0 : 5;
@@ -142,7 +148,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         };
         myFollow.setAdapter(myFollowAdapter);
 
-        BaseListAdapter oppositeAdapter = new BaseListAdapter() {
+        oppositeAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
                 return launchPkUserFansBeans == null ? 0 : 5;
@@ -157,6 +163,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
         oppositeSide.setAdapter(oppositeAdapter);
     }
+
 
     class PKViewHolder extends BaseViewHolder {
         ImageView ivPkHead;
@@ -223,13 +230,14 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 //                            tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong - 1) / 60, (second - aLong - 1) % 60));
                             if ("惩罚时刻 ".equals(state)) {
                                 if ((second - aLong - 1) > (second - 61)) {
-                                    if(TextUtils.isEmpty(punishWayName)){
+                                    if(TextUtils.isEmpty(punishWayName) && !"".equals(punishWayName)){
                                         tvPkTitle.setText(punishWayName);
                                         tvTime.setText((second - aLong - 1) + "s");
                                     }else{
-                                        tvPkTitle.setText("MVP挑选惩罚^ ");
-                                        tvTime.setText((second - aLong - 1) + "s");
+
                                     }
+                                    tvPkTitle.setText("MVP挑选惩罚^ ");
+                                    tvTime.setText((second - aLong - 1) + "s");
                                 }else{
                                     tvPkTitle.setText(state + " ^ ");
                                     tvTime.setText((second - aLong - 1) + "s");

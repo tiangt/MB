@@ -82,6 +82,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_mvp_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -100,7 +101,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="昵称"
                     android:textSize="10sp"
                     android:singleLine="true"
                     android:textColor="#FF4676" />
