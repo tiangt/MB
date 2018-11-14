@@ -48,8 +48,5 @@ public interface OnLiveFinishedListener {
 
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean);
 
-    void onGetPunishWaysSuccess(PunishWaysBean bean);
-    void onGetPunishWaysSuccess(PunishWaysBean.ListBean bean);
-
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
 }

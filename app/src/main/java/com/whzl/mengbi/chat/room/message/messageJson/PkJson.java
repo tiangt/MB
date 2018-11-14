@@ -50,6 +50,7 @@ public class PkJson {
         public String result;
         public String launchPkUserNickname;
         public String pkUserNickname;
+        public String punishWay;
         /**
          * pkUserLiveAndStreamAddress : {"liveTypeId":1,"showStreams":[{"streamType":"rtmp","streamAddress":"rtmp://livedown.mengbitv.com/live/100144"},{"streamType":"flv","streamAddress":"http://livedown.mengbitv.com/live/100144.flv"},{"streamType":"hls","streamAddress":"http://livedown.mengbitv.com/live/100144/playlist.m3u8"}],"liveType":"PC","platformType":"ENT","width":800,"height":600}
          */
@@ -110,47 +111,6 @@ public class PkJson {
 
                 public String streamType;
                 public String streamAddress;
-            }
-        }
-
-        public PunishWaysBean punishWaysBean;
-
-        public static class PunishWaysBean {
-
-            private List<com.whzl.mengbi.model.entity.PunishWaysBean.ListBean> list;
-
-            public List<com.whzl.mengbi.model.entity.PunishWaysBean.ListBean> getList() {
-                return list;
-            }
-
-            public void setList(List<com.whzl.mengbi.model.entity.PunishWaysBean.ListBean> list) {
-                this.list = list;
-            }
-
-            public class ListBean {
-                /**
-                 * id : 1
-                 * name : S蹲
-                 */
-
-                private int id;
-                private String name;
-
-                public int getId() {
-                    return id;
-                }
-
-                public void setId(int id) {
-                    this.id = id;
-                }
-
-                public String getName() {
-                    return name;
-                }
-
-                public void setName(String name) {
-                    this.name = name;
-                }
             }
         }
 
