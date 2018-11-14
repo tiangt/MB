@@ -496,9 +496,9 @@ public class PkControl {
                 }
             }
         });
-        showToast("MVP = "+bean.mvpUserBean.nickname);
-        if (null != bean.mvpUserBean) {
-            mvpName.setText(bean.mvpUserBean.nickname);
+        showToast("MVP = "+bean.mvpUser.nickname);
+        if (null != bean.mvpUser) {
+            mvpName.setText(bean.mvpUser.nickname);
         }
         if (status == 0) {
             leftResult.setText("平");
@@ -654,11 +654,11 @@ public class PkControl {
 
     private void setMVPPunishment(int punishWayId, String punishWayName) {
         HashMap hashMap = new HashMap();
-        if (null == bean.mvpUserBean) {
+        if (null == bean.mvpUser) {
             return;
         }
         hashMap.put("wayId", punishWayId);
-        hashMap.put("userId", bean.mvpUserBean.userId);
+        hashMap.put("userId", bean.mvpUser.userId);
         hashMap.put("anchorId", mAnchorId);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.PUNISH_WAY, RequestManager.TYPE_POST_JSON, hashMap,
                 new RequestManager.ReqCallBack<Object>() {
