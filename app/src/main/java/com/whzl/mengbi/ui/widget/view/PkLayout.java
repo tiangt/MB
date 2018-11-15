@@ -240,7 +240,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                         //非MVP接受到的惩罚
                                         tvPkTitle.setText(punishWay);
                                     }else{
-                                        tvPkTitle.setText("MVP挑选惩罚^ ");
+                                        tvPkTitle.setText("MVP挑选惩罚^");
                                     }
                                     tvTime.setText((second - aLong - 1) + "s");
                                 } else {

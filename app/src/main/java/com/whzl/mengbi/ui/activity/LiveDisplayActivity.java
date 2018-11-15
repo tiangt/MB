@@ -4,11 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -102,6 +104,7 @@ import com.whzl.mengbi.ui.adapter.CircleFragmentPagerAdaper;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
+import com.whzl.mengbi.ui.dialog.EndPkDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
@@ -315,6 +318,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ArrayList<String> list;
     private ArrayList<Boolean> mSelectedList;
     private BaseListAdapter mvpAdapter;
+    private BaseAwesomeDialog dialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -428,6 +432,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initVp();
 //        showPKResult();
 //        showPunishment();
+//        endPkDialog();
     }
 
     private void initVp() {
@@ -771,6 +776,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
         }
 
+    }
+
+    private void endPkDialog() {
+        EndPkDialog dialog = new EndPkDialog(this);
+        dialog.show();
     }
 
     public void login() {
