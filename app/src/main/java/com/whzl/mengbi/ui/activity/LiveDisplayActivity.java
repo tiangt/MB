@@ -879,15 +879,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (pkControl == null) {
             rlOtherSide.setVisibility(View.VISIBLE);
             pkControl = new PkControl(pkLayout, this);
+            pkControl.setStartAnim(svgaStartPk);
+            pkControl.setIvCountDown(ivCountDown);
+            pkControl.setmAnchorId(mAnchorId);
+            pkControl.setmProgramId(mProgramId);
+            pkControl.setTvCountDown(tvCountDown);
+            pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
+            pkControl.setOtherLive(textureView2);
         }
-        pkControl.setStartAnim(svgaStartPk);
-        pkControl.setIvCountDown(ivCountDown);
         pkControl.setBean(bean);
-        pkControl.setmAnchorId(mAnchorId);
-        pkControl.setmProgramId(mProgramId);
-        pkControl.setTvCountDown(tvCountDown);
-        pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
-        pkControl.setOtherLive(textureView2);
         pkControl.init();
     }
 

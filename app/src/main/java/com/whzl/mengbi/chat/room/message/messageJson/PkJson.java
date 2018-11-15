@@ -1,6 +1,6 @@
 package com.whzl.mengbi.chat.room.message.messageJson;
 
-import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.model.entity.PKFansBean;
 
 import java.util.List;
 
@@ -38,6 +38,8 @@ public class PkJson {
         public int pkPunishSurplusSecond;
         public long launchPkUserId;
         public long pkUserId;
+
+        public int changeUserProgramId;
         /**
          * firstBloodUserDto : {"nickname":"zhansan","userId":"137068","lastUpdateTime":"2018-10-30 11:11:11"}
          * programId : 100079
@@ -115,6 +117,7 @@ public class PkJson {
         }
 
         public MvpUserBean mvpUser;
+
         public static class MvpUserBean {
             /**
              * userId : 30000607
@@ -128,29 +131,7 @@ public class PkJson {
         }
 
 
-        public List<LaunchPkUserFansBean> launchPkUserFans;
-        public List<LaunchPkUserFansBean> pkUserFans;
-
-        public List<LaunchPkUserFansBean> getLaunchPkUserFans() {
-            return launchPkUserFans;
-        }
-
-        public List<LaunchPkUserFansBean> getPkUserFans() {
-            return pkUserFans;
-        }
-        public static class LaunchPkUserFansBean {
-            /**
-             * userId : 30000607
-             * nickname : 萌友30000607
-             * avatar : http://test-img.mengbitv.com/avatar/030/00/06/07_100x100.jpg?1532419849
-             * score : 1
-             */
-
-            public int userId;
-            public String nickname;
-            public String avatar;
-            public double score;
-        }
+        public List<PKFansBean> userFans;
 
     }
 }

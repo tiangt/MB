@@ -43,24 +43,8 @@ public class PKResultBean {
     public MvpUserBean mvpUser;
     public String punishWay;
     public OtherStreamBean otherStream;
-    public List<LaunchPkUserFansBean> launchPkUserFans;
-    public List<PkUserFansBean> pkUserFans;
-
-    public List<LaunchPkUserFansBean> getLaunchPkUserFans() {
-        return launchPkUserFans;
-    }
-
-    public void setLaunchPkUserFans(List<LaunchPkUserFansBean> launchPkUserFans) {
-        this.launchPkUserFans = launchPkUserFans;
-    }
-
-    public List<PkUserFansBean> getPkUserFans() {
-        return pkUserFans;
-    }
-
-    public void setPkUserFans(List<PkUserFansBean> pkUserFans) {
-        this.pkUserFans = pkUserFans;
-    }
+    public List<PKFansBean> launchPkUserFans;
+    public List<PKFansBean> pkUserFans;
 
     public static class UserInfoBean {
         /**
@@ -116,32 +100,6 @@ public class PKResultBean {
         }
     }
 
-    public static class LaunchPkUserFansBean {
-        /**
-         * userId : 30000607
-         * nickname : 萌友30000607
-         * avatar : http://test-img.mengbitv.com/avatar/030/00/06/07_100x100.jpg?1532419849
-         * score : 1
-         */
 
-        public int userId;
-        public String nickname;
-        public String avatar;
-        public int score;
-    }
-
-    public static class PkUserFansBean {
-        /**
-         * userId : 30000607
-         * nickname : 萌友30000607
-         * avatar : http://test-img.mengbitv.com/avatar/030/00/06/07_100x100.jpg?1532419849
-         * score : 1
-         */
-
-        public int userId;
-        public String nickname;
-        public String avatar;
-        public int score;
-    }
 }
 

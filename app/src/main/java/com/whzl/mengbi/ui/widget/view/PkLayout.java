@@ -5,32 +5,31 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
-
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
-
-import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
-import android.view.ViewGroup;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-
-import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
+import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -65,8 +64,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private RecyclerView oppositeSide;
     private List<String> list;
     private TextView tvPkTitle;
-    private List<PkJson.ContextBean.LaunchPkUserFansBean> pkUserFansBeans;
-    private List<PkJson.ContextBean.LaunchPkUserFansBean> launchPkUserFansBeans;
+    private List<PKFansBean> pkUserFansBeans = new ArrayList<>();
+    private List<PKFansBean> launchPkUserFansBeans = new ArrayList<>();
     private String mvpPunishWay;
     private String punishWay;
     private BaseListAdapter myFollowAdapter;
@@ -101,14 +100,39 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         setProgress(initializeProgress);
     }
 
-    public void setPkFanRank(List<PkJson.ContextBean.LaunchPkUserFansBean> pkUserFansBeans,
-                             List<PkJson.ContextBean.LaunchPkUserFansBean> launchPkUserFansBeans) {
-        this.pkUserFansBeans = pkUserFansBeans;
-        this.launchPkUserFansBeans = launchPkUserFansBeans;
+    public void setPkFanRank(List<PKFansBean> pkUserFansBeans,
+                             List<PKFansBean> launchPkUserFansBeans) {
+//        this.pkUserFansBeans = pkUserFansBeans;
+//        this.launchPkUserFansBeans = launchPkUserFansBeans;
+        if (this.pkUserFansBeans != null) {
+            this.pkUserFansBeans.clear();
+        }
+        this.pkUserFansBeans.addAll(pkUserFansBeans);
+        if (this.launchPkUserFansBeans != null) {
+            this.launchPkUserFansBeans.clear();
+        }
+        this.launchPkUserFansBeans.addAll(launchPkUserFansBeans);
         Log.d("chen", pkUserFansBeans + "");
         oppositeAdapter.notifyDataSetChanged();
         myFollowAdapter.notifyDataSetChanged();
     }
+
+    public void setLeftPkFans(List<PKFansBean> pkFans) {
+        if (this.pkUserFansBeans != null) {
+            this.pkUserFansBeans.clear();
+        }
+        this.pkUserFansBeans.addAll(pkFans);
+        myFollowAdapter.notifyDataSetChanged();
+    }
+
+    public void setRightPkFans(List<PKFansBean> pkFans) {
+        if (this.launchPkUserFansBeans != null) {
+            this.launchPkUserFansBeans.clear();
+        }
+        this.launchPkUserFansBeans.addAll(pkFans);
+        oppositeAdapter.notifyDataSetChanged();
+    }
+
 
     public void setMvpPunishWay(String mvpPunishWay) {
         this.mvpPunishWay = mvpPunishWay;
@@ -151,6 +175,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             }
         };
         myFollow.setAdapter(myFollowAdapter);
+        myFollow.scrollToPosition(0);
 
         oppositeAdapter = new BaseListAdapter() {
             @Override
@@ -183,7 +208,19 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(int position) {
-            tvPkCount.setText(pkUserFansBeans.get(position).nickname);
+            if (position < pkUserFansBeans.size()) {
+                PKFansBean pkFansBean = pkUserFansBeans.get(position);
+                tvPkCount.setText((int) pkFansBean.score + "");
+                if (TextUtils.isEmpty(pkFansBean.avatar)) {
+                    String jpg = ImageUrl.getAvatarUrl(pkFansBean.userId, "jpg", pkFansBean.lastUpdateTime);
+                    GlideImageLoader.getInstace().displayImage(getContext(), jpg, ivPkHead);
+                } else {
+                    GlideImageLoader.getInstace().displayImage(context, pkFansBean.avatar, ivPkHead);
+                }
+            } else {
+                tvPkCount.setText("");
+                GlideImageLoader.getInstace().displayImage(context, null, ivPkHead);
+            }
             showRanking(position, ivPkLevel);
         }
     }
@@ -202,7 +239,19 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(int position) {
-            tvPkCount.setText(launchPkUserFansBeans.get(position).nickname);
+            if (position < launchPkUserFansBeans.size()) {
+                PKFansBean pkFansBean = launchPkUserFansBeans.get(position);
+                tvPkCount.setText((int) pkFansBean.score + "");
+                if (TextUtils.isEmpty(pkFansBean.avatar)) {
+                    String jpg = ImageUrl.getAvatarUrl(pkFansBean.userId, "jpg", pkFansBean.lastUpdateTime);
+                    GlideImageLoader.getInstace().displayImage(getContext(), jpg, ivPkHead);
+                } else {
+                    GlideImageLoader.getInstace().displayImage(context, pkFansBean.avatar, ivPkHead);
+                }
+            } else {
+                tvPkCount.setText("");
+                GlideImageLoader.getInstace().displayImage(context, null, ivPkHead);
+            }
             showRanking(position, ivPkLevel);
         }
     }
@@ -239,8 +288,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                     } else if (!TextUtils.isEmpty(punishWay) && !"".equals(punishWay)) {
                                         //非MVP接受到的惩罚
                                         tvPkTitle.setText(punishWay);
-                                    }else{
-                                        tvPkTitle.setText("MVP挑选惩罚^");
+                                    } else {
+                                        tvPkTitle.setText("MVP挑选惩罚^ ");
                                     }
                                     tvTime.setText((second - aLong - 1) + "s");
                                 } else {
@@ -388,6 +437,15 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             case PK_THIRD:
                 GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_pk_3, imageView);
                 break;
+            default:
+                GlideImageLoader.getInstace().displayImage(context, null, imageView);
+                break;
+        }
+    }
+
+    public void hidePkWindow() {
+        if (popupWindow != null) {
+            popupWindow.dismiss();
         }
     }
 
