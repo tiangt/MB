@@ -67,7 +67,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private TextView tvPkTitle;
     private List<PkJson.ContextBean.LaunchPkUserFansBean> pkUserFansBeans;
     private List<PkJson.ContextBean.LaunchPkUserFansBean> launchPkUserFansBeans;
-    private String punishWayName;
+    private String mvpPunishWay;
     private String punishWay;
     private BaseListAdapter myFollowAdapter;
     private BaseListAdapter oppositeAdapter;
@@ -105,13 +105,17 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                              List<PkJson.ContextBean.LaunchPkUserFansBean> launchPkUserFansBeans) {
         this.pkUserFansBeans = pkUserFansBeans;
         this.launchPkUserFansBeans = launchPkUserFansBeans;
-        Log.d("chen",pkUserFansBeans+"");
+        Log.d("chen", pkUserFansBeans + "");
         oppositeAdapter.notifyDataSetChanged();
         myFollowAdapter.notifyDataSetChanged();
     }
 
-    public void setPunishWayName(String punishWayName){
-        this.punishWayName = punishWayName;
+    public void setMvpPunishWay(String mvpPunishWay) {
+        this.mvpPunishWay = mvpPunishWay;
+    }
+
+    public void setPunishWay(String punishWay) {
+        this.punishWay = punishWay;
     }
 
     private void initPop(Context context) {
@@ -224,23 +228,32 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
                     LogUtils.e("ssssss  state" + aLong);
-//                    tvTime.setText(context.getString(R.string.pk_time, (9 - aLong) / 60, (9 - aLong) % 60));
                     if (aLong < second - 1) {
                         if (aLong < second - 1) {
-//                            tvTime.setText(state + context.getString(R.string.pk_time, (second - aLong - 1) / 60, (second - aLong - 1) % 60));
                             if ("惩罚时刻 ".equals(state)) {
                                 if ((second - aLong - 1) > (second - 61)) {
-                                    if(TextUtils.isEmpty(punishWayName) && !"".equals(punishWayName)){
-                                        tvPkTitle.setText(punishWayName);
+                                    if (!TextUtils.isEmpty(mvpPunishWay) && !"".equals(mvpPunishWay)) {
+                                        //MVP挑选惩罚
+                                        tvPkTitle.setText(mvpPunishWay);
                                         tvTime.setText((second - aLong - 1) + "s");
-                                    }else{
-
+                                    } else {
+                                        //非MVP接受到的惩罚
+                                        tvPkTitle.setText(punishWay);
+                                        tvTime.setText((second - aLong - 1) + "s");
                                     }
                                     tvPkTitle.setText("MVP挑选惩罚^ ");
                                     tvTime.setText((second - aLong - 1) + "s");
-                                }else{
-                                    tvPkTitle.setText(state + " ^ ");
-                                    tvTime.setText((second - aLong - 1) + "s");
+                                } else {
+                                    //惩罚倒计时60秒后
+                                    if (TextUtils.isEmpty(mvpPunishWay) || "".equals(mvpPunishWay)
+                                            || TextUtils.isEmpty(punishWay) || "".equals(punishWay)) {
+                                        //未选择惩罚内容
+                                        tvPkTitle.setText("自定义 ");
+                                        tvTime.setText((second - aLong - 1) + "s");
+                                    } else {
+                                        tvPkTitle.setText(state + " ^ ");
+                                        tvTime.setText((second - aLong - 1) + "s");
+                                    }
                                 }
                             } else {
                                 tvPkTitle.setText(state);

@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -114,6 +115,7 @@ public class PkControl {
     private ImageView ivCountDown;
     private List<PunishWaysBean.ListBean> punishWays = new ArrayList<>();
     private List<Boolean> mSelectedList;
+    private int mvpUserId;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -251,6 +253,9 @@ public class PkControl {
                 showPunishment();
 //                    }
 //                }
+                if (!TextUtils.isEmpty(bean.punishWay) && !"".equals(bean.punishWay)) {
+                    pkLayout.setPunishWay(bean.punishWay);
+                }
                 break;
             case "PK_TIE_FINISH"://平局时间结束
                 layout.setVisibility(View.GONE);
@@ -261,6 +266,7 @@ public class PkControl {
             case "PK_PUNISH_FINISH"://惩罚时间结束
                 layout.setVisibility(View.GONE);
                 pkLayout.setVisibility(View.GONE);
+                mvpWindow.dismiss();
                 pkLayout.reset();
                 break;
         }
@@ -496,10 +502,12 @@ public class PkControl {
                 }
             }
         });
-        showToast("MVP = "+bean.mvpUser.nickname);
+        showToast("MVP = " + bean.mvpUser.nickname);
+        mvpUserId = bean.mvpUser.userId;
         if (null != bean.mvpUser) {
             mvpName.setText(bean.mvpUser.nickname);
         }
+        showToast(bean.pkUserInfo.avatar + "===" + bean.launchPkUserInfo.avatar);
         if (status == 0) {
             leftResult.setText("平");
             rightResult.setText("平");
@@ -563,7 +571,6 @@ public class PkControl {
                 }
             }
         });
-
         getPunishWays();
     }
 
@@ -615,11 +622,12 @@ public class PkControl {
                         mSelectedList.set(i, false);
                     }
                     mSelectedList.set(position, true);
-                    showToast(position + "");
                     btnPunishment.setVisibility(View.VISIBLE);
                     btnPunishment.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            showToast(punishWays.get(position).getId() +
+                                    punishWays.get(position).getName());
                             setMVPPunishment(punishWays.get(position).getId(),
                                     punishWays.get(position).getName());
                         }
@@ -657,6 +665,7 @@ public class PkControl {
         if (null == bean.mvpUser) {
             return;
         }
+//        showToast(punishWayId + "--" + mAnchorId + "--" + bean.mvpUser.userId);
         hashMap.put("wayId", punishWayId);
         hashMap.put("userId", bean.mvpUser.userId);
         hashMap.put("anchorId", mAnchorId);
@@ -669,7 +678,7 @@ public class PkControl {
                         if (responseInfo.getCode() == 200) {
                             showToast("Success");
                             //选择惩罚方式
-                            pkLayout.setPunishWayName(punishWayName);
+                            pkLayout.setMvpPunishWay(punishWayName);
                             mvpWindow.dismiss();
                         }
                     }

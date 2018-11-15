@@ -735,7 +735,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (mRankDialog != null && mRankDialog.isAdded()) {
                     return;
                 }
-                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId, "sevenDay")
+                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
                         .setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
@@ -762,9 +762,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.rl_guard_number:
-                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId, "day")
-                        .setDimAmount(0)
+                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0, mAudienceCount)
                         .setShowBottom(true)
+                        .setDimAmount(0)
                         .show(getSupportFragmentManager());
                 break;
             default:
