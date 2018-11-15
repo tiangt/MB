@@ -4,10 +4,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,7 +29,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.ksyun.media.player.KSYTextureView;
 import com.opensource.svgaplayer.SVGADrawable;
@@ -37,16 +38,16 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
-import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PkInfoBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.dialog.EndPkDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
@@ -61,7 +62,6 @@ import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -230,20 +230,16 @@ public class PkControl {
                         showPKResult(0);
                     } else if (bean.launchPkUserScore > bean.pkUserScore) {
                         showPKResult(1);
-                        mvpUserId = bean.mvpUser.userId;
                     } else if (bean.launchPkUserScore < bean.pkUserScore) {
                         showPKResult(2);
-                        mvpUserId = bean.mvpUser.userId;
                     }
                 } else if (bean.pkUserId == mAnchorId) {
                     if (bean.launchPkUserScore == bean.pkUserScore) {
                         showPKResult(0);
                     } else if (bean.pkUserScore > bean.launchPkUserScore) {
                         showPKResult(1);
-                        mvpUserId = bean.mvpUser.userId;
                     } else if (bean.pkUserScore < bean.launchPkUserScore) {
                         showPKResult(2);
-                        mvpUserId = bean.mvpUser.userId;
                     }
                 }
                 break;
@@ -524,6 +520,7 @@ public class PkControl {
         });
         if (null != bean.mvpUser) {
             mvpName.setText(bean.mvpUser.nickname);
+            mvpUserId = bean.mvpUser.userId;
         }
         if (status == 0) {
             leftResult.setText("平");

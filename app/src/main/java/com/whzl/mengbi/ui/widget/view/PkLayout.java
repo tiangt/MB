@@ -400,7 +400,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void reset() {
-        hidePkWindow();
         setProgress(50);
         setLeftScore(0);
         setRightScore(0);

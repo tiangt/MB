@@ -11,6 +11,14 @@
         android:background="@drawable/shape_pk_rank_bg"
         android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/iv_vs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_pk_vs" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_my_follow"
             android:layout_centerVertical="true"
@@ -19,14 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_toLeftOf="@id/iv_vs" />
-
-        <ImageView
-            android:id="@+id/iv_vs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_pk_vs" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_marginLeft="6dp"
