@@ -254,6 +254,7 @@ public class PkControl {
                 if (null != pkResultPop) {
                     pkResultPop.dismiss();
                 }
+                Log.d("chenliang", "mvpUserId = " + mvpUserId + ", mUserId = " + mUserId + ", punishWay = " + bean.punishWay);
                 if (mvpUserId != 0) {
                     if (mvpUserId == mUserId) {
                         showPunishment();
@@ -351,15 +352,19 @@ public class PkControl {
             if ("T".equals(bean.punishStatus)) {
                 pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
-                    if (mvpUserId != 0) {
-                        if (mvpUserId == mUserId) {
+                    if (bean.mvpUser != null) {
+                        if (bean.mvpUser.userId == mUserId) {
                             showPunishment();
+                        } else {
+                            pkLayout.setPunishWay(bean.punishWay);
                         }
                     }
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
-                    if (mvpUserId != 0) {
-                        if (mvpUserId == mUserId) {
+                    if (bean.mvpUser != null) {
+                        if (bean.mvpUser.userId == mUserId) {
                             showPunishment();
+                        } else {
+                            pkLayout.setPunishWay(bean.punishWay);
                         }
                     }
                 }
@@ -518,6 +523,7 @@ public class PkControl {
                 }
             }
         });
+        Log.d("chenliang","nickName = "+bean.mvpUser.nickname+", userId = "+bean.mvpUser.userId);
         if (null != bean.mvpUser) {
             mvpName.setText(bean.mvpUser.nickname);
             mvpUserId = bean.mvpUser.userId;

@@ -73,6 +73,7 @@ import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -433,11 +434,34 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        showPKResult();
 //        showPunishment();
 //        endPkDialog();
+//        startPKAnim();
     }
 
     private void initVp() {
         mGrandAdaper = new CircleFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
         vpActivity.setAdapter(mGrandAdaper);
+    }
+
+    private void startPKAnim() {
+        svgaStartPk.setLoops(1);
+        SVGAParser parser = new SVGAParser(this);
+        try {
+            parser.parse("start_pk.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem);
+                    svgaStartPk.setImageDrawable(drawable);
+                    svgaStartPk.startAnimation();
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
     }
 
     private void initBanner() {
@@ -879,6 +903,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (pkControl == null) {
             rlOtherSide.setVisibility(View.VISIBLE);
             pkControl = new PkControl(pkLayout, this);
+            pkControl.setUserId(mUserId);
             pkControl.setStartAnim(svgaStartPk);
             pkControl.setIvCountDown(ivCountDown);
             pkControl.setmAnchorId(mAnchorId);
@@ -1198,6 +1223,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (pkControl == null) {
             pkControl = new PkControl(pkLayout, this);
         }
+        pkControl.setUserId(mUserId);
         pkControl.setStartAnim(svgaStartPk);
         pkControl.setIvCountDown(ivCountDown);
         pkControl.setmAnchorId(mAnchorId);

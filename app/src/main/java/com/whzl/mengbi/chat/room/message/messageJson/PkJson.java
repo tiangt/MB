@@ -125,7 +125,7 @@ public class PkJson {
              * avatar : http://test-img.mengbitv.com/avatar/030/00/06/07_100x100.jpg?1532419849
              */
 
-            public int userId;
+            public long userId;
             public String nickname;
             public String avatar;
         }
