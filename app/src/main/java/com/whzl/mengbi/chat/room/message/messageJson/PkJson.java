@@ -131,7 +131,8 @@ public class PkJson {
         }
 
 
-        public List<PKFansBean> userFans;
+        public List<PKFansBean> launchPkUserFans;
+        public List<PKFansBean> pkUserFans;
 
     }
 }
