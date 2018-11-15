@@ -127,8 +127,6 @@ public class PkJson {
             public String avatar;
         }
 
-        public LaunchPkUserFansBean launchPkUserFansBean;
-        public LaunchPkUserFansBean pkUserFansBean;
 
         public List<LaunchPkUserFansBean> launchPkUserFans;
         public List<LaunchPkUserFansBean> pkUserFans;

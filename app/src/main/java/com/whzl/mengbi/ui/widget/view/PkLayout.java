@@ -232,16 +232,16 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         if (aLong < second - 1) {
                             if ("惩罚时刻 ".equals(state)) {
                                 if ((second - aLong - 1) > (second - 61)) {
+                                    Log.d("chenliang", "PKlayout = " + mvpPunishWay);
                                     if (!TextUtils.isEmpty(mvpPunishWay) && !"".equals(mvpPunishWay)) {
                                         //MVP挑选惩罚
                                         tvPkTitle.setText(mvpPunishWay);
-                                        tvTime.setText((second - aLong - 1) + "s");
-                                    } else {
+                                    } else if (!TextUtils.isEmpty(punishWay) && !"".equals(punishWay)) {
                                         //非MVP接受到的惩罚
                                         tvPkTitle.setText(punishWay);
-                                        tvTime.setText((second - aLong - 1) + "s");
+                                    }else{
+                                        tvPkTitle.setText("MVP挑选惩罚^ ");
                                     }
-                                    tvPkTitle.setText("MVP挑选惩罚^ ");
                                     tvTime.setText((second - aLong - 1) + "s");
                                 } else {
                                     //惩罚倒计时60秒后

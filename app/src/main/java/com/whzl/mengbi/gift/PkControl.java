@@ -13,6 +13,7 @@ import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -115,7 +116,9 @@ public class PkControl {
     private ImageView ivCountDown;
     private List<PunishWaysBean.ListBean> punishWays = new ArrayList<>();
     private List<Boolean> mSelectedList;
-    private int mvpUserId;
+    private long mvpUserId;
+    private String leftHead;
+    private String rightHead;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -168,8 +171,11 @@ public class PkControl {
                 startPKAnim();
                 startCountDown(5);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
+                Log.d("chenliang", bean.launchPkUserFans.toString());
                 if (bean.launchUserProgramId == mProgramId) {
-                    pkLayout.setPkFanRank(bean.getLaunchPkUserFans(), bean.getPkUserFans());
+                    pkLayout.setPkFanRank(bean.launchPkUserFans, bean.pkUserFans);
+                    leftHead = bean.launchPkUserInfo.avatar;
+                    rightHead = bean.pkUserInfo.avatar;
                     GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
                     tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
@@ -183,7 +189,9 @@ public class PkControl {
                         otherSideLive();
                     }
                 } else if (bean.pkUserProgramId == mProgramId) {
-                    pkLayout.setPkFanRank(bean.getLaunchPkUserFans(), bean.getPkUserFans());
+                    pkLayout.setPkFanRank(bean.launchPkUserFans, bean.pkUserFans);
+                    leftHead = bean.pkUserInfo.avatar;
+                    rightHead = bean.launchPkUserInfo.avatar;
                     GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, ivRightHead);
                     tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
@@ -224,16 +232,20 @@ public class PkControl {
                         showPKResult(0);
                     } else if (bean.launchPkUserScore > bean.pkUserScore) {
                         showPKResult(1);
+                        mvpUserId = bean.mvpUser.userId;
                     } else if (bean.launchPkUserScore < bean.pkUserScore) {
                         showPKResult(2);
+                        mvpUserId = bean.mvpUser.userId;
                     }
                 } else if (bean.pkUserId == mAnchorId) {
                     if (bean.launchPkUserScore == bean.pkUserScore) {
                         showPKResult(0);
                     } else if (bean.pkUserScore > bean.launchPkUserScore) {
                         showPKResult(1);
+                        mvpUserId = bean.mvpUser.userId;
                     } else if (bean.pkUserScore < bean.launchPkUserScore) {
                         showPKResult(2);
+                        mvpUserId = bean.mvpUser.userId;
                     }
                 }
                 break;
@@ -248,11 +260,12 @@ public class PkControl {
                 if (null != pkResultPop) {
                     pkResultPop.dismiss();
                 }
-//                if (null != bean.mvpUserBean) {
-//                    if (mUserId == bean.mvpUserBean.userId) {
-                showPunishment();
-//                    }
-//                }
+                if (mvpUserId != 0) {
+                    if(mvpUserId == mUserId){
+                        showPunishment();
+                    }
+                }
+
                 if (!TextUtils.isEmpty(bean.punishWay) && !"".equals(bean.punishWay)) {
                     pkLayout.setPunishWay(bean.punishWay);
                 }
@@ -336,16 +349,16 @@ public class PkControl {
             if ("T".equals(bean.punishStatus)) {
                 pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
-                    if (null != bean.mvpUser) {
-//                        if (mUserId == bean.mvpUser.userId) {
-                        showPunishment();
-//                        }
+                    if (mvpUserId != 0) {
+                        if(mvpUserId == mUserId){
+                            showPunishment();
+                        }
                     }
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
-                    if (null != bean.mvpUser) {
-//                        if (mUserId == bean.mvpUser.userId) {
-                        showPunishment();
-//                        }
+                    if (mvpUserId != 0) {
+                        if(mvpUserId == mUserId){
+                            showPunishment();
+                        }
                     }
                 }
             }
@@ -502,30 +515,27 @@ public class PkControl {
                 }
             }
         });
-        showToast("MVP = " + bean.mvpUser.nickname);
-        mvpUserId = bean.mvpUser.userId;
         if (null != bean.mvpUser) {
             mvpName.setText(bean.mvpUser.nickname);
         }
-        showToast(bean.pkUserInfo.avatar + "===" + bean.launchPkUserInfo.avatar);
         if (status == 0) {
             leftResult.setText("平");
             rightResult.setText("平");
             mvpTitle.setVisibility(View.INVISIBLE);
-            GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, leftHead);
-            GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, rightHead);
+            GlideImageLoader.getInstace().displayImage(context, leftHead, leftHead);
+            GlideImageLoader.getInstace().displayImage(context, rightHead, rightHead);
         } else if (status == 1) {
             leftResult.setText("胜");
             rightResult.setText("败");
             rightResult.setTextColor(Color.argb(125, 255, 255, 255));
-            GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, leftHead);
-            GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, rightHead);
+            GlideImageLoader.getInstace().displayImage(context, leftHead, leftHead);
+            GlideImageLoader.getInstace().displayImage(context, rightHead, rightHead);
         } else if (status == 2) {
             leftResult.setText("败");
             leftResult.setTextColor(Color.argb(125, 255, 255, 255));
             rightResult.setText("胜");
-            GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, leftHead);
-            GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, rightHead);
+            GlideImageLoader.getInstace().displayImage(context, leftHead, leftHead);
+            GlideImageLoader.getInstace().displayImage(context, rightHead, rightHead);
         }
     }
 
@@ -662,24 +672,24 @@ public class PkControl {
 
     private void setMVPPunishment(int punishWayId, String punishWayName) {
         HashMap hashMap = new HashMap();
-        if (null == bean.mvpUser) {
-            return;
-        }
-//        showToast(punishWayId + "--" + mAnchorId + "--" + bean.mvpUser.userId);
         hashMap.put("wayId", punishWayId);
-        hashMap.put("userId", bean.mvpUser.userId);
+        hashMap.put("userId", mvpUserId);
         hashMap.put("anchorId", mAnchorId);
+        Log.d("chenliang", punishWayId + "---" + mvpUserId + "---" + mAnchorId + "---" + punishWayName);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.PUNISH_WAY, RequestManager.TYPE_POST_JSON, hashMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
                         String jsonStr = result.toString();
+                        Log.d("chenliang", jsonStr);
                         ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
                         if (responseInfo.getCode() == 200) {
                             showToast("Success");
                             //选择惩罚方式
                             pkLayout.setMvpPunishWay(punishWayName);
                             mvpWindow.dismiss();
+                        } else {
+                            showToast(responseInfo.getMsg());
                         }
                     }
 
