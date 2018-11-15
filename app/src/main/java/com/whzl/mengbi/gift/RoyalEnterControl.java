@@ -96,7 +96,7 @@ public class RoyalEnterControl {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 tvEnter.startScroll();
-                RxTimerUtil.timer(3000, new RxTimerUtil.IRxNext() {
+                RxTimerUtil.timer(5000, new RxTimerUtil.IRxNext() {
                     @Override
                     public void doNext(long number) {
                         outAnim();

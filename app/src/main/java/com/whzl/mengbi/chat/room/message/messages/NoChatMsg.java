@@ -119,9 +119,10 @@ public class NoChatMsg implements FillHolderMessage {
         mHolder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
         mHolder.textView.setText("");
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname + " 被 ", toUid, programId, ContextCompat.getColor(context, R.color.text_color_nochat_bei)));
-        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, ContextCompat.getColor(context, R.color.text_color_nochat_people)));
-        String kickouContent = " 踢出房间";
-        mHolder.textView.append(LightSpanString.getLightString(kickouContent, ContextCompat.getColor(context, R.color.text_color_nochat)));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, toNickname, toUid, programId, ContextCompat.getColor(context, R.color.text_color_kickout_bei)));
+        mHolder.textView.append(LightSpanString.getLightString(" 被 ", ContextCompat.getColor(context, R.color.text_color_kickout_text)));
+        mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, ContextCompat.getColor(context, R.color.text_color_kickout_people)));
+        String kickouContent = " 踢出房间" + period + "分钟";
+        mHolder.textView.append(LightSpanString.getLightString(kickouContent, ContextCompat.getColor(context, R.color.text_color_kickout_text)));
     }
 }
