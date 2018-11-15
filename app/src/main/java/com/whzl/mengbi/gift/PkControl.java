@@ -52,6 +52,7 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -171,9 +172,7 @@ public class PkControl {
                 startPKAnim();
                 startCountDown(5);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
-                Log.d("chenliang", bean.launchPkUserFans.toString());
                 if (bean.launchUserProgramId == mProgramId) {
-                    pkLayout.setPkFanRank(bean.launchPkUserFans, bean.pkUserFans);
                     leftHead = bean.launchPkUserInfo.avatar;
                     rightHead = bean.pkUserInfo.avatar;
                     GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
@@ -189,7 +188,6 @@ public class PkControl {
                         otherSideLive();
                     }
                 } else if (bean.pkUserProgramId == mProgramId) {
-                    pkLayout.setPkFanRank(bean.launchPkUserFans, bean.pkUserFans);
                     leftHead = bean.pkUserInfo.avatar;
                     rightHead = bean.launchPkUserInfo.avatar;
                     GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, ivRightHead);
@@ -261,7 +259,7 @@ public class PkControl {
                     pkResultPop.dismiss();
                 }
                 if (mvpUserId != 0) {
-                    if(mvpUserId == mUserId){
+                    if (mvpUserId == mUserId) {
                         showPunishment();
                     }
                 }
@@ -282,6 +280,14 @@ public class PkControl {
                 mvpWindow.dismiss();
                 pkLayout.reset();
                 break;
+            case "PK_SCORE_PUSH"://用户分数推送
+                if (mProgramId == bean.changeUserProgramId) {
+                    pkLayout.setLeftPkFans(bean.userFans);
+                } else {
+                    pkLayout.setRightPkFans(bean.userFans);
+                }
+                break;
+
         }
         pkLayout.setListener(new PkLayout.TimeDwonListener() {
             @Override
@@ -350,13 +356,13 @@ public class PkControl {
                 pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
                     if (mvpUserId != 0) {
-                        if(mvpUserId == mUserId){
+                        if (mvpUserId == mUserId) {
                             showPunishment();
                         }
                     }
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
                     if (mvpUserId != 0) {
-                        if(mvpUserId == mUserId){
+                        if (mvpUserId == mUserId) {
                             showPunishment();
                         }
                     }
@@ -377,6 +383,7 @@ public class PkControl {
                     showJumpLiveHouseDialog(jumpProgramId, jumpNick);
                 }
             });
+            pkLayout.setPkFanRank(bean.pkUserFans, bean.launchPkUserFans);
         }
     }
 
