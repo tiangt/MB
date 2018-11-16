@@ -159,8 +159,8 @@
                     android:layout_toRightOf="@id/tv_contribute">
 
                     <ImageView
-                        android:layout_width="33dp"
-                        android:layout_height="28dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:src="@drawable/live_display_guard_num" />
 
                     <TextView
@@ -169,9 +169,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
-                        android:paddingBottom="5dp"
+                        android:paddingBottom="4dp"
                         android:textColor="@color/white"
-                        android:textSize="5sp" />
+                        android:textSize="6sp" />
                 </RelativeLayout>
 
                 <FrameLayout
@@ -404,8 +404,9 @@
 
                 <com.opensource.svgaplayer.SVGAImageView
                     android:id="@+id/svga_start_pk"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
                     android:scaleType="fitCenter"
                     app:autoPlay="true" />
 
