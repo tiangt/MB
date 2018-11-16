@@ -114,6 +114,7 @@
                     android:textSize="12dp" />
 
                 <Button
+                    android:layout_marginLeft="-0.5dp"
                     android:id="@+id/btn_send_gift"
                     android:layout_width="57dp"
                     android:layout_height="match_parent"
