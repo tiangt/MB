@@ -259,7 +259,6 @@ public class PkControl {
                 if (null != pkResultPop) {
                     pkResultPop.dismiss();
                 }
-                Log.d("chenliang", "mvpUserId = " + mvpUserId + ", mUserId = " + mUserId + ", punishWay = " + bean.punishWay);
                 if (mvpUserId != 0) {
                     if (mvpUserId == mUserId) {
                         showPunishment();
@@ -536,7 +535,6 @@ public class PkControl {
                 }
             }
         });
-        Log.d("chenliang", "nickName = " + bean.mvpUser.nickname + ", userId = " + bean.mvpUser.userId);
         if (null != bean.mvpUser) {
             mvpName.setText(bean.mvpUser.nickname);
             mvpUserId = bean.mvpUser.userId;
@@ -698,16 +696,13 @@ public class PkControl {
         hashMap.put("wayId", punishWayId);
         hashMap.put("userId", mvpUserId);
         hashMap.put("anchorId", mAnchorId);
-        Log.d("chenliang", punishWayId + "---" + mvpUserId + "---" + mAnchorId + "---" + punishWayName);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.PUNISH_WAY, RequestManager.TYPE_POST_JSON, hashMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
                         String jsonStr = result.toString();
-                        Log.d("chenliang", jsonStr);
                         ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
                         if (responseInfo.getCode() == 200) {
-                            showToast("Success");
                             //选择惩罚方式
                             pkLayout.setMvpPunishWay(punishWayName);
                             mvpWindow.dismiss();

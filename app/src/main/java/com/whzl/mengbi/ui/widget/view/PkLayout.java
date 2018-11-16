@@ -70,6 +70,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private String punishWay;
     private BaseListAdapter myFollowAdapter;
     private BaseListAdapter oppositeAdapter;
+    private RelativeLayout rlPunishWay;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -97,6 +98,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         tvLeftScore = inflate.findViewById(R.id.tv_left_score);
         tvRightScore = inflate.findViewById(R.id.tv_right_score);
         tvPkTitle = inflate.findViewById(R.id.tv_pk_title);
+        rlPunishWay = inflate.findViewById(R.id.rl_punish_way);
         setProgress(initializeProgress);
     }
 
@@ -281,13 +283,12 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         if (aLong < second - 1) {
                             if ("惩罚时刻 ".equals(state)) {
                                 if ((second - aLong - 1) > (second - 61)) {
-                                    Log.d("chenliang", "PKlayout = " + mvpPunishWay);
                                     if (!TextUtils.isEmpty(mvpPunishWay) && !"".equals(mvpPunishWay)) {
                                         //MVP挑选惩罚
                                         tvPkTitle.setText(mvpPunishWay);
                                     } else if (!TextUtils.isEmpty(punishWay) && !"".equals(punishWay)) {
                                         //非MVP接受到的惩罚
-                                        tvPkTitle.setText(punishWay);
+                                        tvPkTitle.setText("惩罚:"+punishWay);
                                     } else {
                                         tvPkTitle.setText("MVP挑选惩罚^ ");
                                     }
@@ -297,7 +298,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                     if (TextUtils.isEmpty(mvpPunishWay) || "".equals(mvpPunishWay)
                                             || TextUtils.isEmpty(punishWay) || "".equals(punishWay)) {
                                         //未选择惩罚内容
-                                        tvPkTitle.setText("自定义 ");
+                                        tvPkTitle.setText("惩罚:自定义");
                                         tvTime.setText((second - aLong - 1) + "s");
                                     } else {
                                         tvPkTitle.setText(state + " ^ ");
@@ -449,5 +450,14 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         }
     }
 
+    private PunishWayClick clickLintener;
+
+    public interface PunishWayClick {
+
+    }
+
+    public void setOnMarqueeListener(PunishWayClick listener) {
+        this.clickLintener = listener;
+    }
 }
 

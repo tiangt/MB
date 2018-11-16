@@ -7,8 +7,8 @@
 
     <com.whzl.mengbi.ui.widget.view.CircleRelativeLayout
         android:id="@+id/circle_head"
-        android:layout_width="23dp"
-        android:layout_height="23dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/shape_online_head_civilian">
 
