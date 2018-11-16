@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -146,13 +147,14 @@ public class BackpackMotherFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onError(int code) {
+                    public void onError(ApiResult<BackpackListBean> body) {
                         if(getContext() == null){
                             return;
                         }
                         viewPager.setVisibility(View.GONE);
                         llBackPack.setVisibility(View.VISIBLE);
                     }
+
                 });
     }
 

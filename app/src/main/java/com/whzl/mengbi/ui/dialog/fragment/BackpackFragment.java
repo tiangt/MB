@@ -20,6 +20,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -230,8 +231,7 @@ public class BackpackFragment extends BaseFragment {
                     }
 
                     @Override
-                    public void onError(int code) {
-
+                    public void onError(ApiResult<BackpackListBean> body) {
                     }
                 });
     }

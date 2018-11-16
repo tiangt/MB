@@ -88,6 +88,7 @@ public class GiftDialog extends BaseAwesomeDialog {
     private GiftInfo.GiftDetailInfoBean giftDetailInfoBean;
     private int currentSelectedIndex;
     private ArrayList<Fragment> fragments;
+    private int REQUEST_LOGIN = 120;
 
     public static BaseAwesomeDialog newInstance(GiftInfo giftInfo, long coin) {
         Bundle args = new Bundle();
@@ -218,6 +219,11 @@ public class GiftDialog extends BaseAwesomeDialog {
                 showCountSelectPopWindow();
                 break;
             case R.id.btn_send_gift:
+                long mUserId = Long.parseLong(SPUtils.get(getActivity(), "userId", 0L).toString());
+                if (mUserId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    return;
+                }
                 String countStr = tvCount.getText().toString().trim();
                 int giftCount = 0;
                 try {
@@ -260,6 +266,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         }
 
     }
+
 
     private void jumpRechargeActivity() {
         Intent intent = new Intent(getContext(), WXPayEntryActivity.class);
