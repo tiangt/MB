@@ -71,6 +71,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private BaseListAdapter myFollowAdapter;
     private BaseListAdapter oppositeAdapter;
     private RelativeLayout rlPunishWay;
+    private LinearLayout llPkProgress;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -99,6 +100,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         tvRightScore = inflate.findViewById(R.id.tv_right_score);
         tvPkTitle = inflate.findViewById(R.id.tv_pk_title);
         rlPunishWay = inflate.findViewById(R.id.rl_punish_way);
+        llPkProgress = inflate.findViewById(R.id.ll_pk_progress);
+        rlPunishWay.setOnClickListener(this);
+        llPkProgress.setOnClickListener(this);
         setProgress(initializeProgress);
     }
 
@@ -393,6 +397,12 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                     }
                 }
                 break;
+
+            case R.id.ll_pk_progress:
+                if(clickLintener != null){
+                    clickLintener.onClick();
+                }
+                break;
         }
     }
 
@@ -453,10 +463,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private PunishWayClick clickLintener;
 
     public interface PunishWayClick {
-
+        void onClick();
     }
 
-    public void setOnMarqueeListener(PunishWayClick listener) {
+    public void setPunishWayOnClick(PunishWayClick listener) {
         this.clickLintener = listener;
     }
 }
