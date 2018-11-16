@@ -264,6 +264,8 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         super.onDestroy();
         umShareAPI.release();
         EventBus.getDefault().unregister(this);
+
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
