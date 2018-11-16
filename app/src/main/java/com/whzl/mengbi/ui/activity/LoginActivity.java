@@ -62,6 +62,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     private LoginPresent mLoginPresent;
     private UMShareAPI umShareAPI;
 
+
     private UMAuthListener umAuthListener = new UMAuthListener() {
         /**
          * @desc 授权开始的回调

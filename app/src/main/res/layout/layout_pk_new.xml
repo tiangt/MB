@@ -17,6 +17,7 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rl_punish_way"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
@@ -34,7 +35,7 @@
                     android:id="@+id/tv_time_pk"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10sp"
+                    android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@id/tv_pk_title"
                     android:textColor="#FFF800"
                     android:textSize="10sp" />
