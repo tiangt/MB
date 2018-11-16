@@ -44,7 +44,7 @@
                     android:layout_marginRight="35dp"/>
 
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
-                    android:id="@+id/iv_left_head"
+                    android:id="@+id/iv_left_avatar"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"
@@ -73,7 +73,7 @@
                     android:textSize="12sp" />
 
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
-                    android:id="@+id/iv_right_head"
+                    android:id="@+id/iv_right_avatar"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"

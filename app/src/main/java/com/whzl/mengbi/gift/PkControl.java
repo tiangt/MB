@@ -118,8 +118,8 @@ public class PkControl {
     private List<PunishWaysBean.ListBean> punishWays = new ArrayList<>();
     private List<Boolean> mSelectedList;
     private long mvpUserId;
-    private String leftHead;
-    private String rightHead;
+    private String leftAvatar;
+    private String rightAvatar;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -173,8 +173,8 @@ public class PkControl {
                 startCountDown(5);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
                 if (bean.launchUserProgramId == mProgramId) {
-                    leftHead = bean.launchPkUserInfo.avatar;
-                    rightHead = bean.pkUserInfo.avatar;
+                    leftAvatar = bean.launchPkUserInfo.avatar;
+                    rightAvatar = bean.pkUserInfo.avatar;
                     GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
                     tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
@@ -188,8 +188,8 @@ public class PkControl {
                         otherSideLive();
                     }
                 } else if (bean.pkUserProgramId == mProgramId) {
-                    leftHead = bean.pkUserInfo.avatar;
-                    rightHead = bean.launchPkUserInfo.avatar;
+                    leftAvatar = bean.pkUserInfo.avatar;
+                    rightAvatar = bean.launchPkUserInfo.avatar;
                     GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, ivRightHead);
                     tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
@@ -505,8 +505,8 @@ public class PkControl {
         TextView leftResult = popView.findViewById(R.id.tv_left_result);
         TextView rightResult = popView.findViewById(R.id.tv_right_result);
         TextView mvpTitle = popView.findViewById(R.id.tv_mvp_title);
-        CircleImageView leftHead = popView.findViewById(R.id.iv_left_head);
-        CircleImageView rightHead = popView.findViewById(R.id.iv_right_head);
+        CircleImageView ivLeftAvatar = popView.findViewById(R.id.iv_left_avatar);
+        CircleImageView ivRightAvatar = popView.findViewById(R.id.iv_right_avatar);
         TextView mvpName = popView.findViewById(R.id.tv_mvp_name);
         int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -532,20 +532,20 @@ public class PkControl {
             leftResult.setText("平");
             rightResult.setText("平");
             mvpTitle.setVisibility(View.INVISIBLE);
-            GlideImageLoader.getInstace().displayImage(context, leftHead, leftHead);
-            GlideImageLoader.getInstace().displayImage(context, rightHead, rightHead);
+            GlideImageLoader.getInstace().displayImage(context, leftAvatar, ivLeftAvatar);
+            GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightAvatar);
         } else if (status == 1) {
             leftResult.setText("胜");
             rightResult.setText("败");
             rightResult.setTextColor(Color.argb(125, 255, 255, 255));
-            GlideImageLoader.getInstace().displayImage(context, leftHead, leftHead);
-            GlideImageLoader.getInstace().displayImage(context, rightHead, rightHead);
+            GlideImageLoader.getInstace().displayImage(context, leftAvatar, ivLeftAvatar);
+            GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightAvatar);
         } else if (status == 2) {
             leftResult.setText("败");
             leftResult.setTextColor(Color.argb(125, 255, 255, 255));
             rightResult.setText("胜");
-            GlideImageLoader.getInstace().displayImage(context, leftHead, leftHead);
-            GlideImageLoader.getInstace().displayImage(context, rightHead, rightHead);
+            GlideImageLoader.getInstace().displayImage(context, leftAvatar, ivLeftAvatar);
+            GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightAvatar);
         }
     }
 
