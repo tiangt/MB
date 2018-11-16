@@ -1,6 +1,7 @@
 package com.whzl.mengbi.gift;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -34,9 +35,10 @@ public class RunWayGiftControl {
     }
 
     public void load(RunWayEvent event) {
+        Log.i("chenliang", "Run = " + event.getRunWayJson().getContext().getRunwayType());
+        Log.i("chenliang", "CacheIt = " + event.getRunWayJson().getContext().isCacheIt());
         if (event == null || event.getRunWayJson() == null
-                || event.getRunWayJson().getContext() == null
-                || autoScrollView == null || event.getRunWayJson().getContext().getRunwayType() == null) {
+                || event.getRunWayJson().getContext() == null) {
             return;
         }
         String type = event.getRunWayJson().getContext().getRunwayType();
@@ -45,7 +47,7 @@ public class RunWayGiftControl {
             frameLayout.setVisibility(View.VISIBLE);
             if ("destroy".equals(type)) {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-            } else if ("getOn".equals(type)) {
+            } else {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
             }
             autoScrollView.setVisibility(View.VISIBLE);
@@ -64,7 +66,7 @@ public class RunWayGiftControl {
             frameLayout.setVisibility(View.VISIBLE);
             if ("destroy".equals(type)) {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-            } else if ("getOn".equals(type)) {
+            } else {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
             }
             autoScrollView.setVisibility(View.VISIBLE);

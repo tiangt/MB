@@ -109,12 +109,9 @@ public class PkProgressView extends ProgressBar {
     }
 
 
-
     /**
-     * @param context
-     * 上下文对象
-     * @param attrs
-     * 参数
+     * @param context      上下文对象
+     * @param attrs        参数
      * @param defStyleAttr
      */
     private void initView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -180,7 +177,7 @@ public class PkProgressView extends ProgressBar {
         path.moveTo(18, 0);
 //        RectF mRectF = new RectF(0, 0, 30, 30);
 //        path.arcTo(mRectF,180,0);
-        path.addArc(0,0,36,36,180,90);
+        path.addArc(0, 0, 36, 36, 180, 90);
         if (mDefaultPercent < 0) {
             mDefaultPercent = 0;
         }
@@ -195,24 +192,26 @@ public class PkProgressView extends ProgressBar {
             int p3_width = (mDefaultPercent + 2) * getWidth() / 100;
             path.lineTo(p3_width, getHeight());
         } else if (mDefaultPercent < 2) {
-            int p1_width = (mDefaultPercent) * getWidth() / 100;
+            // point2
+            int p1_width = (10) * getWidth() / 100;
             path.lineTo(p1_width, 0);
-            return;
+            // point3
+            int p3_width = (14) * getWidth() / 100;
+            path.lineTo(p3_width, getHeight());
         } else if (mDefaultPercent > 98) {
             // point2
-            path.lineTo(getWidth(), 0);
+            int p1_width = (92) * getWidth() / 100;
+            path.lineTo(p1_width, 0);
             // point3
-            int p3_width = (mDefaultPercent) * getWidth() / 100;
+            int p3_width = (96) * getWidth() / 100;
             path.lineTo(p3_width, getHeight());
-            canvas.drawRoundRect(rectF, 18, 18, barPaint);
-            return;
         }
         // point4
 //        path.addArc(0,getHeight()-60,60,getHeight(),90,90);
         path.lineTo(18, getHeight());
-        path.addArc(0,getHeight()-36,36,getHeight(),90,90);
+        path.addArc(0, getHeight() - 36, 36, getHeight(), 90, 90);
 //        path.close();
-        path.lineTo(0,18);
+        path.lineTo(0, 18);
 //        barPaint.setColor(mBackColor);
         canvas.drawPath(path, barPaint);
         // 绘制文字

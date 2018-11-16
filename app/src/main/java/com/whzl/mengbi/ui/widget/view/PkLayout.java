@@ -9,7 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -58,7 +56,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private TextView tvRightScore;
     private ValueAnimator animator;
     private TimeDwonListener listener;
-    private RelativeLayout rlPkProgress;
     private PopupWindow popupWindow;
     private RecyclerView myFollow;
     private RecyclerView oppositeSide;
@@ -72,6 +69,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private BaseListAdapter oppositeAdapter;
     private RelativeLayout rlPunishWay;
     private LinearLayout llPkProgress;
+    private PopupWindow mvpPopupWindow;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -100,16 +98,12 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         tvRightScore = inflate.findViewById(R.id.tv_right_score);
         tvPkTitle = inflate.findViewById(R.id.tv_pk_title);
         rlPunishWay = inflate.findViewById(R.id.rl_punish_way);
-        llPkProgress = inflate.findViewById(R.id.ll_pk_progress);
-        rlPunishWay.setOnClickListener(this);
-        llPkProgress.setOnClickListener(this);
+        rlPunishWay.setOnClickListener(this::onClick);
         setProgress(initializeProgress);
     }
 
     public void setPkFanRank(List<PKFansBean> pkUserFansBeans,
                              List<PKFansBean> launchPkUserFansBeans) {
-//        this.pkUserFansBeans = pkUserFansBeans;
-//        this.launchPkUserFansBeans = launchPkUserFansBeans;
         if (this.pkUserFansBeans != null) {
             this.pkUserFansBeans.clear();
         }
@@ -118,7 +112,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             this.launchPkUserFansBeans.clear();
         }
         this.launchPkUserFansBeans.addAll(launchPkUserFansBeans);
-        Log.d("chen", pkUserFansBeans + "");
         oppositeAdapter.notifyDataSetChanged();
         myFollowAdapter.notifyDataSetChanged();
     }
@@ -139,21 +132,22 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         oppositeAdapter.notifyDataSetChanged();
     }
 
-
-    public void setMvpPunishWay(String mvpPunishWay) {
+    public void setMvpPunishWay(String mvpPunishWay, PopupWindow popupWindow) {
         this.mvpPunishWay = mvpPunishWay;
+        this.mvpPopupWindow = popupWindow;
     }
 
-    public void setPunishWay(String punishWay) {
+    public void setPunishWay(String punishWay, PopupWindow popupWindow) {
         this.punishWay = punishWay;
+        this.mvpPopupWindow = popupWindow;
     }
 
     private void initPop(Context context) {
         // PopupWindow 显示PK排名
         View popView = LayoutInflater.from(context).inflate(R.layout.pop_window_pk_rank, null);
         popupWindow = new PopupWindow(popView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
-        rlPkProgress = inflate.findViewById(R.id.rl_pk_progress);
-        rlPkProgress.setOnClickListener(this::onClick);
+        llPkProgress = inflate.findViewById(R.id.ll_pk_progress);
+        llPkProgress.setOnClickListener(this::onClick);
         myFollow = popView.findViewById(R.id.rv_my_follow);
         oppositeSide = popView.findViewById(R.id.rv_opposite_side);
 
@@ -171,7 +165,15 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         myFollowAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return pkUserFansBeans == null ? 0 : 5;
+                int count = 0;
+                if (pkUserFansBeans == null) {
+                    count = 0;
+                } else if (pkUserFansBeans.size() < 5) {
+                    count = pkUserFansBeans.size();
+                } else {
+                    count = 5;
+                }
+                return count;
             }
 
             @Override
@@ -186,7 +188,15 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         oppositeAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return launchPkUserFansBeans == null ? 0 : 5;
+                int count = 0;
+                if (launchPkUserFansBeans == null) {
+                    count = 0;
+                } else if (launchPkUserFansBeans.size() < 5) {
+                    count = launchPkUserFansBeans.size();
+                } else {
+                    count = 5;
+                }
+                return count;
             }
 
             @Override
@@ -195,7 +205,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                 return new PKOppoViewHolder(itemView);
             }
         };
-
         oppositeSide.setAdapter(oppositeAdapter);
     }
 
@@ -289,22 +298,34 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                 if ((second - aLong - 1) > (second - 61)) {
                                     if (!TextUtils.isEmpty(mvpPunishWay) && !"".equals(mvpPunishWay)) {
                                         //MVP挑选惩罚
-                                        tvPkTitle.setText(mvpPunishWay);
+                                        tvPkTitle.setText("惩罚:" + mvpPunishWay);
                                     } else if (!TextUtils.isEmpty(punishWay) && !"".equals(punishWay)) {
                                         //非MVP接受到的惩罚
-                                        tvPkTitle.setText("惩罚:"+punishWay);
+                                        tvPkTitle.setText("惩罚:" + punishWay);
                                     } else {
                                         tvPkTitle.setText("MVP挑选惩罚^ ");
+                                        if (clickLintener != null) {
+                                            clickLintener.onClick();
+                                        }
                                     }
                                     tvTime.setText((second - aLong - 1) + "s");
                                 } else {
                                     //惩罚倒计时60秒后
                                     if (TextUtils.isEmpty(mvpPunishWay) || "".equals(mvpPunishWay)
                                             || TextUtils.isEmpty(punishWay) || "".equals(punishWay)) {
+                                        if (mvpPopupWindow != null) {
+                                            mvpPopupWindow.dismiss();
+                                        }
                                         //未选择惩罚内容
-                                        tvPkTitle.setText("惩罚:自定义");
-                                        tvTime.setText((second - aLong - 1) + "s");
+                                        if (TextUtils.isEmpty(mvpPunishWay) || "".equals(mvpPunishWay)
+                                                || TextUtils.isEmpty(punishWay) || "".equals(punishWay)) {
+                                            tvPkTitle.setText("惩罚:自定义");
+                                            tvTime.setText((second - aLong - 1) + "s");
+                                        }
                                     } else {
+                                        if (mvpPopupWindow != null) {
+                                            mvpPopupWindow.dismiss();
+                                        }
                                         tvPkTitle.setText(state + " ^ ");
                                         tvTime.setText((second - aLong - 1) + "s");
                                     }
@@ -324,6 +345,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         }
                     } else if (aLong >= second - 1) {
                         LogUtils.e("ssssss  state dispose");
+                        popupWindow.dismiss();
                         disposable.dispose();
                     }
                 });
@@ -388,7 +410,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.rl_pk_progress:
+            case R.id.ll_pk_progress:
                 if (popupWindow != null) {
                     if (popupWindow.isShowing()) {
                         popupWindow.dismiss();
@@ -398,8 +420,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                 }
                 break;
 
-            case R.id.ll_pk_progress:
-                if(clickLintener != null){
+            case R.id.rl_punish_way:
+                if (clickLintener != null) {
                     clickLintener.onClick();
                 }
                 break;

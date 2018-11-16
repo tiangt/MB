@@ -3,6 +3,7 @@ package com.whzl.mengbi.chat.room.message.events;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -32,7 +33,6 @@ public class RunWayEvent {
         this.giftSpanString = giftSpanString;
     }
 
-
     public Context getmContext() {
         return mContext;
     }
@@ -47,6 +47,7 @@ public class RunWayEvent {
 
     public void showRunWay(TextView tvRunWayGift) throws Exception {
         String type = runWayJson.getContext().getRunwayType();
+        Log.i("chenliang", "RunWayEvent TYPE = "+type);
         tvRunWayGift.setText(LightSpanString.getLightString(DateUtils.longToDate(runWayJson.getContext().getDateLong()) + " ",
                 Color.parseColor("#faf9f9"))); //时间
         tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getNickname(),
@@ -58,7 +59,7 @@ public class RunWayEvent {
                 Color.parseColor("#faf9f9")));
         tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getCount() + "个",
                 Color.parseColor("#faf9f9"))); //个数
-        tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getGoodsName()+" ",
+        tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getGoodsName() + " ",
                 Color.parseColor("#faf9f9"))); //礼物名称
         if (getGiftSpanString() != null) {
             tvRunWayGift.append(getGiftSpanString());//礼物
@@ -66,8 +67,8 @@ public class RunWayEvent {
         if ("destroy".equals(type)) {
             tvRunWayGift.append(LightSpanString.getLightString(" , 攻占超跑, ",
                     Color.parseColor("#faf9f9")));
-        } else if ("getOn".equals(type)) {
-            tvRunWayGift.append(LightSpanString.getLightString(" 登上超跑, ",
+        } else {
+            tvRunWayGift.append(LightSpanString.getLightString(" , 登上超跑, ",
                     Color.parseColor("#faf9f9")));
         }
         tvRunWayGift.append(LightSpanString.getLightString(" " + "围观ing",
