@@ -736,10 +736,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
                 break;
             case R.id.btn_send_gift:
-                if (mUserId == 0) {
-                    login();
-                    return;
-                }
+//                if (mUserId == 0) {
+//                    login();
+//                    return;
+//                }
                 if (mGiftData == null || mGiftData.getData() == null) {
                     mLivePresenter.getLiveGift();
                     return;
@@ -1599,7 +1599,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
