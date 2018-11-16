@@ -133,6 +133,6 @@ public class PkJson {
 
         public List<PKFansBean> launchPkUserFans;
         public List<PKFansBean> pkUserFans;
-
+        public List<PKFansBean> userFans;
     }
 }
