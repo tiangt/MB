@@ -52,5 +52,16 @@
         <attr name="background_color" format="color" />
         <attr name="background_alpha" format="integer" />
     </declare-styleable>
+
+    <!-- PK进度条 -->
+    <declare-styleable name="PkProgressView">
+        <attr name="text"/>
+        <attr name="backColorDefault" format="color"/>
+        <attr name="backColor" format="color"/>
+        <attr name="defaultPercent" format="integer"/>
+        <attr name="textSize"/>
+        <attr name="textColor"/>
+        <attr name="alignLeft" format="dimension"/>
+    </declare-styleable>
 </resources>
 

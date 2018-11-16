@@ -260,6 +260,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvOtherSide;
     @BindView(R.id.rl_guard_number)
     RelativeLayout rlGuardNumber;
+    @BindView(R.id.rl_other_side_info)
+    RelativeLayout rlOtherSideInfo;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -911,6 +913,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             pkControl.setTvCountDown(tvCountDown);
             pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
             pkControl.setOtherLive(textureView2);
+            pkControl.setOtherSideInfo(rlOtherSideInfo);
         }
         pkControl.setBean(bean);
         pkControl.init();
@@ -1086,10 +1089,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void initRunWay() {
-        if (mRunWayGiftControl == null) {
+//        if (mRunWayGiftControl == null) {
             mRunWayGiftControl = new RunWayGiftControl(runWayText, frameSupercarTrack, ivRocket);
             mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
-        }
+//        }
     }
 
     @Override
@@ -1231,6 +1234,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setTvCountDown(tvCountDown);
         pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
         pkControl.setOtherLive(textureView2);
+        pkControl.setOtherSideInfo(rlOtherSideInfo);
 
         if (bean.otherStream != null) {
             rlOtherSide.setVisibility(View.VISIBLE);

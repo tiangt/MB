@@ -104,17 +104,18 @@ public class PkControl {
     private PopupWindow pkResultPop;
     private SVGAImageView svgaImageView;
     private PopupWindow mvpWindow;
-
+    private ImageView ivCountDown;
     private ImageView ivClose;
     private RecyclerView rvPunishment;
     private Button btnPunishment;
+    private RelativeLayout rlOtherSideInfo;
+
     private BaseListAdapter mvpAdapter;
     private int punishWayId;
     private String punishWayName;
     private long mUserId;
     private String streamAddress;
     private String streamType;
-    private ImageView ivCountDown;
     private List<PunishWaysBean.ListBean> punishWays = new ArrayList<>();
     private List<Boolean> mSelectedList;
     private long mvpUserId;
@@ -162,6 +163,10 @@ public class PkControl {
 
     public void setOtherLive(KSYTextureView ksyTextureView) {
         this.ksyTextureView = ksyTextureView;
+    }
+
+    public void setOtherSideInfo(RelativeLayout otherPkInfo){
+        this.rlOtherSideInfo = otherPkInfo;
     }
 
     public void init() {
@@ -293,7 +298,7 @@ public class PkControl {
             }
         });
 
-        layout.setOnClickListener(new View.OnClickListener() {
+        rlOtherSideInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showJumpLiveHouseDialog(jumpProgramId, jumpNick);
@@ -354,7 +359,11 @@ public class PkControl {
                 if (pkLayout.getProgressBar().getProgress() > 50) {
                     if (bean.mvpUser != null) {
                         if (bean.mvpUser.userId == mUserId) {
-                            showPunishment();
+                            if (TextUtils.isEmpty(bean.punishWay) && "".equals(bean.punishWay)) {
+                                pkLayout.setPunishWay(bean.punishWay);
+                            } else {
+                                showPunishment();
+                            }
                         } else {
                             pkLayout.setPunishWay(bean.punishWay);
                         }
@@ -362,7 +371,11 @@ public class PkControl {
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
                     if (bean.mvpUser != null) {
                         if (bean.mvpUser.userId == mUserId) {
-                            showPunishment();
+                            if (TextUtils.isEmpty(bean.punishWay) && "".equals(bean.punishWay)) {
+                                pkLayout.setPunishWay(bean.punishWay);
+                            } else {
+                                showPunishment();
+                            }
                         } else {
                             pkLayout.setPunishWay(bean.punishWay);
                         }
@@ -378,7 +391,7 @@ public class PkControl {
                     endPkCountDown();
                 }
             });
-            layout.setOnClickListener(new View.OnClickListener() {
+            rlOtherSideInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showJumpLiveHouseDialog(jumpProgramId, jumpNick);
@@ -523,7 +536,7 @@ public class PkControl {
                 }
             }
         });
-        Log.d("chenliang","nickName = "+bean.mvpUser.nickname+", userId = "+bean.mvpUser.userId);
+        Log.d("chenliang", "nickName = " + bean.mvpUser.nickname + ", userId = " + bean.mvpUser.userId);
         if (null != bean.mvpUser) {
             mvpName.setText(bean.mvpUser.nickname);
             mvpUserId = bean.mvpUser.userId;

@@ -48,7 +48,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private final int PK_THIRD = 2;
 
     private View inflate;
-    private ProgressBar progressBar;
+    private PkProgressView progressBar;
     private Context context;
     private TextView tvTime;
     private Disposable disposable;
@@ -82,8 +82,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     public PkLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PkLayout);
-        initializeProgress = typedArray.getInt(R.styleable.PkLayout_progress, 50);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PkProgressView);
+        initializeProgress = typedArray.getInt(R.styleable.PkProgressView_defaultPercent, 50);
         init(context);
         initPop(context);
     }
@@ -265,10 +265,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void setProgress(int progress) {
-        progressBar.setProgress(progress);
+        progressBar.setDefaultPercent(progress);
     }
 
-    public ProgressBar getProgressBar() {
+    public PkProgressView getProgressBar() {
         return progressBar;
     }
 
