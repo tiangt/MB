@@ -250,7 +250,16 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- 处理以"app_name://page/type"开头的 URI -->
+                <data android:scheme="mengbi" />
+                <data android:host="play" />
+                <data android:path="/home" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.activity.LoginActivity"
             android:launchMode="singleTop"/>
         <activity
