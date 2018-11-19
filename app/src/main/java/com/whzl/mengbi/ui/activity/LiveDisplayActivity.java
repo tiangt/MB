@@ -1518,6 +1518,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView2 != null) {
             textureView2.runInBackground(true);
         }
+        pkLayout.destroy();
     }
 
     @Override
@@ -1530,6 +1531,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView2.runInForeground();
         }
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        mLivePresenter.getPkInfo(mProgramId);
     }
 
     @Override

@@ -24,6 +24,7 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -238,6 +239,11 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             }
             showRanking(position, ivPkLevel);
         }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+        }
     }
 
     class PKOppoViewHolder extends BaseViewHolder {
@@ -296,30 +302,33 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         if (aLong < second - 1) {
                             if ("惩罚时刻 ".equals(state)) {
                                 if ((second - aLong - 1) > (second - 61)) {
-                                    if (!TextUtils.isEmpty(mvpPunishWay) && !"".equals(mvpPunishWay)) {
+                                    if (!TextUtils.isEmpty(mvpPunishWay)) {
                                         //MVP挑选惩罚
                                         tvPkTitle.setText("惩罚:" + mvpPunishWay);
-                                    } else if (!TextUtils.isEmpty(punishWay) && !"".equals(punishWay)) {
+                                    } else if (!TextUtils.isEmpty(punishWay)) {
                                         //非MVP接受到的惩罚
                                         tvPkTitle.setText("惩罚:" + punishWay);
                                     } else {
                                         tvPkTitle.setText("MVP挑选惩罚^ ");
-                                        if (clickLintener != null) {
-                                            clickLintener.onClick();
-                                        }
                                     }
                                     tvTime.setText((second - aLong - 1) + "s");
                                 } else {
                                     //惩罚倒计时60秒后
-                                    if (TextUtils.isEmpty(mvpPunishWay) || "".equals(mvpPunishWay)
-                                            || TextUtils.isEmpty(punishWay) || "".equals(punishWay)) {
+                                    if (TextUtils.isEmpty(mvpPunishWay) || TextUtils.isEmpty(punishWay)) {
                                         if (mvpPopupWindow != null) {
                                             mvpPopupWindow.dismiss();
                                         }
                                         //未选择惩罚内容
-                                        if (TextUtils.isEmpty(mvpPunishWay) || "".equals(mvpPunishWay)
-                                                || TextUtils.isEmpty(punishWay) || "".equals(punishWay)) {
-                                            tvPkTitle.setText("惩罚:自定义");
+                                        if (TextUtils.isEmpty(mvpPunishWay)) {
+                                            if(TextUtils.isEmpty(punishWay)){
+                                                tvPkTitle.setText("惩罚:自定义");
+                                                tvTime.setText((second - aLong - 1) + "s");
+                                            }else{
+                                                tvPkTitle.setText("惩罚:"+punishWay);
+                                                tvTime.setText((second - aLong - 1) + "s");
+                                            }
+                                        }else{
+                                            tvPkTitle.setText("惩罚:"+mvpPunishWay);
                                             tvTime.setText((second - aLong - 1) + "s");
                                         }
                                     } else {
@@ -346,7 +355,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                     } else if (aLong >= second - 1) {
                         LogUtils.e("ssssss  state dispose");
                         popupWindow.dismiss();
-                        disposable.dispose();
+//                        disposable.dispose();
                     }
                 });
 

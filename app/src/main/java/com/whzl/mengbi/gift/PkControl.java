@@ -124,6 +124,7 @@ public class PkControl {
     private String rightAvatar;
     private List<PKFansBean> pkUserFansBeans = new ArrayList<>();
     private List<PKFansBean> launchPkUserFansBeans = new ArrayList<>();
+    private boolean isClose;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -183,7 +184,6 @@ public class PkControl {
                 if (bean.launchUserProgramId == mProgramId) {
                     leftAvatar = bean.launchPkUserInfo.avatar;
                     rightAvatar = bean.pkUserInfo.avatar;
-                    Log.d("chenliang", "leftAvatar --- "+leftAvatar+", rightAvatar --- "+rightAvatar);
                     GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
                     tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
@@ -199,7 +199,6 @@ public class PkControl {
                 } else if (bean.pkUserProgramId == mProgramId) {
                     leftAvatar = bean.pkUserInfo.avatar;
                     rightAvatar = bean.launchPkUserInfo.avatar;
-                    Log.d("chenliang", "leftAvatar +++ "+leftAvatar+", rightAvatar +++ "+rightAvatar);
                     GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, ivRightHead);
                     tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
@@ -264,22 +263,23 @@ public class PkControl {
                 if (null != pkResultPop) {
                     pkResultPop.dismiss();
                 }
-                if (mvpUserId != 0) {
+                Log.i("chenliang", "PUNISHMENT = " + bean.punishWay);
+                if (mvpUserId != 0 && TextUtils.isEmpty(bean.punishWay)) {
                     if (mvpUserId == mUserId) {
                         showPunishment(true);
+                    } else {
+                        showPunishment(false);
                     }
-                }
-
-                if (!TextUtils.isEmpty(bean.punishWay) && !"".equals(bean.punishWay)) {
+                } else  {
                     showPunishment(false);
                     pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                 }
                 break;
             case "PK_TIE_FINISH"://平局时间结束
                 layout.setVisibility(View.GONE);
-                pkResultPop.dismiss();
                 pkLayout.reset();
                 pkLayout.setVisibility(View.GONE);
+                pkResultPop.dismiss();
                 break;
             case "PK_PUNISH_FINISH"://惩罚时间结束
                 layout.setVisibility(View.GONE);
@@ -318,6 +318,8 @@ public class PkControl {
             if (mProgramId == bean.launchPkUserProgramId) {
                 myPkInfo = bean.launchUserInfo;
                 otherPkInfo = bean.pkUserInfo;
+                leftAvatar = bean.launchUserInfo.avatar;
+                rightAvatar = bean.pkUserInfo.avatar;
                 GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
                 tvRightName.setText(bean.pkUserInfo.nickname);
                 pkLayout.setLeftScore(bean.launchPkUserScore);
@@ -335,6 +337,8 @@ public class PkControl {
             } else if (mProgramId == bean.pkUserProgramId) {
                 myPkInfo = bean.pkUserInfo;
                 otherPkInfo = bean.launchUserInfo;
+                leftAvatar = bean.launchUserInfo.avatar;
+                rightAvatar = bean.pkUserInfo.avatar;
                 GlideImageLoader.getInstace().displayImage(context, bean.launchUserInfo.avatar, ivRightHead);
                 tvRightName.setText(bean.launchUserInfo.nickname);
                 pkLayout.setLeftScore(bean.pkUserScore);
@@ -360,14 +364,15 @@ public class PkControl {
                 }
             }
             if ("T".equals(bean.punishStatus)) {
+                Log.i("chenliang","INITNET_PUNISH = "+bean.punishWay);
                 pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
                     if (bean.mvpUser != null) {
                         if (bean.mvpUser.userId == mUserId) {
-                            if (TextUtils.isEmpty(bean.punishWay) && "".equals(bean.punishWay)) {
-                                pkLayout.setPunishWay(bean.punishWay, mvpWindow);
-                            } else {
+                            if (TextUtils.isEmpty(bean.punishWay)) {
                                 showPunishment(true);
+                            } else {
+                                pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                             }
                         } else {
                             showPunishment(false);
@@ -377,10 +382,10 @@ public class PkControl {
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
                     if (bean.mvpUser != null) {
                         if (bean.mvpUser.userId == mUserId) {
-                            if (TextUtils.isEmpty(bean.punishWay) && "".equals(bean.punishWay)) {
-                                pkLayout.setPunishWay(bean.punishWay, mvpWindow);
-                            } else {
+                            if (TextUtils.isEmpty(bean.punishWay)) {
                                 showPunishment(true);
+                            } else {
+                                pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                             }
                         } else {
                             showPunishment(false);
@@ -404,7 +409,12 @@ public class PkControl {
                     showJumpLiveHouseDialog(jumpProgramId, jumpNick);
                 }
             });
-            pkLayout.setPkFanRank(bean.pkUserFans, bean.launchPkUserFans);
+            if (mProgramId == bean.launchPkUserProgramId) {
+                pkLayout.setPkFanRank(bean.launchPkUserFans, bean.pkUserFans);
+            } else {
+                pkLayout.setPkFanRank(bean.pkUserFans, bean.launchPkUserFans);
+            }
+
         }
     }
 
@@ -547,11 +557,9 @@ public class PkControl {
             mvpName.setText(bean.mvpUser.nickname);
             mvpUserId = bean.mvpUser.userId;
         }
-        Log.d("chenliang", "leftAvatar = " + leftAvatar + ", rightAvatar = " + rightAvatar);
         if (status == 0) {
             leftResult.setText("平");
             rightResult.setText("平");
-            mvpTitle.setVisibility(View.INVISIBLE);
             GlideImageLoader.getInstace().displayImage(context, leftAvatar, ivLeftAvatar);
             GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightAvatar);
         } else if (status == 1) {
@@ -600,9 +608,11 @@ public class PkControl {
             @Override
             public void onClick(View v) {
                 mvpWindow.dismiss();
+                isClose = true;
             }
         });
 
+//        if (!isClose) {
         pkLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -620,7 +630,7 @@ public class PkControl {
         rvPunishment.setFocusableInTouchMode(false);
         rvPunishment.setHasFixedSize(true);
         rvPunishment.setLayoutManager(new GridLayoutManager(context, 3));
-        rvPunishment.addItemDecoration(new SpacesItemDecoration(5));
+        rvPunishment.addItemDecoration(new SpacesItemDecoration(10));
         mvpAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
@@ -743,6 +753,7 @@ public class PkControl {
                     @Override
                     public void onSuccess(PunishWaysBean dataBean) {
                         if (dataBean != null) {
+                            punishWays.clear();
                             for (int i = 0; i < dataBean.getList().size(); i++) {
                                 punishWays.add(dataBean.getList().get(i));
                                 mSelectedList.add(false);
