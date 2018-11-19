@@ -322,6 +322,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ArrayList<Boolean> mSelectedList;
     private BaseListAdapter mvpAdapter;
     private BaseAwesomeDialog dialog;
+    private Disposable roomRankTotalDisposable;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -657,7 +658,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getAudienceList(mProgramId);
         mLivePresenter.getGuardTotal(mProgramId);
-        mLivePresenter.getRoomRankTotal(mProgramId, "sevenDay");
+        roomRankTotalDisposable = Observable.interval(0, 10, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            mLivePresenter.getRoomRankTotal(mProgramId, "sevenDay");
+        });
     }
 
     private void getRoomToken() {
@@ -1597,6 +1600,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (grandDisposable != null) {
             grandDisposable.dispose();
             LogUtils.e("ssssss  timerGrand dispose");
+        }
+        if (roomRankTotalDisposable != null) {
+            roomRankTotalDisposable.dispose();
         }
     }
 
