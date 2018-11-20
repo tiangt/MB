@@ -34,11 +34,15 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
     private float temp_view_plus_two_text_length = 0.0f;//用于计算的临时变量
     public boolean isStarting = false;//是否开始滚动
     private Paint paint = null;//绘图样式
-    private String text = "";//文本内容
+    private String text ;//文本内容
 
     private float mTextSize;//This is text size
     private int mTextColor; //This is text color
     private int scrollTimes = 1;
+
+    public void setScrollTimes(int scrollTimes) {
+        this.scrollTimes = scrollTimes;
+    }
 
     public AutoScrollTextView3(Context context) {
         super(context, null);
@@ -193,15 +197,15 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         }
         step += 1.0;
         if (scrollTimes < 3) {
-            if (step > viewWidth+textLength) {
+            if (step > viewWidth + textLength) {
                 step = 0;
                 scrollTimes += 1;
             }
         } else {
             if (step == viewWidth) {
                 step = viewWidth;
-                if (listener != null) {
-                    listener.stopScroll();
+                if (runStateListener != null) {
+                    runStateListener.finishSingleRun();
                 }
                 isStarting = false;
             }
@@ -225,5 +229,15 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
 
     public void setOnMarqueeListener(MarqueeStateListener listener) {
         this.listener = listener;
+    }
+
+    private RunStateListener runStateListener;
+
+    public interface RunStateListener {
+        void finishSingleRun();
+    }
+
+    public void setOnRunStateListener(RunStateListener runStateListener) {
+        this.runStateListener = runStateListener;
     }
 }

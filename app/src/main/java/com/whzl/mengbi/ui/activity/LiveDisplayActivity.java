@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -20,6 +21,9 @@ import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -74,6 +78,7 @@ import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.GuardCountEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -148,6 +153,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -323,6 +330,33 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseListAdapter mvpAdapter;
     private BaseAwesomeDialog dialog;
     private Disposable roomRankTotalDisposable;
+    private String strHostName;
+    private MaqrueeTask task;
+
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                tvHostName.init(getWindowManager(), getMarqueeWidth());
+                tvHostName.setTextColor(Color.WHITE);
+                tvHostName.setScrollTimes(1);
+                tvHostName.startScroll();
+            }
+        }
+    };
+
+    private Timer timer = new Timer(true);
+
+    private class MaqrueeTask extends TimerTask {
+
+        @Override
+        public void run() {
+            Message msg = new Message();
+            msg.what = 1;
+            handler.sendMessage(msg);
+        }
+    }
+
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -443,28 +477,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initVp() {
         mGrandAdaper = new CircleFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
         vpActivity.setAdapter(mGrandAdaper);
-    }
-
-    private void startPKAnim() {
-        svgaStartPk.setLoops(1);
-        SVGAParser parser = new SVGAParser(this);
-        try {
-            parser.parse("start_pk.svga", new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    svgaStartPk.setImageDrawable(drawable);
-                    svgaStartPk.startAnimation();
-                }
-
-                @Override
-                public void onError() {
-
-                }
-            });
-        } catch (Exception e) {
-            System.out.print(true);
-        }
     }
 
     private void initBanner() {
@@ -976,17 +988,21 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 fragment.setUpWithAnchor(mAnchor);
                 GlideImageLoader.getInstace().circleCropImage(this, mAnchor.getAvatar(), ivHostAvatar);
 
+                strHostName = mAnchor.getName();
                 tvHostName.setText(mAnchor.getName());
                 tvHostName.init(getWindowManager(), getMarqueeWidth());
                 tvHostName.setTextColor(Color.WHITE);
                 tvHostName.startScroll();
-//                mTimer.schedule(mTimerTask, 5000, 5000);
-//                tvHostName.setOnMarqueeListener(new AutoScrollTextView3.MarqueeStateListener() {
-//                    @Override
-//                    public void stopScroll() {
-//
-//                    }
-//                });
+                tvHostName.setOnRunStateListener(new AutoScrollTextView3.RunStateListener() {
+                    @Override
+                    public void finishSingleRun() {
+                        if (task != null) {
+                            task.cancel();
+                        }
+                        task = new MaqrueeTask();
+                        timer.schedule(task, 5000, 5000);
+                    }
+                });
             }
             if (roomInfoBean.getData().getStream() != null) {
                 setupPlayerSize(roomInfoBean.getData().getStream().getHeight(), roomInfoBean.getData().getStream().getWidth());
@@ -1093,8 +1109,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initRunWay() {
 //        if (mRunWayGiftControl == null) {
-            mRunWayGiftControl = new RunWayGiftControl(runWayText, frameSupercarTrack, ivRocket);
-            mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
+        mRunWayGiftControl = new RunWayGiftControl(runWayText, frameSupercarTrack, ivRocket);
+        mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
 //        }
     }
 
@@ -1439,6 +1455,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         }
         showGuard(event.avatar, event.nickName);
+        mLivePresenter.getGuardTotal(mProgramId);
+        LogUtils.e("guard-------");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1521,6 +1539,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView2 != null) {
             textureView2.runInBackground(true);
         }
+        if (timer != null) {
+            timer.cancel();
+        }
         pkLayout.destroy();
     }
 
@@ -1559,6 +1580,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         if (mvpWindow != null && mvpWindow.isShowing()) {
             mvpWindow.dismiss();
+        }
+
+        if (timer != null) {
+            timer.cancel();
         }
     }
 

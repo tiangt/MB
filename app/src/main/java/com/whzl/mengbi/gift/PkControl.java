@@ -125,6 +125,7 @@ public class PkControl {
     private List<PKFansBean> pkUserFansBeans = new ArrayList<>();
     private List<PKFansBean> launchPkUserFansBeans = new ArrayList<>();
     private boolean isClose;
+    private String punishment;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -264,13 +265,14 @@ public class PkControl {
                     pkResultPop.dismiss();
                 }
                 Log.i("chenliang", "PUNISHMENT = " + bean.punishWay);
+                punishment = bean.punishWay;
                 if (mvpUserId != 0 && TextUtils.isEmpty(bean.punishWay)) {
                     if (mvpUserId == mUserId) {
                         showPunishment(true);
                     } else {
                         showPunishment(false);
                     }
-                } else  {
+                } else {
                     showPunishment(false);
                     pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                 }
@@ -364,10 +366,11 @@ public class PkControl {
                 }
             }
             if ("T".equals(bean.punishStatus)) {
-                Log.i("chenliang","INITNET_PUNISH = "+bean.punishWay);
+                Log.i("chenliang", "INITNET_PUNISH = " + bean.punishWay);
                 pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
                     if (bean.mvpUser != null) {
+                        punishment = bean.punishWay;
                         if (bean.mvpUser.userId == mUserId) {
                             if (TextUtils.isEmpty(bean.punishWay)) {
                                 showPunishment(true);
@@ -381,6 +384,7 @@ public class PkControl {
                     }
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
                     if (bean.mvpUser != null) {
+                        punishment = bean.punishWay;
                         if (bean.mvpUser.userId == mUserId) {
                             if (TextUtils.isEmpty(bean.punishWay)) {
                                 showPunishment(true);
@@ -537,6 +541,7 @@ public class PkControl {
         TextView mvpTitle = popView.findViewById(R.id.tv_mvp_title);
         CircleImageView ivLeftAvatar = popView.findViewById(R.id.iv_left_avatar);
         CircleImageView ivRightAvatar = popView.findViewById(R.id.iv_right_avatar);
+        LinearLayout llMsg = popView.findViewById(R.id.ll_msg);
         TextView mvpName = popView.findViewById(R.id.tv_mvp_name);
         int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
@@ -560,6 +565,8 @@ public class PkControl {
         if (status == 0) {
             leftResult.setText("平");
             rightResult.setText("平");
+            mvpTitle.setVisibility(View.GONE);
+            llMsg.setVisibility(View.GONE);
             GlideImageLoader.getInstace().displayImage(context, leftAvatar, ivLeftAvatar);
             GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightAvatar);
         } else if (status == 1) {
@@ -612,15 +619,27 @@ public class PkControl {
             }
         });
 
-//        if (!isClose) {
-        pkLayout.post(new Runnable() {
+        if (TextUtils.isEmpty(punishment)) {
+            pkLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        PopupWindowCompat.showAsDropDown(mvpWindow, pkLayout, offsetX, offsetY, Gravity.START);
+                    }
+                }
+            });
+        }
+
+        pkLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
+            public void onClick(View v) {
+                showToast("12312");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     PopupWindowCompat.showAsDropDown(mvpWindow, pkLayout, offsetX, offsetY, Gravity.START);
                 }
             }
         });
+
         getPunishWays();
     }
 
