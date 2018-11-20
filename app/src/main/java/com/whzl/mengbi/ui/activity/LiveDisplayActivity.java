@@ -984,16 +984,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 tvHostName.setTextColor(Color.WHITE);
                 tvHostName.startScroll();
 
-                tvHostName.setOnRunStateListener(new AutoScrollTextView3.RunStateListener() {
-                    @Override
-                    public void finishSingleRun() {
-                        if (task != null) {
-                            task.cancel();
-                        }
-                        task = new MaqrueeTask();
-                        timer.schedule(task, 5 * 1000, 5 * 1000);
-                    }
-                });
+//                tvHostName.setOnRunStateListener(new AutoScrollTextView3.RunStateListener() {
+//                    @Override
+//                    public void finishSingleRun() {
+//                        if (task != null) {
+//                            task.cancel();
+//                        }
+//                        task = new MaqrueeTask();
+//                        timer.schedule(task, 5 * 1000, 5 * 1000);
+//                    }
+//                });
             }
             if (roomInfoBean.getData().getStream() != null) {
                 setupPlayerSize(roomInfoBean.getData().getStream().getHeight(), roomInfoBean.getData().getStream().getWidth());
