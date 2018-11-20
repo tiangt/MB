@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class RunWayListBean {
 
-    public List<RunWayJson.ContextEntity> list;
+    public List<RunwayBean.ContextEntity> list;
 
-    public class Conte {
+    public class ContextEntity {
         /**
          * userId : 30000254
          * toUserId : 30000139

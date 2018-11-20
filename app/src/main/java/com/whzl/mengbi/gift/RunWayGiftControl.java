@@ -35,13 +35,11 @@ public class RunWayGiftControl {
     }
 
     public void load(RunWayEvent event) {
-        Log.i("chenliang", "Run = " + event.getRunWayJson().getContext().getRunwayType());
-        Log.i("chenliang", "CacheIt = " + event.getRunWayJson().getContext().isCacheIt());
         if (event == null || event.getRunWayJson() == null
                 || event.getRunWayJson().getContext() == null) {
             return;
         }
-        String type = event.getRunWayJson().getContext().getRunwayType();
+        String type = event.getRunWayJson().getContext().getRunWayType();
         trackAnim = new TrackAnim(frameLayout, imageView);
         if (!autoScrollView.isStarting) {
             frameLayout.setVisibility(View.VISIBLE);
@@ -82,6 +80,52 @@ public class RunWayGiftControl {
         runwayQueue.add(event);
     }
 
+    public void loadNet(RunWayEvent event){
+        if (event == null || event.getRunwayBean() == null
+                || event.getRunwayBean().getContext() == null) {
+            return;
+        }
+        String type = event.getRunwayBean().getContext().getRunwayType();
+        trackAnim = new TrackAnim(frameLayout, imageView);
+        if (!autoScrollView.isStarting) {
+            frameLayout.setVisibility(View.VISIBLE);
+            if ("destroy".equals(type)) {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+            } else {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+            }
+            autoScrollView.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            trackAnim.startAnim();
+            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
+                @Override
+                public void onAnimationEnd() {
+                    startNetRun(event);
+                }
+            });
+        }
+
+        if (autoScrollView.isStarting) {
+            frameLayout.clearAnimation();
+            frameLayout.setVisibility(View.VISIBLE);
+            if ("destroy".equals(type)) {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+            } else {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+            }
+            autoScrollView.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+            trackAnim.startAnim();
+            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
+                @Override
+                public void onAnimationEnd() {
+                    startNetRun(event);
+                }
+            });
+        }
+        runwayQueue.add(event);
+    }
+
     private synchronized void startRun(RunWayEvent event) {
         if (autoScrollView == null) {
             return;
@@ -100,6 +144,29 @@ public class RunWayGiftControl {
                 runwayQueue.remove(0);
             } else if (cacheEvent != null && !cacheEvent.equals(autoScrollView.getRunWayEvent())) {
                 startRun(cacheEvent);
+            }
+        });
+        autoScrollView.startScroll();
+    }
+
+    private synchronized void startNetRun(RunWayEvent event) {
+        if (autoScrollView == null) {
+            return;
+        }
+        if (event.getRunwayBean().getContext().isCacheIt()) {
+            cacheEvent = event;
+        }
+        autoScrollView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClick(event.getRunwayBean().getContext().getProgramId(), event.getRunwayBean().getContext().getToNickname());
+            }
+        });
+        autoScrollView.initNet(event, () -> {
+            if (runwayQueue.size() > 0) {
+                startNetRun(runwayQueue.get(0));
+                runwayQueue.remove(0);
+            } else if (cacheEvent != null && !cacheEvent.equals(autoScrollView.getRunWayEvent())) {
+                startNetRun(cacheEvent);
             }
         });
         autoScrollView.startScroll();

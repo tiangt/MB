@@ -118,6 +118,15 @@
                         android:text="0票"
                         android:textColor="@color/white"
                         android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tv_fans_rank"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="点击打开助力粉丝榜"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"/>
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>

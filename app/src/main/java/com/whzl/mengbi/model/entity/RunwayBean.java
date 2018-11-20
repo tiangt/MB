@@ -1,7 +1,10 @@
-package com.whzl.mengbi.chat.room.message.messageJson;
+package com.whzl.mengbi.model.entity;
 
-public class RunWayJson {
-
+/**
+ * @author cliang
+ * @date 2018.11.20
+ */
+public class RunwayBean {
     /**
      * platform : MOBILE
      * eventCode : RUNWAY
@@ -70,10 +73,10 @@ public class RunWayJson {
         private int goodsPicId;
         private String toNickname;
         private String goodsName;
-        private String runWayType;
+        private String runwayType;
 
-        public String getRunWayType() {
-            return runWayType;
+        public String getRunwayType() {
+            return runwayType;
         }
 
         public int getProgramId() {

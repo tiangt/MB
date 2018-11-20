@@ -73,6 +73,31 @@ public class AutoScrollTextView extends AppCompatTextView {
         viewWidth = UIUtil.getScreenWidthPixels(getContext()) - UIUtil.dip2px(getContext(), 120);
     }
 
+    public void initNet(RunWayEvent event, RunStateListener listener) {
+        runWayEvent = event;
+        flagIsCacheTimeOut = false;
+        this.listener = listener;
+        setVisibility(GONE);
+        try {
+            event.showNetRunWay(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        paint = getPaint();
+        String text = getText().toString();
+        step = 0f;
+        textLength = paint.measureText(text);
+        maxTranslateX = textLength + viewWidth + 50;
+        dispose();
+        if (event.getRunwayBean().getContext().isCacheIt()) {
+            event.setHasRuned(true);
+            mDispose = Observable.just(1)
+                    .delay(event.getRunwayBean().getContext().getSeconds(), TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(integer -> flagIsCacheTimeOut = true);
+        }
+    }
+
     public void init(RunWayEvent event, RunStateListener listener) {
         runWayEvent = event;
         flagIsCacheTimeOut = false;

@@ -265,7 +265,7 @@
                                 android:textColor="@color/white"
                                 android:textSize="10sp"
                                 android:singleLine="true"
-                                android:maxLength="5"
+                                android:maxEms="5"
                                 android:ellipsize="end"
                                 android:layout_centerInParent="true"
                                 android:layout_marginLeft="8dp"

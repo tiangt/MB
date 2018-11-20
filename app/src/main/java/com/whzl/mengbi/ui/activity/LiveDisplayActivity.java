@@ -102,6 +102,7 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.RunwayBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
@@ -337,9 +338,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 1) {
+                tvHostName.setText(strHostName);
                 tvHostName.init(getWindowManager(), getMarqueeWidth());
                 tvHostName.setTextColor(Color.WHITE);
-                tvHostName.setScrollTimes(1);
                 tvHostName.startScroll();
             }
         }
@@ -1091,16 +1092,26 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
             DownloadImageFile downloadImageFile = new DownloadImageFile(imageSpanList -> {
                 for (int i = 0; i < runWayListBean.list.size(); i++) {
-                    RunWayJson runWayJson = new RunWayJson();
-                    runWayJson.setContext(runWayListBean.list.get(i));
+//                    RunWayJson runWayJson = new RunWayJson();
+//                    runWayJson.setContext(runWayListBean.list.get(i));
+//                    RunWayEvent event;
+//                    if (imageSpanList == null) {
+//                        event = new RunWayEvent(runWayJson, null);
+//                    } else {
+//                        event = new RunWayEvent(runWayJson, imageSpanList.get(i));
+//                    }
+//                    initRunWay();
+//                    mRunWayGiftControl.load(event);
+                    RunwayBean runWayBean = new RunwayBean();
+                    runWayBean.setContext(runWayListBean.list.get(i));
                     RunWayEvent event;
                     if (imageSpanList == null) {
-                        event = new RunWayEvent(runWayJson, null);
+                        event = new RunWayEvent(runWayBean, null);
                     } else {
-                        event = new RunWayEvent(runWayJson, imageSpanList.get(i));
+                        event = new RunWayEvent(runWayBean, imageSpanList.get(i));
                     }
                     initRunWay();
-                    mRunWayGiftControl.load(event);
+                    mRunWayGiftControl.loadNet(event);
                 }
             });
             downloadImageFile.doDownload(imageUrlList, this);

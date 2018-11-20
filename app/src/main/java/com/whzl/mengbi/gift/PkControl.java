@@ -38,6 +38,7 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
@@ -183,8 +184,8 @@ public class PkControl {
                 startCountDown(5);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
                 if (bean.launchUserProgramId == mProgramId) {
-                    leftAvatar = bean.launchPkUserInfo.avatar;
-                    rightAvatar = bean.pkUserInfo.avatar;
+                    leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserId,"jpg",System.currentTimeMillis());
+                    rightAvatar = ImageUrl.getAvatarUrl(bean.pkUserId,"jpg",System.currentTimeMillis());
                     GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
                     tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
@@ -198,8 +199,8 @@ public class PkControl {
                         otherSideLive();
                     }
                 } else if (bean.pkUserProgramId == mProgramId) {
-                    leftAvatar = bean.pkUserInfo.avatar;
-                    rightAvatar = bean.launchPkUserInfo.avatar;
+                    leftAvatar = ImageUrl.getAvatarUrl(bean.pkUserId,"jpg",System.currentTimeMillis());
+                    rightAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserId,"jpg",System.currentTimeMillis());
                     GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, ivRightHead);
                     tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
@@ -264,7 +265,6 @@ public class PkControl {
                 if (null != pkResultPop) {
                     pkResultPop.dismiss();
                 }
-                Log.i("chenliang", "PUNISHMENT = " + bean.punishWay);
                 punishment = bean.punishWay;
                 if (mvpUserId != 0 && TextUtils.isEmpty(bean.punishWay)) {
                     if (mvpUserId == mUserId) {
@@ -366,7 +366,6 @@ public class PkControl {
                 }
             }
             if ("T".equals(bean.punishStatus)) {
-                Log.i("chenliang", "INITNET_PUNISH = " + bean.punishWay);
                 pkLayout.timer("惩罚时刻 ", bean.punishSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
                     if (bean.mvpUser != null) {
@@ -698,8 +697,6 @@ public class PkControl {
                         btnPunishment.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                showToast(punishWays.get(position).getId() +
-                                        punishWays.get(position).getName());
                                 setMVPPunishment(punishWays.get(position).getId(),
                                         punishWays.get(position).getName());
                             }

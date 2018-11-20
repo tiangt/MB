@@ -71,6 +71,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private RelativeLayout rlPunishWay;
     private LinearLayout llPkProgress;
     private PopupWindow mvpPopupWindow;
+    private TextView tvFansRank;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -99,6 +100,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         tvRightScore = inflate.findViewById(R.id.tv_right_score);
         tvPkTitle = inflate.findViewById(R.id.tv_pk_title);
         rlPunishWay = inflate.findViewById(R.id.rl_punish_way);
+        tvFansRank = inflate.findViewById(R.id.tv_fans_rank);
         rlPunishWay.setOnClickListener(this::onClick);
         setProgress(initializeProgress);
     }
@@ -422,8 +424,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             case R.id.ll_pk_progress:
                 if (popupWindow != null) {
                     if (popupWindow.isShowing()) {
+                        tvFansRank.setText("点击关闭助力粉丝榜");
                         popupWindow.dismiss();
                     } else {
+                        tvFansRank.setText("点击打开助力粉丝榜");
                         showPopupWindow(v);
                     }
                 }
