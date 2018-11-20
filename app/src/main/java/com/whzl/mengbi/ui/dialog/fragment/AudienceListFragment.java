@@ -32,10 +32,13 @@ import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -45,6 +48,7 @@ import io.reactivex.schedulers.Schedulers;
 public class AudienceListFragment extends BaseListFragment<AudienceListBean.AudienceInfoBean> {
 
     private int mProgramId;
+    private Disposable disposable;
 
     public static AudienceListFragment newInstance(int programId) {
         AudienceListFragment fragment = new AudienceListFragment();
@@ -62,29 +66,32 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
 
     @Override
     protected void loadData() {
-        mProgramId = getArguments().getInt("programId");
-        HashMap paramsMap = new HashMap();
-        paramsMap.put("programId", mProgramId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
-        ApiFactory.getInstance().getApi(Api.class)
-                .getAudienceList(signPramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
-                    @Override
-                    public void onSuccess(AudienceListBean.DataBean dataBean) {
-                        if (dataBean != null) {
-                            loadSuccess(dataBean.getList());
-                        } else {
-                            loadSuccess(null);
+        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            mProgramId = getArguments().getInt("programId");
+            HashMap paramsMap = new HashMap();
+            paramsMap.put("programId", mProgramId);
+            HashMap signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
+            ApiFactory.getInstance().getApi(Api.class)
+                    .getAudienceList(signPramsMap)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
+                        @Override
+                        public void onSuccess(AudienceListBean.DataBean dataBean) {
+                            if (dataBean != null) {
+                                loadSuccess(dataBean.getList());
+                            } else {
+                                loadSuccess(null);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onError(int code) {
+                        @Override
+                        public void onError(int code) {
 
-                    }
-                });
+                        }
+                    });
+        });
+
     }
 
     class AudienceViewHolder extends BaseViewHolder {
@@ -166,6 +173,14 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             if (getActivity() != null) {
                 ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid(), true);
             }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(disposable != null){
+            disposable.dispose();
         }
     }
 }

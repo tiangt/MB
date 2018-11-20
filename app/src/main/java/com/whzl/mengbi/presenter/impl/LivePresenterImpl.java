@@ -50,7 +50,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     @Override
     public void getAudienceAccount(int programId) {
         liveModel.doAudienceAccount(programId, this);
-
     }
 
     @Override

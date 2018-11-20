@@ -24,17 +24,25 @@ import com.whzl.mengbi.util.UIUtil;
 public class AutoScrollTextView3 extends AppCompatTextView implements View.OnClickListener {
 
     public final static String TAG = AutoScrollTextView.class.getSimpleName();
+    private final float DEF_TEXT_SIZE = 13.0F;
 
-    private float textLength;//文本长度
-    private float viewWidth;
-    private float step;//文字的横坐标
-    private float y;//文字的纵坐标
+    private float textLength = 0f;//文本长度
+    private float viewWidth = 0f;
+    private float step = 0f;//文字的横坐标
+    private float y = 0f;//文字的纵坐标
+    private float temp_view_plus_text_length = 0.0f;//用于计算的临时变量
+    private float temp_view_plus_two_text_length = 0.0f;//用于计算的临时变量
     public boolean isStarting = false;//是否开始滚动
-    private Paint paint;//绘图样式
-    private String text;//文本内容
+    private Paint paint = null;//绘图样式
+    private String text ;//文本内容
 
+    private float mTextSize;//This is text size
     private int mTextColor; //This is text color
-    private int scrollTimes;
+    private int scrollTimes = 1;
+
+    public void setScrollTimes(int scrollTimes) {
+        this.scrollTimes = scrollTimes;
+    }
 
     public AutoScrollTextView3(Context context) {
         super(context, null);
@@ -57,12 +65,6 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
     }
 
     public void init(WindowManager windowManager, int width) {
-        paint = null;
-        scrollTimes = 1;
-        textLength = 0f;
-        viewWidth = 0f;
-        step = 0f;
-        y = 0f;
         paint = getPaint();
         text = getText().toString();
         textLength = paint.measureText(text);
@@ -204,6 +206,9 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
                 step = viewWidth;
                 if (runStateListener != null) {
                     runStateListener.finishSingleRun();
+                }
+                if(listener != null){
+                    listener.stopScroll();
                 }
                 isStarting = false;
             }

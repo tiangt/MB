@@ -333,12 +333,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Disposable roomRankTotalDisposable;
     private String strHostName;
     private MaqrueeTask task;
+    private Disposable roomOnlineDisposable;
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 1) {
-                tvHostName.setText(strHostName);
                 tvHostName.init(getWindowManager(), getMarqueeWidth());
                 tvHostName.setTextColor(Color.WHITE);
                 tvHostName.startScroll();
@@ -568,19 +568,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         layoutManager.setOrientation(AdaptiveLayoutManager.HORIZONTAL);
         layoutManager.setAutoMeasureEnabled(true);
         mAudienceRecycler.setLayoutManager(layoutManager);
-//        mGuardAdapter = new BaseListAdapter() {
-//            @Override
-//            protected int getDataCount() {
-//                return mGuardList == null ? 0 : 3;
-//            }
-//
-//            @Override
-//            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-//                View itemView = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.item_protect, parent, false);
-//                return new GuardViewHolder(itemView);
-//            }
-//        };
-
         if (mAudienceList != null) {
             pollAdapter = new AutoPollAdapter(this, mAudienceList);
             mAudienceRecycler.setAdapter(pollAdapter);
@@ -669,7 +656,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         mLivePresenter.getActivityList();
         mLivePresenter.getPkInfo(mProgramId);
-        mLivePresenter.getAudienceList(mProgramId);
+        roomOnlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            mLivePresenter.getAudienceList(mProgramId);
+        });
         mLivePresenter.getGuardTotal(mProgramId);
         roomRankTotalDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             mLivePresenter.getRoomRankTotal(mProgramId, "sevenDay");
@@ -994,6 +983,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 tvHostName.init(getWindowManager(), getMarqueeWidth());
                 tvHostName.setTextColor(Color.WHITE);
                 tvHostName.startScroll();
+
                 tvHostName.setOnRunStateListener(new AutoScrollTextView3.RunStateListener() {
                     @Override
                     public void finishSingleRun() {
@@ -1001,7 +991,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                             task.cancel();
                         }
                         task = new MaqrueeTask();
-                        timer.schedule(task, 5000, 5000);
+                        timer.schedule(task, 5 * 1000, 5 * 1000);
                     }
                 });
             }
@@ -1331,6 +1321,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (bean.getList() != null && bean.getList().size() != 0) {
             tvPopularity.setText(getString(R.string.audience, bean.total));
             mAudienceCount = bean.total;
+            mAudienceList.clear();
             if (bean.getList().size() > 50) {
                 for (int i = 1; i < 51; i++) {
                     //i=0为主播信息
@@ -1467,7 +1458,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         showGuard(event.avatar, event.nickName);
         mLivePresenter.getGuardTotal(mProgramId);
-        LogUtils.e("guard-------");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1639,6 +1629,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (roomRankTotalDisposable != null) {
             roomRankTotalDisposable.dispose();
+        }
+        if (roomOnlineDisposable != null) {
+            roomOnlineDisposable.dispose();
         }
     }
 

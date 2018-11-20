@@ -424,10 +424,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             case R.id.ll_pk_progress:
                 if (popupWindow != null) {
                     if (popupWindow.isShowing()) {
-                        tvFansRank.setText("点击关闭助力粉丝榜");
+                        tvFansRank.setText("点击打开助力粉丝榜");
                         popupWindow.dismiss();
                     } else {
-                        tvFansRank.setText("点击打开助力粉丝榜");
+                        tvFansRank.setText("点击关闭助力粉丝榜");
                         showPopupWindow(v);
                     }
                 }

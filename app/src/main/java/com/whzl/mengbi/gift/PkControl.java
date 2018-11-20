@@ -184,9 +184,9 @@ public class PkControl {
                 startCountDown(5);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
                 if (bean.launchUserProgramId == mProgramId) {
-                    leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserId,"jpg",System.currentTimeMillis());
-                    rightAvatar = ImageUrl.getAvatarUrl(bean.pkUserId,"jpg",System.currentTimeMillis());
-                    GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
+                    leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserId, "jpg", System.currentTimeMillis());
+                    rightAvatar = ImageUrl.getAvatarUrl(bean.pkUserId, "jpg", System.currentTimeMillis());
+                    GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightHead);
                     tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
                     jumpNick = bean.pkUserInfo.nickname;
@@ -199,9 +199,9 @@ public class PkControl {
                         otherSideLive();
                     }
                 } else if (bean.pkUserProgramId == mProgramId) {
-                    leftAvatar = ImageUrl.getAvatarUrl(bean.pkUserId,"jpg",System.currentTimeMillis());
-                    rightAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserId,"jpg",System.currentTimeMillis());
-                    GlideImageLoader.getInstace().displayImage(context, bean.launchPkUserInfo.avatar, ivRightHead);
+                    leftAvatar = ImageUrl.getAvatarUrl(bean.pkUserId, "jpg", System.currentTimeMillis());
+                    rightAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserId, "jpg", System.currentTimeMillis());
+                    GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightHead);
                     tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
                     jumpNick = bean.launchPkUserInfo.nickname;
@@ -294,6 +294,14 @@ public class PkControl {
                     pkLayout.setLeftPkFans(bean.userFans);
                 } else {
                     pkLayout.setRightPkFans(bean.userFans);
+                }
+                break;
+            case "PK_PUNISH_WAY": //惩罚方式
+                if (TextUtils.isEmpty(bean.punishWay)) {
+                    if(mvpWindow.isShowing()){
+                        mvpWindow.dismiss();
+                    }
+                    pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                 }
                 break;
 
