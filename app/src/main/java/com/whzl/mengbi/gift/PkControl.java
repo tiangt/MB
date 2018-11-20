@@ -253,6 +253,7 @@ public class PkControl {
                         showPKResult(2);
                     }
                 }
+                pkLayout.hidePkWindow();
                 break;
             case "PK_TIE_START"://平局时间开始
                 pkLayout.setVisibility(View.VISIBLE);

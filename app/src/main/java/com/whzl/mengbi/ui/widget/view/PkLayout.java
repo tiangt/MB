@@ -24,7 +24,6 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -322,15 +321,15 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                         }
                                         //未选择惩罚内容
                                         if (TextUtils.isEmpty(mvpPunishWay)) {
-                                            if(TextUtils.isEmpty(punishWay)){
+                                            if (TextUtils.isEmpty(punishWay)) {
                                                 tvPkTitle.setText("惩罚:自定义");
                                                 tvTime.setText((second - aLong - 1) + "s");
-                                            }else{
-                                                tvPkTitle.setText("惩罚:"+punishWay);
+                                            } else {
+                                                tvPkTitle.setText("惩罚:" + punishWay);
                                                 tvTime.setText((second - aLong - 1) + "s");
                                             }
-                                        }else{
-                                            tvPkTitle.setText("惩罚:"+mvpPunishWay);
+                                        } else {
+                                            tvPkTitle.setText("惩罚:" + mvpPunishWay);
                                             tvTime.setText((second - aLong - 1) + "s");
                                         }
                                     } else {
@@ -356,8 +355,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         }
                     } else if (aLong >= second - 1) {
                         LogUtils.e("ssssss  state dispose");
-                        popupWindow.dismiss();
-//                        disposable.dispose();
+                        if (disposable != null) {
+                            disposable.dispose();
+                        }
                     }
                 });
 
@@ -490,7 +490,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void hidePkWindow() {
-        if (popupWindow != null) {
+        if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
     }
