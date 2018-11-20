@@ -7,13 +7,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.whzl.mengbi.util.UIUtil;
+import com.whzl.mengbi.util.RxTimerUtil;
 
 /**
  * 主播昵称
@@ -34,7 +32,7 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
     private float temp_view_plus_two_text_length = 0.0f;//用于计算的临时变量
     public boolean isStarting = false;//是否开始滚动
     private Paint paint = null;//绘图样式
-    private String text ;//文本内容
+    private String text;//文本内容
 
     private float mTextSize;//This is text size
     private int mTextColor; //This is text color
@@ -191,6 +189,11 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
             } else {
                 canvas.drawText(text, viewWidth - step, y, paint);
             }
+            RxTimerUtil.timer(5 * 60 * 1000, number -> {
+                step = 0f;
+                scrollTimes = 1;
+                startScroll();
+            });
         }
         if (!isStarting) {
             return;
@@ -207,7 +210,7 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
                 if (runStateListener != null) {
                     runStateListener.finishSingleRun();
                 }
-                if(listener != null){
+                if (listener != null) {
                     listener.stopScroll();
                 }
                 isStarting = false;
