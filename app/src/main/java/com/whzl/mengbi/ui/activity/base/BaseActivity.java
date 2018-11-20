@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.activity.base;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.arch.lifecycle.Lifecycle;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.AutoDisposeConverter;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
+import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.contract.BaseView;
@@ -31,7 +33,7 @@ import butterknife.Unbinder;
 /**
  * @author shaw
  */
-public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView{
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity implements BaseView {
     protected T mPresenter;
 
     private static final String TAG_LOADING_DIALOG = "dialogLoading";
@@ -165,7 +167,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         return super.onOptionsItemSelected(item);
     }
 
-    protected void showLoading(String msg) {
+    public void showLoading(String msg) {
         if (dialog == null) {
             dialog = new ProgressDialog(this);
             dialog.setMessage(msg);
@@ -175,7 +177,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         dialog.show();
     }
 
-    protected void dismissLoading() {
+    public void dismissLoading() {
         if (dialog != null) {
             dialog.dismiss();
         }
@@ -207,4 +209,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 .from(this, Lifecycle.Event.ON_DESTROY));
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
 }
