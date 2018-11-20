@@ -99,7 +99,7 @@ public class NoChatMsg implements FillHolderMessage {
         mHolder.textView.append(LightSpanString.getLightString(" 被 ", Color.parseColor("#FFFF709F")));
         mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, ContextCompat.getColor(context, R.color.text_color_nochat_people)));
         String nochatContent = " 禁止发言" + period + "分钟";
-        mHolder.textView.append(LightSpanString.getLightString(nochatContent, R.color.text_color_nochat));
+        mHolder.textView.append(LightSpanString.getLightString(nochatContent, Color.parseColor("#FFFF709F")));
     }
 
     private void showRelieveNoChatMsg(RecyclerView.ViewHolder holder) {
@@ -111,7 +111,7 @@ public class NoChatMsg implements FillHolderMessage {
         mHolder.textView.append(LightSpanString.getLightString(" 被 ", Color.parseColor("#FFFF709F")));
         mHolder.textView.append(LightSpanString.getNickNameSpan(context, fromNickname, fromUid, programId, ContextCompat.getColor(context, R.color.text_color_nochat_people)));
         String nochatContent = " 解除禁言";
-        mHolder.textView.append(LightSpanString.getLightString(nochatContent, R.color.text_color_nochat));
+        mHolder.textView.append(LightSpanString.getLightString(nochatContent, Color.parseColor("#FFFF709F")));
     }
 
     private void showKickoutMsg(RecyclerView.ViewHolder holder) {

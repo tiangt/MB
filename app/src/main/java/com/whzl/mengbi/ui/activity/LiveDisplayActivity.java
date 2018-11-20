@@ -671,7 +671,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getAudienceList(mProgramId);
         mLivePresenter.getGuardTotal(mProgramId);
-        roomRankTotalDisposable = Observable.interval(0, 10, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+        roomRankTotalDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             mLivePresenter.getRoomRankTotal(mProgramId, "sevenDay");
         });
     }
