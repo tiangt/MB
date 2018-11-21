@@ -177,6 +177,7 @@ public class PkControl {
     }
 
     public void init() {
+        LogUtils.e("sssssss  " + bean.busiCode);
         switch (bean.busiCode) {
             case "PK_ACCEPT_REQUEST": //接收PK请求
                 pkLayout.setVisibility(View.VISIBLE);
@@ -306,7 +307,7 @@ public class PkControl {
                 break;
             case "PK_PUNISH_WAY": //惩罚方式
                 if (!TextUtils.isEmpty(bean.punishWay)) {
-                    if(mvpWindow.isShowing()){
+                    if (mvpWindow.isShowing()) {
                         mvpWindow.dismiss();
                     }
                     pkLayout.setPunishWay(bean.punishWay, mvpWindow);
@@ -330,6 +331,7 @@ public class PkControl {
     }
 
     public void initNet(PKResultBean bean) {
+        LogUtils.e("ssssssss  pkStatus " + bean.pkStatus + "    punishStatus  " + bean.punishStatus + "   tieStatus " + bean.tieStatus);
         if ("T".equals(bean.pkStatus) || "T".equals(bean.punishStatus) || "T".equals(bean.tieStatus)) {
             pkLayout.setVisibility(View.VISIBLE);
             startPKAnim();
@@ -652,7 +654,7 @@ public class PkControl {
         getPunishWays();
     }
 
-    private void choosePunishWay(boolean isMvp){
+    private void choosePunishWay(boolean isMvp) {
         pkLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

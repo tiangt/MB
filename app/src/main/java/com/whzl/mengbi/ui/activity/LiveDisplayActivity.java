@@ -1486,7 +1486,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView2.runInForeground();
         }
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
-        mLivePresenter.getPkInfo(mProgramId);
+//        mLivePresenter.getPkInfo(mProgramId);
     }
 
     @Override
