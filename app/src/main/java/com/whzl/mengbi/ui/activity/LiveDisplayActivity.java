@@ -423,10 +423,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initFragment();
         initBanner();
         initVp();
-//        showPKResult();
-//        showPunishment();
-//        endPkDialog();
-//        startPKAnim();
     }
 
     private void initVp() {
@@ -761,11 +757,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
         }
 
-    }
-
-    private void endPkDialog() {
-        EndPkDialog dialog = new EndPkDialog(this);
-        dialog.show();
     }
 
     public void login() {
@@ -1483,7 +1474,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView2 != null) {
             textureView2.runInBackground(true);
         }
-        pkLayout.destroy();
     }
 
     @Override

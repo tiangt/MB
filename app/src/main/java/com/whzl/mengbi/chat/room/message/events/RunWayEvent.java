@@ -58,8 +58,6 @@ public class RunWayEvent {
     }
 
     public void showRunWay(TextView tvRunWayGift) throws Exception {
-        Log.i("chenliang", "RunWayEvent TYPE = " + runWayJson.getContext().getRunWayType());
-
         tvRunWayGift.setText(LightSpanString.getLightString(DateUtils.longToDate(runWayJson.getContext().getDateLong()) + " ",
                 Color.parseColor("#faf9f9"))); //时间
         tvRunWayGift.append(LightSpanString.getLightString(runWayJson.getContext().getNickname(),
@@ -88,7 +86,6 @@ public class RunWayEvent {
     }
 
     public void showNetRunWay(TextView tvRunWayGift) throws Exception {
-        Log.i("chenliang", "NET RunWayEvent TYPE = " + runwayBean.getContext().getRunwayType());
         tvRunWayGift.setText(LightSpanString.getLightString(DateUtils.longToDate(runwayBean.getContext().getDateLong()) + " ",
                 Color.parseColor("#faf9f9"))); //时间
         tvRunWayGift.append(LightSpanString.getLightString(runwayBean.getContext().getNickname(),

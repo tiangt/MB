@@ -24,6 +24,7 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -355,9 +356,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         }
                     } else if (aLong >= second - 1) {
                         LogUtils.e("ssssss  state dispose");
-                        if (disposable != null) {
-                            disposable.dispose();
-                        }
+//                        popupWindow.dismiss();
+                        disposable.dispose();
                     }
                 });
 
@@ -435,7 +435,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
             case R.id.rl_punish_way:
                 if (clickLintener != null) {
-                    clickLintener.onClick();
+                    clickLintener.onClick(v);
                 }
                 break;
         }
@@ -498,7 +498,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private PunishWayClick clickLintener;
 
     public interface PunishWayClick {
-        void onClick();
+        void onClick(View view);
     }
 
     public void setPunishWayOnClick(PunishWayClick listener) {
