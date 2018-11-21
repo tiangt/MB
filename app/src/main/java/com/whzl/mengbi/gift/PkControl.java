@@ -185,6 +185,7 @@ public class PkControl {
                 startPKAnim();
                 startCountDown(5);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
+                choosePunishWay(true);
                 if (bean.launchUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
                     rightAvatar = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -658,6 +659,7 @@ public class PkControl {
         pkLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ToastUtils.showToast("123213");
                 showPunishment(isMvp);
             }
         });
@@ -699,6 +701,9 @@ public class PkControl {
         @Override
         public void onBindViewHolder(int position) {
             tvPunishment.setText(punishWays.get(position).getName());
+            if(mSelectedList == null || mSelectedList.size() == 0){
+                return;
+            }
             if (mSelectedList.get(position)) {
                 tvPunishment.setBackgroundResource(R.drawable.shape_item_2);
                 tvPunishment.setTextColor(Color.WHITE);

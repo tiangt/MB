@@ -449,7 +449,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         setProgress(50);
         setLeftScore(0);
         setRightScore(0);
+        launchPkUserFansBeans.clear();
+        pkUserFansBeans.clear();
         tvTime.setText("");
+        tvPkTitle.setText("");
         if (disposable != null) {
             disposable.dispose();
             disposable = null;
