@@ -298,7 +298,7 @@ public class PkControl {
                 }
                 break;
             case "PK_PUNISH_WAY": //惩罚方式
-                if (TextUtils.isEmpty(bean.punishWay)) {
+                if (!TextUtils.isEmpty(bean.punishWay)) {
                     if(mvpWindow.isShowing()){
                         mvpWindow.dismiss();
                     }
@@ -641,7 +641,6 @@ public class PkControl {
         pkLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast("12312");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     PopupWindowCompat.showAsDropDown(mvpWindow, pkLayout, offsetX, offsetY, Gravity.START);
                 }

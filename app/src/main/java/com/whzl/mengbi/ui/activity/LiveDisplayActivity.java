@@ -105,6 +105,7 @@ import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.recyclerview.AdaptiveLayoutManager;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
+import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
