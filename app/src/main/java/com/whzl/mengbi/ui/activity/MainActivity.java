@@ -91,7 +91,10 @@ public class MainActivity extends BaseActivity {
                     setTabChange(0);
                     break;
                 case R.id.rb_rank:
-                    setTabChange(1);
+                    if (checkLogin()) {
+                        setTabChange(1);
+                        return;
+                    }
                     login();
                     break;
                 case R.id.rb_follow:
