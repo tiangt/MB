@@ -228,14 +228,26 @@ public class PkControl {
                     double a = bean.launchPkUserScore;
                     double b = bean.launchPkUserScore + bean.pkUserScore;
                     double v = (a / b) * 100;
-                    pkLayout.setAnimation((int) v);
+                    if ((int) v >= 90) {
+                        pkLayout.setAnimation(90);
+                    } else if ((int) v <= 10) {
+                        pkLayout.setAnimation((10));
+                    } else {
+                        pkLayout.setAnimation((int) v);
+                    }
                 } else if (mAnchorId == bean.pkUserId) {
                     pkLayout.setLeftScore(bean.pkUserScore);
                     pkLayout.setRightScore(bean.launchPkUserScore);
                     double a = bean.pkUserScore;
                     double b = bean.launchPkUserScore + bean.pkUserScore;
                     double v = (a / b) * 100;
-                    pkLayout.setAnimation((int) v);
+                    if ((int) v >= 90) {
+                        pkLayout.setAnimation(90);
+                    } else if ((int) v <= 10) {
+                        pkLayout.setAnimation((10));
+                    } else {
+                        pkLayout.setAnimation((int) v);
+                    }
                 }
                 break;
             case "PK_RESULT"://PK结果
@@ -349,11 +361,19 @@ public class PkControl {
                 jumpNick = bean.pkUserInfo.nickname;
                 if (bean.launchPkUserScore == 0 && bean.pkUserScore == 0) {
                     pkLayout.setProgress(50);
+                    pkLayout.initializeProgress = 50;
                 } else {
                     double a = bean.launchPkUserScore;
                     double b = bean.launchPkUserScore + bean.pkUserScore;
                     double v = (a / b) * 100;
                     pkLayout.setProgress((int) v);
+                    if ((int) v <= 10) {
+                        pkLayout.initializeProgress = 10;
+                    } else if ((int) v >= 90) {
+                        pkLayout.initializeProgress = 90;
+                    } else {
+                        pkLayout.initializeProgress = (int) v;
+                    }
                 }
             } else if (mProgramId == bean.pkUserProgramId) {
                 myPkInfo = bean.pkUserInfo;
@@ -368,11 +388,19 @@ public class PkControl {
                 jumpNick = bean.launchUserInfo.nickname;
                 if (bean.pkUserScore == 0 && bean.launchPkUserScore == 0) {
                     pkLayout.setProgress(50);
+                    pkLayout.initializeProgress = 50;
                 } else {
                     double a = bean.pkUserScore;
                     double b = bean.launchPkUserScore + bean.pkUserScore;
                     double v = (a / b) * 100;
                     pkLayout.setProgress((int) v);
+                    if ((int) v <= 10) {
+                        pkLayout.initializeProgress = 10;
+                    } else if ((int) v >= 90) {
+                        pkLayout.initializeProgress = 90;
+                    } else {
+                        pkLayout.initializeProgress = (int) v;
+                    }
                 }
             }
 
@@ -701,7 +729,7 @@ public class PkControl {
         @Override
         public void onBindViewHolder(int position) {
             tvPunishment.setText(punishWays.get(position).getName());
-            if(mSelectedList == null || mSelectedList.size() == 0){
+            if (mSelectedList == null || mSelectedList.size() == 0) {
                 return;
             }
             if (mSelectedList.get(position)) {
