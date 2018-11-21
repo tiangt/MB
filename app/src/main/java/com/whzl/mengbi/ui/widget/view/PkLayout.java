@@ -322,15 +322,15 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                         }
                                         //未选择惩罚内容
                                         if (TextUtils.isEmpty(mvpPunishWay)) {
-                                            if(TextUtils.isEmpty(punishWay)){
+                                            if (TextUtils.isEmpty(punishWay)) {
                                                 tvPkTitle.setText("惩罚:自定义");
                                                 tvTime.setText((second - aLong - 1) + "s");
-                                            }else{
-                                                tvPkTitle.setText("惩罚:"+punishWay);
+                                            } else {
+                                                tvPkTitle.setText("惩罚:" + punishWay);
                                                 tvTime.setText((second - aLong - 1) + "s");
                                             }
-                                        }else{
-                                            tvPkTitle.setText("惩罚:"+mvpPunishWay);
+                                        } else {
+                                            tvPkTitle.setText("惩罚:" + mvpPunishWay);
                                             tvTime.setText((second - aLong - 1) + "s");
                                         }
                                     } else {
@@ -356,8 +356,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         }
                     } else if (aLong >= second - 1) {
                         LogUtils.e("ssssss  state dispose");
-                        popupWindow.dismiss();
-//                        disposable.dispose();
+//                        popupWindow.dismiss();
+                        disposable.dispose();
                     }
                 });
 
@@ -435,7 +435,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
             case R.id.rl_punish_way:
                 if (clickLintener != null) {
-                    clickLintener.onClick();
+                    clickLintener.onClick(v);
                 }
                 break;
         }
@@ -490,7 +490,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void hidePkWindow() {
-        if (popupWindow != null) {
+        if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
     }
@@ -498,7 +498,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private PunishWayClick clickLintener;
 
     public interface PunishWayClick {
-        void onClick();
+        void onClick(View view);
     }
 
     public void setPunishWayOnClick(PunishWayClick listener) {
