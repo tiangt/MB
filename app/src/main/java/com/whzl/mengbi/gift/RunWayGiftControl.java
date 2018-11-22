@@ -75,6 +75,11 @@ public class RunWayGiftControl {
                 startRun(runwayQueue.get(0));
                 runwayQueue.remove(0);
             } else if (cacheEvent != null && !cacheEvent.equals(autoScrollView.getRunWayEvent())) {
+                if (cacheEvent.from.equals("net")) {
+                    type = cacheEvent.getRunwayBean().getContext().getRunwayType();
+                } else {
+                    type = cacheEvent.getRunWayJson().getContext().getRunWayType();
+                }
                 startRun(cacheEvent);
             }
         });
@@ -83,19 +88,11 @@ public class RunWayGiftControl {
             @Override
             public void doNext(long number) {
                 frameLayout.setVisibility(View.VISIBLE);
-//                if (null != cacheEvent && null != cacheEvent.getRunWayJson().getContext()) {
-//                    if ("destroy".equals(cacheEvent.getRunWayJson().getContext().getRunWayType())) {
-//                        frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-//                    } else {
-//                        frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
-//                    }
-//                } else {
-                    if ("destroy".equals(type)) {
-                        frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-                    } else {
-                        frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
-                    }
-//                }
+                if ("destroy".equals(type)) {
+                    frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+                } else {
+                    frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+                }
 
                 autoScrollView.setVisibility(View.VISIBLE);
                 autoScrollView.setBackground(frameLayout);

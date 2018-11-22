@@ -316,7 +316,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                     tvTime.setText((second - aLong - 1) + "s");
                                 } else {
                                     //惩罚倒计时60秒后
-                                    if (TextUtils.isEmpty(mvpPunishWay) || TextUtils.isEmpty(punishWay)) {
+                                    if (!TextUtils.isEmpty(mvpPunishWay) || !TextUtils.isEmpty(punishWay)) {
                                         if (mvpPopupWindow != null) {
                                             mvpPopupWindow.dismiss();
                                         }
@@ -346,11 +346,11 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                 tvTime.setText((second - aLong - 1) + "s");
                             }
                         }
-                        if (aLong == second - 11 && "PK进行中 ".equals(state) && listener != null) {
+                        if (aLong == second - 11 && "PK倒计时 ".equals(state) && listener != null) {
                             listener.onTimeDownListener();
                         }
 
-                        if ("PK进行中 ".equals(state)) {
+                        if ("PK倒计时 ".equals(state)) {
                             tvPkTitle.setText(state);
                             tvTime.setText((second - aLong - 1) + "s");
                         }

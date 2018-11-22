@@ -936,8 +936,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         setDateSourceForPlayer(roomInfoBean.getData().getStream().getStreamAddress().getFlv());
                     } else if (roomInfoBean.getData().getStream().getStreamAddress().getRtmp() != null) {
                         setDateSourceForPlayer(roomInfoBean.getData().getStream().getStreamAddress().getRtmp());
-                    } else if (roomInfoBean.getData().getStream().getStreamAddress().getHls() != null) {
-                        setDateSourceForPlayer(roomInfoBean.getData().getStream().getStreamAddress().getHls());
                     }
                 }
             }
