@@ -137,9 +137,6 @@ public class AutoScrollTextView extends AppCompatTextView {
                         .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(integer -> flagIsCacheTimeOut = true);
-            } else {
-                event.setHasRuned(true);
-//            flagIsCacheTimeOut = true;
             }
         } else {
             if (event.getRunwayBean().getContext().isCacheIt()) {
@@ -148,9 +145,6 @@ public class AutoScrollTextView extends AppCompatTextView {
                         .delay(event.getRunwayBean().getContext().getSeconds(), TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(integer -> flagIsCacheTimeOut = true);
-            } else {
-                event.setHasRuned(true);
-//            flagIsCacheTimeOut = true;
             }
         }
 

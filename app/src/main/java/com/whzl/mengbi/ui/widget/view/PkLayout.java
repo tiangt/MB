@@ -316,7 +316,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                     tvTime.setText((second - aLong - 1) + "s");
                                 } else {
                                     //惩罚倒计时60秒后
-                                    if (!TextUtils.isEmpty(mvpPunishWay) || !TextUtils.isEmpty(punishWay)) {
+                                    if (TextUtils.isEmpty(mvpPunishWay) || TextUtils.isEmpty(punishWay)) {
                                         if (mvpPopupWindow != null) {
                                             mvpPopupWindow.dismiss();
                                         }

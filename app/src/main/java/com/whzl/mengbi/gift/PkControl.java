@@ -122,7 +122,7 @@ public class PkControl {
     private boolean isClose;
     private String punishment;
     private boolean isMvp;
-    private boolean needShow;
+    private boolean needShow = false;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -161,6 +161,8 @@ public class PkControl {
     }
 
     private void initEvent() {
+        ksyTextureView.stop();
+        ksyTextureView.reset();
         pkLayout.setPunishWayOnClick(new PkLayout.PunishWayClick() {
             @Override
             public void onClick(View view) {
@@ -290,25 +292,21 @@ public class PkControl {
                 }
                 punishment = bean.punishWay;
                 if (mvpUserId != 0 && TextUtils.isEmpty(bean.punishWay)) {
-                    needShow = true;
                     if (mvpUserId == mUserId) {
                         showPunishment(true);
                         isMvp = true;
-//                        choosePunishWay(true);
                     } else {
-                        showPunishment(false);
+                        needShow = true;
                         isMvp = false;
-//                        choosePunishWay(false);
                     }
                 } else {
-                    showPunishment(false);
-                    isMvp = false;
-//                    choosePunishWay(false);
                     needShow = false;
+                    isMvp = false;
                     pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                 }
                 break;
             case "PK_TIE_FINISH"://平局时间结束
+                shutDown();
                 layout.setVisibility(View.GONE);
                 pkLayout.reset();
                 pkLayout.setVisibility(View.GONE);
@@ -316,6 +314,7 @@ public class PkControl {
                 pkLayout.hidePkWindow();
                 break;
             case "PK_PUNISH_FINISH"://惩罚时间结束
+                shutDown();
                 layout.setVisibility(View.GONE);
                 pkLayout.reset();
                 pkLayout.setVisibility(View.GONE);
@@ -542,6 +541,11 @@ public class PkControl {
         if (animatorSetsuofang != null) {
             animatorSetsuofang.end();
             animatorSetsuofang = null;
+        }
+        if (ksyTextureView != null) {
+            ksyTextureView.stop();
+            ksyTextureView.release();
+            ksyTextureView = null;
         }
         isMvp = false;
         needShow = false;
@@ -855,5 +859,13 @@ public class PkControl {
 
                     }
                 });
+    }
+
+    private void shutDown(){
+        if (ksyTextureView != null) {
+            ksyTextureView.stop();
+            ksyTextureView.release();
+            ksyTextureView = null;
+        }
     }
 }

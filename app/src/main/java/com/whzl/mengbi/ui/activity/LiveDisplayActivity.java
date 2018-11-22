@@ -853,18 +853,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(PkEvent pkEvent) {
         PkJson.ContextBean bean = pkEvent.getPkJson().context;
         if (pkControl == null) {
-            rlOtherSide.setVisibility(View.VISIBLE);
             pkControl = new PkControl(pkLayout, this);
-            pkControl.setUserId(mUserId);
-            pkControl.setStartAnim(svgaStartPk);
-            pkControl.setIvCountDown(ivCountDown);
-            pkControl.setmAnchorId(mAnchorId);
-            pkControl.setmProgramId(mProgramId);
-            pkControl.setTvCountDown(tvCountDown);
-            pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
-            pkControl.setOtherLive(textureView2);
-            pkControl.setOtherSideInfo(rlOtherSideInfo);
         }
+        rlOtherSide.setVisibility(View.VISIBLE);
+        pkControl.setUserId(mUserId);
+        pkControl.setStartAnim(svgaStartPk);
+        pkControl.setIvCountDown(ivCountDown);
+        pkControl.setmAnchorId(mAnchorId);
+        pkControl.setmProgramId(mProgramId);
+        pkControl.setTvCountDown(tvCountDown);
+        pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
+        pkControl.setOtherLive(textureView2);
+        pkControl.setOtherSideInfo(rlOtherSideInfo);
         pkControl.setBean(bean);
         pkControl.init();
     }

@@ -1,5 +1,6 @@
 package com.whzl.mengbi.gift;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -95,29 +96,6 @@ public class RunWayGiftControl {
         });
 
     }
-
-//    private synchronized void startNetRun(RunWayEvent event) {
-//        if (autoScrollView == null) {
-//            return;
-//        }
-//        if (event.getRunwayBean().getContext().isCacheIt()) {
-//            cacheEvent = event;
-//        }
-//        autoScrollView.setOnClickListener(v -> {
-//            if (listener != null) {
-//                listener.onClick(event.getRunwayBean().getContext().getProgramId(), event.getRunwayBean().getContext().getToNickname());
-//            }
-//        });
-//        autoScrollView.initNet(event, () -> {
-//            if (runwayQueue.size() > 0) {
-//                startNetRun(runwayQueue.get(0));
-//                runwayQueue.remove(0);
-//            } else if (cacheEvent != null && !cacheEvent.equals(autoScrollView.getRunWayEvent())) {
-//                startNetRun(cacheEvent);
-//            }
-//        });
-//        autoScrollView.startScroll();
-//    }
 
     public void destroy() {
         if (autoScrollView != null && trackAnim != null) {
