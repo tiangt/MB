@@ -4,19 +4,15 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -49,14 +45,11 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.ui.dialog.EndPkDialog;
-import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -128,6 +121,8 @@ public class PkControl {
     private List<PKFansBean> launchPkUserFansBeans = new ArrayList<>();
     private boolean isClose;
     private String punishment;
+    private boolean isMvp;
+    private boolean needShow;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -162,6 +157,18 @@ public class PkControl {
     public PkControl(PkLayout pkLayout, Activity context) {
         this.pkLayout = pkLayout;
         this.context = context;
+        initEvent();
+    }
+
+    private void initEvent() {
+        pkLayout.setPunishWayOnClick(new PkLayout.PunishWayClick() {
+            @Override
+            public void onClick(View view) {
+                if (needShow) {
+                    showPunishment(isMvp);
+                }
+            }
+        });
     }
 
     public void setStartAnim(SVGAImageView svgaImageView) {
@@ -285,14 +292,17 @@ public class PkControl {
                 if (mvpUserId != 0 && TextUtils.isEmpty(bean.punishWay)) {
                     if (mvpUserId == mUserId) {
                         showPunishment(true);
-                        choosePunishWay(true);
+                        isMvp = true;
+//                        choosePunishWay(true);
                     } else {
                         showPunishment(false);
-                        choosePunishWay(false);
+                        isMvp = false;
+//                        choosePunishWay(false);
                     }
                 } else {
                     showPunishment(false);
-                    choosePunishWay(false);
+                    isMvp = false;
+//                    choosePunishWay(false);
                     pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                 }
                 break;
@@ -419,13 +429,15 @@ public class PkControl {
                         if (bean.mvpUser.userId == mUserId) {
                             if (TextUtils.isEmpty(bean.punishWay)) {
                                 showPunishment(true);
-                                choosePunishWay(true);
+                                isMvp = true;
+//                                choosePunishWay(true);
                             } else {
                                 pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                             }
                         } else {
                             showPunishment(false);
-                            choosePunishWay(false);
+                            isMvp = false;
+//                            choosePunishWay(false);
                             pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                         }
                     }
@@ -435,13 +447,15 @@ public class PkControl {
                         if (bean.mvpUser.userId == mUserId) {
                             if (TextUtils.isEmpty(bean.punishWay)) {
                                 showPunishment(true);
-                                choosePunishWay(true);
+                                isMvp = true;
+//                                choosePunishWay(true);
                             } else {
                                 pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                             }
                         } else {
                             showPunishment(false);
-                            choosePunishWay(false);
+                            isMvp = false;
+//                            choosePunishWay(false);
                             pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                         }
                     }
@@ -527,6 +541,8 @@ public class PkControl {
             animatorSetsuofang.end();
             animatorSetsuofang = null;
         }
+        isMvp = false;
+        needShow = false;
     }
 
     private void showJumpLiveHouseDialog(int programId, String nickName) {
@@ -640,14 +656,14 @@ public class PkControl {
     private void showPunishment(boolean isMvp) {
         View popView = LayoutInflater.from(context).inflate(R.layout.pop_mvp, null);
         mvpWindow = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        mvpWindow.setOutsideTouchable(false);
-        mvpWindow.setFocusable(false);
-        mvpWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
+        mvpWindow.setOutsideTouchable(true);
+//        mvpWindow.setFocusable(false);
+//        mvpWindow.setTouchInterceptor(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return false;
+//            }
+//        });
         int width = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         int height = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
         popView.measure(width, height);
@@ -669,11 +685,11 @@ public class PkControl {
             }
         });
 
-        if (TextUtils.isEmpty(punishment) && isMvp) {
+        if (TextUtils.isEmpty(punishment)) {
             pkLayout.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !mvpWindow.isShowing()) {
                         PopupWindowCompat.showAsDropDown(mvpWindow, pkLayout, offsetX, offsetY, Gravity.START);
                     }
                 }
@@ -683,15 +699,15 @@ public class PkControl {
         getPunishWays();
     }
 
-    private void choosePunishWay(boolean isMvp) {
-        pkLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.showToast("123213");
-                showPunishment(isMvp);
-            }
-        });
-    }
+//    private void choosePunishWay(boolean isMvp) {
+//        pkLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ToastUtils.showToast("123213");
+//                showPunishment(isMvp);
+//            }
+//        });
+//    }
 
     private void initRecy(boolean isMvp) {
         mSelectedList = new ArrayList<Boolean>();
