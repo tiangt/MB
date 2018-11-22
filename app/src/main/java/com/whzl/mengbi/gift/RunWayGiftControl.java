@@ -1,7 +1,5 @@
 package com.whzl.mengbi.gift;
 
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,6 +21,7 @@ public class RunWayGiftControl {
     private ArrayList<RunWayEvent> runwayQueue = new ArrayList<>();
     private RunWayEvent cacheEvent;
     private TrackAnim trackAnim;
+    private String type;
 
     public RunWayGiftControl(AutoScrollTextView autoScrollTextView) {
         this.autoScrollView = autoScrollTextView;
@@ -34,12 +33,17 @@ public class RunWayGiftControl {
         this.imageView = imageView;
     }
 
-    public void load(RunWayEvent event) {
-        if (event == null || event.getRunWayJson() == null
-                || event.getRunWayJson().getContext() == null) {
+    public void load(RunWayEvent event,String net) {
+        if (event == null) {
             return;
         }
-        String type = event.getRunWayJson().getContext().getRunWayType();
+        event.from = net;
+        if (event.from.equals("net")) {
+            cacheEvent = event;
+            type = event.getRunwayBean().getContext().getRunwayType();
+        } else {
+            type = event.getRunWayJson().getContext().getRunWayType();
+        }
         trackAnim = new TrackAnim(frameLayout, imageView);
         if (!autoScrollView.isStarting) {
             frameLayout.setVisibility(View.VISIBLE);
@@ -58,89 +62,95 @@ public class RunWayGiftControl {
                     startRun(event);
                 }
             });
+        } else {
+            runwayQueue.add(event);
         }
 
-        if (autoScrollView.isStarting) {
-            frameLayout.clearAnimation();
-            frameLayout.setVisibility(View.VISIBLE);
-            if ("destroy".equals(type)) {
-                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-            } else {
-                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
-            }
-            autoScrollView.setVisibility(View.VISIBLE);
-            autoScrollView.setBackground(frameLayout);
-            imageView.setVisibility(View.VISIBLE);
-            trackAnim.startAnim();
-            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
-                @Override
-                public void onAnimationEnd() {
-                    startRun(event);
-                }
-            });
-        }
-        runwayQueue.add(event);
+//        if (autoScrollView.isStarting) {
+//            frameLayout.clearAnimation();
+//            frameLayout.setVisibility(View.VISIBLE);
+//            if ("destroy".equals(type)) {
+//                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+//            } else {
+//                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+//            }
+//            autoScrollView.setVisibility(View.VISIBLE);
+//            autoScrollView.setBackground(frameLayout);
+//            imageView.setVisibility(View.VISIBLE);
+//            trackAnim.startAnim();
+//            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
+//                @Override
+//                public void onAnimationEnd() {
+//                    startRun(event);
+//                }
+//            });
+//        }
+//        runwayQueue.add(event);
     }
 
-    public void loadNet(RunWayEvent event){
-        if (event == null || event.getRunwayBean() == null
-                || event.getRunwayBean().getContext() == null) {
-            return;
-        }
-        String type = event.getRunwayBean().getContext().getRunwayType();
-        trackAnim = new TrackAnim(frameLayout, imageView);
-        if (!autoScrollView.isStarting) {
-            frameLayout.setVisibility(View.VISIBLE);
-            if ("destroy".equals(type)) {
-                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-            } else {
-                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
-            }
-            autoScrollView.setVisibility(View.VISIBLE);
-            autoScrollView.setBackground(frameLayout);
-            imageView.setVisibility(View.VISIBLE);
-            trackAnim.startAnim();
-            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
-                @Override
-                public void onAnimationEnd() {
-                    startNetRun(event);
-                }
-            });
-            return;
-        }
-
-        if (autoScrollView.isStarting) {
-            frameLayout.clearAnimation();
-            frameLayout.setVisibility(View.VISIBLE);
-            if ("destroy".equals(type)) {
-                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-            } else {
-                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
-            }
-            autoScrollView.setVisibility(View.VISIBLE);
-            autoScrollView.setBackground(frameLayout);
-            imageView.setVisibility(View.VISIBLE);
-            trackAnim.startAnim();
-            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
-                @Override
-                public void onAnimationEnd() {
-                    startNetRun(event);
-                }
-            });
-        }
-        runwayQueue.add(event);
-    }
+//    public void loadNet(RunWayEvent event){
+//        if (event == null || event.getRunwayBean() == null
+//                || event.getRunwayBean().getContext() == null) {
+//            return;
+//        }
+//        String type = event.getRunwayBean().getContext().getRunwayType();
+//        trackAnim = new TrackAnim(frameLayout, imageView);
+//        if (!autoScrollView.isStarting) {
+//            frameLayout.setVisibility(View.VISIBLE);
+//            if ("destroy".equals(type)) {
+//                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+//            } else {
+//                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+//            }
+//            autoScrollView.setVisibility(View.VISIBLE);
+//            autoScrollView.setBackground(frameLayout);
+//            imageView.setVisibility(View.VISIBLE);
+//            trackAnim.startAnim();
+//            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
+//                @Override
+//                public void onAnimationEnd() {
+//                    startNetRun(event);
+//                }
+//            });
+//            return;
+//        }
+//
+//        if (autoScrollView.isStarting) {
+//            frameLayout.clearAnimation();
+//            frameLayout.setVisibility(View.VISIBLE);
+//            if ("destroy".equals(type)) {
+//                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+//            } else {
+//                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+//            }
+//            autoScrollView.setVisibility(View.VISIBLE);
+//            autoScrollView.setBackground(frameLayout);
+//            imageView.setVisibility(View.VISIBLE);
+//            trackAnim.startAnim();
+//            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
+//                @Override
+//                public void onAnimationEnd() {
+//                    startNetRun(event);
+//                }
+//            });
+//        }
+//        runwayQueue.add(event);
+//    }
 
     private synchronized void startRun(RunWayEvent event) {
         if (autoScrollView == null) {
             return;
         }
-        if (event.getRunWayJson().getContext().isCacheIt()) {
+        if (event.from.equals("socket")&&event.getRunWayJson().getContext().isCacheIt()) {
             cacheEvent = event;
         }
         autoScrollView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onClick(event.getRunWayJson().getContext().getProgramId(), event.getRunWayJson().getContext().getToNickname());
+                if (event.from.equals("socket")) {
+                    listener.onClick(event.getRunWayJson().getContext().getProgramId(), event.getRunWayJson().getContext().getToNickname());
+                } else {
+                    listener.onClick(event.getRunwayBean().getContext().getProgramId(), event.getRunwayBean().getContext().getToNickname());
+                }
             }
         });
         autoScrollView.init(event, () -> {
@@ -154,28 +164,28 @@ public class RunWayGiftControl {
         autoScrollView.startScroll();
     }
 
-    private synchronized void startNetRun(RunWayEvent event) {
-        if (autoScrollView == null) {
-            return;
-        }
-        if (event.getRunwayBean().getContext().isCacheIt()) {
-            cacheEvent = event;
-        }
-        autoScrollView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onClick(event.getRunwayBean().getContext().getProgramId(), event.getRunwayBean().getContext().getToNickname());
-            }
-        });
-        autoScrollView.initNet(event, () -> {
-            if (runwayQueue.size() > 0) {
-                startNetRun(runwayQueue.get(0));
-                runwayQueue.remove(0);
-            } else if (cacheEvent != null && !cacheEvent.equals(autoScrollView.getRunWayEvent())) {
-                startNetRun(cacheEvent);
-            }
-        });
-        autoScrollView.startScroll();
-    }
+//    private synchronized void startNetRun(RunWayEvent event) {
+//        if (autoScrollView == null) {
+//            return;
+//        }
+//        if (event.getRunwayBean().getContext().isCacheIt()) {
+//            cacheEvent = event;
+//        }
+//        autoScrollView.setOnClickListener(v -> {
+//            if (listener != null) {
+//                listener.onClick(event.getRunwayBean().getContext().getProgramId(), event.getRunwayBean().getContext().getToNickname());
+//            }
+//        });
+//        autoScrollView.initNet(event, () -> {
+//            if (runwayQueue.size() > 0) {
+//                startNetRun(runwayQueue.get(0));
+//                runwayQueue.remove(0);
+//            } else if (cacheEvent != null && !cacheEvent.equals(autoScrollView.getRunWayEvent())) {
+//                startNetRun(cacheEvent);
+//            }
+//        });
+//        autoScrollView.startScroll();
+//    }
 
     public void destroy() {
         if (autoScrollView != null && trackAnim != null) {

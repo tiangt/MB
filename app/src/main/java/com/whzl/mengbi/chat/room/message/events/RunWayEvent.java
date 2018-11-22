@@ -20,6 +20,7 @@ public class RunWayEvent {
     private SpannableString giftSpanString;
     private boolean hasRuned;
     public SpannableString ss;
+    public String from = "socket";
 
     /*
     giftSpanString 可能为null,使用时请判断是否为null

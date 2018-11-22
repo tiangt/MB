@@ -815,7 +815,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        runWayText.setVisibility(View.GONE);
 //        ivRocket.setVisibility(View.GONE);
         initRunWay();
-        mRunWayGiftControl.load(runWayEvent);
+        mRunWayGiftControl.load(runWayEvent,"socket");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1035,7 +1035,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         event = new RunWayEvent(runWayBean, imageSpanList.get(i));
                     }
                     initRunWay();
-                    mRunWayGiftControl.loadNet(event);
+                    mRunWayGiftControl.load(event,"net");
                 }
             });
             downloadImageFile.doDownload(imageUrlList, this);
@@ -1043,10 +1043,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void initRunWay() {
-//        if (mRunWayGiftControl == null) {
+        if (mRunWayGiftControl == null) {
         mRunWayGiftControl = new RunWayGiftControl(runWayText, frameSupercarTrack, ivRocket);
         mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
-//        }
+        }
     }
 
     @Override

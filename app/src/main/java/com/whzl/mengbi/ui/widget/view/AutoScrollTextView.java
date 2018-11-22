@@ -127,18 +127,30 @@ public class AutoScrollTextView extends AppCompatTextView {
         textLength = paint.measureText(text);
         maxTranslateX = textLength + viewWidth + 50;
         dispose();
-        Log.i("chenlaing", "Type = " + event.getRunWayJson().getContext().getRunWayType() + ", isCacheIt = " + event.getRunWayJson().getContext().isCacheIt() +
-                ", seconds = " + event.getRunWayJson().getContext().getSeconds());
-        if (event.getRunWayJson().getContext().isCacheIt()) {
-            event.setHasRuned(true);
-            mDispose = Observable.just(1)
-                    .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(integer -> flagIsCacheTimeOut = true);
-        } else {
-            event.setHasRuned(true);
+        if (event.from.equals("socket")) {
+            if (event.getRunWayJson().getContext().isCacheIt()) {
+                event.setHasRuned(true);
+                mDispose = Observable.just(1)
+                        .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(integer -> flagIsCacheTimeOut = true);
+            } else {
+                event.setHasRuned(true);
 //            flagIsCacheTimeOut = true;
+            }
+        } else {
+            if (event.getRunwayBean().getContext().isCacheIt()) {
+                event.setHasRuned(true);
+                mDispose = Observable.just(1)
+                        .delay(event.getRunwayBean().getContext().getSeconds(), TimeUnit.SECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(integer -> flagIsCacheTimeOut = true);
+            } else {
+                event.setHasRuned(true);
+//            flagIsCacheTimeOut = true;
+            }
         }
+
     }
 
     public void dispose() {
