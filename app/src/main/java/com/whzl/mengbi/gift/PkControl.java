@@ -203,7 +203,7 @@ public class PkControl {
                     if (bean.pkUserLiveAndStreamAddress.showStreams != null) {
                         for (int i = 0; i < bean.pkUserLiveAndStreamAddress.showStreams.size(); i++) {
                             streamType = bean.pkUserLiveAndStreamAddress.showStreams.get(i).streamType;
-                            if(streamType.equals("flv")){
+                            if(streamType.equals("rtmp")){
                                 streamAddress = bean.pkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
                                 setDateSourceForPlayer2(streamAddress);
                                 break;
@@ -221,7 +221,7 @@ public class PkControl {
                     jumpNick = bean.launchPkUserInfo.nickname;
                     if (bean.launchPkUserLiveAndStreamAddress.showStreams != null) {
                         for (int i = 0; i < bean.launchPkUserLiveAndStreamAddress.showStreams.size(); i++) {
-                            if(streamType.equals("flv")){
+                            if(streamType.equals("rtmp")){
                                 streamAddress = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
                                 setDateSourceForPlayer2(streamAddress);
                                 break;
@@ -597,9 +597,8 @@ public class PkControl {
     }
 
     private void setDateSourceForPlayer2(String stream) {
-
+        ksyTextureView.reset();
         try {
-            ksyTextureView.reset();
             ksyTextureView.setDataSource(stream);
             ksyTextureView.prepareAsync();
         } catch (IOException e) {
@@ -868,7 +867,6 @@ public class PkControl {
     private void shutDown(){
         if (ksyTextureView != null) {
             ksyTextureView.stop();
-            ksyTextureView.release();
             ksyTextureView = null;
         }
     }
