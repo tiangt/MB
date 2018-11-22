@@ -192,6 +192,7 @@ public class PkControl {
                 layout.setVisibility(View.VISIBLE);
                 startPKAnim();
                 startCountDown(5);
+                otherSideLive();
                 pkLayout.timer("PK倒计时 ", bean.pkSurPlusSecond);
                 if (bean.launchUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -210,7 +211,7 @@ public class PkControl {
                             }
 
                         }
-                        otherSideLive();
+//                        otherSideLive();
                     }
                 } else if (bean.pkUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -227,7 +228,7 @@ public class PkControl {
                                 break;
                             }
                         }
-                        otherSideLive();
+//                        otherSideLive();
                     }
                 }
                 break;
@@ -599,6 +600,7 @@ public class PkControl {
     private void setDateSourceForPlayer2(String stream) {
 
         try {
+            ksyTextureView.stop();
             ksyTextureView.reset();
             ksyTextureView.setDataSource(stream);
             ksyTextureView.prepareAsync();
@@ -868,8 +870,7 @@ public class PkControl {
     private void shutDown(){
         if (ksyTextureView != null) {
             ksyTextureView.stop();
-            ksyTextureView.release();
-            ksyTextureView = null;
+            ksyTextureView.reset();
         }
     }
 }
