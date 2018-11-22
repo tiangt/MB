@@ -28,7 +28,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="3dp"
         android:layout_toRightOf="@id/iv_avatar"
-        android:gravity="bottom"
+        android:gravity="center_vertical"
         android:orientation="horizontal" />
 
 </RelativeLayout>
