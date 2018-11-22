@@ -99,15 +99,16 @@ public class AutoScrollTextView extends AppCompatTextView {
         dispose();
         Log.i("chenlaing", "Net-Type = " + event.getRunwayBean().getContext().getRunwayType() + ", Net-isCacheIt = " + event.getRunwayBean().getContext().isCacheIt() +
                 ", Net-seconds = " + event.getRunwayBean().getContext().getSeconds());
-//        if (event.getRunwayBean().getContext().isCacheIt()) {
-        event.setHasRuned(true);
-        mDispose = Observable.just(1)
-                .delay(event.getRunwayBean().getContext().getSeconds(), TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> flagIsCacheTimeOut = true);
-//        } else {
+        if (event.getRunwayBean().getContext().isCacheIt()) {
+            event.setHasRuned(true);
+            mDispose = Observable.just(1)
+                    .delay(event.getRunwayBean().getContext().getSeconds(), TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(integer -> flagIsCacheTimeOut = true);
+        } else {
+            event.setHasRuned(true);
 //            flagIsCacheTimeOut = true;
-//        }
+        }
     }
 
     public void init(RunWayEvent event, RunStateListener listener) {
@@ -128,15 +129,16 @@ public class AutoScrollTextView extends AppCompatTextView {
         dispose();
         Log.i("chenlaing", "Type = " + event.getRunWayJson().getContext().getRunWayType() + ", isCacheIt = " + event.getRunWayJson().getContext().isCacheIt() +
                 ", seconds = " + event.getRunWayJson().getContext().getSeconds());
-//        if (event.getRunWayJson().getContext().isCacheIt()) {
-        event.setHasRuned(true);
-        mDispose = Observable.just(1)
-                .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(integer -> flagIsCacheTimeOut = true);
-//        } else {
+        if (event.getRunWayJson().getContext().isCacheIt()) {
+            event.setHasRuned(true);
+            mDispose = Observable.just(1)
+                    .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(integer -> flagIsCacheTimeOut = true);
+        } else {
+            event.setHasRuned(true);
 //            flagIsCacheTimeOut = true;
-//        }
+        }
     }
 
     public void dispose() {

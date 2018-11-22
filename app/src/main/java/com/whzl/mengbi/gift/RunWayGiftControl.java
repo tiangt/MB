@@ -106,6 +106,7 @@ public class RunWayGiftControl {
                     startNetRun(event);
                 }
             });
+            return;
         }
 
         if (autoScrollView.isStarting) {
@@ -178,8 +179,8 @@ public class RunWayGiftControl {
 
     public void destroy() {
         if (autoScrollView != null && trackAnim != null) {
-//            autoScrollView.stopScroll();
-//            autoScrollView.dispose();
+            autoScrollView.stopScroll();
+            autoScrollView.dispose();
             trackAnim.stopAnim();
         }
         runwayQueue.clear();

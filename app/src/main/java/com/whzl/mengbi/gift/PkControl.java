@@ -290,6 +290,7 @@ public class PkControl {
                 }
                 punishment = bean.punishWay;
                 if (mvpUserId != 0 && TextUtils.isEmpty(bean.punishWay)) {
+                    needShow = true;
                     if (mvpUserId == mUserId) {
                         showPunishment(true);
                         isMvp = true;
@@ -303,6 +304,7 @@ public class PkControl {
                     showPunishment(false);
                     isMvp = false;
 //                    choosePunishWay(false);
+                    needShow = false;
                     pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                 }
                 break;
