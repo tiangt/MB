@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -21,7 +22,6 @@ import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.util.ResourceMap;
-import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -96,12 +96,18 @@ public class RoyalEnterControl {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 tvEnter.startScroll();
-                RxTimerUtil.timer(5000, new RxTimerUtil.IRxNext() {
+                new Handler().postDelayed(new Runnable() {
                     @Override
-                    public void doNext(long number) {
+                    public void run() {
                         outAnim();
                     }
-                });
+                }, 5000);
+//                RxTimerUtil.timer(5000, new RxTimerUtil.IRxNext() {
+//                    @Override
+//                    public void doNext(long number) {
+//                        outAnim();
+//                    }
+//                });
             }
         });
         translationX.start();

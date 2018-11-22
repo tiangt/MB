@@ -286,17 +286,17 @@ public class AutoScrollTextView2 extends AppCompatTextView {
 //        canvas.drawRoundRect(0,0,textLength+50,getMeasuredHeight(),60,60,paint);
         super.onDraw(canvas);
         //滚动速度
-        if (step <= viewWidth && step + 1.5 > viewWidth) {
+        if (step <= viewWidth && step + 2.5 > viewWidth) {
             Observable.just(1)
                     .delay(3, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(integer -> {
-                        step += 1.5;
+                        step += 2.5;
                         invalidate();
                     });
             return;
         }
-        step += 1.5;
+        step += 2.5;
         if (step > maxTranslateX) {
             if (listener != null) {
                 listener.finishSingleRun();

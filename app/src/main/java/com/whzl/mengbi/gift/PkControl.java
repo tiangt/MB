@@ -287,7 +287,6 @@ public class PkControl {
             case "PK_TIE_START"://平局时间开始
                 pkLayout.setVisibility(View.VISIBLE);
                 pkLayout.timer("平局 ", bean.pkTieSurplusSecond);
-                layout.setVisibility(View.GONE);
                 break;
             case "PK_PUNISH_START"://惩罚时间开始
                 pkLayout.setVisibility(View.VISIBLE);
