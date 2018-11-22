@@ -46,22 +46,22 @@ public class RunWayGiftControl {
         }
         trackAnim = new TrackAnim(frameLayout, imageView);
         if (!autoScrollView.isStarting) {
-            frameLayout.setVisibility(View.VISIBLE);
-            if ("destroy".equals(type)) {
-                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-            } else {
-                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
-            }
-            autoScrollView.setVisibility(View.VISIBLE);
-            autoScrollView.setBackground(frameLayout);
-            imageView.setVisibility(View.VISIBLE);
-            trackAnim.startAnim();
-            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
-                @Override
-                public void onAnimationEnd() {
+//            frameLayout.setVisibility(View.VISIBLE);
+//            if ("destroy".equals(type)) {
+//                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+//            } else {
+//                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+//            }
+//            autoScrollView.setVisibility(View.VISIBLE);
+//            autoScrollView.setBackground(frameLayout);
+//            imageView.setVisibility(View.VISIBLE);
+//            trackAnim.startAnim();
+//            trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
+//                @Override
+//                public void onAnimationEnd() {
                     startRun(event);
-                }
-            });
+//                }
+//            });
         } else {
             runwayQueue.add(event);
         }
@@ -162,6 +162,16 @@ public class RunWayGiftControl {
             }
         });
         autoScrollView.startScroll();
+        frameLayout.setVisibility(View.VISIBLE);
+            if ("destroy".equals(type)) {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+            } else {
+                frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+            }
+            autoScrollView.setVisibility(View.VISIBLE);
+            autoScrollView.setBackground(frameLayout);
+            imageView.setVisibility(View.VISIBLE);
+            trackAnim.startAnim();
     }
 
 //    private synchronized void startNetRun(RunWayEvent event) {
