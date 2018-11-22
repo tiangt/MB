@@ -852,10 +852,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PkEvent pkEvent) {
         PkJson.ContextBean bean = pkEvent.getPkJson().context;
+        if ("PK_RECORD".equals(bean.busiCode)) {
+            return;
+        }
         if (pkControl == null) {
             pkControl = new PkControl(pkLayout, this);
         }
-        rlOtherSide.setVisibility(View.VISIBLE);
+//        rlOtherSide.setVisibility(View.VISIBLE);
         pkControl.setUserId(mUserId);
         pkControl.setStartAnim(svgaStartPk);
         pkControl.setIvCountDown(ivCountDown);
