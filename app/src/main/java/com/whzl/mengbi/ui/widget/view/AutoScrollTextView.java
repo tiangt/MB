@@ -97,8 +97,6 @@ public class AutoScrollTextView extends AppCompatTextView {
         textLength = paint.measureText(text);
         maxTranslateX = textLength + viewWidth + 50;
         dispose();
-        Log.i("chenlaing", "Net-Type = " + event.getRunwayBean().getContext().getRunwayType() + ", Net-isCacheIt = " + event.getRunwayBean().getContext().isCacheIt() +
-                ", Net-seconds = " + event.getRunwayBean().getContext().getSeconds());
         if (event.getRunwayBean().getContext().isCacheIt()) {
             event.setHasRuned(true);
             mDispose = Observable.just(1)
@@ -117,7 +115,12 @@ public class AutoScrollTextView extends AppCompatTextView {
         this.listener = listener;
         setVisibility(GONE);
         try {
-            event.showRunWay(this);
+            if("socket".equals(event.from)){
+                event.showRunWay(this);
+            }else{
+                event.showNetRunWay(this);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

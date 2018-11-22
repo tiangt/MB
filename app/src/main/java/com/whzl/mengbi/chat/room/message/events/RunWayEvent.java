@@ -76,6 +76,7 @@ public class RunWayEvent {
         if (getGiftSpanString() != null) {
             tvRunWayGift.append(getGiftSpanString());//礼物
         }
+
         if ("destroy".equals(runWayJson.getContext().getRunWayType())) {
             tvRunWayGift.append(LightSpanString.getLightString(" , 攻占超跑, ",
                     Color.parseColor("#faf9f9")));
