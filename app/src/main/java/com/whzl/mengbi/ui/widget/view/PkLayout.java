@@ -354,7 +354,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                             tvPkTitle.setText(state);
                             tvTime.setText((second - aLong - 1) + "s");
                         }
-                    } else if (aLong >= second - 1) {
+                    } else if (aLong >= second - 1 && !disposable.isDisposed()) {
                         LogUtils.e("ssssss  state dispose");
 //                        popupWindow.dismiss();
                         disposable.dispose();
@@ -403,7 +403,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void destroy() {
-        if (disposable != null) {
+        if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
         if (disposable2 != null) {
@@ -456,9 +456,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         pkUserFansBeans.clear();
         tvTime.setText("");
         tvPkTitle.setText("");
-        if (disposable != null) {
+        if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
-            disposable = null;
         }
     }
 

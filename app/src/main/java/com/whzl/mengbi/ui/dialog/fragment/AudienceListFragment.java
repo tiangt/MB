@@ -129,7 +129,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             } else {
                 imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(audienceInfoBean.getLevelMap().getUSER_LEVEL()));
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(),20), UIUtil.dip2px(getMyActivity(),20));
             linearLayout.addView(imageView, params);
             if (identity == UserIdentity.ROOM_MANAGER) {
                 ImageView mgrView = new ImageView(getContext());
