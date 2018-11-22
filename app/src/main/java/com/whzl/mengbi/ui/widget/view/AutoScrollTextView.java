@@ -8,7 +8,9 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.util.ToastUtils;
@@ -60,6 +62,12 @@ public class AutoScrollTextView extends AppCompatTextView {
      */
     private RunWayEvent runWayEvent;
 
+    private FrameLayout frameLayout;
+
+    public void setBackground(FrameLayout frameLayout) {
+        this.frameLayout = frameLayout;
+    }
+
     public AutoScrollTextView(Context context) {
         this(context, null);
     }
@@ -89,13 +97,17 @@ public class AutoScrollTextView extends AppCompatTextView {
         textLength = paint.measureText(text);
         maxTranslateX = textLength + viewWidth + 50;
         dispose();
-        if (event.getRunwayBean().getContext().isCacheIt()) {
-            event.setHasRuned(true);
-            mDispose = Observable.just(1)
-                    .delay(event.getRunwayBean().getContext().getSeconds(), TimeUnit.SECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(integer -> flagIsCacheTimeOut = true);
-        }
+        Log.i("chenlaing", "Net-Type = " + event.getRunwayBean().getContext().getRunwayType() + ", Net-isCacheIt = " + event.getRunwayBean().getContext().isCacheIt() +
+                ", Net-seconds = " + event.getRunwayBean().getContext().getSeconds());
+//        if (event.getRunwayBean().getContext().isCacheIt()) {
+        event.setHasRuned(true);
+        mDispose = Observable.just(1)
+                .delay(event.getRunwayBean().getContext().getSeconds(), TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> flagIsCacheTimeOut = true);
+//        } else {
+//            flagIsCacheTimeOut = true;
+//        }
     }
 
     public void init(RunWayEvent event, RunStateListener listener) {
@@ -114,13 +126,17 @@ public class AutoScrollTextView extends AppCompatTextView {
         textLength = paint.measureText(text);
         maxTranslateX = textLength + viewWidth + 50;
         dispose();
-        if (event.getRunWayJson().getContext().isCacheIt()) {
-            event.setHasRuned(true);
-            mDispose = Observable.just(1)
-                    .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(integer -> flagIsCacheTimeOut = true);
-        }
+        Log.i("chenlaing", "Type = " + event.getRunWayJson().getContext().getRunWayType() + ", isCacheIt = " + event.getRunWayJson().getContext().isCacheIt() +
+                ", seconds = " + event.getRunWayJson().getContext().getSeconds());
+//        if (event.getRunWayJson().getContext().isCacheIt()) {
+        event.setHasRuned(true);
+        mDispose = Observable.just(1)
+                .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(integer -> flagIsCacheTimeOut = true);
+//        } else {
+//            flagIsCacheTimeOut = true;
+//        }
     }
 
     public void dispose() {
@@ -238,6 +254,8 @@ public class AutoScrollTextView extends AppCompatTextView {
             }
             if (flagIsCacheTimeOut) {
                 stopScroll();
+                frameLayout.clearAnimation();
+                frameLayout.setVisibility(GONE);
                 return;
             }
             step = 0;
@@ -250,4 +268,5 @@ public class AutoScrollTextView extends AppCompatTextView {
     public interface RunStateListener {
         void finishSingleRun();
     }
+
 }

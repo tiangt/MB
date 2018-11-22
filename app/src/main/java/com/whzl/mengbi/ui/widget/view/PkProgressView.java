@@ -179,10 +179,10 @@ public class PkProgressView extends ProgressBar {
 //        path.arcTo(mRectF,180,0);
         path.addArc(0, 0, 36, 36, 180, 90);
         if (mDefaultPercent < 0) {
-            mDefaultPercent = 0;
+            mDefaultPercent = 8;
         }
         if (mDefaultPercent > 100) {
-            mDefaultPercent = 100;
+            mDefaultPercent = 92;
         }
         if (mDefaultPercent >= 2 && mDefaultPercent <= 98) {
             // point2
@@ -191,14 +191,14 @@ public class PkProgressView extends ProgressBar {
             // point3
             int p3_width = (mDefaultPercent + 2) * getWidth() / 100;
             path.lineTo(p3_width, getHeight());
-        } else if (mDefaultPercent < 2) {
+        } else if (mDefaultPercent < 10) {
             // point2
-            int p1_width = (10) * getWidth() / 100;
+            int p1_width = (4) * getWidth() / 100;
             path.lineTo(p1_width, 0);
             // point3
-            int p3_width = (14) * getWidth() / 100;
+            int p3_width = (8) * getWidth() / 100;
             path.lineTo(p3_width, getHeight());
-        } else if (mDefaultPercent > 98) {
+        } else if (mDefaultPercent > 90) {
             // point2
             int p1_width = (92) * getWidth() / 100;
             path.lineTo(p1_width, 0);

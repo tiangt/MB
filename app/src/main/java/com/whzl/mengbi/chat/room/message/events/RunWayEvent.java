@@ -19,6 +19,7 @@ public class RunWayEvent {
     private RunwayBean runwayBean;
     private SpannableString giftSpanString;
     private boolean hasRuned;
+    public SpannableString ss;
 
     /*
     giftSpanString 可能为null,使用时请判断是否为null
@@ -111,7 +112,6 @@ public class RunWayEvent {
         }
         tvRunWayGift.append(LightSpanString.getLightString(" " + "围观ing",
                 Color.parseColor("#fff00a")));
-
     }
 
     /*

@@ -185,7 +185,6 @@ public class PkControl {
                 startPKAnim();
                 startCountDown(5);
                 pkLayout.timer("PK进行中 ", bean.pkSurPlusSecond);
-                choosePunishWay(true);
                 if (bean.launchUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
                     rightAvatar = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -516,6 +515,7 @@ public class PkControl {
             intent.putExtra(BundleConfig.PROGRAM_ID, programId);
             context.startActivity(intent);
         });
+        dialog.setCancelable(false);
         dialog.show();
     }
 
@@ -641,7 +641,7 @@ public class PkControl {
             }
         });
 
-        if (TextUtils.isEmpty(punishment)) {
+        if (TextUtils.isEmpty(punishment) && isMvp) {
             pkLayout.post(new Runnable() {
                 @Override
                 public void run() {

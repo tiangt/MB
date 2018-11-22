@@ -49,6 +49,7 @@ public class RunWayGiftControl {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
             }
             autoScrollView.setVisibility(View.VISIBLE);
+            autoScrollView.setBackground(frameLayout);
             imageView.setVisibility(View.VISIBLE);
             trackAnim.startAnim();
             trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
@@ -68,6 +69,7 @@ public class RunWayGiftControl {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
             }
             autoScrollView.setVisibility(View.VISIBLE);
+            autoScrollView.setBackground(frameLayout);
             imageView.setVisibility(View.VISIBLE);
             trackAnim.startAnim();
             trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
@@ -95,6 +97,7 @@ public class RunWayGiftControl {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
             }
             autoScrollView.setVisibility(View.VISIBLE);
+            autoScrollView.setBackground(frameLayout);
             imageView.setVisibility(View.VISIBLE);
             trackAnim.startAnim();
             trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
@@ -114,6 +117,7 @@ public class RunWayGiftControl {
                 frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
             }
             autoScrollView.setVisibility(View.VISIBLE);
+            autoScrollView.setBackground(frameLayout);
             imageView.setVisibility(View.VISIBLE);
             trackAnim.startAnim();
             trackAnim.setTrackAnimListener(new TrackAnim.OnTrackAnimListener() {
