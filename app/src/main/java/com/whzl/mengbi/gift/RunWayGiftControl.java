@@ -83,11 +83,20 @@ public class RunWayGiftControl {
             @Override
             public void doNext(long number) {
                 frameLayout.setVisibility(View.VISIBLE);
-                if ("destroy".equals(type)) {
-                    frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
-                } else {
-                    frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
-                }
+//                if (null != cacheEvent && null != cacheEvent.getRunWayJson().getContext()) {
+//                    if ("destroy".equals(cacheEvent.getRunWayJson().getContext().getRunWayType())) {
+//                        frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+//                    } else {
+//                        frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+//                    }
+//                } else {
+                    if ("destroy".equals(type)) {
+                        frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_capture);
+                    } else {
+                        frameLayout.setBackgroundResource(R.drawable.shape_round_rect_supercar_board);
+                    }
+//                }
+
                 autoScrollView.setVisibility(View.VISIBLE);
                 autoScrollView.setBackground(frameLayout);
                 imageView.setVisibility(View.VISIBLE);

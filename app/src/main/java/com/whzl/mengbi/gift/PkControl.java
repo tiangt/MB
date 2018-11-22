@@ -161,8 +161,6 @@ public class PkControl {
     }
 
     private void initEvent() {
-        ksyTextureView.stop();
-        ksyTextureView.reset();
         pkLayout.setPunishWayOnClick(new PkLayout.PunishWayClick() {
             @Override
             public void onClick(View view) {
