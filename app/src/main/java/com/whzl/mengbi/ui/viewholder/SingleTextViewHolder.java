@@ -11,5 +11,11 @@ public class SingleTextViewHolder extends RecyclerView.ViewHolder {
     public SingleTextViewHolder(View itemView) {
         super(itemView);
         textView = itemView.findViewById(R.id.chat_text);
+        textView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
     }
 }

@@ -52,7 +52,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private TextView tvTime;
     private Disposable disposable;
     private Disposable disposable2;
-    private int initializeProgress;
+    public int initializeProgress;
     private TextView tvLeftScore;
     private TextView tvRightScore;
     private ValueAnimator animator;
@@ -373,7 +373,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                setProgress((int) valueAnimator.getAnimatedValue());
+                int animatedValue = (int) valueAnimator.getAnimatedValue();
+                setProgress(animatedValue);
             }
         });
 
@@ -449,6 +450,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         setProgress(50);
         setLeftScore(0);
         setRightScore(0);
+        initializeProgress = 50;
         launchPkUserFansBeans.clear();
         pkUserFansBeans.clear();
         tvTime.setText("");

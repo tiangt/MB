@@ -157,6 +157,9 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
 
         private SavedState(Parcel in) {
             super(in);
+            if (in == null) {
+                return;
+            }
             boolean[] b = null;
             in.readBooleanArray(b);
             if (b != null && b.length > 0)
