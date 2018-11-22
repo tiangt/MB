@@ -192,6 +192,7 @@ public class PkControl {
                 layout.setVisibility(View.VISIBLE);
                 startPKAnim();
                 startCountDown(5);
+                otherSideLive();
                 pkLayout.timer("PK倒计时 ", bean.pkSurPlusSecond);
                 if (bean.launchUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -203,14 +204,14 @@ public class PkControl {
                     if (bean.pkUserLiveAndStreamAddress.showStreams != null) {
                         for (int i = 0; i < bean.pkUserLiveAndStreamAddress.showStreams.size(); i++) {
                             streamType = bean.pkUserLiveAndStreamAddress.showStreams.get(i).streamType;
-                            if(streamType.equals("rtmp")){
+                            if(streamType.equals("flv")){
                                 streamAddress = bean.pkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
                                 setDateSourceForPlayer2(streamAddress);
                                 break;
                             }
 
                         }
-                        otherSideLive();
+//                        otherSideLive();
                     }
                 } else if (bean.pkUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -221,13 +222,13 @@ public class PkControl {
                     jumpNick = bean.launchPkUserInfo.nickname;
                     if (bean.launchPkUserLiveAndStreamAddress.showStreams != null) {
                         for (int i = 0; i < bean.launchPkUserLiveAndStreamAddress.showStreams.size(); i++) {
-                            if(streamType.equals("rtmp")){
+                            if(streamType.equals("flv")){
                                 streamAddress = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
                                 setDateSourceForPlayer2(streamAddress);
                                 break;
                             }
                         }
-                        otherSideLive();
+//                        otherSideLive();
                     }
                 }
                 break;
@@ -597,8 +598,10 @@ public class PkControl {
     }
 
     private void setDateSourceForPlayer2(String stream) {
-        ksyTextureView.reset();
+
         try {
+            ksyTextureView.stop();
+            ksyTextureView.reset();
             ksyTextureView.setDataSource(stream);
             ksyTextureView.prepareAsync();
         } catch (IOException e) {
@@ -867,7 +870,7 @@ public class PkControl {
     private void shutDown(){
         if (ksyTextureView != null) {
             ksyTextureView.stop();
-            ksyTextureView = null;
+            ksyTextureView.reset();
         }
     }
 }
