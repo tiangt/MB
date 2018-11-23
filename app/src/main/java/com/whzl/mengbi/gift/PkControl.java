@@ -204,7 +204,7 @@ public class PkControl {
                     if (bean.pkUserLiveAndStreamAddress.showStreams != null) {
                         for (int i = 0; i < bean.pkUserLiveAndStreamAddress.showStreams.size(); i++) {
                             streamType = bean.pkUserLiveAndStreamAddress.showStreams.get(i).streamType;
-                            if(streamType.equals("flv")){
+                            if (streamType.equals("flv")) {
                                 streamAddress = bean.pkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
                                 setDateSourceForPlayer2(streamAddress);
                                 break;
@@ -222,7 +222,7 @@ public class PkControl {
                     jumpNick = bean.launchPkUserInfo.nickname;
                     if (bean.launchPkUserLiveAndStreamAddress.showStreams != null) {
                         for (int i = 0; i < bean.launchPkUserLiveAndStreamAddress.showStreams.size(); i++) {
-                            if(streamType.equals("flv")){
+                            if (streamType.equals("flv")) {
                                 streamAddress = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
                                 setDateSourceForPlayer2(streamAddress);
                                 break;
@@ -298,7 +298,7 @@ public class PkControl {
 
                 if (mvpUserId != 0) {
                     if (mvpUserId == mUserId) {
-                        needShow=true;
+                        needShow = true;
                         showPunishment(true);
                         isMvp = true;
                     } else {
@@ -338,7 +338,7 @@ public class PkControl {
                 break;
             case "PK_PUNISH_WAY": //惩罚方式
                 if (!TextUtils.isEmpty(bean.punishWay)) {
-                    if (mvpWindow.isShowing()) {
+                    if (mvpWindow != null && mvpWindow.isShowing()) {
                         mvpWindow.dismiss();
                     }
                     needShow = false;
@@ -437,18 +437,18 @@ public class PkControl {
                     punishment = bean.punishWay;
                     if (bean.mvpUser.userId == mUserId) {
                         if (TextUtils.isEmpty(bean.punishWay)) {
-                            needShow=true;
+                            needShow = true;
                             showPunishment(true);
                             isMvp = true;
 //                                choosePunishWay(true);
                         } else {
-                            needShow=false;
+                            needShow = false;
                             pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                         }
                     } else {
                         if (punishment.isEmpty()) {
                             needShow = true;
-                        }else{
+                        } else {
                             needShow = false;
                         }
 //                            showPunishment(false);
@@ -867,7 +867,7 @@ public class PkControl {
                 });
     }
 
-    private void shutDown(){
+    private void shutDown() {
         if (ksyTextureView != null) {
             ksyTextureView.stop();
             ksyTextureView.reset();
