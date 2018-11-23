@@ -73,16 +73,16 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         y = getTextSize() + getPaddingTop();
     }
 
-    @Override
-    public Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-        SavedState ss = new SavedState(superState);
-
-        ss.step = step;
-        ss.isStarting = isStarting;
-        return ss;
-
-    }
+//    @Override
+//    public Parcelable onSaveInstanceState() {
+//        Parcelable superState = super.onSaveInstanceState();
+//        SavedState ss = new SavedState(superState);
+//
+//        ss.step = step;
+//        ss.isStarting = isStarting;
+//        return ss;
+//
+//    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -108,18 +108,18 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         invalidate();
     }
 
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        if (!(state instanceof SavedState)) {
-            super.onRestoreInstanceState(state);
-            return;
-        }
-        SavedState ss = (SavedState) state;
-        super.onRestoreInstanceState(ss.getSuperState());
-
-        step = ss.step;
-        isStarting = ss.isStarting;
-    }
+//    @Override
+//    public void onRestoreInstanceState(Parcelable state) {
+//        if (!(state instanceof SavedState)) {
+//            super.onRestoreInstanceState(state);
+//            return;
+//        }
+//        SavedState ss = (SavedState) state;
+//        super.onRestoreInstanceState(ss.getSuperState());
+//
+//        step = ss.step;
+//        isStarting = ss.isStarting;
+//    }
 
     @Override
     public void setVisibility(int visibility) {
