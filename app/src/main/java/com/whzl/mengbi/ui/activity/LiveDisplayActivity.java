@@ -332,6 +332,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         textureView2.reset();
 
         textureView.setVisibility(View.INVISIBLE);
+        textureView2.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         mProgramId = intent.getIntExtra(BundleConfig.PROGRAM_ID, -1);
         SPUtils.put(this, "programId", mProgramId);
