@@ -1194,6 +1194,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         if (bean.otherStream != null) {
             rlOtherSide.setVisibility(View.VISIBLE);
+            rlOtherSideInfo.setVisibility(View.VISIBLE);
             List<String> rtmpList = bean.otherStream.getRtmp();
             List<String> flvList = bean.otherStream.getFlv();
             List<String> hlsList = bean.otherStream.getHls();
@@ -1590,6 +1591,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, programId);
             startActivity(intent);
+            rlOtherSide.setVisibility(View.GONE);
+            rlOtherSideInfo.setVisibility(View.GONE);
+            textureView.setVisibility(View.INVISIBLE);
+            pkLayout.setVisibility(View.GONE);
         });
         dialog.show();
     }
