@@ -49,6 +49,7 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -165,8 +166,10 @@ public class PkControl {
         pkLayout.setPunishWayOnClick(new PkLayout.PunishWayClick() {
             @Override
             public void onClick(View view) {
-                if (needShow) {
-                    showPunishment(isMvp);
+                if(ClickUtil.isFastClick()){
+                    if (needShow) {
+                        showPunishment(isMvp);
+                    }
                 }
             }
         });
