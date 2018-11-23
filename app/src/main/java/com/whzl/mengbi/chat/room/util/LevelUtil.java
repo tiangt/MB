@@ -156,7 +156,7 @@ public class LevelUtil {
         if (drawable != null) {
             int originWidth = drawable.getIntrinsicWidth();
             int originHeight = drawable.getIntrinsicHeight();
-            float dpHeight = 12;
+            float dpHeight = 13;
             float dpWidth = originWidth * dpHeight / originHeight;
             drawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
             ImageSpan span = new CenterAlignImageSpan(drawable);
