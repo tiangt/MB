@@ -31,4 +31,10 @@ public interface LiveModel {
     void pkInfo(HashMap paramsMap, OnLiveFinishedListener listener);
 
     void activityGrand(HashMap paramsMap, OnLiveFinishedListener listener);
+
+    void getAudienceList(HashMap paramsMap, OnLiveFinishedListener listener);
+
+    void getTotalGuard(HashMap paramsMap, OnLiveFinishedListener listener);
+
+    void getRoomRankTotal(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

@@ -11,6 +11,7 @@ import com.whzl.mengbi.chat.room.util.DownloadEvent;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,6 +22,7 @@ import java.util.List;
 public class ChatAction implements Actions {
     @Override
     public void performAction(String msgStr, Context context) {
+        LogUtils.e2(msgStr);
         ChatCommonJson chatJson = GsonUtils.GsonToBean(msgStr, ChatCommonJson.class);
         if (chatJson == null) {
             return;

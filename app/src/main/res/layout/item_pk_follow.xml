@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="1dp"
+    android:layout_marginRight="1dp">
+
+    <com.whzl.mengbi.ui.widget.view.CircleRelativeLayout
+        android:id="@+id/circle_head"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shape_online_head_civilian">
+
+        <com.whzl.mengbi.ui.widget.view.CircleImageView
+            android:id="@+id/iv_circle_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp" />
+
+        <ImageView
+            android:id="@+id/iv_pk_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+
+    </com.whzl.mengbi.ui.widget.view.CircleRelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_pk_count"
+        android:layout_width="24.5dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/circle_head"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="#fffffe"
+        android:textSize="8sp" />
+</RelativeLayout>
+

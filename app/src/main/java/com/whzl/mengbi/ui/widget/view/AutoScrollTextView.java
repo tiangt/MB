@@ -8,7 +8,9 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.util.ToastUtils;
@@ -60,6 +62,12 @@ public class AutoScrollTextView extends AppCompatTextView {
      */
     private RunWayEvent runWayEvent;
 
+    private FrameLayout frameLayout;
+
+    public void setBackground(FrameLayout frameLayout) {
+        this.frameLayout = frameLayout;
+    }
+
     public AutoScrollTextView(Context context) {
         this(context, null);
     }
@@ -73,13 +81,13 @@ public class AutoScrollTextView extends AppCompatTextView {
         viewWidth = UIUtil.getScreenWidthPixels(getContext()) - UIUtil.dip2px(getContext(), 120);
     }
 
-    public void init(RunWayEvent event, RunStateListener listener) {
+    public void initNet(RunWayEvent event, RunStateListener listener) {
         runWayEvent = event;
         flagIsCacheTimeOut = false;
         this.listener = listener;
         setVisibility(GONE);
         try {
-            event.showRunWay(this);
+            event.showNetRunWay(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,13 +97,57 @@ public class AutoScrollTextView extends AppCompatTextView {
         textLength = paint.measureText(text);
         maxTranslateX = textLength + viewWidth + 50;
         dispose();
-        if (event.getRunWayJson().getContext().isCacheIt()) {
+        if (event.getRunwayBean().getContext().isCacheIt()) {
             event.setHasRuned(true);
             mDispose = Observable.just(1)
-                    .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
+                    .delay(event.getRunwayBean().getContext().getSeconds(), TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(integer -> flagIsCacheTimeOut = true);
+        } else {
+            event.setHasRuned(true);
+//            flagIsCacheTimeOut = true;
         }
+    }
+
+    public void init(RunWayEvent event, RunStateListener listener) {
+        runWayEvent = event;
+        flagIsCacheTimeOut = false;
+        this.listener = listener;
+        setVisibility(GONE);
+        try {
+            if("socket".equals(event.from)){
+                event.showRunWay(this);
+            }else{
+                event.showNetRunWay(this);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        paint = getPaint();
+        String text = getText().toString();
+        step = 0f;
+        textLength = paint.measureText(text);
+        maxTranslateX = textLength + viewWidth + 50;
+        dispose();
+        if (event.from.equals("socket")) {
+            if (event.getRunWayJson().getContext().isCacheIt()) {
+                event.setHasRuned(true);
+                mDispose = Observable.just(1)
+                        .delay(event.getRunWayJson().getContext().getSeconds(), TimeUnit.SECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(integer -> flagIsCacheTimeOut = true);
+            }
+        } else {
+            if (event.getRunwayBean().getContext().isCacheIt()) {
+                event.setHasRuned(true);
+                mDispose = Observable.just(1)
+                        .delay(event.getRunwayBean().getContext().getSeconds(), TimeUnit.SECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(integer -> flagIsCacheTimeOut = true);
+            }
+        }
+
     }
 
     public void dispose() {
@@ -196,23 +248,25 @@ public class AutoScrollTextView extends AppCompatTextView {
         canvas.translate(viewWidth - step, 0);
         super.onDraw(canvas);
         //滚动速度
-        if (step <= viewWidth && step + 1.5 > viewWidth) {
+        if (step <= viewWidth && step + 2.5 > viewWidth) {
             Observable.just(1)
                     .delay(3, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(integer -> {
-                        step += 1.5;
+                        step += 2.5;
                         invalidate();
                     });
             return;
         }
-        step += 1.5;
+        step += 2.5;
         if (step > maxTranslateX) {
             if (listener != null) {
                 listener.finishSingleRun();
             }
             if (flagIsCacheTimeOut) {
                 stopScroll();
+                frameLayout.clearAnimation();
+                frameLayout.setVisibility(GONE);
                 return;
             }
             step = 0;
@@ -225,4 +279,5 @@ public class AutoScrollTextView extends AppCompatTextView {
     public interface RunStateListener {
         void finishSingleRun();
     }
+
 }

@@ -27,7 +27,6 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.fragment.RankFragment;
 import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 import com.whzl.mengbi.ui.fragment.main.HomeFragment;
-import com.whzl.mengbi.ui.fragment.main.HomeFragmentNew;
 import com.whzl.mengbi.ui.fragment.main.MeFragment;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.AsyncRun;
@@ -120,6 +119,10 @@ public class MainActivity extends BaseActivity {
         currentSelectedIndex = 0;
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivityForResult(intent, REQUEST_LOGIN);
+//        LoginDialog.newInstance()
+//                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+//                .setDimAmount(0)
+//                .show(getSupportFragmentManager());
         rgTab.check(rgTab.getChildAt(0).getId());
     }
 

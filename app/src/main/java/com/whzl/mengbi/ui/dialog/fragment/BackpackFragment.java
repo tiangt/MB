@@ -1,14 +1,18 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
-import android.graphics.Color;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
@@ -16,15 +20,13 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
-import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
-import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -34,6 +36,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +45,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import pl.droidsonroids.gif.GifDrawable;
 
 /**
  * @author shaw
@@ -54,6 +58,8 @@ public class BackpackFragment extends BaseFragment {
     private boolean flagOnMessageEvent = true;
     private ArrayList<BackpackListBean.GoodsDetailBean> mDatas = new ArrayList<>();
     private int selectedPosition = -1;
+
+    private int selectId = -1;
 
 
     public static BackpackFragment newInstance(ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList) {
@@ -74,7 +80,7 @@ public class BackpackFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         mDatas = getArguments().getParcelableArrayList("data");
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        recycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        recycler.setLayoutManager(new GridLayoutManager(getContext(), 5));
         giftAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
@@ -121,6 +127,8 @@ public class BackpackFragment extends BaseFragment {
         TextView tvCost;
         @BindView(R.id.view_select_mark)
         View selectedMark;
+        @BindView(R.id.rl)
+        RelativeLayout rl;
 
         public GoodsViewHolder(View itemView) {
             super(itemView);
@@ -132,24 +140,60 @@ public class BackpackFragment extends BaseFragment {
             BackpackListBean.GoodsDetailBean goodsDetailBean = mDatas.get(position);
             GlideImageLoader.getInstace().displayImage(getContext(), goodsDetailBean.goodsPic, ivGift);
             tvGiftName.setText(goodsDetailBean.goodsName);
-            tvCost.setText("数量 ");
-            SpannableString spannableString = StringUtils.spannableStringColor(goodsDetailBean.count + "", Color.parseColor("#fdc809"));
-            tvCost.append(spannableString);
-            selectedMark.setSelected(position == selectedPosition);
+//            tvCost.setText("数量 ");
+//            SpannableString spannableString = StringUtils.spannableStringColor(goodsDetailBean.count + "", Color.parseColor("#fdc809"));
+            tvCost.setText(goodsDetailBean.count + "");
+//            selectedMark.setSelected(position == selectedPosition);
+            if (position == selectedPosition) {
+                try {
+                    GifDrawable drawable = new GifDrawable(getResources(),R.drawable.bg_live_house_select);
+                    rl.setBackground(drawable);
+//                ((ImageView) holder.getView(R.id.iv)).setImageDrawable(drawable);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//            holder.getView(R.id.rl).setBackground();
+            } else {
+                rl.setBackground(null);
+            }
         }
 
         @Override
         public void onItemClick(View view, int position) {
             super.onItemLongClick(view, position);
+            if (selectedPosition == position) {
+                return;
+            }
+            startAnimal(ivGift, position);
             BackpackListBean.GoodsDetailBean goodsDetailBean = mDatas.get(position);
-            selectedPosition = position;
-            giftAdapter.notifyDataSetChanged();
             GiftInfo.GiftDetailInfoBean giftDetailInfoBean = new GiftInfo.GiftDetailInfoBean();
             giftDetailInfoBean.setGoodsId(goodsDetailBean.goodsId);
+            selectId = goodsDetailBean.goodsId;
             giftDetailInfoBean.setBackpack(true);
             flagOnMessageEvent = false;
             EventBus.getDefault().post(new GiftSelectedEvent(giftDetailInfoBean));
         }
+    }
+
+    public void startAnimal(View imageView, int position) {
+
+        AnimatorSet animatorSetsuofang = new AnimatorSet();
+
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 2f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 2f, 1f);
+
+        animatorSetsuofang.setDuration(300);
+        animatorSetsuofang.setInterpolator(new OvershootInterpolator());
+        animatorSetsuofang.play(scaleX).with(scaleY);//两个动画同时开始
+        animatorSetsuofang.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                selectedPosition = position;
+                giftAdapter.notifyDataSetChanged();
+            }
+        });
+        animatorSetsuofang.start();
     }
 
     private void getBackPack() {
@@ -166,6 +210,7 @@ public class BackpackFragment extends BaseFragment {
                     @Override
                     public void onSuccess(BackpackListBean backpackListBean) {
                         if (backpackListBean != null && backpackListBean.list != null) {
+                            ((BackpackMotherFragment) getParentFragment()).llBackPack.setVisibility(View.GONE);
 //                            for (int i = 0; i < backpackListBean.list.size(); i++) {
 //                                for (int j = 0; j < mDatas.size(); j++) {
 //                                    if(mDatas.get(j).goodsId == backpackListBean.list.get(i).goodsId){
@@ -173,16 +218,20 @@ public class BackpackFragment extends BaseFragment {
 //                                    }
 //                                }
 //                            }
+                            if (mDatas.size() != backpackListBean.list.size()) {
+                                selectedPosition = -1;
+                                EventBus.getDefault().post(new GiftSelectedEvent(null));
+                            }
                             mDatas.clear();
                             mDatas.addAll(backpackListBean.list);
-                            selectedPosition = -1;
                             giftAdapter.notifyDataSetChanged();
+                        } else {
+                            ((BackpackMotherFragment) getParentFragment()).llBackPack.setVisibility(View.VISIBLE);
                         }
                     }
 
                     @Override
-                    public void onError(int code) {
-
+                    public void onError(ApiResult<BackpackListBean> body) {
                     }
                 });
     }

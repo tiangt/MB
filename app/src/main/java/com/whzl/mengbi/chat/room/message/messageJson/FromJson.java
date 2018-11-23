@@ -60,6 +60,7 @@ public class FromJson {
         String goodsName;
         String goodsType;
         int bindProgramId;
+        public String goodsColor;
 
         public int getGoodsIcon() {
             return goodsIcon;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 
 import com.whzl.mengbi.R;
@@ -11,7 +12,6 @@ import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
-import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
 import com.whzl.mengbi.util.ResourceMap;
 
@@ -19,18 +19,25 @@ import java.io.IOException;
 import java.util.List;
 
 public class WelcomeMsg implements FillHolderMessage {
-    private String nickName;
-    private long uid;
-    private int userLevel;
-    private List<SpannableString> userSpanList;
+    public String nickName;
+    public long uid;
+    public int userLevel;
+    public List<SpannableString> userSpanList;
     private Context mContext;
-    private boolean isAnchor = false;
-    private long prettyNum;
-    private boolean hasGuard = false;
-    private int programId = 0;
+    public boolean isAnchor = false;
+    private String prettyNum;
+    private String prettyNumColor;
+    public boolean hasGuard = false;
+    public int programId = 0;
+
+    public WelcomeJson getmWelcomeJson() {
+        return mWelcomeJson;
+    }
+
     private WelcomeJson mWelcomeJson;
-    private int royalLevel;
-    private boolean hasVip = false;
+    public int royalLevel;
+    public boolean hasVip = false;
+    public String prettyNumberOrUserId;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
         this.nickName = welcomeJson.getContext().getInfo().getNickname();
@@ -50,11 +57,14 @@ public class WelcomeMsg implements FillHolderMessage {
         this.hasGuard = userHasGuard(welcomeJson.getContext().getInfo().getUserBagList());
         this.royalLevel = getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
         this.hasVip = userHasVip(welcomeJson.getContext().getInfo().getUserBagList());
+        this.prettyNumColor = getPrettyNumColor(welcomeJson.getContext().getInfo().getUserBagList());
+        this.prettyNum = getPrettyNumString(welcomeJson.getContext().getInfo().getUserBagList());
     }
 
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
         WelcomeTextViewHolder mHolder = (WelcomeTextViewHolder) holder;
+        mHolder.linearLayout.setBackgroundResource(R.drawable.bg_welcome_noguard);
         mHolder.textView.setText("");
         if (royalLevel > 0) {
             try {
@@ -75,6 +85,7 @@ public class WelcomeMsg implements FillHolderMessage {
             mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
             mHolder.textView.append(" ");
             if (hasGuard) {
+                mHolder.linearLayout.setBackgroundResource(R.drawable.bg_welcome_hasguard);
                 mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.guard));
                 mHolder.textView.append(" ");
             }
@@ -88,13 +99,31 @@ public class WelcomeMsg implements FillHolderMessage {
                     mHolder.textView.append(" ");
                 }
             }
-            mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#f4be2c")));
+            if (!TextUtils.isEmpty(prettyNum)) {
+                if ("A".equals(prettyNumColor)) {
+                    mHolder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
+                    mHolder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
+                } else if ("B".equals(prettyNumColor)) {
+                    mHolder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe7a2a"), Color.parseColor("#ffffff")));
+                    mHolder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe7a2a"), Color.parseColor("#fe7a2a")));
+                } else if ("C".equals(prettyNumColor)) {
+                    mHolder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
+                    mHolder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
+                }
+                mHolder.textView.append(" ");
+            }
+            mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#999999")));
+            if (royalLevel > 0) {
+                mHolder.textView.append(LightSpanString.getLightString(" 闪亮登场", Color.parseColor("#999999")));
+            } else {
+                mHolder.textView.append(LightSpanString.getLightString(" 精彩亮相", Color.parseColor("#999999")));
+            }
         } else {
-            mHolder.textView.append(LightSpanString.getLightString("欢迎 ", WHITE_FONG_COLOR));
-            mHolder.textView.append(LightSpanString.getLightString(nickName, Color.parseColor("#ffffff")));
-
+            mHolder.textView.append(LightSpanString.getLightString("欢迎 ", Color.parseColor("#999999")));
+            mHolder.textView.append(LightSpanString.getLightString(nickName, Color.parseColor("#999999")));
+            mHolder.textView.append(LightSpanString.getLightString(" 入场", Color.parseColor("#999999")));
         }
-        mHolder.textView.append(LightSpanString.getLightString(" 进入直播间", WHITE_FONG_COLOR));
+
     }
 
     @Override
@@ -129,7 +158,7 @@ public class WelcomeMsg implements FillHolderMessage {
         return level;
     }
 
-    private int getRoyalLevel(List<WelcomeJson.WelcomeLevelListItem> levelList) {
+    public int getRoyalLevel(List<WelcomeJson.WelcomeLevelListItem> levelList) {
         if (null == levelList) {
             return 0;
         }
@@ -193,17 +222,32 @@ public class WelcomeMsg implements FillHolderMessage {
         return mWelcomeJson.getContext().getCarObj().getCarPicId();
     }
 
-    public long getPrettyNum() {
-        if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
-            return 0;
+
+    public String getPrettyNumColor(List<WelcomeJson.UserBagItem> userBagList) {
+        if (userBagList == null) {
+            return "A";
         }
-        return mWelcomeJson.getContext().getCarObj().getPrettyNumberOrUserId();
+        String string = "A";
+        for (WelcomeJson.UserBagItem bagItem : userBagList) {
+            if (bagItem.getGoodsType().equals("PRETTY_NUM") && bagItem.getIsEquip().equals("T") && bagItem.goodsColor != null) {
+                string = bagItem.goodsColor;
+                break;
+            }
+        }
+        return string;
     }
 
-    public String getGoodsColor() {
-        if (mWelcomeJson.getContext() == null || mWelcomeJson.getContext().getCarObj() == null) {
-            return "default";
+    public String getPrettyNumString(List<WelcomeJson.UserBagItem> userBagList) {
+        if (userBagList == null) {
+            return "";
         }
-        return mWelcomeJson.getContext().getCarObj().getGoodsColor();
+        String string = "";
+        for (WelcomeJson.UserBagItem bagItem : userBagList) {
+            if (bagItem.getGoodsType().equals("PRETTY_NUM") && bagItem.getIsEquip().equals("T")) {
+                string = bagItem.getGoodsName();
+                break;
+            }
+        }
+        return string;
     }
 }

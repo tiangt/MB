@@ -26,6 +26,7 @@ public class GiftSortMotherFragment extends BaseFragment {
     ViewPager viewPager;
     @BindView(R.id.pager_index_container)
     LinearLayout pagerIndexContainer;
+    private float gitfNum = 10;
 
     public static GiftSortMotherFragment newInstance(ArrayList<GiftInfo.GiftDetailInfoBean> giftList) {
 
@@ -44,18 +45,18 @@ public class GiftSortMotherFragment extends BaseFragment {
     @Override
     public void init() {
         ArrayList<GiftInfo.GiftDetailInfoBean> giftList = getArguments().getParcelableArrayList("gifts");
-        int pagers = (int) Math.ceil(giftList.size() / 8f);
+        int pagers = (int) Math.ceil(giftList.size() / gitfNum);
         setupPagerIndex(pagers);
         ArrayList<Fragment> fragments = new ArrayList<>();
         for (int i = 0; i < pagers; i++) {
             GiftSortFragment fragment;
             if (i == pagers - 1) {
                 ArrayList<GiftInfo.GiftDetailInfoBean> pagerGiftList = new ArrayList<>();
-                pagerGiftList.addAll(giftList.subList(i * 8, giftList.size()));
+                pagerGiftList.addAll(giftList.subList((int) (i * gitfNum), giftList.size()));
                 fragment = GiftSortFragment.newInstance(pagerGiftList);
             } else {
                 ArrayList<GiftInfo.GiftDetailInfoBean> pagerGiftList = new ArrayList<>();
-                pagerGiftList.addAll(giftList.subList(i * 8, (i + 1) * 8));
+                pagerGiftList.addAll(giftList.subList((int) (i * gitfNum), (int)((i + 1) * gitfNum)));
                 fragment = GiftSortFragment.newInstance(pagerGiftList);
             }
             fragments.add(fragment);
@@ -89,14 +90,14 @@ public class GiftSortMotherFragment extends BaseFragment {
         if(pagers < 2){
             return;
         }
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 8), UIUtil.dip2px(getContext(), 8));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 4), UIUtil.dip2px(getContext(), 4));
         for (int i = 0; i < pagers; i++) {
             View view = new View(getContext());
             view.setBackgroundResource(R.drawable.selector_common_pager_index);
             if (i == 0) {
                 view.setSelected(true);
             } else {
-                params.leftMargin = UIUtil.dip2px(getContext(), 7.5f);
+                params.leftMargin = UIUtil.dip2px(getContext(), 10);
             }
             pagerIndexContainer.addView(view, params);
         }

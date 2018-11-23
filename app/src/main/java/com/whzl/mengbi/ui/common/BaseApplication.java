@@ -70,7 +70,7 @@ public class BaseApplication extends Application {
             // You should not init your app in this process.
             return;
         }
-        _refWatcher = LeakCanary.install(this);
+//        _refWatcher = LeakCanary.install(this);
         CrashHandler.getInstance().init(this);
         initUM();
         initApi();
@@ -84,6 +84,7 @@ public class BaseApplication extends Application {
         StatService.setDebugOn(true);
         StatService.setAppChannel(this, channel, true);
         StatService.autoTrace(this, true, false);
+        StatService.start(this);
     }
 
     public static BaseApplication getInstance() {

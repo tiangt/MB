@@ -75,6 +75,39 @@ public class LevelUtil {
         return -1;
     }
 
+    public static String getPrettyNumColor(FromJson fromJson) {
+        if (fromJson == null) {
+            return "A";
+        }
+        List<FromJson.Good> goodsList = fromJson.getGoodsList();
+        if (goodsList == null) {
+            return "A";
+        }
+        for (FromJson.Good good : goodsList) {
+            if (good.getGoodsType().equals("PRETTY_NUM") && good.goodsColor != null) {
+                String goodsColor = good.goodsColor;
+                return goodsColor;
+            }
+        }
+        return "A";
+    }
+
+    public static String getPrettyNum(FromJson fromJson) {
+        if (fromJson == null) {
+            return "";
+        }
+        List<FromJson.Good> goodsList = fromJson.getGoodsList();
+        if (goodsList == null) {
+            return "";
+        }
+        for (FromJson.Good good : goodsList) {
+            if (good.getGoodsType().equals("PRETTY_NUM")) {
+                String goodsColor = good.getGoodsName();
+                return goodsColor;
+            }
+        }
+        return "";
+    }
 
     /**
      * 根据图片资源获取spanString
@@ -95,7 +128,7 @@ public class LevelUtil {
         float dpHeight = ImageUrl.IMAGE_HIGHT;
         float dpWidth = originWidth * dpHeight / originHeight;
         levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
-        CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
+        ImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
         levelIcon.setSpan(imageSpan, 0, levelIcon.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return levelIcon;
@@ -115,12 +148,17 @@ public class LevelUtil {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             Bitmap bitmap = FileUtils.readBitmapFromAssetsFile("images/face/royal/royal_" + resourceId + ".gif", context);
             drawable = new BitmapDrawable(context.getResources(), bitmap);
+            bitmap.recycle();
         } else {
             drawable = new GifDrawable(getFileContent(context, "images/face/royal/royal_" + resourceId + ".gif"));
             drawable.setCallback(new DrawableCallback(textView));
         }
         if (drawable != null) {
-            drawable.setBounds(0, 0, DensityUtil.dp2px(30), DensityUtil.dp2px(11));
+            int originWidth = drawable.getIntrinsicWidth();
+            int originHeight = drawable.getIntrinsicHeight();
+            float dpHeight = 13;
+            float dpWidth = originWidth * dpHeight / originHeight;
+            drawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
             ImageSpan span = new CenterAlignImageSpan(drawable);
             levelIcon.setSpan(span, 0, levelIcon.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
@@ -157,4 +195,21 @@ public class LevelUtil {
         }
     }
 
+    public static SpannableString getImageResourceSpanByHeight(Context context, int resourceId, int height) {
+        SpannableString levelIcon = new SpannableString("icon");
+        Resources res = context.getResources();
+        Drawable levelIconDrawable = res.getDrawable(resourceId);
+        if (levelIconDrawable == null) {
+            return levelIcon;
+        }
+        int originWidth = levelIconDrawable.getIntrinsicWidth();
+        int originHeight = levelIconDrawable.getIntrinsicHeight();
+        float dpHeight = height;
+        float dpWidth = originWidth * dpHeight / originHeight;
+        levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
+        ImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
+        levelIcon.setSpan(imageSpan, 0, levelIcon.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return levelIcon;
+    }
 }

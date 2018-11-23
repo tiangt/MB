@@ -34,4 +34,10 @@ public interface LivePresenter {
     void getPkInfo(int programId);
 
     void getActivityGrand(int programId,int anchorId);
+
+    void getAudienceList(int programId);
+
+    void getGuardTotal(int programId);
+
+    void getRoomRankTotal(int mProgramId, String type);
 }

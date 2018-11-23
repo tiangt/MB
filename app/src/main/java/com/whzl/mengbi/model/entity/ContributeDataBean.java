@@ -19,7 +19,7 @@ public class ContributeDataBean {
     public DataBean data;
 
     public class DataBean {
-        public List<UserInfoBean> day;
+        public List<UserInfoBean> list;
         public List<UserInfoBean> week;
 
         public class UserInfoBean {

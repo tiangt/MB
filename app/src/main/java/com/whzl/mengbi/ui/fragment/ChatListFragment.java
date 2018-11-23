@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.fragment;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,13 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
@@ -44,14 +46,39 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 public class ChatListFragment extends BaseFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
+//    @BindView(R.id.ll_enter)
+    LinearLayout llEnter;
+//    @BindView(R.id.tv_enter)
+//    RollTextView tvEnter;
+//    ImageView ivEnter;
+
+//    public void setIvEnter(ImageView ivEnter) {
+//        this.ivEnter = ivEnter;
+//    }
+//
+//    public void setLlEnter(LinearLayout llEnter) {
+//        this.llEnter = llEnter;
+//    }
+//
+//    public void setTvEnter(RollTextView tvEnter) {
+//        this.tvEnter = tvEnter;
+//    }
+
     private RecyclerView.Adapter chatAdapter;
     private static final int TOTAL_CHAT_MSG = 100;
     private boolean isRecyclerScrolling;
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
+    //    private RoyalEnterControl royalEnterControl;
+    private int mProgramId;
 
 
-    public static ChatListFragment newInstance() {
-        return new ChatListFragment();
+
+    public static ChatListFragment newInstance(int programId) {
+        Bundle args = new Bundle();
+        args.putInt("programId", programId);
+        ChatListFragment chatListFragment = new ChatListFragment();
+        chatListFragment.setArguments(args);
+        return chatListFragment;
     }
 
     @Override
@@ -63,6 +90,7 @@ public class ChatListFragment extends BaseFragment {
     public void init() {
         initChatRecycler();
         EventBus.getDefault().register(this);
+        mProgramId = getArguments().getInt("programId");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -78,7 +106,28 @@ public class ChatListFragment extends BaseFragment {
                 recycler.smoothScrollToPosition(chatList.size() - 1);
             }
         }
+
+//        if (message instanceof WelcomeMsg) {
+//            WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
+//            int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
+//            if (royalLevel > 0) {
+//                if (royalEnterControl == null) {
+//                    royalEnterControl = new RoyalEnterControl();
+//                    royalEnterControl.setLlEnter(llEnter);
+//                    royalEnterControl.setTvEnter(tvEnter);
+//                    royalEnterControl.setIvEnter(ivEnter);
+//                    royalEnterControl.setContext(getMyActivity());
+//                }
+////            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
+////            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
+////            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
+//                royalEnterControl.showEnter((WelcomeMsg) message);
+//            }
+//        }
     }
+
+
+
 
     private void initChatRecycler() {
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
@@ -115,41 +164,45 @@ public class ChatListFragment extends BaseFragment {
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 FillHolderMessage message = chatList.get(position);
+                if (message instanceof PkMessage) {
+                    ((PkMessage) message).setProgramId(mProgramId);
+                }
                 message.fillHolder(holder);
                 holder.itemView.setOnClickListener(null);
                 if (getItemViewType(position) == 1 || getItemViewType(position) == 2) {
                     WelcomeMsg welcomeMsg = (WelcomeMsg) message;
-                    RelativeLayout rlCarContainer = holder.itemView.findViewById(R.id.rl_car_container);
+//                    RelativeLayout rlCarContainer = holder.itemView.findViewById(R.id.rl_car_container);
+                    LinearLayout llCar = holder.itemView.findViewById(R.id.ll_car);
                     if (welcomeMsg.hasBagCar()) {
-                        rlCarContainer.setVisibility(View.VISIBLE);
+                        llCar.setVisibility(View.VISIBLE);
                         ImageView ivCar = holder.itemView.findViewById(R.id.iv_car);
                         TextView tvCarName = holder.itemView.findViewById(R.id.tv_car_name);
-                        TextView tvPrettyDesc = holder.itemView.findViewById(R.id.tv_pretty_num_desc);
-                        TextView tvPrettyNum = holder.itemView.findViewById(R.id.tv_pretty_num);
+//                        TextView tvPrettyDesc = holder.itemView.findViewById(R.id.tv_pretty_num_desc);
+//                        TextView tvPrettyNum = holder.itemView.findViewById(R.id.tv_pretty_num);
                         tvCarName.setText(welcomeMsg.getCarName());
-                        tvPrettyDesc.setText(welcomeMsg.getPrettyNum() == 0 ? "普号" : "靓号");
-                        tvPrettyNum.setText(welcomeMsg.getPrettyNum() == 0 ? welcomeMsg.getUid() + "" : welcomeMsg.getPrettyNum() + "");
+//                        tvPrettyDesc.setText(welcomeMsg.getPrettyNum() == 0 ? "普号" : "靓号");
+//                        tvPrettyNum.setText(welcomeMsg.getPrettyNum() == 0 ? welcomeMsg.getUid() + "" : welcomeMsg.getPrettyNum() + "");
                         String imageUrl = ImageUrl.getImageUrl(welcomeMsg.getCarId(), "jpg");
                         GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivCar);
-                        String goodsColor = welcomeMsg.getGoodsColor();
-                        if ("A".equals(goodsColor)) {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
-                        } else if ("B".equals(goodsColor)) {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
-                        } else if ("C".equals(goodsColor)) {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
-                        } else if ("D".equals(goodsColor)) {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
-                        } else {
-                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
-                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
-                        }
+//                        String goodsColor = welcomeMsg.getGoodsColor();
+//                        if ("A".equals(goodsColor)) {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
+//                        } else if ("B".equals(goodsColor)) {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
+//                        } else if ("C".equals(goodsColor)) {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
+//                        } else if ("D".equals(goodsColor)) {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
+//                        } else {
+//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
+//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
+//                        }
                     } else {
-                        rlCarContainer.setVisibility(View.GONE);
+                        llCar.setVisibility(View.GONE);
                     }
 
                 } else {

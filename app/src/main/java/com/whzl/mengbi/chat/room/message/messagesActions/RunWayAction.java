@@ -2,6 +2,7 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
 import android.text.SpannableString;
+import android.util.Log;
 
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
@@ -18,6 +19,7 @@ import java.util.List;
 public class RunWayAction implements Actions {
     @Override
     public void performAction(String msgStr, Context context) {
+        Log.i("chen", "sssss = "+msgStr);
         RunWayJson runWayJson = GsonUtils.GsonToBean(msgStr, RunWayJson.class);
         if (null == runWayJson) {
             return;

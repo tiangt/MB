@@ -9,7 +9,7 @@ import com.whzl.mengbi.chat.room.message.messageJson.LuckGiftBigJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 
-public class LuckGiftBigEvent extends BroadEvent {
+public class LuckGiftBigEvent implements BroadEvent {
     private LuckGiftBigJson luckGiftBigJson;
     private Context mContext;
 

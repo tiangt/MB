@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -22,13 +24,17 @@ import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
+import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
+import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -52,10 +58,14 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     RecyclerView recycler;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.recommend_recycler)
+    RecyclerView recommendRecycler;
     private ArrayList<AnchorFollowedDataBean.AnchorInfoBean> mAnchorList = new ArrayList<>();
     private int mCurrentPager = 1;
     private BaseListAdapter adapter;
     private long userId;
+    private BaseListAdapter recommendAdapter;
+    private ArrayList<RecommendAnchorInfoBean> mRecommendAnchorInfoList = new ArrayList<>();
 
     @Override
     protected void initEnv() {
@@ -73,6 +83,80 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
         getAnchorList(mCurrentPager++);
+        initRecommendRecycler();
+    }
+
+    private void initRecommendRecycler() {
+        recommendRecycler.setNestedScrollingEnabled(false);
+        recommendRecycler.setFocusableInTouchMode(false);
+        recommendRecycler.setHasFixedSize(true);
+        recommendRecycler.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recommendRecycler.addItemDecoration(new SpacesItemDecoration(5));
+        recommendAdapter = new BaseListAdapter() {
+
+            @Override
+            protected int getDataCount() {
+                return mRecommendAnchorInfoList == null ? 0 : mRecommendAnchorInfoList.size();
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_anchor_home, null);
+                return new AnchorInfoViewHolder(itemView);
+            }
+        };
+        recommendRecycler.setAdapter(recommendAdapter);
+
+        View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_follow, refreshLayout, false);
+        recommendAdapter.addHeaderView(view);
+        initHead(view);
+    }
+
+    private void initHead(View view) {
+        ImageView iv = view.findViewById(R.id.iv);
+        GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.img_nobility, iv);
+    }
+
+    class AnchorInfoViewHolder extends BaseViewHolder {
+        @BindView(R.id.iv_cover)
+        ImageView ivCover;
+        @BindView(R.id.iv_is_live_mark)
+        ImageView ivIsLive;
+        @BindView(R.id.tv_anchor_name)
+        TextView tvAnchorName;
+        @BindView(R.id.tv_watch_count)
+        TextView tvWatchCount;
+        @BindView(R.id.tv_is_live_mark)
+        TextView tvIsLive;
+
+
+        public AnchorInfoViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
+            tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
+            String recommendName = recommendAnchorInfoBean.getAnchorNickname();
+            if (recommendName.length() > 8) {
+                tvAnchorName.setText(recommendName.substring(0, 8) + "...");
+            } else {
+                tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
+            }
+            tvWatchCount.setText(recommendAnchorInfoBean.getRoomUserCount() + "");
+            GlideImageLoader.getInstace().loadRoundImage(getContext(), recommendAnchorInfoBean.getCover(), ivCover, 5);
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
+            RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(recommendAdapter.getRealPosition(this));
+            intent.putExtra(BundleConfig.PROGRAM_ID, recommendAnchorInfoBean.getProgramId());
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -95,7 +179,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
-                        if(getContext() == null || isDetached()){
+                        if (getContext() == null || isDetached()) {
                             return;
                         }
                         String jsonStr = result.toString();
@@ -105,18 +189,19 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        if(getContext() == null || isDetached()){
+                        if (getContext() == null || isDetached()) {
                             return;
                         }
                         refreshLayout.finishRefresh();
                         refreshLayout.finishLoadMore();
                         ToastUtils.showToast(errorMsg);
-                        mCurrentPager --;
+                        mCurrentPager--;
                     }
                 });
     }
 
     private void loadSuccess(AnchorFollowedDataBean anchorFollowedDataBean) {
+        recommendRecycler.setVisibility(View.GONE);
         if (anchorFollowedDataBean != null && anchorFollowedDataBean.data != null && anchorFollowedDataBean.data.list != null) {
             if (mCurrentPager == 2) {
                 mAnchorList.clear();
@@ -131,6 +216,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
                 } else {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
+//                    showEmptyView();
                 }
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
@@ -156,6 +242,34 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 }
             }, 300);
         }
+    }
+
+    private void showEmptyView() {
+        recommendRecycler.setVisibility(View.VISIBLE);
+        HashMap hashMap = new HashMap();
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.RECOMMEND_ANCHOR, RequestManager.TYPE_POST_JSON, hashMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        String jsonStr = result.toString();
+                        RecommendInfo recommendInfo = JSON.parseObject(jsonStr, RecommendInfo.class);
+                        if (recommendInfo.getCode() == 200) {
+                            if (recommendInfo != null && recommendInfo.getData() != null) {
+                                mRecommendAnchorInfoList.clear();
+                                mRecommendAnchorInfoList.addAll(recommendInfo.getData().getList());
+                                recommendAdapter.notifyDataSetChanged();
+                            }
+                        } else {
+//                            listenter.onError(recommendInfo.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.e("onReqFailed" + errorMsg);
+//                        listenter.onError(errorMsg);
+                    }
+                });
     }
 
     private void initRecycler() {
@@ -243,7 +357,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
-                        if(isDetached()){
+                        if (isDetached()) {
                             return;
                         }
                         String jsonStr = result.toString();

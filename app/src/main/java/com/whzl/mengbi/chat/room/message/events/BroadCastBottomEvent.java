@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
@@ -16,9 +15,8 @@ import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.util.LogUtils;
 
-public class BroadCastBottomEvent extends BroadEvent {
+public class BroadCastBottomEvent implements BroadEvent {
     private BroadCastBottomJson broadCastBottomJson;
     private Context mContext;
     private int programId;
@@ -53,7 +51,7 @@ public class BroadCastBottomEvent extends BroadEvent {
             FaceReplace.getInstance().guardFaceReplace16(tvRunWayGift, lightString1, mContext);
         }
         if (broadCastBottomJson.context.isVip) {
-            FaceReplace.getInstance().vipFaceReplace16(tvRunWayGift,lightString1,mContext);
+            FaceReplace.getInstance().vipFaceReplace16(tvRunWayGift, lightString1, mContext);
         }
 //        SpannableStringBuilder string = new SpannableStringBuilder();
 

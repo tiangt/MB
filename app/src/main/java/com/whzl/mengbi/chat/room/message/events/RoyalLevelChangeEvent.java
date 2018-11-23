@@ -9,7 +9,7 @@ import com.whzl.mengbi.chat.room.message.messageJson.RoyalLevelChangeJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 
-public class RoyalLevelChangeEvent extends BroadEvent {
+public class RoyalLevelChangeEvent implements BroadEvent {
     private RoyalLevelChangeJson royalLevelChangeJson;
     private Context mContext;
 

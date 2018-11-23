@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#181818">
+    android:background="#343a42">
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/rootView"
@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="6dp"
                     android:background="@drawable/shape_host_info_bg">
 
                     <com.whzl.mengbi.ui.widget.view.CircleImageView
@@ -43,117 +43,173 @@
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@id/iv_host_avatar">
 
-                        <TextView
+                        <!--<TextView-->
+                        <!--android:id="@+id/tv_host_name"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginLeft="6dp"-->
+                        <!--android:layout_marginTop="3dp"-->
+                        <!--android:layout_marginRight="6dp"-->
+                        <!--android:ellipsize="middle"-->
+                        <!--android:maxEms="6"-->
+                        <!--android:singleLine="true"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:textSize="10sp" />-->
+                        <com.whzl.mengbi.ui.widget.view.AutoScrollTextView3
                             android:id="@+id/tv_host_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="50dp"
+                            android:layout_height="13dp"
                             android:layout_marginLeft="6dp"
-                            android:layout_marginRight="6dp"
                             android:layout_marginTop="3dp"
-                            android:ellipsize="middle"
-                            android:maxEms="6"
-                            android:singleLine="true"
-                            android:textColor="#e5e5e5"
-                            android:textSize="10sp" />
+                            android:layout_marginRight="6dp"
+                            android:textSize="11sp" />
+
 
                         <TextView
                             android:id="@+id/tv_fans_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
-                            android:layout_marginBottom="2dp"
                             android:layout_marginLeft="6dp"
-                            android:layout_marginRight="6dp"
                             android:layout_marginTop="6.5dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginBottom="2dp"
                             android:singleLine="true"
-                            android:textColor="#e5e5e5"
+                            android:textColor="@color/white"
                             android:textSize="10sp" />
                     </RelativeLayout>
 
-                    <ImageButton
+                    <TextView
                         android:id="@+id/btn_follow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="45dp"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
+                        android:layout_margin="4dp"
                         android:layout_marginRight="1dp"
                         android:layout_toRightOf="@id/rl_host_info"
-                        android:background="@null"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_live_follow" />
+                        android:background="@drawable/shape_live_follow_button"
+                        android:gravity="center"
+                        android:text="关注"
+                        android:textColor="#323232"
+                        android:textSize="13sp" />
 
                 </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/guard_recycler"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@id/tv_popularity">
-
-                </android.support.v7.widget.RecyclerView>
-
-
                 <TextView
                     android:id="@+id/tv_popularity"
-                    android:layout_width="50dp"
-                    android:layout_height="29dp"
+                    android:layout_width="31dp"
+                    android:layout_height="31dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
                     android:background="@drawable/shape_live_display_populartity_bg"
                     android:gravity="center"
-                    android:textColor="#f0f0f0"
-                    android:textSize="10sp" />
+                    android:textColor="@color/white"
+                    android:textSize="9sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="11dp"
+                    android:layout_toLeftOf="@id/tv_popularity"
+                    android:layout_toRightOf="@id/rl_anchor_info">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/audience_recycler"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="-1dp"
+                        android:layout_marginRight="-1dp"
+                        android:overScrollMode="never" />
+                </RelativeLayout>
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_contribution_container"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="6dp"
                 android:layout_marginTop="6.5dp">
 
-                <Button
-                    android:id="@+id/btn_contribute"
-                    android:layout_width="61dp"
+                <TextView
+                    android:id="@+id/tv_contribute"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
                     android:background="@drawable/shape_live_display_contribution_btn_bg"
+                    android:drawableLeft="@drawable/live_display_cup"
                     android:drawableRight="@drawable/live_display_arrow"
+                    android:drawablePadding="6dp"
                     android:gravity="center"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:text="@string/live_display_contribution"
-                    android:textColor="#f0f0f0"
-                    android:textSize="10sp" />
+                    android:paddingLeft="9dp"
+                    android:paddingRight="9dp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
-                <android.support.design.widget.CoordinatorLayout
+                <RelativeLayout
+                    android:id="@+id/rl_guard_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_toRightOf="@id/tv_contribute">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/live_display_guard_num" />
+
+                    <TextView
+                        android:id="@+id/tv_guard_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:paddingBottom="4dp"
+                        android:textColor="@color/white"
+                        android:textSize="6sp" />
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:id="@+id/frame_supercar_track"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/rl_guard_number"
+                    android:visibility="gone" />
+
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="40dp"
-                    android:layout_toRightOf="@id/btn_contribute">
+                    android:layout_marginRight="5dp"
+                    android:layout_toRightOf="@id/rl_guard_number">
 
                     <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
                         android:id="@+id/tv_run_way_gift"
                         android:layout_width="1000dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginBottom="2dp"
+                        android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
-                </android.support.design.widget.CoordinatorLayout>
+                        android:textSize="12sp" />
+                </android.support.constraint.ConstraintLayout>
 
-                <Button
-                    android:id="@+id/btn_close"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
+                <ImageView
+                    android:id="@+id/iv_live_rocket"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/close_icon"
-                    android:paddingLeft="10dp" />
-
+                    android:layout_toLeftOf="@id/frame_supercar_track"
+                    android:src="@drawable/live_display_rocket"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <com.whzl.mengbi.ui.widget.view.RatioRelativeLayout
@@ -164,10 +220,61 @@
                 android:background="@color/colorblack"
                 app:ratio="1.33">
 
-                <com.ksyun.media.player.KSYTextureView
-                    android:id="@+id/texture_view"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.ksyun.media.player.KSYTextureView
+                        android:id="@+id/texture_view"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <RelativeLayout
+                        android:id="@+id/rl_other_side"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:layout_weight="1">
+
+                        <com.ksyun.media.player.KSYTextureView
+                            android:id="@+id/texture_view2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                        <RelativeLayout
+                            android:id="@+id/rl_other_side_info"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/shape_other_side">
+
+                            <com.whzl.mengbi.ui.widget.view.CircleImageView
+                                android:id="@+id/circle_other_side"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_centerVertical="true"
+                                android:src="@color/white"/>
+
+                            <TextView
+                                android:id="@+id/tv_other_side"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:textSize="10sp"
+                                android:singleLine="true"
+                                android:maxEms="5"
+                                android:ellipsize="end"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_toRightOf="@id/circle_other_side"/>
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
 
                 <ProgressBar
                     android:id="@+id/progressbar"
@@ -220,7 +327,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
 
                 <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"
@@ -235,10 +342,10 @@
                         android:layout_alignParentBottom="true"
                         android:background="#702d2933"
                         android:gravity="center_vertical"
-                        android:paddingBottom="3dp"
                         android:paddingLeft="7dp"
-                        android:paddingRight="7dp"
                         android:paddingTop="2dp"
+                        android:paddingRight="7dp"
+                        android:paddingBottom="3dp"
                         android:singleLine="true"
                         android:textSize="12sp"
                         android:visibility="gone" />
@@ -254,6 +361,56 @@
                     android:textStyle="bold"
                     android:visibility="gone" />
 
+                <ImageView
+                    android:id="@+id/iv_count_down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_enter"
+                    android:layout_width="255dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_enter_car"
+                        android:layout_width="64dp"
+                        android:layout_height="40dp"
+                        android:scaleType="fitEnd" />
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/cl_entenr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="4dp">
+
+                        <com.whzl.mengbi.ui.widget.view.RoyalEnterView
+                            android:id="@+id/tv_enter"
+                            android:layout_width="1000dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:textColor="#ffffff"
+                            android:textSize="12sp" />
+                    </android.support.constraint.ConstraintLayout>
+                </LinearLayout>
+
+                <com.opensource.svgaplayer.SVGAImageView
+                    android:id="@+id/svga_start_pk"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="fitCenter"
+                    app:autoPlay="true" />
+
             </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 
 
@@ -265,7 +422,7 @@
                     android:id="@+id/fragment_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#292929">
+                    android:background="#343a42">
 
                 </FrameLayout>
 
@@ -282,18 +439,24 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="7dp"
-                    android:layout_marginTop="9dp" />
+                    android:layout_marginTop="9dp"
+                    android:layout_marginRight="7dp" />
 
                 <android.support.v4.view.ViewPager
-                    android:background="@drawable/bg_liveweb"
                     android:id="@+id/vp_activity"
                     android:layout_width="61dp"
                     android:layout_height="108dp"
-                    android:layout_alignParentRight="true"
                     android:layout_below="@id/banner"
+                    android:layout_alignParentRight="true"
                     android:layout_marginTop="5dp"
+                    android:background="@drawable/bg_liveweb"
                     android:visibility="gone" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@drawable/bg_chat_top_translate"
+                    android:layout_height="26dp"
+                    android:layout_alignParentTop="true"/>
             </RelativeLayout>
         </LinearLayout>
 
@@ -301,48 +464,93 @@
             android:id="@+id/rl_bottom_container"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="#292929">
+            android:background="#343a42">
 
             <ImageButton
                 android:id="@+id/btn_chat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="77dp"
+                android:layout_height="32dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="17.5dp"
+                android:layout_marginLeft="12dp"
                 android:background="@null"
                 android:src="@drawable/ic_live_display_talk" />
 
 
             <ImageButton
                 android:id="@+id/btn_chat_private"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="7dp"
                 android:layout_toRightOf="@id/btn_chat"
-                android:background="@drawable/private_chat_btn_bg"
+                android:background="@null"
+                android:scaleType="centerCrop"
                 android:src="@drawable/private_chat_icon" />
-
 
             <View
                 android:id="@+id/view_message_notify"
                 android:layout_width="6dp"
                 android:layout_height="6dp"
-                android:layout_alignRight="@id/btn_chat_private"
                 android:layout_alignTop="@id/btn_chat_private"
-                android:layout_marginRight="9dp"
-                android:layout_marginTop="9dp"
+                android:layout_alignRight="@id/btn_chat_private"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="2dp"
                 android:background="@drawable/shape_red_notify"
                 android:visibility="gone" />
 
+            <ImageButton
+                android:id="@+id/btn_close"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_live_close" />
+
+            <ImageButton
+                android:id="@+id/btn_share"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:layout_toLeftOf="@id/btn_close"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_live_share"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:layout_toLeftOf="@id/btn_share"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_live_more"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btn_free_gift"
+                android:layout_width="31dp"
+                android:layout_height="33dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:layout_toLeftOf="@id/btn_more"
+                android:background="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_live_free_gift"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/btn_send_gift"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="17.5dp"
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_live_display_gift" />
@@ -352,18 +560,20 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_treasure_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="18dp">
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="50dp">
 
         <ImageButton
             android:id="@+id/btn_treasure_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:background="@null"
+            android:scaleType="centerCrop"
             android:src="@drawable/live_treasure_box_btn_icon" />
 
         <TextView
@@ -371,8 +581,8 @@
             android:layout_width="11dp"
             android:layout_height="11dp"
             android:layout_alignRight="@id/btn_treasure_box"
-            android:layout_marginRight="7dp"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
             android:background="@drawable/shape_red_notify"
             android:gravity="center"
             android:text="1"

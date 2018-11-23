@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -19,13 +19,8 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -43,6 +38,8 @@ public class BackpackMotherFragment extends BaseFragment {
     LinearLayout pagerIndexContainer;
     @BindView(R.id.tv_backpack_empty)
     TextView tvBackpackEmpty;
+    @BindView(R.id.ll_backpack_empty)
+   public LinearLayout llBackPack;
     private int pagers;
     private FragmentPagerAdaper adapter;
     private ArrayList<Fragment> fragments = new ArrayList<>();
@@ -94,14 +91,14 @@ public class BackpackMotherFragment extends BaseFragment {
         if (pagers < 2) {
             return;
         }
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 8), UIUtil.dip2px(getContext(), 8));
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 4), UIUtil.dip2px(getContext(), 4));
         for (int i = 0; i < pagers; i++) {
             View view = new View(getContext());
             view.setBackgroundResource(R.drawable.selector_common_pager_index);
             if (i == 0) {
                 view.setSelected(true);
             } else {
-                params.leftMargin = UIUtil.dip2px(getContext(), 7.5f);
+                params.leftMargin = UIUtil.dip2px(getContext(), 10);
             }
             pagerIndexContainer.addView(view, params);
         }
@@ -126,37 +123,38 @@ public class BackpackMotherFragment extends BaseFragment {
                         fragments.clear();
                         if (backpackListBean != null && backpackListBean.list != null && backpackListBean.list.size() > 0) {
                             viewPager.setVisibility(View.VISIBLE);
-                            tvBackpackEmpty.setVisibility(View.GONE);
-                            pagers = (int) Math.ceil(backpackListBean.list.size() / 8f);
+                            llBackPack.setVisibility(View.GONE);
+                            pagers = (int) Math.ceil(backpackListBean.list.size() / 10f);
                             setupPagerIndex(pagers);
                             for (int i = 0; i < pagers; i++) {
                                 BackpackFragment fragment;
                                 if (i == pagers - 1) {
                                     ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
-                                    pagerGiftList.addAll(backpackListBean.list.subList(i * 8, backpackListBean.list.size()));
+                                    pagerGiftList.addAll(backpackListBean.list.subList(i * 10, backpackListBean.list.size()));
                                     fragment = BackpackFragment.newInstance(pagerGiftList);
                                 } else {
                                     ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
-                                    pagerGiftList.addAll(backpackListBean.list.subList(i * 8, (i + 1) * 8));
+                                    pagerGiftList.addAll(backpackListBean.list.subList(i * 10, (i + 1) * 10));
                                     fragment = BackpackFragment.newInstance(pagerGiftList);
                                 }
                                 fragments.add(fragment);
                             }
                         } else {
                             viewPager.setVisibility(View.GONE);
-                            tvBackpackEmpty.setVisibility(View.VISIBLE);
+                            llBackPack.setVisibility(View.VISIBLE);
                         }
                         adapter.notifyDataSetChanged();
                     }
 
                     @Override
-                    public void onError(int code) {
+                    public void onError(ApiResult<BackpackListBean> body) {
                         if(getContext() == null){
                             return;
                         }
                         viewPager.setVisibility(View.GONE);
-                        tvBackpackEmpty.setVisibility(View.VISIBLE);
+                        llBackPack.setVisibility(View.VISIBLE);
                     }
+
                 });
     }
 

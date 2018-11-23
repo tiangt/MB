@@ -26,12 +26,13 @@ public class ProgramFirstMessage implements FillHolderMessage {
     @Override
     public void fillHolder(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder mHolder = (SingleTextViewHolder) holder;
+        mHolder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
         mHolder.textView.setText("");
         mHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.congratulation));
-        mHolder.textView.append(LightSpanString.getLightString("  恭喜 ", Color.parseColor("#f00f0f")));
-        mHolder.textView.append(LightSpanString.getLightString(nickname, Color.parseColor("#eff161")));
-        mHolder.textView.append(LightSpanString.getLightString(" 成为本场第一富豪", Color.parseColor("#f00f0f")));
+        mHolder.textView.append(LightSpanString.getLightString("  恭喜 ", Color.parseColor("#FFF9F9F9")));
+        mHolder.textView.append(LightSpanString.getLightString(nickname, Color.parseColor("#FF2DA8EE")));
+        mHolder.textView.append(LightSpanString.getLightString(" 成为本场第一富豪", Color.parseColor("#fc8f7a")));
     }
 
     @Override

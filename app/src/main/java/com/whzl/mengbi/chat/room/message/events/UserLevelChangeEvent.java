@@ -10,7 +10,7 @@ import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.util.ResourceMap;
 
-public class UserLevelChangeEvent extends BroadEvent {
+public class UserLevelChangeEvent implements BroadEvent {
     private UserLevelChangeJson userLevelChangeJson;
     private Context mContext;
 

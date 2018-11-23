@@ -1,14 +1,17 @@
 package com.whzl.mengbi.presenter.impl;
 
-import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
-import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -47,7 +50,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     @Override
     public void getAudienceAccount(int programId) {
         liveModel.doAudienceAccount(programId, this);
-
     }
 
     @Override
@@ -140,6 +142,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
+
     @Override
     public void onGetProgramFirstSuccess(long userId) {
         if (liveView != null) {
@@ -169,7 +172,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void onPkInfoSuccess(PkInfoBean bean) {
+    public void onPkInfoSuccess(PKResultBean bean) {
         if (liveView != null) {
             liveView.onPkInfoSuccess(bean);
         }
@@ -179,6 +182,27 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
         if (liveView != null) {
             liveView.onActivityGrandSuccess(bean);
+        }
+    }
+
+    @Override
+    public void onGetAudienceListSuccess(AudienceListBean.DataBean bean) {
+        if (liveView != null) {
+            liveView.onGetAudienceListSuccess(bean);
+        }
+    }
+
+    @Override
+    public void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean) {
+        if (liveView != null) {
+            liveView.onGetTotalGuardSuccess(bean);
+        }
+    }
+
+    @Override
+    public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
+        if (liveView != null) {
+            liveView.onGetRoomRankTotalSuccess(bean);
         }
     }
 
@@ -249,4 +273,31 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.activityGrand(signPramsMap, this);
     }
+
+    @Override
+    public void getAudienceList(int programId) {
+        HashMap map = new HashMap();
+        map.put("programId", programId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getAudienceList(signPramsMap, this);
+    }
+
+    @Override
+    public void getGuardTotal(int programId) {
+        HashMap map = new HashMap();
+        map.put("programId", programId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getTotalGuard(signPramsMap, this);
+    }
+
+
+    @Override
+    public void getRoomRankTotal(int mProgramId, String type) {
+        HashMap map = new HashMap();
+        map.put("programId", mProgramId);
+        map.put("type", type);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getRoomRankTotal(signPramsMap, this);
+    }
+
 }

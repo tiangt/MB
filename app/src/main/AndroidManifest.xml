@@ -41,6 +41,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:largeHeap="true"
         tools:replace="label">
         <!--百度统计-->
         <meta-data
@@ -250,10 +251,18 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".ui.activity.LoginActivity"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- 处理以"app_name://page/type"开头的 URI -->
+                <data android:scheme="mengbi" />
+                <data android:host="play" />
+                <data android:path="/home" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:launchMode="singleTop"
@@ -269,12 +278,10 @@
         <activity android:name=".ui.activity.AboutUsActivity" />
         <activity android:name=".ui.activity.WatchHistoryActivity" />
         <activity android:name=".ui.activity.FeedbackActivity" />
-        <activity
-            android:name=".ui.activity.RankListActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".ui.activity.CommWebActivity"
-            android:launchMode="singleTop" />
+        <activity android:name=".ui.activity.RankListActivity"
+            android:launchMode="singleTop"/>
+        <activity android:name=".ui.activity.CommWebActivity"
+            android:launchMode="singleTop"/>
         <activity android:name=".ui.activity.me.ShopActivity" />
         <activity android:name=".ui.activity.me.BuyVipActivity" />
         <activity android:name=".ui.activity.me.SendVipActivity" />

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="15dp"
-        style="@style/LiveHouseDialogTab">
+        style="@style/RankTab">
 
     </android.support.design.widget.TabLayout>
 

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="123dp"
     android:layout_height="175dp"
-    android:background="@drawable/shape_git_count_select_pop_bg"
+    android:background="@drawable/bg_pop_live_gift"
     android:orientation="vertical">
 
     <TextView
@@ -11,8 +11,8 @@
         android:layout_height="25dp"
         android:gravity="center"
         android:text="@string/gift_count_custom"
-        android:textColor="#323232"
-        android:textSize="14sp" />
+        android:textColor="#ffffff"
+        android:textSize="9sp" />
 
     <View
         android:id="@+id/view_divider"
@@ -20,12 +20,13 @@
         android:layout_height="0.5dp"
         android:layout_marginLeft="6.5dp"
         android:layout_marginRight="6.5dp"
-        android:background="@color/divider_color" />
+        android:background="#10ffffff" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="123dp"
         android:layout_height="match_parent"
+        android:layout_marginBottom="3dp"
         android:overScrollMode="never" />
 
 </LinearLayout>

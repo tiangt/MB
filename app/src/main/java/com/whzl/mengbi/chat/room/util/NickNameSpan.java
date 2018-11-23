@@ -6,6 +6,8 @@ import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
+import com.whzl.mengbi.R;
+import com.whzl.mengbi.util.UIUtil;
 
 
 public abstract class NickNameSpan extends ClickableSpan {
@@ -31,7 +33,8 @@ public abstract class NickNameSpan extends ClickableSpan {
         }
         ds.setColor(dsColor); //红色
         ds.setUnderlineText(false);
-        float textSize = DensityUtil.dp2px(15);
+//        float textSize = DensityUtil.dp2px(15);
+        float textSize = UIUtil.sp2px(context, 13);
         //Log.d("NicknameSpan", textSize + "");
         ds.setTextSize(textSize);
     }

@@ -128,7 +128,7 @@ public class URLContentUtils {
     /**
      * 直播间贡献排行
      */
-    public static final String CONTRIBUTION_LIST = "v1/rank/room-rank";
+    public static final String CONTRIBUTION_LIST = "v1/rank/room-rank-new";
 
     /**
      * 直播间贡献排行
@@ -189,4 +189,9 @@ public class URLContentUtils {
      * 验证手机号是否存在
      */
     public static final String IS_PHONE = "v1/user/check-identify-code";
+
+    /**
+     * MVP设置惩罚方式
+     */
+    public static final String PUNISH_WAY = "/v1/pk/set-punish-way";
 }

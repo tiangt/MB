@@ -58,6 +58,7 @@ public class RunWayJson {
          * goodsPicId : 1386
          * toNickname : QichengTest_4
          * goodsName : 护士帽
+         * runwayType ：跑道类型（destory 攻占标志、getOn 登上标志）
          */
         private int goodsId;
         private int count;
@@ -69,6 +70,11 @@ public class RunWayJson {
         private int goodsPicId;
         private String toNickname;
         private String goodsName;
+        private String runWayType;
+
+        public String getRunWayType() {
+            return runWayType;
+        }
 
         public int getProgramId() {
             return programId;

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +62,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     TextView tvForgetPsw;
     private LoginPresent mLoginPresent;
     private UMShareAPI umShareAPI;
+
 
     private UMAuthListener umAuthListener = new UMAuthListener() {
         /**

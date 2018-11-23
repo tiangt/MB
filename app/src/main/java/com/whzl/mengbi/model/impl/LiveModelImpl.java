@@ -7,12 +7,16 @@ import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceCountBean;
+import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
-import com.whzl.mengbi.model.entity.PkInfoBean;
+import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
+import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -330,16 +334,14 @@ public class LiveModelImpl implements LiveModel {
                 .pkInfo(paramsMap)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<PkInfoBean>() {
-
-
+                .subscribe(new ApiObserver<PKResultBean>() {
                     @Override
-                    public void onSuccess(PkInfoBean jsonElement) {
+                    public void onSuccess(PKResultBean jsonElement) {
                         listener.onPkInfoSuccess(jsonElement);
                     }
 
                     @Override
-                    public void onError(ApiResult<PkInfoBean> body) {
+                    public void onError(ApiResult<PKResultBean> body) {
 
                     }
                 });
@@ -357,6 +359,69 @@ public class LiveModelImpl implements LiveModel {
                     @Override
                     public void onSuccess(ActivityGrandBean jsonElement) {
                         listener.onActivityGrandSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getAudienceList(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getAudienceList(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
+                    @Override
+                    public void onSuccess(AudienceListBean.DataBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetAudienceListSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getTotalGuard(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getTotalGuard(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<GuardTotalBean.DataBean>() {
+                    @Override
+                    public void onSuccess(GuardTotalBean.DataBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetTotalGuardSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getRoomRankTotal(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getRoomRankTotal(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<RoomRankTotalBean>() {
+                    @Override
+                    public void onSuccess(RoomRankTotalBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetRoomRankTotalSuccess(dataBean);
+                        }
                     }
 
                     @Override
