@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import io.reactivex.Observable;
@@ -52,7 +53,8 @@ public class RoyalEnterView extends AppCompatTextView {
         String text = getText().toString();
         step = 0f;
         textLength = paint.measureText(text);
-        viewWidth = UIUtil.dip2px(getContext(), 255);
+        viewWidth = UIUtil.dip2px(getContext(), 235);
+        LogUtils.e("sssssssss   textLength  "+textLength+" viewWidth  "+viewWidth);
     }
 
 
