@@ -560,7 +560,7 @@ public class PkControl {
             disposable.dispose();
         }
         if (animatorSetsuofang != null) {
-            animatorSetsuofang.end();
+            animatorSetsuofang.cancel();
             animatorSetsuofang = null;
         }
         isMvp = false;
