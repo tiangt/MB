@@ -13,8 +13,11 @@ import android.text.style.ImageSpan;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
+import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.FromJson;
 import com.whzl.mengbi.util.FileUtils;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.UIUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -127,7 +130,7 @@ public class LevelUtil {
         int originHeight = levelIconDrawable.getIntrinsicHeight();
         float dpHeight = ImageUrl.IMAGE_HIGHT;
         float dpWidth = originWidth * dpHeight / originHeight;
-        levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
+        levelIconDrawable.setBounds(0, 0, UIUtil.sp2px(context,dpWidth), UIUtil.sp2px(context,dpHeight));
         ImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
         levelIcon.setSpan(imageSpan, 0, levelIcon.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -156,9 +159,9 @@ public class LevelUtil {
         if (drawable != null) {
             int originWidth = drawable.getIntrinsicWidth();
             int originHeight = drawable.getIntrinsicHeight();
-            float dpHeight = 13;
+            float dpHeight = 14;
             float dpWidth = originWidth * dpHeight / originHeight;
-            drawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
+            drawable.setBounds(0, 0, UIUtil.sp2px(context,dpWidth), UIUtil.sp2px(context,dpHeight));
             ImageSpan span = new CenterAlignImageSpan(drawable);
             levelIcon.setSpan(span, 0, levelIcon.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
