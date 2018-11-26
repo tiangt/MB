@@ -21,7 +21,7 @@ public class RxTimerUtil {
      * @param milliseconds
      * @param next
      */
-    public void timer(long milliseconds, final IRxNext next) {
+    public void timer(long milliseconds,final IRxNext next) {
         Observable.timer(milliseconds, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {
@@ -93,7 +93,7 @@ public class RxTimerUtil {
     /**
      * 取消订阅
      */
-    public void cancel(){
+    public  void cancel(){
         if(mDisposable!=null&&!mDisposable.isDisposed()){
             mDisposable.dispose();
         }
