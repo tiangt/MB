@@ -1,6 +1,5 @@
 package com.whzl.mengbi.presenter;
 
-import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
@@ -32,8 +31,6 @@ public interface OnLiveFinishedListener {
     void onSendGiftSuccess();
 
     void onGetRunWayListSuccess(RunWayListBean runWayListBean);
-
-    void onGetGuardListSuccess(GuardListBean guardListBean);
 
     void onGetProgramFirstSuccess(long userId);
 

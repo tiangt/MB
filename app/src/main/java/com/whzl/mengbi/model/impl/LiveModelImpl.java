@@ -192,24 +192,6 @@ public class LiveModelImpl implements LiveModel {
 
     }
 
-    @Override
-    public void getGuardList(HashMap paramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .getGuardList(paramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<GuardListBean>() {
-                    @Override
-                    public void onSuccess(GuardListBean guardListBean) {
-                        listener.onGetGuardListSuccess(guardListBean);
-                    }
-
-                    @Override
-                    public void onError(int code) {
-                    }
-                });
-
-    }
 
     @Override
     public void getProgramFirst(HashMap paramsMap, OnLiveFinishedListener listener) {

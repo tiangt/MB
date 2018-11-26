@@ -1,6 +1,5 @@
 package com.whzl.mengbi.presenter.impl;
 
-import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
@@ -123,13 +122,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
-    @Override
-    public void onGetGuardListSuccess(GuardListBean guardListBean) {
-        if (liveView != null) {
-            liveView.getGuardListSuccess(guardListBean);
-        }
-    }
-
 
     @Override
     public void onGetProgramFirstSuccess(long userId) {
@@ -204,14 +196,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         if (userId != 0) {
             liveModel.doRoomUserInfo(userId, programId, this);
         }
-    }
-
-    @Override
-    public void getGuardList(int programId) {
-        HashMap map = new HashMap();
-        map.put("programId", programId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        liveModel.getGuardList(signPramsMap, this);
     }
 
     @Override

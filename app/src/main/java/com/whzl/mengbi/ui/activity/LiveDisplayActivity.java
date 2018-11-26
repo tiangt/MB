@@ -259,7 +259,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RunWayGiftControl mRunWayGiftControl;
     private LuckGiftControl mLuckyGiftControl;
     private GifGiftControl mGifGiftControl;
-    private ArrayList<GuardListBean.GuardDetailBean> mGuardList;
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
     public boolean isGuard;
     private boolean isVip;
@@ -400,7 +399,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void setupView() {
         initPlayer();
-//        initProtectRecycler();
         initFragment();
         initBanner();
         initVp();
@@ -524,15 +522,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 banner.setVisibility(View.GONE);
             }
         }
-//        else {
-//            rlTreasureBox.setVisibility(View.VISIBLE);
-//            if (showActivityGrand) {
-//                vpActivity.setVisibility(View.VISIBLE);
-//            }
-//            if (showBanner) {
-//                banner.setVisibility(View.VISIBLE);
-//            }
-//        }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
         if (fragments[index].isAdded()) {
@@ -550,7 +539,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         layoutParams.height = UIUtil.dip2px(this, dpHeight);
         rlBottomContainer.post(() -> {
             rlBottomContainer.setLayoutParams(layoutParams);
-//            rlBottomContainer.requestLayout();
         });
     }
 
@@ -576,7 +564,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRoomInfo(mProgramId);
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
-        mLivePresenter.getGuardList(mProgramId);
         if (mUserId > 0) {
             mLivePresenter.getTreasureBoxStatus(mUserId);
         }
@@ -667,10 +654,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
                 break;
             case R.id.btn_send_gift:
-//                if (mUserId == 0) {
-//                    login();
-//                    return;
-//                }
                 if (mGiftData == null || mGiftData.getData() == null) {
                     mLivePresenter.getLiveGift();
                     return;
@@ -787,9 +770,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RunWayEvent runWayEvent) {
-//        frameSupercarTrack.setVisibility(View.GONE);
-//        runWayText.setVisibility(View.GONE);
-//        ivRocket.setVisibility(View.GONE);
         initRunWay();
         mRunWayGiftControl.load(runWayEvent, "socket");
     }
@@ -834,7 +814,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (pkControl == null) {
             pkControl = new PkControl(pkLayout, this);
         }
-//        rlOtherSide.setVisibility(View.VISIBLE);
         pkControl.setUserId(mUserId);
         pkControl.setStartAnim(svgaStartPk);
         pkControl.setIvCountDown(ivCountDown);
@@ -985,16 +964,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
             DownloadImageFile downloadImageFile = new DownloadImageFile(imageSpanList -> {
                 for (int i = 0; i < runWayListBean.list.size(); i++) {
-//                    RunWayJson runWayJson = new RunWayJson();
-//                    runWayJson.setContext(runWayListBean.list.get(i));
-//                    RunWayEvent event;
-//                    if (imageSpanList == null) {
-//                        event = new RunWayEvent(runWayJson, null);
-//                    } else {
-//                        event = new RunWayEvent(runWayJson, imageSpanList.get(i));
-//                    }
-//                    initRunWay();
-//                    mRunWayGiftControl.load(event);
                     RunwayBean runWayBean = new RunwayBean();
                     runWayBean.setContext(runWayListBean.list.get(i));
                     RunWayEvent event;
@@ -1019,18 +988,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @Override
-    public void getGuardListSuccess(GuardListBean guardListBean) {
-        if (mGuardList == null) {
-            mGuardList = new ArrayList<>();
-        }
-        mGuardList.clear();
-        if (guardListBean != null) {
-            mGuardList.addAll(guardListBean.list);
-        }
-//        mGuardAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     public void onGetProgramFirstSuccess(long userId) {
         ChatRoomInfo.getInstance().setProgramFirstId(userId);
     }
@@ -1042,16 +999,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (treasureBoxStatusBean != null && treasureBoxStatusBean.list != null) {
             for (int i = 0; i < treasureBoxStatusBean.list.size(); i++) {
                 TreasureBoxStatusBean.ListBean listBean = treasureBoxStatusBean.list.get(i);
-//                if (listBean.maxOnlineTimes == 0) {
-//                    if (listBean.taskId == 6) {
-//                        hasTreasureCanReceive = true;
-//                        mTreasureStatusMap.put(listBean.taskId, 1);
-//                    } else {
-//                        mTreasureStatusMap.put(listBean.taskId, 0);
-//                    }
-//                } else if (listBean.maxUngrandAwardTimes > 0 && listBean.maxUngrandAwardTimes == listBean.maxOnlineTimes) {
-//                    mTreasureStatusMap.put(listBean.taskId, 3);
-//                }
                 if (listBean.taskId == 6) {
                     if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
                         // 倒计时
@@ -1340,7 +1287,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GuardOpenEvent event) {
         if (event.userId == mUserId) {
-            mLivePresenter.getGuardList(mProgramId);
             mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         }
         showGuard(event.avatar, event.nickName);

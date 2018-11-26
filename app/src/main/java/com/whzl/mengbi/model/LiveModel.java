@@ -17,8 +17,6 @@ public interface LiveModel {
 
     void getRunWayList(HashMap paramsMap, OnLiveFinishedListener listener);
 
-    void getGuardList(HashMap paramsMap, OnLiveFinishedListener listener);
-
     void getProgramFirst(HashMap paramsMap, OnLiveFinishedListener listener);
 
     void getTreasureBox(HashMap paramsMap, OnLiveFinishedListener listener);
