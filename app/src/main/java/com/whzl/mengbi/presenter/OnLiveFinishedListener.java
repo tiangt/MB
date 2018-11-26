@@ -8,7 +8,6 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -17,11 +16,15 @@ import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 
 public interface OnLiveFinishedListener {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
+
     void onLiveGiftSuccess(GiftInfo giftInfo);
+
     void onRoomInfoSuccess(RoomInfoBean roomInfoBean);
-    void onAudienceSuccess(long audienceAccount);
+
     void onSuccess();
+
     void onFellowHostSuccess();
+
     void onError(String mes);
 
     void onGetRoomUserInfoSuccess(RoomUserInfo.DataBean data);

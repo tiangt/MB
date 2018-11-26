@@ -22,8 +22,6 @@ public interface LiveView {
 
     void onRoomInfoSuccess(RoomInfoBean roomInfoBean);
 
-    void onAudienceSuccess(long count);
-
     void onFollowHostSuccess();
 
     void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data);

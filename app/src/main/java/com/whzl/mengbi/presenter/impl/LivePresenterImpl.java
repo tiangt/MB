@@ -9,7 +9,6 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -47,10 +46,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         liveModel.doRoomInfo(programId, this);
     }
 
-    @Override
-    public void getAudienceAccount(int programId) {
-        liveModel.doAudienceAccount(programId, this);
-    }
 
     @Override
     public void onDestory() {
@@ -85,13 +80,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
         if (liveView != null) {
             liveView.onRoomInfoSuccess(roomInfoBean);
-        }
-    }
-
-    @Override
-    public void onAudienceSuccess(long audienceAccount) {
-        if (liveView != null) {
-            liveView.onAudienceSuccess(audienceAccount);
         }
     }
 

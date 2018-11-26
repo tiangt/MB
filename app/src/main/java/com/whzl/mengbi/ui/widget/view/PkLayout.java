@@ -24,7 +24,6 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -51,7 +50,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private Context context;
     private TextView tvTime;
     private Disposable disposable;
-    private Disposable disposable2;
     public int initializeProgress;
     private TextView tvLeftScore;
     private TextView tvRightScore;
@@ -405,9 +403,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     public void destroy() {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
-        }
-        if (disposable2 != null) {
-            disposable2.dispose();
         }
         if (popupWindow != null) {
             popupWindow.dismiss();

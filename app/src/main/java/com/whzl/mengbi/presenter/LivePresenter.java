@@ -9,7 +9,6 @@ public interface LivePresenter {
 
     void getRoomInfo(int programId);
 
-    void getAudienceAccount(int programId);
 
     void followHost(long userId, int programId);
 
@@ -33,7 +32,7 @@ public interface LivePresenter {
 
     void getPkInfo(int programId);
 
-    void getActivityGrand(int programId,int anchorId);
+    void getActivityGrand(int programId, int anchorId);
 
     void getAudienceList(int programId);
 
