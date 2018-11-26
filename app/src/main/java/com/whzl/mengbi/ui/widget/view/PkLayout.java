@@ -24,7 +24,6 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -52,7 +51,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private Context context;
     private TextView tvTime;
     private Disposable disposable;
-    private Disposable disposable2;
     public int initializeProgress;
     private TextView tvLeftScore;
     private TextView tvRightScore;
@@ -73,6 +71,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private LinearLayout llPkProgress;
     private PopupWindow mvpPopupWindow;
     private TextView tvFansRank;
+    private RxTimerUtil rxTimerUtil;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -92,6 +91,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     private void init(Context context) {
+        rxTimerUtil=new RxTimerUtil();
         LayoutInflater from = LayoutInflater.from(context);
         inflate = from.inflate(R.layout.layout_pk_new, this, false);
         addView(inflate);
@@ -355,7 +355,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                             if (1 == second - aLong - 1) {
                                 tvPkTitle.setText(state);
                                 tvTime.setText((second - aLong - 1) + "s");
-                                RxTimerUtil.timer(1000, new RxTimerUtil.IRxNext() {
+                                rxTimerUtil.timer(1000, new RxTimerUtil.IRxNext() {
                                     @Override
                                     public void doNext(long number) {
                                         tvTime.setText(0 + "s");
@@ -418,9 +418,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     public void destroy() {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
-        }
-        if (disposable2 != null) {
-            disposable2.dispose();
         }
         if (popupWindow != null) {
             popupWindow.dismiss();

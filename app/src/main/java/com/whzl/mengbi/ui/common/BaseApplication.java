@@ -84,7 +84,7 @@ public class BaseApplication extends Application {
         StatService.setDebugOn(true);
         StatService.setAppChannel(this, channel, true);
         StatService.autoTrace(this, true, false);
-        StatService.start(this);
+//        StatService.start(this);
     }
 
     public static BaseApplication getInstance() {

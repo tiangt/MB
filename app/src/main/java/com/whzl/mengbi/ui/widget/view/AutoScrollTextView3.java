@@ -37,6 +37,7 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
     private float mTextSize;//This is text size
     private int mTextColor; //This is text color
     private int scrollTimes = 1;
+    private RxTimerUtil rxTimerUtil;
 
     public void setScrollTimes(int scrollTimes) {
         this.scrollTimes = scrollTimes;
@@ -59,6 +60,7 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
 
 
     private void initView() {
+        rxTimerUtil = new RxTimerUtil();
         setOnClickListener(this);
     }
 
@@ -192,7 +194,7 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
             } else {
                 canvas.drawText(text, viewWidth - step, y, paint);
             }
-            RxTimerUtil.timer(5 * 60 * 1000, number -> {
+            rxTimerUtil.timer(5 * 60 * 1000, number -> {
                 step = 0f;
                 scrollTimes = 1;
                 startScroll();
