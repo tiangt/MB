@@ -130,12 +130,14 @@ public class GiftDialog extends BaseAwesomeDialog {
 //        tabLayout.addTab(tabLayout.newTab().setText("常用"));
 //        titles.add("常用");
 
-        List<GiftInfo.DataBean.ListBean> listBeans = mGiftInfo.getData().getList();
-        for (int i = 0; i < listBeans.size(); i++) {
-            if (listBeans.get(i).getGroup() != null) {
-                fragments.add(GiftSortMotherFragment.newInstance(listBeans.get(i).getGroupList()));
-                titles.add(listBeans.get(i).getGroup());
-                tabLayout.addTab(tabLayout.newTab().setText(listBeans.get(i).getGroup()));
+        if (mGiftInfo.getData() != null && mGiftInfo.getData().getList() != null) {
+            List<GiftInfo.DataBean.ListBean> listBeans = mGiftInfo.getData().getList();
+            for (int i = 0; i < listBeans.size(); i++) {
+                if (listBeans.get(i).getGroup() != null) {
+                    fragments.add(GiftSortMotherFragment.newInstance(listBeans.get(i).getGroupList()));
+                    titles.add(listBeans.get(i).getGroup());
+                    tabLayout.addTab(tabLayout.newTab().setText(listBeans.get(i).getGroup()));
+                }
             }
         }
 
