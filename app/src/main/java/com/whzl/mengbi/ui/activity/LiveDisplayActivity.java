@@ -14,8 +14,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -1167,10 +1169,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetAudienceListSuccess(AudienceListBean.DataBean bean) {
         mAudienceCount = bean.total;
-        tvPopularity.setText(getString(R.string.audience, bean.total));
-        mAudienceList.clear();
-        mAudienceList.addAll(bean.getList());
-        pollAdapter.notifyDataSetChanged();
+        if (bean.getList() == null && bean.getList().size() == 0) {
+            tvPopularity.setText(getString(R.string.audience, 0));
+        } else {
+            tvPopularity.setText(getString(R.string.audience, bean.total));
+            mAudienceList.clear();
+            mAudienceList.addAll(bean.getList());
+            pollAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
