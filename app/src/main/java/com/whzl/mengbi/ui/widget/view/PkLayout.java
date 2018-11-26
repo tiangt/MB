@@ -369,7 +369,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         }
                     } else if (aLong >= second - 1 && !disposable.isDisposed()) {
                         LogUtils.e("ssssss  state dispose");
-//                        popupWindow.dismiss();
+                        popupWindow.dismiss();
                         disposable.dispose();
                     }
                 });
