@@ -847,6 +847,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(BroadCastBottomEvent broadCastBottomEvent) {
         initRunWayBroad();
         broadCastBottomEvent.setProgramId(mProgramId);
+        broadCastBottomEvent.setPkLayoutVisibility(rlOtherSide, rlOtherSideInfo, textureView, pkLayout, ivCountDown);
         mRunWayBroadControl.load(broadCastBottomEvent);
     }
 
@@ -1271,6 +1272,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     mAudienceList.add(audienceInfoBean);
                 }
             }
+        } else {
+            tvPopularity.setText(getString(R.string.audience, 0));
         }
         initProtectRecycler();
         pollAdapter.notifyDataSetChanged();
@@ -1595,6 +1598,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             rlOtherSideInfo.setVisibility(View.GONE);
             textureView.setVisibility(View.INVISIBLE);
             pkLayout.setVisibility(View.GONE);
+            ivCountDown.clearAnimation();
         });
         dialog.show();
     }

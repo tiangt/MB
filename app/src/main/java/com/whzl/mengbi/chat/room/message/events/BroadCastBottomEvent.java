@@ -7,19 +7,30 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.SpannableString;
+import android.view.TextureView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ksyun.media.player.KSYTextureView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.BroadCastBottomJson;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.widget.view.PkLayout;
 
 public class BroadCastBottomEvent implements BroadEvent {
     private BroadCastBottomJson broadCastBottomJson;
     private Context mContext;
     private int programId;
+    private RelativeLayout rlOtherSide;
+    private RelativeLayout rlOtherSideInfo;
+    private KSYTextureView textureView;
+    private PkLayout pkLayout;
+    private ImageView ivCountDown;
 
     public void setProgramId(int programId) {
         this.programId = programId;
@@ -29,6 +40,15 @@ public class BroadCastBottomEvent implements BroadEvent {
         super();
         this.broadCastBottomJson = broadCastBottomJson;
         this.mContext = mContext;
+    }
+
+    public void setPkLayoutVisibility(RelativeLayout rlOtherSide, RelativeLayout rlOtherSideInfo,
+                                      KSYTextureView textureView, PkLayout pkLayout, ImageView ivCountDown) {
+        this.rlOtherSide = rlOtherSide;
+        this.rlOtherSideInfo = rlOtherSideInfo;
+        this.textureView = textureView;
+        this.pkLayout = pkLayout;
+        this.ivCountDown = ivCountDown;
     }
 
     public BroadCastBottomJson getBroadCastBottomJson() {
@@ -77,6 +97,14 @@ public class BroadCastBottomEvent implements BroadEvent {
                 intent.putExtra(BundleConfig.PROGRAM_ID, broadCastBottomJson.context.programId);
                 mContext.startActivity(intent);
                 programId = broadCastBottomJson.context.programId;
+                if (rlOtherSide != null && rlOtherSideInfo != null
+                        && textureView != null && pkLayout != null && ivCountDown != null) {
+                    rlOtherSide.setVisibility(View.GONE);
+                    rlOtherSideInfo.setVisibility(View.GONE);
+                    textureView.setVisibility(View.INVISIBLE);
+                    pkLayout.setVisibility(View.GONE);
+                    ivCountDown.clearAnimation();
+                }
             });
             dialog.show();
         });

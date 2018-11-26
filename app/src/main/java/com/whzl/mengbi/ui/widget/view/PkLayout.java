@@ -26,6 +26,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
@@ -351,8 +352,20 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         }
 
                         if ("PK倒计时 ".equals(state)) {
-                            tvPkTitle.setText(state);
-                            tvTime.setText((second - aLong - 1) + "s");
+                            if (1 == second - aLong - 1) {
+                                tvPkTitle.setText(state);
+                                tvTime.setText((second - aLong - 1) + "s");
+                                RxTimerUtil.timer(1000, new RxTimerUtil.IRxNext() {
+                                    @Override
+                                    public void doNext(long number) {
+                                        tvTime.setText(0 + "s");
+                                    }
+                                });
+                            } else {
+                                tvPkTitle.setText(state);
+                                tvTime.setText((second - aLong - 1) + "s");
+                            }
+
                         }
                     } else if (aLong >= second - 1 && !disposable.isDisposed()) {
                         LogUtils.e("ssssss  state dispose");

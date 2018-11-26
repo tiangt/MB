@@ -166,7 +166,7 @@ public class PkControl {
         pkLayout.setPunishWayOnClick(new PkLayout.PunishWayClick() {
             @Override
             public void onClick(View view) {
-                if(ClickUtil.isFastClick()){
+                if (ClickUtil.isFastClick()) {
                     if (needShow) {
                         showPunishment(isMvp);
                     }
@@ -212,7 +212,6 @@ public class PkControl {
                                 setDateSourceForPlayer2(streamAddress);
                                 break;
                             }
-
                         }
 //                        otherSideLive();
                     }
@@ -225,6 +224,7 @@ public class PkControl {
                     jumpNick = bean.launchPkUserInfo.nickname;
                     if (bean.launchPkUserLiveAndStreamAddress.showStreams != null) {
                         for (int i = 0; i < bean.launchPkUserLiveAndStreamAddress.showStreams.size(); i++) {
+                            streamType = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamType;
                             if (streamType.equals("flv")) {
                                 streamAddress = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
                                 setDateSourceForPlayer2(streamAddress);
