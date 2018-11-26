@@ -318,18 +318,18 @@ public class PkControl {
                 shutDown();
                 layout.setVisibility(View.GONE);
                 pkLayout.reset();
+//                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);
                 pkResultPop.dismiss();
-                pkLayout.hidePkWindow();
                 needShow = false;
                 break;
             case "PK_PUNISH_FINISH"://惩罚时间结束
                 shutDown();
                 layout.setVisibility(View.GONE);
                 pkLayout.reset();
+//                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);
                 mvpWindow.dismiss();
-                pkLayout.hidePkWindow();
                 needShow = false;
                 break;
             case "PK_SCORE_PUSH"://用户分数推送

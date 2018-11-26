@@ -369,7 +369,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         }
                     } else if (aLong >= second - 1 && !disposable.isDisposed()) {
                         LogUtils.e("ssssss  state dispose");
-                        popupWindow.dismiss();
+//                        popupWindow.dismiss();
                         disposable.dispose();
                     }
                 });
@@ -457,7 +457,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void reset() {
-
+        hidePkWindow();
         setProgress(50);
         setLeftScore(0);
         setRightScore(0);
