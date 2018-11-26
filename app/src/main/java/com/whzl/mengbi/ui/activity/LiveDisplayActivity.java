@@ -14,10 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -60,7 +57,6 @@ import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
-import com.whzl.mengbi.chat.room.util.RoyalLevel;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
@@ -72,7 +68,6 @@ import com.whzl.mengbi.gift.PkControl;
 import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
-import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
@@ -91,8 +86,6 @@ import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.CircleFragmentPagerAdaper;
-import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
-import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
@@ -104,6 +97,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.view.LiveView;
+import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
@@ -135,7 +129,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -285,7 +278,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
     private CircleFragmentPagerAdaper mGrandAdaper;
     private Disposable grandDisposable;
-    private BaseListAdapter pollAdapter;
+    private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList = new ArrayList<>();
     private RoyalEnterControl royalEnterControl;
     private boolean showActivityGrand = false;
@@ -409,62 +402,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initProtectRecycler() {
         mAudienceRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        pollAdapter = new BaseListAdapter() {
-            @Override
-            protected int getDataCount() {
-                if (mAudienceList == null || mAudienceList.size() <= 1) {
-                    return 0;
-                } else if (mAudienceList.size() > 50) {
-                    return 50;
-                } else {
-                    return mAudienceList.size() - 1;
-                }
-            }
-
-            @Override
-            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.item_auto_poll, parent, false);
-                return new ProtectViewHolder(itemView);
-            }
-
-        };
-        mAudienceRecycler.setAdapter(pollAdapter);
-
-    }
-
-    class ProtectViewHolder extends BaseViewHolder {
-        @BindView(R.id.iv_circle_head)
-        ImageView ivHead;
-        @BindView(R.id.iv_royal_level)
-        ImageView ivRoyal;
-        @BindView(R.id.circle_head)
-        RelativeLayout rl;
-
-
-        public ProtectViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(int position) {
-            int mUserRoyalLevel = mAudienceList.get(position + 1).getLevelMap().getROYAL_LEVEL();
-            if (mUserRoyalLevel > 0) {
-                rl.setBackgroundResource(R.drawable.shape_online_head_royal);
-                setRoyalTag(mUserRoyalLevel, ivRoyal);
-            } else {
-                rl.setBackgroundResource(R.drawable.shape_online_head_civilian);
-            }
-            GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, mAudienceList.get(position + 1).getAvatar(), ivHead);
-        }
-
-        @Override
-        public void onItemClick(View view, int position) {
-            super.onItemClick(view, position);
+        pollAdapter = new AutoPollAdapter(mAudienceList, this);
+        pollAdapter.setListerner(position -> {
             long userId = mAudienceList.get(position + 1).getUserid();
             showAudienceInfoDialog(userId, false);
-        }
+        });
+        mAudienceRecycler.setAdapter(pollAdapter);
     }
+
 
     private void initVp() {
         mGrandAdaper = new CircleFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
@@ -1175,6 +1120,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             tvPopularity.setText(getString(R.string.audience, bean.total));
             mAudienceList.clear();
             mAudienceList.addAll(bean.getList());
+            pollAdapter.setmAudienceList(mAudienceList);
             pollAdapter.notifyDataSetChanged();
         }
     }
@@ -1556,39 +1502,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView2.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * 用户贵族等级
-     *
-     * @param level
-     * @param mRoyalLevel
-     */
-    private void setRoyalTag(int level, ImageView mRoyalLevel) {
-        switch (level) {
-            case RoyalLevel.ROYAL_BRONZE:
-                GlideImageLoader.getInstace().displayImage(this, R.drawable.royal_1, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_SILVER:
-                GlideImageLoader.getInstace().displayImage(this, R.drawable.royal_2, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_GOLD:
-                GlideImageLoader.getInstace().displayImage(this, R.drawable.royal_3, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_PLATINUM:
-                GlideImageLoader.getInstace().displayImage(this, R.drawable.royal_4, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_DIAMOND:
-                GlideImageLoader.getInstace().displayImage(this, R.drawable.royal_5, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_STAR:
-                GlideImageLoader.getInstace().displayImage(this, R.drawable.royal_6, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_KING:
-                GlideImageLoader.getInstace().displayImage(this, R.drawable.royal_7, mRoyalLevel);
-                break;
-
         }
     }
 }
