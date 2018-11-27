@@ -3,7 +3,7 @@ package com.whzl.mengbi.chat.room.util;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
 public class ImageUrl {
-    public static final float IMAGE_HIGHT = 13;
+    public static final float IMAGE_HIGHT = 14;
     //imageType: gif, jpg
     //根据时间戳获取url
     public static String getImageUrl(int imageId, String imageType, long timestamp) {

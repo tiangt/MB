@@ -166,7 +166,7 @@ public class PkControl {
         pkLayout.setPunishWayOnClick(new PkLayout.PunishWayClick() {
             @Override
             public void onClick(View view) {
-                if(ClickUtil.isFastClick()){
+                if (ClickUtil.isFastClick()) {
                     if (needShow) {
                         showPunishment(isMvp);
                     }
@@ -212,7 +212,6 @@ public class PkControl {
                                 setDateSourceForPlayer2(streamAddress);
                                 break;
                             }
-
                         }
 //                        otherSideLive();
                     }
@@ -225,6 +224,7 @@ public class PkControl {
                     jumpNick = bean.launchPkUserInfo.nickname;
                     if (bean.launchPkUserLiveAndStreamAddress.showStreams != null) {
                         for (int i = 0; i < bean.launchPkUserLiveAndStreamAddress.showStreams.size(); i++) {
+                            streamType = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamType;
                             if (streamType.equals("flv")) {
                                 streamAddress = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
                                 setDateSourceForPlayer2(streamAddress);
@@ -318,18 +318,18 @@ public class PkControl {
                 shutDown();
                 layout.setVisibility(View.GONE);
                 pkLayout.reset();
+//                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);
                 pkResultPop.dismiss();
-                pkLayout.hidePkWindow();
                 needShow = false;
                 break;
             case "PK_PUNISH_FINISH"://惩罚时间结束
                 shutDown();
                 layout.setVisibility(View.GONE);
                 pkLayout.reset();
+//                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);
                 mvpWindow.dismiss();
-                pkLayout.hidePkWindow();
                 needShow = false;
                 break;
             case "PK_SCORE_PUSH"://用户分数推送

@@ -24,8 +24,8 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
@@ -51,7 +51,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private Context context;
     private TextView tvTime;
     private Disposable disposable;
-    private Disposable disposable2;
     public int initializeProgress;
     private TextView tvLeftScore;
     private TextView tvRightScore;
@@ -72,6 +71,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private LinearLayout llPkProgress;
     private PopupWindow mvpPopupWindow;
     private TextView tvFansRank;
+    private RxTimerUtil rxTimerUtil;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -91,6 +91,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     private void init(Context context) {
+        rxTimerUtil=new RxTimerUtil();
         LayoutInflater from = LayoutInflater.from(context);
         inflate = from.inflate(R.layout.layout_pk_new, this, false);
         addView(inflate);
@@ -351,8 +352,20 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         }
 
                         if ("PK倒计时 ".equals(state)) {
-                            tvPkTitle.setText(state);
-                            tvTime.setText((second - aLong - 1) + "s");
+                            if (1 == second - aLong - 1) {
+                                tvPkTitle.setText(state);
+                                tvTime.setText((second - aLong - 1) + "s");
+                                rxTimerUtil.timer(1000, new RxTimerUtil.IRxNext() {
+                                    @Override
+                                    public void doNext(long number) {
+                                        tvTime.setText(0 + "s");
+                                    }
+                                });
+                            } else {
+                                tvPkTitle.setText(state);
+                                tvTime.setText((second - aLong - 1) + "s");
+                            }
+
                         }
                     } else if (aLong >= second - 1 && !disposable.isDisposed()) {
                         LogUtils.e("ssssss  state dispose");
@@ -406,9 +419,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
-        if (disposable2 != null) {
-            disposable2.dispose();
-        }
         if (popupWindow != null) {
             popupWindow.dismiss();
         }
@@ -447,7 +457,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void reset() {
-
+        hidePkWindow();
         setProgress(50);
         setLeftScore(0);
         setRightScore(0);

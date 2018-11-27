@@ -47,7 +47,7 @@ public class AudienceListBean {
     }
 
     public class DataBean {
-        public int total; //在线总人数
+        public long total; //在线总人数
         private ArrayList<AudienceInfoBean> list;
 
         public ArrayList<AudienceInfoBean> getList() {

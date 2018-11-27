@@ -14,14 +14,14 @@ import io.reactivex.disposables.Disposable;
  */
 public class RxTimerUtil {
 
-    private static Disposable mDisposable;
+    private  Disposable mDisposable;
 
     /** milliseconds毫秒后执行next操作
      *
      * @param milliseconds
      * @param next
      */
-    public static void timer(long milliseconds,final IRxNext next) {
+    public void timer(long milliseconds,final IRxNext next) {
         Observable.timer(milliseconds, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {
@@ -61,7 +61,7 @@ public class RxTimerUtil {
      * @param milliseconds
      * @param next
      */
-    public static void interval(long milliseconds,final IRxNext next){
+    public  void interval(long milliseconds,final IRxNext next){
         Observable.interval(milliseconds, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {
@@ -93,7 +93,7 @@ public class RxTimerUtil {
     /**
      * 取消订阅
      */
-    public static void cancel(){
+    public  void cancel(){
         if(mDisposable!=null&&!mDisposable.isDisposed()){
             mDisposable.dispose();
         }

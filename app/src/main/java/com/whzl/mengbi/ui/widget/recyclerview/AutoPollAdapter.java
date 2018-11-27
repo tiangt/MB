@@ -1,134 +1,135 @@
 package com.whzl.mengbi.ui.widget.recyclerview;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.RoyalLevel;
 import com.whzl.mengbi.model.entity.AudienceListBean;
-import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
+import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 /**
  * @author cliang
  * @date 2018.10.26
  */
-public class AutoPollAdapter extends RecyclerView.Adapter<AutoViewHolder> {
+public class AutoPollAdapter extends BaseListAdapter {
+    public void setmAudienceList(ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList) {
+        this.mAudienceList = mAudienceList;
+    }
 
-    private final Context mContext;
-    private final ArrayList<AudienceListBean.AudienceInfoBean> mData;
-    protected OnItemClickListener mOnItemClickListener;
+    private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList = new ArrayList<>();
+    private Context context;
+    private OnclickListerner listerner;
 
-    private View mView;
-    private CircleImageView mCircleHead;
-    private ImageView mRoyalLevel;
-    private int mUserRoyalLevel;
+    public void setListerner(OnclickListerner listerner) {
+        this.listerner = listerner;
+    }
 
-    public AutoPollAdapter(Context context, ArrayList<AudienceListBean.AudienceInfoBean> list) {
-        this.mContext = context;
-        this.mData = list;
+    public AutoPollAdapter(ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList, Context context) {
+        this.mAudienceList = mAudienceList;
+        this.context = context;
     }
 
     @Override
-    public AutoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        mView = LayoutInflater.from(mContext).inflate(R.layout.item_auto_poll, parent, false);
-        AutoViewHolder holder = new AutoViewHolder(mView) {
-            @Override
-            public void onBindViewHolder(int position) {
-
-            }
-        };
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(final AutoViewHolder holder, int position) {
-        mCircleHead = holder.itemView.findViewById(R.id.iv_circle_head);
-        mRoyalLevel = holder.itemView.findViewById(R.id.iv_royal_level);
-        mUserRoyalLevel = mData.get(position % mData.size()).getLevelMap().getROYAL_LEVEL();
-        if (mUserRoyalLevel > 0) {
-            mView.setBackgroundResource(R.drawable.shape_online_head_royal);
-            setRoyalTag(mUserRoyalLevel);
+    protected int getDataCount() {
+        if (mAudienceList == null || mAudienceList.size() <= 1) {
+            return 0;
+        } else if (mAudienceList.size() > 50) {
+            return 50;
         } else {
-            mView.setBackgroundResource(R.drawable.shape_online_head_civilian);
-        }
-        GlideImageLoader.getInstace().displayImage(mContext, mData.get(position % mData.size()).getAvatar(), mCircleHead);
-
-
-        // 如果设置了回调，则设置点击事件/长按事件
-        if (mOnItemClickListener != null) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int pos = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(holder.itemView.findViewById(R.id.circle_head), pos);
-                }
-            });
-
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int pos = holder.getLayoutPosition();
-                    mOnItemClickListener.onItemLongClick(holder.itemView.findViewById(R.id.circle_head), pos);
-                    return false;
-                }
-            });
+            return mAudienceList.size() - 1;
         }
     }
 
     @Override
-    public int getItemCount() {
-        return mData.size();
+    protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(context).inflate(R.layout.item_auto_poll, parent, false);
+        return new ProtectViewHolder(itemView);
     }
 
-    public interface OnItemClickListener {
+    class ProtectViewHolder extends BaseViewHolder {
+        @BindView(R.id.iv_circle_head)
+        ImageView ivHead;
+        @BindView(R.id.iv_royal_level)
+        ImageView ivRoyal;
+        @BindView(R.id.circle_head)
+        RelativeLayout rl;
 
-        void onItemClick(View viewById, int pos);
 
-        void onItemLongClick(View viewById, int pos);
+        public ProtectViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            int mUserRoyalLevel = mAudienceList.get(position + 1).getLevelMap().getROYAL_LEVEL();
+            if (mUserRoyalLevel > 0) {
+                rl.setBackgroundResource(R.drawable.shape_online_head_royal);
+                setRoyalTag(mUserRoyalLevel, ivRoyal);
+            } else {
+                rl.setBackgroundResource(R.drawable.shape_online_head_civilian);
+                GlideImageLoader.getInstace().displayImage(context, null, ivRoyal);
+            }
+            GlideImageLoader.getInstace().displayImage(context, mAudienceList.get(position + 1).getAvatar(), ivHead);
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            long userId = mAudienceList.get(position + 1).getUserid();
+//            showAudienceInfoDialog(userId, false);
+            listerner.onClick(position);
+        }
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.mOnItemClickListener = onItemClickListener;
+
+    public interface OnclickListerner {
+        void onClick(int position);
     }
 
     /**
      * 用户贵族等级
      *
      * @param level
+     * @param mRoyalLevel
      */
-    private void setRoyalTag(int level) {
+    private void setRoyalTag(int level, ImageView mRoyalLevel) {
         switch (level) {
             case RoyalLevel.ROYAL_BRONZE:
-                GlideImageLoader.getInstace().displayImage(mContext, R.drawable.royal_1, mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_1, mRoyalLevel);
                 break;
             case RoyalLevel.ROYAL_SILVER:
-                GlideImageLoader.getInstace().displayImage(mContext, R.drawable.royal_2, mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_2, mRoyalLevel);
                 break;
             case RoyalLevel.ROYAL_GOLD:
-                GlideImageLoader.getInstace().displayImage(mContext, R.drawable.royal_3, mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_3, mRoyalLevel);
                 break;
             case RoyalLevel.ROYAL_PLATINUM:
-                GlideImageLoader.getInstace().displayImage(mContext, R.drawable.royal_4, mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_4, mRoyalLevel);
                 break;
             case RoyalLevel.ROYAL_DIAMOND:
-                GlideImageLoader.getInstace().displayImage(mContext, R.drawable.royal_5, mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_5, mRoyalLevel);
                 break;
             case RoyalLevel.ROYAL_STAR:
-                GlideImageLoader.getInstace().displayImage(mContext, R.drawable.royal_6, mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_6, mRoyalLevel);
                 break;
             case RoyalLevel.ROYAL_KING:
-                GlideImageLoader.getInstace().displayImage(mContext, R.drawable.royal_7, mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_7, mRoyalLevel);
                 break;
 
         }
     }
-
 }

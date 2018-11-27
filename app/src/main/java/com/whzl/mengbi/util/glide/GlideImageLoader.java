@@ -1,11 +1,14 @@
 package com.whzl.mengbi.util.glide;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
@@ -41,21 +44,40 @@ public class GlideImageLoader extends ImageLoader {
         return glideImageLoader;
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public  boolean isValidContextForGlide(final Context context) {
+        if (context == null) {
+            return false;
+        }
+        if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isDestroyed() || activity.isFinishing()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         //Glide 加载图片简单用法
-        Glide.with(context).load(path).into(imageView);
+        if (isValidContextForGlide(context)) {
+            Glide.with(context).load(path).into(imageView);
+        }
     }
 
     public void displayImageNoCache(Context context, Object path, ImageView imageView) {
-        RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE);
-        Glide.with(context).load(path).apply(options).into(imageView);
+        if (isValidContextForGlide(context)) {
+            RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE);
+            Glide.with(context).load(path).apply(options).into(imageView);
+        }
     }
 
     public void circleCropImage(Context context, Object path, ImageView imageView) {
-        //Glide 加载图片简单用法
-        RequestOptions options = new RequestOptions().circleCrop();
-        Glide.with(context).load(path).apply(options).into(imageView);
+        if (isValidContextForGlide(context)) {
+            RequestOptions options = new RequestOptions().circleCrop();
+            Glide.with(context).load(path).apply(options).into(imageView);
+        }
     }
 
     @Override
@@ -64,27 +86,28 @@ public class GlideImageLoader extends ImageLoader {
     }
 
     public void loadGif(Context context, Object model, final ImageView imageView, final GifListener gifListener) {
+        if (isValidContextForGlide(context)) {
+            RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
+            Glide.with(context).asGif().apply(requestOptions).load(model).listener(new RequestListener<GifDrawable>() {
 
-        RequestOptions requestOptions = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.RESOURCE);
-        Glide.with(context).asGif().apply(requestOptions).load(model).listener(new RequestListener<GifDrawable>() {
+                @Override
 
-            @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
+                    gifListener.onFail();
+                    return false;
 
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
-                gifListener.onFail();
-                return false;
+                }
 
-            }
+                @Override
 
-            @Override
+                public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
+                    gifListener.onResourceReady();
+                    return false;
 
-            public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
-                gifListener.onResourceReady();
-                return false;
+                }
 
-            }
-
-        }).into(imageView);
+            }).into(imageView);
+        }
 
     }
 
@@ -100,8 +123,10 @@ public class GlideImageLoader extends ImageLoader {
     }
 
     public void loadRoundImage(Context context, Object object, ImageView imageView, int radius) {
-        RequestOptions transform = new RequestOptions().transform(new GlideRoundTransform(context, radius));
-        Glide.with(context).load(object).apply(transform).into(imageView);
+        if (isValidContextForGlide(context)) {
+            RequestOptions transform = new RequestOptions().transform(new GlideRoundTransform(context, radius));
+            Glide.with(context).load(object).apply(transform).into(imageView);
+        }
     }
 
     public class GlideRoundTransform extends BitmapTransformation {

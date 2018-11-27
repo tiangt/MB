@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.view;
 
-import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
@@ -22,8 +21,6 @@ public interface LiveView {
 
     void onRoomInfoSuccess(RoomInfoBean roomInfoBean);
 
-    void onAudienceSuccess(long count);
-
     void onFollowHostSuccess();
 
     void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data);
@@ -33,8 +30,6 @@ public interface LiveView {
     void onError(String meg);
 
     void onGetRunWayListSuccess(RunWayListBean runWayListBean);
-
-    void getGuardListSuccess(GuardListBean guardListBean);
 
     void onGetProgramFirstSuccess(long userId);
 

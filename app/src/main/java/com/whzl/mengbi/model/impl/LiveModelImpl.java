@@ -6,14 +6,12 @@ import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.ApiResult;
-import com.whzl.mengbi.model.entity.AudienceCountBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
@@ -106,29 +104,6 @@ public class LiveModelImpl implements LiveModel {
         });
     }
 
-    @Override
-    public void doAudienceAccount(int programId, OnLiveFinishedListener listener) {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("programId", programId + "");
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.AUDIENCE_COUNT, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
-            @Override
-            public void onReqSuccess(Object result) {
-                AudienceCountBean audienceCountBean = GsonUtils.GsonToBean(result.toString(), AudienceCountBean.class);
-                if (audienceCountBean.getCode() == 200) {
-                    if (audienceCountBean.getData() != null) {
-                        listener.onAudienceSuccess(audienceCountBean.getData().getRoomUserNum());
-                    }
-                } else {
-                    listener.onError(audienceCountBean.getMsg());
-                }
-            }
-
-            @Override
-            public void onReqFailed(String errorMsg) {
-                listener.onError(errorMsg);
-            }
-        });
-    }
 
     @Override
     public void doFollowHost(long userId, int programId, OnLiveFinishedListener listener) {
@@ -217,24 +192,6 @@ public class LiveModelImpl implements LiveModel {
 
     }
 
-    @Override
-    public void getGuardList(HashMap paramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .getGuardList(paramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<GuardListBean>() {
-                    @Override
-                    public void onSuccess(GuardListBean guardListBean) {
-                        listener.onGetGuardListSuccess(guardListBean);
-                    }
-
-                    @Override
-                    public void onError(int code) {
-                    }
-                });
-
-    }
 
     @Override
     public void getProgramFirst(HashMap paramsMap, OnLiveFinishedListener listener) {
@@ -266,7 +223,7 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void getTreasureBox(HashMap paramsMap, OnLiveFinishedListener listener){
+    public void getTreasureBox(HashMap paramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .getTreasureBoxStatus(paramsMap)
                 .subscribeOn(Schedulers.io())
@@ -287,7 +244,7 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void treceiveTreasure(HashMap paramsMap, OnLiveFinishedListener listener){
+    public void treceiveTreasure(HashMap paramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .receiveTreasure(paramsMap)
                 .subscribeOn(Schedulers.io())

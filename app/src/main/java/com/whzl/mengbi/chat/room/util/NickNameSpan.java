@@ -34,7 +34,7 @@ public abstract class NickNameSpan extends ClickableSpan {
         ds.setColor(dsColor); //红色
         ds.setUnderlineText(false);
 //        float textSize = DensityUtil.dp2px(15);
-        float textSize = UIUtil.sp2px(context, 13);
+        float textSize = UIUtil.sp2px(context, 14);
         //Log.d("NicknameSpan", textSize + "");
         ds.setTextSize(textSize);
     }

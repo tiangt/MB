@@ -18,6 +18,7 @@ import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.UIUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -136,7 +137,7 @@ public class FaceReplace {
                 if (drawable == null) {
                     break;
                 }
-                drawable.setBounds(0, 0, DensityUtil.dp2px(ImageUrl.IMAGE_HIGHT), DensityUtil.dp2px(ImageUrl.IMAGE_HIGHT));
+                drawable.setBounds(0, 0, UIUtil.sp2px(context,ImageUrl.IMAGE_HIGHT), UIUtil.sp2px(context,ImageUrl.IMAGE_HIGHT));
                 ImageSpan span = new CenterAlignImageSpan(drawable);
                 spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
             }
