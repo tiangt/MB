@@ -285,7 +285,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private boolean showBanner = false;
     private Disposable roomRankTotalDisposable;
     private Disposable roomOnlineDisposable;
-
+    private NetStateChangeReceiver mPkReceiver;
+    private String pkStream;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -336,6 +337,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
         mLivePresenter.getLiveGift();
         initReceiver();
+        initPkNetwork();
     }
 
     private void initReceiver() {
@@ -359,6 +361,28 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
         });
         registerReceiver(mReceiver, intentFilter);
+    }
+
+    private void initPkNetwork() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        mPkReceiver = new NetStateChangeReceiver();
+        mPkReceiver.setEvevt(netMobile -> {
+            if (netMobile != NetUtils.NETWORK_NONE) {
+                if (textureView2 != null && pkStream != null) {
+                    textureView2.softReset();
+                    try {
+                        textureView2.setDataSource(pkStream);
+                        textureView2.prepareAsync();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                showToast(R.string.net_error);
+            }
+        });
+        registerReceiver(mPkReceiver, intentFilter);
     }
 
     private void initPlayer() {
@@ -1355,6 +1379,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.onDestory();
         super.onDestroy();
         unregisterReceiver(mReceiver);
+        unregisterReceiver(mPkReceiver);
     }
 
     private void destroy() {
@@ -1497,6 +1522,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void setDateSourceForPlayer2(String stream) {
+        pkStream = stream;
         try {
             textureView2.setDataSource(stream);
             textureView2.prepareAsync();
