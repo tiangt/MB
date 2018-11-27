@@ -95,6 +95,7 @@ public class LuckGiftControl {
     }
 
     public void destroy() {
+        tvLuckyGift.setVisibility(View.GONE);
         if (showAnim != null) {
             showAnim.removeAllUpdateListeners();
             showAnim.cancel();
