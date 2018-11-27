@@ -81,6 +81,7 @@ public class AutoPollAdapter extends BaseListAdapter {
                 setRoyalTag(mUserRoyalLevel, ivRoyal);
             } else {
                 rl.setBackgroundResource(R.drawable.shape_online_head_civilian);
+                GlideImageLoader.getInstace().displayImage(context, null, ivRoyal);
             }
             GlideImageLoader.getInstace().displayImage(context, mAudienceList.get(position + 1).getAvatar(), ivHead);
         }
