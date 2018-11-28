@@ -243,7 +243,7 @@ public class MainActivity extends BaseActivity {
                 .setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-                        holder.setText(R.id.tv_version_name, "V." + phone.versionName);
+                        holder.setText(R.id.tv_version_name, "发现新版本(" + phone.versionName + ")");
                         holder.setText(R.id.tv_update_info, phone.upgradeDetail);
                         holder.setOnClickListener(R.id.btn_dismiss, new View.OnClickListener() {
                             @Override
