@@ -183,6 +183,9 @@
     <color name="text_color_kickout_text">#ff709f</color>
 
     <color name="text_color_chat_list">#ffffff</color>
+    <color name="translucent">#aaffffff</color>
+    <color name="text_host_name">#010101</color>
+    <color name="line">#EDEDED</color>
 
     <color name="main_tab_color">#f9f9f9</color>
 </resources>

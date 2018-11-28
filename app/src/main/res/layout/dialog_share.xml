@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_dialog_top_corner_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_title"
+        android:textSize="13sp"
+        android:textColor="@color/text_view"
+        android:layout_marginTop="13dp"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_host_card"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_share_card"
+            android:gravity="center"
+            android:drawablePadding="7dp"
+            android:textColor="@color/text_view"
+            android:textSize="12sp"
+            android:text="主播名片"/>
+
+        <TextView
+            android:id="@+id/tv_weixin_circle"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_share_weixin_circle"
+            android:gravity="center"
+            android:drawablePadding="7dp"
+            android:textColor="@color/text_view"
+            android:textSize="12sp"
+            android:text="@string/weixin_circle"/>
+
+        <TextView
+            android:id="@+id/tv_weixin_friend"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_share_weixin"
+            android:gravity="center"
+            android:drawablePadding="7dp"
+            android:textColor="@color/text_view"
+            android:textSize="12sp"
+            android:text="@string/weixin_friend"/>
+
+        <TextView
+            android:id="@+id/tv_weibo"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_share_weibo"
+            android:gravity="center"
+            android:drawablePadding="7dp"
+            android:textColor="@color/text_view"
+            android:textSize="12sp"
+            android:text="@string/weibo"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_qq"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_share_qq"
+            android:gravity="center"
+            android:drawablePadding="7dp"
+            android:textColor="@color/text_view"
+            android:textSize="12sp"
+            android:text="@string/qq"/>
+
+        <TextView
+            android:id="@+id/tv_qq_zone"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_share_zone"
+            android:gravity="center"
+            android:drawablePadding="7dp"
+            android:textColor="@color/text_view"
+            android:textSize="12sp"
+            android:text="@string/zone"/>
+
+        <TextView
+            android:id="@+id/tv_copy"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_share_copy"
+            android:gravity="center"
+            android:drawablePadding="7dp"
+            android:textColor="@color/text_view"
+            android:textSize="12sp"
+            android:text="复制链接"/>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/ic_share_close"
+            android:gravity="center"
+            android:drawablePadding="7dp"
+            android:textColor="@color/text_view"
+            android:textSize="12sp"
+            android:text="取消"/>
+    </LinearLayout>
+
+</LinearLayout>

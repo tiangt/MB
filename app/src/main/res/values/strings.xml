@@ -300,6 +300,19 @@
     <string name="confirm_reset">确认重置</string>
     <string name="retrieve_psw">找回密码</string>
 
+    <string name="empty_always">还没有送过礼物，快去送个礼物给主播吧！</string>
+    <string name="mvp_privilege">胜方最佳MVP特权</string>
+    <string name="pk_punishment_description">说明：惩罚为胜方最佳MVP选择，不选由主播自行定义</string>
+
+    <string name="share_title">分享直播间让小伙伴一起来观看</string>
+    <string name="weixin_circle">朋友圈</string>
+    <string name="weixin_friend">微信好友</string>
+    <string name="weibo">新浪微博</string>
+    <string name="qq">QQ</string>
+    <string name="zone">QQ空间</string>
+    <string name="long_press">长按识别二维码</string>
+    <string name="share_card_title">通过以下方式分享</string>
+
     <array name="new_task">
         <item>领取</item>
         <item>改昵称</item>
@@ -326,7 +339,5 @@
         <item>幸运转盘抽奖1次</item>
     </array>
 
-    <string name="empty_always">还没有送过礼物，快去送个礼物给主播吧！</string>
-    <string name="mvp_privilege">胜方最佳MVP特权</string>
-    <string name="pk_punishment_description">说明：惩罚为胜方最佳MVP选择，不选由主播自行定义</string>
+
 </resources>

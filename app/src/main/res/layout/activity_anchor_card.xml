@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="289dp"
+        android:layout_height="384dp"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_share_card">
+
+        <ImageView
+            android:id="@+id/iv_host_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="157dp"
+            android:background="@drawable/shape_share_rect"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.whzl.mengbi.ui.widget.view.CircleImageView
+                android:id="@+id/iv_host_avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorPrimary" />
+
+            <TextView
+                android:id="@+id/tv_host_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/iv_host_avatar"
+                android:singleLine="true"
+                android:text="123123"
+                android:textColor="@color/text_host_name"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_room_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_host_name"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/iv_host_avatar"
+                android:singleLine="true"
+                android:text="123123"
+                android:textColor="@color/text_view"
+                android:textSize="10sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_share"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/tv_weixin_circle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_card_weixin_circle"
+                    android:drawablePadding="7dp"
+                    android:gravity="center"
+                    android:text="@string/weixin_circle"
+                    android:textColor="@color/text_view"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tv_weixin_friend"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_card_weixin"
+                    android:drawablePadding="7dp"
+                    android:gravity="center"
+                    android:text="@string/weixin_friend"
+                    android:textColor="@color/text_view"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tv_weibo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_card_weibo"
+                    android:drawablePadding="7dp"
+                    android:gravity="center"
+                    android:text="@string/weibo"
+                    android:textColor="@color/text_view"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tv_qq"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_card_qq"
+                    android:drawablePadding="7dp"
+                    android:gravity="center"
+                    android:text="@string/qq"
+                    android:textColor="@color/text_view"
+                    android:textSize="8sp" />
+
+                <TextView
+                    android:id="@+id/tv_qq_zone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_card_zone"
+                    android:drawablePadding="7dp"
+                    android:gravity="center"
+                    android:text="@string/zone"
+                    android:textColor="@color/text_view"
+                    android:textSize="8sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/ll_share"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="1dp"
+                    android:background="@color/line"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginRight="22dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/share_card_title"
+                    android:textColor="@color/text_view"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="11sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="1dp"
+                    android:background="@color/line"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginRight="11dp"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_logo_title"
+            app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.043" />
+
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@null"
+            android:src="@drawable/ic_close_white"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_qr_code"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_dialog_update_bg"
+            app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
+            app:layout_constraintEnd_toEndOf="@+id/iv_host_cover"
+            app:layout_constraintHorizontal_bias="0.914"
+            app:layout_constraintStart_toStartOf="@+id/iv_host_cover"
+            app:layout_constraintTop_toTopOf="@+id/iv_host_cover"
+            app:layout_constraintVertical_bias="0.633" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:layout_marginRight="33dp"
+            android:text="@string/long_press"
+            android:textColor="@color/text_host_name"
+            android:textSize="7sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_qr_code" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>

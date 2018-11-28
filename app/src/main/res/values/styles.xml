@@ -327,4 +327,11 @@
         <item name="android:textColor">#646464</item>
         <item name="textAllCaps">true</item>
     </style>
+
+    <style name="TransparentTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/translucent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@style/DefaultAnimation</item>
+    </style>
 </resources>
