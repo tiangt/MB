@@ -187,4 +187,5 @@
     <color name="text_host_name">#010101</color>
     <color name="line">#EDEDED</color>
 
+    <color name="main_tab_color">#f9f9f9</color>
 </resources>

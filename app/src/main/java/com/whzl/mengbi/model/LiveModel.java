@@ -34,4 +34,6 @@ public interface LiveModel {
     void getTotalGuard(HashMap paramsMap, OnLiveFinishedListener listener);
 
     void getRoomRankTotal(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void weekRank(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

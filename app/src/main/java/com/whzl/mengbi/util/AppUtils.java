@@ -24,6 +24,7 @@ public class AppUtils {
     private final static X500Principal DEBUG_DN = new X500Principal(
             "CN=Android Debug,O=Android,C=US");
     public static int REQUEST_INSTALL = 100;
+    public static final int REQUEST_LOGIN = 250;
 
     /**
      * Get version name

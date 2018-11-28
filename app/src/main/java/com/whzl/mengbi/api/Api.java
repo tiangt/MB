@@ -31,6 +31,7 @@ import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
+import com.whzl.mengbi.model.entity.WeekRankBean;
 
 import java.util.Map;
 
@@ -524,5 +525,15 @@ public interface Api {
     @POST("v1/rank/room-rank-total")
     @FormUrlEncoded
     Observable<ApiResult<RoomRankTotalBean>> getRoomRankTotal(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间指定类型的榜单的总值
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/rank/week-personal-ranking")
+    @FormUrlEncoded
+    Observable<ApiResult<WeekRankBean>> getWeekRank(@FieldMap Map<String, String> params);
 
 }

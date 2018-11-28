@@ -5,28 +5,140 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:gravity="center"
+    <RelativeLayout
         android:id="@+id/rl_icon_container"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="30dp"
-        android:background="@color/white">
+        android:layout_width="245dp"
+        android:layout_height="280dp"
+        android:background="@drawable/bg_login_dialog">
+
 
         <ImageButton
-            android:id="@+id/btn_wechat_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/ib_close"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:background="@null"
-            android:src="@drawable/ic_login_weixin" />
+            android:src="@drawable/close_icon" />
 
-        <ImageButton
-            android:id="@+id/btn_qq_login"
+        <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="67dp"
-            android:layout_toRightOf="@id/btn_wechat_login"
-            android:background="@null"
-            android:src="@drawable/ic_login_qq" />
-    </LinearLayout>
+            android:layout_below="@id/ib_close"
+            android:layout_centerHorizontal="true"
+            android:text="登录萌比"
+            android:textColor="#70000000"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_login"
+            android:layout_width="match_parent"
+            android:layout_height="117dp"
+            android:layout_below="@id/tv_title"
+            android:layout_marginLeft="21dp"
+            android:layout_marginRight="21dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_qq"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_login_dialog"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_qq_login_dialog" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:text="QQ登录"
+                    android:textColor="#70000000"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wechat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_login_dialog"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_wechat_login_dialog" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:text="微信登录"
+                    android:textColor="#70000000"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_phone_login"
+            android:layout_width="204dp"
+            android:layout_height="46dp"
+            android:layout_below="@id/ll_login"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_btn_login_dialog"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:src="@drawable/ic_phone_login_dialog" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:text="手机号码登录"
+                android:textColor="#70000000"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_deal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="21dp"
+            android:text="同意《用户协议》"
+            android:textColor="#40000000"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:text="立即注册"
+            android:textColor="#ff2b3f"
+            android:textSize="12sp" />
+    </RelativeLayout>
 </LinearLayout>

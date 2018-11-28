@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:background="#f9f9f9"
+            android:background="@color/main_tab_color"
             android:textColor="#323232"
             style="@style/fragmentTitleText"
             android:text="@string/rank_title" />

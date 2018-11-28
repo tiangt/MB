@@ -24,4 +24,5 @@ public interface NetConfig {
     String APPSECRET = "3b2d8c0d1d88d44f1ef99b015caa5fe4";
     String CLIENTTYPE = "ANDROID";
     String CUSTOM_OFFICIAL_SERVICE_QQ = "800851880";
+    String USER_DEAL = "https://www.mengbitv.com/assets/m-help/personAgree.html";
 }

@@ -1,10 +1,13 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -15,11 +18,15 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
+import com.whzl.mengbi.ui.activity.JsBridgeActivity;
+import com.whzl.mengbi.ui.activity.LoginActivity;
+import com.whzl.mengbi.ui.activity.RegisterActivity;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.view.LoginView;
+import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 
@@ -37,13 +44,28 @@ import static com.whzl.mengbi.util.ToastUtils.showToast;
  */
 public class LoginDialog extends BaseAwesomeDialog implements LoginView {
 
-    @BindView(R.id.btn_wechat_login)
-    ImageButton btnWechatLogin;
-    @BindView(R.id.btn_qq_login)
-    ImageButton btnQqLogin;
+    @BindView(R.id.ll_wechat)
+    LinearLayout llWechat;
+    @BindView(R.id.ll_qq)
+    LinearLayout llQQ;
+    @BindView(R.id.ll_phone_login)
+    LinearLayout llPhone;
+    @BindView(R.id.ib_close)
+    ImageButton ibClose;
+    @BindView(R.id.tv_register)
+    TextView tvRegister;
+    @BindView(R.id.tv_deal)
+    TextView tvDeal;
 
     private LoginPresent mLoginPresent;
     private UMShareAPI umShareAPI;
+
+    public BaseAwesomeDialog setLoginSuccessListener(LoginSuccessListener loginSuccessListener) {
+        this.loginSuccessListener = loginSuccessListener;
+        return this;
+    }
+
+    private LoginSuccessListener loginSuccessListener;
 
     public static LoginDialog newInstance() {
         LoginDialog dialog = new LoginDialog();
@@ -133,15 +155,33 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
     }
 
 
-    @OnClick({R.id.btn_wechat_login, R.id.btn_qq_login})
+    @OnClick({R.id.ll_wechat, R.id.ll_qq, R.id.ib_close, R.id.ll_phone_login, R.id.tv_register, R.id.tv_deal})
     public void onViewClicked(View view) {
-        ((BaseActivity) getActivity()).showLoading("登录中...");
         switch (view.getId()) {
-            case R.id.btn_wechat_login:
+            case R.id.ll_wechat:
+                ((BaseActivity) getActivity()).showLoading("登录中...");
                 umShareAPI.getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, umAuthListener);
                 break;
-            case R.id.btn_qq_login:
+            case R.id.ll_qq:
+                ((BaseActivity) getActivity()).showLoading("登录中...");
                 umShareAPI.getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, umAuthListener);
+                break;
+            case R.id.ib_close:
+                dismiss();
+                break;
+            case R.id.ll_phone_login:
+                getActivity().startActivityForResult(new Intent(getActivity(), LoginActivity.class).
+                        putExtra("from", "logindialog"), AppUtils.REQUEST_LOGIN);
+                dismiss();
+                break;
+            case R.id.tv_register:
+                getActivity().startActivityForResult(new Intent(getActivity(), RegisterActivity.class), AppUtils.REQUEST_LOGIN);
+                dismiss();
+                break;
+            case R.id.tv_deal:
+                getActivity().startActivity(new Intent(getActivity(), JsBridgeActivity.class)
+                        .putExtra("url", NetConfig.USER_DEAL)
+                        .putExtra("title", "用户协议"));
                 break;
         }
     }
@@ -161,6 +201,12 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, userInfo.getData().getNickname());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, userInfo.getData().getLastRechargeTime()
                 != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
+        loginSuccessListener.onLoginSuccessListener();
         dismiss();
     }
+
+    public interface LoginSuccessListener {
+        void onLoginSuccessListener();
+    }
+
 }
