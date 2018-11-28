@@ -63,7 +63,7 @@ public class ResourceMap {
         usersLevelMap.put(35, R.drawable.usergrade34);
         usersLevelMap.put(36, R.drawable.usergrade35);
         usersLevelMap.put(37, R.drawable.usergrade36);
-        usersLevelMap.put(38, R.drawable.usergrade37);
+        usersLevelMap.put(38, R.drawable.usergrade36);
     }
 
     private void initAnchorMap() {
@@ -135,7 +135,7 @@ public class ResourceMap {
             levelIcon = usersLevelMap.get(level);
         } else {
             if (level > 37) {
-                levelIcon = R.drawable.usergrade37;
+                levelIcon = R.drawable.usergrade36;
             } else {
                 levelIcon = R.drawable.usergrade;
             }
