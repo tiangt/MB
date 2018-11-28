@@ -184,4 +184,5 @@
 
     <color name="text_color_chat_list">#ffffff</color>
 
+    <color name="main_tab_color">#f9f9f9</color>
 </resources>
