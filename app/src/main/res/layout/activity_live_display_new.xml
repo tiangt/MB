@@ -506,8 +506,7 @@
                 android:layout_toLeftOf="@id/btn_close"
                 android:background="@null"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_live_share"
-                android:visibility="gone" />
+                android:src="@drawable/ic_live_share" />
 
             <ImageButton
                 android:id="@+id/btn_more"

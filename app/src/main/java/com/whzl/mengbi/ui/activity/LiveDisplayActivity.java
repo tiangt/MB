@@ -31,6 +31,7 @@ import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.ksyun.media.player.KSYTextureView;
 import com.opensource.svgaplayer.SVGAImageView;
+import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
@@ -92,6 +93,7 @@ import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
+import com.whzl.mengbi.ui.dialog.ShareDialog;
 import com.whzl.mengbi.ui.dialog.TreasureBoxDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
@@ -239,6 +241,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlGuardNumber;
     @BindView(R.id.rl_other_side_info)
     RelativeLayout rlOtherSideInfo;
+    @BindView(R.id.btn_share)
+    ImageButton btnShare;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -266,6 +270,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog mRankDialog;
     private BaseAwesomeDialog mChatDialog;
     private BaseAwesomeDialog mGuardListDialog;
+    private BaseAwesomeDialog mShareDialog;
     private long mAudienceCount;
     private TreasureBoxDialog mTreasureBoxDialog;
     private HashMap<Integer, Integer> mTreasureStatusMap;
@@ -568,7 +573,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private
-            , R.id.rootView, R.id.fragment_container, R.id.btn_treasure_box, R.id.rl_guard_number})
+            , R.id.rootView, R.id.fragment_container, R.id.btn_treasure_box, R.id.rl_guard_number
+            , R.id.btn_share})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
@@ -679,6 +685,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
             case R.id.rl_guard_number:
                 mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0, mAudienceCount)
+                        .setShowBottom(true)
+                        .setDimAmount(0)
+                        .show(getSupportFragmentManager());
+                break;
+            case R.id.btn_share:
+                mShareDialog = ShareDialog.newInstance()
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
@@ -1438,6 +1450,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 isVip = true;
             }
         }
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     private void showJumpLiveHouseDialog(int programId, String nickName) {
