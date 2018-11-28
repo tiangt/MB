@@ -82,10 +82,11 @@ import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunwayBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
+import com.whzl.mengbi.model.entity.WeekRankBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
-import com.whzl.mengbi.ui.adapter.CircleFragmentPagerAdaper;
+import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
@@ -276,7 +277,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private PkControl pkControl;
     private List<GetActivityBean.ListBean> mBannerInfoList;
     private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
-    private CircleFragmentPagerAdaper mGrandAdaper;
+    private FragmentPagerAdaper mGrandAdaper;
     private Disposable grandDisposable;
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList = new ArrayList<>();
@@ -436,7 +437,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
 
     private void initVp() {
-        mGrandAdaper = new CircleFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
+        mGrandAdaper = new FragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
         vpActivity.setAdapter(mGrandAdaper);
     }
 
@@ -872,7 +873,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 progressBar.setVisibility(View.GONE);
             }
         }
+
+        initAboutAnchor(mProgramId, mAnchorId);
+    }
+
+    /**
+     * 周星 主播任务 活动页面
+     */
+    private void initAboutAnchor(int mProgramId, int mAnchorId) {
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
+        mLivePresenter.getWeekRank(mAnchorId);
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1103,11 +1113,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     }
 
+    /**
+     * 直播间的活动（常规活动）
+     * */
     @Override
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
-        if (mActivityGrands != null) {
-            mActivityGrands.clear();
-        }
+//        if (mActivityGrands != null) {
+//            mActivityGrands.clear();
+//        }
         if (bean.list != null && bean.list.size() != 0) {
             showActivityGrand = true;
             vpActivity.setVisibility(View.VISIBLE);
@@ -1128,9 +1141,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mActivityGrands.add(liveWebFragment);
             }
             mGrandAdaper.notifyDataSetChanged();
-            if (bean.list.size() > 1) {
-                timerGrand(bean.list.size());
-            }
+//            if (bean.list.size() > 1) {
+//                timerGrand(bean.list.size());
+//            }
         }
 
     }
@@ -1157,6 +1170,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetPunishWaysSuccess(PunishWaysBean bean) {
         pkControl = new PkControl(pkLayout, this);
+    }
+
+    /**
+     * 周星榜
+     * */
+    @Override
+    public void onWeekRankSuccess(WeekRankBean bean) {
+
     }
 
     @Override
@@ -1424,6 +1445,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (roomOnlineDisposable != null) {
             roomOnlineDisposable.dispose();
         }
+        mActivityGrands.clear();
     }
 
     @Override

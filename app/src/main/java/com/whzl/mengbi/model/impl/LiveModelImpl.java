@@ -2,7 +2,6 @@ package com.whzl.mengbi.model.impl;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.ApiResult;
@@ -18,6 +17,7 @@ import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
+import com.whzl.mengbi.model.entity.WeekRankBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
@@ -378,6 +378,27 @@ public class LiveModelImpl implements LiveModel {
                     public void onSuccess(RoomRankTotalBean dataBean) {
                         if (dataBean != null) {
                             listener.onGetRoomRankTotalSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void weekRank(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getWeekRank(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<WeekRankBean>() {
+                    @Override
+                    public void onSuccess(WeekRankBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onWeekRank(dataBean);
                         }
                     }
 

@@ -12,6 +12,7 @@ import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
+import com.whzl.mengbi.model.entity.WeekRankBean;
 
 public interface OnLiveFinishedListener {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -49,4 +50,6 @@ public interface OnLiveFinishedListener {
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean);
 
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
+
+    void onWeekRank(WeekRankBean bean);
 }

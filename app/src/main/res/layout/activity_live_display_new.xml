@@ -428,7 +428,14 @@
                     android:layout_height="60dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="9dp"
-                    android:layout_marginRight="7dp" />
+                    android:layout_marginRight="7dp" >
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="26dp"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/bg_chat_top_translate" />
+                </com.youth.banner.Banner>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/vp_activity"
@@ -437,14 +444,8 @@
                     android:layout_below="@id/banner"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/bg_liveweb"
                     android:visibility="gone" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:background="@drawable/bg_chat_top_translate"
-                    android:layout_height="26dp"
-                    android:layout_alignParentTop="true"/>
             </RelativeLayout>
         </LinearLayout>
 
