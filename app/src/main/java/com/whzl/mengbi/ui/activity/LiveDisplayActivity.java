@@ -97,6 +97,7 @@ import com.whzl.mengbi.ui.dialog.TreasureBoxDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
+import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
@@ -1177,7 +1178,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * */
     @Override
     public void onWeekRankSuccess(WeekRankBean bean) {
-
+        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance();
+        mActivityGrands.add(weekRankFragment);
+        mGrandAdaper.notifyDataSetChanged();
     }
 
     @Override
