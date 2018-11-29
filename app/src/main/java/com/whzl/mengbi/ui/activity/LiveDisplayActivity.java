@@ -245,6 +245,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlOtherSideInfo;
     @BindView(R.id.btn_share)
     ImageButton btnShare;
+    @BindView(R.id.ll_pager_index)
+    LinearLayout llPagerIndex;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -442,9 +444,33 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
 
+    /**
+     * 活动viewpager
+     */
     private void initVp() {
         mGrandAdaper = new FragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
         vpActivity.setAdapter(mGrandAdaper);
+        vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mActivityGrands.size() < 2) {
+                    return;
+                }
+                for (int i = 0; i < mActivityGrands.size(); i++) {
+                    llPagerIndex.getChildAt(i).setSelected(i == position);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initBanner() {
@@ -1128,7 +1154,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     /**
      * 直播间的活动（常规活动）
-     * */
+     */
     @Override
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
 //        if (mActivityGrands != null) {
@@ -1157,6 +1183,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //            if (bean.list.size() > 1) {
 //                timerGrand(bean.list.size());
 //            }
+            initActivityPoints();
         }
 
     }
@@ -1187,12 +1214,37 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     /**
      * 周星榜
-     * */
+     */
     @Override
     public void onWeekRankSuccess(WeekRankBean bean) {
         LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(bean);
-        mActivityGrands.add(0,weekRankFragment);
+        mActivityGrands.add(0, weekRankFragment);
         mGrandAdaper.notifyDataSetChanged();
+        initActivityPoints();
+    }
+
+    /**
+     * 活动下标黄点
+     */
+    private void initActivityPoints() {
+        if (llPagerIndex.getChildCount() > 0) {
+            llPagerIndex.removeAllViews();
+        }
+        if (mActivityGrands.size() < 2) {
+            return;
+        }
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(this, 5), UIUtil.dip2px(this, 5));
+        for (int i = 0; i < mActivityGrands.size(); i++) {
+            View view = new View(this);
+            view.setBackgroundResource(R.drawable.selector_live_activity_pager_index);
+            if (i == 0) {
+                view.setSelected(true);
+            } else {
+                params.leftMargin = UIUtil.dip2px(this, 5);
+                params.rightMargin = UIUtil.dip2px(this, 5);
+            }
+            llPagerIndex.addView(view, params);
+        }
     }
 
     @Override
