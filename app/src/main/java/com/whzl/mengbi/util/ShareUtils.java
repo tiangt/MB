@@ -1,6 +1,7 @@
 package com.whzl.mengbi.util;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -69,6 +70,70 @@ public class ShareUtils {
                     }
                 }).share();
     }
+
+
+    /**
+     * 分享图片
+     */
+    public static void shareBitmap(final Activity activity, Bitmap bitmap, SHARE_MEDIA platform) {
+        UMImage image = new UMImage(activity, bitmap);//bitmap文件
+        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+//        image.compressStyle = UMImage.CompressStyle.QUALITY;//质量压缩，适合长图的分享
+//        image.compressFormat = Bitmap.CompressFormat.PNG;//用户分享透明背景的图片可以设置这种方式，但是qq好友，微信朋友圈，不支持透明背景图片，会变成黑色
+
+        new ShareAction(activity)
+                .setPlatform(platform)
+                .withMedia(image)
+                .setCallback(new UMShareListener() {
+                    @Override
+                    public void onStart(SHARE_MEDIA share_media) {
+
+                    }
+
+                    @Override
+                    public void onResult(final SHARE_MEDIA share_media) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(activity, "分享成功", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onError(final SHARE_MEDIA share_media, final Throwable throwable) {
+                        if (throwable != null) {
+                            Log.d("throw", "throw:" + throwable.getMessage());
+                        }
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(activity, "分享失败", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancel(final SHARE_MEDIA share_media) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(activity, "分享取消", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                })
+                .share();
+
+        //新浪微博中图文+链接
+        /*new ShareAction(activity)
+                .setPlatform(platform)
+                .withText(description + " " + WebUrl)
+                .withMedia(new UMImage(activity,imageID))
+                .share();*/
+    }
+
 
 
 }
