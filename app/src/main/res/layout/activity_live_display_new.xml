@@ -547,7 +547,7 @@
                 android:background="@null"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_live_free_gift"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
             <ImageButton
                 android:id="@+id/btn_send_gift"
