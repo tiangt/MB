@@ -691,7 +691,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_share:
-                mShareDialog = ShareDialog.newInstance()
+                mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor)
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
