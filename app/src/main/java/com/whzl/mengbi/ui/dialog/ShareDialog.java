@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.dialog;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +9,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.ui.activity.AnchorCardActivity;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.util.ShareUtils;
