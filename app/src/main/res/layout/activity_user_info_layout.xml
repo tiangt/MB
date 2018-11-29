@@ -153,7 +153,7 @@
 
         <ImageView
             android:id="@+id/iv_anchor_level"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -190,8 +190,8 @@
 
         <ImageView
             android:id="@+id/iv_user_level"
-            android:layout_width="23dp"
-            android:layout_height="16dp"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="15dp" />
@@ -234,8 +234,8 @@
 
         <ImageView
             android:id="@+id/iv_royal"
-            android:layout_width="23dp"
-            android:layout_height="16dp"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:layout_marginTop="12dp" />

@@ -1217,6 +1217,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onWeekRankSuccess(WeekRankBean bean) {
+        if (bean == null) {
+            return;
+        }
         LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(bean);
         mActivityGrands.add(0, weekRankFragment);
         mGrandAdaper.notifyDataSetChanged();
