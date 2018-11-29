@@ -38,5 +38,4 @@ public interface LivePresenter {
 
     void getRoomRankTotal(int mProgramId, String type);
 
-    void getWeekRank(int anchorId);
 }

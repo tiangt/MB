@@ -290,7 +290,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList = new ArrayList<>();
     private RoyalEnterControl royalEnterControl;
-    private boolean showActivityGrand = false;
+    private boolean showActivityGrand = true;
     private boolean showBanner = false;
     private Disposable roomRankTotalDisposable;
     private Disposable roomOnlineDisposable;
@@ -521,6 +521,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             rlTreasureBox.setVisibility(View.GONE);
             if (showActivityGrand) {
                 vpActivity.setVisibility(View.GONE);
+                llPagerIndex.setVisibility(View.GONE);
             }
             if (showBanner) {
                 banner.setVisibility(View.GONE);
@@ -651,6 +652,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
                     rlTreasureBox.setVisibility(View.VISIBLE);
                     if (showActivityGrand) {
+                        vpActivity.setVisibility(View.VISIBLE);
                         vpActivity.setVisibility(View.VISIBLE);
                     }
                     if (showBanner) {
@@ -920,8 +922,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 周星 主播任务 活动页面
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
+        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId,mAnchorId);
+        mActivityGrands.add( weekRankFragment);
+        mGrandAdaper.notifyDataSetChanged();
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
-        mLivePresenter.getWeekRank(mAnchorId);
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1157,12 +1161,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
-//        if (mActivityGrands != null) {
-//            mActivityGrands.clear();
-//        }
         if (bean.list != null && bean.list.size() != 0) {
-            showActivityGrand = true;
-            vpActivity.setVisibility(View.VISIBLE);
             vpActivity.setOffscreenPageLimit(bean.list.size());
             for (int i = 0; i < bean.list.size(); i++) {
                 ActivityGrandBean.ListBean listBean = bean.list.get(i);
@@ -1180,9 +1179,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mActivityGrands.add(liveWebFragment);
             }
             mGrandAdaper.notifyDataSetChanged();
-//            if (bean.list.size() > 1) {
-//                timerGrand(bean.list.size());
-//            }
             initActivityPoints();
         }
 
@@ -1212,19 +1208,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl = new PkControl(pkLayout, this);
     }
 
-    /**
-     * 周星榜
-     */
-    @Override
-    public void onWeekRankSuccess(WeekRankBean bean) {
-        if (bean == null) {
-            return;
-        }
-        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(bean);
-        mActivityGrands.add(0, weekRankFragment);
-        mGrandAdaper.notifyDataSetChanged();
-        initActivityPoints();
-    }
 
     /**
      * 活动下标黄点
@@ -1515,8 +1498,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (roomOnlineDisposable != null) {
             roomOnlineDisposable.dispose();
         }
-        mActivityGrands.clear();
-        mGrandAdaper.notifyDataSetChanged();
+        if (mActivityGrands.size()>0) {
+            mActivityGrands.clear();
+            mGrandAdaper.notifyDataSetChanged();
+        }
+        if (llPagerIndex.getChildCount() > 0) {
+            llPagerIndex.removeAllViews();
+        }
     }
 
     @Override
