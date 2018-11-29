@@ -60,7 +60,6 @@ public class AnchorCardActivity extends BaseActivity {
         mHostName = getIntent().getStringExtra("hostName");
         mAnchorId = getIntent().getIntExtra("anchorId", 0);
         mHostAvatar = ImageUrl.getAvatarUrl(mAnchorId, "png", System.currentTimeMillis());
-
         tvHostName.setText(mHostName);
         tvRoomNum.setText(getString(R.string.search_room, mProgramId));
         //头像
