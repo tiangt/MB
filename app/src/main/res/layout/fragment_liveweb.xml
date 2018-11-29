@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_liveweb"
     android:orientation="vertical">
 
     <com.github.lzyzsd.jsbridge.BridgeWebView
         android:id="@+id/JsBridgeWebView"
-        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_width="61dp"
         android:layout_height="match_parent"
         android:overScrollMode="never" />
 

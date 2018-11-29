@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
@@ -535,5 +536,15 @@ public interface Api {
     @POST("v1/rank/week-personal-ranking")
     @FormUrlEncoded
     Observable<ApiResult<WeekRankBean>> getWeekRank(@FieldMap Map<String, String> params);
+
+    /**
+     * 主播任务
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/anchor-task")
+    @FormUrlEncoded
+    Observable<ApiResult<AnchorTaskBean>> getAnchorTask(@FieldMap Map<String, String> params);
 
 }

@@ -1,6 +1,7 @@
 package com.whzl.mengbi.model;
 
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
+import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 
 import java.util.HashMap;
 
@@ -35,4 +36,5 @@ public interface LiveModel {
 
     void getRoomRankTotal(HashMap signPramsMap, OnLiveFinishedListener listener);
 
+    void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

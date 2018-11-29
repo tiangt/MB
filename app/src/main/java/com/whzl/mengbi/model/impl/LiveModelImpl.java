@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
@@ -383,6 +384,26 @@ public class LiveModelImpl implements LiveModel {
                     @Override
                     public void onError(int code) {
 
+                    }
+                });
+    }
+
+    @Override
+    public void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getAnchorTask(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<AnchorTaskBean>() {
+                    @Override
+                    public void onSuccess(AnchorTaskBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetAnchorTaskSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<AnchorTaskBean> body) {
                     }
                 });
     }

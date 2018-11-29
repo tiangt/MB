@@ -70,6 +70,7 @@ import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -98,6 +99,7 @@ import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
 import com.whzl.mengbi.ui.dialog.TreasureBoxDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
@@ -937,9 +939,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 周星 主播任务 活动页面
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
-        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-        mActivityGrands.add(weekRankFragment);
-        mGrandAdaper.notifyDataSetChanged();
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
     }
 
@@ -1193,10 +1192,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 });
                 mActivityGrands.add(liveWebFragment);
             }
-            mGrandAdaper.notifyDataSetChanged();
-            initActivityPoints();
+//            mGrandAdaper.notifyDataSetChanged();
         }
-
+        //周星榜
+        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        mActivityGrands.add(weekRankFragment);
+        mGrandAdaper.notifyDataSetChanged();
+        initActivityPoints();
+        //主播任务
+        mLivePresenter.getAnchorTask(mAnchorId);
     }
 
     @Override
@@ -1221,6 +1225,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetPunishWaysSuccess(PunishWaysBean bean) {
         pkControl = new PkControl(pkLayout, this);
+    }
+
+    /**
+     * 主播任务成功
+     */
+    @Override
+    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
+        if (dataBean != null) {
+            AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
+            mActivityGrands.add(anchorTaskFragment);
+            mGrandAdaper.notifyDataSetChanged();
+            initActivityPoints();
+        }
     }
 
 
