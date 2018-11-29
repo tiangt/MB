@@ -13,7 +13,6 @@ import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
-import com.whzl.mengbi.model.entity.WeekRankBean;
 import com.whzl.mengbi.model.impl.LiveModelImpl;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
@@ -187,12 +186,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
-    @Override
-    public void onWeekRank(WeekRankBean bean) {
-        if (liveView != null) {
-            liveView.onWeekRankSuccess(bean);
-        }
-    }
 
     @Override
     public void followHost(long userId, int mProgramId) {
@@ -280,11 +273,4 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         liveModel.getRoomRankTotal(signPramsMap, this);
     }
 
-    @Override
-    public void getWeekRank(int anchorId) {
-        HashMap map = new HashMap();
-        map.put("userId", anchorId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        liveModel.weekRank(signPramsMap, this);
-    }
 }

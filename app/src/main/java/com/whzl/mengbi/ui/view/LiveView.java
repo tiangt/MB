@@ -13,7 +13,6 @@ import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
-import com.whzl.mengbi.model.entity.WeekRankBean;
 
 public interface LiveView {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -53,5 +52,4 @@ public interface LiveView {
 
     void onGetPunishWaysSuccess(PunishWaysBean bean);
 
-    void onWeekRankSuccess(WeekRankBean bean);
 }

@@ -7,10 +7,18 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.WeekRankBean;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author nobody
@@ -36,10 +44,11 @@ public class LiveWeekRankFragment extends BaseFragment {
     @BindView(R.id.tv_rank_3)
     TextView tvRank3;
 
-    public static LiveWeekRankFragment newInstance(WeekRankBean bean) {
+    public static LiveWeekRankFragment newInstance(int mProgramId, int mAnchorId) {
         LiveWeekRankFragment weekRankFragment = new LiveWeekRankFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("bean", bean);
+        bundle.putInt("mProgramId", mProgramId);
+        bundle.putInt("mAnchorId", mAnchorId);
         weekRankFragment.setArguments(bundle);
         return weekRankFragment;
     }
@@ -51,23 +60,41 @@ public class LiveWeekRankFragment extends BaseFragment {
 
     @Override
     public void init() {
-        WeekRankBean bean = getArguments().getParcelable("bean");
-        if (bean.list != null && bean.list.size() > 0) {
-            tvName1.setText(bean.list.get(0).goodsName);
-            tvName2.setText(bean.list.get(1).goodsName);
-            tvName3.setText(bean.list.get(2).goodsName);
+        int mAnchorId = getArguments().getInt("mAnchorId");
+        HashMap map = new HashMap();
+        map.put("userId", mAnchorId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        ApiFactory.getInstance().getApi(Api.class)
+                .getWeekRank(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<WeekRankBean>() {
+                    @Override
+                    public void onSuccess(WeekRankBean bean) {
+                        if (bean.list != null && bean.list.size() > 0) {
+                            tvName1.setText(bean.list.get(0).goodsName);
+                            tvName2.setText(bean.list.get(1).goodsName);
+                            tvName3.setText(bean.list.get(2).goodsName);
 
-            tvRank1.setText(bean.list.get(0).rankValue < 0 ? "未上榜" : "第" + bean.list.get(0).rankValue + "名");
-            tvRank2.setText(bean.list.get(1).rankValue < 0 ? "未上榜" : "第" + bean.list.get(1).rankValue + "名");
-            tvRank3.setText(bean.list.get(2).rankValue < 0 ? "未上榜" : "第" + bean.list.get(2).rankValue + "名");
+                            tvRank1.setText(bean.list.get(0).rankValue < 0 ? "未上榜" : "第" + bean.list.get(0).rankValue + "名");
+                            tvRank2.setText(bean.list.get(1).rankValue < 0 ? "未上榜" : "第" + bean.list.get(1).rankValue + "名");
+                            tvRank3.setText(bean.list.get(2).rankValue < 0 ? "未上榜" : "第" + bean.list.get(2).rankValue + "名");
 
-            tvRank1.setTextColor(bean.list.get(0).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
-            tvRank2.setTextColor(bean.list.get(1).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
-            tvRank3.setTextColor(bean.list.get(2).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
+                            tvRank1.setTextColor(bean.list.get(0).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
+                            tvRank2.setTextColor(bean.list.get(1).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
+                            tvRank3.setTextColor(bean.list.get(2).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
 
-            Glide.with(this).load(bean.list.get(0).goodsPic).into(iv1);
-            Glide.with(this).load(bean.list.get(1).goodsPic).into(iv2);
-            Glide.with(this).load(bean.list.get(2).goodsPic).into(iv3);
-        }
+                            Glide.with(LiveWeekRankFragment.this).load(bean.list.get(0).goodsPic).into(iv1);
+                            Glide.with(LiveWeekRankFragment.this).load(bean.list.get(1).goodsPic).into(iv2);
+                            Glide.with(LiveWeekRankFragment.this).load(bean.list.get(2).goodsPic).into(iv3);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                    }
+                });
+
+
     }
 }
