@@ -1513,6 +1513,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             roomOnlineDisposable.dispose();
         }
         mActivityGrands.clear();
+        mGrandAdaper.notifyDataSetChanged();
     }
 
     @Override
