@@ -312,6 +312,8 @@
     <string name="zone">QQ空间</string>
     <string name="long_press">长按识别二维码</string>
     <string name="share_card_title">通过以下方式分享</string>
+    <string name="share_outside_title">我正在偷偷观看%1$s的直播！</string>
+    <string name="share_outside_decs">%1$s正在性感热舞中，快去瞧瞧吧！</string>
 
     <array name="new_task">
         <item>领取</item>

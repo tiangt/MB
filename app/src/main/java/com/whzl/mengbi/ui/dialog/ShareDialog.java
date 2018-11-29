@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.dialog;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +9,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.ui.activity.AnchorCardActivity;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.util.ShareUtils;
@@ -22,7 +20,7 @@ import butterknife.OnClick;
  * @author cliang
  * @date 2018.11.28
  */
-public class ShareDialog extends BaseAwesomeDialog{
+public class ShareDialog extends BaseAwesomeDialog {
 
     @BindView(R.id.tv_host_card)
     TextView mHostCard;
@@ -42,14 +40,16 @@ public class ShareDialog extends BaseAwesomeDialog{
     TextView mCancel;
 
     private int mProgramId;
+    private int anchorId;
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
     private String strHostName;
-    private int anchorId;
+    private String mAnchorCover;
 
-    public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
+    public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, String anchorCover) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
         args.putParcelable("anchor", anchorBean);
+        args.putString("anchorCover", anchorCover);
         ShareDialog dialog = new ShareDialog();
         dialog.setArguments(args);
         return dialog;
@@ -64,6 +64,7 @@ public class ShareDialog extends BaseAwesomeDialog{
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         mProgramId = getArguments().getInt("programId");
         mAnchorBean = getArguments().getParcelable("anchor");
+        mAnchorCover = getArguments().getString("anchorCover", "");
         strHostName = mAnchorBean.getName();
         anchorId = mAnchorBean.getId();
     }
@@ -77,31 +78,42 @@ public class ShareDialog extends BaseAwesomeDialog{
                 intent.putExtra("programId", mProgramId);
                 intent.putExtra("hostName", strHostName);
                 intent.putExtra("anchorId", anchorId);
+                intent.putExtra("anchorCover", mAnchorCover);
                 startActivity(intent);
                 dismiss();
                 break;
             case R.id.tv_weixin_circle:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", "http://dev.img.mengbitv.com/avatar/030/00/01/39.jpg?1528251480", "我正在偷偷观看 主播昵称 的直播！", "主播昵称 正在性感热舞中，快去瞧瞧吧！"
+                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                        , getString(R.string.share_outside_title, strHostName)
+                        , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.WEIXIN_CIRCLE);
                 dismiss();
                 break;
             case R.id.tv_weixin_friend:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", "http://dev.img.mengbitv.com/avatar/030/00/01/39.jpg?1528251480", "我正在偷偷观看 主播昵称 的直播！", "主播昵称 正在性感热舞中，快去瞧瞧吧！"
+                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                        , getString(R.string.share_outside_title, strHostName)
+                        , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.WEIXIN);
                 dismiss();
                 break;
             case R.id.tv_weibo:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", "http://dev.img.mengbitv.com/avatar/030/00/01/39.jpg?1528251480", "我正在偷偷观看 主播昵称 的直播！", "主播昵称 正在性感热舞中，快去瞧瞧吧！"
+                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                        , getString(R.string.share_outside_title, strHostName)
+                        , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.SINA);
                 dismiss();
                 break;
             case R.id.tv_qq:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", "http://dev.img.mengbitv.com/avatar/030/00/01/39.jpg?1528251480", "我正在偷偷观看 主播昵称 的直播！", "主播昵称 正在性感热舞中，快去瞧瞧吧！"
+                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                        , getString(R.string.share_outside_title, strHostName)
+                        , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.QQ);
                 dismiss();
                 break;
             case R.id.tv_qq_zone:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", "http://dev.img.mengbitv.com/avatar/030/00/01/39.jpg?1528251480", "我正在偷偷观看 主播昵称 的直播！", "主播昵称 正在性感热舞中，快去瞧瞧吧！"
+                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                        , getString(R.string.share_outside_title, strHostName)
+                        , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.QZONE);
                 dismiss();
                 break;

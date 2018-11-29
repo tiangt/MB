@@ -10,4 +10,6 @@ public interface SDKConfig {
     String SECREAT_WEIXING = "c1762807092c6ace7405071a9df51290";
     String KEY_QQ = "101477481";
     String SECREAT_QQ = "52f84675951166e7dcc95b019ccd63fa";
+    String KEY_SINA = "1495604664";
+    String SECREAT_SINA = "5ffe226664ad1739ffe8c7ed944221e2";
 }

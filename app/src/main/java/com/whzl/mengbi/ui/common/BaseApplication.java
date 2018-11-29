@@ -48,6 +48,8 @@ public class BaseApplication extends Application {
         PlatformConfig.setWeixin(SDKConfig.KEY_WEIXIN, SDKConfig.SECREAT_WEIXING);
         //初始化QQ登录
         PlatformConfig.setQQZone(SDKConfig.KEY_QQ, SDKConfig.SECREAT_QQ);
+        //初始化新浪微博
+        PlatformConfig.setSinaWeibo(SDKConfig.KEY_SINA, SDKConfig.SECREAT_SINA, "http://sns.whalecloud.com");
     }
 
     @Override

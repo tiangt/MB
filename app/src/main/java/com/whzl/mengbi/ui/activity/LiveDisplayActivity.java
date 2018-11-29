@@ -300,6 +300,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private NetStateChangeReceiver mPkReceiver;
     private String pkStream;
     private BaseAwesomeDialog mFreeGiftDialog;
+    private String mAnchorCover;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -344,6 +345,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter = new LivePresenterImpl(this);
         if (getIntent() != null) {
             mProgramId = getIntent().getIntExtra(BundleConfig.PROGRAM_ID, -1);
+            //主播封面
+            mAnchorCover = getIntent().getStringExtra(BundleConfig.ANCHOR_COVER);
             SPUtils.put(this, "programId", mProgramId);
         }
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
@@ -724,7 +727,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_share:
-                mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor)
+                mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor, mAnchorCover)
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
