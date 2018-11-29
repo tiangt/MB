@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void login() {
-        currentSelectedIndex = 0;
+//        currentSelectedIndex = 0;
 //        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 //        startActivityForResult(intent, REQUEST_LOGIN);
         LoginDialog.newInstance()
@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity {
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0.7f)
                 .show(getSupportFragmentManager());
-        rgTab.check(rgTab.getChildAt(0).getId());
+        rgTab.check(rgTab.getChildAt(currentSelectedIndex).getId());
     }
 
     private boolean checkLogin() {
