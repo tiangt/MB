@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageButton;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.zxing.WriterException;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
@@ -57,6 +59,7 @@ public class AnchorCardActivity extends BaseActivity {
     private String mHostName;
     private int mAnchorId;
     private String mHostAvatar;
+    private String mAnchorCover;
 
     @Override
     protected void setupContentView() {
@@ -68,13 +71,14 @@ public class AnchorCardActivity extends BaseActivity {
         mProgramId = getIntent().getIntExtra("programId", 0);
         mHostName = getIntent().getStringExtra("hostName");
         mAnchorId = getIntent().getIntExtra("anchorId", 0);
+        mAnchorCover = getIntent().getStringExtra("anchorCover");
         mHostAvatar = ImageUrl.getAvatarUrl(mAnchorId, "png", System.currentTimeMillis());
         tvHostName.setText(mHostName);
         tvRoomNum.setText(getString(R.string.search_room, mProgramId));
         //头像
         GlideImageLoader.getInstace().displayImage(this, mHostAvatar, ivHostAvatar);
         //背景
-        GlideImageLoader.getInstace().displayImage(this, mHostAvatar, ivHostCover);
+        GlideImageLoader.getInstace().displayImage(this, mAnchorCover, ivHostCover);
         setQRCode();
     }
 
@@ -115,7 +119,7 @@ public class AnchorCardActivity extends BaseActivity {
      */
     private void setQRCode() {
         try {
-            Bitmap bitmap = QRCodeUtils.create2DCode("12312312312313123132");
+            Bitmap bitmap = QRCodeUtils.create2DCode("12312fgfdgdgfggggggggggggggggggggggggggggggggggggggggggggggsdfsfdsfsdfsfs312312313123132");
             Glide.with(this).load(bitmap).into(ivQRCode);
         } catch (WriterException e) {
             e.printStackTrace();
@@ -128,8 +132,20 @@ public class AnchorCardActivity extends BaseActivity {
      * @param platform
      */
     private void getLayoutToBitmap(SHARE_MEDIA platform) {
+        shareCardLayout.findViewById(R.id.btn_close).setVisibility(View.INVISIBLE);
         Bitmap bitmap = BitmapUtils.getViewBitmap(shareCardLayout);
         ShareUtils.shareBitmap(this, bitmap, platform);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        btnClose.setVisibility(View.VISIBLE);
+    }
 }
