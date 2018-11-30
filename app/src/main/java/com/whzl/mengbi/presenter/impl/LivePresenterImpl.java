@@ -2,6 +2,7 @@ package com.whzl.mengbi.presenter.impl;
 
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -186,6 +187,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
+    @Override
+    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
+        if (liveView != null) {
+            liveView.onGetAnchorTaskSuccess(dataBean);
+        }
+    }
+
 
     @Override
     public void followHost(long userId, int mProgramId) {
@@ -273,4 +281,10 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         liveModel.getRoomRankTotal(signPramsMap, this);
     }
 
+    public void getAnchorTask(int mAnchorId) {
+        HashMap map = new HashMap();
+        map.put("userId", mAnchorId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getAnchorTask(signPramsMap, this);
+    }
 }

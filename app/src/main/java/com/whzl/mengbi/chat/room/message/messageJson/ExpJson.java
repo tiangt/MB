@@ -4,14 +4,14 @@ import java.util.List;
 
 public class ExpJson {
     public class AnchorExpItem{
-        int bjExpValue;
+        long bjExpValue;
         String expName;
         String expType;
-        int sjExpvalue;
-        int sjNeedExpValue;
-        int totalExpValue;
+        long sjExpvalue;
+        long sjNeedExpValue;
+        long totalExpValue;
 
-        public int getBjExpValue() {
+        public long getBjExpValue() {
             return bjExpValue;
         }
 
@@ -23,15 +23,15 @@ public class ExpJson {
             return expType;
         }
 
-        public int getSjExpvalue() {
+        public long getSjExpvalue() {
             return sjExpvalue;
         }
 
-        public int getSjNeedExpValue() {
+        public long getSjNeedExpValue() {
             return sjNeedExpValue;
         }
 
-        public int getTotalExpValue() {
+        public long getTotalExpValue() {
             return totalExpValue;
         }
     }

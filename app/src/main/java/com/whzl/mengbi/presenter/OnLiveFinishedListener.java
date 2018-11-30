@@ -1,6 +1,7 @@
 package com.whzl.mengbi.presenter;
 
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -50,4 +51,5 @@ public interface OnLiveFinishedListener {
 
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
 
+    void onGetAnchorTaskSuccess(AnchorTaskBean dataBean);
 }

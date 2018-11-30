@@ -105,13 +105,13 @@ public class FromJson {
 }
 
 class Exp{
-    int bjExpValue;
-    int bjNeedExpValue;
+    long bjExpValue;
+    long bjNeedExpValue;
     String expName;
     String expType;
-    int sjExpvalue;
-    int sjNeedExpValue;
-    int totalExpValue;
+    long sjExpvalue;
+    long sjNeedExpValue;
+    long totalExpValue;
     long userExpSn;
 }
 

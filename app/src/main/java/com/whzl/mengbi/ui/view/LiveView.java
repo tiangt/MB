@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.view;
 
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -52,4 +53,5 @@ public interface LiveView {
 
     void onGetPunishWaysSuccess(PunishWaysBean bean);
 
+    void onGetAnchorTaskSuccess(AnchorTaskBean dataBean);
 }

@@ -70,6 +70,7 @@ import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -89,6 +90,7 @@ import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
+import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
@@ -98,6 +100,7 @@ import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
 import com.whzl.mengbi.ui.dialog.TreasureBoxDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
@@ -248,6 +251,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageButton btnShare;
     @BindView(R.id.ll_pager_index)
     LinearLayout llPagerIndex;
+    @BindView(R.id.btn_free_gift)
+    ImageButton btnFreeGift;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -297,6 +302,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Disposable roomOnlineDisposable;
     private NetStateChangeReceiver mPkReceiver;
     private String pkStream;
+    private BaseAwesomeDialog mFreeGiftDialog;
     private String mAnchorCover;
 
 //     1、vip、守护、贵族、主播、运管不受限制
@@ -610,7 +616,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private
             , R.id.rootView, R.id.fragment_container, R.id.btn_treasure_box, R.id.rl_guard_number
-            , R.id.btn_share})
+            , R.id.btn_share, R.id.btn_free_gift})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
@@ -735,6 +741,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
+                break;
+            case R.id.btn_free_gift:
+                if (mFreeGiftDialog == null) {
+                    mFreeGiftDialog = FreeGiftDialog.newInstance()
+                            .setShowBottom(true)
+                            .setDimAmount(0);
+                }
+                mFreeGiftDialog.show(getSupportFragmentManager());
                 break;
             default:
                 break;
@@ -933,9 +947,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 周星 主播任务 活动页面
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
-        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-        mActivityGrands.add(weekRankFragment);
-        mGrandAdaper.notifyDataSetChanged();
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
     }
 
@@ -1189,10 +1200,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 });
                 mActivityGrands.add(liveWebFragment);
             }
-            mGrandAdaper.notifyDataSetChanged();
-            initActivityPoints();
+//            mGrandAdaper.notifyDataSetChanged();
         }
-
+        //周星榜
+        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        mActivityGrands.add(weekRankFragment);
+        mGrandAdaper.notifyDataSetChanged();
+        initActivityPoints();
+        //主播任务
+        mLivePresenter.getAnchorTask(mAnchorId);
     }
 
     @Override
@@ -1217,6 +1233,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetPunishWaysSuccess(PunishWaysBean bean) {
         pkControl = new PkControl(pkLayout, this);
+    }
+
+    /**
+     * 主播任务成功
+     */
+    @Override
+    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
+        if (dataBean != null) {
+            AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
+            mActivityGrands.add(anchorTaskFragment);
+            mGrandAdaper.notifyDataSetChanged();
+            initActivityPoints();
+        }
     }
 
 
