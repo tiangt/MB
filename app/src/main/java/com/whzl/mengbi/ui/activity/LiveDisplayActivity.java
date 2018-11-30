@@ -93,6 +93,7 @@ import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
+import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
 import com.whzl.mengbi.ui.dialog.TreasureBoxDialog;
@@ -441,7 +442,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pollAdapter = new AutoPollAdapter(mAudienceList, this);
         pollAdapter.setListerner(position -> {
             long userId = mAudienceList.get(position + 1).getUserid();
-            showAudienceInfoDialog(userId, false);
+//            showAudienceInfoDialog(userId, false);
+            PersonalInfoDialog.newInstance(userId, mProgramId)
+                    .setDimAmount(0)
+                    .show(getSupportFragmentManager());
         });
         mAudienceRecycler.setAdapter(pollAdapter);
     }
@@ -723,6 +727,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_share:
+                if (mUserId == 0) {
+                    login();
+                    return;
+                }
                 mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor, mAnchorCover)
                         .setShowBottom(true)
                         .setDimAmount(0)
@@ -925,8 +933,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 周星 主播任务 活动页面
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
-        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId,mAnchorId);
-        mActivityGrands.add( weekRankFragment);
+        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        mActivityGrands.add(weekRankFragment);
         mGrandAdaper.notifyDataSetChanged();
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
     }
@@ -1501,7 +1509,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (roomOnlineDisposable != null) {
             roomOnlineDisposable.dispose();
         }
-        if (mActivityGrands.size()>0) {
+        if (mActivityGrands.size() > 0) {
             mActivityGrands.clear();
             mGrandAdaper.notifyDataSetChanged();
         }

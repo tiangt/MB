@@ -188,4 +188,13 @@
     <color name="line">#EDEDED</color>
 
     <color name="main_tab_color">#f9f9f9</color>
+    <color name="text_red">#ff2b3f</color>
+    <color name="translucent_black">#aa252525</color>
+    <color name="text_sign">#fefefe</color>
+    <color name="light_grey">#aaffffff</color>
+    <color name="text_yellow">#fff700</color>
+    <color name="text_grey">#888888</color>
+    <color name="text_blue">#28a1ff</color>
+    <color name="text_green">#44af4b</color>
+    <color name="text_purple">#ff36f3</color>
 </resources>

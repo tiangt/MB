@@ -321,5 +321,7 @@
         <activity
             android:name=".ui.activity.AnchorCardActivity"
             android:theme="@style/TransparentTheme" />
+
+        <activity android:name=".ui.activity.PersonalInfoActivity"/>
     </application>
 </manifest>
