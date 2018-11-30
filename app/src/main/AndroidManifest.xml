@@ -134,8 +134,7 @@
             android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
             android:launchMode="singleTask"
@@ -321,5 +320,6 @@
         <activity
             android:name=".ui.activity.AnchorCardActivity"
             android:theme="@style/TransparentTheme" />
+        <activity android:name=".ui.activity.BuySuccubusActivity" />
     </application>
 </manifest>
