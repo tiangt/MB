@@ -4,20 +4,20 @@ import java.util.List;
 
 public class WelcomeJson {
     public class WelcomeExpListItem {
-        private int sjExpvalue;
-        private int bjExpValue;
+        private long sjExpvalue;
+        private long bjExpValue;
         private int userExpSn;
         private String expName;
-        private int sjNeedExpValue;
-        private int bjNeedExpValue;
-        private int totalExpValue;
+        private long sjNeedExpValue;
+        private long bjNeedExpValue;
+        private long totalExpValue;
         private String expType;
 
-        public int getSjExpvalue() {
+        public long getSjExpvalue() {
             return sjExpvalue;
         }
 
-        public int getBjExpValue() {
+        public long getBjExpValue() {
             return bjExpValue;
         }
 
@@ -29,15 +29,15 @@ public class WelcomeJson {
             return expName;
         }
 
-        public int getSjNeedExpValue() {
+        public long getSjNeedExpValue() {
             return sjNeedExpValue;
         }
 
-        public int getBjNeedExpValue() {
+        public long getBjNeedExpValue() {
             return bjNeedExpValue;
         }
 
-        public int getTotalExpValue() {
+        public long getTotalExpValue() {
             return totalExpValue;
         }
 

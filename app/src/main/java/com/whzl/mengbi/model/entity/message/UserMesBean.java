@@ -372,16 +372,16 @@ public class UserMesBean {
 
                 public static class ExpListBean {
 
-                    private int bjExpValue;
-                    private int bjNeedExpValue;
+                    private long bjExpValue;
+                    private long bjNeedExpValue;
                     private String expName;
                     private String expType;
-                    private int sjExpvalue;
-                    private int sjNeedExpValue;
-                    private int totalExpValue;
+                    private long sjExpvalue;
+                    private long sjNeedExpValue;
+                    private long totalExpValue;
                     private int userExpSn;
 
-                    public int getBjExpValue() {
+                    public long getBjExpValue() {
                         return bjExpValue;
                     }
 
@@ -389,7 +389,7 @@ public class UserMesBean {
                         this.bjExpValue = bjExpValue;
                     }
 
-                    public int getBjNeedExpValue() {
+                    public long getBjNeedExpValue() {
                         return bjNeedExpValue;
                     }
 
@@ -413,7 +413,7 @@ public class UserMesBean {
                         this.expType = expType;
                     }
 
-                    public int getSjExpvalue() {
+                    public long getSjExpvalue() {
                         return sjExpvalue;
                     }
 
@@ -421,7 +421,7 @@ public class UserMesBean {
                         this.sjExpvalue = sjExpvalue;
                     }
 
-                    public int getSjNeedExpValue() {
+                    public long getSjNeedExpValue() {
                         return sjNeedExpValue;
                     }
 
@@ -429,7 +429,7 @@ public class UserMesBean {
                         this.sjNeedExpValue = sjNeedExpValue;
                     }
 
-                    public int getTotalExpValue() {
+                    public long getTotalExpValue() {
                         return totalExpValue;
                     }
 

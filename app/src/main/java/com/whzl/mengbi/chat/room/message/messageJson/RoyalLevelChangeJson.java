@@ -75,13 +75,13 @@ public class RoyalLevelChangeJson {
                  * userExpSn : 1857
                  */
 
-                public int bjExpValue;
-                public int bjNeedExpValue;
+                public long bjExpValue;
+                public long bjNeedExpValue;
                 public String expName;
                 public String expType;
-                public int sjExpvalue;
-                public int sjNeedExpValue;
-                public int totalExpValue;
+                public long sjExpvalue;
+                public long sjNeedExpValue;
+                public long totalExpValue;
                 public int userExpSn;
             }
         }

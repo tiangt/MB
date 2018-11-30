@@ -89,13 +89,13 @@ public class UserLevelChangeJson {
                  * userExpSn : 1861
                  */
 
-                public int bjExpValue;
-                public int bjNeedExpValue;
+                public long bjExpValue;
+                public long bjNeedExpValue;
                 public String expName;
                 public String expType;
-                public int sjExpvalue;
-                public int sjNeedExpValue;
-                public int totalExpValue;
+                public long sjExpvalue;
+                public long sjNeedExpValue;
+                public long totalExpValue;
                 public int userExpSn;
             }
         }
