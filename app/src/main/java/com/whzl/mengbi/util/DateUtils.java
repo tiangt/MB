@@ -162,12 +162,11 @@ public class DateUtils {
     }
 
     /**
-     * @Description: long类型转换成日期
-     *
      * @param lo 毫秒数
      * @return String yyyy-MM-dd HH:mm:ss
+     * @Description: long类型转换成日期
      */
-    public static String longToDate(long lo){
+    public static String longToDate(long lo) {
         Date date = new Date(lo);
         SimpleDateFormat sd = new SimpleDateFormat("HH:mm");
         return sd.format(date);
@@ -176,7 +175,7 @@ public class DateUtils {
     /**
      * 日期转化为毫秒
      */
-    public static long dateStrToMillis(String dateStr,String pattern) {
+    public static long dateStrToMillis(String dateStr, String pattern) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         long millis = 0;
         try {
@@ -187,7 +186,9 @@ public class DateUtils {
         return millis;
     }
 
-    /**设置每个阶段时间*/
+    /**
+     * 设置每个阶段时间
+     */
     private static final int seconds_of_1minute = 60;
 
     private static final int seconds_of_30minutes = 30 * 60;
@@ -206,26 +207,26 @@ public class DateUtils {
 
     /**
      * 格式化时间
+     *
      * @param mTime
      * @return
      */
-    public static String getTimeRange(String mTime)
-    {
+    public static String getTimeRange(String mTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         /**获取当前时间*/
-        Date  curDate = new  Date(System.currentTimeMillis());
-        String dataStrNew= sdf.format(curDate);
-        Date startTime=null;
+        Date curDate = new Date(System.currentTimeMillis());
+        String dataStrNew = sdf.format(curDate);
+        Date startTime = null;
         try {
             /**将时间转化成Date*/
-            curDate=sdf.parse(dataStrNew);
+            curDate = sdf.parse(dataStrNew);
             startTime = sdf.parse(mTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         /**除以1000是为了转换成秒*/
-        long   between=(curDate.getTime()- startTime.getTime())/1000;
-        int   elapsedTime= (int) (between);
+        long between = (curDate.getTime() - startTime.getTime()) / 1000;
+        int elapsedTime = (int) (between);
         if (elapsedTime < seconds_of_1minute) {
 
             return "刚刚";
@@ -264,4 +265,47 @@ public class DateUtils {
         }
         return "";
     }
+
+
+    /**
+     * 星座生成 传进是日期格式为: yyyy-mm-dd
+     *
+     * @param time
+     */
+    public static String getConstellations(String time) {
+        String dateFormat = time.substring(0, 10);
+//        try {
+//            dateFormat = transferFormat(time);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        String[][] constellations = {{"摩羯座", "水瓶座"}, {"水瓶座", "双鱼座"}, {"双鱼座", "白羊座"}, {"白羊座", "金牛座"}, {"金牛座", "双子座"}, {"双子座", "巨蟹座"}, {"巨蟹座", "狮子座"},
+                {"狮子座", "处女座"}, {"处女座", "天秤座"}, {"天秤座", "天蝎座"}, {"天蝎座", "射手座"}, {"射手座", "摩羯座"}};
+        //星座分割时间
+        int[] date = {20, 19, 21, 20, 21, 22, 23, 23, 23, 24, 23, 22};
+        String[] data = dateFormat.split("-");
+        int day = date[Integer.parseInt(data[1]) - 1];
+        String[] cl1 = constellations[Integer.parseInt(data[1]) - 1];
+        if (Integer.parseInt(data[2]) >= day) {
+            return cl1[1];
+        } else {
+            return cl1[0];
+        }
+    }
+
+    /**
+     * yyyy-MM-dd HH:mm:ss转换为yyyy-MM-dd
+     *
+     * @throws ParseException
+     */
+    public static String transferFormat(String inTime) throws ParseException {
+        SimpleDateFormat s1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat s2 = new SimpleDateFormat("yyyy-MM-dd");
+        Date tempDate = null;
+        String outTime = null;
+        tempDate = s1.parse(inTime);
+        outTime = s2.format(s2.parse(s1.format(tempDate)));
+        return outTime;
+    }
+
 }

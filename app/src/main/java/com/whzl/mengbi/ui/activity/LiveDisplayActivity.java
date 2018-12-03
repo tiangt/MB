@@ -1439,7 +1439,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         PersonalInfoDialog.newInstance(viewedUserID, mProgramId)
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0)
-                .setShowBottom(isShowBottom)
+                .setShowBottom(false)
                 .show(getSupportFragmentManager());
     }
 
