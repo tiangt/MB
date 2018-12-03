@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="390dp"
+        android:layout_width="380dp"
         android:layout_height="325dp"
         android:layout_gravity="center"
         android:background="@null">
@@ -17,7 +17,6 @@
             android:id="@+id/iv_bg_personal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/bg_bronze"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -142,13 +141,13 @@
                 app:layout_constraintRight_toRightOf="parent">
 
                 <TextView
+                    android:id="@+id/tv_follow"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="+关注"
-                    android:textColor="@color/text_red"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -190,6 +189,7 @@
                 android:layout_marginBottom="8dp"
                 android:background="@null"
                 android:src="@drawable/ic_buy_royal"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"

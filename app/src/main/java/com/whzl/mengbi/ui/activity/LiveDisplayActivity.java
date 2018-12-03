@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -78,6 +79,7 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
+import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -89,6 +91,7 @@ import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
@@ -113,12 +116,15 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
 import com.youth.banner.Banner;
@@ -304,6 +310,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private String pkStream;
     private BaseAwesomeDialog mFreeGiftDialog;
     private String mAnchorCover;
+    private boolean isSubs;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -624,7 +631,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     login();
                     return;
                 }
-                showAudienceInfoDialog(mAnchorId, false);
+//                showAudienceInfoDialog(mAnchorId, false);
+                PersonalInfoDialog.newInstance(mAnchorId, mProgramId, mUserId, isSubs)
+                        .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+                        .setDimAmount(0)
+                        .setShowBottom(false)
+                        .show(getSupportFragmentManager());
                 //主播信息
                 break;
             case R.id.btn_follow:
@@ -961,11 +973,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onFollowHostSuccess() {
         btnFollow.setVisibility(View.GONE);
+        isSubs = true;
     }
 
     @Override
     public void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data) {
         btnFollow.setVisibility(data.isIsSubs() ? View.GONE : View.VISIBLE);
+        isSubs = data.isIsSubs();
         if (data != null) {
             mUserId = data.getUserId();
             mRoomUserInfo = data;
@@ -1411,12 +1425,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
-        AudienceInfoDialog.newInstance(viewedUserID, mProgramId, mRoomUserInfo)
-                .setListener(() -> {
-                    if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
-                        mGuardListDialog.dismiss();
-                    }
-                })
+//        AudienceInfoDialog.newInstance(viewedUserID, mProgramId, mRoomUserInfo)
+//                .setListener(() -> {
+//                    if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+//                        mGuardListDialog.dismiss();
+//                    }
+//                })
+//                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+//                .setDimAmount(0)
+//                .setShowBottom(isShowBottom)
+//                .show(getSupportFragmentManager());
+
+        PersonalInfoDialog.newInstance(viewedUserID, mProgramId)
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0)
                 .setShowBottom(isShowBottom)
@@ -1651,5 +1671,47 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setFollow() {
+        mLivePresenter.followHost(mUserId, mProgramId);
+    }
+
+    public void setCancelFollow(long userId, int programId) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("提示");
+        dialog.setMessage("是否确定取消关注该主播");
+        dialog.setNegativeButton("取消", null);
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                HashMap map = new HashMap();
+                map.put("userId", userId);
+                map.put("programId", programId);
+                unFollow(map);
+            }
+        });
+        dialog.show();
+    }
+
+    private void unFollow(HashMap paramsMap) {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.UNFOLLOW_ANCHOR, RequestManager.TYPE_POST_JSON, paramsMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        String jsonStr = result.toString();
+                        ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
+                        if (responseInfo.getCode() == 200) {
+                            ToastUtils.showToast("取消关注");
+                            isSubs = false;
+                            btnFollow.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        ToastUtils.showToast(errorMsg);
+                    }
+                });
     }
 }
