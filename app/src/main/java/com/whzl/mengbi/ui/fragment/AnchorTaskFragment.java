@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,26 +46,41 @@ public class AnchorTaskFragment extends BaseFragment {
                 tv.setText(bean.completion * bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion * bean.number + "");
+                if (!TextUtils.isEmpty(bean.unit)) {
+                    tv.append(bean.unit);
+                }
                 break;
             case "DIV":
                 tv.setText(bean.completion / bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion / bean.number + "");
+                if (!TextUtils.isEmpty(bean.unit)) {
+                    tv.append(bean.unit);
+                }
                 break;
             case "ADD":
                 tv.setText(bean.completion + bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion + bean.number + "");
+                if (!TextUtils.isEmpty(bean.unit)) {
+                    tv.append(bean.unit);
+                }
                 break;
             case "SUB":
                 tv.setText(bean.completion - bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion - bean.number + "");
+                if (!TextUtils.isEmpty(bean.unit)) {
+                    tv.append(bean.unit);
+                }
                 break;
             default:
                 tv.setText(bean.completion + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion + "");
+                if (!TextUtils.isEmpty(bean.unit)) {
+                    tv.append(bean.unit);
+                }
                 break;
         }
     }
