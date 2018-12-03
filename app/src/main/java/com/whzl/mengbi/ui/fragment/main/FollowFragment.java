@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.GlideRoundTransform;
+import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
@@ -327,7 +329,11 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
             } else {
                 tvStatus.setVisibility(View.GONE);
                 tvLastTime.setVisibility(View.VISIBLE);
-                tvLastTime.setText("上次直播");
+                tvLastTime.setText("上次直播:");
+                if (!TextUtils.isEmpty(anchorInfoBean.lastShowBeginTime)) {
+                    String timeRange = DateUtils.getTimeRange(anchorInfoBean.lastShowBeginTime);
+                    tvLastTime.append(timeRange);
+                }
             }
             tvAnchorName.setText(anchorInfoBean.anchorNickname);
             ivLevelIcon.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(anchorInfoBean.anchorLevelValue));
