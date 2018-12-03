@@ -90,7 +90,7 @@ public class WelcomeMsg implements FillHolderMessage {
                 mHolder.textView.append(" ");
             }
             if (hasVip) {
-                mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip_chat));
+                mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip));
                 mHolder.textView.append(" ");
             }
             if (null != userSpanList) {

@@ -153,7 +153,7 @@ public class ChatMessage implements FillHolderMessage {
             mholder.textView.append(" ");
         }
         if (hasVip) {
-            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip_chat));
+            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip));
             mholder.textView.append(" ");
         }
         if (fromSpanList != null) {

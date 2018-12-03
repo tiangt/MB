@@ -56,12 +56,12 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="43dp"
+            android:layout_height="43dp"
             android:layout_marginRight="51dp"
             android:layout_marginTop="34dp"
             android:layout_toLeftOf="@id/ll_vip"
-            android:src="@drawable/ic_vip_vip" />
+            android:src="@drawable/ic_vip" />
     </RelativeLayout>
 
     <View

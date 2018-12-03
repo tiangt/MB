@@ -165,7 +165,7 @@ public class RoyalEnterControl {
                 tvEnter.append(" ");
             }
             if (welcomeMsg.hasVip) {
-                tvEnter.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_vip_chat));
+                tvEnter.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_vip));
                 tvEnter.append(" ");
             }
             if (null != welcomeMsg.userSpanList) {
