@@ -282,11 +282,12 @@
                     android:layout_marginRight="10dp"
                     android:src="@drawable/anchor_level1"/>
 
-                <com.whzl.mengbi.ui.widget.ProgressBarView2
+                <com.whzl.mengbi.ui.widget.view.TextProgressBar
+                    android:id="@+id/tp_anchor_level"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:layout_height="15dp" />
+                    android:layout_height="20dp" />
 
                 <ImageView
                     android:id="@+id/iv_anchor_level_next"
@@ -330,11 +331,12 @@
                     android:layout_marginRight="10dp"
                     android:src="@drawable/usergrade"/>
 
-                <com.whzl.mengbi.ui.widget.ProgressBarView2
+                <com.whzl.mengbi.ui.widget.view.TextProgressBar
+                    android:id="@+id/tp_user_level"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:layout_height="15dp" />
+                    android:layout_height="20dp" />
 
                 <ImageView
                     android:id="@+id/iv_user_level_next"
@@ -378,11 +380,12 @@
                     android:layout_marginRight="10dp"
                     android:src="@drawable/royal_1"/>
 
-                <com.whzl.mengbi.ui.widget.ProgressBarView2
+                <com.whzl.mengbi.ui.widget.view.TextProgressBar
+                    android:id="@+id/tp_royal_level"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:layout_height="15dp" />
+                    android:layout_height="20dp" />
 
                 <ImageView
                     android:id="@+id/iv_royal_level_next"

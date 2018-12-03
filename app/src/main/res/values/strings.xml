@@ -316,6 +316,7 @@
     <string name="share_outside_decs">%1$s正在性感热舞中，快去瞧瞧吧！</string>
     <string name="at">Ta</string>
 
+    <!-- 信息, 个人主页 -->
     <string name="basic_info">基本信息</string>
     <string name="page_nick_name">昵&#12288;&#12288;称:</string>
     <string name="meng_num">萌&#12288;&#12288;号:</string>
@@ -325,6 +326,11 @@
     <string name="user_level">富豪等级:</string>
     <string name="royal_level">贵族等级:</string>
     <string name="medal_wall">勋章墙</string>
+    <string name="anchor_grade">还差%1$d主播经验</string>
+    <string name="user_grade">还差%1$d用户经验</string>
+    <string name="royal_grade">还差%1$d贵族经验</string>
+    <string name="not_followed">+关注</string>
+    <string name="followed">已关注</string>
 
     <array name="new_task">
         <item>领取</item>
