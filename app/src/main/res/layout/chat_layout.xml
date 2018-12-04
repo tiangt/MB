@@ -9,31 +9,38 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="30dp"
+        android:background="#ffffff"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="11dp"
             android:layout_marginRight="9dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_chat_dialog_edit_bg"
             android:gravity="center">
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:background="#100a0200" />
 
             <EditText
                 android:id="@+id/et_content"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/live_house_chat_edit_text_hint"
-                android:paddingLeft="20dp"
+                android:imeOptions="actionSend"
+                android:paddingLeft="7dp"
                 android:paddingRight="7dp"
-                android:textSize="15sp"
-                android:textColorHint="#cececf"/>
+                android:singleLine="true"
+                android:textColorHint="#cececf"
+                android:textSize="12sp" />
 
             <Button
                 android:id="@+id/btn_input_change"
@@ -45,16 +52,6 @@
                 android:textSize="15sp" />
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_send"
-            android:layout_width="80dp"
-            android:layout_height="36dp"
-            android:layout_marginRight="11dp"
-            android:background="@drawable/shape_dialog_chat_send_btn_bg"
-            android:text="发送"
-            android:textColor="#f0f0f0"
-            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -68,49 +65,66 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="238dp" />
 
-        <RadioGroup
-            android:id="@+id/rg_emoji_switch"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="wrap_content"
             android:background="@color/white"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rb_comm"
-                android:layout_width="45dp"
-                android:layout_height="match_parent"
-                android:button="@null"
-                android:drawableLeft="@drawable/selector_common_emoji_switch_rb"
-                android:paddingLeft="12dp"
-                android:background="@drawable/selector_emoji_selected_rb_bg" />
+            <RadioGroup
+                android:id="@+id/rg_emoji_switch"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/rb_guard"
-                android:layout_width="45dp"
-                android:layout_height="match_parent"
-                android:button="@null"
-                android:drawableLeft="@drawable/selector_guard_emoji_switch_rb"
-                android:paddingLeft="12dp"
-                android:background="@drawable/selector_emoji_selected_rb_bg" />
+                <RadioButton
+                    android:id="@+id/rb_comm"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/selector_emoji_selected_rb_bg"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_common_emoji_switch_rb"
+                    android:paddingLeft="12dp" />
 
-            <RadioButton
-                android:id="@+id/rb_vip"
-                android:layout_width="45dp"
-                android:layout_height="match_parent"
-                android:button="@null"
-                android:drawableLeft="@drawable/selector_vip_emoji_switch_rb"
-                android:paddingLeft="12dp"
-                android:background="@drawable/selector_emoji_selected_rb_bg" />
+                <RadioButton
+                    android:id="@+id/rb_guard"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/selector_emoji_selected_rb_bg"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_guard_emoji_switch_rb"
+                    android:paddingLeft="12dp" />
 
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/rb_vip"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/selector_emoji_selected_rb_bg"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_vip_emoji_switch_rb"
+                    android:paddingLeft="12dp" />
 
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_send"
+                android:layout_width="65dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="11dp"
+                android:background="@drawable/shape_dialog_chat_send_btn_bg"
+                android:text="发送"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

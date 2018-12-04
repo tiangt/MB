@@ -182,7 +182,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="live_house_chat_edit_text_hint">和大家聊聊天吧！</string>
+    <string name="live_house_chat_edit_text_hint">聊聊呗...</string>
     <string name="gift_count_custom">自定义数量</string>
     <string name="confirm">确定</string>
     <string name="gift_custom_hint">请输入赠送数量 最多9999</string>

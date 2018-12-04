@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -21,7 +22,6 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
-import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -102,6 +102,20 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == 1) {
                 KeyBoardUtil.closeKeybord(etContent, getContext());
                 dismiss();
+            }
+            return false;
+        });
+        etContent.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                String message = etContent.getText().toString().trim();
+                if (TextUtils.isEmpty(message)) {
+                    return true;
+                }
+                ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
+                etContent.getText().clear();
+                KeyBoardUtil.closeKeybord(etContent, getContext());
+                dismiss();
+                return true;
             }
             return false;
         });
