@@ -56,6 +56,7 @@ public class RoomInfoBean {
          * subscriptionNum : 13
          * anchor : {"id":30000139,"name":"哈哈哈哈哈哈哈哈和哈","city":"上海","province":"浙江省","lastUpdateTime":"2018-06-06 10:18:00","level":[{"levelType":"ANCHOR_LEVEL","levelValue":49,"levelName":"天使9","expList":[{"expType":"GIFT_EXP","expName":"付费礼物经验","sjExpvalue":2970534412,"bjExpValue":2970534412,"sjNeedExpValue":3000000000,"bjNeedExpValue":0}]},{"levelType":"ROYAL_LEVEL","levelValue":0,"levelName":"平民","expList":[{"expType":"ROYAL_EXP","expName":"贵族经验","sjExpvalue":0,"bjExpValue":0,"sjNeedExpValue":200,"bjNeedExpValue":0}]},{"levelType":"USER_LEVEL","levelValue":23,"levelName":"子爵","expList":[{"expType":"USER_EXP","expName":"用户经验","sjExpvalue":10022200,"bjExpValue":10022200,"sjNeedExpValue":15000000,"bjNeedExpValue":0}]}],"anchorPlatformType":"ENT","introduce":"php echo ？","avatar":"http://dev.img.mengbitv.com/avatar/030/00/01/39.jpg?1528251480"}
          * stream : {"height":600,"width":800,"streamAddress":{"rtmp":"rtmp://livedown.mengbitv.com/live/100079","flv":"http://livedown.mengbitv.com/live/100079.flv","hls":"http://livedown.mengbitv.com/live/100079/playlist.m3u8"},"liveType":"PC"}
+         * shareUrl: "https://dev-m.mengbitv.com/100144"
          */
 
         private int programId;
@@ -67,6 +68,7 @@ public class RoomInfoBean {
         private int subscriptionNum;
         private AnchorBean anchor;
         private StreamBean stream;
+        private String shareUrl;
 
         public int getProgramId() {
             return programId;
@@ -138,6 +140,12 @@ public class RoomInfoBean {
 
         public void setStream(StreamBean stream) {
             this.stream = stream;
+        }
+
+        public String getShareUrl(){return shareUrl;}
+
+        public void setShareUrl(String shareUrl){
+            this.shareUrl = shareUrl;
         }
 
         public static class AnchorBean implements Parcelable {

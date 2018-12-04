@@ -332,6 +332,11 @@
     <string name="not_followed">+关注</string>
     <string name="followed">已关注</string>
 
+    <string name="user_rank">%1$d\n富豪排行</string>
+    <string name="anchor_rank">%1$d\n主播排行</string>
+    <string name="fans_count">%1$d\n粉丝</string>
+    <string name="follow">%1$d\n关注</string>
+
     <array name="new_task">
         <item>领取</item>
         <item>改昵称</item>

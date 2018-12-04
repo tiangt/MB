@@ -131,11 +131,6 @@ public class TextProgressBar extends ProgressBar {
         return (int) (dip * scale + 0.5f * (dip >= 0 ? 1 : -1));//加0.5是为了四舍五入
     }
 
-    /**
-     * 指定自定义控件在屏幕上的大小,onMeasure方法的两个参数是由上一层控件
-     * 传入的大小，而且是模式和尺寸混合在一起的数值，需要MeasureSpec.getMode(widthMeasureSpec)
-     * 得到模式，MeasureSpec.getSize(widthMeasureSpec)得到尺寸
-     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -164,7 +159,7 @@ public class TextProgressBar extends ProgressBar {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPorterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
-        mPaint.setTextSize(30);
+        mPaint.setTextSize(20);
         mPaint.setXfermode(null);
     }
 

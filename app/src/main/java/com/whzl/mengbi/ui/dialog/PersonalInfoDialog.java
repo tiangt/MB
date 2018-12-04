@@ -71,7 +71,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     @BindView(R.id.tv_follow)
     TextView tvFollow;
 
-    private float dimAmount = 0.5f;//灰度深浅
+
+    private float dimAmount = 0.7f;//灰度深浅
     private long mUserId;
     private int mProgramId;
     private RoomUserInfo.DataBean mViewedUser;
@@ -134,11 +135,17 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         switch (v.getId()) {
             case R.id.btn_personal:
                 Intent intent = new Intent(getActivity(), PersonalInfoActivity.class);
+                intent.putExtra("userId", mUserId);
+                intent.putExtra("programId", mProgramId);
+                intent.putExtra("currentUserId", mCurrentId);
+                intent.putExtra("isSubs", mIsSubs);
                 startActivity(intent);
+                dismiss();
                 break;
             case R.id.btn_buy_royal:
                 Intent intentShop = new Intent(getActivity(), ShopActivity.class);
                 startActivity(intentShop);
+                dismiss();
                 break;
             case R.id.tv_follow:
                 if (mIsSubs) {
@@ -268,9 +275,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                                     int intrinsicWidth = resource.getIntrinsicWidth();
                                     ImageView goodImage = new ImageView(getContext());
                                     goodImage.setImageDrawable(resource);
-                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext()
-                                            , intrinsicWidth / 4f * 3)
-                                            , UIUtil.dip2px(getContext(), intrinsicHeight / 4f * 3));
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 20), UIUtil.dip2px(getContext(), 20));
                                     params.leftMargin = UIUtil.dip2px(getContext(), 6);
                                     params.gravity = UIUtil.dip2px(getContext(), 6);
                                     linearLayout.addView(goodImage, params);
@@ -284,7 +289,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         if (identityId == UserIdentity.ROOM_MANAGER) {
             ImageView mgrView = new ImageView(getContext());
             mgrView.setImageResource(R.drawable.room_manager);
-            LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 20), UIUtil.dip2px(getContext(), 20));
             mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 6);
             mgrViewParams.gravity = UIUtil.dip2px(getContext(), 6);
             linearLayout.addView(mgrView, mgrViewParams);

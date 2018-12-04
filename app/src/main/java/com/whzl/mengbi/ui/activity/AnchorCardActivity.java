@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -60,6 +61,7 @@ public class AnchorCardActivity extends BaseActivity {
     private int mAnchorId;
     private String mHostAvatar;
     private String mAnchorCover;
+    private String mShareUrl;
 
     @Override
     protected void setupContentView() {
@@ -72,6 +74,7 @@ public class AnchorCardActivity extends BaseActivity {
         mHostName = getIntent().getStringExtra("hostName");
         mAnchorId = getIntent().getIntExtra("anchorId", 0);
         mAnchorCover = getIntent().getStringExtra("anchorCover");
+        mShareUrl = getIntent().getStringExtra("shareUrl");
         mHostAvatar = ImageUrl.getAvatarUrl(mAnchorId, "png", System.currentTimeMillis());
         tvHostName.setText(mHostName);
         tvRoomNum.setText(getString(R.string.search_room, mProgramId));
@@ -119,8 +122,10 @@ public class AnchorCardActivity extends BaseActivity {
      */
     private void setQRCode() {
         try {
-            Bitmap bitmap = QRCodeUtils.create2DCode("12312fgfdgdgfggggggggggggggggggggggggggggggggggggggggggggggsdfsfdsfsdfsfs312312313123132");
-            Glide.with(this).load(bitmap).into(ivQRCode);
+            if (!TextUtils.isEmpty(mShareUrl)) {
+                Bitmap bitmap = QRCodeUtils.create2DCode(mShareUrl);
+                Glide.with(this).load(bitmap).into(ivQRCode);
+            }
         } catch (WriterException e) {
             e.printStackTrace();
         }
