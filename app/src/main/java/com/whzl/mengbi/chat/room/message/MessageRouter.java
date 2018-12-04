@@ -30,6 +30,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.SubProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SystemMsgAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UpdateProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UserLevelChangeAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.WeekStarAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.util.GsonUtils;
@@ -87,6 +88,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("BROADCAST", new BroadCastAction());
         actionsMap.put("PK", new PkAction());
         actionsMap.put("AWARD_LOTTERY", new LotteryAction());
+        actionsMap.put("WeekStarFirstNotify", new WeekStarAction());
     }
 
     private void initChatAction() {
