@@ -15,7 +15,7 @@
             android:layout_centerInParent="true"
             android:text="私聊区"
             android:textColor="#20d190"
-            android:textSize="15sp"/>
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_chat_to"
@@ -24,12 +24,12 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="8dp"
+            android:drawablePadding="8dp"
+            android:drawableRight="@drawable/private_chat_down_arrow_icon"
             android:gravity="center"
             android:text="私聊对象"
             android:textColor="#20d190"
-            android:textSize="10sp"
-            android:drawableRight="@drawable/private_chat_down_arrow_icon"
-            android:drawablePadding="8dp"/>
+            android:textSize="10sp" />
 
     </RelativeLayout>
 
@@ -39,7 +39,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="#292929"
-        android:paddingBottom="5dp"/>
+        android:paddingBottom="5dp" />
 
     <LinearLayout
         android:id="@+id/ll_bottom_container"
@@ -82,15 +82,15 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_send"
-            android:layout_width="80dp"
-            android:layout_height="36dp"
-            android:layout_marginRight="11dp"
-            android:background="@drawable/shape_dialog_chat_send_btn_bg"
-            android:text="发送"
-            android:textColor="#f0f0f0"
-            android:textSize="17sp" />
+        <!--<Button-->
+        <!--android:id="@+id/btn_send"-->
+        <!--android:layout_width="80dp"-->
+        <!--android:layout_height="36dp"-->
+        <!--android:layout_marginRight="11dp"-->
+        <!--android:background="@drawable/shape_dialog_chat_send_btn_bg"-->
+        <!--android:text="发送"-->
+        <!--android:textColor="#f0f0f0"-->
+        <!--android:textSize="17sp" />-->
 
     </LinearLayout>
 
