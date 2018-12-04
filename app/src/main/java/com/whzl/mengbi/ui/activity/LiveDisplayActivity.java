@@ -310,8 +310,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private String pkStream;
     private BaseAwesomeDialog mFreeGiftDialog;
     private String mAnchorCover;
-    private boolean isSubs;
     private String mShareUrl;
+    private String mLiveState;
+    private String mIsFollowed;
+    private boolean isSubs;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -457,7 +459,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pollAdapter.setListerner(position -> {
             long userId = mAudienceList.get(position + 1).getUserid();
 //            showAudienceInfoDialog(userId, false);
-            PersonalInfoDialog.newInstance(userId, mProgramId)
+            PersonalInfoDialog.newInstance(userId, mProgramId, mUserId)
                     .setDimAmount(0)
                     .show(getSupportFragmentManager());
         });
@@ -633,10 +635,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     return;
                 }
 //                showAudienceInfoDialog(mAnchorId, false);
-                PersonalInfoDialog.newInstance(mAnchorId, mProgramId, mUserId, isSubs)
-                        .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+                PersonalInfoDialog.newInstance(mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
                         .setDimAmount(0)
-                        .setShowBottom(false)
                         .show(getSupportFragmentManager());
                 //主播信息
                 break;
@@ -746,10 +746,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_share:
-                if (mUserId == 0) {
-                    login();
-                    return;
-                }
                 mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor, mAnchorCover, mShareUrl)
                         .setShowBottom(true)
                         .setDimAmount(0)
@@ -953,6 +949,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
 
             mShareUrl = roomInfoBean.getData().getShareUrl();
+
+            mLiveState = roomInfoBean.getData().getProgramStatus();
         }
 
         initAboutAnchor(mProgramId, mAnchorId);
@@ -976,13 +974,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onFollowHostSuccess() {
         btnFollow.setVisibility(View.GONE);
-        isSubs = true;
+        mIsFollowed = "T";
     }
 
     @Override
     public void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data) {
         btnFollow.setVisibility(data.isIsSubs() ? View.GONE : View.VISIBLE);
-        isSubs = data.isIsSubs();
+        mIsFollowed = data.getIsFollowed();
         if (data != null) {
             mUserId = data.getUserId();
             mRoomUserInfo = data;
@@ -1439,7 +1437,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //                .setShowBottom(isShowBottom)
 //                .show(getSupportFragmentManager());
 
-        PersonalInfoDialog.newInstance(viewedUserID, mProgramId)
+        PersonalInfoDialog.newInstance(viewedUserID, mProgramId, mUserId)
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0)
                 .setShowBottom(false)
@@ -1674,47 +1672,5 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void setFollow() {
-        mLivePresenter.followHost(mUserId, mProgramId);
-    }
-
-    public void setCancelFollow(long userId, int programId) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("提示");
-        dialog.setMessage("是否确定取消关注该主播");
-        dialog.setNegativeButton("取消", null);
-        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                HashMap map = new HashMap();
-                map.put("userId", userId);
-                map.put("programId", programId);
-                unFollow(map);
-            }
-        });
-        dialog.show();
-    }
-
-    private void unFollow(HashMap paramsMap) {
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.UNFOLLOW_ANCHOR, RequestManager.TYPE_POST_JSON, paramsMap,
-                new RequestManager.ReqCallBack<Object>() {
-                    @Override
-                    public void onReqSuccess(Object result) {
-                        String jsonStr = result.toString();
-                        ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
-                        if (responseInfo.getCode() == 200) {
-                            ToastUtils.showToast("取消关注");
-                            isSubs = false;
-                            btnFollow.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onReqFailed(String errorMsg) {
-                        ToastUtils.showToast(errorMsg);
-                    }
-                });
     }
 }

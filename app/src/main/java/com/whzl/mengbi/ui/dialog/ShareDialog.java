@@ -78,13 +78,8 @@ public class ShareDialog extends BaseAwesomeDialog {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_host_card:
-                Intent intent = new Intent(getActivity(), AnchorCardActivity.class);
-                intent.putExtra("programId", mProgramId);
-                intent.putExtra("hostName", strHostName);
-                intent.putExtra("anchorId", anchorId);
-                intent.putExtra("anchorCover", mAnchorCover);
-                intent.putExtra("shareUrl", mShareUrl);
-                startActivity(intent);
+                ShareCardDialog.newInstance(mProgramId, strHostName, anchorId, mAnchorCover, mShareUrl)
+                        .show(getActivity().getSupportFragmentManager());
                 dismiss();
                 break;
             case R.id.tv_weixin_circle:

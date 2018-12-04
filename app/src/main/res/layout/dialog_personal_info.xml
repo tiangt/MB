@@ -111,8 +111,9 @@
             <LinearLayout
                 android:id="@+id/ll_level_container"
                 android:layout_width="wrap_content"
-                android:layout_height="18dp"
+                android:layout_height="30dp"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_anchor_id" />

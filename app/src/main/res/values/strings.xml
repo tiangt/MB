@@ -334,8 +334,13 @@
 
     <string name="user_rank">%1$d\n富豪排行</string>
     <string name="anchor_rank">%1$d\n主播排行</string>
+    <string name="user_rank_out">%1$s\n富豪排行</string>
+    <string name="anchor_rank_out">%1$s\n主播排行</string>
     <string name="fans_count">%1$d\n粉丝</string>
     <string name="follow">%1$d\n关注</string>
+    <string name="live">直播中</string>
+    <string name="rest">休息中</string>
+    <string name="ranking">第%1$d名</string>
 
     <array name="new_task">
         <item>领取</item>
