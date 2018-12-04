@@ -11,6 +11,7 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.ui.activity.AnchorCardActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.util.ClipboardUtils;
 import com.whzl.mengbi.util.ShareUtils;
 
 import butterknife.BindView;
@@ -44,12 +45,14 @@ public class ShareDialog extends BaseAwesomeDialog {
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
     private String strHostName;
     private String mAnchorCover;
+    private String mShareUrl;
 
-    public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, String anchorCover) {
+    public static BaseAwesomeDialog newInstance(int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, String anchorCover, String shareUrl) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
         args.putParcelable("anchor", anchorBean);
         args.putString("anchorCover", anchorCover);
+        args.putString("shareUrl", shareUrl);
         ShareDialog dialog = new ShareDialog();
         dialog.setArguments(args);
         return dialog;
@@ -65,6 +68,7 @@ public class ShareDialog extends BaseAwesomeDialog {
         mProgramId = getArguments().getInt("programId");
         mAnchorBean = getArguments().getParcelable("anchor");
         mAnchorCover = getArguments().getString("anchorCover", "");
+        mShareUrl = getArguments().getString("shareUrl", "");
         strHostName = mAnchorBean.getName();
         anchorId = mAnchorBean.getId();
     }
@@ -79,45 +83,47 @@ public class ShareDialog extends BaseAwesomeDialog {
                 intent.putExtra("hostName", strHostName);
                 intent.putExtra("anchorId", anchorId);
                 intent.putExtra("anchorCover", mAnchorCover);
+                intent.putExtra("shareUrl", mShareUrl);
                 startActivity(intent);
                 dismiss();
                 break;
             case R.id.tv_weixin_circle:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                ShareUtils.shareWeb(getActivity(), mShareUrl, mAnchorCover
                         , getString(R.string.share_outside_title, strHostName)
                         , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.WEIXIN_CIRCLE);
                 dismiss();
                 break;
             case R.id.tv_weixin_friend:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                ShareUtils.shareWeb(getActivity(), mShareUrl, mAnchorCover
                         , getString(R.string.share_outside_title, strHostName)
                         , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.WEIXIN);
                 dismiss();
                 break;
             case R.id.tv_weibo:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                ShareUtils.shareWeb(getActivity(), mShareUrl, mAnchorCover
                         , getString(R.string.share_outside_title, strHostName)
                         , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.SINA);
                 dismiss();
                 break;
             case R.id.tv_qq:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                ShareUtils.shareWeb(getActivity(), mShareUrl, mAnchorCover
                         , getString(R.string.share_outside_title, strHostName)
                         , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.QQ);
                 dismiss();
                 break;
             case R.id.tv_qq_zone:
-                ShareUtils.shareWeb(getActivity(), "https://www.mengbitv.com", mAnchorCover
+                ShareUtils.shareWeb(getActivity(), mShareUrl, mAnchorCover
                         , getString(R.string.share_outside_title, strHostName)
                         , getString(R.string.share_outside_decs, strHostName)
                         , SHARE_MEDIA.QZONE);
                 dismiss();
                 break;
             case R.id.tv_copy:
+                ClipboardUtils.putTextIntoClip(getActivity(), mShareUrl);
                 //复制到剪贴板
                 break;
             case R.id.tv_cancel:

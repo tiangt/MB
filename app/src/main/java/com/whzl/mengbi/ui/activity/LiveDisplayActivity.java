@@ -311,6 +311,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog mFreeGiftDialog;
     private String mAnchorCover;
     private boolean isSubs;
+    private String mShareUrl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -749,7 +750,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     login();
                     return;
                 }
-                mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor, mAnchorCover)
+                mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor, mAnchorCover, mShareUrl)
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
@@ -950,6 +951,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 tvStopTip.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
+
+            mShareUrl = roomInfoBean.getData().getShareUrl();
         }
 
         initAboutAnchor(mProgramId, mAnchorId);
