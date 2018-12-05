@@ -58,12 +58,11 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_login"
                 android:layout_width="50dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/btn_received_free_gift"
                 android:gravity="center"
-                android:text="已领取"
                 android:textColor="#fefefe"
                 android:textSize="10sp" />
         </LinearLayout>
@@ -136,12 +135,11 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_chat"
                 android:layout_width="50dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="12dp"
-                android:background="@drawable/btn_receive_free_gift"
                 android:gravity="center"
-                android:text="领取"
                 android:textColor="#fefefe"
                 android:textSize="10sp" />
         </LinearLayout>
@@ -186,14 +184,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="再观看 "
+                        android:text="您需观看 "
                         android:textColor="#40fefefe"
                         android:textSize="9sp" />
 
                     <TextView
+                        android:id="@+id/tv_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10分钟"
+                        android:text="5分钟"
                         android:textColor="#fff800"
                         android:textSize="9sp" />
 
@@ -205,6 +204,7 @@
                         android:textSize="9sp" />
 
                     <TextView
+                        android:id="@+id/tv_get_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="蓝色妖姬x5"
@@ -223,15 +223,15 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="12dp"
-                android:background="@drawable/btn_unfinished_free_gift"
-                android:gravity="center"
-                android:text="未领取"
-                android:textColor="#fefefe"
-                android:textSize="10sp" />
+            <!--<TextView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:layout_marginRight="12dp"-->
+                <!--android:background="@drawable/btn_unfinished_free_gift"-->
+                <!--android:gravity="center"-->
+                <!--android:text="未领取"-->
+                <!--android:textColor="#fefefe"-->
+                <!--android:textSize="10sp" />-->
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

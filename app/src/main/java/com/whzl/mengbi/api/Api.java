@@ -12,6 +12,8 @@ import com.whzl.mengbi.model.entity.BillAwardBean;
 import com.whzl.mengbi.model.entity.BillGiftBean;
 import com.whzl.mengbi.model.entity.BillPayBean;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
+import com.whzl.mengbi.model.entity.DailyTaskBean;
+import com.whzl.mengbi.model.entity.DemonCarBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
@@ -567,5 +569,35 @@ public interface Api {
     @POST("v1/consume/send-broadcast")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> sendBroadcast(@FieldMap Map<String, String> params);
+
+    /**
+     * 每日任务
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/daily-task")
+    @FormUrlEncoded
+    Observable<ApiResult<DailyTaskBean>> dailyTask(@FieldMap Map<String, String> params);
+
+    /**
+     * 每日奖励领取
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/daily-task-receive")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> dailyTaskReceive(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取守护价格接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/mall/get-demon-car-prices")
+    @FormUrlEncoded
+    Observable<ApiResult<DemonCarBean>> getDemonCar(@FieldMap Map<String, String> params);
 
 }

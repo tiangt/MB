@@ -753,7 +753,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
             case R.id.btn_free_gift:
                 if (mFreeGiftDialog == null) {
-                    mFreeGiftDialog = FreeGiftDialog.newInstance()
+                    mFreeGiftDialog = FreeGiftDialog.newInstance(mProgramId,mAnchorId)
                             .setShowBottom(true)
                             .setDimAmount(0);
                 }
