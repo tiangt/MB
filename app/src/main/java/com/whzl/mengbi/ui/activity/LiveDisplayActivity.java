@@ -207,10 +207,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     CircleImageView ivGuardAvatar;
     @BindView(R.id.tv_guard_nick_name)
     TextView tvGuardNickName;
-    @BindView(R.id.tv_treasure_box_count)
-    TextView tvTreasureCount;
-    @BindView(R.id.tv_treasure_timer)
-    TextView tvTreasureTimer;
     @BindView(R.id.tv_run_way_broad)
     AutoScrollTextView2 runWayBroad;
     @BindView(R.id.pk_layout)
@@ -235,8 +231,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageView ivEnterCar;
     @BindView(R.id.svga_start_pk)
     SVGAImageView svgaStartPk;
-    @BindView(R.id.rl_treasure_box)
-    RelativeLayout rlTreasureBox;
     @BindView(R.id.cl_entenr)
     ConstraintLayout clEnter;
     @BindView(R.id.iv_count_down)
@@ -288,17 +282,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog mGuardListDialog;
     private BaseAwesomeDialog mShareDialog;
     private long mAudienceCount;
-    private TreasureBoxDialog mTreasureBoxDialog;
-    private HashMap<Integer, Integer> mTreasureStatusMap;
-    private Disposable mTreasureODisposable;
-    private Long mTime;
-    private int currentReceiveTreasureId;
     private RunWayBroadControl mRunWayBroadControl;
     private PkControl pkControl;
     private List<GetActivityBean.ListBean> mBannerInfoList;
     private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
     private FragmentPagerAdaper mGrandAdaper;
-    private Disposable grandDisposable;
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList = new ArrayList<>();
     private RoyalEnterControl royalEnterControl;
@@ -313,7 +301,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private String mShareUrl;
     private String mLiveState;
     private String mIsFollowed;
-    private boolean isSubs;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -541,7 +528,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (index == 1) {
             viewMessageNotify.setVisibility(View.GONE);
 
-            rlTreasureBox.setVisibility(View.GONE);
             if (showActivityGrand) {
                 vpActivity.setVisibility(View.GONE);
                 llPagerIndex.setVisibility(View.GONE);
@@ -592,9 +578,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRoomInfo(mProgramId);
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
-        if (mUserId > 0) {
-            mLivePresenter.getTreasureBoxStatus(mUserId);
-        }
         mLivePresenter.getActivityList();
         mLivePresenter.getPkInfo(mProgramId);
         roomOnlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
@@ -625,7 +608,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private
-            , R.id.rootView, R.id.fragment_container, R.id.btn_treasure_box, R.id.rl_guard_number
+            , R.id.rootView, R.id.fragment_container, R.id.rl_guard_number
             , R.id.btn_share, R.id.btn_free_gift})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -676,7 +659,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (currentSelectedIndex == 1) {
                     setTabChange(0);
 
-                    rlTreasureBox.setVisibility(View.VISIBLE);
                     if (showActivityGrand) {
                         vpActivity.setVisibility(View.VISIBLE);
                         vpActivity.setVisibility(View.VISIBLE);
@@ -715,27 +697,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
                 mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
                         .setDimAmount(0)
-                        .setShowBottom(true)
-                        .show(getSupportFragmentManager());
-                break;
-            case R.id.btn_treasure_box:
-                if (mUserId == 0) {
-                    login();
-                    return;
-                }
-                if (mTreasureStatusMap == null) {
-                    mLivePresenter.getTreasureBoxStatus(mUserId);
-                    return;
-                }
-                if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                    return;
-                }
-                mTreasureBoxDialog = TreasureBoxDialog.newInstance(mTreasureStatusMap, mTime);
-                mTreasureBoxDialog.setOnReceiveClick((int id) -> {
-                    currentReceiveTreasureId = id;
-                    mLivePresenter.receiveTreasure(mUserId);
-                });
-                mTreasureBoxDialog.setDimAmount(0)
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
                 break;
@@ -1053,84 +1014,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         ChatRoomInfo.getInstance().setProgramFirstId(userId);
     }
 
-    @Override
-    public void onTreasureSuccess(TreasureBoxStatusBean treasureBoxStatusBean) {
-        mTreasureStatusMap = new HashMap();
-        boolean hasTreasureCanReceive = false;
-        if (treasureBoxStatusBean != null && treasureBoxStatusBean.list != null) {
-            for (int i = 0; i < treasureBoxStatusBean.list.size(); i++) {
-                TreasureBoxStatusBean.ListBean listBean = treasureBoxStatusBean.list.get(i);
-                if (listBean.taskId == 6) {
-                    if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
-                        // 倒计时
-                        mTreasureStatusMap.put(listBean.taskId, 0);
-                    } else if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes > 0) {
-                        // 可领取
-                        hasTreasureCanReceive = true;
-                        mTreasureStatusMap.put(listBean.taskId, 1);
-                    } else {
-                        // 已领取
-                        mTreasureStatusMap.put(listBean.taskId, 3);
-                    }
-                } else if (listBean.taskId == 7) {
-                    if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
-                        // 倒计时
-                        mTreasureStatusMap.put(listBean.taskId, 0);
-                    } else if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes > 0) {
-                        // 可领取
-                        hasTreasureCanReceive = true;
-                        mTreasureStatusMap.put(listBean.taskId, 1);
-                    } else {
-                        // 已领取
-                        mTreasureStatusMap.put(listBean.taskId, 3);
-                    }
 
-                } else if (listBean.taskId == 8) {
-                    if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
-                        // 倒计时
-                        mTreasureStatusMap.put(listBean.taskId, 0);
-                    } else if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes > 0) {
-                        // 可领取
-                        hasTreasureCanReceive = true;
-                        mTreasureStatusMap.put(listBean.taskId, 1);
-                    } else {
-                        // 已领取
-                        mTreasureStatusMap.put(listBean.taskId, 3);
-                    }
-
-                }
-            }
-        }
-        if (hasTreasureCanReceive) {
-            tvTreasureCount.setVisibility(View.VISIBLE);
-            tvTreasureCount.setText(1 + "");
-        } else {
-            tvTreasureCount.setVisibility(View.GONE);
-        }
-        if (mTreasureStatusMap.get(6) == 0) {
-            timer59(6);
-        } else
-            //1 可领 3 已领 0 倒计时
-            if ((mTreasureStatusMap.get(6) == 3 && mTreasureStatusMap.get(7) == 0)) {
-                timer(7);
-            } else if ((mTreasureStatusMap.get(7) == 3 && mTreasureStatusMap.get(8) == 0)) {
-                timer(8);
-            }
-    }
-
-    @Override
-    public void onReceiveTreasureSuccess() {
-        showToast("领取成功");
-        tvTreasureCount.setVisibility(View.GONE);
-        mTreasureStatusMap.put(currentReceiveTreasureId, 3);
-        if (currentReceiveTreasureId < 8) {
-            timer(currentReceiveTreasureId + 1);
-        } else {
-            if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                mTreasureBoxDialog.setTreasureStatusMap(mTreasureStatusMap);
-            }
-        }
-    }
 
     @Override
     public void onActivityListSuccess(GetActivityBean bean) {
@@ -1298,65 +1182,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-    private void timerGrand(int i) {
-        grandDisposable = Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    LogUtils.e("ssssss  timerGrand" + aLong);
-                    long l = aLong / i % i;
-                    vpActivity.setCurrentItem((int) l);
-                });
-    }
-
-    private void timer(int id) {
-        mTreasureODisposable = Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    mTime = aLong;
-                    if (tvTreasureTimer == null || tvTreasureTimer.getVisibility() == View.GONE) {
-                        return;
-                    }
-                    tvTreasureTimer.setText(getString(R.string.two, (599 - aLong) / 60, (599 - aLong) % 60));
-                    if (aLong == 599) {
-                        mTreasureODisposable.dispose();
-                        mTreasureStatusMap.put(id, 1);
-                        tvTreasureCount.setVisibility(View.VISIBLE);
-                        tvTreasureCount.setText("1");
-                        tvTreasureTimer.setText("开宝箱");
-                        if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                            mTreasureBoxDialog.setTreasureStatusMap(mTreasureStatusMap);
-                        }
-                    }
-                    if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                        mTreasureBoxDialog.setmTime(aLong);
-                    }
-                });
-    }
-
-    private void timer59(int id) {
-        mTreasureODisposable = Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    mTime = aLong;
-                    if (tvTreasureTimer == null || tvTreasureTimer.getVisibility() == View.GONE) {
-                        return;
-                    }
-                    tvTreasureTimer.setText(getString(R.string.two, (59 - aLong) / 60, (59 - aLong) % 60));
-                    if (aLong == 59) {
-                        mTreasureODisposable.dispose();
-                        mTreasureStatusMap.put(id, 1);
-                        tvTreasureCount.setVisibility(View.VISIBLE);
-                        tvTreasureCount.setText("1");
-                        tvTreasureTimer.setText("开宝箱");
-                        if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                            mTreasureBoxDialog.setTreasureStatusMap(mTreasureStatusMap);
-                        }
-                    }
-                    if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                        mTreasureBoxDialog.setmTime(aLong);
-                    }
-                });
-    }
 
     @Override
     public void onLiveGiftSuccess(GiftInfo giftInfo) {
@@ -1542,16 +1367,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (chatRoomPresenter != null) {
             chatRoomPresenter.onChatRoomDestroy();
         }
-        if (mTreasureODisposable != null) {
-            mTreasureODisposable.dispose();
-        }
         pkLayout.destroy();
         if (pkControl != null) {
             pkControl.destroy();
-        }
-        if (grandDisposable != null) {
-            grandDisposable.dispose();
-            LogUtils.e("ssssss  timerGrand dispose");
         }
         if (roomRankTotalDisposable != null) {
             roomRankTotalDisposable.dispose();
@@ -1576,7 +1394,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mUserId = (long) SPUtils.get(this, "userId", 0L);
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
-                mLivePresenter.getTreasureBoxStatus(mUserId);
                 isVip = true;
             }
         }

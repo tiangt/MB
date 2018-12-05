@@ -22,10 +22,6 @@ public interface LivePresenter {
 
     void getProgramFirst(int programId);
 
-    void getTreasureBoxStatus(long userId);
-
-    void receiveTreasure(long userId);
-
     void getActivityList();
 
     void getPkInfo(int programId);

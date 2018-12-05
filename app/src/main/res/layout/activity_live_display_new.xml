@@ -563,51 +563,6 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_treasure_box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="12dp">
-
-        <ImageButton
-            android:id="@+id/btn_treasure_box"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/live_treasure_box_btn_icon" />
-
-        <TextView
-            android:id="@+id/tv_treasure_box_count"
-            android:layout_width="11dp"
-            android:layout_height="11dp"
-            android:layout_alignRight="@id/btn_treasure_box"
-            android:layout_marginRight="4dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/shape_red_notify"
-            android:gravity="center"
-            android:text="1"
-            android:textColor="@color/white"
-            android:textSize="7sp"
-            android:visibility="visible" />
-
-        <TextView
-            android:id="@+id/tv_treasure_timer"
-            android:layout_width="29dp"
-            android:layout_height="11dp"
-            android:layout_below="@id/btn_treasure_box"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/shape_live_treasure_counter_text_bg"
-            android:gravity="center"
-            android:text="开宝箱"
-            android:textColor="@color/white"
-            android:textSize="7sp" />
-
-    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_guard_success"
