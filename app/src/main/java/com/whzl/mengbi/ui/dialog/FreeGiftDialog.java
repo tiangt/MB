@@ -22,6 +22,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -65,6 +66,9 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
     private int mProgramId;
     private int mAnchorId;
 
+    private boolean canLogin;
+    private boolean canChat;
+
     public static BaseAwesomeDialog newInstance(int mProgramId, int mAnchorId) {
         FreeGiftDialog freeGiftDialog = new FreeGiftDialog();
         Bundle bundle = new Bundle();
@@ -94,20 +98,22 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
     }
 
     private void initEvent() {
-        tvLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ("领取".equals(tvLogin.getText().toString())) {
+        tvLogin.setOnClickListener(v -> {
+            if ("领取".equals(tvLogin.getText().toString())) {
+                if (canLogin) {
                     finishTask(loginawardId, loginawardSn);
+                } else {
+                    ToastUtils.showToast("任务未完成");
                 }
             }
         });
 
-        tvChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ("领取".equals(tvChat.getText().toString())) {
+        tvChat.setOnClickListener(v -> {
+            if ("领取".equals(tvChat.getText().toString())) {
+                if (canChat) {
                     finishTask(chatawardId, chatawardSn);
+                } else {
+                    ToastUtils.showToast("任务未完成");
                 }
             }
         });
@@ -128,7 +134,6 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
 
                     @Override
                     public void onSuccess(JsonElement bean) {
-                        list.clear();
                         initData();
                     }
 
@@ -158,19 +163,31 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
                         if ("GRANT".equals(bean.login.status)) {
                             tvLogin.setText("已领取");
                             tvLogin.setBackgroundResource(R.drawable.btn_received_free_gift);
+                            canLogin = false;
+                        } else if ("INACTIVE".equals(bean.login.status)) {
+                            tvLogin.setText("领取");
+                            tvLogin.setBackgroundResource(R.drawable.btn_receive_free_gift);
+                            canLogin = false;
                         } else {
                             tvLogin.setText("领取");
                             tvLogin.setBackgroundResource(R.drawable.btn_receive_free_gift);
+                            canLogin = true;
                         }
 
                         if ("GRANT".equals(bean.chat.status)) {
                             tvChat.setText("已领取");
                             tvChat.setBackgroundResource(R.drawable.btn_received_free_gift);
+                            canChat = false;
+                        } else if ("INACTIVE".equals(bean.chat.status)) {
+                            tvChat.setText("领取");
+                            tvChat.setBackgroundResource(R.drawable.btn_receive_free_gift);
+                            canChat = false;
                         } else {
                             tvChat.setText("领取");
                             tvChat.setBackgroundResource(R.drawable.btn_receive_free_gift);
+                            canChat = false;
                         }
-
+                        list.clear();
                         list.addAll(bean.watch);
                         baseListAdapter.notifyDataSetChanged();
                     }

@@ -26,6 +26,7 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -307,6 +308,13 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 dismiss();
                 break;
             case R.id.btn_input_broad:
+                long userId = (long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0);
+                if (userId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    KeyBoardUtil.closeKeybord(etContent, getContext());
+                    dismiss();
+                    return;
+                }
                 btnInputBroad.setSelected(!btnInputBroad.isSelected());
                 if (btnInputBroad.isSelected()) {
                     etContent.setHint("广播每条1000萌币 (广播卡:" + total + ")");

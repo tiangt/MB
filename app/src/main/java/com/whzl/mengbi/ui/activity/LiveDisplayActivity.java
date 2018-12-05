@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -79,29 +78,25 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
-import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunwayBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
-import com.whzl.mengbi.model.entity.WeekRankBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
-import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
+import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
-import com.whzl.mengbi.ui.dialog.TreasureBoxDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
@@ -116,15 +111,13 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
-import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.util.network.RequestManager;
-import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
 import com.youth.banner.Banner;
@@ -145,7 +138,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -713,8 +705,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_free_gift:
+                if (mUserId == 0) {
+                    login();
+                    return;
+                }
                 if (mFreeGiftDialog == null) {
-                    mFreeGiftDialog = FreeGiftDialog.newInstance(mProgramId,mAnchorId)
+                    mFreeGiftDialog = FreeGiftDialog.newInstance(mProgramId, mAnchorId)
                             .setShowBottom(true)
                             .setDimAmount(0);
                 }
@@ -727,9 +723,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void login() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra("from", this.getClass().toString());
-        startActivityForResult(intent, REQUEST_LOGIN);
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        intent.putExtra("from", this.getClass().toString());
+//        startActivityForResult(intent, REQUEST_LOGIN);
+        LoginDialog.newInstance()
+                .setLoginSuccessListener(new LoginDialog.LoginSuccessListener() {
+                    @Override
+                    public void onLoginSuccessListener() {
+                        LogUtils.e("sssssssss   onLoginSuccessListener");
+                        mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
+                        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                        getRoomToken();
+                        isVip = true;
+                    }
+                })
+                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+                .setDimAmount(0.7f)
+                .show(getSupportFragmentManager());
     }
 
     @Override
@@ -1013,7 +1023,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onGetProgramFirstSuccess(long userId) {
         ChatRoomInfo.getInstance().setProgramFirstId(userId);
     }
-
 
 
     @Override
@@ -1395,6 +1404,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
                 isVip = true;
+                LogUtils.e("sssssssss   onActivityResult");
+            }
+        }
+        if (requestCode == AppUtils.REQUEST_LOGIN) {
+            if (resultCode == RESULT_OK) {
+                mUserId = (long) SPUtils.get(this, "userId", 0L);
+                mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                getRoomToken();
+                isVip = true;
+                LogUtils.e("sssssssss   onActivityResult");
             }
         }
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
