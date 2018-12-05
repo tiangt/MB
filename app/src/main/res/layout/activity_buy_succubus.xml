@@ -8,11 +8,42 @@
 
     <include layout="@layout/comm_black_toolbar" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
-        android:src="@drawable/img_succubus" />
+    <RelativeLayout
+        android:layout_width="245dp"
+        android:layout_height="182dp">
+
+        <ImageView
+            android:layout_width="245dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="27dp"
+            android:src="@drawable/img_succubus" />
+
+        <LinearLayout
+            android:layout_width="78dp"
+            android:layout_height="19dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="25dp"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bg_buy_succubus_car"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:text="萌币/月"
+                android:textColor="#40fefefe"
+                android:textSize="8sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -119,6 +150,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_buy"
         android:layout_width="176dp"
         android:layout_height="33dp"
         android:layout_marginTop="40dp"

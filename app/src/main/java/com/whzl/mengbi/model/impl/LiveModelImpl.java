@@ -17,7 +17,6 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
@@ -222,47 +221,6 @@ public class LiveModelImpl implements LiveModel {
 
     }
 
-    @Override
-    public void getTreasureBox(HashMap paramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .getTreasureBoxStatus(paramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<TreasureBoxStatusBean>() {
-
-
-                    @Override
-                    public void onSuccess(TreasureBoxStatusBean treasureBoxStatusBean) {
-                        listener.onTreasureStatusSuccess(treasureBoxStatusBean);
-                    }
-
-                    @Override
-                    public void onError(int code) {
-
-                    }
-                });
-    }
-
-    @Override
-    public void treceiveTreasure(HashMap paramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .receiveTreasure(paramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<JsonElement>() {
-
-
-                    @Override
-                    public void onSuccess(JsonElement jsonElement) {
-                        listener.onReceiveTreasureSuccess();
-                    }
-
-                    @Override
-                    public void onError(int code) {
-
-                    }
-                });
-    }
 
     @Override
     public void activityList(HashMap paramsMap, OnLiveFinishedListener listener) {

@@ -13,7 +13,6 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.impl.LiveModelImpl;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
@@ -131,19 +130,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
-    @Override
-    public void onTreasureStatusSuccess(TreasureBoxStatusBean treasureBoxStatusBean) {
-        if (liveView != null) {
-            liveView.onTreasureSuccess(treasureBoxStatusBean);
-        }
-    }
-
-    @Override
-    public void onReceiveTreasureSuccess() {
-        if (liveView != null) {
-            liveView.onReceiveTreasureSuccess();
-        }
-    }
 
     @Override
     public void onActivityListSuccess(GetActivityBean bean) {
@@ -213,22 +199,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("programId", programId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getProgramFirst(signPramsMap, this);
-    }
-
-    @Override
-    public void getTreasureBoxStatus(long userId) {
-        HashMap map = new HashMap();
-        map.put("userId", userId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        liveModel.getTreasureBox(signPramsMap, this);
-    }
-
-    @Override
-    public void receiveTreasure(long userId) {
-        HashMap map = new HashMap();
-        map.put("userId", userId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        liveModel.treceiveTreasure(signPramsMap, this);
     }
 
     @Override
