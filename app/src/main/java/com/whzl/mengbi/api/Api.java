@@ -11,6 +11,7 @@ import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.BillAwardBean;
 import com.whzl.mengbi.model.entity.BillGiftBean;
 import com.whzl.mengbi.model.entity.BillPayBean;
+import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
@@ -546,5 +547,25 @@ public interface Api {
     @POST("v1/activity/anchor-task")
     @FormUrlEncoded
     Observable<ApiResult<AnchorTaskBean>> getAnchorTask(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取用户广播数量
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/consume/broadcast-num")
+    @FormUrlEncoded
+    Observable<ApiResult<BroadCastNumBean>> getBroadNum(@FieldMap Map<String, String> params);
+
+    /**
+     * 发送广播
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/consume/send-broadcast")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> sendBroadcast(@FieldMap Map<String, String> params);
 
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="69dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="41dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/bg_text_item_free_dialog"
+            android:textColor="#fefefe"
+            android:textSize="9sp" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:layout_below="@id/ll"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_flower_free_gift" />
+
+    <TextView
+        android:layout_width="38dp"
+        android:layout_height="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_receive_free_gift"
+        android:gravity="center"
+        android:textSize="8sp" />
+</RelativeLayout>

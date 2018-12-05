@@ -17,7 +17,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
@@ -29,9 +33,19 @@ import com.whzl.mengbi.ui.dialog.fragment.CommonEmojiMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GuardEmojiFragment;
 import com.whzl.mengbi.ui.dialog.fragment.VipEmojiFragment;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author shaw
@@ -50,6 +64,8 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     FrameLayout fragmentContainer;
     @BindView(R.id.rg_emoji_switch)
     RadioGroup rgEmojiSwitch;
+    @BindView(R.id.btn_input_broad)
+    Button btnInputBroad;
     private boolean isShowSoftInput;
     private int height;
     private int currentSelectedIndex;
@@ -59,6 +75,8 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
     private int mProgramId;
     private RoomUserInfo.DataBean mChatToUser;
+    private int total;
+    private Long userId;
 
     public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
@@ -90,6 +108,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+        userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
         isGuard = getArguments().getBoolean("isGuard");
         isVip = getArguments().getBoolean("isVip");
         mProgramId = getArguments().getInt("programId");
@@ -97,6 +116,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         mChatToUser = getArguments().getParcelable("chatToUser");
         if (mChatToUser != null) {
             etContent.setHint("对" + mChatToUser.getNickname() + "私聊");
+            btnInputBroad.setVisibility(View.GONE);
         }
         etContent.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == 1) {
@@ -111,9 +131,15 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 if (TextUtils.isEmpty(message)) {
                     return true;
                 }
-                ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
-                etContent.getText().clear();
-                KeyBoardUtil.closeKeybord(etContent, getContext());
+                if (btnInputBroad.isSelected()) {
+                    sendBroadCast(message);
+                    etContent.getText().clear();
+                    KeyBoardUtil.closeKeybord(etContent, getContext());
+                } else {
+                    ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
+                    etContent.getText().clear();
+                    KeyBoardUtil.closeKeybord(etContent, getContext());
+                }
                 dismiss();
                 return true;
             }
@@ -136,6 +162,29 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     break;
             }
         });
+        getBroadNum();
+    }
+
+    private void getBroadNum() {
+        HashMap params = new HashMap();
+        params.put("userId", userId);
+        Map signPramsMap = ParamsUtils.getSignPramsMap(params);
+        ApiFactory.getInstance().getApi(Api.class)
+                .getBroadNum(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<BroadCastNumBean>() {
+
+                    @Override
+                    public void onSuccess(BroadCastNumBean bean) {
+                        total = bean.total;
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
     }
 
     private void initFragments() {
@@ -212,7 +261,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         dismiss();
     }
 
-    @OnClick({R.id.btn_send, R.id.btn_input_change, R.id.dialog_out, R.id.et_content})
+    @OnClick({R.id.btn_send, R.id.btn_input_change, R.id.dialog_out, R.id.et_content, R.id.btn_input_broad})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_send:
@@ -220,9 +269,15 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 if (TextUtils.isEmpty(message)) {
                     return;
                 }
-                ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
-                etContent.getText().clear();
-                KeyBoardUtil.closeKeybord(etContent, getContext());
+                if (btnInputBroad.isSelected()) {
+                    sendBroadCast(message);
+                    etContent.getText().clear();
+                    KeyBoardUtil.closeKeybord(etContent, getContext());
+                } else {
+                    ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
+                    etContent.getText().clear();
+                    KeyBoardUtil.closeKeybord(etContent, getContext());
+                }
                 dismiss();
                 break;
             case R.id.btn_input_change:
@@ -251,9 +306,41 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 KeyBoardUtil.closeKeybord(etContent, getContext());
                 dismiss();
                 break;
+            case R.id.btn_input_broad:
+                btnInputBroad.setSelected(!btnInputBroad.isSelected());
+                if (btnInputBroad.isSelected()) {
+                    etContent.setHint("广播每条1000萌币 (广播卡:" + total + ")");
+                } else {
+                    etContent.setHint(getString(R.string.live_house_chat_edit_text_hint));
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    private void sendBroadCast(String message) {
+        HashMap params = new HashMap();
+        params.put("userId", userId);
+        params.put("programId", mProgramId);
+        params.put("message", message);
+        Map signPramsMap = ParamsUtils.getSignPramsMap(params);
+        ApiFactory.getInstance().getApi(Api.class)
+                .sendBroadcast(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+
+                    @Override
+                    public void onSuccess(JsonElement bean) {
+                        ToastUtils.showToast("发送成功");
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -262,4 +349,5 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
         super.onDestroyView();
     }
+
 }

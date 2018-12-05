@@ -27,13 +27,11 @@ public class RxTimerUtil {
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable disposable) {
-                        LogUtils.e("rxtimerutil   onSubscribe");
                         mDisposable=disposable;
                     }
 
                     @Override
                     public void onNext(@NonNull Long number) {
-                        LogUtils.e("rxtimerutil   onNext");
                         if(next!=null){
                             next.doNext(number);
                         }
@@ -41,14 +39,12 @@ public class RxTimerUtil {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        LogUtils.e("rxtimerutil   onError");
                         //取消订阅
                         cancel();
                     }
 
                     @Override
                     public void onComplete() {
-                        LogUtils.e("rxtimerutil   onComplet");
                         //取消订阅
                         cancel();
                     }
