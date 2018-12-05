@@ -34,7 +34,7 @@ public class TextProgressBar extends ProgressBar {
     /**
      * 文字
      */
-    private String text;
+    private String text = "";
 
     /**
      * 进度条颜色

@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
+import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
@@ -31,6 +34,7 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.ToastUtils;
@@ -40,12 +44,16 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.whzl.mengbi.util.UserIdentity.getCanChatPaivate;
 
 /**
  * @author cliang
@@ -75,38 +83,59 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     TextView tvFollow;
     @BindView(R.id.tv_ranking)
     TextView tVRank;
+    @BindView(R.id.tv_pretty_num)
+    PrettyNumText tvPrettyNum;
+    @BindView(R.id.tv_private_chat)
+    TextView tvPrivateChat;
+    @BindView(R.id.rl_more)
+    RelativeLayout rlMore;
 
     private float dimAmount = 0.7f;//灰度深浅
     private long mUserId;
     private int mProgramId;
     private RoomUserInfo.DataBean mViewedUser;
+    private RoomUserInfo.DataBean mUser;
     private List<RoomUserInfo.LevelMapBean> levelMapBeans;
     private int levelValue;
     private String levelType;
     private String mIsFollowed;
     private long mVisitorId;
     private String liveState;
+    private PersonalInfoBean.DataBean userBean;
 
-    public static PersonalInfoDialog newInstance(long userId, int programId, long visitorId) {
+    public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId) {
         Bundle args = new Bundle();
         args.putLong("userId", userId);
         args.putInt("programId", programId);
         args.putLong("visitorId", visitorId); //当前用户ID
+        args.putParcelable("user", user);
         PersonalInfoDialog dialog = new PersonalInfoDialog();
         dialog.setArguments(args);
         return dialog;
     }
 
-    public static PersonalInfoDialog newInstance(long userId, int programId, long visitorId, String isFollowed, String liveState) {
+    public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId, String isFollowed, String liveState) {
         Bundle args = new Bundle();
         args.putLong("userId", userId); //被访者ID
         args.putInt("programId", programId);
         args.putLong("visitorId", visitorId); //当前用户ID
         args.putString("isFollowed", isFollowed);
         args.putString("liveState", liveState);
+        args.putParcelable("user", user);
         PersonalInfoDialog dialog = new PersonalInfoDialog();
         dialog.setArguments(args);
         return dialog;
+    }
+
+    public BaseAwesomeDialog setListener(OnClickListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
+    private OnClickListener listener;
+
+    public interface OnClickListener {
+        void onPrivateChatClick();
     }
 
     @Override
@@ -121,8 +150,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         mIsFollowed = getArguments().getString("isFollowed");
         mVisitorId = getArguments().getLong("visitorId");
         liveState = getArguments().getString("liveState");
+        mUser = getArguments().getParcelable("user");
         setAnimation();
         getUserInfo(mUserId, mProgramId, mVisitorId);
+        getHomePageInfo(mUserId, mVisitorId);
     }
 
     private void setAnimation() {
@@ -138,7 +169,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         setCancelable(true);
     }
 
-    @OnClick({R.id.btn_personal, R.id.btn_buy_royal, R.id.tv_follow, R.id.btn_close})
+    @OnClick({R.id.btn_personal, R.id.btn_buy_royal, R.id.tv_follow, R.id.btn_close,
+            R.id.tv_private_chat, R.id.rl_more})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_personal:
@@ -161,6 +193,18 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 //关注
                 follow(mVisitorId, mUserId);
                 mIsFollowed = "T";
+                break;
+            case R.id.tv_private_chat:
+                EventBus.getDefault().post(new PrivateChatSelectedEvent(mViewedUser));
+                if (listener != null) {
+                    listener.onPrivateChatClick();
+                }
+                dismiss();
+                break;
+            case R.id.rl_more:
+                OperateMoreDialog.newInstance(mUserId, mVisitorId, mProgramId, mUser)
+                        .setShowBottom(true)
+                        .show(getActivity().getSupportFragmentManager());
                 break;
             case R.id.btn_close:
                 dismiss();
@@ -187,8 +231,11 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                         mViewedUser = roomUserInfoData.getData();
                         setupView(mViewedUser);
                     }
+                    if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mVisitorId) {
+                        return;
+                    }
+                    setupOperations();
                 }
-
             }
 
             @Override
@@ -196,6 +243,74 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
 
             }
         });
+    }
+
+    private void getHomePageInfo(long userId, long visitorId) {
+        HashMap paramsMap = new HashMap<>();
+        paramsMap.put("userId", userId);
+        paramsMap.put("visitorId", visitorId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.HOME_PAGE, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                PersonalInfoBean personalInfoBean = GsonUtils.GsonToBean(result.toString(), PersonalInfoBean.class);
+                if (personalInfoBean.getCode() == 200) {
+                    if (personalInfoBean.getData() != null) {
+                        userBean = personalInfoBean.getData();
+                        setPrettyNum(userBean);
+                    }
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+    }
+
+    private void setupOperations() {
+        if (mUser.getIdentityId() == UserIdentity.OPTR_MANAGER) {
+            tvPrivateChat.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        if (mUser.getIdentityId() == UserIdentity.ANCHOR) {
+            tvPrivateChat.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER) {
+            tvPrivateChat.setVisibility(View.VISIBLE);
+            return;
+        }
+    }
+
+    private void setPrettyNum(PersonalInfoBean.DataBean userBean) {
+        if (userBean.getGoodsList() == null) {
+            return;
+        }
+        for (int i = 0; i < userBean.getGoodsList().size(); i++) {
+            PersonalInfoBean.DataBean.GoodsListBean goodsListBean = userBean.getGoodsList().get(i);
+            if ("PRETTY_NUM".equals(goodsListBean.getGoodsType())) {
+                tvPrettyNum.setVisibility(View.VISIBLE);
+                if (goodsListBean.getGoodsName().length() == 5) {
+                    tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
+                    tvPrettyNum.setNumColor(Color.rgb(255, 43, 63));
+                    tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_five);
+                    tvPrettyNum.setNumber();
+                } else if (goodsListBean.getGoodsName().length() == 6) {
+                    tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
+                    tvPrettyNum.setNumColor(Color.rgb(255, 165, 0));
+                    tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_six);
+                    tvPrettyNum.setNumber();
+                } else if (goodsListBean.getGoodsName().length() == 7) {
+                    tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
+                    tvPrettyNum.setNumColor(Color.rgb(49, 161, 255));
+                    tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_seven);
+                    tvPrettyNum.setNumber();
+                }
+            }
+        }
     }
 
     private void setupView(RoomUserInfo.DataBean user) {
@@ -359,4 +474,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     }
                 });
     }
+
+
 }

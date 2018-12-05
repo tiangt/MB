@@ -459,7 +459,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pollAdapter.setListerner(position -> {
             long userId = mAudienceList.get(position + 1).getUserid();
 //            showAudienceInfoDialog(userId, false);
-            PersonalInfoDialog.newInstance(userId, mProgramId, mUserId)
+            PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
+                    .setAnimStyle(R.style.dialogWindowAnim)
                     .setDimAmount(0)
                     .show(getSupportFragmentManager());
         });
@@ -534,7 +535,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         fragmentTransaction.commit();
     }
 
-    private void setTabChange(int index) {
+    public void setTabChange(int index) {
         if (index == currentSelectedIndex) {
             return;
         }
@@ -635,7 +636,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     return;
                 }
 //                showAudienceInfoDialog(mAnchorId, false);
-                PersonalInfoDialog.newInstance(mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
+                PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
+                        .setAnimStyle(R.style.dialogWindowAnim)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
                 //主播信息
@@ -1437,8 +1439,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //                .setShowBottom(isShowBottom)
 //                .show(getSupportFragmentManager());
 
-        PersonalInfoDialog.newInstance(viewedUserID, mProgramId, mUserId)
-                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+        PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
+                .setAnimStyle(R.style.dialogWindowAnim)
                 .setDimAmount(0)
                 .setShowBottom(false)
                 .show(getSupportFragmentManager());

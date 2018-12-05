@@ -31,8 +31,8 @@
 
                     <ImageButton
                         android:id="@+id/btn_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginTop="10dp"
                         android:background="@null"
@@ -42,7 +42,7 @@
                         android:id="@+id/iv_avatar"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_below="@id/btn_back"
+                        android:layout_marginTop="40dp"
                         android:layout_centerHorizontal="true" />
 
                     <TextView
@@ -197,14 +197,12 @@
                     android:textColor="@color/text_grey"
                     android:textSize="12sp" />
 
-                <TextView
+                <com.whzl.mengbi.ui.widget.view.PrettyNumText
                     android:id="@+id/tv_pretty_num"
                     android:layout_width="wrap_content"
-                    android:layout_height="13dp"
+                    android:layout_height="15dp"
                     android:layout_marginRight="10dp"
                     android:layout_gravity="center_vertical"
-                    android:textSize="12sp"
-                    android:gravity="center_vertical"
                     android:visibility="gone" />
 
                 <TextView
@@ -279,10 +277,12 @@
 
             <!-- 主播等级 -->
             <LinearLayout
+                android:id="@+id/ll_anchor_level"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="19dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="56dp"
@@ -293,36 +293,10 @@
                     android:textColor="@color/text_grey"
                     android:textSize="12sp" />
 
-                <ImageView
-                    android:id="@+id/iv_anchor_level_now"
-                    android:layout_width="50dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/anchor_level1" />
-
-                <com.whzl.mengbi.ui.widget.view.TextProgressBar
-                    android:id="@+id/tp_anchor_level"
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/iv_anchor_level_next"
-                    android:layout_width="50dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/anchor_level2" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_per_right"
-                    android:visibility="gone" />
+                <com.whzl.mengbi.ui.widget.view.ExpValueLayout
+                    android:id="@+id/evl_anchor_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -342,36 +316,10 @@
                     android:textColor="@color/text_grey"
                     android:textSize="12sp" />
 
-                <ImageView
-                    android:id="@+id/iv_user_level_now"
-                    android:layout_width="50dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/usergrade" />
-
-                <com.whzl.mengbi.ui.widget.view.TextProgressBar
-                    android:id="@+id/tp_user_level"
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/iv_user_level_next"
-                    android:layout_width="50dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/usergrade1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_per_right"
-                    android:visibility="gone" />
+                <com.whzl.mengbi.ui.widget.view.ExpValueLayout
+                    android:id="@+id/evl_user_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -391,36 +339,10 @@
                     android:textColor="@color/text_grey"
                     android:textSize="12sp" />
 
-                <ImageView
-                    android:id="@+id/iv_royal_level_now"
-                    android:layout_width="50dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/royal_1" />
-
-                <com.whzl.mengbi.ui.widget.view.TextProgressBar
-                    android:id="@+id/tp_royal_level"
-                    android:layout_width="0dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:id="@+id/iv_royal_level_next"
-                    android:layout_width="50dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/royal_2" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/ic_per_right"
-                    android:visibility="gone" />
+                <com.whzl.mengbi.ui.widget.view.ExpValueLayout
+                    android:id="@+id/evl_royal_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -441,8 +363,9 @@
                 android:id="@+id/rv_medal_wall"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:focusableInTouchMode="false"
-                android:scrollbars="none" />
+                android:nestedScrollingEnabled="false" />
 
         </LinearLayout>
 

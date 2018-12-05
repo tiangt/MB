@@ -326,7 +326,7 @@
     <string name="user_level">富豪等级:</string>
     <string name="royal_level">贵族等级:</string>
     <string name="medal_wall">勋章墙</string>
-    <string name="anchor_grade">还差%1$d主播经验</string>
+    <string name="anchor_grade">还差%1$d付费礼物经验</string>
     <string name="user_grade">还差%1$d用户经验</string>
     <string name="royal_grade">还差%1$d贵族经验</string>
     <string name="not_followed">+关注</string>

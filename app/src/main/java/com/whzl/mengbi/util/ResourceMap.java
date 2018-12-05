@@ -162,7 +162,11 @@ public class ResourceMap {
         if (royalLevelMap.containsKey(level)) {
             levelIcon = royalLevelMap.get(level);
         } else {
-            levelIcon = R.drawable.ic_qingtong;
+            if(level > 6){
+                levelIcon = R.drawable.royal_7;
+            }else{
+                levelIcon = R.drawable.ic_qingtong;
+            }
         }
         return levelIcon;
     }

@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -29,15 +28,17 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
+import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.TextProgressBar;
+import com.whzl.mengbi.util.ClipboardUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
-import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -46,7 +47,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -60,12 +60,6 @@ public class PersonalInfoActivity extends BaseActivity {
     ImageView btnBack;
     @BindView(R.id.iv_personal_cover)
     ImageView ivPersonalCover;
-    @BindView(R.id.tp_anchor_level)
-    TextProgressBar tpAnchorLevel;
-    @BindView(R.id.tp_user_level)
-    TextProgressBar tpUserLevel;
-    @BindView(R.id.tp_royal_level)
-    TextProgressBar tpRoyalLevel;
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
     @BindView(R.id.tv_nick_name)
@@ -89,7 +83,7 @@ public class PersonalInfoActivity extends BaseActivity {
     @BindView(R.id.tv_constellation)
     TextView tvConstellation;
     @BindView(R.id.tv_pretty_num)
-    TextView tvPrettyNum;
+    PrettyNumText tvPrettyNum;
     @BindView(R.id.ll_level_container)
     LinearLayout linearLayout;
     @BindView(R.id.tv_live_state)
@@ -98,19 +92,26 @@ public class PersonalInfoActivity extends BaseActivity {
     TextView tvFollowState;
     @BindView(R.id.rv_medal_wall)
     RecyclerView rvMedalWall;
+    @BindView(R.id.tv_copy_num)
+    TextView tvCopyNum;
+    @BindView(R.id.ll_anchor_level)
+    LinearLayout llAnchorLevel;
+    @BindView(R.id.evl_anchor_level)
+    ExpValueLayout evlAnchorLevel;
+    @BindView(R.id.evl_user_level)
+    ExpValueLayout evlUserLevel;
+    @BindView(R.id.evl_royal_level)
+    ExpValueLayout evlRoyalLevel;
 
-    private int mAnchorGrade;
-    private int mUserGrade;
-    private int mRoyalGrade;
     private long mUserId, mVisitorId;
     private PersonalInfoBean.DataBean userBean;
-    private List<RoomUserInfo.LevelMapBean> levelMapBeans;
     private int levelValue;
     private String levelType;
-    private boolean mIsSubs;
     private String mLiveState;
     private BaseListAdapter medalAdapter;
     private int fansCount;
+    private List<PersonalInfoBean.DataBean.LevelListBean> levelList;
+    private List<PersonalInfoBean.DataBean.GoodsListBean> goodsList = new ArrayList<>();
 
     @Override
     protected void setupContentView() {
@@ -125,21 +126,6 @@ public class PersonalInfoActivity extends BaseActivity {
         mVisitorId = bundle.getLong("visitorId", 0); //访问者
         mLiveState = bundle.getString("liveState", "");
         getHomePageInfo(mUserId, mVisitorId);
-        tpAnchorLevel.setText(getString(R.string.anchor_grade, mAnchorGrade));
-        tpAnchorLevel.setMaxCount(100);
-        tpAnchorLevel.setCurrentCount(50);
-        tpAnchorLevel.setPercentColor(Color.rgb(236, 81, 227));
-        tpUserLevel.setText(getString(R.string.user_grade, mUserGrade));
-        tpUserLevel.setMaxCount(100);
-        tpUserLevel.setCurrentCount(50);
-        tpUserLevel.setPercentColor(Color.rgb(236, 194, 56));
-        tpRoyalLevel.setText(getString(R.string.royal_grade, mRoyalGrade));
-        tpRoyalLevel.setMaxCount(100);
-        tpRoyalLevel.setCurrentCount(50);
-        tpRoyalLevel.setPercentColor(Color.rgb(246, 55, 73));
-
-
-        initRecy();
     }
 
     @Override
@@ -153,7 +139,7 @@ public class PersonalInfoActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.btn_back, R.id.tv_follow_state})
+    @OnClick({R.id.btn_back, R.id.tv_follow_state, R.id.tv_copy_num})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
@@ -161,6 +147,9 @@ public class PersonalInfoActivity extends BaseActivity {
                 break;
             case R.id.tv_follow_state:
                 follow(mVisitorId, mUserId);
+                break;
+            case R.id.tv_copy_num:
+                ClipboardUtils.putTextIntoClip(this, mUserId + "");
                 break;
             default:
                 break;
@@ -232,12 +221,22 @@ public class PersonalInfoActivity extends BaseActivity {
 
         setLevelIcon(userBean);
 
+        setLevel(userBean);
+
+        if (userBean.getGoodsList() != null) {
+            for (int i = 0; i < userBean.getGoodsList().size(); i++) {
+                String type = userBean.getGoodsList().get(i).getGoodsType();
+                if ("BADGE".equals(type)) {
+                    goodsList.add(userBean.getGoodsList().get(i));
+                }
+            }
+            initRecy();
+        }
     }
 
     private void setLevelIcon(PersonalInfoBean.DataBean userBean) {
         linearLayout.removeAllViews();
         ImageView imageView = new ImageView(this);
-        levelMapBeans = new ArrayList<>();
         //贵族等级
         if (userBean.getLevelList() != null) {
             for (int i = 0; i < userBean.getLevelList().size(); i++) {
@@ -309,23 +308,28 @@ public class PersonalInfoActivity extends BaseActivity {
                             });
                 }
 
-                if("PRETTY_NUM".equals(goodsListBean.getGoodsType())){
+                if ("PRETTY_NUM".equals(goodsListBean.getGoodsType())) {
                     tvPrettyNum.setVisibility(View.VISIBLE);
-                    tvPrettyNum.setText(goodsListBean.getGoodsName());
-                    tvPrettyNum.setBackgroundResource(R.drawable.pretty_six);
+                    if (goodsListBean.getGoodsName().length() == 5) {
+                        tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
+                        tvPrettyNum.setNumColor(Color.rgb(255, 43, 63));
+                        tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_five);
+                        tvPrettyNum.setNumber();
+                    } else if (goodsListBean.getGoodsName().length() == 6) {
+                        tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
+                        tvPrettyNum.setNumColor(Color.rgb(255, 165, 0));
+                        tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_six);
+                        tvPrettyNum.setNumber();
+                    } else if (goodsListBean.getGoodsName().length() == 7) {
+                        tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
+                        tvPrettyNum.setNumColor(Color.rgb(49, 161, 255));
+                        tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_seven);
+                        tvPrettyNum.setNumber();
+                    }
+
                 }
             }
         }
-
-        //房管
-//        if (identityId == UserIdentity.ROOM_MANAGER) {
-//            ImageView mgrView = new ImageView(this);
-//            mgrView.setImageResource(R.drawable.room_manager);
-//            LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//            mgrViewParams.leftMargin = UIUtil.dip2px(this, 6);
-//            mgrViewParams.gravity = UIUtil.dip2px(this, 6);
-//            linearLayout.addView(mgrView, mgrViewParams);
-//        }
     }
 
     private void follow(long userId, long followingUserId) {
@@ -355,10 +359,6 @@ public class PersonalInfoActivity extends BaseActivity {
     }
 
     private void initRecy() {
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(i + "");
-        }
         rvMedalWall.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         rvMedalWall.setFocusableInTouchMode(false);
         rvMedalWall.setHasFixedSize(true);
@@ -367,7 +367,7 @@ public class PersonalInfoActivity extends BaseActivity {
         medalAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return list.size();
+                return goodsList == null ? 0 : goodsList.size();
             }
 
             @Override
@@ -391,8 +391,35 @@ public class PersonalInfoActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(int position) {
-            GlideImageLoader.getInstace().displayImage(PersonalInfoActivity.this, R.drawable.royal_7, ivMedal);
-            tvMedal.setText(position + "");
+            String goodsIcon = goodsList.get(position).getGoodsIcon();
+            String goodsName = goodsList.get(position).getGoodsName();
+            String goodsType = goodsList.get(position).getGoodsType();
+            if ("BADGE".equals(goodsType)) {
+                GlideImageLoader.getInstace().displayImage(PersonalInfoActivity.this, goodsIcon, ivMedal);
+                tvMedal.setText(goodsName);
+            }
+        }
+    }
+
+    private void setLevel(PersonalInfoBean.DataBean dataBean) {
+        levelList = dataBean.getLevelList();
+        if (levelList != null) {
+            for (int i = 0; i < levelList.size(); i++) {
+                if ("ANCHOR_LEVEL".equals(levelList.get(i).getLevelType())) {
+                    llAnchorLevel.setVisibility(View.VISIBLE);
+                    evlAnchorLevel.setLevelValue(levelList.get(i).getLevelType(), levelList.get(i).getLevelValue(),
+                            levelList.get(i).getLevelName(), levelList.get(i).getExpList());
+                    evlAnchorLevel.initView();
+                } else if ("USER_LEVEL".equals(levelList.get(i).getLevelType())) {
+                    evlUserLevel.setLevelValue(levelList.get(i).getLevelType(), levelList.get(i).getLevelValue(),
+                            levelList.get(i).getLevelName(), levelList.get(i).getExpList());
+                    evlUserLevel.initView();
+                } else if ("ROYAL_LEVEL".equals(levelList.get(i).getLevelType())) {
+                    evlRoyalLevel.setLevelValue(levelList.get(i).getLevelType(), levelList.get(i).getLevelValue(),
+                            levelList.get(i).getLevelName(), levelList.get(i).getExpList());
+                    evlRoyalLevel.initView();
+                }
+            }
         }
     }
 
