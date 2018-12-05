@@ -16,11 +16,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.PersonalInfoActivity;
@@ -31,6 +33,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -70,7 +73,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     LinearLayout linearLayout;
     @BindView(R.id.tv_follow)
     TextView tvFollow;
-
+    @BindView(R.id.tv_ranking)
+    TextView tVRank;
 
     private float dimAmount = 0.7f;//灰度深浅
     private long mUserId;
@@ -79,24 +83,27 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private List<RoomUserInfo.LevelMapBean> levelMapBeans;
     private int levelValue;
     private String levelType;
-    private boolean mIsSubs = false;
-    private long mCurrentId;
+    private String mIsFollowed;
+    private long mVisitorId;
+    private String liveState;
 
-    public static PersonalInfoDialog newInstance(long userId, int programId) {
+    public static PersonalInfoDialog newInstance(long userId, int programId, long visitorId) {
         Bundle args = new Bundle();
         args.putLong("userId", userId);
         args.putInt("programId", programId);
+        args.putLong("visitorId", visitorId); //当前用户ID
         PersonalInfoDialog dialog = new PersonalInfoDialog();
         dialog.setArguments(args);
         return dialog;
     }
 
-    public static PersonalInfoDialog newInstance(long anchorId, int programId, long userId, boolean isSubs) {
+    public static PersonalInfoDialog newInstance(long userId, int programId, long visitorId, String isFollowed, String liveState) {
         Bundle args = new Bundle();
-        args.putLong("userId", anchorId); //主播ID
+        args.putLong("userId", userId); //被访者ID
         args.putInt("programId", programId);
-        args.putLong("currentUserId", userId); //当前用户ID
-        args.putBoolean("isSubs", isSubs);
+        args.putLong("visitorId", visitorId); //当前用户ID
+        args.putString("isFollowed", isFollowed);
+        args.putString("liveState", liveState);
         PersonalInfoDialog dialog = new PersonalInfoDialog();
         dialog.setArguments(args);
         return dialog;
@@ -111,10 +118,11 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         mUserId = getArguments().getLong("userId");
         mProgramId = getArguments().getInt("programId");
-        mIsSubs = getArguments().getBoolean("isSubs");
-        mCurrentId = getArguments().getLong("currentUserId");
+        mIsFollowed = getArguments().getString("isFollowed");
+        mVisitorId = getArguments().getLong("visitorId");
+        liveState = getArguments().getString("liveState");
         setAnimation();
-        getUserInfo(mUserId, mProgramId);
+        getUserInfo(mUserId, mProgramId, mVisitorId);
     }
 
     private void setAnimation() {
@@ -134,11 +142,13 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_personal:
-                Intent intent = new Intent(getActivity(), PersonalInfoActivity.class);
-                intent.putExtra("userId", mUserId);
-                intent.putExtra("programId", mProgramId);
-                intent.putExtra("currentUserId", mCurrentId);
-                intent.putExtra("isSubs", mIsSubs);
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putLong("userId", mUserId);
+                bundle.putLong("visitorId", mVisitorId);
+                bundle.putString("liveState", liveState);
+                intent.putExtras(bundle);
+                intent.setClass(getActivity(), PersonalInfoActivity.class);
                 startActivity(intent);
                 dismiss();
                 break;
@@ -148,18 +158,9 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 dismiss();
                 break;
             case R.id.tv_follow:
-                if (mIsSubs) {
-                    //取消关注
-                    ((LiveDisplayActivity) getContext()).setCancelFollow(mCurrentId, mProgramId);
-                    mIsSubs = false;
-                    dismiss();
-                } else {
-                    //关注
-                    ((LiveDisplayActivity) getContext()).setFollow();
-                    tvFollow.setText(R.string.followed);
-                    tvFollow.setTextColor(Color.GRAY);
-                    mIsSubs = true;
-                }
+                //关注
+                follow(mVisitorId, mUserId);
+                mIsFollowed = "T";
                 break;
             case R.id.btn_close:
                 dismiss();
@@ -169,10 +170,11 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         }
     }
 
-    private void getUserInfo(long userId, int programId) {
+    private void getUserInfo(long userId, int programId, long visitorId) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
         paramsMap.put("userId", userId + "");
+        paramsMap.put("visitorId", visitorId + "");
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
@@ -200,6 +202,13 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         GlideImageLoader.getInstace().displayImage(getContext(), user.getAvatar(), mUserAvatar);
         mTvNickName.setText(user.getNickname());
         mTvAnchorId.setText("ID " + user.getUserId());
+        mIsFollowed = user.getIsFollowed();
+        int rank = user.getRank();
+        if (rank < 0) {
+            tVRank.setText("万名之外");
+        } else {
+            tVRank.setText(getString(R.string.ranking, rank));
+        }
         String introduce = user.getIntroduce();
         if (!TextUtils.isEmpty(introduce)) {
             mTvIntroduce.setText(introduce);
@@ -224,9 +233,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                         }
                         ImageView royalImage = new ImageView(getContext());
                         royalImage.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
-                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 20), UIUtil.dip2px(getContext(), 20));
+                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 30), UIUtil.dip2px(getContext(), 11));
                         royalParams.leftMargin = UIUtil.dip2px(getContext(), 6);
-                        royalParams.gravity = UIUtil.dip2px(getContext(), 6);
                         linearLayout.addView(royalImage, royalParams);
                     }
                 }
@@ -240,21 +248,22 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 levelValue = user.getLevelList().get(i).getLevelValue();
                 if (identityId == 10) {
                     tvFollow.setVisibility(View.VISIBLE);
-                    if (mIsSubs) {
+                    if ("T".equals(mIsFollowed)) {
                         tvFollow.setText(R.string.followed);
                         tvFollow.setTextColor(Color.GRAY);
+                        mIsFollowed = "T";
                     } else {
                         tvFollow.setText(R.string.not_followed);
                         tvFollow.setTextColor(Color.RED);
+                        mIsFollowed = "F";
                     }
                     imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
                 } else {
                     imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
                 }
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 20), UIUtil.dip2px(getContext(), 20));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 28), UIUtil.dip2px(getContext(), 15));
             params.leftMargin = UIUtil.dip2px(getContext(), 6);
-            params.gravity = UIUtil.dip2px(getContext(), 6);
             linearLayout.addView(imageView, params);
         }
 
@@ -275,9 +284,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                                     int intrinsicWidth = resource.getIntrinsicWidth();
                                     ImageView goodImage = new ImageView(getContext());
                                     goodImage.setImageDrawable(resource);
-                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 20), UIUtil.dip2px(getContext(), 20));
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 15), UIUtil.dip2px(getContext(), 15));
                                     params.leftMargin = UIUtil.dip2px(getContext(), 6);
-                                    params.gravity = UIUtil.dip2px(getContext(), 6);
                                     linearLayout.addView(goodImage, params);
                                 }
                             });
@@ -289,9 +297,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         if (identityId == UserIdentity.ROOM_MANAGER) {
             ImageView mgrView = new ImageView(getContext());
             mgrView.setImageResource(R.drawable.room_manager);
-            LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 20), UIUtil.dip2px(getContext(), 20));
+            LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 15), UIUtil.dip2px(getContext(), 15));
             mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 6);
-            mgrViewParams.gravity = UIUtil.dip2px(getContext(), 6);
             linearLayout.addView(mgrView, mgrViewParams);
         }
     }
@@ -326,5 +333,30 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_civilian, ivBgPersonal);
                 break;
         }
+    }
+
+    private void follow(long userId, long followingUserId) {
+        HashMap map = new HashMap();
+        map.put("userId", userId);
+        map.put("followingUserId", followingUserId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SOCIAL_FOLLOW, RequestManager.TYPE_POST_JSON, map,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        String jsonStr = result.toString();
+                        ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
+                        if (responseInfo.getCode() == 200) {
+                            tvFollow.setText(R.string.followed);
+                            tvFollow.setTextColor(Color.GRAY);
+                        } else {
+                            Toast.makeText(getActivity(), responseInfo.getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        ToastUtils.showToast(errorMsg);
+                    }
+                });
     }
 }

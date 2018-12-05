@@ -1,25 +1,35 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
+import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.TextProgressBar;
 import com.whzl.mengbi.util.DateUtils;
@@ -48,6 +58,8 @@ public class PersonalInfoActivity extends BaseActivity {
 
     @BindView(R.id.btn_back)
     ImageView btnBack;
+    @BindView(R.id.iv_personal_cover)
+    ImageView ivPersonalCover;
     @BindView(R.id.tp_anchor_level)
     TextProgressBar tpAnchorLevel;
     @BindView(R.id.tp_user_level)
@@ -76,24 +88,29 @@ public class PersonalInfoActivity extends BaseActivity {
     TextView tvAge;
     @BindView(R.id.tv_constellation)
     TextView tvConstellation;
+    @BindView(R.id.tv_pretty_num)
+    TextView tvPrettyNum;
     @BindView(R.id.ll_level_container)
     LinearLayout linearLayout;
     @BindView(R.id.tv_live_state)
     TextView tvLiveState;
     @BindView(R.id.tv_follow_state)
     TextView tvFollowState;
+    @BindView(R.id.rv_medal_wall)
+    RecyclerView rvMedalWall;
 
     private int mAnchorGrade;
     private int mUserGrade;
     private int mRoyalGrade;
-    private long mUserId, mCurrentUserId;
-    private int mProgramId;
-    private RoomUserInfo.DataBean userBean;
+    private long mUserId, mVisitorId;
+    private PersonalInfoBean.DataBean userBean;
     private List<RoomUserInfo.LevelMapBean> levelMapBeans;
     private int levelValue;
     private String levelType;
     private boolean mIsSubs;
-
+    private String mLiveState;
+    private BaseListAdapter medalAdapter;
+    private int fansCount;
 
     @Override
     protected void setupContentView() {
@@ -102,11 +119,12 @@ public class PersonalInfoActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        mUserId = getIntent().getLongExtra("userId", 0);
-        mProgramId = getIntent().getIntExtra("programId", 0);
-        mCurrentUserId = getIntent().getLongExtra("currentUserId", 0);
-        mIsSubs = getIntent().getBooleanExtra("isSubs", false);
-        getUserInfo(mUserId, mProgramId);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        mUserId = bundle.getLong("userId", 0); //被访者
+        mVisitorId = bundle.getLong("visitorId", 0); //访问者
+        mLiveState = bundle.getString("liveState", "");
+        getHomePageInfo(mUserId, mVisitorId);
         tpAnchorLevel.setText(getString(R.string.anchor_grade, mAnchorGrade));
         tpAnchorLevel.setMaxCount(100);
         tpAnchorLevel.setCurrentCount(50);
@@ -120,9 +138,8 @@ public class PersonalInfoActivity extends BaseActivity {
         tpRoyalLevel.setCurrentCount(50);
         tpRoyalLevel.setPercentColor(Color.rgb(246, 55, 73));
 
-        tvRank.setText(getString(R.string.user_rank, 0));
-        tvFansCount.setText(getString(R.string.fans_count, 0));
-        tvFollow.setText(getString(R.string.follow, 0));
+
+        initRecy();
     }
 
     @Override
@@ -143,24 +160,24 @@ public class PersonalInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_follow_state:
-                follow();
+                follow(mVisitorId, mUserId);
                 break;
             default:
                 break;
         }
     }
 
-    private void getUserInfo(long userId, long programId) {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("programId", programId + "");
-        paramsMap.put("userId", userId + "");
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+    private void getHomePageInfo(long userId, long visitorId) {
+        HashMap paramsMap = new HashMap<>();
+        paramsMap.put("userId", userId);
+        paramsMap.put("visitorId", visitorId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.HOME_PAGE, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
-                RoomUserInfo roomUserInfoData = GsonUtils.GsonToBean(result.toString(), RoomUserInfo.class);
-                if (roomUserInfoData.getCode() == 200) {
-                    if (roomUserInfoData.getData() != null) {
-                        userBean = roomUserInfoData.getData();
+                PersonalInfoBean personalInfoBean = GsonUtils.GsonToBean(result.toString(), PersonalInfoBean.class);
+                if (personalInfoBean.getCode() == 200) {
+                    if (personalInfoBean.getData() != null) {
+                        userBean = personalInfoBean.getData();
                         setView(userBean);
                     }
                 }
@@ -173,13 +190,31 @@ public class PersonalInfoActivity extends BaseActivity {
         });
     }
 
-    private void setView(RoomUserInfo.DataBean userBean) {
+    private void setView(PersonalInfoBean.DataBean userBean) {
         GlideImageLoader.getInstace().displayImage(this, userBean.getAvatar(), ivAvatar);
+        GlideImageLoader.getInstace().displayImage(this, userBean.getAvatar(), ivPersonalCover);
         tvNickName.setText(userBean.getNickname());
         String introduce = userBean.getIntroduce();
         if (!TextUtils.isEmpty(introduce)) {
             tvSign.setText(introduce);
         }
+
+        if (userBean.getRank() < 0) {
+            if ("ANCHOR".equals(userBean.getUserType())) {
+                tvRank.setText(getString(R.string.anchor_rank_out, "万名之外"));
+            } else {
+                tvRank.setText(getString(R.string.user_rank_out, "万名之外"));
+            }
+        } else {
+            if ("ANCHOR".equals(userBean.getUserType())) {
+                fansCount = userBean.getRank();
+                tvRank.setText(getString(R.string.anchor_rank, fansCount));
+            } else {
+                tvRank.setText(getString(R.string.user_rank, userBean.getRank()));
+            }
+        }
+        tvFansCount.setText(getString(R.string.fans_count, userBean.getFansNum()));
+        tvFollow.setText(getString(R.string.follow, userBean.getMyFollowNum()));
 
         tvUserName.setText(userBean.getNickname());
         tvUserId.setText(userBean.getUserId() + "");
@@ -199,8 +234,7 @@ public class PersonalInfoActivity extends BaseActivity {
 
     }
 
-    private void setLevelIcon(RoomUserInfo.DataBean userBean) {
-        int identityId = userBean.getIdentityId();
+    private void setLevelIcon(PersonalInfoBean.DataBean userBean) {
         linearLayout.removeAllViews();
         ImageView imageView = new ImageView(this);
         levelMapBeans = new ArrayList<>();
@@ -215,9 +249,8 @@ public class PersonalInfoActivity extends BaseActivity {
                     } else {
                         ImageView royalImage = new ImageView(PersonalInfoActivity.this);
                         royalImage.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
-                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 20), UIUtil.dip2px(PersonalInfoActivity.this, 20));
+                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 30), UIUtil.dip2px(PersonalInfoActivity.this, 11));
                         royalParams.leftMargin = UIUtil.dip2px(PersonalInfoActivity.this, 6);
-                        royalParams.gravity = UIUtil.dip2px(PersonalInfoActivity.this, 6);
                         linearLayout.addView(royalImage, royalParams);
                     }
                 }
@@ -230,26 +263,33 @@ public class PersonalInfoActivity extends BaseActivity {
                 levelType = userBean.getLevelList().get(i).getLevelType();
                 levelValue = userBean.getLevelList().get(i).getLevelValue();
                 if ("ANCHOR".equals(userBean.getUserType())) {
-                    if (!mIsSubs) {
+                    if ("F".equals(userBean.getIsFollowed())) {
                         tvFollowState.setVisibility(View.VISIBLE);
                     }
                     tvLiveState.setVisibility(View.VISIBLE);
+                    if ("T".equals(mLiveState)) {
+                        tvLiveState.setText(R.string.live);
+                        tvLiveState.setTextColor(Color.RED);
+                    } else {
+                        tvLiveState.setText(R.string.rest);
+                        tvLiveState.setTextColor(Color.GRAY);
+                    }
+
                     imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
                 } else {
                     imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
                 }
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 20), UIUtil.dip2px(PersonalInfoActivity.this, 20));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 28), UIUtil.dip2px(PersonalInfoActivity.this, 15));
             params.leftMargin = UIUtil.dip2px(PersonalInfoActivity.this, 6);
-            params.gravity = UIUtil.dip2px(PersonalInfoActivity.this, 6);
             linearLayout.addView(imageView, params);
         }
 
         //守护，VIP
         if (userBean.getGoodsList() != null) {
             for (int i = 0; i < userBean.getGoodsList().size(); i++) {
-                RoomUserInfo.GoodsListBean goodsListBean = userBean.getGoodsList().get(i);
-                if ("BADGE".equals(goodsListBean.getGoodsType()) || "GUARD".equals(goodsListBean.getGoodsType()) || "VIP".equals(goodsListBean.getGoodsType())) {
+                PersonalInfoBean.DataBean.GoodsListBean goodsListBean = userBean.getGoodsList().get(i);
+                if ("BADGE".equals(goodsListBean.getGoodsType()) || "VIP".equals(goodsListBean.getGoodsType())) {
                     Glide.with(this)
                             .load(goodsListBean.getGoodsIcon())
                             .into(new SimpleTarget<Drawable>() {
@@ -262,48 +302,98 @@ public class PersonalInfoActivity extends BaseActivity {
                                     int intrinsicWidth = resource.getIntrinsicWidth();
                                     ImageView goodImage = new ImageView(PersonalInfoActivity.this);
                                     goodImage.setImageDrawable(resource);
-                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this
-                                            , intrinsicWidth / 4f * 3)
-                                            , UIUtil.dip2px(PersonalInfoActivity.this, intrinsicHeight / 4f * 3));
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 15), UIUtil.dip2px(PersonalInfoActivity.this, 15));
                                     params.leftMargin = UIUtil.dip2px(PersonalInfoActivity.this, 6);
-                                    params.gravity = UIUtil.dip2px(PersonalInfoActivity.this, 6);
                                     linearLayout.addView(goodImage, params);
                                 }
                             });
+                }
+
+                if("PRETTY_NUM".equals(goodsListBean.getGoodsType())){
+                    tvPrettyNum.setVisibility(View.VISIBLE);
+                    tvPrettyNum.setText(goodsListBean.getGoodsName());
+                    tvPrettyNum.setBackgroundResource(R.drawable.pretty_six);
                 }
             }
         }
 
         //房管
-        if (identityId == UserIdentity.ROOM_MANAGER) {
-            ImageView mgrView = new ImageView(this);
-            mgrView.setImageResource(R.drawable.room_manager);
-            LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            mgrViewParams.leftMargin = UIUtil.dip2px(this, 6);
-            mgrViewParams.gravity = UIUtil.dip2px(this, 6);
-            linearLayout.addView(mgrView, mgrViewParams);
-        }
+//        if (identityId == UserIdentity.ROOM_MANAGER) {
+//            ImageView mgrView = new ImageView(this);
+//            mgrView.setImageResource(R.drawable.room_manager);
+//            LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            mgrViewParams.leftMargin = UIUtil.dip2px(this, 6);
+//            mgrViewParams.gravity = UIUtil.dip2px(this, 6);
+//            linearLayout.addView(mgrView, mgrViewParams);
+//        }
     }
 
-    private void follow() {
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("programId", mProgramId + "");
-        paramsMap.put("userId", mCurrentUserId + "");
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.FELLOW_HOST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+    private void follow(long userId, long followingUserId) {
+        HashMap map = new HashMap();
+        map.put("userId", userId);
+        map.put("followingUserId", followingUserId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SOCIAL_FOLLOW, RequestManager.TYPE_POST_JSON, map,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        String jsonStr = result.toString();
+                        ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
+                        if (responseInfo.getCode() == 200) {
+                            tvFollowState.setVisibility(View.GONE);
+                            showToast("关注成功");
+                            tvRank.setText(getString(R.string.anchor_rank, fansCount + 1));
+                        } else {
+                            showToast(responseInfo.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        ToastUtils.showToast(errorMsg);
+                    }
+                });
+    }
+
+    private void initRecy() {
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(i + "");
+        }
+        rvMedalWall.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        rvMedalWall.setFocusableInTouchMode(false);
+        rvMedalWall.setHasFixedSize(true);
+        rvMedalWall.setLayoutManager(new GridLayoutManager(this, 4));
+        rvMedalWall.addItemDecoration(new SpacesItemDecoration(10));
+        medalAdapter = new BaseListAdapter() {
             @Override
-            public void onReqSuccess(Object result) {
-                ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
-                if (responseInfo.getCode() == 200) {
-                    ToastUtils.showToast("关注成功");
-                    tvFollowState.setVisibility(View.GONE);
-                }
+            protected int getDataCount() {
+                return list.size();
             }
 
             @Override
-            public void onReqFailed(String errorMsg) {
-
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(PersonalInfoActivity.this).inflate(R.layout.item_medal_wall, parent, false);
+                return new MedalViewHolder(itemView);
             }
-        });
+        };
+        rvMedalWall.setAdapter(medalAdapter);
+    }
+
+    class MedalViewHolder extends BaseViewHolder {
+        ImageView ivMedal;
+        TextView tvMedal;
+
+        public MedalViewHolder(View itemView) {
+            super(itemView);
+            ivMedal = itemView.findViewById(R.id.iv_medal);
+            tvMedal = itemView.findViewById(R.id.tv_medal);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            GlideImageLoader.getInstace().displayImage(PersonalInfoActivity.this, R.drawable.royal_7, ivMedal);
+            tvMedal.setText(position + "");
+        }
     }
 
 }
