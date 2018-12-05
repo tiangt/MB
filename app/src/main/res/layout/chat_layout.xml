@@ -62,11 +62,6 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#3b1b2924" />
-
     <LinearLayout
         android:id="@+id/ll_emoji_container"
         android:layout_width="match_parent"
