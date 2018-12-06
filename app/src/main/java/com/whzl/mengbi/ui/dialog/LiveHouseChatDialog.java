@@ -7,6 +7,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -78,6 +79,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     private RoomUserInfo.DataBean mChatToUser;
     private int total;
     private Long userId;
+    private String mAt;
 
     public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
@@ -102,6 +104,18 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         return liveHouseChatDialog;
     }
 
+    public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, String at, RoomInfoBean.DataBean.AnchorBean anchorBean) {
+        LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
+        Bundle args = new Bundle();
+        args.putBoolean("isGuard", isGuard);
+        args.putBoolean("isVip", isVip);
+        args.putInt("programId", programId);
+        args.putString("at", at);
+        args.putParcelable("anchor", anchorBean);
+        liveHouseChatDialog.setArguments(args);
+        return liveHouseChatDialog;
+    }
+
     @Override
     public int intLayoutId() {
         return R.layout.dialog_live_house_chat;
@@ -115,6 +129,11 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         mProgramId = getArguments().getInt("programId");
         mAnchorBean = getArguments().getParcelable("anchor");
         mChatToUser = getArguments().getParcelable("chatToUser");
+        mAt = getArguments().getString("at");
+        if (!TextUtils.isEmpty(mAt)) {
+            etContent.setText(mAt);
+            etContent.setSelection(mAt.length());
+        }
         if (mChatToUser != null) {
             etContent.setHint("对" + mChatToUser.getNickname() + "私聊");
             btnInputBroad.setVisibility(View.GONE);

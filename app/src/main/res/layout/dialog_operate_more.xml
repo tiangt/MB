@@ -9,40 +9,63 @@
         android:id="@+id/ll_option_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_room"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:gravity="center"
+            android:text="@string/operate_mute"
             android:textColor="#808080"
             android:textSize="12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee" />
 
         <TextView
             android:id="@+id/tv_global"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:gravity="center"
+            android:text="@string/global_mute"
             android:textColor="#808080"
             android:textSize="12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee" />
 
         <TextView
             android:id="@+id/tv_kick_out"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:gravity="center"
+            android:text="@string/kick"
             android:textColor="#808080"
             android:textSize="12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee" />
 
         <TextView
             android:id="@+id/tv_manager"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:gravity="center"
+            android:text="@string/room_manager"
             android:textColor="#808080"
             android:textSize="12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee" />
     </LinearLayout>
 
     <TextView

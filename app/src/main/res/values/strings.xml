@@ -341,6 +341,14 @@
     <string name="live">直播中</string>
     <string name="rest">休息中</string>
     <string name="ranking">第%1$d名</string>
+    
+    <string name="operate_mute">禁止TA本房间发言15分钟</string>
+    <string name="global_mute">禁止TA全局直播发言15分钟</string>
+    <string name="kick">把TA踢出房间15分钟</string>
+    <string name="room_manager">把TA升为房间管理员</string>
+    <string name="cancel_mute">解除禁言</string>
+    <string name="cancel_global_mute">解除全局禁言</string>
+    <string name="cancel_room_manager">解除房管</string>
 
     <array name="new_task">
         <item>领取</item>

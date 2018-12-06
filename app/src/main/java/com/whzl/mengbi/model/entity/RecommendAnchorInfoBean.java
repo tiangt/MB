@@ -20,6 +20,16 @@ public class RecommendAnchorInfoBean {
 
     private ShowStreamDataInfo showStreamData;
 
+    private String isPk;
+
+    public String getIsPk() {
+        return isPk;
+    }
+
+    public void setIsPk(String isPk) {
+        this.isPk = isPk;
+    }
+
     public Integer getProgramId() {
         return programId;
     }
