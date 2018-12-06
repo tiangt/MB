@@ -13,7 +13,7 @@ public interface LiveModel {
 
     void doFollowHost(long userId, int programId, OnLiveFinishedListener listener);
 
-    void doRoomUserInfo(long userId, int programId, OnLiveFinishedListener listener);
+    void doRoomUserInfo(long visitorId, int userId, int programId, OnLiveFinishedListener listener);
 
     void doSendGift(HashMap paramsMap, OnLiveFinishedListener listener);
 

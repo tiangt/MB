@@ -156,6 +156,10 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
                 dismiss();
                 break;
             case R.id.tv_report:
+                TipOffDialog.newInstance(mUserId, visitorId, mProgramId)
+                        .setShowBottom(true)
+                        .show(getActivity().getSupportFragmentManager());
+                dismiss();
                 break;
             default:
                 break;
@@ -194,14 +198,22 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
     }
 
     private void setupView(RoomUserInfo.DataBean user) {
-        int identityId = user.getIdentityId();
         if (user.getIdentityId() == ROOM_MANAGER) {
             tvManager.setText(R.string.cancel_room_manager);
         }
+        //本房间禁言
         if (user.getDisabledService() != null) {
             for (int i = 0; i < user.getDisabledService().size(); i++) {
                 if (2 == user.getDisabledService().get(i)) {
                     tvRoom.setText(R.string.cancel_mute);
+                }
+            }
+        }
+        //全局禁言
+        if (user.getDisabledService() != null) {
+            for (int i = 0; i < user.getDisabledService().size(); i++) {
+                if (2 == user.getDisabledService().get(i)) {
+                    tvGlobal.setText(R.string.cancel_global_mute);
                 }
             }
         }

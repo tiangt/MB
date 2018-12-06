@@ -187,9 +187,9 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void getRoomUserInfo(long userId, int programId) {
+    public void getRoomUserInfo(long visitorId, int userId, int programId) {
         if (userId != 0) {
-            liveModel.doRoomUserInfo(userId, programId, this);
+            liveModel.doRoomUserInfo(visitorId,userId, programId, this);
         }
     }
 

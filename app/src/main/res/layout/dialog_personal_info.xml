@@ -32,7 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.609">
+            app:layout_constraintVertical_bias="0.578">
 
             <ImageButton
                 android:id="@+id/btn_personal"
@@ -187,9 +187,9 @@
                     <ImageView
                         android:layout_width="10dp"
                         android:layout_height="10dp"
-                        android:src="@drawable/ic_at"
+                        android:layout_marginTop="4dp"
                         android:layout_toLeftOf="@id/tv_at"
-                        android:layout_marginTop="4dp"/>
+                        android:src="@drawable/ic_at" />
 
                 </RelativeLayout>
 

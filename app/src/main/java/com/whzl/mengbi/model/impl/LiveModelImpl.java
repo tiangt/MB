@@ -128,10 +128,11 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void doRoomUserInfo(long userId, int programId, OnLiveFinishedListener listener) {
+    public void doRoomUserInfo(long visitorId, int userId, int programId, OnLiveFinishedListener listener) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
-        paramsMap.put("userId", userId + "");
+        paramsMap.put("userID", userId + "");
+        paramsMap.put("visitorId", visitorId + "");
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
