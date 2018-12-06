@@ -49,6 +49,7 @@ import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
+import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
@@ -69,6 +70,7 @@ import com.whzl.mengbi.gift.PkControl;
 import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
+import com.whzl.mengbi.gift.WeekStarControl;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
@@ -111,6 +113,7 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
+import com.whzl.mengbi.ui.widget.view.WeekStarView;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -245,6 +248,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout llPagerIndex;
     @BindView(R.id.btn_free_gift)
     ImageButton btnFreeGift;
+    @BindView(R.id.iv_weekstar)
+    ImageView ivWeekstar;
+    @BindView(R.id.wsv_weekstar)
+    WeekStarView wsvWeekstar;
+    @BindView(R.id.cl_weekstar)
+    ConstraintLayout clWeekstar;
+    @BindView(R.id.rl_weekstar)
+    RelativeLayout rlWeekstar;
+    @BindView(R.id.btn_more)
+    ImageButton btnMore;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -293,6 +306,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private String mShareUrl;
     private String mLiveState;
     private String mIsFollowed;
+    private WeekStarControl weekStarControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1486,6 +1500,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             PkEvent pkEvent = new PkEvent(((PkMessage) message).pkJson, this);
             mRunWayBroadControl.load(pkEvent);
         }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(WeekStarEvent weekStarEvent) {
+        if (weekStarControl == null) {
+            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+            weekStarControl.setTvEnter(wsvWeekstar);
+            weekStarControl.setIvEnter(ivWeekstar);
+            weekStarControl.setRlEnter(rlWeekstar);
+        }
+        weekStarControl.showEnter(weekStarEvent);
     }
 
     private void otherSideLive() {

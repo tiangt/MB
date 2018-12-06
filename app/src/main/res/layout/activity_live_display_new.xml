@@ -297,6 +297,37 @@
 
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:id="@+id/rl_weekstar"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_weekstar"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:scaleType="fitXY" />
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/cl_weekstar"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginRight="14dp"
+                        android:background="@color/transparent">
+
+                        <com.whzl.mengbi.ui.widget.view.WeekStarView
+                            android:id="@+id/wsv_weekstar"
+                            android:layout_width="1000dp"
+                            android:layout_height="25dp"
+                            android:gravity="center_vertical"
+                            android:maxLines="1"
+                            android:textColor="#fffffa"
+                            android:textSize="12sp" />
+                    </android.support.constraint.ConstraintLayout>
+                </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tv_lucky_gift"
                     android:layout_width="320dp"
