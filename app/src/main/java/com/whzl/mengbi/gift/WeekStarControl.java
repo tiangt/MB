@@ -82,7 +82,7 @@ public class WeekStarControl {
             tvEnter.append(" 恭喜 ");
             tvEnter.append(bean.nickName);
             tvEnter.append(" 在周星礼物 ");
-            tvEnter.append("xing");
+            tvEnter.append(bean.giftName);
             tvEnter.append(" 争夺中，上升到第一名");
         }
     }

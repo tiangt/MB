@@ -26,5 +26,6 @@ public class WeekStarJson {
         public int ranksId;
         public String speakcolor;
         public String userId;
+        public String giftName;
     }
 }
