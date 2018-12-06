@@ -314,16 +314,19 @@ public class PersonalInfoActivity extends BaseActivity {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setNumColor(Color.rgb(255, 43, 63));
                         tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_five);
+                        tvPrettyNum.setPrettyTextSize(10);
                         tvPrettyNum.setNumber();
                     } else if (goodsListBean.getGoodsName().length() == 6) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setNumColor(Color.rgb(255, 165, 0));
                         tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_six);
+                        tvPrettyNum.setPrettyTextSize(10);
                         tvPrettyNum.setNumber();
                     } else if (goodsListBean.getGoodsName().length() == 7) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setNumColor(Color.rgb(49, 161, 255));
                         tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_seven);
+                        tvPrettyNum.setPrettyTextSize(10);
                         tvPrettyNum.setNumber();
                     }
 

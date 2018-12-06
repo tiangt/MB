@@ -1511,4 +1511,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             e.printStackTrace();
         }
     }
+
+    public void showAtChat(String at) {
+        if (mChatDialog != null && mChatDialog.isAdded()) {
+            return;
+        }
+        mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, at, mAnchor)
+                .setDimAmount(0)
+                .setShowBottom(true)
+                .show(getSupportFragmentManager());
+    }
 }

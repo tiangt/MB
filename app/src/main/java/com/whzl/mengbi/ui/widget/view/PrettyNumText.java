@@ -22,6 +22,7 @@ public class PrettyNumText extends LinearLayout {
     private int backgroundColor;
     private String prettyNum;
     private int numColor;
+    private float size;
     private TextView tvPretty;
     private TextView tvNum;
 
@@ -55,6 +56,10 @@ public class PrettyNumText extends LinearLayout {
         this.numColor = numColor;
     }
 
+    public void setPrettyTextSize(float size){
+        this.size = size;
+    }
+
     private void init(Context context) {
         LayoutInflater from = LayoutInflater.from(context);
         inflate = from.inflate(R.layout.layout_pretty_num, this, false);
@@ -68,7 +73,8 @@ public class PrettyNumText extends LinearLayout {
         tvNum.setText(prettyNum);
         tvNum.setTextColor(numColor);
         tvNum.setBackgroundResource(backgroundColor);
+        tvPretty.setTextSize(size);
+        tvNum.setTextSize(size);
     }
-
 
 }

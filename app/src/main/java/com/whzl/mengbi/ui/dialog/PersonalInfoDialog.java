@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     TextView tvPrivateChat;
     @BindView(R.id.rl_more)
     RelativeLayout rlMore;
+    @BindView(R.id.rl_at)
+    RelativeLayout rlAt;
 
     private float dimAmount = 0.7f;//灰度深浅
     private long mUserId;
@@ -151,26 +154,12 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         mVisitorId = getArguments().getLong("visitorId");
         liveState = getArguments().getString("liveState");
         mUser = getArguments().getParcelable("user");
-        setAnimation();
         getUserInfo(mUserId, mProgramId, mVisitorId);
         getHomePageInfo(mUserId, mVisitorId);
     }
 
-    private void setAnimation() {
-        Window window = getDialog().getWindow();
-        if (window != null) {
-            WindowManager.LayoutParams lp = window.getAttributes();
-            //调节灰色背景透明度[0-1]，默认0.5f
-            lp.dimAmount = dimAmount;
-            //是否在底部显示
-            lp.gravity = Gravity.CENTER;
-            window.setAttributes(lp);
-        }
-        setCancelable(true);
-    }
-
     @OnClick({R.id.btn_personal, R.id.btn_buy_royal, R.id.tv_follow, R.id.btn_close,
-            R.id.tv_private_chat, R.id.rl_more})
+            R.id.tv_private_chat, R.id.rl_more, R.id.rl_at})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_personal:
@@ -206,6 +195,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                         .setShowBottom(true)
                         .show(getActivity().getSupportFragmentManager());
                 break;
+            case R.id.rl_at:
+                ((LiveDisplayActivity) getActivity()).showAtChat("@" + mViewedUser.getNickname());
+                dismiss();
+                break;
             case R.id.btn_close:
                 dismiss();
                 break;
@@ -231,7 +224,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                         mViewedUser = roomUserInfoData.getData();
                         setupView(mViewedUser);
                     }
-                    if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mVisitorId) {
+
+                    if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mViewedUser.getUserId()) {
                         return;
                     }
                     setupOperations();
@@ -297,16 +291,19 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setNumColor(Color.rgb(255, 43, 63));
                     tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_five);
+                    tvPrettyNum.setPrettyTextSize(9);
                     tvPrettyNum.setNumber();
                 } else if (goodsListBean.getGoodsName().length() == 6) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setNumColor(Color.rgb(255, 165, 0));
                     tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_six);
+                    tvPrettyNum.setPrettyTextSize(9);
                     tvPrettyNum.setNumber();
                 } else if (goodsListBean.getGoodsName().length() == 7) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setNumColor(Color.rgb(49, 161, 255));
                     tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_seven);
+                    tvPrettyNum.setPrettyTextSize(9);
                     tvPrettyNum.setNumber();
                 }
             }
@@ -475,5 +472,12 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 });
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        Window window = getDialog().getWindow();
+        WindowManager.LayoutParams windowParams = window.getAttributes();
+        windowParams.dimAmount = 0.5f;
+        window.setAttributes(windowParams);
+    }
 }
