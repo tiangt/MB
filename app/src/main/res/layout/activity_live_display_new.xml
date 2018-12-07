@@ -300,19 +300,20 @@
                 <RelativeLayout
                     android:id="@+id/rl_weekstar"
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:visibility="gone">
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/iv_weekstar"
                         android:layout_width="match_parent"
-                        android:layout_height="25dp"
-                        android:scaleType="fitXY" />
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true" />
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_weekstar"
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
+                        android:layout_centerVertical="true"
                         android:layout_marginLeft="14dp"
                         android:layout_marginRight="14dp"
                         android:background="@color/transparent">

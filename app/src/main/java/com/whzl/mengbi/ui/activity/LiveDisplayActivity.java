@@ -307,6 +307,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private String mLiveState;
     private String mIsFollowed;
     private WeekStarControl weekStarControl;
+    private LiveWeekRankFragment weekRankFragment;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1127,7 +1128,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //            mGrandAdaper.notifyDataSetChanged();
         }
         //周星榜
-        LiveWeekRankFragment weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
         mActivityGrands.add(weekRankFragment);
         mGrandAdaper.notifyDataSetChanged();
         initActivityPoints();
@@ -1512,6 +1513,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             weekStarControl.setRlEnter(rlWeekstar);
         }
         weekStarControl.showEnter(weekStarEvent);
+        if (weekRankFragment != null) {
+            weekRankFragment.loaddata();
+        }
     }
 
     private void otherSideLive() {

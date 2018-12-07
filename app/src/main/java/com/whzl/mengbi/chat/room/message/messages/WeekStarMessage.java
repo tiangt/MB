@@ -31,11 +31,11 @@ public class WeekStarMessage implements FillHolderMessage {
         mholder.textView.setText("");
         mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         mholder.textView.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_week_star_chat));
-        mholder.textView.append(LightSpanString.getLightString(" 恭喜 ", Color.parseColor("#ffcc33")));
-        mholder.textView.append(LightSpanString.getLightString(weekStarJson.context.nickName, Color.parseColor("#ffcc33")));
+        mholder.textView.append(LightSpanString.getLightString(" 恭喜 ", Color.parseColor("#FFF9F9F9")));
+        mholder.textView.append(LightSpanString.getLightString(weekStarJson.context.nickName, Color.parseColor("#FFFF538C")));
         mholder.textView.append(LightSpanString.getLightString(" 在周星礼物 ", Color.parseColor("#ffcc33")));
-        mholder.textView.append(LightSpanString.getLightString( weekStarJson.context.giftName, Color.parseColor("#ffcc33")));
-        mholder.textView.append(LightSpanString.getLightString( " 争夺中上升到第一名", Color.parseColor("#ffcc33")));
+        mholder.textView.append(LightSpanString.getLightString(weekStarJson.context.giftName, Color.parseColor("#FFF9F9F9")));
+        mholder.textView.append(LightSpanString.getLightString(" 争夺中上升到第一名", Color.parseColor("#ffcc33")));
     }
 
     @Override
