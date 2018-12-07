@@ -581,7 +581,6 @@
                 android:layout_toLeftOf="@id/btn_more"
                 android:background="@null"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_live_free_gift"
                 android:visibility="visible" />
 
             <ImageButton

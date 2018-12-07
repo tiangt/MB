@@ -68,6 +68,11 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
 
     private boolean canLogin;
     private boolean canChat;
+    private OnGetGiftSuccessListener listener;
+
+    public void setListener(OnGetGiftSuccessListener listener) {
+        this.listener = listener;
+    }
 
     public static BaseAwesomeDialog newInstance(int mProgramId, int mAnchorId) {
         FreeGiftDialog freeGiftDialog = new FreeGiftDialog();
@@ -135,6 +140,9 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
                     @Override
                     public void onSuccess(JsonElement bean) {
                         initData();
+                        if (listener != null) {
+                            listener.onGetgiftSuccess();
+                        }
                     }
 
                     @Override
@@ -142,6 +150,10 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
 
                     }
                 });
+    }
+
+    public interface OnGetGiftSuccessListener{
+        void onGetgiftSuccess();
     }
 
     private void initData() {
@@ -185,7 +197,7 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
                         } else {
                             tvChat.setText("领取");
                             tvChat.setBackgroundResource(R.drawable.btn_receive_free_gift);
-                            canChat = false;
+                            canChat = true;
                         }
                         list.clear();
                         list.addAll(bean.watch);

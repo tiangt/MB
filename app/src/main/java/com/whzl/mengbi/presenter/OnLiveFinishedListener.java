@@ -4,6 +4,7 @@ import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -47,4 +48,6 @@ public interface OnLiveFinishedListener {
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
 
     void onGetAnchorTaskSuccess(AnchorTaskBean dataBean);
+
+    void onGetDailyTaskStateSuccuss(GetDailyTaskStateBean dailyTaskStateBean);
 }

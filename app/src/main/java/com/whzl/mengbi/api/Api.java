@@ -15,6 +15,7 @@ import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.DailyTaskBean;
 import com.whzl.mengbi.model.entity.DemonCarBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
@@ -599,5 +600,15 @@ public interface Api {
     @POST("v1/mall/get-demon-car-prices")
     @FormUrlEncoded
     Observable<ApiResult<DemonCarBean>> getDemonCar(@FieldMap Map<String, String> params);
+
+    /**
+     * 每日奖励领取状态
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/daily-task-is-receive")
+    @FormUrlEncoded
+    Observable<ApiResult<GetDailyTaskStateBean>> getDailyTaskState(@FieldMap Map<String, String> params);
 
 }

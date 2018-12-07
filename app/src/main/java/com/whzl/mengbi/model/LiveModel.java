@@ -34,4 +34,6 @@ public interface LiveModel {
     void getRoomRankTotal(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void getDailyTaskState(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

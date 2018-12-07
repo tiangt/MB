@@ -5,6 +5,7 @@ import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -180,6 +181,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
+    @Override
+    public void onGetDailyTaskStateSuccuss(GetDailyTaskStateBean dailyTaskStateBean) {
+        if (liveView != null) {
+            liveView.onGetDailyTaskStateSuccess(dailyTaskStateBean);
+        }
+    }
+
 
     @Override
     public void followHost(long userId, int mProgramId) {
@@ -249,6 +257,14 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("type", type);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getRoomRankTotal(signPramsMap, this);
+    }
+
+    @Override
+    public void getDailyTaskState(long mUserId) {
+        HashMap map = new HashMap();
+        map.put("userId", mUserId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getDailyTaskState(signPramsMap, this);
     }
 
     public void getAnchorTask(int mAnchorId) {

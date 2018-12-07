@@ -75,6 +75,7 @@ import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -595,6 +596,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         roomRankTotalDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             mLivePresenter.getRoomRankTotal(mProgramId, "sevenDay");
         });
+        if (mUserId == 0) {
+            btnFreeGift.setImageResource(R.drawable.ic_live_free_gift);
+        } else {
+            mLivePresenter.getDailyTaskState(mUserId);
+        }
     }
 
     private void getRoomToken() {
@@ -730,6 +736,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     mFreeGiftDialog = FreeGiftDialog.newInstance(mProgramId, mAnchorId)
                             .setShowBottom(true)
                             .setDimAmount(0);
+                    ((FreeGiftDialog) mFreeGiftDialog).setListener(() -> mLivePresenter.getDailyTaskState(mUserId));
                 }
                 mFreeGiftDialog.show(getSupportFragmentManager());
                 break;
@@ -744,15 +751,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        intent.putExtra("from", this.getClass().toString());
 //        startActivityForResult(intent, REQUEST_LOGIN);
         LoginDialog.newInstance()
-                .setLoginSuccessListener(new LoginDialog.LoginSuccessListener() {
-                    @Override
-                    public void onLoginSuccessListener() {
-                        LogUtils.e("sssssssss   onLoginSuccessListener");
-                        mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
-                        mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
-                        getRoomToken();
-                        isVip = true;
-                    }
+                .setLoginSuccessListener(() -> {
+                    LogUtils.e("sssssssss   onLoginSuccessListener");
+                    mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
+                    mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
+                    getRoomToken();
+                    isVip = true;
                 })
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0.7f)
@@ -1170,6 +1174,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mActivityGrands.add(anchorTaskFragment);
             mGrandAdaper.notifyDataSetChanged();
             initActivityPoints();
+        }
+    }
+
+    @Override
+    public void onGetDailyTaskStateSuccess(GetDailyTaskStateBean dailyTaskStateBean) {
+        if ("T".equals(dailyTaskStateBean.receive)) {
+            btnFreeGift.setImageResource(R.drawable.ic_live_free_gift_receive);
+        } else {
+            btnFreeGift.setImageResource(R.drawable.ic_live_free_gift);
         }
     }
 
