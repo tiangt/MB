@@ -12,6 +12,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.AnchorLevelChangeAction
 import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.BroadCastAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.EverydayTaskAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LotteryAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
@@ -89,6 +90,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("PK", new PkAction());
         actionsMap.put("AWARD_LOTTERY", new LotteryAction());
         actionsMap.put("WeekStarFirstNotify", new WeekStarAction());
+        actionsMap.put("EVERY_DAY_TASK", new EverydayTaskAction());
     }
 
     private void initChatAction() {
@@ -148,7 +150,7 @@ public class MessageRouter implements MessageCallback {
             chatAction.performAction(msgInfo, mContext);
         } else if (type.equals("private")) {
             privateChatAction.performAction(msgInfo, mContext);
-        } else if (type.equals("localroom") || type.equals("broadcast")) {
+        } else if (type.equals("localroom") || type.equals("broadcast") || type.equals("user")) {
             ChatRoomEventJson eventJson = GsonUtils.GsonToBean(msgInfo, ChatRoomEventJson.class);
             if (null == eventJson) {
                 return;

@@ -37,6 +37,7 @@ import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
+import com.whzl.mengbi.chat.room.message.events.EverydayEvent;
 import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
@@ -585,7 +586,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getProgramFirst(mProgramId);
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
-        mLivePresenter.getRoomUserInfo(mUserId,mProgramId);
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
         mLivePresenter.getActivityList();
         mLivePresenter.getPkInfo(mProgramId);
@@ -756,7 +757,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     public void onLoginSuccessListener() {
                         LogUtils.e("sssssssss   onLoginSuccessListener");
                         mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
-                        mLivePresenter.getRoomUserInfo(mUserId,mProgramId);
+                        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                         getRoomToken();
                         isVip = true;
                     }
@@ -1253,13 +1254,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserInfoUpdateEvent event) {
-        mLivePresenter.getRoomUserInfo(mUserId,mProgramId);
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GuardOpenEvent event) {
         if (event.userId == mUserId) {
-            mLivePresenter.getRoomUserInfo(mUserId,  mProgramId);
+            mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         }
         showGuard(event.avatar, event.nickName);
         mLivePresenter.getGuardTotal(mProgramId);
@@ -1362,7 +1363,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView2 != null) {
             textureView2.runInForeground();
         }
-        mLivePresenter.getRoomUserInfo(mUserId,  mProgramId);
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
 //        mLivePresenter.getPkInfo(mProgramId);
     }
 
@@ -1532,6 +1533,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (weekRankFragment != null) {
             weekRankFragment.loaddata();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EverydayEvent event) {
+        mLivePresenter.getDailyTaskState(mUserId);
     }
 
     private void otherSideLive() {

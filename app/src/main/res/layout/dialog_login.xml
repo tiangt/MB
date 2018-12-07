@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rl_icon_container"
         android:layout_width="245dp"
-        android:layout_height="280dp"
+        android:layout_height="205dp"
         android:background="@drawable/bg_login_dialog">
 
 
@@ -17,8 +17,8 @@
             android:layout_width="12dp"
             android:layout_height="12dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="17dp"
             android:background="@null"
             android:src="@drawable/close_icon" />
 
@@ -26,16 +26,16 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ib_close"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
             android:text="登录萌比"
             android:textColor="#70000000"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         <LinearLayout
             android:id="@+id/ll_login"
             android:layout_width="match_parent"
-            android:layout_height="117dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/tv_title"
             android:layout_marginLeft="21dp"
             android:layout_marginRight="21dp"
@@ -49,7 +49,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginRight="6dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_btn_login_dialog"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -73,7 +72,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="6dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_btn_login_dialog"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -95,7 +93,7 @@
         <LinearLayout
             android:id="@+id/ll_phone_login"
             android:layout_width="204dp"
-            android:layout_height="46dp"
+            android:layout_height="33dp"
             android:layout_below="@id/ll_login"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="18dp"
@@ -123,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="14dp"
             android:layout_marginLeft="21dp"
             android:text="同意《用户协议》"
             android:textColor="#40000000"
@@ -135,10 +133,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="14dp"
             android:layout_marginRight="16dp"
             android:text="立即注册"
-            android:textColor="#ff2b3f"
+            android:textColor="#70000000"
             android:textSize="12sp" />
     </RelativeLayout>
 </LinearLayout>
