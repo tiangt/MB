@@ -28,6 +28,7 @@ import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.PersonalInfoActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
@@ -36,6 +37,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
+import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.ToastUtils;
@@ -155,6 +157,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         mUser = getArguments().getParcelable("user");
         getUserInfo(mUserId, mProgramId, mVisitorId);
         getHomePageInfo(mUserId, mVisitorId);
+        isRoyal();
     }
 
     @OnClick({R.id.btn_personal, R.id.btn_buy_royal, R.id.tv_follow, R.id.btn_close,
@@ -162,6 +165,11 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_personal:
+                if (mVisitorId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    dismiss();
+                    return;
+                }
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putLong("userId", mUserId);
@@ -173,16 +181,31 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 dismiss();
                 break;
             case R.id.btn_buy_royal:
+                if (mVisitorId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    dismiss();
+                    return;
+                }
                 Intent intentShop = new Intent(getActivity(), ShopActivity.class);
                 startActivity(intentShop);
                 dismiss();
                 break;
             case R.id.tv_follow:
                 //关注
+                if (mVisitorId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    dismiss();
+                    return;
+                }
                 follow(mVisitorId, mUserId);
                 mIsFollowed = "T";
                 break;
             case R.id.tv_private_chat:
+                if (mVisitorId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    dismiss();
+                    return;
+                }
                 EventBus.getDefault().post(new PrivateChatSelectedEvent(mViewedUser));
                 if (listener != null) {
                     listener.onPrivateChatClick();
@@ -190,11 +213,21 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 dismiss();
                 break;
             case R.id.rl_more:
+                if (mVisitorId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    dismiss();
+                    return;
+                }
                 OperateMoreDialog.newInstance(mUserId, mVisitorId, mProgramId, mUser)
                         .setShowBottom(true)
                         .show(getActivity().getSupportFragmentManager());
                 break;
             case R.id.rl_at:
+                if (mVisitorId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    dismiss();
+                    return;
+                }
                 ((LiveDisplayActivity) getActivity()).showAtChat("@" + mViewedUser.getNickname());
                 dismiss();
                 break;
@@ -223,6 +256,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                         mViewedUser = roomUserInfoData.getData();
                         setupView(mViewedUser);
                     }
+
 
                     if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mViewedUser.getUserId()) {
                         return;
@@ -339,9 +373,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     if (levelValue == 0) {
                         break;
                     } else {
-                        if (levelValue == 0) {
-                            btnBuyRoyal.setVisibility(View.VISIBLE);
-                        }
                         ImageView royalImage = new ImageView(getContext());
                         royalImage.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
                         LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 30), UIUtil.dip2px(getContext(), 11));
@@ -478,5 +509,30 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         WindowManager.LayoutParams windowParams = window.getAttributes();
         windowParams.dimAmount = 0.5f;
         window.setAttributes(windowParams);
+    }
+
+    private void isRoyal() {
+        String userId = String.valueOf(mVisitorId);
+        BusinessUtils.getUserInfo(getActivity(), userId, new BusinessUtils.UserInfoListener() {
+            @Override
+            public void onSuccess(UserInfo.DataBean bean) {
+                if (bean.getLevelList() != null) {
+                    for (int i = 0; i < bean.getLevelList().size(); i++) {
+                        if ("ROYAL_LEVEL".equals(bean.getLevelList().get(i).getLevelType())) {
+                            if (0 == bean.getLevelList().get(i).getLevelValue()) {
+                                btnBuyRoyal.setVisibility(View.VISIBLE);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onError(int code) {
+
+            }
+        });
     }
 }

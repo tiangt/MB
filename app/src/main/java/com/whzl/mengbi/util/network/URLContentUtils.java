@@ -204,4 +204,14 @@ public class URLContentUtils {
      * 获取用户主页
      */
     public static final String HOME_PAGE = "v1/user/homepage";
+
+    /**
+     * 举报原因
+     */
+    public static final String REPORT_REASON = "v1/social/report-reason";
+
+    /**
+     * 举报
+     */
+    public static final String REPORT = "v1/social/report";
 }
