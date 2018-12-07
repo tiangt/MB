@@ -289,8 +289,35 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_follow_follow, parent, false);
                 return new AnchorViewHolder(itemView);
             }
+
+            @Override
+            protected BaseViewHolder onCreateLoadMoreFooterViewHolder(ViewGroup parent) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_load_more_end, parent, false);
+                TextView tvFoot = view.findViewById(R.id.tv_foot);
+                tvFoot.setText("没有更多了~");
+                return new LoadMoreFooterViewHolder(view);
+            }
         };
         recycler.setAdapter(adapter);
+    }
+
+    private class LoadMoreFooterViewHolder extends BaseViewHolder {
+
+        public LoadMoreFooterViewHolder(View view) {
+            super(view);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            // 强制关闭复用，刷新动画
+            this.setIsRecyclable(false);
+            // 设置自定义加载中和到底了效果
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            // 设置点击效果，比如加载失败，点击重试
+        }
     }
 
     public static FollowFragment newInstance() {
@@ -357,17 +384,17 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         tvFollowState.setTextColor(Color.parseColor("#20000000"));
         tvFollowState.setText("已关注");
         tvFollowState.setOnClickListener(v -> {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setTitle("提示");
-            dialog.setMessage("是否确定取消关注该主播");
-            dialog.setNegativeButton("取消", null);
-            dialog.setPositiveButton("确定", (dialog1, which) -> {
-                HashMap map = new HashMap();
-                map.put("userId", userId);
-                map.put("programId", anchorInfoBean.programId);
-                unFollow(map, tvFollowState, anchorInfoBean);
-            });
-            dialog.show();
+//            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+//            dialog.setTitle("提示");
+//            dialog.setMessage("是否确定取消关注该主播");
+//            dialog.setNegativeButton("取消", null);
+//            dialog.setPositiveButton("确定", (dialog1, which) -> {
+            HashMap map = new HashMap();
+            map.put("userId", userId);
+            map.put("programId", anchorInfoBean.programId);
+            unFollow(map, tvFollowState, anchorInfoBean);
+//            });
+//            dialog.show();
         });
     }
 
@@ -400,12 +427,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         tvFollowState.setBackgroundResource(R.drawable.bg_state_no_follow_follow);
         tvFollowState.setTextColor(Color.parseColor("#70000000"));
         tvFollowState.setText("关注");
-        tvFollowState.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                follow(tvFollowState, anchorInfoBean);
-            }
-        });
+        tvFollowState.setOnClickListener(v -> follow(tvFollowState, anchorInfoBean));
     }
 
     private void follow(TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean infoBean) {
