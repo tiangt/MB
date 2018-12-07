@@ -51,6 +51,9 @@ public class ShareUtils {
                     @Override
                     public void onResult(final SHARE_MEDIA share_media) {
                         activity.runOnUiThread(() -> {
+                            if(share_media == SHARE_MEDIA.WEIXIN || share_media ==SHARE_MEDIA.WEIXIN_CIRCLE){
+                                return;
+                            }
                             Toast.makeText(activity, "分享成功", Toast.LENGTH_SHORT).show();
                         });
                     }
@@ -95,6 +98,9 @@ public class ShareUtils {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(share_media == SHARE_MEDIA.WEIXIN || share_media ==SHARE_MEDIA.WEIXIN_CIRCLE){
+                                    return;
+                                }
                                 Toast.makeText(activity, "分享成功", Toast.LENGTH_SHORT).show();
                             }
                         });
