@@ -584,7 +584,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getProgramFirst(mProgramId);
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
-        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
         mLivePresenter.getActivityList();
         mLivePresenter.getPkInfo(mProgramId);
@@ -749,7 +749,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     public void onLoginSuccessListener() {
                         LogUtils.e("sssssssss   onLoginSuccessListener");
                         mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
-                        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                        mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
                         getRoomToken();
                         isVip = true;
                     }
@@ -996,7 +996,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onSendGiftSuccess() {
-        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
     }
 
     @Override
@@ -1237,13 +1237,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserInfoUpdateEvent event) {
-        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GuardOpenEvent event) {
         if (event.userId == mUserId) {
-            mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+            mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
         }
         showGuard(event.avatar, event.nickName);
         mLivePresenter.getGuardTotal(mProgramId);
@@ -1346,7 +1346,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView2 != null) {
             textureView2.runInForeground();
         }
-        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
 //        mLivePresenter.getPkInfo(mProgramId);
     }
 
@@ -1418,7 +1418,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (requestCode == REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
                 mUserId = (long) SPUtils.get(this, "userId", 0L);
-                mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
                 getRoomToken();
                 isVip = true;
                 LogUtils.e("sssssssss   onActivityResult");
@@ -1427,7 +1427,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (requestCode == AppUtils.REQUEST_LOGIN) {
             if (resultCode == RESULT_OK) {
                 mUserId = (long) SPUtils.get(this, "userId", 0L);
-                mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                mLivePresenter.getRoomUserInfo(mUserId, mAnchorId, mProgramId);
                 getRoomToken();
                 isVip = true;
                 LogUtils.e("sssssssss   onActivityResult");

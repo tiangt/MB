@@ -93,7 +93,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     @BindView(R.id.rl_at)
     RelativeLayout rlAt;
 
-    private float dimAmount = 0.7f;//灰度深浅
     private long mUserId;
     private int mProgramId;
     private RoomUserInfo.DataBean mViewedUser;

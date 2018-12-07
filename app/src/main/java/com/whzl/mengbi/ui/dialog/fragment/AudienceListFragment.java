@@ -154,9 +154,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
                                         int intrinsicWidth = resource.getIntrinsicWidth();
                                         ImageView imageView = new ImageView(getContext());
                                         imageView.setImageDrawable(resource);
-                                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext()
-                                                , intrinsicWidth / 4f * 3)
-                                                , UIUtil.dip2px(getContext(), intrinsicHeight / 4f * 3));
+                                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 15), UIUtil.dip2px(getContext(), 15));
                                         params.leftMargin = UIUtil.dip2px(getContext(), 6);
                                         linearLayout.addView(imageView, params);
                                     }

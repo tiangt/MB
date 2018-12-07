@@ -12,7 +12,7 @@ public interface LivePresenter {
 
     void followHost(long userId, int programId);
 
-    void getRoomUserInfo(long userId, int programId);
+    void getRoomUserInfo(long visitorId, int userId, int programId);
 
     void onDestory();
 
