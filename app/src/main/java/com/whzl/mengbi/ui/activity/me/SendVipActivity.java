@@ -171,7 +171,7 @@ public class SendVipActivity extends BaseActivity {
         }
         BusinessUtils.mallBuy(this, String.valueOf(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L)), String.valueOf(priceBean.goodsId)
                 , String.valueOf(priceBean.prices.month.priceId), "1", etIdSearch.getText().toString()
-                , "", "", new BusinessUtils.MallBuyListener() {
+                , "", new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
                         ToastUtils.toastMessage(SendVipActivity.this, "赠送成功");

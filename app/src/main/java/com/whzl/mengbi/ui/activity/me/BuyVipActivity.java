@@ -83,7 +83,7 @@ public class BuyVipActivity extends BaseActivity {
 
     private void buy() {
         BusinessUtils.mallBuy(this, String.valueOf(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L)), String.valueOf(priceBean.goodsId)
-                , String.valueOf(priceBean.prices.month.priceId), "1", "", "", "", new BusinessUtils.MallBuyListener() {
+                , String.valueOf(priceBean.prices.month.priceId), "1", "", "", new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
                         ToastUtils.toastMessage(BuyVipActivity.this,"购买成功");

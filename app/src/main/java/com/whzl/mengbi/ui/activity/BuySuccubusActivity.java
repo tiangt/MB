@@ -106,7 +106,7 @@ public class BuySuccubusActivity extends BaseActivity {
     private void buy() {
         Long userid = (Long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
         BusinessUtils.mallBuy(this, userid + "", goodsId + "", priceId + "", "1",
-                "", "", "", new BusinessUtils.MallBuyListener() {
+                "", "",  new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
                         ToastUtils.toastMessage(BuySuccubusActivity.this, "购买成功");

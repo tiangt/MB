@@ -289,7 +289,7 @@ public class BuyGoodnumActivity extends BaseActivity {
 
     private void buyorsend(String salerId, String programId) {
         BusinessUtils.mallBuy(this, String.valueOf(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L))
-                , bean.goodsId + "", bean.priceId + "", "1", etSendId.getText().toString().trim(), salerId, programId
+                , bean.goodsId + "", bean.priceId + "", "1", etSendId.getText().toString().trim(), salerId
                 , new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
