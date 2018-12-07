@@ -43,6 +43,7 @@ public class LiveWeekRankFragment extends BaseFragment {
     TextView tvName3;
     @BindView(R.id.tv_rank_3)
     TextView tvRank3;
+    private int mAnchorId;
 
     public static LiveWeekRankFragment newInstance(int mProgramId, int mAnchorId) {
         LiveWeekRankFragment weekRankFragment = new LiveWeekRankFragment();
@@ -60,7 +61,11 @@ public class LiveWeekRankFragment extends BaseFragment {
 
     @Override
     public void init() {
-        int mAnchorId = getArguments().getInt("mAnchorId");
+        mAnchorId = getArguments().getInt("mAnchorId");
+        loaddata();
+    }
+
+    public void loaddata() {
         HashMap map = new HashMap();
         map.put("userId", mAnchorId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
@@ -94,7 +99,5 @@ public class LiveWeekRankFragment extends BaseFragment {
                     public void onError(int code) {
                     }
                 });
-
-
     }
 }

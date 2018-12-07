@@ -150,7 +150,7 @@ public class WeekStarView extends AppCompatTextView {
         }
         canvas.translate(-step, 0);
         super.onDraw(canvas);
-        if (viewWidth > textLength + 30) {
+        if (viewWidth > textLength) {
             return;
         }
         Observable.just(1)
