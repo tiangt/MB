@@ -59,7 +59,7 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
     TextView tvGetNum;
 
     private ArrayList<DailyTaskBean.LoginBean> list = new ArrayList();
-    private Long userid;
+    private long userid;
     private BaseListAdapter baseListAdapter;
     private int loginawardId;
     private long loginawardSn;
