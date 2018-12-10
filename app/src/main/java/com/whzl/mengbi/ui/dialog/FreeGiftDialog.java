@@ -16,6 +16,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.DailyTaskBean;
+import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.ui.activity.BuySuccubusActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -29,6 +30,7 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -100,6 +102,46 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
         initRecycler();
         initEvent();
         initData();
+        initBuyVisible();
+    }
+
+    private void initBuyVisible() {
+        HashMap params = new HashMap();
+        params.put("programId", mProgramId + "");
+        params.put("userId", userid + "");
+        Map signPramsMap = ParamsUtils.getSignPramsMap(params);
+        ApiFactory.getInstance().getApi(Api.class)
+                .roomUser(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<RoomUserBean>(this) {
+
+                    @Override
+                    public void onSuccess(RoomUserBean bean) {
+                        if (bean.goodsList != null) {
+                            if (checkHasCard(bean.goodsList)) {
+                                tvBuyCard.setVisibility(View.GONE);
+                            } else {
+                                tvBuyCard.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+
+    }
+
+    private boolean checkHasCard(List<RoomUserBean.GoodsListBean> goodsList) {
+        for (int i = 0; i < goodsList.size(); i++) {
+            if (goodsList.get(i).goodsType.equals("DEMON_CARD")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void initEvent() {
@@ -152,7 +194,7 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
                 });
     }
 
-    public interface OnGetGiftSuccessListener{
+    public interface OnGetGiftSuccessListener {
         void onGetgiftSuccess();
     }
 
@@ -177,8 +219,8 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
                             tvLogin.setBackgroundResource(R.drawable.btn_received_free_gift);
                             canLogin = false;
                         } else if ("INACTIVE".equals(bean.login.status)) {
-                            tvLogin.setText("领取");
-                            tvLogin.setBackgroundResource(R.drawable.btn_receive_free_gift);
+                            tvLogin.setText("未完成");
+                            tvLogin.setBackgroundResource(R.drawable.btn_unfinished_free_gift);
                             canLogin = false;
                         } else {
                             tvLogin.setText("领取");
@@ -191,8 +233,8 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
                             tvChat.setBackgroundResource(R.drawable.btn_received_free_gift);
                             canChat = false;
                         } else if ("INACTIVE".equals(bean.chat.status)) {
-                            tvChat.setText("领取");
-                            tvChat.setBackgroundResource(R.drawable.btn_receive_free_gift);
+                            tvChat.setText("未完成");
+                            tvChat.setBackgroundResource(R.drawable.btn_unfinished_free_gift);
                             canChat = false;
                         } else {
                             tvChat.setText("领取");
@@ -297,7 +339,7 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
                     tvNum.setText("10");
                     break;
                 case 3:
-                    tvNum.setText("10");
+                    tvNum.setText("15");
                     break;
                 case 4:
                     tvNum.setText("20");

@@ -31,6 +31,7 @@ import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
+import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -610,5 +611,15 @@ public interface Api {
     @POST("v1/activity/daily-task-is-receive")
     @FormUrlEncoded
     Observable<ApiResult<GetDailyTaskStateBean>> getDailyTaskState(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间用户信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/room-user")
+    @FormUrlEncoded
+    Observable<ApiResult<RoomUserBean>> roomUser(@FieldMap Map<String, String> params);
 
 }
