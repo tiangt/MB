@@ -197,4 +197,5 @@
     <color name="text_blue">#28a1ff</color>
     <color name="text_green">#44af4b</color>
     <color name="text_purple">#ff36f3</color>
+    <color name="tran_grey">#99eeeeee</color>
 </resources>

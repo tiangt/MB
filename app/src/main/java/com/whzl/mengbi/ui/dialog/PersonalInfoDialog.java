@@ -155,9 +155,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         mVisitorId = getArguments().getLong("visitorId");
         liveState = getArguments().getString("liveState");
         mUser = getArguments().getParcelable("user");
+        mTvAnchorId.setText("ID " + mUser.getUserId());
         getUserInfo(mUserId, mProgramId, mVisitorId);
         getHomePageInfo(mUserId, mVisitorId);
-        isRoyal();
+//        isRoyal();
     }
 
     @OnClick({R.id.btn_personal, R.id.btn_buy_royal, R.id.tv_follow, R.id.btn_close,
@@ -187,6 +188,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     return;
                 }
                 Intent intentShop = new Intent(getActivity(), ShopActivity.class);
+                intentShop.putExtra("select", 2);
                 startActivity(intentShop);
                 dismiss();
                 break;
@@ -320,6 +322,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
             PersonalInfoBean.DataBean.GoodsListBean goodsListBean = userBean.getGoodsList().get(i);
             if ("PRETTY_NUM".equals(goodsListBean.getGoodsType())) {
                 tvPrettyNum.setVisibility(View.VISIBLE);
+                mTvAnchorId.setVisibility(View.GONE);
                 if (goodsListBean.getGoodsName().length() == 5) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setNumColor(Color.rgb(255, 43, 63));
@@ -346,7 +349,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private void setupView(RoomUserInfo.DataBean user) {
         GlideImageLoader.getInstace().displayImage(getContext(), user.getAvatar(), mUserAvatar);
         mTvNickName.setText(user.getNickname());
-        mTvAnchorId.setText("ID " + user.getUserId());
         mIsFollowed = user.getIsFollowed();
         int rank = user.getRank();
         if (rank < 0) {
@@ -373,9 +375,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     if (levelValue == 0) {
                         break;
                     } else {
+                        btnBuyRoyal.setVisibility(View.VISIBLE);
                         ImageView royalImage = new ImageView(getContext());
                         royalImage.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
-                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 30), UIUtil.dip2px(getContext(), 11));
+                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 35), UIUtil.dip2px(getContext(), 16));
                         royalParams.leftMargin = UIUtil.dip2px(getContext(), 6);
                         linearLayout.addView(royalImage, royalParams);
                     }
@@ -404,7 +407,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
                 }
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 28), UIUtil.dip2px(getContext(), 15));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 38), UIUtil.dip2px(getContext(), 16));
             params.leftMargin = UIUtil.dip2px(getContext(), 6);
             linearLayout.addView(imageView, params);
         }
@@ -426,7 +429,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                                     int intrinsicWidth = resource.getIntrinsicWidth();
                                     ImageView goodImage = new ImageView(getContext());
                                     goodImage.setImageDrawable(resource);
-                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 15), UIUtil.dip2px(getContext(), 15));
+                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 16), UIUtil.dip2px(getContext(), 16));
                                     params.leftMargin = UIUtil.dip2px(getContext(), 6);
                                     linearLayout.addView(goodImage, params);
                                 }
@@ -520,7 +523,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     for (int i = 0; i < bean.getLevelList().size(); i++) {
                         if ("ROYAL_LEVEL".equals(bean.getLevelList().get(i).getLevelType())) {
                             if (0 == bean.getLevelList().get(i).getLevelValue()) {
-                                btnBuyRoyal.setVisibility(View.VISIBLE);
+
                                 break;
                             }
                         }

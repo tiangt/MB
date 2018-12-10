@@ -183,7 +183,7 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
                         mViewedUser = roomUserInfoData.getData();
                         setupView(mViewedUser);
                     }
-                    if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == visitorId) {
+                    if (mViewedUser == null || mViewedUser.getUserId() <= 0 || mViewedUser.getUserId() == visitorId) {
                         return;
                     }
                     setupOperations();

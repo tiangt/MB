@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.GuardListBean;
+import com.whzl.mengbi.model.entity.AudienceListBean;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseListFragment;
@@ -66,7 +68,7 @@ public class GuardListFragment extends BaseListFragment<GuardListBean.GuardDetai
                         if (guardListBean != null) {
                             loadSuccess(guardListBean.list);
                             GuardListDialog guardListDialog = (GuardListDialog) getParentFragment();
-                            if(guardListDialog != null && guardListDialog.isAdded() && guardListBean.list != null){
+                            if (guardListDialog != null && guardListDialog.isAdded() && guardListBean.list != null) {
                                 guardListDialog.setGuardTitle(guardListBean.list.size());
                             }
                         } else {
@@ -109,6 +111,14 @@ public class GuardListFragment extends BaseListFragment<GuardListBean.GuardDetai
             tvExpire.append(spannableString);
             tvExpire.append(" 天");
         }
-    }
 
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            GuardListBean.GuardDetailBean guardDetailBean = mData.get(position);
+            if (getActivity() != null) {
+                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(guardDetailBean.userId, true);
+            }
+        }
+    }
 }

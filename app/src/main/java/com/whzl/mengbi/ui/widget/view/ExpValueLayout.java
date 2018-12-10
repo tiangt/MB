@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
@@ -26,7 +27,7 @@ public class ExpValueLayout extends LinearLayout {
     private Context context;
     private View inflate;
     private ImageView ivLevelNow;
-    private TextProgressBar tpUserLevel;
+    private CustomProgressBar tpAnchorLevel, tpUserLevel, tpRoyalLevel;
     private ImageView ivLevelNext;
     private String levelType;
     private int levelValue;
@@ -39,6 +40,7 @@ public class ExpValueLayout extends LinearLayout {
     private long sjNeedExpValue1;
     private long sjExpvalue2;
     private long sjNeedExpValue2;
+    private TextView tvPb;
 
     public ExpValueLayout(Context context) {
         super(context);
@@ -71,8 +73,11 @@ public class ExpValueLayout extends LinearLayout {
         inflate = from.inflate(R.layout.layout_exp_value, this, false);
         addView(inflate);
         ivLevelNow = inflate.findViewById(R.id.iv_level_now);
+        tpAnchorLevel = inflate.findViewById(R.id.tp_anchor_level);
         tpUserLevel = inflate.findViewById(R.id.tp_user_level);
+        tpRoyalLevel = inflate.findViewById(R.id.tp_royal_level);
         ivLevelNext = inflate.findViewById(R.id.iv_level_next);
+        tvPb = inflate.findViewById(R.id.tv_pb);
     }
 
     public void initView() {
@@ -98,24 +103,23 @@ public class ExpValueLayout extends LinearLayout {
             if ("GIFT_EXP".equals(expType)) {
                 sjExpvalue = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue = listBeans.get(j).getSjNeedExpValue();
-                tpUserLevel.setText(context.getString(R.string.anchor_grade, sjNeedExpValue));
-                tpUserLevel.setMaxCount(sjExpvalue + sjNeedExpValue);
-                tpUserLevel.setCurrentCount(sjExpvalue);
-                tpUserLevel.setPercentColor(Color.rgb(236, 81, 227));
+                tvPb.setText(context.getString(R.string.anchor_grade, sjNeedExpValue));
+                tpAnchorLevel.setMax((int) (sjExpvalue + sjNeedExpValue));
+                tpAnchorLevel.setProgress((int) sjExpvalue);
             } else if ("ROYAL_EXP".equals(expType)) {
                 sjExpvalue1 = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue1 = listBeans.get(j).getSjNeedExpValue();
-                tpUserLevel.setText(context.getString(R.string.royal_grade, sjNeedExpValue1));
-                tpUserLevel.setMaxCount(sjExpvalue1 + sjNeedExpValue1);
-                tpUserLevel.setCurrentCount(sjExpvalue1);
-                tpUserLevel.setPercentColor(Color.rgb(246, 55, 73));
+                tvPb.setText(context.getString(R.string.royal_grade, sjNeedExpValue1));
+                tpRoyalLevel.setMax((int) (sjExpvalue1 + sjNeedExpValue1));
+                tpRoyalLevel.setProgress((int) sjExpvalue1);
+                tpRoyalLevel.setVisibility(VISIBLE);
             } else if ("USER_EXP".equals(expType)) {
                 sjExpvalue2 = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue2 = listBeans.get(j).getSjNeedExpValue();
-                tpUserLevel.setText(context.getString(R.string.user_grade, sjNeedExpValue2));
-                tpUserLevel.setMaxCount(sjExpvalue2 + sjNeedExpValue2);
-                tpUserLevel.setCurrentCount(sjExpvalue2);
-                tpUserLevel.setPercentColor(Color.rgb(236, 194, 56));
+                tvPb.setText(context.getString(R.string.user_grade, sjNeedExpValue2));
+                tpUserLevel.setMax((int) (sjExpvalue2 + sjNeedExpValue2));
+                tpUserLevel.setProgress((int) sjExpvalue2);
+                tpUserLevel.setVisibility(VISIBLE);
             }
         }
     }

@@ -348,7 +348,7 @@ public class PersonalInfoActivity extends BaseActivity {
                         if (responseInfo.getCode() == 200) {
                             tvFollowState.setVisibility(View.GONE);
                             showToast("关注成功");
-                            tvRank.setText(getString(R.string.anchor_rank, fansCount + 1));
+                            tvRank.setText(getString(R.string.anchor_rank, (fansCount + 1)));
                         } else {
                             showToast(responseInfo.getMsg());
                         }

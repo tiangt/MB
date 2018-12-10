@@ -77,7 +77,7 @@
                         android:layout_toRightOf="@id/rl_host_info"
                         android:background="@drawable/shape_live_follow_button"
                         android:gravity="center"
-                        android:text="关注"
+                        android:text="订阅"
                         android:textColor="#323232"
                         android:textSize="13sp" />
 

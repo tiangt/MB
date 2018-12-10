@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -11,12 +12,50 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="10dp" />
 
-    <com.whzl.mengbi.ui.widget.view.TextProgressBar
-        android:id="@+id/tp_user_level"
+    <!--<com.whzl.mengbi.ui.widget.view.TextProgressBar-->
+    <!--android:id="@+id/tp_user_level"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:layout_weight="1" />-->
+
+    <com.whzl.mengbi.ui.widget.view.rc.RCRelativeLayout
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:round_corner="20dp">
+
+        <com.whzl.mengbi.ui.widget.view.CustomProgressBar
+            android:id="@+id/tp_anchor_level"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:progressDrawable="@drawable/pb_drawable_anchor" />
+
+        <com.whzl.mengbi.ui.widget.view.CustomProgressBar
+            android:id="@+id/tp_user_level"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:progressDrawable="@drawable/pb_drawable_user"
+            android:visibility="gone"/>
+
+        <com.whzl.mengbi.ui.widget.view.CustomProgressBar
+            android:id="@+id/tp_royal_level"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:progressDrawable="@drawable/pb_drawable_royal"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_pb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+    </com.whzl.mengbi.ui.widget.view.rc.RCRelativeLayout>
 
     <ImageView
         android:id="@+id/iv_level_next"
