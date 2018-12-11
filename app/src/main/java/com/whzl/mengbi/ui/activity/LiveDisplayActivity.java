@@ -456,7 +456,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             long userId = mAudienceList.get(position + 1).getUserid();
 //            showAudienceInfoDialog(userId, false);
             PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
-                    .setAnimStyle(R.style.dialogWindowAnim)
+                    .setListener(() -> {
+                        if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                            mGuardListDialog.dismiss();
+                        }
+                        if(mRankDialog != null && mRankDialog.isAdded()){
+                            mRankDialog.dismiss();
+                        }
+                    })
+                    .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                     .setDimAmount(0)
                     .show(getSupportFragmentManager());
         });
@@ -634,7 +642,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
 //                showAudienceInfoDialog(mAnchorId, false);
                 PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
-                        .setAnimStyle(R.style.dialogWindowAnim)
+                        .setListener(() -> {
+                            if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                                mGuardListDialog.dismiss();
+                            }
+                            if(mRankDialog != null && mRankDialog.isAdded()){
+                                mRankDialog.dismiss();
+                            }
+                        })
+                        .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
                 //主播信息
@@ -1306,7 +1322,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //                .show(getSupportFragmentManager());
 
         PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
-                .setAnimStyle(R.style.dialogWindowAnim)
+                .setListener(() -> {
+                    if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                        mGuardListDialog.dismiss();
+                    }
+                    if(mRankDialog != null && mRankDialog.isAdded()){
+                        mRankDialog.dismiss();
+                    }
+                })
+                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                 .setDimAmount(0)
                 .setShowBottom(false)
                 .show(getSupportFragmentManager());

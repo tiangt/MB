@@ -2,6 +2,7 @@ package com.whzl.mengbi.util;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,6 +12,12 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * @author cliang
@@ -30,11 +37,6 @@ public class ShareUtils {
      */
     public static void shareWeb(Activity activity, String webUrl, String imageUrl,
                                 String title, String description, SHARE_MEDIA platform) {
-//        UMShareAPI mShareAPI = UMShareAPI.get(activity);
-//        if (mShareAPI.isInstall(activity, platform)) {
-//            Toast.makeText(activity, "没有安装客户端", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
         UMWeb web = new UMWeb(webUrl);
         web.setTitle(title);
         web.setDescription(description);
@@ -51,7 +53,7 @@ public class ShareUtils {
                     @Override
                     public void onResult(final SHARE_MEDIA share_media) {
                         activity.runOnUiThread(() -> {
-                            if(share_media == SHARE_MEDIA.WEIXIN || share_media ==SHARE_MEDIA.WEIXIN_CIRCLE){
+                            if (share_media == SHARE_MEDIA.WEIXIN || share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
                                 return;
                             }
                             Toast.makeText(activity, "分享成功", Toast.LENGTH_SHORT).show();
@@ -98,7 +100,7 @@ public class ShareUtils {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(share_media == SHARE_MEDIA.WEIXIN || share_media ==SHARE_MEDIA.WEIXIN_CIRCLE){
+                                if (share_media == SHARE_MEDIA.WEIXIN || share_media == SHARE_MEDIA.WEIXIN_CIRCLE) {
                                     return;
                                 }
                                 Toast.makeText(activity, "分享成功", Toast.LENGTH_SHORT).show();
@@ -139,7 +141,6 @@ public class ShareUtils {
                 .withMedia(new UMImage(activity,imageID))
                 .share();*/
     }
-
 
 
 }

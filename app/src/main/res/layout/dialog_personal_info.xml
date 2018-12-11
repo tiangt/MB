@@ -11,6 +11,7 @@
         android:layout_width="370dp"
         android:layout_height="330dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
         android:background="@null">
 
         <ImageView
@@ -44,9 +45,9 @@
                 android:id="@+id/btn_personal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginStart="7dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="7dp"
                 android:background="@null"
                 android:src="@drawable/ic_personal"
                 app:layout_constraintStart_toStartOf="parent"
