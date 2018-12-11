@@ -2,15 +2,9 @@ package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -20,9 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
@@ -55,8 +46,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.whzl.mengbi.util.UserIdentity.getCanChatPaivate;
 
 /**
  * @author cliang
@@ -94,6 +83,12 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     RelativeLayout rlMore;
     @BindView(R.id.rl_at)
     RelativeLayout rlAt;
+    @BindView(R.id.rl_follow)
+    RelativeLayout rlFollow;
+    @BindView(R.id.rl_chat)
+    RelativeLayout rlChat;
+    @BindView(R.id.tv_at)
+    TextView tvAt;
 
     private long mUserId;
     private int mProgramId;
@@ -155,7 +150,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         mVisitorId = getArguments().getLong("visitorId");
         liveState = getArguments().getString("liveState");
         mUser = getArguments().getParcelable("user");
-        mTvAnchorId.setText("ID " + mUser.getUserId());
+        mTvAnchorId.setText("ID " + mUserId);
+        tvAt.setText("@Ta");
         getUserInfo(mUserId, mProgramId, mVisitorId);
         getHomePageInfo(mUserId, mVisitorId);
 //        isRoyal();
@@ -166,11 +162,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_personal:
-                if (mVisitorId == 0) {
-                    ((LiveDisplayActivity) getActivity()).login();
-                    dismiss();
-                    return;
-                }
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putLong("userId", mUserId);
@@ -229,6 +220,9 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     ((LiveDisplayActivity) getActivity()).login();
                     dismiss();
                     return;
+                }
+                if (listener != null) {
+                    listener.onPrivateChatClick();
                 }
                 ((LiveDisplayActivity) getActivity()).showAtChat("@" + mViewedUser.getNickname());
                 dismiss();
@@ -298,19 +292,58 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     }
 
     private void setupOperations() {
-        if (mUser.getIdentityId() == UserIdentity.OPTR_MANAGER) {
-            tvPrivateChat.setVisibility(View.VISIBLE);
-            return;
+//        if (mUser.getIdentityId() == UserIdentity.OPTR_MANAGER) {
+//            tvPrivateChat.setVisibility(View.VISIBLE);
+//            return;
+//        }
+//
+//        if (mUser.getIdentityId() == UserIdentity.ANCHOR) {
+//            tvPrivateChat.setVisibility(View.VISIBLE);
+//            return;
+//        }
+//
+//        if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER) {
+//            tvPrivateChat.setVisibility(View.VISIBLE);
+//            return;
+//        }
+        //贵族可私聊
+        if (mUser.getLevelList() != null) {
+            for (int i = 0; i < mUser.getLevelList().size(); i++) {
+                String levelType = mUser.getLevelList().get(i).getLevelType();
+                int levelValue = mUser.getLevelList().get(i).getLevelValue();
+                if ("ROYAL_LEVEL".equals(levelType)) {
+                    if (levelValue == 0) {
+                        break;
+                    } else {
+                        rlChat.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
         }
 
-        if (mUser.getIdentityId() == UserIdentity.ANCHOR) {
-            tvPrivateChat.setVisibility(View.VISIBLE);
-            return;
+        //名士5及以上可私聊
+        if (mUser.getLevelList() != null) {
+            for (int i = 0; i < mUser.getLevelList().size(); i++) {
+                int levelValue = mUser.getLevelList().get(i).getLevelValue();
+                int indentityId = mUser.getIdentityId();
+                if (indentityId == 10) {
+                    return;
+                } else {
+                    if (levelValue > 4) {
+                        rlChat.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
         }
 
-        if (mUser.getIdentityId() == UserIdentity.ROOM_MANAGER) {
-            tvPrivateChat.setVisibility(View.VISIBLE);
-            return;
+        //守护，VIP可私聊
+        if (mUser.getGoodsList() != null) {
+            for (int i = 0; i < mUser.getGoodsList().size(); i++) {
+                RoomUserInfo.GoodsListBean goodsBean = mUser.getGoodsList().get(i);
+                if ("GUARD".equals(goodsBean.getGoodsType()) || "VIP".equals(goodsBean.getGoodsType())) {
+                    rlChat.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 
@@ -392,7 +425,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 levelType = user.getLevelList().get(i).getLevelType();
                 levelValue = user.getLevelList().get(i).getLevelValue();
                 if (identityId == 10) {
-                    tvFollow.setVisibility(View.VISIBLE);
+                    rlFollow.setVisibility(View.VISIBLE);
                     if ("T".equals(mIsFollowed)) {
                         tvFollow.setText(R.string.followed);
                         tvFollow.setTextColor(Color.GRAY);
@@ -416,24 +449,38 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         if (user.getGoodsList() != null) {
             for (int i = 0; i < user.getGoodsList().size(); i++) {
                 RoomUserInfo.GoodsListBean goodsListBean = user.getGoodsList().get(i);
-                if ("BADGE".equals(goodsListBean.getGoodsType()) || "GUARD".equals(goodsListBean.getGoodsType()) || "VIP".equals(goodsListBean.getGoodsType())) {
-                    Glide.with(getContext())
-                            .load(goodsListBean.getGoodsIcon())
-                            .into(new SimpleTarget<Drawable>() {
-                                @Override
-                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                                    if (getContext() == null) {
-                                        return;
-                                    }
-                                    int intrinsicHeight = resource.getIntrinsicHeight();
-                                    int intrinsicWidth = resource.getIntrinsicWidth();
-                                    ImageView goodImage = new ImageView(getContext());
-                                    goodImage.setImageDrawable(resource);
-                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 16), UIUtil.dip2px(getContext(), 16));
-                                    params.leftMargin = UIUtil.dip2px(getContext(), 6);
-                                    linearLayout.addView(goodImage, params);
-                                }
-                            });
+//                if ("GUARD".equals(goodsListBean.getGoodsType()) || "VIP".equals(goodsListBean.getGoodsType())) {
+//                    Glide.with(getContext())
+//                            .load(goodsListBean.getGoodsIcon())
+//                            .into(new SimpleTarget<Drawable>() {
+//                                @Override
+//                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                                    if (getContext() == null) {
+//                                        return;
+//                                    }
+//                                    int intrinsicHeight = resource.getIntrinsicHeight();
+//                                    int intrinsicWidth = resource.getIntrinsicWidth();
+//                                    ImageView goodImage = new ImageView(getContext());
+//                                    goodImage.setImageDrawable(resource);
+//                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 16), UIUtil.dip2px(getContext(), 16));
+//                                    params.leftMargin = UIUtil.dip2px(getContext(), 6);
+//                                    linearLayout.addView(goodImage, params);
+//                                }
+//                            });
+//                }
+                if ("GUARD".equals(goodsListBean.getGoodsType())) {
+                    ImageView guardImage = new ImageView(getContext());
+                    guardImage.setImageDrawable(getResources().getDrawable(R.drawable.guard));
+                    LinearLayout.LayoutParams guard = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 15), UIUtil.dip2px(getContext(), 15));
+                    guard.leftMargin = UIUtil.dip2px(getContext(), 6);
+                    linearLayout.addView(guardImage, guard);
+                }
+                if ("VIP".equals(goodsListBean.getGoodsType())) {
+                    ImageView vipImage = new ImageView(getContext());
+                    vipImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_vip));
+                    LinearLayout.LayoutParams vip = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 15), UIUtil.dip2px(getContext(), 15));
+                    vip.leftMargin = UIUtil.dip2px(getContext(), 6);
+                    linearLayout.addView(vipImage, vip);
                 }
             }
         }
@@ -538,4 +585,5 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
             }
         });
     }
+
 }

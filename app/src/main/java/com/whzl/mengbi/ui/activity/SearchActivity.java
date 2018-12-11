@@ -118,7 +118,7 @@ public class SearchActivity extends BaseActivity {
                     @Override
                     public void onSuccess(SearchAnchorBean bean) {
 
-                        if (mCurrentPager==2&& bean.list.size() == 0) {
+                        if (mCurrentPager == 2 && bean.list.size() == 0) {
                             llList.setVisibility(View.GONE);
                             return;
                         } else {
@@ -136,7 +136,7 @@ public class SearchActivity extends BaseActivity {
                         anchorAdapter.notifyDataSetChanged();
 
                         if (bean.list.size() < NetConfig.DEFAULT_PAGER_SIZE) {
-                            refreshLayout.finishLoadMore(500,true,true);
+                            refreshLayout.finishLoadMore(500, true, true);
                         } else {
                             refreshLayout.finishLoadMore();
                         }
@@ -199,6 +199,7 @@ public class SearchActivity extends BaseActivity {
             super.onItemClick(view, position);
             Intent intent = new Intent(SearchActivity.this, LiveDisplayActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, mAnchorInfoList.get(position).programId);
+            intent.putExtra(BundleConfig.ANCHOR_COVER, mAnchorInfoList.get(position).cover);
             startActivity(intent);
         }
     }
