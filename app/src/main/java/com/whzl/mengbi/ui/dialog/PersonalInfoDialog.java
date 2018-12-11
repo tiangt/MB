@@ -418,7 +418,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 }
             }
         }
-
         //主播用户等级
         if (user.getLevelList() != null) {
             for (int i = 0; i < user.getLevelList().size(); i++) {
