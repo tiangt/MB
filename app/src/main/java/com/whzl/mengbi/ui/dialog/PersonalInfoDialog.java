@@ -360,19 +360,19 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setNumColor(Color.rgb(255, 43, 63));
                     tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_five);
-                    tvPrettyNum.setPrettyTextSize(9);
+                    tvPrettyNum.setPrettyTextSize(10);
                     tvPrettyNum.setNumber();
                 } else if (goodsListBean.getGoodsName().length() == 6) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setNumColor(Color.rgb(255, 165, 0));
                     tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_six);
-                    tvPrettyNum.setPrettyTextSize(9);
+                    tvPrettyNum.setPrettyTextSize(10);
                     tvPrettyNum.setNumber();
                 } else if (goodsListBean.getGoodsName().length() == 7) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setNumColor(Color.rgb(49, 161, 255));
                     tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_seven);
-                    tvPrettyNum.setPrettyTextSize(9);
+                    tvPrettyNum.setPrettyTextSize(10);
                     tvPrettyNum.setNumber();
                 }
             }
@@ -428,7 +428,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     rlFollow.setVisibility(View.VISIBLE);
                     if ("T".equals(mIsFollowed)) {
                         tvFollow.setText(R.string.followed);
-                        tvFollow.setTextColor(Color.GRAY);
+                        tvFollow.setTextColor(getResources().getColor(R.color.tran_black));
                         mIsFollowed = "T";
                     } else {
                         tvFollow.setText(R.string.not_followed);

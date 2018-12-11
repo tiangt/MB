@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.jaeger.library.StatusBarUtil;
+import com.squareup.picasso.Picasso;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
@@ -35,6 +38,9 @@ import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.TextProgressBar;
+import com.whzl.mengbi.util.AppUtils;
+import com.whzl.mengbi.util.BitmapUtils;
+import com.whzl.mengbi.util.BlurTransformation;
 import com.whzl.mengbi.util.ClipboardUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
@@ -47,6 +53,7 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -107,6 +114,7 @@ public class PersonalInfoActivity extends BaseActivity {
     @BindView(R.id.evl_royal_level)
     ExpValueLayout evlRoyalLevel;
 
+    private int REQUEST_LOGIN = 250;
     private long mUserId, mVisitorId;
     private PersonalInfoBean.DataBean userBean;
     private int levelValue;
@@ -127,8 +135,9 @@ public class PersonalInfoActivity extends BaseActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         mUserId = bundle.getLong("userId", 0); //被访者
-        mVisitorId = bundle.getLong("visitorId", 0); //访问者
+//        mVisitorId = bundle.getLong("visitorId", 0); //访问者
         mLiveState = bundle.getString("liveState", "");
+        mVisitorId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
         getHomePageInfo(mUserId, mVisitorId);
     }
 
@@ -150,10 +159,10 @@ public class PersonalInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_follow_state:
-                if (mVisitorId == 0) {
-                    login();
-                    return;
-                }
+//                if (mVisitorId == 0) {
+//                    login();
+//                    return;
+//                }
                 follow(mVisitorId, mUserId);
                 break;
             case R.id.tv_copy_num:
@@ -169,8 +178,8 @@ public class PersonalInfoActivity extends BaseActivity {
                 .setLoginSuccessListener(new LoginDialog.LoginSuccessListener() {
                     @Override
                     public void onLoginSuccessListener() {
-                        LogUtils.e("sssssssss   onLoginSuccessListener");
                         mVisitorId = (long) SPUtils.get(PersonalInfoActivity.this, "userId", 0L);
+//                        tvFollowState.setVisibility(View.GONE);
                     }
                 })
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
@@ -203,7 +212,8 @@ public class PersonalInfoActivity extends BaseActivity {
 
     private void setView(PersonalInfoBean.DataBean userBean) {
         GlideImageLoader.getInstace().displayImage(this, userBean.getAvatar(), ivAvatar);
-        GlideImageLoader.getInstace().displayImage(this, userBean.getAvatar(), ivPersonalCover);
+//        GlideImageLoader.getInstace().displayImage(this, userBean.getAvatar(), ivPersonalCover);
+        Picasso.with(this).load(userBean.getAvatar()).transform(new BlurTransformation(this)).into(ivPersonalCover);
         tvNickName.setText(userBean.getNickname());
         String introduce = userBean.getIntroduce();
         if (!TextUtils.isEmpty(introduce)) {
@@ -338,7 +348,7 @@ public class PersonalInfoActivity extends BaseActivity {
 //                    linearLayout.addView(guardImage, guard);
 //                }
 
-                if("VIP".equals(goodsListBean.getGoodsType())){
+                if ("VIP".equals(goodsListBean.getGoodsType())) {
                     ImageView vipImage = new ImageView(this);
                     vipImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_vip));
                     LinearLayout.LayoutParams vip = new LinearLayout.LayoutParams(UIUtil.dip2px(this, 15), UIUtil.dip2px(this, 15));
@@ -352,19 +362,19 @@ public class PersonalInfoActivity extends BaseActivity {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setNumColor(Color.rgb(255, 43, 63));
                         tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_five);
-                        tvPrettyNum.setPrettyTextSize(10);
+                        tvPrettyNum.setPrettyTextSize(12);
                         tvPrettyNum.setNumber();
                     } else if (goodsListBean.getGoodsName().length() == 6) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setNumColor(Color.rgb(255, 165, 0));
                         tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_six);
-                        tvPrettyNum.setPrettyTextSize(10);
+                        tvPrettyNum.setPrettyTextSize(12);
                         tvPrettyNum.setNumber();
                     } else if (goodsListBean.getGoodsName().length() == 7) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setNumColor(Color.rgb(49, 161, 255));
                         tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_seven);
-                        tvPrettyNum.setPrettyTextSize(10);
+                        tvPrettyNum.setPrettyTextSize(12);
                         tvPrettyNum.setNumber();
                     }
 
@@ -464,4 +474,20 @@ public class PersonalInfoActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AppUtils.REQUEST_LOGIN) {
+            if (RESULT_OK == resultCode) {
+                mVisitorId = (long) SPUtils.get(this, "userId", 0L);
+                LogUtils.e("sssssssss   onActivityResult");
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getHomePageInfo(mVisitorId, mUserId);
+    }
 }
