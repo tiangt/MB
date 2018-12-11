@@ -1,10 +1,8 @@
 package com.whzl.mengbi.ui.fragment.main;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -277,7 +275,6 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
     private void initRecycler() {
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        recycler.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
         adapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
@@ -360,6 +357,8 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 if (!TextUtils.isEmpty(anchorInfoBean.lastShowBeginTime)) {
                     String timeRange = DateUtils.getTimeRange(anchorInfoBean.lastShowBeginTime);
                     tvLastTime.append(timeRange);
+                } else {
+                    tvLastTime.append("无");
                 }
             }
             tvAnchorName.setText(anchorInfoBean.anchorNickname);
@@ -382,7 +381,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     private void setFollowState(TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean) {
         tvFollowState.setBackground(null);
         tvFollowState.setTextColor(Color.parseColor("#20000000"));
-        tvFollowState.setText("已关注");
+        tvFollowState.setText("已订阅");
         tvFollowState.setOnClickListener(v -> {
 //            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
 //            dialog.setTitle("提示");
@@ -411,7 +410,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                         if (responseInfo.getCode() == 200) {
 //                            mCurrentPager = 1;
 //                            getAnchorList(mCurrentPager++);
-                            ToastUtils.showToast("取消关注成功");
+                            ToastUtils.showToast("取消订阅成功");
                             setUnFollowState(tvFollowState, anchorInfoBean);
                         }
                     }
@@ -426,7 +425,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     private void setUnFollowState(TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean) {
         tvFollowState.setBackgroundResource(R.drawable.bg_state_no_follow_follow);
         tvFollowState.setTextColor(Color.parseColor("#70000000"));
-        tvFollowState.setText("关注");
+        tvFollowState.setText("订阅");
         tvFollowState.setOnClickListener(v -> follow(tvFollowState, anchorInfoBean));
     }
 
@@ -439,7 +438,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
             public void onReqSuccess(Object result) {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
-                    ToastUtils.showToast("关注成功");
+                    ToastUtils.showToast("订阅成功");
                     setFollowState(tvFollowState, infoBean);
                 }
             }
