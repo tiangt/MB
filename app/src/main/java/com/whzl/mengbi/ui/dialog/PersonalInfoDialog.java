@@ -83,6 +83,12 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     RelativeLayout rlMore;
     @BindView(R.id.rl_at)
     RelativeLayout rlAt;
+    @BindView(R.id.rl_follow)
+    RelativeLayout rlFollow;
+    @BindView(R.id.rl_chat)
+    RelativeLayout rlChat;
+    @BindView(R.id.tv_at)
+    TextView tvAt;
 
     private long mUserId;
     private int mProgramId;
@@ -145,6 +151,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         liveState = getArguments().getString("liveState");
         mUser = getArguments().getParcelable("user");
         mTvAnchorId.setText("ID " + mUserId);
+        tvAt.setText("@Ta");
         getUserInfo(mUserId, mProgramId, mVisitorId);
         getHomePageInfo(mUserId, mVisitorId);
 //        isRoyal();
@@ -308,7 +315,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     if (levelValue == 0) {
                         break;
                     } else {
-                        tvPrivateChat.setVisibility(View.VISIBLE);
+                        rlChat.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -323,7 +330,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     return;
                 } else {
                     if (levelValue > 4) {
-                        tvPrivateChat.setVisibility(View.VISIBLE);
+                        rlChat.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -334,7 +341,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
             for (int i = 0; i < mUser.getGoodsList().size(); i++) {
                 RoomUserInfo.GoodsListBean goodsBean = mUser.getGoodsList().get(i);
                 if ("GUARD".equals(goodsBean.getGoodsType()) || "VIP".equals(goodsBean.getGoodsType())) {
-                    tvPrivateChat.setVisibility(View.VISIBLE);
+                    rlChat.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -418,7 +425,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 levelType = user.getLevelList().get(i).getLevelType();
                 levelValue = user.getLevelList().get(i).getLevelValue();
                 if (identityId == 10) {
-                    tvFollow.setVisibility(View.VISIBLE);
+                    rlFollow.setVisibility(View.VISIBLE);
                     if ("T".equals(mIsFollowed)) {
                         tvFollow.setText(R.string.followed);
                         tvFollow.setTextColor(Color.GRAY);

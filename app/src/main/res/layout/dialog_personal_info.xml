@@ -57,8 +57,8 @@
                 android:id="@+id/btn_close"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginRight="7dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginRight="7dp"
                 android:background="@null"
                 android:src="@drawable/ic_close_per"
                 app:layout_constraintRight_toRightOf="parent"
@@ -177,22 +177,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="5dp"
-                    android:background="@color/tran_grey" />
+                    android:background="@color/tran_grey2" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
 
-                    <TextView
-                        android:id="@+id/tv_follow"
+                    <RelativeLayout
+                        android:id="@+id/rl_follow"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:textSize="14sp"
-                        android:visibility="gone" />
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_follow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:layout_centerInParent="true"/>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="20dp"
+                            android:background="@color/tran_grey2"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/rl_at"
@@ -205,30 +220,39 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:text="@string/at"
                             android:textColor="@color/font_color_11"
                             android:textSize="14sp" />
 
-                        <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_toLeftOf="@id/tv_at"
-                            android:src="@drawable/ic_at" />
-
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="20dp"
+                            android:background="@color/tran_grey2"
+                            android:layout_alignParentRight="true"/>
                     </RelativeLayout>
 
-
-                    <TextView
-                        android:id="@+id/tv_private_chat"
+                    <RelativeLayout
+                        android:id="@+id/rl_chat"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="私信"
-                        android:textColor="@color/font_color_11"
-                        android:textSize="14sp"
-                        android:visibility="gone" />
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tv_private_chat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="私信"
+                            android:textColor="@color/font_color_11"
+                            android:textSize="14sp"
+                            android:layout_centerInParent="true" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="20dp"
+                            android:background="@color/tran_grey2"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
+
 
                     <RelativeLayout
                         android:id="@+id/rl_more"
