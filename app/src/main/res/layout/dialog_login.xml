@@ -27,10 +27,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="17dp"
+            android:layout_marginTop="14dp"
             android:text="登录萌比"
             android:textColor="#70000000"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
 
         <LinearLayout
             android:id="@+id/ll_login"
@@ -116,27 +116,30 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_deal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginLeft="21dp"
-            android:text="同意《用户协议》"
-            android:textColor="#40000000"
-            android:textSize="12sp" />
+        <LinearLayout
+            android:layout_width="204dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_phone_login"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/tv_register"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginRight="16dp"
-            android:text="立即注册"
-            android:textColor="#70000000"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_deal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="同意《用户协议》"
+                android:textColor="#40000000"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="立即注册"
+                android:textColor="#70000000"
+                android:textSize="12sp" />
+        </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>

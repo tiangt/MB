@@ -199,4 +199,6 @@
     <color name="text_purple">#ff36f3</color>
     <color name="tran_grey">#11eeeeee</color>
     <color name="tran_grey2">#66eeeeee</color>
+
+    <color name="text_content_free_gift">#90fefefe</color>
 </resources>

@@ -3,7 +3,6 @@ package com.whzl.mengbi.ui.fragment.main;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -276,7 +275,6 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
     private void initRecycler() {
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        recycler.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
         adapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
