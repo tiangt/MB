@@ -12,38 +12,46 @@
         android:background="@drawable/bg_login_dialog">
 
 
-        <LinearLayout
-            android:id="@+id/ll_close"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="17dp"
-            android:gravity="center_horizontal">
-
-            <ImageButton
-                android:id="@+id/ib_close"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:background="@null"
-                android:src="@drawable/close_icon" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/ll_title"
+            android:layout_width="204dp"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="14dp"
-            android:text="登录萌比"
-            android:textColor="#70000000"
-            android:textSize="14sp" />
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="14dp"
+                android:text="登录萌比"
+                android:textColor="#70000000"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="17dp"
+                android:gravity="right">
+
+                <ImageButton
+                    android:id="@+id/ib_close"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:background="@null"
+                    android:src="@drawable/close_icon" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/ll_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_title"
+            android:layout_below="@id/ll_title"
             android:layout_marginLeft="21dp"
             android:layout_marginRight="21dp"
             android:layout_marginTop="20dp"

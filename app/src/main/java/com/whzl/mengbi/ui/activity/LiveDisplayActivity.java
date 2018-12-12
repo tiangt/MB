@@ -1132,7 +1132,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
         if (bean.list != null && bean.list.size() != 0) {
-            vpActivity.setOffscreenPageLimit(bean.list.size());
             for (int i = 0; i < bean.list.size(); i++) {
                 ActivityGrandBean.ListBean listBean = bean.list.get(i);
                 LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
@@ -1192,6 +1191,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
             mActivityGrands.add(anchorTaskFragment);
             mGrandAdaper.notifyDataSetChanged();
+            vpActivity.setOffscreenPageLimit(mActivityGrands.size());
             initActivityPoints();
         }
     }

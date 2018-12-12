@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:text="萌币/月"
-                android:textColor="#40fefefe"
+                android:textColor="@color/text_content_free_gift"
                 android:textSize="8sp" />
         </LinearLayout>
     </RelativeLayout>
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:text="观看直播领取的蓝色妖姬均双倍奖励"
-                android:textColor="#40ffffff"
+                android:textColor="@color/text_content_free_gift"
                 android:textSize="9sp" />
         </LinearLayout>
     </LinearLayout>
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:text="用户信息标识妖姬勋章"
-                android:textColor="#40ffffff"
+                android:textColor="@color/text_content_free_gift"
                 android:textSize="9sp" />
         </LinearLayout>
     </LinearLayout>

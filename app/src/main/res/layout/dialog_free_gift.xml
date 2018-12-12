@@ -107,7 +107,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="在直播间发言最少 "
+                        android:text="每天在直播间发言≥ "
                         android:textColor="@color/text_content_free_gift"
                         android:textSize="@dimen/text_content_free_gift" />
 
