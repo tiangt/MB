@@ -66,7 +66,7 @@ public class LiveWeekRankFragment extends BaseFragment {
     @Override
     public void init() {
         mAnchorId = getArguments().getInt("mAnchorId");
-        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+        disposable = Observable.interval(0, 10, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             loaddata();
         });
     }
@@ -105,5 +105,13 @@ public class LiveWeekRankFragment extends BaseFragment {
                     public void onError(int code) {
                     }
                 });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 }
