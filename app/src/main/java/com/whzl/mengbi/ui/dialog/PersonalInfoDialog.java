@@ -411,8 +411,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                         btnBuyRoyal.setVisibility(View.VISIBLE);
                         ImageView royalImage = new ImageView(getContext());
                         royalImage.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
-                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 35), UIUtil.dip2px(getContext(), 16));
-                        royalParams.leftMargin = UIUtil.dip2px(getContext(), 6);
+                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 36), UIUtil.dip2px(getContext(), 16));
+                        royalParams.leftMargin = UIUtil.dip2px(getContext(), 3);
                         linearLayout.addView(royalImage, royalParams);
                     }
                 }
@@ -442,7 +442,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 }
             }
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 38), UIUtil.dip2px(getContext(), 16));
-            params.leftMargin = UIUtil.dip2px(getContext(), 6);
+            params.leftMargin = UIUtil.dip2px(getContext(), 1);
             linearLayout.addView(imageView, params);
         }
 
@@ -473,14 +473,14 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     ImageView guardImage = new ImageView(getContext());
                     guardImage.setImageDrawable(getResources().getDrawable(R.drawable.guard));
                     LinearLayout.LayoutParams guard = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 15), UIUtil.dip2px(getContext(), 15));
-                    guard.leftMargin = UIUtil.dip2px(getContext(), 6);
+                    guard.leftMargin = UIUtil.dip2px(getContext(), 3);
                     linearLayout.addView(guardImage, guard);
                 }
                 if ("VIP".equals(goodsListBean.getGoodsType())) {
                     ImageView vipImage = new ImageView(getContext());
                     vipImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_vip));
                     LinearLayout.LayoutParams vip = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 15), UIUtil.dip2px(getContext(), 15));
-                    vip.leftMargin = UIUtil.dip2px(getContext(), 6);
+                    vip.leftMargin = UIUtil.dip2px(getContext(), 3);
                     linearLayout.addView(vipImage, vip);
                 }
             }
@@ -491,7 +491,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
             ImageView mgrView = new ImageView(getContext());
             mgrView.setImageResource(R.drawable.room_manager);
             LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 15), UIUtil.dip2px(getContext(), 15));
-            mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 6);
+            mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 3);
             linearLayout.addView(mgrView, mgrViewParams);
         }
     }
