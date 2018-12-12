@@ -434,8 +434,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                         tvFollow.setTextColor(Color.RED);
                         mIsFollowed = "F";
                     }
-                    imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
-                } else {
+                    if("ANCHOR_LEVEL".equals(levelType)){
+                        imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
+                    }
+                } else if("USER_LEVEL".equals(levelType)){
                     imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
                 }
             }

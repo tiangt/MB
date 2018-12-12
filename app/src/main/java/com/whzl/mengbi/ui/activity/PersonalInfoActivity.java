@@ -305,10 +305,12 @@ public class PersonalInfoActivity extends BaseActivity {
                         tvLiveState.setText(R.string.rest);
                         tvLiveState.setTextColor(Color.GRAY);
                     }
-
-                    imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
-                } else {
+                    if ("ANCHOR_LEVEL".equals(levelType)) {
+                        imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
+                    }
+                } else if ("USER_LEVEL".equals(levelType)) {
                     imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
+                    break;
                 }
             }
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 38), UIUtil.dip2px(PersonalInfoActivity.this, 16));
