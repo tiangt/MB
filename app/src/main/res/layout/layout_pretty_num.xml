@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:gravity="center"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:text="靓"/>
 
     <TextView

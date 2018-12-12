@@ -224,7 +224,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 if (listener != null) {
                     listener.onPrivateChatClick();
                 }
-                ((LiveDisplayActivity) getActivity()).showAtChat("@" + mViewedUser.getNickname());
+                ((LiveDisplayActivity) getActivity()).showAtChat("@" + mViewedUser.getNickname() + " ");
                 dismiss();
                 break;
             case R.id.btn_close:
@@ -434,10 +434,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                         tvFollow.setTextColor(Color.RED);
                         mIsFollowed = "F";
                     }
-                    if("ANCHOR_LEVEL".equals(levelType)){
+                    if ("ANCHOR_LEVEL".equals(levelType)) {
                         imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
                     }
-                } else if("USER_LEVEL".equals(levelType)){
+                } else if ("USER_LEVEL".equals(levelType)) {
                     imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
                 }
             }
