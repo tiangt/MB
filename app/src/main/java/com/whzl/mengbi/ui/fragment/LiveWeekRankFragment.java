@@ -15,9 +15,12 @@ import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -44,6 +47,7 @@ public class LiveWeekRankFragment extends BaseFragment {
     @BindView(R.id.tv_rank_3)
     TextView tvRank3;
     private int mAnchorId;
+    private Disposable disposable;
 
     public static LiveWeekRankFragment newInstance(int mProgramId, int mAnchorId) {
         LiveWeekRankFragment weekRankFragment = new LiveWeekRankFragment();
@@ -62,7 +66,9 @@ public class LiveWeekRankFragment extends BaseFragment {
     @Override
     public void init() {
         mAnchorId = getArguments().getInt("mAnchorId");
-        loaddata();
+        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            loaddata();
+        });
     }
 
     public void loaddata() {
