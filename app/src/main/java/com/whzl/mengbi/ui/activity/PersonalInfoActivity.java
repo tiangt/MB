@@ -159,10 +159,10 @@ public class PersonalInfoActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_follow_state:
-//                if (mVisitorId == 0) {
-//                    login();
-//                    return;
-//                }
+                if (mVisitorId == 0) {
+                    login();
+                    return;
+                }
                 follow(mVisitorId, mUserId);
                 break;
             case R.id.tv_copy_num:
@@ -179,7 +179,7 @@ public class PersonalInfoActivity extends BaseActivity {
                     @Override
                     public void onLoginSuccessListener() {
                         mVisitorId = (long) SPUtils.get(PersonalInfoActivity.this, "userId", 0L);
-//                        tvFollowState.setVisibility(View.GONE);
+                        tvFollowState.setVisibility(View.GONE);
                     }
                 })
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
@@ -480,14 +480,8 @@ public class PersonalInfoActivity extends BaseActivity {
         if (requestCode == AppUtils.REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
                 mVisitorId = (long) SPUtils.get(this, "userId", 0L);
-                LogUtils.e("sssssssss   onActivityResult");
+                tvFollowState.setVisibility(View.GONE);
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getHomePageInfo(mVisitorId, mUserId);
     }
 }

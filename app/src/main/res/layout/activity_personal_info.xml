@@ -33,7 +33,6 @@
                         android:id="@+id/btn_back"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginLeft="12dp"
                         android:layout_marginTop="10dp"
                         android:background="@null"
                         android:src="@drawable/ic_login_return" />

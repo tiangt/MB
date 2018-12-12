@@ -89,7 +89,11 @@ public class ExpValueLayout extends LinearLayout {
             ivLevelNow.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
             ivLevelNext.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue + 1));
         } else if ("ROYAL_LEVEL".equals(levelType)) {
-            ivLevelNow.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
+            if(levelValue == 0){
+               ivLevelNow.setVisibility(INVISIBLE);
+            }else{
+                ivLevelNow.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
+            }
             ivLevelNext.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue + 1));
         } else if ("USER_LEVEL".equals(levelType)) {
             ivLevelNow.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
