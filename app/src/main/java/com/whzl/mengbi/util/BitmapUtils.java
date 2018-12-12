@@ -1,7 +1,23 @@
 package com.whzl.mengbi.util;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
+
+import com.lht.paintview.util.Constant;
+import com.squareup.picasso.Picasso;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
+import static com.facebook.common.internal.ByteStreams.copy;
 
 /**
  * @author cliang
@@ -36,4 +52,6 @@ public class BitmapUtils {
         v.setDrawingCacheBackgroundColor(color);
         return bitmap;
     }
+
+
 }

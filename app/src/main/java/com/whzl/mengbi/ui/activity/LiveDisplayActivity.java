@@ -637,10 +637,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
-                if (mUserId == 0) {
-                    login();
-                    return;
-                }
+//                if (mUserId == 0) {
+//                    login();
+//                    return;
+//                }
 //                showAudienceInfoDialog(mAnchorId, false);
                 if (ClickUtil.isFastClick()) {
                     PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
@@ -1386,7 +1386,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView2 != null) {
             textureView2.runInForeground();
         }
-        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        if (mUserId == 0) {
+            mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
+            mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+            getRoomToken();
+        }
 //        mLivePresenter.getPkInfo(mProgramId);
     }
 

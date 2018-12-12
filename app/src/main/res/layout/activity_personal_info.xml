@@ -27,13 +27,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/translucent_black">
+                    android:background="#00000000">
 
                     <ImageButton
                         android:id="@+id/btn_back"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_marginLeft="12dp"
                         android:layout_marginTop="10dp"
                         android:background="@null"
                         android:src="@drawable/ic_login_return" />
@@ -55,7 +54,7 @@
                         android:singleLine="true"
                         android:text="昵称"
                         android:textColor="@color/white"
-                        android:textSize="12sp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -68,7 +67,7 @@
                         android:singleLine="true"
                         android:text="@string/no_motto_hint"
                         android:textColor="@color/text_sign"
-                        android:textSize="9sp" />
+                        android:textSize="10sp" />
 
                     <LinearLayout
                         android:id="@+id/ll_level_container"
