@@ -771,15 +771,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        intent.putExtra("from", this.getClass().toString());
 //        startActivityForResult(intent, REQUEST_LOGIN);
         LoginDialog.newInstance()
-                .setLoginSuccessListener(new LoginDialog.LoginSuccessListener() {
-                    @Override
-                    public void onLoginSuccessListener() {
-                        LogUtils.e("sssssssss   onLoginSuccessListener");
-                        mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
-                        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
-                        getRoomToken();
-                        isVip = true;
-                    }
+                .setLoginSuccessListener(() -> {
+                    mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
+                    mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                    getRoomToken();
+                    isVip = true;
                 })
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0.7f)

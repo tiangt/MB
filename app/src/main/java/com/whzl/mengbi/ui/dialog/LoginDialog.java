@@ -56,6 +56,8 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
     TextView tvRegister;
     @BindView(R.id.tv_deal)
     TextView tvDeal;
+    @BindView(R.id.ll_close)
+    LinearLayout llClose;
 
     private LoginPresent mLoginPresent;
     private UMShareAPI umShareAPI;
@@ -155,7 +157,7 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
     }
 
 
-    @OnClick({R.id.ll_wechat, R.id.ll_qq, R.id.ib_close, R.id.ll_phone_login, R.id.tv_register, R.id.tv_deal})
+    @OnClick({R.id.ll_wechat, R.id.ll_qq, R.id.ll_close, R.id.ll_phone_login, R.id.tv_register, R.id.tv_deal})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_wechat:
@@ -166,7 +168,7 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
                 ((BaseActivity) getActivity()).showLoading("登录中...");
                 umShareAPI.getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, umAuthListener);
                 break;
-            case R.id.ib_close:
+            case R.id.ll_close:
                 dismiss();
                 break;
             case R.id.ll_phone_login:
