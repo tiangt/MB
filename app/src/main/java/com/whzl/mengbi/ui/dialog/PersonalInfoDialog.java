@@ -167,17 +167,13 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 bundle.putLong("userId", mUserId);
                 bundle.putLong("visitorId", mVisitorId);
                 bundle.putString("liveState", liveState);
+                bundle.putInt("programId", mProgramId);
                 intent.putExtras(bundle);
                 intent.setClass(getActivity(), PersonalInfoActivity.class);
                 startActivity(intent);
                 dismiss();
                 break;
             case R.id.btn_buy_royal:
-                if (mVisitorId == 0) {
-                    ((LiveDisplayActivity) getActivity()).login();
-                    dismiss();
-                    return;
-                }
                 Intent intentShop = new Intent(getActivity(), ShopActivity.class);
                 intentShop.putExtra("select", 2);
                 startActivity(intentShop);
