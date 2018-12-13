@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rl_icon_container"
         android:layout_width="245dp"
-        android:layout_height="205dp"
+        android:layout_height="215dp"
         android:background="@drawable/bg_login_dialog">
 
 
