@@ -89,9 +89,9 @@ public class ExpValueLayout extends LinearLayout {
             ivLevelNow.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
             ivLevelNext.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue + 1));
         } else if ("ROYAL_LEVEL".equals(levelType)) {
-            if(levelValue == 0){
-               ivLevelNow.setVisibility(INVISIBLE);
-            }else{
+            if (levelValue == 0) {
+                ivLevelNow.setVisibility(INVISIBLE);
+            } else {
                 ivLevelNow.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
             }
             ivLevelNext.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue + 1));
@@ -107,22 +107,28 @@ public class ExpValueLayout extends LinearLayout {
             if ("GIFT_EXP".equals(expType)) {
                 sjExpvalue = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue = listBeans.get(j).getSjNeedExpValue();
-                tvPb.setText(context.getString(R.string.anchor_grade, sjNeedExpValue));
-                tpAnchorLevel.setMax((int) (sjExpvalue + sjNeedExpValue));
-                tpAnchorLevel.setProgress((int) sjExpvalue);
+                tpAnchorLevel.setMax((int) (sjNeedExpValue));
+                if (sjExpvalue < sjNeedExpValue) {
+                    tvPb.setText(context.getString(R.string.anchor_grade, (sjNeedExpValue - sjExpvalue)));
+                    tpAnchorLevel.setProgress((int) sjExpvalue);
+                }
             } else if ("ROYAL_EXP".equals(expType)) {
                 sjExpvalue1 = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue1 = listBeans.get(j).getSjNeedExpValue();
-                tvPb.setText(context.getString(R.string.royal_grade, sjNeedExpValue1));
-                tpRoyalLevel.setMax((int) (sjExpvalue1 + sjNeedExpValue1));
-                tpRoyalLevel.setProgress((int) sjExpvalue1);
+                tpRoyalLevel.setMax((int) (sjNeedExpValue1));
+                if (sjExpvalue1 < sjNeedExpValue1) {
+                    tvPb.setText(context.getString(R.string.royal_grade, (sjNeedExpValue1 - sjExpvalue1)));
+                    tpRoyalLevel.setProgress((int) sjExpvalue1);
+                }
                 tpRoyalLevel.setVisibility(VISIBLE);
             } else if ("USER_EXP".equals(expType)) {
                 sjExpvalue2 = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue2 = listBeans.get(j).getSjNeedExpValue();
-                tvPb.setText(context.getString(R.string.user_grade, sjNeedExpValue2));
-                tpUserLevel.setMax((int) (sjExpvalue2 + sjNeedExpValue2));
-                tpUserLevel.setProgress((int) sjExpvalue2);
+                tpUserLevel.setMax((int) (sjNeedExpValue2));
+                if (sjExpvalue2 < sjNeedExpValue2) {
+                    tvPb.setText(context.getString(R.string.user_grade, (sjNeedExpValue2 - sjExpvalue2)));
+                    tpUserLevel.setProgress((int) sjExpvalue2);
+                }
                 tpUserLevel.setVisibility(VISIBLE);
             }
         }

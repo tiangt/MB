@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.jaeger.library.StatusBarUtil;
 import com.squareup.picasso.Picasso;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -116,7 +118,6 @@ public class PersonalInfoActivity extends BaseActivity {
     @BindView(R.id.tv_rank_name)
     TextView tvRankName;
 
-    private int REQUEST_LOGIN = 250;
     private long mUserId, mVisitorId;
     private PersonalInfoBean.DataBean userBean;
     private int levelValue;
@@ -124,6 +125,7 @@ public class PersonalInfoActivity extends BaseActivity {
     private String mLiveState;
     private BaseListAdapter medalAdapter;
     private int fansCount;
+    private int mProgramId;
     private List<PersonalInfoBean.DataBean.LevelListBean> levelList;
     private List<PersonalInfoBean.DataBean.GoodsListBean> goodsList = new ArrayList<>();
 
@@ -139,6 +141,7 @@ public class PersonalInfoActivity extends BaseActivity {
         mUserId = bundle.getLong("userId", 0); //被访者
 //        mVisitorId = bundle.getLong("visitorId", 0); //访问者
         mLiveState = bundle.getString("liveState", "");
+        mProgramId = bundle.getInt("programId", 0);
         mVisitorId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
         getHomePageInfo(mUserId, mVisitorId);
     }
@@ -154,7 +157,7 @@ public class PersonalInfoActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.btn_back, R.id.tv_follow_state, R.id.tv_copy_num})
+    @OnClick({R.id.btn_back, R.id.tv_follow_state, R.id.tv_copy_num, R.id.tv_live_state})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
@@ -169,6 +172,11 @@ public class PersonalInfoActivity extends BaseActivity {
                 break;
             case R.id.tv_copy_num:
                 ClipboardUtils.putTextIntoClip(this, mUserId + "");
+                break;
+            case R.id.tv_live_state:
+                Intent intent = new Intent(this, LiveDisplayActivity.class);
+                intent.putExtra(BundleConfig.PROGRAM_ID, mProgramId);
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -233,15 +241,15 @@ public class PersonalInfoActivity extends BaseActivity {
         } else {
             if ("ANCHOR".equals(userBean.getUserType())) {
                 fansCount = userBean.getRank();
-                tvRank.setText(fansCount+"");
+                tvRank.setText(fansCount + "");
                 tvRankName.setText("主播排名");
             } else {
-                tvRank.setText(userBean.getRank()+"");
+                tvRank.setText(userBean.getRank() + "");
                 tvRankName.setText("富豪排名");
             }
         }
-        tvFansCount.setText(userBean.getFansNum()+"");
-        tvFollow.setText(userBean.getMyFollowNum()+"");
+        tvFansCount.setText(userBean.getFansNum() + "");
+        tvFollow.setText(userBean.getMyFollowNum() + "");
 
         tvUserName.setText(userBean.getNickname());
         tvUserId.setText(userBean.getUserId() + "");
@@ -306,7 +314,7 @@ public class PersonalInfoActivity extends BaseActivity {
                     tvLiveState.setVisibility(View.VISIBLE);
                     if ("T".equals(mLiveState)) {
                         tvLiveState.setText(R.string.live);
-                        tvLiveState.setTextColor(Color.RED);
+                        tvLiveState.setTextColor(Color.rgb(255, 43, 63));
                     } else {
                         tvLiveState.setText(R.string.rest);
                         tvLiveState.setTextColor(Color.WHITE);
