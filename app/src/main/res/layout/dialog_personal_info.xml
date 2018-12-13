@@ -289,7 +289,7 @@
                 app:layout_constraintHorizontal_bias="0.982"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.356"
+                app:layout_constraintVertical_bias="0.303"
                 tools:ignore="MissingConstraints" />
 
         </android.support.constraint.ConstraintLayout>

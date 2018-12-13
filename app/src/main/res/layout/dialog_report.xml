@@ -13,7 +13,7 @@
         android:gravity="center"
         android:text="温馨提示"
         android:textColor="#77ff8282"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         android:gravity="center"
         android:text="成功举报后，官方会在24小时内核实并处理"
         android:textColor="#77808080"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <View
         android:layout_width="match_parent"
@@ -40,7 +40,6 @@
         android:layout_height="10dp"
         android:background="#eeeeee" />
 
-
     <TextView
         android:id="@+id/tv_cancel"
         android:layout_width="match_parent"
@@ -48,6 +47,6 @@
         android:gravity="center"
         android:text="取消"
         android:textColor="#D3D3D3"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>
