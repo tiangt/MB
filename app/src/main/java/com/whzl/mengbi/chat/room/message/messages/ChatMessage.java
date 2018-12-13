@@ -190,7 +190,7 @@ public class ChatMessage implements FillHolderMessage {
         mholder.textView.append(LightSpanString.getLightString("  ", Color.parseColor("#75bbfb")));
         SpannableString spanString;
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
-            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
+            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#fc8f7a"));
         } else {
             spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
         }

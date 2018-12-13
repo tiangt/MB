@@ -7,7 +7,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -21,6 +20,8 @@ import android.widget.RadioGroup;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.message.events.AnchorWeekTaskEvent;
+import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -40,6 +41,8 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -361,6 +364,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     @Override
                     public void onSuccess(JsonElement bean) {
                         ToastUtils.showToast("发送成功");
+                        EventBus.getDefault().post(new SendBroadEvent());
                     }
 
                     @Override

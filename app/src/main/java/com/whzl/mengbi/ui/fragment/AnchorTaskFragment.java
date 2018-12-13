@@ -7,8 +7,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.message.events.AnchorWeekTaskEvent;
+import com.whzl.mengbi.chat.room.message.messageJson.AnchorWeekTaskJson;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 
@@ -38,8 +44,20 @@ public class AnchorTaskFragment extends BaseFragment {
     }
 
     @Override
-    public void init() {
+    protected void initEnv() {
+        super.initEnv();
+        EventBus.getDefault().register(this);
         bean = getArguments().getParcelable("bean");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void init() {
         Glide.with(this).load(bean.pic).into(iv);
         switch (bean.operation) {
             case "MUL":
@@ -83,6 +101,13 @@ public class AnchorTaskFragment extends BaseFragment {
                 }
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(AnchorWeekTaskEvent event) {
+        AnchorWeekTaskJson anchorWeekTaskJson = event.anchorWeekTaskJson;
+        bean.completion = anchorWeekTaskJson.context.actionValue;
+        init();
     }
 
 }

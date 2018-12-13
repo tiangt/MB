@@ -9,6 +9,7 @@ import com.whzl.mengbi.chat.room.message.messageJson.ChatRoomEventJson;
 import com.whzl.mengbi.chat.room.message.messages.NoChatMsg;
 import com.whzl.mengbi.chat.room.message.messagesActions.Actions;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnchorLevelChangeAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.AnchorWeekTaskAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.BroadCastAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
@@ -91,6 +92,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("AWARD_LOTTERY", new LotteryAction());
         actionsMap.put("WeekStarFirstNotify", new WeekStarAction());
         actionsMap.put("EVERY_DAY_TASK", new EverydayTaskAction());
+        actionsMap.put("ANCHOR_WEEK_TASK", new AnchorWeekTaskAction());
     }
 
     private void initChatAction() {

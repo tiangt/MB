@@ -45,6 +45,7 @@ import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
+import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
@@ -1022,6 +1023,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
     }
 
+    /**
+     * 发送广播成功
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(SendBroadEvent event) {
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+    }
+
     @Override
     public void onError(String msg) {
         showToast(msg);
@@ -1235,7 +1244,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (bean.total.compareTo(new BigDecimal(10000)) < 0) {
             tvContribute.setText(bean.total + "");
         } else {
-            BigDecimal divide = bean.total.divide(new BigDecimal(10000), 1, BigDecimal.ROUND_HALF_DOWN);
+            BigDecimal divide = bean.total.divide(new BigDecimal(10000), 1, BigDecimal.ROUND_DOWN);
             tvContribute.setText(divide + "万");
         }
     }
