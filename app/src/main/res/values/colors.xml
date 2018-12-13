@@ -191,7 +191,7 @@
     <color name="text_red">#ff2b3f</color>
     <color name="translucent_black">#aa252525</color>
     <color name="text_sign">#fefefe</color>
-    <color name="light_grey">#aaffffff</color>
+    <color name="light_grey">#30ffffff</color>
     <color name="text_yellow">#fff700</color>
     <color name="text_grey">#888888</color>
     <color name="text_blue">#28a1ff</color>
@@ -201,6 +201,7 @@
     <color name="tran_grey2">#66eeeeee</color>
     <color name="tran_black">#30000000</color>
     <color name="tran_black2">#70000000</color>
+    <color name="tran_white1">#90ffffff</color>
 
     <color name="text_content_free_gift">#90fefefe</color>
 </resources>

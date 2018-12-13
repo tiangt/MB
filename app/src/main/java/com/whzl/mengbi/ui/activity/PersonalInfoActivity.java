@@ -113,6 +113,8 @@ public class PersonalInfoActivity extends BaseActivity {
     ExpValueLayout evlUserLevel;
     @BindView(R.id.evl_royal_level)
     ExpValueLayout evlRoyalLevel;
+    @BindView(R.id.tv_rank_name)
+    TextView tvRankName;
 
     private int REQUEST_LOGIN = 250;
     private long mUserId, mVisitorId;
@@ -222,20 +224,24 @@ public class PersonalInfoActivity extends BaseActivity {
 
         if (userBean.getRank() < 0) {
             if ("ANCHOR".equals(userBean.getUserType())) {
-                tvRank.setText(getString(R.string.anchor_rank_out, "万名之外"));
+                tvRank.setText("万名之外");
+                tvRankName.setText("主播排名");
             } else {
-                tvRank.setText(getString(R.string.user_rank_out, "万名之外"));
+                tvRank.setText("万名之外");
+                tvRankName.setText("富豪排名");
             }
         } else {
             if ("ANCHOR".equals(userBean.getUserType())) {
                 fansCount = userBean.getRank();
-                tvRank.setText(getString(R.string.anchor_rank, fansCount));
+                tvRank.setText(fansCount+"");
+                tvRankName.setText("主播排名");
             } else {
-                tvRank.setText(getString(R.string.user_rank, userBean.getRank()));
+                tvRank.setText(userBean.getRank()+"");
+                tvRankName.setText("富豪排名");
             }
         }
-        tvFansCount.setText(getString(R.string.fans_count, userBean.getFansNum()));
-        tvFollow.setText(getString(R.string.follow, userBean.getMyFollowNum()));
+        tvFansCount.setText(userBean.getFansNum()+"");
+        tvFollow.setText(userBean.getMyFollowNum()+"");
 
         tvUserName.setText(userBean.getNickname());
         tvUserId.setText(userBean.getUserId() + "");
@@ -303,7 +309,7 @@ public class PersonalInfoActivity extends BaseActivity {
                         tvLiveState.setTextColor(Color.RED);
                     } else {
                         tvLiveState.setText(R.string.rest);
-                        tvLiveState.setTextColor(Color.GRAY);
+                        tvLiveState.setTextColor(Color.WHITE);
                     }
                     if ("ANCHOR_LEVEL".equals(levelType)) {
                         imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
@@ -314,7 +320,7 @@ public class PersonalInfoActivity extends BaseActivity {
                 }
             }
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 38), UIUtil.dip2px(PersonalInfoActivity.this, 16));
-            params.leftMargin = UIUtil.dip2px(PersonalInfoActivity.this, 6);
+            params.leftMargin = UIUtil.dip2px(PersonalInfoActivity.this, 3);
             linearLayout.addView(imageView, params);
         }
 
@@ -354,7 +360,7 @@ public class PersonalInfoActivity extends BaseActivity {
                     ImageView vipImage = new ImageView(this);
                     vipImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_vip));
                     LinearLayout.LayoutParams vip = new LinearLayout.LayoutParams(UIUtil.dip2px(this, 15), UIUtil.dip2px(this, 15));
-                    vip.leftMargin = UIUtil.dip2px(this, 6);
+                    vip.leftMargin = UIUtil.dip2px(this, 3);
                     linearLayout.addView(vipImage, vip);
                 }
 
