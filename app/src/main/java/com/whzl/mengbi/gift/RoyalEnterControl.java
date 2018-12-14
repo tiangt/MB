@@ -184,6 +184,9 @@ public class RoyalEnterControl {
                 } else if ("C".equals(prettyNumColor)) {
                     tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
                     tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
+                } else {
+                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
+                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
                 }
                 tvEnter.append(" ");
             }
