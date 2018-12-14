@@ -274,7 +274,7 @@
     <string name="empty_guard_list">当前主播还没有守护用户\n快给心爱的主播开一个吧</string>
     <string name="guard_priority">1.尊贵标识\n2.排位靠前\n3.尊贵坐席\n4.私聊\n5.防禁言\n6.聊天文字\n7.守护专属表情\n8.守护专属礼物\n9.守护进场特效</string>
     <string name="feedback">意见反馈</string>
-    <string name="subscriptions">粉丝:%1$s</string>
+    <string name="subscriptions">订阅:%1$s</string>
     <string name="audience">在线\n%1$d</string>
     <string name="alert">提示</string>
     <string name="cancel">取消</string>
