@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.DemonCarBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -18,6 +19,8 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,11 +109,12 @@ public class BuySuccubusActivity extends BaseActivity {
     private void buy() {
         Long userid = (Long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
         BusinessUtils.mallBuy(this, userid + "", goodsId + "", priceId + "", "1",
-                "", "",  new BusinessUtils.MallBuyListener() {
+                "", "", new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
                         ToastUtils.toastMessage(BuySuccubusActivity.this, "购买成功");
                         finish();
+                        EventBus.getDefault().post(new SendBroadEvent());
                     }
 
                     @Override
