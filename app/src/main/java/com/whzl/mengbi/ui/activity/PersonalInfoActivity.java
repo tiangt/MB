@@ -222,7 +222,6 @@ public class PersonalInfoActivity extends BaseActivity {
 
     private void setView(PersonalInfoBean.DataBean userBean) {
         GlideImageLoader.getInstace().displayImage(this, userBean.getAvatar(), ivAvatar);
-//        GlideImageLoader.getInstace().displayImage(this, userBean.getAvatar(), ivPersonalCover);
         Picasso.with(this).load(userBean.getAvatar()).transform(new BlurTransformation(this)).into(ivPersonalCover);
         tvNickName.setText(userBean.getNickname());
         String introduce = userBean.getIntroduce();
@@ -312,7 +311,7 @@ public class PersonalInfoActivity extends BaseActivity {
                         tvFollowState.setVisibility(View.VISIBLE);
                     }
                     tvLiveState.setVisibility(View.VISIBLE);
-                    if ("T".equals(mLiveState)) {
+                    if ("T".equals(userBean.getLiveStatus())) {
                         tvLiveState.setText(R.string.live);
                         tvLiveState.setTextColor(Color.rgb(255, 43, 63));
                     } else {
