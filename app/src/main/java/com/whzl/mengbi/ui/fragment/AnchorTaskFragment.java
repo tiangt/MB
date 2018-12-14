@@ -61,7 +61,8 @@ public class AnchorTaskFragment extends BaseFragment {
         Glide.with(this).load(bean.pic).into(iv);
         switch (bean.operation) {
             case "MUL":
-                tv.setText(bean.completion * bean.number + "");
+                tv.setText(bean.completion * bean.number >= bean.needCompletion * bean.number ?
+                        bean.needCompletion * bean.number + "" : bean.completion * bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion * bean.number + "");
                 if (!TextUtils.isEmpty(bean.unit)) {
@@ -69,7 +70,8 @@ public class AnchorTaskFragment extends BaseFragment {
                 }
                 break;
             case "DIV":
-                tv.setText(bean.completion / bean.number + "");
+                tv.setText(bean.completion / bean.number >= bean.needCompletion / bean.number ?
+                        bean.needCompletion / bean.number + "" : bean.completion / bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion / bean.number + "");
                 if (!TextUtils.isEmpty(bean.unit)) {
@@ -77,7 +79,8 @@ public class AnchorTaskFragment extends BaseFragment {
                 }
                 break;
             case "ADD":
-                tv.setText(bean.completion + bean.number + "");
+                tv.setText(bean.completion + bean.number >= bean.needCompletion + bean.number ?
+                        bean.needCompletion + bean.number + "" : bean.completion + bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion + bean.number + "");
                 if (!TextUtils.isEmpty(bean.unit)) {
@@ -85,7 +88,8 @@ public class AnchorTaskFragment extends BaseFragment {
                 }
                 break;
             case "SUB":
-                tv.setText(bean.completion - bean.number + "");
+                tv.setText(bean.completion - bean.number >= bean.needCompletion - bean.number ?
+                        bean.needCompletion - bean.number + "" : bean.completion - bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion - bean.number + "");
                 if (!TextUtils.isEmpty(bean.unit)) {
@@ -93,7 +97,8 @@ public class AnchorTaskFragment extends BaseFragment {
                 }
                 break;
             default:
-                tv.setText(bean.completion + "");
+                tv.setText(bean.completion >= bean.needCompletion ?
+                        bean.needCompletion + "" : bean.completion + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion + "");
                 if (!TextUtils.isEmpty(bean.unit)) {
@@ -106,7 +111,11 @@ public class AnchorTaskFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnchorWeekTaskEvent event) {
         AnchorWeekTaskJson anchorWeekTaskJson = event.anchorWeekTaskJson;
-        bean.completion = anchorWeekTaskJson.context.actionValue;
+        if (anchorWeekTaskJson.context.actionValue >= anchorWeekTaskJson.context.actionNeedValue) {
+            bean.completion = anchorWeekTaskJson.context.actionNeedValue;
+        } else {
+            bean.completion = anchorWeekTaskJson.context.actionValue;
+        }
         init();
     }
 
