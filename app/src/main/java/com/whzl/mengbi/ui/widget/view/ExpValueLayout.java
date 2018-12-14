@@ -151,7 +151,7 @@ public class ExpValueLayout extends LinearLayout {
                 if (levelValue == 37) {
                     tpAnchorLevel.setMax(100);
                     tpAnchorLevel.setProgress(100);
-                    tvPb.setText("您已达到最高用户等级");
+                    tvPb.setText("您已达到最高富豪等级");
                 } else {
                     tpUserLevel.setMax((int) (sjNeedExpValue2));
                     if (sjExpvalue2 < sjNeedExpValue2) {
