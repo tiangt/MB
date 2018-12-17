@@ -46,6 +46,9 @@ public class ChatRoomPresenterImpl {
     }
 
     public void setupConnection(LiveRoomTokenInfo liveRoomTokenInfo, Context context) {
+        if (client != null) {
+            client.closeSocket();
+        }
         this.liveRoomTokenInfo = liveRoomTokenInfo;
         MbSocketFactory socketFactory = new MbSocketFactory();
         connectCallback = new IConnectCallback() {
@@ -81,9 +84,7 @@ public class ChatRoomPresenterImpl {
             messageCallback.unregister();
         }
         messageCallback = new MessageRouter(context);
-        if (client != null) {
-            client.closeSocket();
-        }
+
         client = new MbChatClient(socketFactory);
         client.setErrorCallback(errorCallback);
         client.setConnectCallback(connectCallback);
