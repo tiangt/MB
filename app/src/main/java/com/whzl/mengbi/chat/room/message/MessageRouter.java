@@ -9,9 +9,11 @@ import com.whzl.mengbi.chat.room.message.messageJson.ChatRoomEventJson;
 import com.whzl.mengbi.chat.room.message.messages.NoChatMsg;
 import com.whzl.mengbi.chat.room.message.messagesActions.Actions;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnchorLevelChangeAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.AnchorWeekTaskAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.BroadCastAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.EverydayTaskAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LotteryAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
@@ -30,6 +32,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.SubProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.SystemMsgAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UpdateProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UserLevelChangeAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.WeekStarAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.util.GsonUtils;
@@ -87,6 +90,9 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("BROADCAST", new BroadCastAction());
         actionsMap.put("PK", new PkAction());
         actionsMap.put("AWARD_LOTTERY", new LotteryAction());
+        actionsMap.put("WeekStarFirstNotify", new WeekStarAction());
+        actionsMap.put("EVERY_DAY_TASK", new EverydayTaskAction());
+        actionsMap.put("ANCHOR_WEEK_TASK", new AnchorWeekTaskAction());
     }
 
     private void initChatAction() {
@@ -146,7 +152,7 @@ public class MessageRouter implements MessageCallback {
             chatAction.performAction(msgInfo, mContext);
         } else if (type.equals("private")) {
             privateChatAction.performAction(msgInfo, mContext);
-        } else if (type.equals("localroom") || type.equals("broadcast")) {
+        } else if (type.equals("localroom") || type.equals("broadcast") || type.equals("user")) {
             ChatRoomEventJson eventJson = GsonUtils.GsonToBean(msgInfo, ChatRoomEventJson.class);
             if (null == eventJson) {
                 return;

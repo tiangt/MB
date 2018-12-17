@@ -1,13 +1,12 @@
 package com.whzl.mengbi.ui.fragment.main;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -33,6 +34,8 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
+import com.whzl.mengbi.ui.widget.view.GlideRoundTransform;
+import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
@@ -113,8 +116,6 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     private void initHead(View view) {
-        ImageView iv = view.findViewById(R.id.iv);
-        GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.img_nobility, iv);
     }
 
     class AnchorInfoViewHolder extends BaseViewHolder {
@@ -216,7 +217,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
                 } else {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
-//                    showEmptyView();
+                    showEmptyView();
                 }
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
@@ -274,7 +275,6 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
     private void initRecycler() {
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        recycler.addItemDecoration(new DividerItemDecoration(getContext(), RecyclerView.VERTICAL));
         adapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
@@ -283,11 +283,38 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_anchor_followed, parent, false);
+                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_follow_follow, parent, false);
                 return new AnchorViewHolder(itemView);
+            }
+
+            @Override
+            protected BaseViewHolder onCreateLoadMoreFooterViewHolder(ViewGroup parent) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_load_more_end, parent, false);
+                TextView tvFoot = view.findViewById(R.id.tv_foot);
+                tvFoot.setText("没有更多了~");
+                return new LoadMoreFooterViewHolder(view);
             }
         };
         recycler.setAdapter(adapter);
+    }
+
+    private class LoadMoreFooterViewHolder extends BaseViewHolder {
+
+        public LoadMoreFooterViewHolder(View view) {
+            super(view);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            // 强制关闭复用，刷新动画
+            this.setIsRecyclable(false);
+            // 设置自定义加载中和到底了效果
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            // 设置点击效果，比如加载失败，点击重试
+        }
     }
 
     public static FollowFragment newInstance() {
@@ -299,12 +326,14 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         ImageView ivAvatar;
         @BindView(R.id.tv_anchor_name)
         TextView tvAnchorName;
-        @BindView(R.id.tv_room_num)
-        TextView tvRoomNum;
         @BindView(R.id.iv_level_icon)
         ImageView ivLevelIcon;
         @BindView(R.id.tv_status)
         TextView tvStatus;
+        @BindView(R.id.tv_follow_state)
+        TextView tvFollowState;
+        @BindView(R.id.tv_last_time)
+        TextView tvLastTime;
 
         public AnchorViewHolder(View itemView) {
             super(itemView);
@@ -314,13 +343,29 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         @Override
         public void onBindViewHolder(int position) {
             AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
-            GlideImageLoader.getInstace().displayImage(getContext(), anchorInfoBean.avatar, ivAvatar);
-            tvStatus.setVisibility("T".equals(anchorInfoBean.status) ? View.VISIBLE : View.GONE);
-            tvRoomNum.setText(getString(R.string.room_num, anchorInfoBean.programId));
+//            GlideImageLoader.getInstace().displayImage(getContext(), anchorInfoBean.avatar, ivAvatar);
+            RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(5));
+            Glide.with(FollowFragment.this).load(anchorInfoBean.avatar).apply(requestOptions).into(ivAvatar);
+//            tvStatus.setVisibility("T".equals(anchorInfoBean.status) ? View.VISIBLE : View.GONE);
+            if ("T".equals(anchorInfoBean.status)) {
+                tvStatus.setVisibility(View.VISIBLE);
+                tvLastTime.setVisibility(View.GONE);
+            } else {
+                tvStatus.setVisibility(View.GONE);
+                tvLastTime.setVisibility(View.VISIBLE);
+                tvLastTime.setText("上次直播:");
+                if (!TextUtils.isEmpty(anchorInfoBean.lastShowBeginTime)) {
+                    String timeRange = DateUtils.getTimeRange(anchorInfoBean.lastShowBeginTime);
+                    tvLastTime.append(timeRange);
+                } else {
+                    tvLastTime.append("无");
+                }
+            }
             tvAnchorName.setText(anchorInfoBean.anchorNickname);
             ivLevelIcon.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(anchorInfoBean.anchorLevelValue));
-
+            setFollowState(tvFollowState, anchorInfoBean);
         }
+
 
         @Override
         public void onItemClick(View view, int position) {
@@ -331,28 +376,28 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
             startActivity(intent);
         }
 
-        @Override
-        public void onItemLongClick(View view, int position) {
-            super.onItemLongClick(view, position);
-            AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setTitle("提示");
-            dialog.setMessage("是否确定取消关注该主播");
-            dialog.setNegativeButton("取消", null);
-            dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    HashMap map = new HashMap();
-                    map.put("userId", userId);
-                    map.put("programId", anchorInfoBean.programId);
-                    unFollow(map);
-                }
-            });
-            dialog.show();
-        }
     }
 
-    private void unFollow(HashMap paramsMap) {
+    private void setFollowState(TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean) {
+        tvFollowState.setBackground(null);
+        tvFollowState.setTextColor(Color.parseColor("#20000000"));
+        tvFollowState.setText("已订阅");
+        tvFollowState.setOnClickListener(v -> {
+//            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+//            dialog.setTitle("提示");
+//            dialog.setMessage("是否确定取消关注该主播");
+//            dialog.setNegativeButton("取消", null);
+//            dialog.setPositiveButton("确定", (dialog1, which) -> {
+            HashMap map = new HashMap();
+            map.put("userId", userId);
+            map.put("programId", anchorInfoBean.programId);
+            unFollow(map, tvFollowState, anchorInfoBean);
+//            });
+//            dialog.show();
+        });
+    }
+
+    private void unFollow(HashMap paramsMap, TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean) {
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.UNFOLLOW_ANCHOR, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
@@ -363,8 +408,10 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                         String jsonStr = result.toString();
                         ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
                         if (responseInfo.getCode() == 200) {
-                            mCurrentPager = 1;
-                            getAnchorList(mCurrentPager++);
+//                            mCurrentPager = 1;
+//                            getAnchorList(mCurrentPager++);
+                            ToastUtils.showToast("取消订阅成功");
+                            setUnFollowState(tvFollowState, anchorInfoBean);
                         }
                     }
 
@@ -375,6 +422,33 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 });
     }
 
+    private void setUnFollowState(TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean) {
+        tvFollowState.setBackgroundResource(R.drawable.bg_state_no_follow_follow);
+        tvFollowState.setTextColor(Color.parseColor("#70000000"));
+        tvFollowState.setText("订阅");
+        tvFollowState.setOnClickListener(v -> follow(tvFollowState, anchorInfoBean));
+    }
+
+    private void follow(TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean infoBean) {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("programId", infoBean.programId + "");
+        paramsMap.put("userId", userId + "");
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.FELLOW_HOST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
+                if (responseInfo.getCode() == 200) {
+                    ToastUtils.showToast("订阅成功");
+                    setFollowState(tvFollowState, infoBean);
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {

@@ -124,6 +124,27 @@
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
+        <!-- 新浪微博 -->
+        <activity
+            android:name="com.umeng.socialize.media.WBShareCallBackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+        <activity
+            android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name="com.sina.weibo.sdk.share.WbShareTransActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:launchMode="singleTop"
@@ -250,18 +271,20 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:exported="true"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-                <!--&lt;!&ndash; 处理以"app_name://page/type"开头的 URI &ndash;&gt;-->
-                <!--<data android:scheme="mengbi" />-->
-                <!--<data android:host="play" />-->
-                <!--<data android:path="/home" />-->
+            <!--<action android:name="android.intent.action.VIEW" />-->
+            <!--<category android:name="android.intent.category.DEFAULT" />-->
+            <!--&lt;!&ndash; 处理以"app_name://page/type"开头的 URI &ndash;&gt;-->
+            <!--<data android:scheme="mengbi" />-->
+            <!--<data android:host="play" />-->
+            <!--<data android:path="/home" />-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".ui.activity.LoginActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:launchMode="singleTop"
@@ -277,10 +300,12 @@
         <activity android:name=".ui.activity.AboutUsActivity" />
         <activity android:name=".ui.activity.WatchHistoryActivity" />
         <activity android:name=".ui.activity.FeedbackActivity" />
-        <activity android:name=".ui.activity.RankListActivity"
-            android:launchMode="singleTop"/>
-        <activity android:name=".ui.activity.CommWebActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".ui.activity.RankListActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".ui.activity.CommWebActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".ui.activity.me.ShopActivity" />
         <activity android:name=".ui.activity.me.BuyVipActivity" />
         <activity android:name=".ui.activity.me.SendVipActivity" />
@@ -290,8 +315,14 @@
         <activity android:name=".ui.activity.me.PackActivity" />
         <activity android:name=".ui.activity.base.FrgActivity" />
         <activity android:name=".ui.activity.me.BillActivity" />
-        <activity android:name=".ui.activity.ForgetPasswordActivity"/>
-        <activity android:name=".ui.activity.ResetPasswordActivity"/>
-        <activity android:name=".ui.activity.RetrievePasswordActivity"/>
+        <activity android:name=".ui.activity.ForgetPasswordActivity" />
+        <activity android:name=".ui.activity.ResetPasswordActivity" />
+        <activity android:name=".ui.activity.RetrievePasswordActivity" />
+        <activity
+            android:name=".ui.activity.AnchorCardActivity"
+            android:theme="@style/TransparentTheme" />
+        <activity android:name=".ui.activity.BuySuccubusActivity" />
+
+        <activity android:name=".ui.activity.PersonalInfoActivity"/>
     </application>
 </manifest>

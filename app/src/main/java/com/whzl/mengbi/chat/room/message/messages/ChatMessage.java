@@ -153,7 +153,7 @@ public class ChatMessage implements FillHolderMessage {
             mholder.textView.append(" ");
         }
         if (hasVip) {
-            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip_chat));
+            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip));
             mholder.textView.append(" ");
         }
         if (fromSpanList != null) {
@@ -172,6 +172,9 @@ public class ChatMessage implements FillHolderMessage {
             } else if ("C".equals(prettyNumColor)) {
                 mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
                 mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
+            } else {
+                mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
+                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
             }
             mholder.textView.append("  ");
         }
@@ -190,7 +193,7 @@ public class ChatMessage implements FillHolderMessage {
         mholder.textView.append(LightSpanString.getLightString("  ", Color.parseColor("#75bbfb")));
         SpannableString spanString;
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
-            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
+            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#fc8f7a"));
         } else {
             spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
         }

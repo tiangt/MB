@@ -23,7 +23,7 @@ import io.reactivex.schedulers.Schedulers;
 public class BusinessUtils {
 
     public static void mallBuy(Activity context, String userId, String goodsId, String priceId,
-                               String count, String toUserId, String salerId, String programId, MallBuyListener listener) {
+                               String count, String toUserId, String salerId, MallBuyListener listener) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", userId);
         paramsMap.put("goodsId", goodsId);
@@ -31,7 +31,6 @@ public class BusinessUtils {
         paramsMap.put("count", count);
         paramsMap.put("toUserId", toUserId);
         paramsMap.put("salerId", salerId);
-        paramsMap.put("programId", programId);
         ApiFactory.getInstance().getApi(Api.class)
                 .mallBuy(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())

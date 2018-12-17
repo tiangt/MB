@@ -2,8 +2,11 @@ package com.whzl.mengbi.chat.room.util;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.text.style.ReplacementSpan;
 
 import com.whzl.mengbi.util.UIUtil;
@@ -69,8 +72,11 @@ public class RoundBackgroundColorSpan2 extends ReplacementSpan {
         //设置文字背景矩形，x为span其实左上角相对整个TextView的x值，y为span左上角相对整个View的y值。
         // paint.ascent()获得文字上边缘，paint.descent()获得文字下边缘
         //x+2.5f解决线条粗细不一致问题
+//        paint.setShader(new LinearGradient(x + 2.5f, y + 2.5f + paint.ascent(), x + mSize, y + paint.descent(), Color.RED,Color.BLUE, Shader.TileMode.CLAMP));
+
         canvas.drawRect(rectF, paint);
 
+//        paint.setShader(null);
         //绘制文字
         paint.setColor(textColor);
         paint.setStyle(Paint.Style.FILL);

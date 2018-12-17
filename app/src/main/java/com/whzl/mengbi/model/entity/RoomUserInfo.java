@@ -63,6 +63,8 @@ public class RoomUserInfo {
         private WeathMapBean weathMap;
         private List<LevelMapBean> levelList;
         private List<GoodsListBean> goodsList;
+        private int rank;
+        private String isFollowed;
 
         public List<Integer> getDisabledService() {
             return disabledService;
@@ -251,6 +253,21 @@ public class RoomUserInfo {
             this.userId = userId;
         }
 
+        public void setRank(int rank){
+            this.rank = rank;
+        }
+
+        public int getRank(){
+            return rank;
+        }
+
+        public void setIsFollowed(String isFollowed){
+            this.isFollowed = isFollowed;
+        }
+
+        public String getIsFollowed(){
+            return isFollowed;
+        }
     }
 
     public class LevelMapBean {

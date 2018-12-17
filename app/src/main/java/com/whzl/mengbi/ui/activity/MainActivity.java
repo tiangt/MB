@@ -20,6 +20,7 @@ import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
@@ -60,7 +61,7 @@ import io.reactivex.schedulers.Schedulers;
  * @date 2018/7/18
  */
 public class MainActivity extends BaseActivity {
-    private static final int REQUEST_LOGIN = 250;
+
     @BindView(R.id.rg_tab)
     RadioGroup rgTab;
     private Fragment[] fragments;
@@ -91,11 +92,11 @@ public class MainActivity extends BaseActivity {
                     setTabChange(0);
                     break;
                 case R.id.rb_rank:
-                    if (checkLogin()) {
-                        setTabChange(1);
-                        return;
-                    }
-                    login();
+//                    if (checkLogin()) {
+                    setTabChange(1);
+//                        return;
+//                    }
+//                    login();
                     break;
                 case R.id.rb_follow:
                     if (checkLogin()) {
@@ -116,14 +117,15 @@ public class MainActivity extends BaseActivity {
     }
 
     private void login() {
-        currentSelectedIndex = 0;
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivityForResult(intent, REQUEST_LOGIN);
-//        LoginDialog.newInstance()
-//                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
-//                .setDimAmount(0)
-//                .show(getSupportFragmentManager());
-        rgTab.check(rgTab.getChildAt(0).getId());
+//        currentSelectedIndex = 0;
+//        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//        startActivityForResult(intent, REQUEST_LOGIN);
+        LoginDialog.newInstance()
+                .setLoginSuccessListener(() -> getNewUserAward(true))
+                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+                .setDimAmount(0.7f)
+                .show(getSupportFragmentManager());
+        rgTab.check(rgTab.getChildAt(currentSelectedIndex).getId());
     }
 
     private boolean checkLogin() {
@@ -243,7 +245,7 @@ public class MainActivity extends BaseActivity {
                 .setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-                        holder.setText(R.id.tv_version_name, "V." + phone.versionName);
+                        holder.setText(R.id.tv_version_name, "发现新版本(" + phone.versionName + ")");
                         holder.setText(R.id.tv_update_info, phone.upgradeDetail);
                         holder.setOnClickListener(R.id.btn_dismiss, new View.OnClickListener() {
                             @Override
@@ -335,7 +337,7 @@ public class MainActivity extends BaseActivity {
         if (requestCode == AppUtils.REQUEST_INSTALL) {
             finish();
         }
-        if (requestCode == REQUEST_LOGIN) {
+        if (requestCode == AppUtils.REQUEST_LOGIN) {
             if (resultCode == RESULT_OK) {
                 getNewUserAward(true);
             }

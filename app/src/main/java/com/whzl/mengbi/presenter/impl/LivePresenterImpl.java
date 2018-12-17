@@ -2,8 +2,10 @@ package com.whzl.mengbi.presenter.impl;
 
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -12,7 +14,6 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.impl.LiveModelImpl;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
@@ -130,19 +131,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
-    @Override
-    public void onTreasureStatusSuccess(TreasureBoxStatusBean treasureBoxStatusBean) {
-        if (liveView != null) {
-            liveView.onTreasureSuccess(treasureBoxStatusBean);
-        }
-    }
-
-    @Override
-    public void onReceiveTreasureSuccess() {
-        if (liveView != null) {
-            liveView.onReceiveTreasureSuccess();
-        }
-    }
 
     @Override
     public void onActivityListSuccess(GetActivityBean bean) {
@@ -187,14 +175,29 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
+    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
+        if (liveView != null) {
+            liveView.onGetAnchorTaskSuccess(dataBean);
+        }
+    }
+
+    @Override
+    public void onGetDailyTaskStateSuccuss(GetDailyTaskStateBean dailyTaskStateBean) {
+        if (liveView != null) {
+            liveView.onGetDailyTaskStateSuccess(dailyTaskStateBean);
+        }
+    }
+
+
+    @Override
     public void followHost(long userId, int mProgramId) {
         liveModel.doFollowHost(userId, mProgramId, this);
     }
 
     @Override
-    public void getRoomUserInfo(long userId, int programId) {
-        if (userId != 0) {
-            liveModel.doRoomUserInfo(userId, programId, this);
+    public void getRoomUserInfo(long visitorId, int programId) {
+        if (visitorId != 0) {
+            liveModel.doRoomUserInfo(visitorId,programId, this);
         }
     }
 
@@ -204,22 +207,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("programId", programId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getProgramFirst(signPramsMap, this);
-    }
-
-    @Override
-    public void getTreasureBoxStatus(long userId) {
-        HashMap map = new HashMap();
-        map.put("userId", userId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        liveModel.getTreasureBox(signPramsMap, this);
-    }
-
-    @Override
-    public void receiveTreasure(long userId) {
-        HashMap map = new HashMap();
-        map.put("userId", userId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        liveModel.treceiveTreasure(signPramsMap, this);
     }
 
     @Override
@@ -272,4 +259,18 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         liveModel.getRoomRankTotal(signPramsMap, this);
     }
 
+    @Override
+    public void getDailyTaskState(long mUserId) {
+        HashMap map = new HashMap();
+        map.put("userId", mUserId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getDailyTaskState(signPramsMap, this);
+    }
+
+    public void getAnchorTask(int mAnchorId) {
+        HashMap map = new HashMap();
+        map.put("userId", mAnchorId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getAnchorTask(signPramsMap, this);
+    }
 }

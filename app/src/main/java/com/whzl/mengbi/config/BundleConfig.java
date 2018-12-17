@@ -6,4 +6,5 @@ package com.whzl.mengbi.config;
  */
 public interface BundleConfig {
     String PROGRAM_ID = "programId";
+    String ANCHOR_COVER = "anchorCover";
 }

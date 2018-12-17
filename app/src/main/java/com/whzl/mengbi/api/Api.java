@@ -4,13 +4,18 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.BillAwardBean;
 import com.whzl.mengbi.model.entity.BillGiftBean;
 import com.whzl.mengbi.model.entity.BillPayBean;
+import com.whzl.mengbi.model.entity.BroadCastNumBean;
+import com.whzl.mengbi.model.entity.DailyTaskBean;
+import com.whzl.mengbi.model.entity.DemonCarBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
@@ -26,11 +31,13 @@ import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
+import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
+import com.whzl.mengbi.model.entity.WeekRankBean;
 
 import java.util.Map;
 
@@ -524,5 +531,95 @@ public interface Api {
     @POST("v1/rank/room-rank-total")
     @FormUrlEncoded
     Observable<ApiResult<RoomRankTotalBean>> getRoomRankTotal(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间指定类型的榜单的总值
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/rank/week-personal-ranking")
+    @FormUrlEncoded
+    Observable<ApiResult<WeekRankBean>> getWeekRank(@FieldMap Map<String, String> params);
+
+    /**
+     * 主播任务
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/anchor-task")
+    @FormUrlEncoded
+    Observable<ApiResult<AnchorTaskBean>> getAnchorTask(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取用户广播数量
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/consume/broadcast-num")
+    @FormUrlEncoded
+    Observable<ApiResult<BroadCastNumBean>> getBroadNum(@FieldMap Map<String, String> params);
+
+    /**
+     * 发送广播
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/consume/send-broadcast")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> sendBroadcast(@FieldMap Map<String, String> params);
+
+    /**
+     * 每日任务
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/daily-task")
+    @FormUrlEncoded
+    Observable<ApiResult<DailyTaskBean>> dailyTask(@FieldMap Map<String, String> params);
+
+    /**
+     * 每日奖励领取
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/daily-task-receive")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> dailyTaskReceive(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取守护价格接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/mall/get-demon-car-prices")
+    @FormUrlEncoded
+    Observable<ApiResult<DemonCarBean>> getDemonCar(@FieldMap Map<String, String> params);
+
+    /**
+     * 每日奖励领取状态
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/activity/daily-task-is-receive")
+    @FormUrlEncoded
+    Observable<ApiResult<GetDailyTaskStateBean>> getDailyTaskState(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间用户信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/room-user")
+    @FormUrlEncoded
+    Observable<ApiResult<RoomUserBean>> roomUser(@FieldMap Map<String, String> params);
 
 }

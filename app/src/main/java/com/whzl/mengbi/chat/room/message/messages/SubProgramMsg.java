@@ -1,7 +1,6 @@
 package com.whzl.mengbi.chat.room.message.messages;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
@@ -37,7 +36,7 @@ public class SubProgramMsg implements FillHolderMessage{
         int levelIcon = ResourceMap.getResourceMap().getUserLevelIcon(subProJson.getContext().getLevelValue());
         mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, levelIcon));
         mholder.textView.append(LightSpanString.getNickNameSpan(mContext, " " + subProJson.getContext().getNickname() + " ", subProJson.getContext().getUserId(), programId, ContextCompat.getColor(mContext, R.color.text_color_focus_nick)));
-        mholder.textView.append(LightSpanString.getLightString("关注了主播", ContextCompat.getColor(mContext, R.color.text_color_focus)));
+        mholder.textView.append(LightSpanString.getLightString("订阅了主播", ContextCompat.getColor(mContext, R.color.text_color_focus)));
     }
 
     @Override

@@ -114,10 +114,10 @@
                     android:textSize="12dp" />
 
                 <Button
-                    android:layout_marginLeft="-0.5dp"
                     android:id="@+id/btn_send_gift"
                     android:layout_width="57dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="-0.5dp"
                     android:background="@drawable/shape_live_house_dialog_gift_send_btn_bg"
                     android:text="赠送"
                     android:textColor="@color/white"

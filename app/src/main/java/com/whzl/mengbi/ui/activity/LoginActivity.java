@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -239,6 +238,8 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
             setResult(RESULT_OK);
         } else if (JsBridgeActivity.class.toString().equals(activityFrom)) {
             setResult(RESULT_OK);
+        } else if ("logindialog".equals(activityFrom)) {
+            setResult(RESULT_OK);
         }
         finish();
     }
@@ -269,7 +270,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(ActivityFinishEvent event){
+    public void onEvent(ActivityFinishEvent event) {
 
     }
 }

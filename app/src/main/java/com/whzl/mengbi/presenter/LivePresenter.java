@@ -12,7 +12,7 @@ public interface LivePresenter {
 
     void followHost(long userId, int programId);
 
-    void getRoomUserInfo(long userId, int programId);
+    void getRoomUserInfo(long visitorId,  int programId);
 
     void onDestory();
 
@@ -21,10 +21,6 @@ public interface LivePresenter {
     void getRunWayList(HashMap paramsMap);
 
     void getProgramFirst(int programId);
-
-    void getTreasureBoxStatus(long userId);
-
-    void receiveTreasure(long userId);
 
     void getActivityList();
 
@@ -37,4 +33,6 @@ public interface LivePresenter {
     void getGuardTotal(int programId);
 
     void getRoomRankTotal(int mProgramId, String type);
+
+    void getDailyTaskState(long mUserId);
 }

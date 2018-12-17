@@ -9,9 +9,12 @@ import android.view.View;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.ContributeDataBean;
 import com.whzl.mengbi.model.entity.RoomRankBean;
+import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.AudienceContributeListAdapter;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
+import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.GsonUtils;
@@ -57,11 +60,15 @@ public class ContributeRankFragment extends BaseFragment {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 RoomRankBean.DataBean.ListBean userInfoBean = mDatas.get(position);
-                AudienceInfoDialog.newInstance(userInfoBean.userId, programId)
-                        .setAnimStyle(R.style.Theme_AppCompat_Dialog)
-                        .setDimAmount(0)
-                        .setShowBottom(true)
-                        .show(getChildFragmentManager());
+//                AudienceInfoDialog.newInstance(userInfoBean.userId, programId)
+//                        .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+//                        .setDimAmount(0)
+//                        .setShowBottom(true)
+//                        .show(getChildFragmentManager());
+//                getUserInfo(userInfoBean.userId, programId, mVisitorId);
+                if (getActivity() != null) {
+                    ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(userInfoBean.userId, true);
+                }
             }
 
             @Override
@@ -69,7 +76,7 @@ public class ContributeRankFragment extends BaseFragment {
                 return false;
             }
         });
-        if(getContext() == null){
+        if (getContext() == null) {
             return;
         }
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -104,4 +111,5 @@ public class ContributeRankFragment extends BaseFragment {
             }
         });
     }
+
 }

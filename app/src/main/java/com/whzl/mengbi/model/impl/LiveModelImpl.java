@@ -2,12 +2,13 @@ package com.whzl.mengbi.model.impl;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -17,7 +18,6 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
@@ -129,10 +129,11 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void doRoomUserInfo(long userId, int programId, OnLiveFinishedListener listener) {
+    public void doRoomUserInfo(long visitorId, int programId, OnLiveFinishedListener listener) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
-        paramsMap.put("userId", userId + "");
+        paramsMap.put("userId", visitorId + "");
+//        paramsMap.put("visitorId", visitorId + "");
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
@@ -222,47 +223,6 @@ public class LiveModelImpl implements LiveModel {
 
     }
 
-    @Override
-    public void getTreasureBox(HashMap paramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .getTreasureBoxStatus(paramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<TreasureBoxStatusBean>() {
-
-
-                    @Override
-                    public void onSuccess(TreasureBoxStatusBean treasureBoxStatusBean) {
-                        listener.onTreasureStatusSuccess(treasureBoxStatusBean);
-                    }
-
-                    @Override
-                    public void onError(int code) {
-
-                    }
-                });
-    }
-
-    @Override
-    public void treceiveTreasure(HashMap paramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .receiveTreasure(paramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<JsonElement>() {
-
-
-                    @Override
-                    public void onSuccess(JsonElement jsonElement) {
-                        listener.onReceiveTreasureSuccess();
-                    }
-
-                    @Override
-                    public void onError(int code) {
-
-                    }
-                });
-    }
 
     @Override
     public void activityList(HashMap paramsMap, OnLiveFinishedListener listener) {
@@ -387,4 +347,45 @@ public class LiveModelImpl implements LiveModel {
                     }
                 });
     }
+
+    @Override
+    public void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getAnchorTask(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<AnchorTaskBean>() {
+                    @Override
+                    public void onSuccess(AnchorTaskBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetAnchorTaskSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<AnchorTaskBean> body) {
+                    }
+                });
+    }
+
+    @Override
+    public void getDailyTaskState(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getDailyTaskState(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<GetDailyTaskStateBean>() {
+                    @Override
+                    public void onSuccess(GetDailyTaskStateBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetDailyTaskStateSuccuss(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<GetDailyTaskStateBean> body) {
+                    }
+                });
+    }
+
 }

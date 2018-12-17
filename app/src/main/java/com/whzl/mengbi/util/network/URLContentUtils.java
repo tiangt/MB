@@ -194,4 +194,24 @@ public class URLContentUtils {
      * MVP设置惩罚方式
      */
     public static final String PUNISH_WAY = "/v1/pk/set-punish-way";
+
+    /**
+     * 关注主播
+     */
+    public static final String SOCIAL_FOLLOW = "v1/social/follow";
+
+    /**
+     * 获取用户主页
+     */
+    public static final String HOME_PAGE = "v1/user/homepage";
+
+    /**
+     * 举报原因
+     */
+    public static final String REPORT_REASON = "v1/social/report-reason";
+
+    /**
+     * 举报
+     */
+    public static final String REPORT = "v1/social/report";
 }

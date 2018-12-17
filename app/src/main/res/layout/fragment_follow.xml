@@ -7,7 +7,18 @@
 
     <TextView
         style="@style/fragmentTitleText"
-        android:text="@string/follow_title" />
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@color/main_tab_color"
+        android:gravity="center"
+        android:text="@string/follow_title"
+        android:textColor="@color/text_view"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"

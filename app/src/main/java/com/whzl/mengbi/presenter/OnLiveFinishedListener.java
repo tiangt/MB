@@ -1,8 +1,10 @@
 package com.whzl.mengbi.presenter;
 
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -11,7 +13,6 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 
 public interface OnLiveFinishedListener {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -34,10 +35,6 @@ public interface OnLiveFinishedListener {
 
     void onGetProgramFirstSuccess(long userId);
 
-    void onTreasureStatusSuccess(TreasureBoxStatusBean treasureBoxStatusBean);
-
-    void onReceiveTreasureSuccess();
-
     void onActivityListSuccess(GetActivityBean bean);
 
     void onPkInfoSuccess(PKResultBean bean);
@@ -49,4 +46,8 @@ public interface OnLiveFinishedListener {
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean);
 
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
+
+    void onGetAnchorTaskSuccess(AnchorTaskBean dataBean);
+
+    void onGetDailyTaskStateSuccuss(GetDailyTaskStateBean dailyTaskStateBean);
 }

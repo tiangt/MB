@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,7 +11,8 @@
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent" />
+        app:layout_constraintLeft_toRightOf="parent"
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/tv_is_live_mark"
@@ -35,11 +37,22 @@
         android:id="@+id/iv_is_live_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:layout_marginRight="14dp"
         android:src="@drawable/ic_home_live_middle"
         android:visibility="gone"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_pk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_home_pk"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
@@ -61,7 +74,7 @@
             android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="12sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_watch_count"
@@ -74,7 +87,7 @@
             android:layout_marginBottom="4dp"
             android:textColor="@color/white"
             android:textSize="12sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

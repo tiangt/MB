@@ -94,12 +94,12 @@ public class AnchorLevelChangeJson {
                  * userExpSn : 575
                  */
 
-                public int bjExpValue;
+                public long bjExpValue;
                 public String expName;
                 public String expType;
-                public int sjExpvalue;
-                public int sjNeedExpValue;
-                public int totalExpValue;
+                public long sjExpvalue;
+                public long sjNeedExpValue;
+                public long totalExpValue;
                 public int userExpSn;
             }
         }

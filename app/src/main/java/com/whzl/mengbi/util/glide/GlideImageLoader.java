@@ -27,6 +27,9 @@ import com.whzl.mengbi.BuildConfig;
 import com.whzl.mengbi.util.UIUtil;
 import com.youth.banner.loader.ImageLoader;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.MessageDigest;
 
 public class GlideImageLoader extends ImageLoader {
@@ -45,7 +48,7 @@ public class GlideImageLoader extends ImageLoader {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public  boolean isValidContextForGlide(final Context context) {
+    public boolean isValidContextForGlide(final Context context) {
         if (context == null) {
             return false;
         }
@@ -186,4 +189,69 @@ public class GlideImageLoader extends ImageLoader {
         }
     }
 
+
+    public void loadOneTimeGif(Context context, Object model, final ImageView imageView, final GifListener2 gifListener) {
+        if (isValidContextForGlide(context)) {
+            RequestOptions options = new RequestOptions().skipMemoryCache(true);
+            Glide.with(context).asGif().load(model).apply(options).listener(new RequestListener<GifDrawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
+                    try {
+                        Field gifStateField = GifDrawable.class.getDeclaredField("state");
+                        gifStateField.setAccessible(true);
+                        Class gifStateClass = Class.forName("com.bumptech.glide.load.resource.gif.GifDrawable$GifState");
+                        Field gifFrameLoaderField = gifStateClass.getDeclaredField("frameLoader");
+                        gifFrameLoaderField.setAccessible(true);
+                        Class gifFrameLoaderClass = Class.forName("com.bumptech.glide.load.resource.gif.GifFrameLoader");
+                        Field gifDecoderField = gifFrameLoaderClass.getDeclaredField("gifDecoder");
+                        gifDecoderField.setAccessible(true);
+                        Class gifDecoderClass = Class.forName("com.bumptech.glide.gifdecoder.GifDecoder");
+                        Object gifDecoder = gifDecoderField.get(gifFrameLoaderField.get(gifStateField.get(resource)));
+                        Method getDelayMethod = gifDecoderClass.getDeclaredMethod("getDelay", int.class);
+                        getDelayMethod.setAccessible(true);
+                        //设置只播放一次
+                        resource.setLoopCount(1);
+                        //获得总帧数
+                        int count = resource.getFrameCount();
+                        int delay = 0;
+                        for (int i = 0; i < count; i++) {
+                            //计算每一帧所需要的时间进行累加
+                            delay += (int) getDelayMethod.invoke(gifDecoder, i);
+                        }
+                        imageView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (gifListener != null) {
+                                    gifListener.gifPlayComplete();
+                                }
+                            }
+                        }, delay);
+                    } catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                    return false;
+                }
+            }).into(imageView);
+        }
+    }
+
+    /**
+     * Gif播放完毕回调
+     */
+    public interface GifListener2 {
+        void gifPlayComplete();
+    }
 }

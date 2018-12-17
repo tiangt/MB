@@ -182,7 +182,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="live_house_chat_edit_text_hint">和大家聊聊天吧！</string>
+    <string name="live_house_chat_edit_text_hint">聊聊呗...</string>
     <string name="gift_count_custom">自定义数量</string>
     <string name="confirm">确定</string>
     <string name="gift_custom_hint">请输入赠送数量 最多9999</string>
@@ -240,7 +240,7 @@
     <string name="password_hint">请输入密码</string>
     <string name="nothing" />
     <string name="rank_title">榜单</string>
-    <string name="follow_title">关注</string>
+    <string name="follow_title">订阅</string>
     <string name="me_title">我的</string>
     <string name="login_success">登录成功</string>
     <string name="load_more_end"><![CDATA[ 别拖了     到底啦]]></string>
@@ -274,7 +274,7 @@
     <string name="empty_guard_list">当前主播还没有守护用户\n快给心爱的主播开一个吧</string>
     <string name="guard_priority">1.尊贵标识\n2.排位靠前\n3.尊贵坐席\n4.私聊\n5.防禁言\n6.聊天文字\n7.守护专属表情\n8.守护专属礼物\n9.守护进场特效</string>
     <string name="feedback">意见反馈</string>
-    <string name="subscriptions">粉丝:%1$s</string>
+    <string name="subscriptions">订阅:%1$s</string>
     <string name="audience">在线\n%1$d</string>
     <string name="alert">提示</string>
     <string name="cancel">取消</string>
@@ -299,6 +299,62 @@
     <string name="next">下一步</string>
     <string name="confirm_reset">确认重置</string>
     <string name="retrieve_psw">找回密码</string>
+
+    <string name="empty_always">还没有送过礼物，快去送个礼物给主播吧！</string>
+    <string name="mvp_privilege">胜方最佳MVP特权</string>
+    <string name="pk_punishment_description">说明：惩罚为胜方最佳MVP选择，不选由主播自行定义</string>
+
+    <string name="share_title">分享直播间让小伙伴一起来观看</string>
+    <string name="weixin_circle">朋友圈</string>
+    <string name="weixin_friend">微信好友</string>
+    <string name="weibo">新浪微博</string>
+    <string name="qq">QQ</string>
+    <string name="zone">QQ空间</string>
+    <string name="long_press">长按识别二维码</string>
+    <string name="share_card_title">通过以下方式分享</string>
+    <string name="share_outside_title">我正在偷偷观看%1$s的直播！</string>
+    <string name="share_outside_decs">%1$s正在性感热舞中，快去瞧瞧吧！</string>
+    <string name="at">Ta</string>
+
+    <!-- 信息, 个人主页 -->
+    <string name="basic_info">基本信息</string>
+    <string name="page_nick_name">昵&#12288;&#12288;称:</string>
+    <string name="meng_num">萌&#12288;&#12288;号:</string>
+    <string name="copy_good_num">复制萌号</string>
+    <string name="address_age">地区年龄:</string>
+    <string name="anchor_level">主播等级:</string>
+    <string name="user_level">富豪等级:</string>
+    <string name="royal_level">贵族等级:</string>
+    <string name="medal_wall">勋章墙</string>
+    <string name="anchor_grade">还差&#160;%1$d&#160;主播经验</string>
+    <string name="user_grade">还差&#160;%1$d&#160;富豪经验</string>
+    <string name="royal_grade">还差&#160;%1$d&#160;贵族经验</string>
+    <string name="not_followed">+关注</string>
+    <string name="followed">已关注</string>
+
+    <string name="user_rank">%1$d\n富豪排行</string>
+    <string name="anchor_rank">%1$d\n主播排名</string>
+    <string name="user_rank_out">%1$s\n富豪排名</string>
+    <string name="anchor_rank_out">%1$s\n主播排名</string>
+    <string name="fans_count">%1$d\n粉丝</string>
+    <string name="follow">%1$d\n关注</string>
+    <string name="live">直播中</string>
+    <string name="rest">休息中</string>
+    <string name="ranking">第%1$d名</string>
+    
+    <string name="operate_mute">禁止TA本房间发言15分钟</string>
+    <string name="global_mute">禁止TA全局直播发言15分钟</string>
+    <string name="kick">把TA踢出房间15分钟</string>
+    <string name="room_manager">把TA升为房间管理员</string>
+    <string name="cancel_mute">解除禁言</string>
+    <string name="cancel_global_mute">解除全局禁言</string>
+    <string name="cancel_room_manager">解除房管</string>
+
+    <string name="tip_off_1">政治违规</string>
+    <string name="tip_off_2">低俗色情</string>
+    <string name="tip_off_3">言语谩骂</string>
+    <string name="tip_off_4">广告骚扰</string>
+    <string name="tip_off_5">外站拉人</string>
 
     <array name="new_task">
         <item>领取</item>
@@ -326,7 +382,5 @@
         <item>幸运转盘抽奖1次</item>
     </array>
 
-    <string name="empty_always">还没有送过礼物，快去送个礼物给主播吧！</string>
-    <string name="mvp_privilege">胜方最佳MVP特权</string>
-    <string name="pk_punishment_description">说明：惩罚为胜方最佳MVP选择，不选由主播自行定义</string>
+
 </resources>

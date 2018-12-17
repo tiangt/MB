@@ -223,7 +223,7 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                                             public void onClick(View v) {
                                                 Long userid = (Long) SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L);
                                                 BusinessUtils.mallBuy(getMyActivity(), String.valueOf(userid), String.valueOf(bean.goodsId)
-                                                        , String.valueOf(bean.prices.month.priceId), "1", "", "", "",
+                                                        , String.valueOf(bean.prices.month.priceId), "1", "", "",
                                                         new BusinessUtils.MallBuyListener() {
                                                             @Override
                                                             public void onSuccess() {

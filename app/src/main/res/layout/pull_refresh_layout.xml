@@ -13,7 +13,8 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:overScrollMode="never"
+            android:visibility="gone" />
 
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>

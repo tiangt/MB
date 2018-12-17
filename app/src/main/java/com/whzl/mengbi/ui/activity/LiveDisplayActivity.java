@@ -31,11 +31,13 @@ import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.ksyun.media.player.KSYTextureView;
 import com.opensource.svgaplayer.SVGAImageView;
+import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
+import com.whzl.mengbi.chat.room.message.events.EverydayEvent;
 import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
@@ -43,11 +45,13 @@ import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
+import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
+import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
@@ -68,9 +72,12 @@ import com.whzl.mengbi.gift.PkControl;
 import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
+import com.whzl.mengbi.gift.WeekStarControl;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -81,21 +88,25 @@ import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunwayBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
-import com.whzl.mengbi.ui.adapter.CircleFragmentPagerAdaper;
+import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
+import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
+import com.whzl.mengbi.ui.dialog.LoginDialog;
+import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
-import com.whzl.mengbi.ui.dialog.TreasureBoxDialog;
+import com.whzl.mengbi.ui.dialog.ShareDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
+import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
@@ -105,6 +116,9 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
+import com.whzl.mengbi.ui.widget.view.WeekStarView;
+import com.whzl.mengbi.util.AppUtils;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -131,7 +145,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -193,10 +206,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     CircleImageView ivGuardAvatar;
     @BindView(R.id.tv_guard_nick_name)
     TextView tvGuardNickName;
-    @BindView(R.id.tv_treasure_box_count)
-    TextView tvTreasureCount;
-    @BindView(R.id.tv_treasure_timer)
-    TextView tvTreasureTimer;
     @BindView(R.id.tv_run_way_broad)
     AutoScrollTextView2 runWayBroad;
     @BindView(R.id.pk_layout)
@@ -221,8 +230,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageView ivEnterCar;
     @BindView(R.id.svga_start_pk)
     SVGAImageView svgaStartPk;
-    @BindView(R.id.rl_treasure_box)
-    RelativeLayout rlTreasureBox;
     @BindView(R.id.cl_entenr)
     ConstraintLayout clEnter;
     @BindView(R.id.iv_count_down)
@@ -239,6 +246,22 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlGuardNumber;
     @BindView(R.id.rl_other_side_info)
     RelativeLayout rlOtherSideInfo;
+    @BindView(R.id.btn_share)
+    ImageButton btnShare;
+    @BindView(R.id.ll_pager_index)
+    LinearLayout llPagerIndex;
+    @BindView(R.id.btn_free_gift)
+    ImageButton btnFreeGift;
+    @BindView(R.id.iv_weekstar)
+    ImageView ivWeekstar;
+    @BindView(R.id.wsv_weekstar)
+    WeekStarView wsvWeekstar;
+    @BindView(R.id.cl_weekstar)
+    ConstraintLayout clWeekstar;
+    @BindView(R.id.rl_weekstar)
+    RelativeLayout rlWeekstar;
+    @BindView(R.id.btn_more)
+    ImageButton btnMore;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -266,27 +289,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog mRankDialog;
     private BaseAwesomeDialog mChatDialog;
     private BaseAwesomeDialog mGuardListDialog;
+    private BaseAwesomeDialog mShareDialog;
     private long mAudienceCount;
-    private TreasureBoxDialog mTreasureBoxDialog;
-    private HashMap<Integer, Integer> mTreasureStatusMap;
-    private Disposable mTreasureODisposable;
-    private Long mTime;
-    private int currentReceiveTreasureId;
     private RunWayBroadControl mRunWayBroadControl;
     private PkControl pkControl;
     private List<GetActivityBean.ListBean> mBannerInfoList;
     private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
-    private CircleFragmentPagerAdaper mGrandAdaper;
-    private Disposable grandDisposable;
+    private FragmentPagerAdaper mGrandAdaper;
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList = new ArrayList<>();
     private RoyalEnterControl royalEnterControl;
-    private boolean showActivityGrand = false;
+    private boolean showActivityGrand = true;
     private boolean showBanner = false;
     private Disposable roomRankTotalDisposable;
     private Disposable roomOnlineDisposable;
     private NetStateChangeReceiver mPkReceiver;
     private String pkStream;
+    private BaseAwesomeDialog mFreeGiftDialog;
+    private String mAnchorCover;
+    private String mShareUrl;
+    private String mLiveState;
+    private String mIsFollowed;
+    private WeekStarControl weekStarControl;
+    private LiveWeekRankFragment weekRankFragment;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -331,6 +356,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter = new LivePresenterImpl(this);
         if (getIntent() != null) {
             mProgramId = getIntent().getIntExtra(BundleConfig.PROGRAM_ID, -1);
+            //主播封面
+            mAnchorCover = getIntent().getStringExtra(BundleConfig.ANCHOR_COVER);
             SPUtils.put(this, "programId", mProgramId);
         }
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
@@ -429,15 +456,51 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pollAdapter = new AutoPollAdapter(mAudienceList, this);
         pollAdapter.setListerner(position -> {
             long userId = mAudienceList.get(position + 1).getUserid();
-            showAudienceInfoDialog(userId, false);
+//            showAudienceInfoDialog(userId, false);
+            PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
+                    .setListener(() -> {
+                        if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                            mGuardListDialog.dismiss();
+                        }
+                        if (mRankDialog != null && mRankDialog.isAdded()) {
+                            mRankDialog.dismiss();
+                        }
+                    })
+                    .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+                    .setDimAmount(0)
+                    .show(getSupportFragmentManager());
         });
         mAudienceRecycler.setAdapter(pollAdapter);
     }
 
 
+    /**
+     * 活动viewpager
+     */
     private void initVp() {
-        mGrandAdaper = new CircleFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
+        mGrandAdaper = new FragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
         vpActivity.setAdapter(mGrandAdaper);
+        vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mActivityGrands.size() < 2) {
+                    return;
+                }
+                for (int i = 0; i < mActivityGrands.size(); i++) {
+                    llPagerIndex.getChildAt(i).setSelected(i == position);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initBanner() {
@@ -478,16 +541,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         fragmentTransaction.commit();
     }
 
-    private void setTabChange(int index) {
+    public void setTabChange(int index) {
         if (index == currentSelectedIndex) {
             return;
         }
         if (index == 1) {
             viewMessageNotify.setVisibility(View.GONE);
 
-            rlTreasureBox.setVisibility(View.GONE);
             if (showActivityGrand) {
                 vpActivity.setVisibility(View.GONE);
+                llPagerIndex.setVisibility(View.GONE);
             }
             if (showBanner) {
                 banner.setVisibility(View.GONE);
@@ -535,9 +598,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRoomInfo(mProgramId);
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
-        if (mUserId > 0) {
-            mLivePresenter.getTreasureBoxStatus(mUserId);
-        }
         mLivePresenter.getActivityList();
         mLivePresenter.getPkInfo(mProgramId);
         roomOnlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
@@ -547,6 +607,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         roomRankTotalDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             mLivePresenter.getRoomRankTotal(mProgramId, "sevenDay");
         });
+        if (mUserId == 0) {
+            btnFreeGift.setImageResource(R.drawable.ic_live_free_gift);
+        } else {
+            mLivePresenter.getDailyTaskState(mUserId);
+        }
     }
 
     private void getRoomToken() {
@@ -568,15 +633,30 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private
-            , R.id.rootView, R.id.fragment_container, R.id.btn_treasure_box, R.id.rl_guard_number})
+            , R.id.rootView, R.id.fragment_container, R.id.rl_guard_number
+            , R.id.btn_share, R.id.btn_free_gift})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
-                if (mUserId == 0) {
-                    login();
-                    return;
+//                if (mUserId == 0) {
+//                    login();
+//                    return;
+//                }
+//                showAudienceInfoDialog(mAnchorId, false);
+                if (ClickUtil.isFastClick()) {
+                    PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
+                            .setListener(() -> {
+                                if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                                    mGuardListDialog.dismiss();
+                                }
+                                if (mRankDialog != null && mRankDialog.isAdded()) {
+                                    mRankDialog.dismiss();
+                                }
+                            })
+                            .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+                            .setDimAmount(0)
+                            .show(getSupportFragmentManager());
                 }
-                showAudienceInfoDialog(mAnchorId, false);
                 //主播信息
                 break;
             case R.id.btn_follow:
@@ -615,8 +695,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (currentSelectedIndex == 1) {
                     setTabChange(0);
 
-                    rlTreasureBox.setVisibility(View.VISIBLE);
                     if (showActivityGrand) {
+                        vpActivity.setVisibility(View.VISIBLE);
                         vpActivity.setVisibility(View.VISIBLE);
                     }
                     if (showBanner) {
@@ -656,32 +736,30 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .setShowBottom(true)
                         .show(getSupportFragmentManager());
                 break;
-            case R.id.btn_treasure_box:
-                if (mUserId == 0) {
-                    login();
-                    return;
-                }
-                if (mTreasureStatusMap == null) {
-                    mLivePresenter.getTreasureBoxStatus(mUserId);
-                    return;
-                }
-                if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                    return;
-                }
-                mTreasureBoxDialog = TreasureBoxDialog.newInstance(mTreasureStatusMap, mTime);
-                mTreasureBoxDialog.setOnReceiveClick((int id) -> {
-                    currentReceiveTreasureId = id;
-                    mLivePresenter.receiveTreasure(mUserId);
-                });
-                mTreasureBoxDialog.setDimAmount(0)
-                        .setShowBottom(true)
-                        .show(getSupportFragmentManager());
-                break;
             case R.id.rl_guard_number:
                 mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0, mAudienceCount)
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
+                break;
+            case R.id.btn_share:
+                mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor, mAnchorCover, mShareUrl)
+                        .setShowBottom(true)
+                        .setDimAmount(0)
+                        .show(getSupportFragmentManager());
+                break;
+            case R.id.btn_free_gift:
+                if (mUserId == 0) {
+                    login();
+                    return;
+                }
+                if (mFreeGiftDialog == null) {
+                    mFreeGiftDialog = FreeGiftDialog.newInstance(mProgramId, mAnchorId)
+                            .setShowBottom(true)
+                            .setDimAmount(0);
+                    ((FreeGiftDialog) mFreeGiftDialog).setListener(() -> mLivePresenter.getDailyTaskState(mUserId));
+                }
+                mFreeGiftDialog.show(getSupportFragmentManager());
                 break;
             default:
                 break;
@@ -690,9 +768,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void login() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.putExtra("from", this.getClass().toString());
-        startActivityForResult(intent, REQUEST_LOGIN);
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        intent.putExtra("from", this.getClass().toString());
+//        startActivityForResult(intent, REQUEST_LOGIN);
+        LoginDialog.newInstance()
+                .setLoginSuccessListener(() -> {
+                    mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
+                    mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                    getRoomToken();
+                    isVip = true;
+                })
+                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+                .setDimAmount(0.7f)
+                .show(getSupportFragmentManager());
     }
 
     @Override
@@ -871,7 +959,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 tvStopTip.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
+
+            mShareUrl = roomInfoBean.getData().getShareUrl();
+
+            mLiveState = roomInfoBean.getData().getProgramStatus();
         }
+
+        initAboutAnchor(mProgramId, mAnchorId);
+    }
+
+    /**
+     * 周星 主播任务 活动页面
+     */
+    private void initAboutAnchor(int mProgramId, int mAnchorId) {
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
     }
 
@@ -886,11 +986,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onFollowHostSuccess() {
         btnFollow.setVisibility(View.GONE);
+        mIsFollowed = "T";
     }
 
     @Override
     public void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data) {
         btnFollow.setVisibility(data.isIsSubs() ? View.GONE : View.VISIBLE);
+        mIsFollowed = data.getIsFollowed();
         if (data != null) {
             mUserId = data.getUserId();
             mRoomUserInfo = data;
@@ -918,6 +1020,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onSendGiftSuccess() {
+        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+    }
+
+    /**
+     * 发送广播成功
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(SendBroadEvent event) {
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
     }
 
@@ -963,84 +1073,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         ChatRoomInfo.getInstance().setProgramFirstId(userId);
     }
 
-    @Override
-    public void onTreasureSuccess(TreasureBoxStatusBean treasureBoxStatusBean) {
-        mTreasureStatusMap = new HashMap();
-        boolean hasTreasureCanReceive = false;
-        if (treasureBoxStatusBean != null && treasureBoxStatusBean.list != null) {
-            for (int i = 0; i < treasureBoxStatusBean.list.size(); i++) {
-                TreasureBoxStatusBean.ListBean listBean = treasureBoxStatusBean.list.get(i);
-                if (listBean.taskId == 6) {
-                    if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
-                        // 倒计时
-                        mTreasureStatusMap.put(listBean.taskId, 0);
-                    } else if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes > 0) {
-                        // 可领取
-                        hasTreasureCanReceive = true;
-                        mTreasureStatusMap.put(listBean.taskId, 1);
-                    } else {
-                        // 已领取
-                        mTreasureStatusMap.put(listBean.taskId, 3);
-                    }
-                } else if (listBean.taskId == 7) {
-                    if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
-                        // 倒计时
-                        mTreasureStatusMap.put(listBean.taskId, 0);
-                    } else if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes > 0) {
-                        // 可领取
-                        hasTreasureCanReceive = true;
-                        mTreasureStatusMap.put(listBean.taskId, 1);
-                    } else {
-                        // 已领取
-                        mTreasureStatusMap.put(listBean.taskId, 3);
-                    }
-
-                } else if (listBean.taskId == 8) {
-                    if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes == 0) {
-                        // 倒计时
-                        mTreasureStatusMap.put(listBean.taskId, 0);
-                    } else if (listBean.maxOnlineTimes == 0 && listBean.maxUngrandAwardTimes > 0) {
-                        // 可领取
-                        hasTreasureCanReceive = true;
-                        mTreasureStatusMap.put(listBean.taskId, 1);
-                    } else {
-                        // 已领取
-                        mTreasureStatusMap.put(listBean.taskId, 3);
-                    }
-
-                }
-            }
-        }
-        if (hasTreasureCanReceive) {
-            tvTreasureCount.setVisibility(View.VISIBLE);
-            tvTreasureCount.setText(1 + "");
-        } else {
-            tvTreasureCount.setVisibility(View.GONE);
-        }
-        if (mTreasureStatusMap.get(6) == 0) {
-            timer59(6);
-        } else
-            //1 可领 3 已领 0 倒计时
-            if ((mTreasureStatusMap.get(6) == 3 && mTreasureStatusMap.get(7) == 0)) {
-                timer(7);
-            } else if ((mTreasureStatusMap.get(7) == 3 && mTreasureStatusMap.get(8) == 0)) {
-                timer(8);
-            }
-    }
-
-    @Override
-    public void onReceiveTreasureSuccess() {
-        showToast("领取成功");
-        tvTreasureCount.setVisibility(View.GONE);
-        mTreasureStatusMap.put(currentReceiveTreasureId, 3);
-        if (currentReceiveTreasureId < 8) {
-            timer(currentReceiveTreasureId + 1);
-        } else {
-            if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                mTreasureBoxDialog.setTreasureStatusMap(mTreasureStatusMap);
-            }
-        }
-    }
 
     @Override
     public void onActivityListSuccess(GetActivityBean bean) {
@@ -1103,15 +1135,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     }
 
+    /**
+     * 直播间的活动（常规活动）
+     */
     @Override
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
-        if (mActivityGrands != null) {
-            mActivityGrands.clear();
-        }
         if (bean.list != null && bean.list.size() != 0) {
-            showActivityGrand = true;
-            vpActivity.setVisibility(View.VISIBLE);
-            vpActivity.setOffscreenPageLimit(bean.list.size());
             for (int i = 0; i < bean.list.size(); i++) {
                 ActivityGrandBean.ListBean listBean = bean.list.get(i);
                 LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
@@ -1127,12 +1156,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 });
                 mActivityGrands.add(liveWebFragment);
             }
-            mGrandAdaper.notifyDataSetChanged();
-            if (bean.list.size() > 1) {
-                timerGrand(bean.list.size());
-            }
+//            mGrandAdaper.notifyDataSetChanged();
         }
-
+        //周星榜
+        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        mActivityGrands.add(weekRankFragment);
+        mGrandAdaper.notifyDataSetChanged();
+        initActivityPoints();
+        //主播任务
+        mLivePresenter.getAnchorTask(mAnchorId);
     }
 
     @Override
@@ -1159,75 +1191,64 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl = new PkControl(pkLayout, this);
     }
 
+    /**
+     * 主播任务成功
+     */
+    @Override
+    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
+        if (dataBean != null) {
+            AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
+            mActivityGrands.add(anchorTaskFragment);
+            mGrandAdaper.notifyDataSetChanged();
+            vpActivity.setOffscreenPageLimit(mActivityGrands.size());
+            initActivityPoints();
+        }
+    }
+
+    @Override
+    public void onGetDailyTaskStateSuccess(GetDailyTaskStateBean dailyTaskStateBean) {
+        if ("T".equals(dailyTaskStateBean.receive)) {
+            btnFreeGift.setImageResource(R.drawable.ic_live_free_gift_receive);
+        } else {
+            btnFreeGift.setImageResource(R.drawable.ic_live_free_gift);
+        }
+    }
+
+
+    /**
+     * 活动下标黄点
+     */
+    private void initActivityPoints() {
+        if (llPagerIndex.getChildCount() > 0) {
+            llPagerIndex.removeAllViews();
+        }
+        if (mActivityGrands.size() < 2) {
+            return;
+        }
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(this, 5), UIUtil.dip2px(this, 5));
+        for (int i = 0; i < mActivityGrands.size(); i++) {
+            View view = new View(this);
+            view.setBackgroundResource(R.drawable.selector_live_activity_pager_index);
+            if (i == 0) {
+                view.setSelected(true);
+            } else {
+                params.leftMargin = UIUtil.dip2px(this, 5);
+                params.rightMargin = UIUtil.dip2px(this, 5);
+            }
+            llPagerIndex.addView(view, params);
+        }
+    }
+
     @Override
     public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
         if (bean.total.compareTo(new BigDecimal(10000)) < 0) {
             tvContribute.setText(bean.total + "");
         } else {
-            BigDecimal divide = bean.total.divide(new BigDecimal(10000), 1, BigDecimal.ROUND_HALF_DOWN);
+            BigDecimal divide = bean.total.divide(new BigDecimal(10000), 1, BigDecimal.ROUND_DOWN);
             tvContribute.setText(divide + "万");
         }
     }
 
-    private void timerGrand(int i) {
-        grandDisposable = Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    LogUtils.e("ssssss  timerGrand" + aLong);
-                    long l = aLong / i % i;
-                    vpActivity.setCurrentItem((int) l);
-                });
-    }
-
-    private void timer(int id) {
-        mTreasureODisposable = Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    mTime = aLong;
-                    if (tvTreasureTimer == null || tvTreasureTimer.getVisibility() == View.GONE) {
-                        return;
-                    }
-                    tvTreasureTimer.setText(getString(R.string.two, (599 - aLong) / 60, (599 - aLong) % 60));
-                    if (aLong == 599) {
-                        mTreasureODisposable.dispose();
-                        mTreasureStatusMap.put(id, 1);
-                        tvTreasureCount.setVisibility(View.VISIBLE);
-                        tvTreasureCount.setText("1");
-                        tvTreasureTimer.setText("开宝箱");
-                        if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                            mTreasureBoxDialog.setTreasureStatusMap(mTreasureStatusMap);
-                        }
-                    }
-                    if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                        mTreasureBoxDialog.setmTime(aLong);
-                    }
-                });
-    }
-
-    private void timer59(int id) {
-        mTreasureODisposable = Observable.interval(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    mTime = aLong;
-                    if (tvTreasureTimer == null || tvTreasureTimer.getVisibility() == View.GONE) {
-                        return;
-                    }
-                    tvTreasureTimer.setText(getString(R.string.two, (59 - aLong) / 60, (59 - aLong) % 60));
-                    if (aLong == 59) {
-                        mTreasureODisposable.dispose();
-                        mTreasureStatusMap.put(id, 1);
-                        tvTreasureCount.setVisibility(View.VISIBLE);
-                        tvTreasureCount.setText("1");
-                        tvTreasureTimer.setText("开宝箱");
-                        if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                            mTreasureBoxDialog.setTreasureStatusMap(mTreasureStatusMap);
-                        }
-                    }
-                    if (mTreasureBoxDialog != null && mTreasureBoxDialog.isAdded()) {
-                        mTreasureBoxDialog.setmTime(aLong);
-                    }
-                });
-    }
 
     @Override
     public void onLiveGiftSuccess(GiftInfo giftInfo) {
@@ -1297,15 +1318,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
-        AudienceInfoDialog.newInstance(viewedUserID, mProgramId, mRoomUserInfo)
+//        AudienceInfoDialog.newInstance(viewedUserID, mProgramId, mRoomUserInfo)
+//                .setListener(() -> {
+//                    if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+//                        mGuardListDialog.dismiss();
+//                    }
+//                })
+//                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+//                .setDimAmount(0)
+//                .setShowBottom(isShowBottom)
+//                .show(getSupportFragmentManager());
+
+        PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
                 .setListener(() -> {
                     if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
                         mGuardListDialog.dismiss();
                     }
+                    if (mRankDialog != null && mRankDialog.isAdded()) {
+                        mRankDialog.dismiss();
+                    }
                 })
-                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                 .setDimAmount(0)
-                .setShowBottom(isShowBottom)
+                .setShowBottom(false)
                 .show(getSupportFragmentManager());
     }
 
@@ -1360,7 +1395,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView2 != null) {
             textureView2.runInForeground();
         }
-        mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        if (mUserId == 0) {
+            mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
+            mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+            getRoomToken();
+        }
 //        mLivePresenter.getPkInfo(mProgramId);
     }
 
@@ -1407,22 +1446,22 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (chatRoomPresenter != null) {
             chatRoomPresenter.onChatRoomDestroy();
         }
-        if (mTreasureODisposable != null) {
-            mTreasureODisposable.dispose();
-        }
         pkLayout.destroy();
         if (pkControl != null) {
             pkControl.destroy();
-        }
-        if (grandDisposable != null) {
-            grandDisposable.dispose();
-            LogUtils.e("ssssss  timerGrand dispose");
         }
         if (roomRankTotalDisposable != null) {
             roomRankTotalDisposable.dispose();
         }
         if (roomOnlineDisposable != null) {
             roomOnlineDisposable.dispose();
+        }
+        if (mActivityGrands.size() > 0) {
+            mActivityGrands.clear();
+            mGrandAdaper.notifyDataSetChanged();
+        }
+        if (llPagerIndex.getChildCount() > 0) {
+            llPagerIndex.removeAllViews();
         }
     }
 
@@ -1434,10 +1473,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mUserId = (long) SPUtils.get(this, "userId", 0L);
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
-                mLivePresenter.getTreasureBoxStatus(mUserId);
                 isVip = true;
+                LogUtils.e("sssssssss   onActivityResult");
             }
         }
+        if (requestCode == AppUtils.REQUEST_LOGIN) {
+            if (resultCode == RESULT_OK) {
+                mUserId = (long) SPUtils.get(this, "userId", 0L);
+                mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                getRoomToken();
+                isVip = true;
+                LogUtils.e("sssssssss   onActivityResult");
+            }
+        }
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
     private void showJumpLiveHouseDialog(int programId, String nickName) {
@@ -1507,6 +1556,26 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(WeekStarEvent weekStarEvent) {
+        if (weekStarControl == null) {
+            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+            weekStarControl.setTvEnter(wsvWeekstar);
+            weekStarControl.setIvEnter(ivWeekstar);
+            weekStarControl.setRlEnter(rlWeekstar);
+        }
+        weekStarControl.showEnter(weekStarEvent);
+        if (weekRankFragment != null) {
+            weekRankFragment.loaddata();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EverydayEvent event) {
+        mLivePresenter.getDailyTaskState(mUserId);
+    }
+
     private void otherSideLive() {
         textureView2.setDecodeMode(KSYMediaPlayer.KSYDecodeMode.KSY_DECODE_MODE_AUTO);
         textureView2.setOnPreparedListener(iMediaPlayer -> {
@@ -1529,5 +1598,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void showAtChat(String at) {
+        if (mChatDialog != null && mChatDialog.isAdded()) {
+            return;
+        }
+        mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, at, mAnchor)
+                .setDimAmount(0)
+                .setShowBottom(true)
+                .show(getSupportFragmentManager());
     }
 }

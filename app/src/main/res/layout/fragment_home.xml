@@ -12,7 +12,7 @@
 
         <TextView
             style="@style/fragmentTitleText"
-            android:background="#f9f9f9"
+            android:background="@color/main_tab_color"
             android:text="@string/home_title"
             android:textColor="#323232" />
 

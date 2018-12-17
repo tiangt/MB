@@ -90,7 +90,7 @@ public class WelcomeMsg implements FillHolderMessage {
                 mHolder.textView.append(" ");
             }
             if (hasVip) {
-                mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip_chat));
+                mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip));
                 mHolder.textView.append(" ");
             }
             if (null != userSpanList) {
@@ -109,6 +109,9 @@ public class WelcomeMsg implements FillHolderMessage {
                 } else if ("C".equals(prettyNumColor)) {
                     mHolder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
                     mHolder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
+                } else {
+                    mHolder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
+                    mHolder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
                 }
                 mHolder.textView.append(" ");
             }

@@ -205,6 +205,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
         TextView tvWatchCount;
         @BindView(R.id.tv_is_live_mark)
         TextView tvIsLive;
+        @BindView(R.id.iv_pk)
+        ImageView ivIsPk;
 
         private final int type;
 
@@ -220,6 +222,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
                     tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
+                    ivIsPk.setVisibility("T".equals(recommendAnchorInfoBean.getIsPk()) ? View.VISIBLE : View.GONE);
                     String recommendName = recommendAnchorInfoBean.getAnchorNickname();
                     if (recommendName.length() > 8) {
                         tvAnchorName.setText(recommendName.substring(0, 8) + "...");
@@ -232,6 +235,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
                     tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
+                    ivIsPk.setVisibility("T".equals(liveShowListInfo.getIsPk()) ? View.VISIBLE : View.GONE);
                     String anchorName = liveShowListInfo.getAnchorNickname();
                     if (anchorName.length() > 8) {
                         tvAnchorName.setText(anchorName.substring(0, 8) + "...");
@@ -254,10 +258,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
                     intent.putExtra(BundleConfig.PROGRAM_ID, recommendAnchorInfoBean.getProgramId());
+                    intent.putExtra(BundleConfig.ANCHOR_COVER, recommendAnchorInfoBean.getCover());
                     break;
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position - 1);
                     intent.putExtra(BundleConfig.PROGRAM_ID, liveShowListInfo.getProgramId());
+                    intent.putExtra(BundleConfig.ANCHOR_COVER, liveShowListInfo.getCover());
                     break;
                 default:
                     break;

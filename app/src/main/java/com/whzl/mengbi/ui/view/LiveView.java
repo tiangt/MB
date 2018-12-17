@@ -1,8 +1,10 @@
 package com.whzl.mengbi.ui.view;
 
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
+import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
@@ -12,7 +14,6 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
-import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 
 public interface LiveView {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -33,10 +34,6 @@ public interface LiveView {
 
     void onGetProgramFirstSuccess(long userId);
 
-    void onTreasureSuccess(TreasureBoxStatusBean treasureBoxStatusBean);
-
-    void onReceiveTreasureSuccess();
-
     void onActivityListSuccess(GetActivityBean bean);
 
     void onPkInfoSuccess(PKResultBean bean);
@@ -51,4 +48,8 @@ public interface LiveView {
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
 
     void onGetPunishWaysSuccess(PunishWaysBean bean);
+
+    void onGetAnchorTaskSuccess(AnchorTaskBean dataBean);
+
+    void onGetDailyTaskStateSuccess(GetDailyTaskStateBean dailyTaskStateBean);
 }

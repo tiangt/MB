@@ -216,12 +216,13 @@ public class GiftDialog extends BaseAwesomeDialog {
 
     @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm, R.id.tv_top_up, R.id.first_top_up})
     public void onClick(View view) {
+        long mUserId = Long.parseLong(SPUtils.get(getActivity(), "userId", 0L).toString());
         switch (view.getId()) {
             case R.id.tv_count:
                 showCountSelectPopWindow();
                 break;
             case R.id.btn_send_gift:
-                long mUserId = Long.parseLong(SPUtils.get(getActivity(), "userId", 0L).toString());
+
                 if (mUserId == 0) {
                     ((LiveDisplayActivity) getActivity()).login();
                     return;
@@ -258,9 +259,17 @@ public class GiftDialog extends BaseAwesomeDialog {
                 rlSendContainer.setVisibility(View.VISIBLE);
                 break;
             case R.id.tv_top_up:
+                if (mUserId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    return;
+                }
                 jumpRechargeActivity();
                 break;
             case R.id.first_top_up:
+                if (mUserId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    return;
+                }
                 Intent intent = new Intent(getContext(), WXPayEntryActivity.class);
                 startActivity(intent);
                 dismiss();

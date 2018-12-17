@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="257dp"
+        android:background="#000000"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_everyday_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:drawableLeft="@drawable/point_free_gift"
+                    android:drawablePadding="4dp"
+                    android:text="每日登录"
+                    android:textColor="#fefefe"
+                    android:textSize="@dimen/text_title_free_gift" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="9dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="每日登录萌比直播即可奖励 "
+                        android:textColor="@color/text_content_free_gift"
+                        android:textSize="@dimen/text_content_free_gift" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="蓝色妖姬x1"
+                        android:textColor="#fff800"
+                        android:textSize="@dimen/text_content_free_gift" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_login"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="12dp"
+                android:gravity="center"
+                android:textColor="#fefefe"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#20ffffff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:drawableLeft="@drawable/point_free_gift"
+                    android:drawablePadding="4dp"
+                    android:text="直播间发言"
+                    android:textColor="#fefefe"
+                    android:textSize="@dimen/text_title_free_gift" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="9dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="每天在直播间发言≥ "
+                        android:textColor="@color/text_content_free_gift"
+                        android:textSize="@dimen/text_content_free_gift" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5条"
+                        android:textColor="#fff800"
+                        android:textSize="@dimen/text_content_free_gift" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" 即可奖励 "
+                        android:textColor="@color/text_content_free_gift"
+                        android:textSize="@dimen/text_content_free_gift" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="蓝色妖姬x5"
+                        android:textColor="#fff800"
+                        android:textSize="@dimen/text_content_free_gift" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_chat"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="12dp"
+                android:gravity="center"
+                android:textColor="#fefefe"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#20ffffff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:drawableLeft="@drawable/point_free_gift"
+                    android:drawablePadding="4dp"
+                    android:text="观看直播"
+                    android:textColor="#fefefe"
+                    android:textSize="@dimen/text_title_free_gift" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="9dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="您需观看 "
+                        android:textColor="@color/text_content_free_gift"
+                        android:textSize="@dimen/text_content_free_gift" />
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5分钟"
+                        android:textColor="#fff800"
+                        android:textSize="@dimen/text_content_free_gift" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" 即可奖励 "
+                        android:textColor="@color/text_content_free_gift"
+                        android:textSize="@dimen/text_content_free_gift" />
+
+                    <TextView
+                        android:id="@+id/tv_get_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="蓝色妖姬x5"
+                        android:textColor="#fff800"
+                        android:textSize="@dimen/text_content_free_gift" />
+
+                    <TextView
+                        android:id="@+id/tv_buy_card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:text="购买妖姬卡，获得双倍奖励"
+                        android:textColor="#ff3aea"
+                        android:textSize="@dimen/text_content_free_gift"
+                        android:textStyle="italic" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--<TextView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:layout_marginRight="12dp"-->
+                <!--android:background="@drawable/btn_unfinished_free_gift"-->
+                <!--android:gravity="center"-->
+                <!--android:text="未领取"-->
+                <!--android:textColor="#fefefe"-->
+                <!--android:textSize="10sp" />-->
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </LinearLayout>
+</LinearLayout>

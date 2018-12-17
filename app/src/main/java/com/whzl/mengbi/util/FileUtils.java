@@ -55,7 +55,7 @@ public class FileUtils {
         hashMap.put("34", R.drawable.usergrade34);
         hashMap.put("35", R.drawable.usergrade35);
         hashMap.put("36", R.drawable.usergrade36);
-        hashMap.put("37", R.drawable.usergrade37);
+        hashMap.put("37", R.drawable.usergrade36);
 
     }
 

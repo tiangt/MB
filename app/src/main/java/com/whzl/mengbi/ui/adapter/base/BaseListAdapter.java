@@ -203,4 +203,5 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
     public void setScrolling(boolean scrolling) {
         isScrolling = scrolling;
     }
+
 }

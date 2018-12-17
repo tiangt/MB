@@ -38,5 +38,6 @@ public class AnchorFollowedDataBean {
         public int anchorLevelValue;
         public ShowStreamDataBean showStreamData;
         public String avatar;
+        public String lastShowBeginTime;
     }
 }

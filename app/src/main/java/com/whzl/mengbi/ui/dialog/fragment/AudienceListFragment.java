@@ -114,12 +114,12 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             tvName.setText(audienceInfoBean.getName());
             GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
             int identity = audienceInfoBean.getIdentity();
-            if ( audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
+            if (audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
                 ImageView royalImg = new ImageView(getContext());
                 Glide.with(getMyActivity()).asGif().load(ResourceMap.getResourceMap().
                         getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
 //                royalImg.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL()));
-                LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(),30), UIUtil.dip2px(getMyActivity(),11));
+                LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 40), UIUtil.dip2px(getMyActivity(), 16));
                 linearLayout.addView(royalImg, rparams);
             }
 
@@ -129,19 +129,28 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
             } else {
                 imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(audienceInfoBean.getLevelMap().getUSER_LEVEL()));
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(),20), UIUtil.dip2px(getMyActivity(),20));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 38), UIUtil.dip2px(getMyActivity(), 16));
+            params.leftMargin = UIUtil.dip2px(getContext(), 1);
             linearLayout.addView(imageView, params);
-            if (identity == UserIdentity.ROOM_MANAGER) {
-                ImageView mgrView = new ImageView(getContext());
-                mgrView.setImageResource(R.drawable.room_manager);
-                LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 6);
-                linearLayout.addView(mgrView, mgrViewParams);
-            }
+
             if (audienceInfoBean.getMedal() != null) {
                 for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
                     AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
-                    if ("BADGE".equals(medalBean.getGoodsType()) || "GUARD".equals(medalBean.getGoodsType())|| "VIP".equals(medalBean.getGoodsType())) {
+                    if ("GUARD".equals(medalBean.getGoodsType())) {
+                        ImageView guardImage = new ImageView(getContext());
+                        guardImage.setImageDrawable(getResources().getDrawable(R.drawable.guard));
+                        LinearLayout.LayoutParams guard = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
+                        guard.leftMargin = UIUtil.dip2px(getContext(), 3);
+                        linearLayout.addView(guardImage, guard);
+                    }
+                    if ("VIP".equals(medalBean.getGoodsType())) {
+                        ImageView vipImage = new ImageView(getContext());
+                        vipImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_vip));
+                        LinearLayout.LayoutParams vip = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
+                        vip.leftMargin = UIUtil.dip2px(getContext(), 3);
+                        linearLayout.addView(vipImage, vip);
+                    }
+                    if ("BADGE".equals(medalBean.getGoodsType())) {
                         Glide.with(getContext())
                                 .load(medalBean.getGoodsIcon())
                                 .into(new SimpleTarget<Drawable>() {
@@ -154,15 +163,21 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
                                         int intrinsicWidth = resource.getIntrinsicWidth();
                                         ImageView imageView = new ImageView(getContext());
                                         imageView.setImageDrawable(resource);
-                                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext()
-                                                , intrinsicWidth / 4f * 3)
-                                                , UIUtil.dip2px(getContext(), intrinsicHeight / 4f * 3));
-                                        params.leftMargin = UIUtil.dip2px(getContext(), 6);
+                                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 18), UIUtil.dip2px(getMyActivity(), 16));
+                                        params.leftMargin = UIUtil.dip2px(getContext(), 3);
                                         linearLayout.addView(imageView, params);
                                     }
                                 });
                     }
                 }
+            }
+
+            if (identity == UserIdentity.ROOM_MANAGER) {
+                ImageView mgrView = new ImageView(getContext());
+                mgrView.setImageResource(R.drawable.room_manager);
+                LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
+                mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 3);
+                linearLayout.addView(mgrView, mgrViewParams);
             }
         }
 
@@ -179,7 +194,7 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(disposable != null){
+        if (disposable != null) {
             disposable.dispose();
         }
     }
