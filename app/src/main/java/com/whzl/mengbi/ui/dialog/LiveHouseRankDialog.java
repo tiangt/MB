@@ -52,7 +52,7 @@ public class LiveHouseRankDialog extends BaseAwesomeDialog {
         fragments.add(ContributeRankFragment.newInstance("day", programId));
         fragments.add(ContributeRankFragment.newInstance("sevenDay", programId));
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
-        viewpager.setCurrentItem(1);
+        viewpager.setCurrentItem(0);
         tabLayout.post(() -> {
             try {
                 settab(tabLayout);
