@@ -146,7 +146,7 @@ public class BackpackFragment extends BaseFragment {
 //            selectedMark.setSelected(position == selectedPosition);
             if (position == selectedPosition) {
                 try {
-                    GifDrawable drawable = new GifDrawable(getResources(),R.drawable.bg_live_house_select);
+                    GifDrawable drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
                     rl.setBackground(drawable);
 //                ((ImageView) holder.getView(R.id.iv)).setImageDrawable(drawable);
                 } catch (IOException e) {
@@ -163,6 +163,19 @@ public class BackpackFragment extends BaseFragment {
             super.onItemLongClick(view, position);
             if (selectedPosition == position) {
                 return;
+            }
+            selectedPosition = position;
+            if (recycler.getChildCount() > 0) {
+                for (int i = 0; i < recycler.getChildCount(); i++) {
+                    recycler.getChildAt(i).findViewById(R.id.rl).setBackground(null);
+                }
+            }
+            GifDrawable drawable = null;
+            try {
+                drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
+                (view.findViewById(R.id.rl)).setBackground(drawable);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             startAnimal(ivGift, position);
             BackpackListBean.GoodsDetailBean goodsDetailBean = mDatas.get(position);
@@ -189,8 +202,8 @@ public class BackpackFragment extends BaseFragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                selectedPosition = position;
-                giftAdapter.notifyDataSetChanged();
+//                selectedPosition = position;
+//                giftAdapter.notifyDataSetChanged();
             }
         });
         animatorSetsuofang.start();
