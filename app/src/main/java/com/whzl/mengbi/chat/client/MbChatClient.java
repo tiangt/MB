@@ -31,8 +31,9 @@ public class  MbChatClient {
     private List<ServerAddr> serverList;
     private BlockingQueue<ByteableMessage> blockingQueue = new ArrayBlockingQueue<>(10);
 
-    public MbChatClient(MbSocketFactory socketFactory){
+    public MbChatClient(MbSocketFactory socketFactory, IConnectCallback connectCallback){
         this.socketFactory = socketFactory;
+        this.mConnectCallback = connectCallback;
     }
 
     public void setConnectCallback(IConnectCallback connectCallback){
@@ -65,7 +66,7 @@ public class  MbChatClient {
                         if (!doConnect(addr)) {
                             continue;
                         }
-                        if(in != null && out != null) {
+                        if(in != null && out != null && !isStoped) {
                             currentDomain = addr.getAddr();
                             startListen();
                             mConnectCallback.onConnectSuccess(currentDomain, isReconnect);
@@ -118,7 +119,6 @@ public class  MbChatClient {
     }
 
     public void closeSocket(){
-        mConnectCallback = null;
         isStoped = true;
         if(socket == null){
             return;

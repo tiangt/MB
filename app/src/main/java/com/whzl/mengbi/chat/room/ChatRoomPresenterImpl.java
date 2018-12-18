@@ -85,33 +85,33 @@ public class ChatRoomPresenterImpl {
         }
         messageCallback = new MessageRouter(context);
 
-        client = new MbChatClient(socketFactory);
+        client = new MbChatClient(socketFactory,connectCallback);
         client.setErrorCallback(errorCallback);
-        if (connectCallback == null) {
-            connectCallback = new IConnectCallback() {
-                @Override
-                public void onConnectSuccess(String domain, boolean isReconnect) {
-                    Log.d(TAG, "连接成功");
-                    long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
-                    if (userId == 0 || !isReconnect) {
-                        chatLogin(domain);
-                    } else {
-                        doLiveRoomToken(userId + "", domain);
-                    }
-                    Log.d(TAG, "chatLogin finished");
-                    netErrorNoticed = false;
-                }
-
-                @Override
-                public void onConnectFailed() {
-                    Log.e(TAG, "连接失败");
-                    if (netErrorNoticed) {
-                        return;
-                    }
-                }
-            };
-        }
-        client.setConnectCallback(connectCallback);
+//        if (connectCallback == null) {
+//            connectCallback = new IConnectCallback() {
+//                @Override
+//                public void onConnectSuccess(String domain, boolean isReconnect) {
+//                    Log.d(TAG, "连接成功");
+//                    long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+//                    if (userId == 0 || !isReconnect) {
+//                        chatLogin(domain);
+//                    } else {
+//                        doLiveRoomToken(userId + "", domain);
+//                    }
+//                    Log.d(TAG, "chatLogin finished");
+//                    netErrorNoticed = false;
+//                }
+//
+//                @Override
+//                public void onConnectFailed() {
+//                    Log.e(TAG, "连接失败");
+//                    if (netErrorNoticed) {
+//                        return;
+//                    }
+//                }
+//            };
+//        }
+//        client.setConnectCallback(connectCallback);
         client.setmMessageCallback(messageCallback);
 
         client.connectWithServerList(getServerList());

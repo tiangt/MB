@@ -176,16 +176,16 @@ public class RoyalEnterControl {
             }
             if (!TextUtils.isEmpty(prettyNum)) {
                 if ("A".equals(prettyNumColor)) {
-                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
+//                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
                     tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
                 } else if ("B".equals(prettyNumColor)) {
-                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#fe7a2a"), Color.parseColor("#ffffff")));
+//                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#fe7a2a"), Color.parseColor("#ffffff")));
                     tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#fe7a2a"), Color.parseColor("#fe7a2a")));
                 } else if ("C".equals(prettyNumColor)) {
-                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
+//                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
                     tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
                 } else {
-                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
+//                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
                     tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
                 }
                 tvEnter.append(" ");
