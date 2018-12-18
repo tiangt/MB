@@ -85,7 +85,7 @@
 
     <!--tab-->
     <style name="LiveHouseDialogTab" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorColor">#ff2b3f</item>
+        <item name="tabIndicatorColor">#fff800</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="android:textAllCaps">true</item>
         <!--<selectedItem name="tabIndicatorColor">@android:color/white</selectedItem>-->
@@ -93,7 +93,7 @@
         <!--<item name="tabPaddingEnd">15dp</item>-->
         <item name="tabBackground">@color/transparent</item>
         <item name="tabTextAppearance">@style/LiveHouseDialogTabText</item>
-        <item name="tabSelectedTextColor">#ff2b3f</item>
+        <item name="tabSelectedTextColor">#fff800</item>
         <item name="tabGravity">fill</item>
     </style>
 
@@ -358,4 +358,20 @@
         <item name="tabSelectedTextColor">#ffd634</item>
     </style>
 
+    <style name="FollowTab" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">#fed634</item>
+        <item name="tabIndicatorHeight">2.5dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="tabBackground">@color/tab_follow</item>
+        <item name="tabTextAppearance">@style/FollowTabText</item>
+        <item name="tabSelectedTextColor">#323232</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+    </style>
+
+    <style name="FollowTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#40323232</item>
+        <item name="textAllCaps">true</item>
+    </style>
 </resources>

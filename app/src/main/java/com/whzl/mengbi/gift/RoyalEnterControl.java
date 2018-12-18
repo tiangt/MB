@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
@@ -176,17 +177,17 @@ public class RoyalEnterControl {
             }
             if (!TextUtils.isEmpty(prettyNum)) {
                 if ("A".equals(prettyNumColor)) {
-                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
-                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
+                    tvEnter.append(LightSpanString.getAPrettyNumSpan(context, prettyNum, ContextCompat.getColor(context, R.color.a_level_preety_num)));
                 } else if ("B".equals(prettyNumColor)) {
-                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#fe7a2a"), Color.parseColor("#ffffff")));
-                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#fe7a2a"), Color.parseColor("#fe7a2a")));
+                    tvEnter.append(LightSpanString.getBPrettyNumSpan(context, prettyNum, ContextCompat.getColor(context, R.color.b_level_preety_num)));
                 } else if ("C".equals(prettyNumColor)) {
-                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
-                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
+                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, ContextCompat.getColor(context, R.color.c_level_preety_num)));
+                } else if ("D".equals(prettyNumColor)) {
+                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, ContextCompat.getColor(context, R.color.d_level_preety_num)));
+                } else if ("E".equals(prettyNumColor)) {
+                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, ContextCompat.getColor(context, R.color.e_level_preety_num)));
                 } else {
-                    tvEnter.append(LightSpanString.getPrettyNumBgSpan(context, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
-                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
+                    tvEnter.append(LightSpanString.getPrettyNumSpan(context, prettyNum, ContextCompat.getColor(context, R.color.e_level_preety_num)));
                 }
                 tvEnter.append(" ");
             }

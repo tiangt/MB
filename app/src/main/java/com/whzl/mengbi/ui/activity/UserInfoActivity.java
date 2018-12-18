@@ -174,12 +174,13 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 int userLevel = levelList.getLevelValue();
                 ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(userLevel));
             } else if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                if (sjNeedValue >= 0) {
+                int royalLevel = levelList.getLevelValue();
+                if (sjNeedValue == 0 || royalLevel == SpConfig.MAX_LEVEL) {
+                    tvUpdate.setText("您已达到最高贵族等级");
+                }else {
                     tvUpdate.setText("离升级还需充值");
                     tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
                     tvUpdate.append("元");
-                } else {
-                    tvUpdate.setText("您已达到最高贵族等级");
                 }
                 int userLevel = levelList.getLevelValue();
                 if (userLevel != 0) {

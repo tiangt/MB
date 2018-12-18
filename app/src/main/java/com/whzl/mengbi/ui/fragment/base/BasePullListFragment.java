@@ -70,6 +70,15 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
             protected int getDataViewType(int position) {
                 return getViewType(position);
             }
+
+            @Override
+            protected BaseViewHolder onCreateLoadMoreFooterViewHolder(ViewGroup parent) {
+                if (baseViewHolder == null) {
+                    return super.onCreateLoadMoreFooterViewHolder(parent);
+                } else {
+                    return baseViewHolder;
+                }
+            }
         };
         pullRecycler.setAdapter(mAdapter);
 
@@ -94,6 +103,12 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
 
         mIsViewCreate = true;
 
+    }
+
+    private BaseViewHolder baseViewHolder;
+
+    protected void setFooterViewHolder(BaseViewHolder holder) {
+        baseViewHolder = holder;
     }
 
     protected int getViewType(int position) {

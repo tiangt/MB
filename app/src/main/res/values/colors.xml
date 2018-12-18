@@ -176,7 +176,7 @@
     <color name="text_color_lottery">#fe3f7e</color>
     <color name="text_color_system">#acd3ff</color>
     <color name="text_color_sendgif">#FFFE3F7E</color>
-    <color name="bg_dialog_gift_live">#2a2e36</color>
+    <color name="bg_dialog_gift_live">#000000</color>
 
     <color name="text_color_kickout_bei">#f9f9f9</color>
     <color name="text_color_kickout_people">#f9f9f9</color>
@@ -208,4 +208,11 @@
     <color name="tran_white2">#30ffffff</color>
 
     <color name="text_content_free_gift">#90fefefe</color>
+    <color name="tab_follow">#fdfdfd</color>
+
+    <color name="a_level_preety_num">#f42434</color>
+    <color name="b_level_preety_num">#FFFFD615</color>
+    <color name="c_level_preety_num">#9887f9</color>
+    <color name="d_level_preety_num">#5dbaf6</color>
+    <color name="e_level_preety_num">#5ecac2</color>
 </resources>

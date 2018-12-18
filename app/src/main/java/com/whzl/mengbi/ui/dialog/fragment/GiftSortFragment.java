@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.OvershootInterpolator;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.adapter.LiveHouseGiftAdapter;
@@ -55,7 +56,8 @@ public class GiftSortFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         ArrayList<GiftInfo.GiftDetailInfoBean> giftList = getArguments().getParcelableArrayList("gifts");
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        recycler.setLayoutManager(new GridLayoutManager(getContext(), 5));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), AppConfig.NUM_SPAN_GIFT_DIALOG);
+        recycler.setLayoutManager(gridLayoutManager);
         giftAdapter = new LiveHouseGiftAdapter(getContext(), R.layout.item_live_house_gift, giftList);
         giftAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
@@ -64,7 +66,15 @@ public class GiftSortFragment extends BaseFragment {
                     return;
                 }
                 try {
+//                    giftAdapter.setSelectedPosition(position);
                     currentPosition = position;
+                    if (recycler.getChildCount() > 0) {
+                        for (int i = 0; i < recycler.getChildCount(); i++) {
+                            recycler.getChildAt(i).findViewById(R.id.rl).setBackground(null);
+                        }
+                    }
+//                    GifDrawable drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
+                    (view.findViewById(R.id.rl)).setBackgroundResource(R.drawable.bg_live_house_gift_bg);
                     startAnimal(view.findViewById(R.id.iv_gift), position);
                     GiftInfo.GiftDetailInfoBean giftDetailInfoBean = giftList.get(position);
                     flagOnMessageEvent = false;
@@ -96,7 +106,7 @@ public class GiftSortFragment extends BaseFragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                giftAdapter.setSelectedPosition(position);
+//                giftAdapter.setSelectedPosition(position);
             }
         });
         animatorSetsuofang.start();

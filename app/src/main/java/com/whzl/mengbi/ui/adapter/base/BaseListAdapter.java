@@ -23,7 +23,6 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
     private int loadMoreFooterState = LOAD_MORE_STATE_END_HIDE;
 
     public View mHeaderView;
-    public View mFooterView;
 
     private View loadMoreEndLayout;
 
@@ -177,7 +176,6 @@ public abstract class BaseListAdapter extends RecyclerView.Adapter<BaseViewHolde
 
     protected BaseViewHolder onCreateLoadMoreFooterViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_load_more_end, parent, false);
-        mFooterView = view;
         return new LoadMoreFooterViewHolder(view);
     }
 

@@ -48,7 +48,7 @@ public class RunWayGiftControl {
             type = event.getRunWayJson().getContext().getRunWayType();
         }
         trackAnim = new TrackAnim(frameLayout, imageView);
-        if (!autoScrollView.isStarting) {
+        if (autoScrollView != null && !autoScrollView.isStarting) {
             startRun(event);
         } else {
             runwayQueue.add(event);

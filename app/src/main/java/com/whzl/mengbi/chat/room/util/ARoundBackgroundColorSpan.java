@@ -3,8 +3,10 @@ package com.whzl.mengbi.chat.room.util;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.text.style.ReplacementSpan;
 
@@ -16,7 +18,7 @@ import io.reactivex.annotations.NonNull;
  * @author nobody
  * @date 2018/11/12
  */
-public class RoundBackgroundColorSpan extends ReplacementSpan {
+public class ARoundBackgroundColorSpan extends ReplacementSpan {
     private int mRadius;
     private int bgColor;
     private int textColor;
@@ -26,9 +28,9 @@ public class RoundBackgroundColorSpan extends ReplacementSpan {
     private Context context;
     private final Typeface font;
 
-    public RoundBackgroundColorSpan(Context context, int bgColor,
-                                    int textColor,
-                                    int radius) {
+    public ARoundBackgroundColorSpan(Context context, int bgColor,
+                                     int textColor,
+                                     int radius) {
         super();
         this.bgColor = bgColor;
         this.textColor = textColor;
@@ -77,12 +79,13 @@ public class RoundBackgroundColorSpan extends ReplacementSpan {
         //设置文字背景矩形，x为span其实左上角相对整个TextView的x值，y为span左上角相对整个View的y值。
         // paint.ascent()获得文字上边缘，paint.descent()获得文字下边缘
         //x+2.5f解决线条粗细不一致问题
-//        paint.setShader(new LinearGradient(x + 2.5f, y + 2.5f + paint.ascent(), x + mSize, y + paint.descent(), Color.RED,Color.BLUE, Shader.TileMode.CLAMP));
+        paint.setShader(new LinearGradient(x + 2.5f, y + 2.5f + paint.ascent(), x + liangSize, y + paint.descent(),
+                Color.parseColor("#FFD100FC"), Color.parseColor("#FFFF2E00"), Shader.TileMode.CLAMP));
 
 //        canvas.drawRect(rectF, paint);
         canvas.drawRoundRect(rectF, mRadius, mRadius, paint);
 
-//        paint.setShader(null);
+        paint.setShader(null);
         //绘制文字
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
