@@ -26,7 +26,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.fragment.RankFragment;
-import com.whzl.mengbi.ui.fragment.FollowFragment;
+import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 import com.whzl.mengbi.ui.fragment.main.HomeFragment;
 import com.whzl.mengbi.ui.fragment.main.MeFragment;
 import com.whzl.mengbi.util.AppUtils;
