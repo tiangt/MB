@@ -7,6 +7,7 @@ import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.Typeface;
 import android.text.style.ReplacementSpan;
 
 import com.whzl.mengbi.util.UIUtil;
@@ -17,21 +18,25 @@ import io.reactivex.annotations.NonNull;
  * @author nobody
  * @date 2018/11/12
  */
-public class RoundBackgroundColorSpan2 extends ReplacementSpan {
+public class BRoundBackgroundColorSpan extends ReplacementSpan {
     private int mRadius;
     private int bgColor;
     private int textColor;
     private int mSize;
+    private int liangSize;
+    private int textSize;
     private Context context;
+    private final Typeface font;
 
-    public RoundBackgroundColorSpan2(Context context, int bgColor,
+    public BRoundBackgroundColorSpan(Context context, int bgColor,
                                      int textColor,
                                      int radius) {
         super();
         this.bgColor = bgColor;
         this.textColor = textColor;
-        this.mRadius = radius;
+        this.mRadius = 5;
         this.context = context;
+        font = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
     }
 
     /**
@@ -45,7 +50,9 @@ public class RoundBackgroundColorSpan2 extends ReplacementSpan {
                        int start,
                        int end,
                        Paint.FontMetricsInt fm) {
-        mSize = (int) (paint.measureText(text, start, end) + 2 * mRadius);
+        liangSize = (int) (paint.measureText("靓", 0, 1) + 2 * mRadius);
+        textSize = (int) (paint.measureText(text, start, end) + 2 * mRadius);
+        mSize = liangSize + textSize;
         return mSize + 5;//5:距离其他文字的空白
     }
 
@@ -68,22 +75,43 @@ public class RoundBackgroundColorSpan2 extends ReplacementSpan {
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setStrokeWidth(UIUtil.dip2px(context, 1));
         paint.setAntiAlias(true);
-        RectF rectF = new RectF(x + 2.5f, y + 2.5f + paint.ascent(), x + mSize, y + paint.descent());
+        RectF rectF = new RectF(x + 2.5f, y + 5f + paint.ascent(), x + liangSize, y + paint.descent() - 5);
         //设置文字背景矩形，x为span其实左上角相对整个TextView的x值，y为span左上角相对整个View的y值。
         // paint.ascent()获得文字上边缘，paint.descent()获得文字下边缘
         //x+2.5f解决线条粗细不一致问题
-//        paint.setShader(new LinearGradient(x + 2.5f, y + 2.5f + paint.ascent(), x + mSize, y + paint.descent(), Color.RED,Color.BLUE, Shader.TileMode.CLAMP));
+        paint.setShader(new LinearGradient(x + 2.5f, y + 2.5f + paint.ascent(), x + liangSize, y + paint.descent(),
+                Color.parseColor("#FFFF6F00"), Color.parseColor("#FFFFD615"), Shader.TileMode.CLAMP));
 
-        canvas.drawRect(rectF, paint);
+//        canvas.drawRect(rectF, paint);
+        canvas.drawRoundRect(rectF, mRadius, mRadius, paint);
 
-//        paint.setShader(null);
+        paint.setShader(null);
+        //绘制文字
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
+        paint.setStrokeWidth(defaultStrokeWidth);
+        canvas.drawText("靓", 0, 1, x + mRadius, y, paint);//此处mRadius为文字右移距离
+
+
+        paint.setColor(defaultColor);//恢复画笔的文字颜色
+
+        //绘制圆角矩形
+        paint.setColor(bgColor);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(UIUtil.dip2px(context, 1));
+        paint.setAntiAlias(true);
+        RectF rectF2 = new RectF(x + liangSize - 1, y + 5f + paint.ascent(), x + mSize + 5, y + paint.descent() - 5);
+        //设置文字背景矩形，x为span其实左上角相对整个TextView的x值，y为span左上角相对整个View的y值。
+        // paint.ascent()获得文字上边缘，paint.descent()获得文字下边缘
+        //x+2.5f解决线条粗细不一致问题
+        canvas.drawRoundRect(rectF2, mRadius, mRadius, paint);
+
         //绘制文字
         paint.setColor(textColor);
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(defaultStrokeWidth);
-        canvas.drawText(text, start, end, x + mRadius, y, paint);//此处mRadius为文字右移距离
 
-
-        paint.setColor(defaultColor);//恢复画笔的文字颜色
+        paint.setTypeface(font);
+        canvas.drawText(text, start, end, x + mRadius + liangSize, y + 1, paint);//此处mRadius为文字右移距离
     }
 }

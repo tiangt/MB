@@ -43,17 +43,26 @@ public class LightSpanString {
         return nickSpan;
     }
 
-    public static SpannableString getPrettyNumSpan(Context context,String num, int bgColor, int textColor) {
+    public static SpannableString getPrettyNumSpan(Context context, String num, int textColor) {
         SpannableString spannableString = new SpannableString(num);
-        RoundBackgroundColorSpan span = new RoundBackgroundColorSpan(context,bgColor, textColor, UIUtil.dip2px(context,1));
+        RoundBackgroundColorSpan span = new RoundBackgroundColorSpan(context, textColor, textColor, UIUtil.dip2px(context, 1));
         spannableString.setSpan(span, 0, num.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
 
-    public static SpannableString getPrettyNumBgSpan(Context context,String num, int bgColor, int textColor) {
+    public static SpannableString getAPrettyNumSpan(Context context, String num, int textColor) {
         SpannableString spannableString = new SpannableString(num);
-        RoundBackgroundColorSpan2 span = new RoundBackgroundColorSpan2(context,bgColor, textColor, UIUtil.dip2px(context,1));
+        ARoundBackgroundColorSpan span = new ARoundBackgroundColorSpan(context, textColor, textColor, UIUtil.dip2px(context, 1));
         spannableString.setSpan(span, 0, num.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         return spannableString;
     }
+
+    public static SpannableString getBPrettyNumSpan(Context context, String num, int textColor) {
+        SpannableString spannableString = new SpannableString(num);
+        BRoundBackgroundColorSpan span = new BRoundBackgroundColorSpan(context, textColor, textColor, UIUtil.dip2px(context, 1));
+        spannableString.setSpan(span, 0, num.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
+
 }

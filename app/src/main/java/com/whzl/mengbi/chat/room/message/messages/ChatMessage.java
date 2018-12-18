@@ -2,6 +2,7 @@ package com.whzl.mengbi.chat.room.message.messages;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -164,17 +165,17 @@ public class ChatMessage implements FillHolderMessage {
         }
         if (!TextUtils.isEmpty(prettyNum)) {
             if ("A".equals(prettyNumColor)) {
-//                mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
-                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
+                mholder.textView.append(LightSpanString.getAPrettyNumSpan(mContext, prettyNum, ContextCompat.getColor(mContext, R.color.a_level_preety_num)));
             } else if ("B".equals(prettyNumColor)) {
-//                mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe7a2a"), Color.parseColor("#ffffff")));
-                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe7a2a"), Color.parseColor("#fe7a2a")));
+                mholder.textView.append(LightSpanString.getBPrettyNumSpan(mContext, prettyNum, ContextCompat.getColor(mContext, R.color.b_level_preety_num)));
             } else if ("C".equals(prettyNumColor)) {
-//                mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#fe3c7c"), Color.parseColor("#ffffff")));
-                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#fe3c7c"), Color.parseColor("#fe3c7c")));
+                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, ContextCompat.getColor(mContext, R.color.c_level_preety_num)));
+            } else if ("D".equals(prettyNumColor)) {
+                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, ContextCompat.getColor(mContext, R.color.d_level_preety_num)));
+            } else if ("E".equals(prettyNumColor)) {
+                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, ContextCompat.getColor(mContext, R.color.e_level_preety_num)));
             } else {
-//                mholder.textView.append(LightSpanString.getPrettyNumBgSpan(mContext, "靓", Color.parseColor("#8bc1fe"), Color.parseColor("#ffffff")));
-                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, Color.parseColor("#8bc1fe"), Color.parseColor("#8bc1fe")));
+                mholder.textView.append(LightSpanString.getPrettyNumSpan(mContext, prettyNum, ContextCompat.getColor(mContext, R.color.e_level_preety_num)));
             }
             mholder.textView.append("  ");
         }
