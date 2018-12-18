@@ -67,6 +67,7 @@ public class UserListDialog extends BaseFullScreenDialog {
         tabLayout.setNeedSwitchAnimation(true);
         tabLayout.setSelectedTabIndicatorWidth(20);
         tabLayout.setupWithViewPager(viewpager);
+
     }
 
     private void settab(TabLayout tabLayout) throws NoSuchFieldException, IllegalAccessException {
