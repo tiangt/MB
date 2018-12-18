@@ -1,7 +1,5 @@
 package com.whzl.mengbi.ui.dialog.base;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,11 +7,13 @@ import android.widget.TextView;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -38,6 +38,11 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
     TextView tvCost;
     @BindView(R.id.iv_avatar)
     ImageView ivAvatar;
+    @BindView(R.id.tv_user_name)
+    TextView tvUserName;
+    @BindView(R.id.iv_user_avatar)
+    ImageView ivUserAvatar;
+
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
     private long mProgramId;
     private GuardPriceBean mGuardPriceBean;
@@ -54,7 +59,7 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
 
     @Override
     public int intLayoutId() {
-        return R.layout.dialog_guard_detaili;
+        return R.layout.dialog_guard_details;
     }
 
     @Override
@@ -71,7 +76,7 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
                         if (guardPriceBean != null) {
                             mGuardPriceBean = guardPriceBean;
                             if (guardPriceBean.prices != null && guardPriceBean.prices.month != null) {
-                                tvCost.setText(guardPriceBean.prices.month.rent + "");
+                                tvCost.setText(StringUtils.formatNumber(guardPriceBean.prices.month.rent) + "萌币");
                             }
                         }
                     }
@@ -85,6 +90,11 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
             tvNickName.setText(mAnchorBean.getName());
             GlideImageLoader.getInstace().displayImage(getContext(), mAnchorBean.getAvatar(), ivAvatar);
         }
+        String userName = (String) SPUtils.get(getContext(), SpConfig.KEY_USER_NAME, "");
+        long userId = (long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
+        tvUserName.setText(userName);
+        String userAvatar = ImageUrl.getAvatarUrl(userId, "png", System.currentTimeMillis());
+        GlideImageLoader.getInstace().displayImage(getContext(), userAvatar, ivUserAvatar);
     }
 
 
@@ -114,7 +124,7 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
                 .subscribe(new ApiObserver<JsonElement>(this) {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
-                        ((LiveDisplayActivity)getActivity()).isGuard = true;
+                        ((LiveDisplayActivity) getActivity()).isGuard = true;
                         dismiss();
                     }
 

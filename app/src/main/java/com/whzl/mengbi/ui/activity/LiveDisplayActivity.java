@@ -9,12 +9,14 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -96,13 +98,16 @@ import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
+import com.whzl.mengbi.ui.dialog.GuardianListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
+import com.whzl.mengbi.ui.dialog.UserListDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseFullScreenDialog;
 import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
@@ -312,6 +317,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private String mIsFollowed;
     private WeekStarControl weekStarControl;
     private LiveWeekRankFragment weekRankFragment;
+    private BaseFullScreenDialog mGuardianDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -457,18 +463,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pollAdapter.setListerner(position -> {
             long userId = mAudienceList.get(position + 1).getUserid();
 //            showAudienceInfoDialog(userId, false);
-            PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
-                    .setListener(() -> {
-                        if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
-                            mGuardListDialog.dismiss();
-                        }
-                        if (mRankDialog != null && mRankDialog.isAdded()) {
-                            mRankDialog.dismiss();
-                        }
-                    })
-                    .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
-                    .setDimAmount(0)
-                    .show(getSupportFragmentManager());
+            if (ClickUtil.isFastClick()) {
+                PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
+                        .setListener(() -> {
+                            if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                                mGuardListDialog.dismiss();
+                            }
+                            if (mRankDialog != null && mRankDialog.isAdded()) {
+                                mRankDialog.dismiss();
+                            }
+                            if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
+                                mGuardianDialog.dismiss();
+                            }
+                        })
+                        .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+                        .setDimAmount(0)
+                        .show(getSupportFragmentManager());
+            }
         });
         mAudienceRecycler.setAdapter(pollAdapter);
     }
@@ -652,6 +663,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                 if (mRankDialog != null && mRankDialog.isAdded()) {
                                     mRankDialog.dismiss();
                                 }
+                                if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
+                                    mGuardianDialog.dismiss();
+                                }
                             })
                             .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                             .setDimAmount(0)
@@ -725,6 +739,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
+//                UserListDialog.newInstance()
+//                        .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
+//                        .show(getSupportFragmentManager());
                 break;
 
             case R.id.tv_contribute:
@@ -737,10 +754,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.rl_guard_number:
-                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0, mAudienceCount)
-                        .setShowBottom(true)
-                        .setDimAmount(0)
-                        .show(getSupportFragmentManager());
+//                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0, mAudienceCount)
+//                        .setShowBottom(true)
+//                        .setDimAmount(0)
+//                        .show(getSupportFragmentManager());
+
+                if (ClickUtil.isFastClick()) {
+                    mGuardianDialog = GuardianListDialog.newInstance(mProgramId, mAnchor)
+                            .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
+                            .show(getSupportFragmentManager());
+                }
                 break;
             case R.id.btn_share:
                 mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor, mAnchorCover, mShareUrl)
@@ -1336,6 +1359,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     }
                     if (mRankDialog != null && mRankDialog.isAdded()) {
                         mRankDialog.dismiss();
+                    }
+                    if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
+                        mGuardianDialog.dismiss();
                     }
                 })
                 .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)

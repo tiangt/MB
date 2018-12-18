@@ -78,6 +78,11 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+    <style name="dialog_enter_from_right_out_from_right" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/slide_right_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_right_out</item>
+    </style>
+
     <!--tab-->
     <style name="LiveHouseDialogTab" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">#ff2b3f</item>
@@ -342,6 +347,15 @@
     <style name="dialogWindowAnim" parent="android:Animation">
         <item name="android:windowEnterAnimation" >@anim/dialog_show_anim</item>
         <item name="android:windowExitAnimation" >@anim/dialog_exit_anim</item>
+    </style>
+
+    <style name="UserTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabBackground">@color/tran_black3</item>
+        <item name="tabIndicatorColor">#ffd634</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#ffd634</item>
+        <item name="tabSelectedTextColor">#ffd634</item>
     </style>
 
 </resources>

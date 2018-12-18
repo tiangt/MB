@@ -341,7 +341,7 @@
     <string name="live">直播中</string>
     <string name="rest">休息中</string>
     <string name="ranking">第%1$d名</string>
-    
+
     <string name="operate_mute">禁止TA本房间发言15分钟</string>
     <string name="global_mute">禁止TA全局直播发言15分钟</string>
     <string name="kick">把TA踢出房间15分钟</string>
@@ -355,6 +355,10 @@
     <string name="tip_off_3">言语谩骂</string>
     <string name="tip_off_4">广告骚扰</string>
     <string name="tip_off_5">外站拉人</string>
+
+    <string name="guardian_count">守护玩家( %1$d )</string>
+    <string name="user_list">玩家列表(%1$d)</string>
+    <string name="room_manager_list">房管列表(%1$d)</string>
 
     <array name="new_task">
         <item>领取</item>

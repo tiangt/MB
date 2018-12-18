@@ -199,9 +199,13 @@
     <color name="text_purple">#ff36f3</color>
     <color name="tran_grey">#11eeeeee</color>
     <color name="tran_grey2">#66eeeeee</color>
+    <color name="black">#000000</color>
     <color name="tran_black">#30000000</color>
     <color name="tran_black2">#70000000</color>
+    <color name="tran_black3">#E0000000</color>
+    <color name="tran_black4">#EE000000</color>
     <color name="tran_white1">#90ffffff</color>
+    <color name="tran_white2">#30ffffff</color>
 
     <color name="text_content_free_gift">#90fefefe</color>
 </resources>
