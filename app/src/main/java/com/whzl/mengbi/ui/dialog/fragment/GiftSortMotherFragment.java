@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -26,7 +27,7 @@ public class GiftSortMotherFragment extends BaseFragment {
     ViewPager viewPager;
     @BindView(R.id.pager_index_container)
     LinearLayout pagerIndexContainer;
-    private float gitfNum = 10;
+    private float gitfNum = AppConfig.NUM_TOTAL_GIFT_DIALOG;
 
     public static GiftSortMotherFragment newInstance(ArrayList<GiftInfo.GiftDetailInfoBean> giftList) {
 

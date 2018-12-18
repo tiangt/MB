@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
@@ -80,7 +81,7 @@ public class BackpackFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         mDatas = getArguments().getParcelableArrayList("data");
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        recycler.setLayoutManager(new GridLayoutManager(getContext(), 5));
+        recycler.setLayoutManager(new GridLayoutManager(getContext(), AppConfig.NUM_SPAN_GIFT_DIALOG));
         giftAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
@@ -145,13 +146,13 @@ public class BackpackFragment extends BaseFragment {
             tvCost.setText(goodsDetailBean.count + "");
 //            selectedMark.setSelected(position == selectedPosition);
             if (position == selectedPosition) {
-                try {
-                    GifDrawable drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
-                    rl.setBackground(drawable);
+//                try {
+//                    GifDrawable drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
+                    rl.setBackgroundResource(R.drawable.bg_live_house_gift_bg);
 //                ((ImageView) holder.getView(R.id.iv)).setImageDrawable(drawable);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 //            holder.getView(R.id.rl).setBackground();
             } else {
                 rl.setBackground(null);
@@ -170,13 +171,13 @@ public class BackpackFragment extends BaseFragment {
                     recycler.getChildAt(i).findViewById(R.id.rl).setBackground(null);
                 }
             }
-            GifDrawable drawable = null;
-            try {
-                drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
-                (view.findViewById(R.id.rl)).setBackground(drawable);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            GifDrawable drawable = null;
+//            try {
+//                drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
+                (view.findViewById(R.id.rl)).setBackgroundResource(R.drawable.bg_live_house_gift_bg);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             startAnimal(ivGift, position);
             BackpackListBean.GoodsDetailBean goodsDetailBean = mDatas.get(position);
             GiftInfo.GiftDetailInfoBean giftDetailInfoBean = new GiftInfo.GiftDetailInfoBean();

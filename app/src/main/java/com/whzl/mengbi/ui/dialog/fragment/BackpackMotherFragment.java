@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
@@ -124,17 +125,17 @@ public class BackpackMotherFragment extends BaseFragment {
                         if (backpackListBean != null && backpackListBean.list != null && backpackListBean.list.size() > 0) {
                             viewPager.setVisibility(View.VISIBLE);
                             llBackPack.setVisibility(View.GONE);
-                            pagers = (int) Math.ceil(backpackListBean.list.size() / 10f);
+                            pagers = (int) Math.ceil(backpackListBean.list.size() / (float)AppConfig.NUM_TOTAL_GIFT_DIALOG);
                             setupPagerIndex(pagers);
                             for (int i = 0; i < pagers; i++) {
                                 BackpackFragment fragment;
                                 if (i == pagers - 1) {
                                     ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
-                                    pagerGiftList.addAll(backpackListBean.list.subList(i * 10, backpackListBean.list.size()));
+                                    pagerGiftList.addAll(backpackListBean.list.subList(i * AppConfig.NUM_TOTAL_GIFT_DIALOG, backpackListBean.list.size()));
                                     fragment = BackpackFragment.newInstance(pagerGiftList);
                                 } else {
                                     ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
-                                    pagerGiftList.addAll(backpackListBean.list.subList(i * 10, (i + 1) * 10));
+                                    pagerGiftList.addAll(backpackListBean.list.subList(i * AppConfig.NUM_TOTAL_GIFT_DIALOG, (i + 1) * AppConfig.NUM_TOTAL_GIFT_DIALOG));
                                     fragment = BackpackFragment.newInstance(pagerGiftList);
                                 }
                                 fragments.add(fragment);
