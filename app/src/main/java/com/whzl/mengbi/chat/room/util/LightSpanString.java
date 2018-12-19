@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.UIUtil;
 
 public class LightSpanString {
@@ -34,7 +35,9 @@ public class LightSpanString {
                     return;
                 }
                 Log.i("chatMsg", "点击了 " + nickName);
-                ((LiveDisplayActivity) context).showAudienceInfoDialog(uid, false);
+                if(ClickUtil.isFastClick()){
+                    ((LiveDisplayActivity) context).showAudienceInfoDialog(uid, false);
+                }
                 //new EnterUserPop().enterUserPop(mContext,uid, ChatRoomInfo.getProgramId());
             }
         };

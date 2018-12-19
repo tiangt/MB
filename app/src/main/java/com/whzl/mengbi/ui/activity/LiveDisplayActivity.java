@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -99,6 +100,7 @@ import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.GuardianListDialog;
+import com.whzl.mengbi.ui.dialog.HeadLineDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
@@ -118,6 +120,7 @@ import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.HeadLineView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
@@ -139,6 +142,7 @@ import com.youth.banner.Transformer;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -179,8 +183,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageButton btnSendGift;
     @BindView(R.id.ll_gift_container)
     LinearLayout llGiftContainer;
-    @BindView(R.id.tv_contribute)
-    TextView tvContribute;
     @BindView(R.id.btn_close)
     ImageButton btnClose;
     @BindView(R.id.iv_gift_gif)
@@ -267,6 +269,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlWeekstar;
     @BindView(R.id.btn_more)
     ImageButton btnMore;
+    @BindView(R.id.head_line)
+    HeadLineView headLineView;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -319,6 +323,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private LiveWeekRankFragment weekRankFragment;
     private BaseFullScreenDialog mGuardianDialog;
     private BaseFullScreenDialog mUserListDialog;
+    private String mRanking;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -644,7 +649,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
-            , R.id.tv_popularity, R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private
+            , R.id.tv_popularity, R.id.btn_chat, R.id.btn_chat_private
             , R.id.rootView, R.id.fragment_container, R.id.rl_guard_number
             , R.id.btn_share, R.id.btn_free_gift})
     public void onClick(View view) {
@@ -747,15 +752,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
                 break;
 
-            case R.id.tv_contribute:
-                if (mRankDialog != null && mRankDialog.isAdded()) {
-                    return;
-                }
-                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
-                        .setDimAmount(0)
-                        .setShowBottom(true)
-                        .show(getSupportFragmentManager());
-                break;
+//            case R.id.tv_contribute:
+//                if (mRankDialog != null && mRankDialog.isAdded()) {
+//                    return;
+//                }
+//                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
+//                        .setDimAmount(0)
+//                        .setShowBottom(true)
+//                        .show(getSupportFragmentManager());
+//                break;
             case R.id.rl_guard_number:
 //                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0, mAudienceCount)
 //                        .setShowBottom(true)
@@ -1268,11 +1273,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
         if (bean.total.compareTo(new BigDecimal(10000)) < 0) {
-            tvContribute.setText(bean.total + "");
+//            tvContribute.setText(bean.total + "");
+            mRanking = bean.total + "";
         } else {
             BigDecimal divide = bean.total.divide(new BigDecimal(10000), 1, BigDecimal.ROUND_DOWN);
-            tvContribute.setText(divide + "万");
+//            tvContribute.setText(divide + "万");
+            mRanking = divide + "万";
         }
+        String[] lines = {mRanking, "第一名"};
+        setHeadLine(lines);
     }
 
 
@@ -1637,5 +1646,36 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .setDimAmount(0)
                 .setShowBottom(true)
                 .show(getSupportFragmentManager());
+    }
+
+    private void setHeadLine(String[] line) {
+        if (line == null || line.length == 0) {
+            return;
+        }
+        int images[] = {R.drawable.live_display_cup, R.drawable.ic_head_line};
+        List<View> views = new ArrayList<>();
+        for (int i = 0; i < line.length; i++) {
+            View v = View.inflate(this, R.layout.item_head_line, null);
+            TextView text = v.findViewById(R.id.tv_head_line);
+            ImageView image = v.findViewById(R.id.iv_head_line);
+            text.setText(line[i]);
+            image.setImageResource(images[i]);
+            views.add(v);
+        }
+        headLineView.setViews(views);
+        headLineView.setOnItemClickListener((position, view) -> {
+            if (0 == position) {
+                if (mRankDialog != null && mRankDialog.isAdded()) {
+                    return;
+                }
+                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
+                        .setDimAmount(0)
+                        .setShowBottom(true)
+                        .show(getSupportFragmentManager());
+            } else {
+                HeadLineDialog.newInstance()
+                        .show(getSupportFragmentManager());
+            }
+        });
     }
 }

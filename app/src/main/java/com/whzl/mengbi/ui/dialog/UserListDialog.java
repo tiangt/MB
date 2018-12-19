@@ -14,6 +14,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseFullScreenDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.AudienceListFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GuardListFragment;
+import com.whzl.mengbi.ui.dialog.fragment.ManagerListFragment;
 import com.whzl.mengbi.ui.dialog.fragment.UserListFragment;
 import com.whzl.mengbi.ui.widget.tablayout.TabLayout;
 import com.whzl.mengbi.util.UIUtil;
@@ -66,7 +67,7 @@ public class UserListDialog extends BaseFullScreenDialog {
         titles.add("房管列表");
         fragments = new ArrayList<>();
         fragments.add(UserListFragment.newInstance(mProgramId));
-        fragments.add(GuardListFragment.newInstance(mProgramId));
+        fragments.add(ManagerListFragment.newInstance());
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         viewpager.setCurrentItem(0);
 
