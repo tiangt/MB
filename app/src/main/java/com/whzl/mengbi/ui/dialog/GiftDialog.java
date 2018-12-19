@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -9,13 +10,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -26,6 +30,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
+import com.whzl.mengbi.eventbus.event.SendSuperWordEvent;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
@@ -82,6 +87,15 @@ public class GiftDialog extends BaseAwesomeDialog {
     LinearLayout llCountCustomContainer;
     @BindView(R.id.first_top_up)
     ConstraintLayout firstTopUp;
+    @BindView(R.id.checkbox)
+    CheckBox checkBox;
+    @BindView(R.id.tv_title_superrun)
+    TextView tvTitleSuperRun;
+    @BindView(R.id.tv_content_superrun)
+    TextView tvContentSuperRun;
+    @BindView(R.id.tv_add_superrun)
+    TextView tvAddSuperRun;
+
     private ArrayList<GiftCountInfoBean> giftCountInfoList;
     private CommonAdapter<GiftCountInfoBean> adapter;
     private PopupWindow popupWindow;
@@ -89,6 +103,8 @@ public class GiftDialog extends BaseAwesomeDialog {
     private int currentSelectedIndex;
     private ArrayList<Fragment> fragments;
     private int REQUEST_LOGIN = 120;
+    private String CAN_NOT_SUPER_RUN = "单笔超过50000萌币才可以上超跑";
+    private AddSendWordDialog addSendWordDialog;
 
     public static BaseAwesomeDialog newInstance(GiftInfo giftInfo, long coin) {
         Bundle args = new Bundle();
@@ -119,6 +135,7 @@ public class GiftDialog extends BaseAwesomeDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+        tvContentSuperRun.setText(CAN_NOT_SUPER_RUN);
         coin = getArguments().getLong("coin");
         boolean hasTopUp = (boolean) SPUtils.get(getContext(), SpConfig.KEY_HAS_RECHARGED, false);
         firstTopUp.setVisibility(hasTopUp ? View.GONE : View.VISIBLE);
@@ -214,7 +231,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         currentSelectedIndex = index;
     }
 
-    @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm, R.id.tv_top_up, R.id.first_top_up})
+    @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm, R.id.tv_top_up, R.id.first_top_up, R.id.checkbox, R.id.tv_add_superrun})
     public void onClick(View view) {
         long mUserId = Long.parseLong(SPUtils.get(getActivity(), "userId", 0L).toString());
         switch (view.getId()) {
@@ -274,6 +291,77 @@ public class GiftDialog extends BaseAwesomeDialog {
                 startActivity(intent);
                 dismiss();
                 break;
+            case R.id.checkbox:
+                if (mUserId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    checkBox.setChecked(false);
+                    return;
+                }
+                String countStr2 = tvCount.getText().toString().trim();
+                int giftCount2 = 0;
+                try {
+                    giftCount2 = Integer.parseInt(countStr2);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                if (giftDetailInfoBean == null) {
+                    ToastUtils.showToast("请选择礼物");
+                    checkBox.setChecked(false);
+                    return;
+                }
+                if (giftCount2 == 0) {
+                    ToastUtils.showToast("礼物数量不能为0");
+                    checkBox.setChecked(false);
+                    return;
+                }
+                if (giftCount2 * giftDetailInfoBean.getRent() < 50000) {
+                    ToastUtils.showToast("单笔超过50000萌币才可以上超跑");
+                    tvContentSuperRun.setText(CAN_NOT_SUPER_RUN);
+                    checkBox.setChecked(false);
+                    return;
+                }
+                if (checkBox.isChecked()) {
+                    if (TextUtils.isEmpty(SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString())) {
+                        tvTitleSuperRun.setText("请添加寄语");
+                    } else {
+                        tvTitleSuperRun.setText(SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString());
+                    }
+                    tvContentSuperRun.setText("可以登上超跑一次，还差 8,888 萌币才能攻占当前超跑");
+                    tvAddSuperRun.setSelected(true);
+                } else {
+                    tvTitleSuperRun.setText("是否上超跑");
+                    tvContentSuperRun.setText("放心吧！您的超跑消息不会被任何人看到");
+                    tvAddSuperRun.setSelected(false);
+                }
+                break;
+            case R.id.tv_add_superrun:
+                if (mUserId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    checkBox.setChecked(false);
+                    return;
+                }
+                if (giftDetailInfoBean == null) {
+                    ToastUtils.showToast("请选择礼物");
+                    checkBox.setChecked(false);
+                    return;
+                }
+                String countStr3 = tvCount.getText().toString().trim();
+                int giftCount3 = 0;
+                try {
+                    giftCount3 = Integer.parseInt(countStr3);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                if (giftCount3 * giftDetailInfoBean.getRent() < 50000) {
+                    ToastUtils.showToast("单笔超过50000萌币才可以添加寄语");
+                    return;
+                }
+                if (addSendWordDialog != null && addSendWordDialog.isAdded()) {
+                    return;
+                }
+                addSendWordDialog = AddSendWordDialog.newInstance();
+                addSendWordDialog.setOutCancel(false).show(getFragmentManager());
+                break;
         }
 
     }
@@ -324,6 +412,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                 @Override
                 public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                     tvCount.setText(giftCountInfoList.get(position).count + "");
+                    setCheckChange();
                     popupWindow.dismiss();
                 }
 
@@ -344,6 +433,48 @@ public class GiftDialog extends BaseAwesomeDialog {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GiftSelectedEvent event) {
         giftDetailInfoBean = event.giftDetailInfoBean;
+        setCheckChange();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(SendSuperWordEvent event) {
+        if (checkBox.isChecked()) {
+            if (TextUtils.isEmpty(SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString())) {
+                tvTitleSuperRun.setText("请添加寄语");
+            } else {
+                tvTitleSuperRun.setText(SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString());
+            }
+        }
+    }
+
+    private void setCheckChange() {
+        String countStr = tvCount.getText().toString().trim();
+        int giftCount = 0;
+        giftCount = Integer.parseInt(countStr);
+        if (!checkBox.isChecked()) {
+            if (giftDetailInfoBean.getRent() * giftCount < 50000) {
+                tvContentSuperRun.setText(CAN_NOT_SUPER_RUN);
+            }
+            return;
+        }
+        //不能上超跑
+        if (giftDetailInfoBean.getRent() * giftCount < 50000) {
+            checkBox.setChecked(false);
+            tvTitleSuperRun.setText("是否上超跑");
+            tvContentSuperRun.setText(CAN_NOT_SUPER_RUN);
+            tvAddSuperRun.setSelected(false);
+        }
+        //可以上超跑
+        else {
+            if (TextUtils.isEmpty(SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString())) {
+                tvTitleSuperRun.setText("请添加寄语");
+            } else {
+                tvTitleSuperRun.setText(SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString());
+            }
+            checkBox.setChecked(true);
+            tvContentSuperRun.setText("可以登上超跑一次，还差 8,888 萌币才能攻占当前超跑");
+            tvAddSuperRun.setSelected(true);
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

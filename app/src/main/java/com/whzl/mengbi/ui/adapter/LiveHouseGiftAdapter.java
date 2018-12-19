@@ -8,10 +8,7 @@ import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.base.ViewHolder;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
-import java.io.IOException;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifDrawable;
 
 /**
  * @author shaw
@@ -34,13 +31,14 @@ public class LiveHouseGiftAdapter extends CommonAdapter<GiftInfo.GiftDetailInfoB
         holder.setText(R.id.tv_cost, giftDetailInfoBean.getRent() + "萌币");
 //        holder.getView(R.id.view_select_mark).setSelected(position == selectedPosition);
         if (position == selectedPosition) {
-            try {
-                GifDrawable drawable = new GifDrawable(context.getResources(), R.drawable.bg_live_house_select);
-                (holder.getView(R.id.rl)).setBackground(drawable);
+            (holder.getView(R.id.rl)).setBackgroundResource(R.drawable.bg_live_house_gift_bg);
+//            try {
+//                GifDrawable drawable = new GifDrawable(context.getResources(), R.drawable.bg_live_house_select);
+//                (holder.getView(R.id.rl)).setBackground(drawable);
 //                ((ImageView) holder.getView(R.id.iv)).setImageDrawable(drawable);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 //            holder.getView(R.id.rl).setBackground();
         } else {
             (holder.getView(R.id.rl)).setBackground(null);

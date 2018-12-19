@@ -216,4 +216,7 @@
     <color name="c_level_preety_num">#9887f9</color>
     <color name="d_level_preety_num">#5dbaf6</color>
     <color name="e_level_preety_num">#5ecac2</color>
+
+    <color name="text_color_no_add_super_run">#30ffffff</color>
+    <color name="text_color_ok_add_super_run">#ffeb00</color>
 </resources>
