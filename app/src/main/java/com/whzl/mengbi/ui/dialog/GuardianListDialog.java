@@ -96,6 +96,7 @@ public class GuardianListDialog extends BaseFullScreenDialog {
                 dismiss();
                 break;
             case R.id.btn_open_guard:
+                dismiss();
                 if (ClickUtil.isFastClick()) {
                     GuardDetailDialog.newInstance(mProgramId, mAnchorBean)
                             .setShowBottom(true)
@@ -203,4 +204,16 @@ public class GuardianListDialog extends BaseFullScreenDialog {
             }
         }
     }
+
+    private OnClickListener listener;
+
+    public interface OnClickListener {
+        void onGuardianClick();
+    }
+
+    public BaseFullScreenDialog setListener(OnClickListener listener) {
+        this.listener = listener;
+        return this;
+    }
+
 }

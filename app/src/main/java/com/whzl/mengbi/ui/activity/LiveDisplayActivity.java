@@ -318,6 +318,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private WeekStarControl weekStarControl;
     private LiveWeekRankFragment weekRankFragment;
     private BaseFullScreenDialog mGuardianDialog;
+    private BaseFullScreenDialog mUserListDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -466,8 +467,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (ClickUtil.isFastClick()) {
                 PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
                         .setListener(() -> {
-                            if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
-                                mGuardListDialog.dismiss();
+                            if (mUserListDialog != null && mUserListDialog.isAdded()) {
+                                mUserListDialog.dismiss();
                             }
                             if (mRankDialog != null && mRankDialog.isAdded()) {
                                 mRankDialog.dismiss();
@@ -657,8 +658,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (ClickUtil.isFastClick()) {
                     PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
                             .setListener(() -> {
-                                if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
-                                    mGuardListDialog.dismiss();
+                                if (mUserListDialog != null && mUserListDialog.isAdded()) {
+                                    mUserListDialog.dismiss();
                                 }
                                 if (mRankDialog != null && mRankDialog.isAdded()) {
                                     mRankDialog.dismiss();
@@ -732,16 +733,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.tv_popularity:
-                if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
+                if (mUserListDialog != null && mUserListDialog.isAdded()) {
                     return;
                 }
-                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 1, mAudienceCount)
-                        .setShowBottom(true)
-                        .setDimAmount(0)
-                        .show(getSupportFragmentManager());
-//                UserListDialog.newInstance()
-//                        .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
+//                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 1, mAudienceCount)
+//                        .setShowBottom(true)
+//                        .setDimAmount(0)
 //                        .show(getSupportFragmentManager());
+                if (ClickUtil.isFastClick()) {
+                    mUserListDialog = UserListDialog.newInstance(mProgramId)
+                            .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
+                            .show(getSupportFragmentManager());
+                }
                 break;
 
             case R.id.tv_contribute:
@@ -1354,8 +1357,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
                 .setListener(() -> {
-                    if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
-                        mGuardListDialog.dismiss();
+                    if (mUserListDialog != null && mUserListDialog.isAdded()) {
+                        mUserListDialog.dismiss();
                     }
                     if (mRankDialog != null && mRankDialog.isAdded()) {
                         mRankDialog.dismiss();
@@ -1373,8 +1376,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void showAudienceInfoDialog(String nickName) {
         AudienceInfoDialog.newInstance(nickName, mProgramId, mRoomUserInfo)
                 .setListener(() -> {
-                    if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
-                        mGuardListDialog.dismiss();
+                    if (mUserListDialog != null && mUserListDialog.isAdded()) {
+                        mUserListDialog.dismiss();
                     }
                 })
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
