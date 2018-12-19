@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseFullScreenDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.AudienceListFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GuardListFragment;
+import com.whzl.mengbi.ui.dialog.fragment.UserListFragment;
 import com.whzl.mengbi.ui.widget.tablayout.TabLayout;
 import com.whzl.mengbi.util.UIUtil;
 
@@ -20,6 +22,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 用户，房管列表
@@ -42,8 +45,11 @@ public class UserListDialog extends BaseFullScreenDialog {
     private FragmentPagerAdaper mAdapter;
     private ArrayList<Fragment> fragments;
 
-    public static BaseFullScreenDialog newInstance(){
+    public static BaseFullScreenDialog newInstance(int programId) {
+        Bundle args = new Bundle();
+        args.putInt("programId", programId);
         UserListDialog dialog = new UserListDialog();
+        dialog.setArguments(args);
         return dialog;
     }
 
@@ -54,14 +60,16 @@ public class UserListDialog extends BaseFullScreenDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseFullScreenDialog dialog) {
+        mProgramId = getArguments().getInt("programId");
         ArrayList<String> titles = new ArrayList<>();
-        titles.add(getString(R.string.user_list,0));
-        titles.add(getString(R.string.room_manager_list,0));
+        titles.add("玩家列表");
+        titles.add("房管列表");
         fragments = new ArrayList<>();
+        fragments.add(UserListFragment.newInstance(mProgramId));
         fragments.add(GuardListFragment.newInstance(mProgramId));
-        fragments.add(AudienceListFragment.newInstance(mProgramId));
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         viewpager.setCurrentItem(0);
+
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setNeedSwitchAnimation(true);
@@ -70,21 +78,23 @@ public class UserListDialog extends BaseFullScreenDialog {
 
     }
 
-    private void settab(TabLayout tabLayout) throws NoSuchFieldException, IllegalAccessException {
-        Class<?> tabLayoutClass = tabLayout.getClass();
-        Field tabStrip = tabLayoutClass.getDeclaredField("mTabStrip");
-        tabStrip.setAccessible(true);
-        LinearLayout llTab = (LinearLayout) tabStrip.get(tabLayout);
-        for (int i = 0; i < llTab.getChildCount(); i++) {
-            View child = llTab.getChildAt(i);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
-            int screenWidth = UIUtil.getScreenWidthPixels(getContext());
-            int indexWidth = UIUtil.dip2px(getContext(), 100);
-            int leftMargin = (int) ((screenWidth - indexWidth * 2) / 4f + 0.5);
-            params.leftMargin = (leftMargin);
-            params.rightMargin = (leftMargin);
-            child.setLayoutParams(params);
-            child.invalidate();
+    @OnClick({R.id.ib_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ib_back:
+                dismiss();
+                break;
+            default:
+                break;
         }
     }
+
+    public void setUserTitle(long userAmount){
+        tabLayout.getTabAt(0).setText("玩家列表（" + userAmount + "）");
+    }
+
+    public void setManagerTitle(int managerAmount){
+        tabLayout.getTabAt(1).setText("房管列表（" + managerAmount + "）");
+    }
+
 }
