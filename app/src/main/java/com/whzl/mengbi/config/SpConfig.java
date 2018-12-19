@@ -13,4 +13,5 @@ public interface SpConfig {
     String AWARD_SHOW_TIME = "awardShowTime";
     String KEY_HAS_RECHARGED = "hasRecharged";
     int MAX_LEVEL = 7;
+    String DEFAULT_SENT_WORD = "defaultSentWord";
 }
