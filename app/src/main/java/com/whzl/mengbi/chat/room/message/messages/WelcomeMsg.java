@@ -229,9 +229,9 @@ public class WelcomeMsg implements FillHolderMessage {
 
     public String getPrettyNumColor(List<WelcomeJson.UserBagItem> userBagList) {
         if (userBagList == null) {
-            return "A";
+            return "E";
         }
-        String string = "A";
+        String string = "E";
         for (WelcomeJson.UserBagItem bagItem : userBagList) {
             if (bagItem.getGoodsType().equals("PRETTY_NUM") && bagItem.getIsEquip().equals("T") && bagItem.goodsColor != null) {
                 string = bagItem.goodsColor;
