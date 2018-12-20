@@ -128,27 +128,35 @@
                     android:layout_marginLeft="6dp"
                     android:layout_marginTop="6.5dp">
 
-                    <TextView
-                        android:id="@+id/tv_contribute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/shape_live_display_contribution_btn_bg"
-                        android:drawableLeft="@drawable/live_display_cup"
-                        android:drawablePadding="6dp"
-                        android:drawableRight="@drawable/live_display_arrow"
-                        android:gravity="center"
-                        android:paddingLeft="9dp"
-                        android:paddingRight="9dp"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
+                <RelativeLayout
+                    android:id="@+id/rl_head"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/shape_live_display_contribution_btn_bg">
 
-                    <RelativeLayout
-                        android:id="@+id/rl_guard_number"
+                    <com.whzl.mengbi.ui.widget.view.HeadLineView
+                        android:id="@+id/head_line"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp"
-                        android:layout_toRightOf="@id/tv_contribute">
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toRightOf="@id/head_line"
+                        android:src="@drawable/live_display_arrow" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_guard_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_toRightOf="@id/rl_head">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -359,21 +367,21 @@
                         android:layout_alignParentBottom="true"
                         android:layout_centerVertical="true">
 
-                        <com.whzl.mengbi.ui.widget.view.AutoScrollTextView2
-                            android:id="@+id/tv_run_way_broad"
-                            android:layout_width="1000dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:background="#702d2933"
-                            android:gravity="center_vertical"
-                            android:paddingBottom="3dp"
-                            android:paddingLeft="7dp"
-                            android:paddingRight="7dp"
-                            android:paddingTop="2dp"
-                            android:singleLine="true"
-                            android:textSize="12sp"
-                            android:visibility="gone" />
-                    </android.support.design.widget.CoordinatorLayout>
+                    <com.whzl.mengbi.ui.widget.view.AutoScrollTextView2
+                        android:id="@+id/tv_run_way_broad"
+                        android:layout_width="1000dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="#702d2933"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="7dp"
+                        android:paddingTop="2dp"
+                        android:paddingRight="7dp"
+                        android:paddingBottom="3dp"
+                        android:singleLine="true"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+                </android.support.design.widget.CoordinatorLayout>
 
                     <TextView
                         android:id="@+id/tv_count_down"
@@ -407,14 +415,14 @@
                             android:layout_height="40dp"
                             android:scaleType="fitEnd" />
 
-                        <android.support.constraint.ConstraintLayout
-                            android:id="@+id/cl_entenr"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingBottom="4dp"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:paddingTop="3dp">
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/cl_entenr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="3dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="4dp">
 
                             <com.whzl.mengbi.ui.widget.view.RoyalEnterView
                                 android:id="@+id/tv_enter"

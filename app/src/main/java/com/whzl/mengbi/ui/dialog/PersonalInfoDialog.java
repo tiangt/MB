@@ -351,25 +351,17 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
             PersonalInfoBean.DataBean.GoodsListBean goodsListBean = userBean.getGoodsList().get(i);
             if ("PRETTY_NUM".equals(goodsListBean.getGoodsType())) {
                 tvPrettyNum.setVisibility(View.VISIBLE);
+                tvPrettyNum.setPrettyTextSize(10);
                 mTvAnchorId.setVisibility(View.GONE);
                 if (goodsListBean.getGoodsName().length() == 5) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
-                    tvPrettyNum.setNumColor(Color.rgb(255, 43, 63));
-                    tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_five);
-                    tvPrettyNum.setPrettyTextSize(10);
-                    tvPrettyNum.setNumber();
+                    tvPrettyNum.setPrettyType("");
                 } else if (goodsListBean.getGoodsName().length() == 6) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
-                    tvPrettyNum.setNumColor(Color.rgb(255, 165, 0));
-                    tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_six);
-                    tvPrettyNum.setPrettyTextSize(10);
-                    tvPrettyNum.setNumber();
+                    tvPrettyNum.setPrettyType("");
                 } else if (goodsListBean.getGoodsName().length() == 7) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
-                    tvPrettyNum.setNumColor(Color.rgb(49, 161, 255));
-                    tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_seven);
-                    tvPrettyNum.setPrettyTextSize(10);
-                    tvPrettyNum.setNumber();
+                    tvPrettyNum.setPrettyType("");
                 }
             }
         }

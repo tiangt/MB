@@ -206,6 +206,7 @@
     <color name="tran_black4">#EE000000</color>
     <color name="tran_white1">#90ffffff</color>
     <color name="tran_white2">#30ffffff</color>
+    <color name="white2">#f5f9fa</color>
 
     <color name="text_content_free_gift">#90fefefe</color>
     <color name="tab_follow">#fdfdfd</color>

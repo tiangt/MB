@@ -1,35 +1,24 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.jaeger.library.StatusBarUtil;
 import com.squareup.picasso.Picasso;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
-import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -39,14 +28,11 @@ import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
-import com.whzl.mengbi.ui.widget.view.TextProgressBar;
 import com.whzl.mengbi.util.AppUtils;
-import com.whzl.mengbi.util.BitmapUtils;
 import com.whzl.mengbi.util.BlurTransformation;
 import com.whzl.mengbi.util.ClipboardUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -55,7 +41,6 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -335,33 +320,6 @@ public class PersonalInfoActivity extends BaseActivity {
         if (userBean.getGoodsList() != null) {
             for (int i = 0; i < userBean.getGoodsList().size(); i++) {
                 PersonalInfoBean.DataBean.GoodsListBean goodsListBean = userBean.getGoodsList().get(i);
-//                if ("BADGE".equals(goodsListBean.getGoodsType()) || "VIP".equals(goodsListBean.getGoodsType())) {
-//                    Glide.with(this)
-//                            .load(goodsListBean.getGoodsIcon())
-//                            .into(new SimpleTarget<Drawable>() {
-//                                @Override
-//                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-//                                    if (this == null) {
-//                                        return;
-//                                    }
-//                                    int intrinsicHeight = resource.getIntrinsicHeight();
-//                                    int intrinsicWidth = resource.getIntrinsicWidth();
-//                                    ImageView goodImage = new ImageView(PersonalInfoActivity.this);
-//                                    goodImage.setImageDrawable(resource);
-//                                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 15), UIUtil.dip2px(PersonalInfoActivity.this, 15));
-//                                    params.leftMargin = UIUtil.dip2px(PersonalInfoActivity.this, 6);
-//                                    linearLayout.addView(goodImage, params);
-//                                }
-//                            });
-//                }
-
-//                if("GUARD".equals(goodsListBean.getGoodsType())){
-//                    ImageView guardImage = new ImageView(this);
-//                    guardImage.setImageDrawable(getResources().getDrawable(R.drawable.guard));
-//                    LinearLayout.LayoutParams guard = new LinearLayout.LayoutParams(UIUtil.dip2px(this, 15), UIUtil.dip2px(this, 15));
-//                    guard.leftMargin = UIUtil.dip2px(this, 6);
-//                    linearLayout.addView(guardImage, guard);
-//                }
 
                 if ("VIP".equals(goodsListBean.getGoodsType())) {
                     ImageView vipImage = new ImageView(this);
@@ -373,24 +331,16 @@ public class PersonalInfoActivity extends BaseActivity {
 
                 if ("PRETTY_NUM".equals(goodsListBean.getGoodsType())) {
                     tvPrettyNum.setVisibility(View.VISIBLE);
+                    tvPrettyNum.setPrettyTextSize(12);
                     if (goodsListBean.getGoodsName().length() == 5) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
-                        tvPrettyNum.setNumColor(Color.rgb(255, 43, 63));
-                        tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_five);
-                        tvPrettyNum.setPrettyTextSize(12);
-                        tvPrettyNum.setNumber();
+                        tvPrettyNum.setPrettyType("");
                     } else if (goodsListBean.getGoodsName().length() == 6) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
-                        tvPrettyNum.setNumColor(Color.rgb(255, 165, 0));
-                        tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_six);
-                        tvPrettyNum.setPrettyTextSize(12);
-                        tvPrettyNum.setNumber();
+                        tvPrettyNum.setPrettyType("");
                     } else if (goodsListBean.getGoodsName().length() == 7) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
-                        tvPrettyNum.setNumColor(Color.rgb(49, 161, 255));
-                        tvPrettyNum.setPrettyBgColor(R.drawable.shape_pretty_seven);
-                        tvPrettyNum.setPrettyTextSize(12);
-                        tvPrettyNum.setNumber();
+                        tvPrettyNum.setPrettyType("");
                     }
 
                 }
