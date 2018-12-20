@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1318,7 +1319,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     }
 
-    public void sendGift(int count, int goodId, boolean useBag) {
+    public void sendGift(int count, int goodId, boolean useBag, String runwayShowMark, String runwayAppend) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("roomId", mProgramId + "");
         paramsMap.put("programId", mProgramId + "");
@@ -1327,6 +1328,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         paramsMap.put("count", count + "");
         paramsMap.put("userId", mUserId + "");
         paramsMap.put("useBag", useBag + "");
+        paramsMap.put("runwayShowMark", runwayShowMark);
+        if (runwayShowMark.equals("T") && TextUtils.isEmpty(runwayAppend)) {
+            paramsMap.put("runwayAppend", getResources().getString(R.string.edit_hint_gift_dialog_super_run));
+        } else {
+            paramsMap.put("runwayAppend", runwayAppend);
+        }
         mLivePresenter.sendGift(paramsMap);
     }
 

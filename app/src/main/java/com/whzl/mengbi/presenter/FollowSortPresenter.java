@@ -24,11 +24,11 @@ public class FollowSortPresenter extends BasePresenter<FollowSortContract.View> 
 
 
     @Override
-    public void getGuardPrograms() {
+    public void getGuardPrograms(int page) {
         if (!isViewAttached()) {
             return;
         }
-        followSortModel.getGuardPrograms()
+        followSortModel.getGuardPrograms(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(mView.<ApiResult<FollowSortBean>>bindAutoDispose())
@@ -47,11 +47,11 @@ public class FollowSortPresenter extends BasePresenter<FollowSortContract.View> 
     }
 
     @Override
-    public void getManageProgram() {
+    public void getManageProgram(int page) {
         if (!isViewAttached()) {
             return;
         }
-        followSortModel.getManageProgram()
+        followSortModel.getManageProgram(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(mView.<ApiResult<FollowSortBean>>bindAutoDispose())

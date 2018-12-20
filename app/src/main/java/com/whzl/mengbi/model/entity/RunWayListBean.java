@@ -1,7 +1,5 @@
 package com.whzl.mengbi.model.entity;
 
-import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
-
 import java.util.List;
 
 /**
@@ -40,5 +38,6 @@ public class RunWayListBean {
         public long dateLong;
         public int programId;
         public String runwayType;
+        public long price;
     }
 }

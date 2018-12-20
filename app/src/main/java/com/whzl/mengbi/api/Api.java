@@ -34,6 +34,7 @@ import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UserInfo;
@@ -643,4 +644,15 @@ public interface Api {
     @POST("v1/user/get-manager-programs")
     @FormUrlEncoded
     Observable<ApiResult<FollowSortBean>> getManageProgram(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间当前跑道的萌币数
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/runway-value")
+    @FormUrlEncoded
+    Observable<ApiResult<RunWayValueBean>> getRunWayValue(@FieldMap Map<String, String> params);
+
 }

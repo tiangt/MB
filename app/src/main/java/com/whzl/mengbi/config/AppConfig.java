@@ -7,4 +7,5 @@ package com.whzl.mengbi.config;
 public interface AppConfig {
     int NUM_TOTAL_GIFT_DIALOG = 8;
     int NUM_SPAN_GIFT_DIALOG = 4;
+    int MIN_VALUE_GIFT_DIALOG = 50000;
 }

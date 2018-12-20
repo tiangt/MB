@@ -23,6 +23,7 @@ import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.GlideRoundTransform;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.ResourceMap;
+import com.whzl.mengbi.util.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,10 +84,10 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
     protected void loadData(int action, int mPage) {
         switch (type) {
             case "guard":
-                mPresenter.getGuardPrograms();
+                mPresenter.getGuardPrograms(mPage);
                 break;
             case "manage":
-                mPresenter.getManageProgram();
+                mPresenter.getManageProgram(mPage);
                 break;
             case "watch":
                 mPresenter.getWatchRecord(mPage);
@@ -170,5 +171,9 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
             intent.putExtra(BundleConfig.PROGRAM_ID, listBean.programId);
             startActivity(intent);
         }
+    }
+
+    public void clickIbClear() {
+        ToastUtils.showToast("s");
     }
 }

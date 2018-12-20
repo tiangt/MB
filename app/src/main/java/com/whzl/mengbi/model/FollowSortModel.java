@@ -21,17 +21,21 @@ import io.reactivex.Observable;
  */
 public class FollowSortModel implements FollowSortContract.Model {
     @Override
-    public Observable<ApiResult<FollowSortBean>> getGuardPrograms() {
+    public Observable<ApiResult<FollowSortBean>> getGuardPrograms(int page) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
+        paramsMap.put("page", page);
+        paramsMap.put("pageSize", NetConfig.DEFAULT_PAGER_SIZE);
         return ApiFactory.getInstance().getApi(Api.class)
                 .getGuardProgram(ParamsUtils.getSignPramsMap(paramsMap));
     }
 
     @Override
-    public Observable<ApiResult<FollowSortBean>> getManageProgram() {
+    public Observable<ApiResult<FollowSortBean>> getManageProgram(int page) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
+        paramsMap.put("page", page);
+        paramsMap.put("pageSize", NetConfig.DEFAULT_PAGER_SIZE);
         return ApiFactory.getInstance().getApi(Api.class)
                 .getManageProgram(ParamsUtils.getSignPramsMap(paramsMap));
     }

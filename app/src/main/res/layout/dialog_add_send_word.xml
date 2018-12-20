@@ -47,7 +47,7 @@
                 android:layout_marginTop="63dp"
                 android:background="@drawable/bg_edit_dialog_add_send_word"
                 android:gravity="start"
-                android:hint="陪你哭，陪你笑，此生只为和你闹"
+                android:hint="@string/edit_hint_gift_dialog_super_run"
                 android:maxLength="20"
                 android:padding="7dp"
                 android:textColor="@color/text_view"

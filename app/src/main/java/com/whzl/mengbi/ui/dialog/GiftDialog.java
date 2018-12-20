@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -10,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,12 +25,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.SendSuperWordEvent;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -40,10 +41,14 @@ import com.whzl.mengbi.ui.dialog.fragment.BackpackMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GiftSortMotherFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
+import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,10 +57,13 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author shaw
@@ -103,8 +111,9 @@ public class GiftDialog extends BaseAwesomeDialog {
     private int currentSelectedIndex;
     private ArrayList<Fragment> fragments;
     private int REQUEST_LOGIN = 120;
-    private String CAN_NOT_SUPER_RUN = "单笔超过50000萌币才可以上超跑";
+    private String CAN_NOT_SUPER_RUN = "单笔超过" + AppConfig.MIN_VALUE_GIFT_DIALOG + "萌币才可以上超跑";
     private AddSendWordDialog addSendWordDialog;
+    private long currentValue = 0;
 
     public static BaseAwesomeDialog newInstance(GiftInfo giftInfo, long coin) {
         Bundle args = new Bundle();
@@ -142,11 +151,6 @@ public class GiftDialog extends BaseAwesomeDialog {
         mGiftInfo = getArguments().getParcelable("gift_info");
         fragments = new ArrayList<>();
         ArrayList<String> titles = new ArrayList<>();
-
-//        fragments.add(AlwaysMotherFragment.newInstance());
-//        tabLayout.addTab(tabLayout.newTab().setText("常用"));
-//        titles.add("常用");
-
         if (mGiftInfo.getData() != null && mGiftInfo.getData().getList() != null) {
             List<GiftInfo.DataBean.ListBean> listBeans = mGiftInfo.getData().getList();
             for (int i = 0; i < listBeans.size(); i++) {
@@ -157,27 +161,6 @@ public class GiftDialog extends BaseAwesomeDialog {
                 }
             }
         }
-
-//        if (mGiftInfo.getData().getRecommend() != null) {
-//            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getRecommend()));
-//            titles.add("推荐");
-//            tabLayout.addTab(tabLayout.newTab().setText("推荐"));
-//        }
-//        if (mGiftInfo.getData().getLucky() != null) {
-//            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLucky()));
-//            titles.add("幸运");
-//            tabLayout.addTab(tabLayout.newTab().setText("幸运"));
-//        }
-//        if (mGiftInfo.getData().getCommon() != null) {
-//            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getCommon()));
-//            titles.add("普通");
-//            tabLayout.addTab(tabLayout.newTab().setText("普通"));
-//        }
-//        if (mGiftInfo.getData().getLuxury() != null) {
-//            fragments.add(GiftSortMotherFragment.newInstance(mGiftInfo.getData().getLuxury()));
-//            titles.add("豪华");
-//            tabLayout.addTab(tabLayout.newTab().setText("豪华"));
-//        }
 
         fragments.add(BackpackMotherFragment.newInstance());
         tabLayout.addTab(tabLayout.newTab().setText("背包"));
@@ -192,7 +175,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         tabLayout.setupWithViewPager(viewpager);
         viewpager.setCurrentItem(0);
 
-        tvAmount.setText(coin + "");
+        tvAmount.setText(AmountConversionUitls.amountConversionFormat(coin));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -210,10 +193,24 @@ public class GiftDialog extends BaseAwesomeDialog {
             }
         });
 
-//        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-//        fragmentTransaction.add(R.id.container, fragments.get(0));
-//        fragmentTransaction.commit();
+        getRunWayGiftDetail();
+    }
 
+    private void getRunWayGiftDetail() {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getRunWayValue(ParamsUtils.getSignPramsMap(new HashMap<>()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<RunWayValueBean>() {
+                    @Override
+                    public void onSuccess(RunWayValueBean runWayListBean) {
+                        currentValue = runWayListBean.value;
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                    }
+                });
     }
 
     private void setTabChange(int index) {
@@ -259,7 +256,9 @@ public class GiftDialog extends BaseAwesomeDialog {
                     ToastUtils.showToast("礼物数量不能为0");
                     return;
                 }
-                ((LiveDisplayActivity) getActivity()).sendGift(giftCount, giftDetailInfoBean.getGoodsId(), giftDetailInfoBean.isBackpack());
+                ((LiveDisplayActivity) getActivity()).sendGift(giftCount, giftDetailInfoBean.getGoodsId(),
+                        giftDetailInfoBean.isBackpack(), checkBox.isChecked() ? "T" : "F",
+                        SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString());
                 break;
             case R.id.btn_count_confirm:
                 KeyBoardUtil.closeKeybord(etCount, getContext());
@@ -314,8 +313,8 @@ public class GiftDialog extends BaseAwesomeDialog {
                     checkBox.setChecked(false);
                     return;
                 }
-                if (giftCount2 * giftDetailInfoBean.getRent() < 50000) {
-                    ToastUtils.showToast("单笔超过50000萌币才可以上超跑");
+                if (giftCount2 * giftDetailInfoBean.getRent() < AppConfig.MIN_VALUE_GIFT_DIALOG) {
+                    ToastUtils.showToast(CAN_NOT_SUPER_RUN);
                     tvContentSuperRun.setText(CAN_NOT_SUPER_RUN);
                     checkBox.setChecked(false);
                     return;
@@ -326,7 +325,13 @@ public class GiftDialog extends BaseAwesomeDialog {
                     } else {
                         tvTitleSuperRun.setText(SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString());
                     }
-                    tvContentSuperRun.setText("可以登上超跑一次，还差 8,888 萌币才能攻占当前超跑");
+
+                    if (giftCount2 * giftDetailInfoBean.getRent() > currentValue) {
+                        tvContentSuperRun.setText("可以攻占当前超跑哦!");
+                    } else {
+                        tvContentSuperRun.setText(getString(R.string.gift_dialog_super_run,
+                                currentValue - giftCount2 * giftDetailInfoBean.getRent() + 1));
+                    }
                     tvAddSuperRun.setSelected(true);
                 } else {
                     tvTitleSuperRun.setText("是否上超跑");
@@ -352,8 +357,8 @@ public class GiftDialog extends BaseAwesomeDialog {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
-                if (giftCount3 * giftDetailInfoBean.getRent() < 50000) {
-                    ToastUtils.showToast("单笔超过50000萌币才可以添加寄语");
+                if (giftCount3 * giftDetailInfoBean.getRent() < AppConfig.MIN_VALUE_GIFT_DIALOG) {
+                    ToastUtils.showToast(CAN_NOT_SUPER_RUN);
                     return;
                 }
                 if (addSendWordDialog != null && addSendWordDialog.isAdded()) {
@@ -451,14 +456,19 @@ public class GiftDialog extends BaseAwesomeDialog {
         String countStr = tvCount.getText().toString().trim();
         int giftCount = 0;
         giftCount = Integer.parseInt(countStr);
+        if (giftDetailInfoBean.getRent() * giftCount < AppConfig.MIN_VALUE_GIFT_DIALOG) {
+            checkBox.setChecked(false);
+        } else {
+            checkBox.setChecked(true);
+        }
         if (!checkBox.isChecked()) {
-            if (giftDetailInfoBean.getRent() * giftCount < 50000) {
+            if (giftDetailInfoBean.getRent() * giftCount < AppConfig.MIN_VALUE_GIFT_DIALOG) {
                 tvContentSuperRun.setText(CAN_NOT_SUPER_RUN);
             }
             return;
         }
         //不能上超跑
-        if (giftDetailInfoBean.getRent() * giftCount < 50000) {
+        if (giftDetailInfoBean.getRent() * giftCount < AppConfig.MIN_VALUE_GIFT_DIALOG) {
             checkBox.setChecked(false);
             tvTitleSuperRun.setText("是否上超跑");
             tvContentSuperRun.setText(CAN_NOT_SUPER_RUN);
@@ -472,14 +482,19 @@ public class GiftDialog extends BaseAwesomeDialog {
                 tvTitleSuperRun.setText(SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString());
             }
             checkBox.setChecked(true);
-            tvContentSuperRun.setText("可以登上超跑一次，还差 8,888 萌币才能攻占当前超跑");
+            if (giftCount * giftDetailInfoBean.getRent() > currentValue) {
+                tvContentSuperRun.setText("可以攻占当前超跑哦!");
+            } else {
+                tvContentSuperRun.setText(getString(R.string.gift_dialog_super_run,
+                        currentValue - giftCount * giftDetailInfoBean.getRent() + 1));
+            }
             tvAddSuperRun.setSelected(true);
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LiveHouseUserInfoUpdateEvent event) {
-        tvAmount.setText(event.coin + "");
+        tvAmount.setText(AmountConversionUitls.amountConversionFormat(event.coin));
     }
 
     @Override

@@ -11,9 +11,9 @@ import io.reactivex.Observable;
  */
 public interface FollowSortContract {
     interface Model {
-        Observable<ApiResult<FollowSortBean>> getGuardPrograms();
+        Observable<ApiResult<FollowSortBean>> getGuardPrograms(int page);
 
-        Observable<ApiResult<FollowSortBean>> getManageProgram();
+        Observable<ApiResult<FollowSortBean>> getManageProgram(int page);
 
         Observable<ApiResult<FollowSortBean>> getWatchReord(int page);
     }
@@ -27,9 +27,9 @@ public interface FollowSortContract {
     }
 
     interface Presenter {
-        void getGuardPrograms();
+        void getGuardPrograms(int page);
 
-        void getManageProgram();
+        void getManageProgram(int page);
 
         void getWatchRecord(int page);
     }
