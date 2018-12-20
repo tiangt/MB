@@ -458,8 +458,10 @@ public class GiftDialog extends BaseAwesomeDialog {
         giftCount = Integer.parseInt(countStr);
         if (giftDetailInfoBean.getRent() * giftCount < AppConfig.MIN_VALUE_GIFT_DIALOG) {
             checkBox.setChecked(false);
+            tvAddSuperRun.setSelected(false);
         } else {
             checkBox.setChecked(true);
+            tvAddSuperRun.setSelected(true);
         }
         if (!checkBox.isChecked()) {
             if (giftDetailInfoBean.getRent() * giftCount < AppConfig.MIN_VALUE_GIFT_DIALOG) {
