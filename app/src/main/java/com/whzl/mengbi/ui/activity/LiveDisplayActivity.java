@@ -9,14 +9,13 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -97,7 +96,6 @@ import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
-import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.GuardianListDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
@@ -267,6 +265,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlWeekstar;
     @BindView(R.id.btn_more)
     ImageButton btnMore;
+    @BindView(R.id.live_draw_layout)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.ll_draw_layout_live)
+    LinearLayout llDrawLayout;
+    @BindView(R.id.rv_activity_draw_layout)
+    RecyclerView rvActivityDrawLayout;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -451,6 +455,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     protected void setupView() {
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
         initPlayer();
         initFragment();
         initBanner();
@@ -646,7 +651,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.tv_contribute, R.id.btn_chat, R.id.btn_chat_private
             , R.id.rootView, R.id.fragment_container, R.id.rl_guard_number
-            , R.id.btn_share, R.id.btn_free_gift})
+            , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
@@ -786,6 +791,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     ((FreeGiftDialog) mFreeGiftDialog).setListener(() -> mLivePresenter.getDailyTaskState(mUserId));
                 }
                 mFreeGiftDialog.show(getSupportFragmentManager());
+                break;
+            case R.id.btn_more:
+                if (mUserId == 0) {
+                    login();
+                    return;
+                }
+                if (drawerLayout.isDrawerOpen(llDrawLayout)) {
+                    drawerLayout.closeDrawer(llDrawLayout);
+                } else {
+                    drawerLayout.openDrawer(llDrawLayout);
+                }
                 break;
             default:
                 break;
@@ -1100,6 +1116,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
 
+    /**
+     * 抽奖活动
+     */
     @Override
     public void onActivityListSuccess(GetActivityBean bean) {
         if (bean == null
