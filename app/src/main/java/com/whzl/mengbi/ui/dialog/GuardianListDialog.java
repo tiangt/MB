@@ -210,6 +210,7 @@ public class GuardianListDialog extends BaseFullScreenDialog {
             SpannableString spannableString = StringUtils.spannableStringColor(guardDetailBean.surplusDays + "", Color.parseColor("#f1275b"));
             tvExpire.append(spannableString);
             tvExpire.append(" 天");
+
         }
 
         @Override
