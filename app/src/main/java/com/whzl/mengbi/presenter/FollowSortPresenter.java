@@ -1,0 +1,94 @@
+package com.whzl.mengbi.presenter;
+
+import com.whzl.mengbi.contract.BasePresenter;
+import com.whzl.mengbi.contract.FollowSortContract;
+import com.whzl.mengbi.model.FollowSortModel;
+import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.FollowSortBean;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+/**
+ * @author nobody
+ * @date 2018/12/20
+ */
+public class FollowSortPresenter extends BasePresenter<FollowSortContract.View> implements FollowSortContract.Presenter {
+
+    private FollowSortModel followSortModel;
+
+    public FollowSortPresenter() {
+        followSortModel = new FollowSortModel();
+    }
+
+
+    @Override
+    public void getGuardPrograms() {
+        if (!isViewAttached()) {
+            return;
+        }
+        followSortModel.getGuardPrograms()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(mView.<ApiResult<FollowSortBean>>bindAutoDispose())
+                .subscribe(new ApiObserver<FollowSortBean>() {
+
+                    @Override
+                    public void onSuccess(FollowSortBean bean) {
+                        mView.onGetGuardPrograms(bean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getManageProgram() {
+        if (!isViewAttached()) {
+            return;
+        }
+        followSortModel.getManageProgram()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(mView.<ApiResult<FollowSortBean>>bindAutoDispose())
+                .subscribe(new ApiObserver<FollowSortBean>() {
+
+                    @Override
+                    public void onSuccess(FollowSortBean bean) {
+                        mView.onGetManageProgram(bean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getWatchRecord(int page) {
+        if (!isViewAttached()) {
+            return;
+        }
+        followSortModel.getWatchReord(page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(mView.<ApiResult<FollowSortBean>>bindAutoDispose())
+                .subscribe(new ApiObserver<FollowSortBean>() {
+
+                    @Override
+                    public void onSuccess(FollowSortBean bean) {
+                        mView.onGetWatchRecord(bean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+}

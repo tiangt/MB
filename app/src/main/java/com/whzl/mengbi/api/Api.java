@@ -14,6 +14,7 @@ import com.whzl.mengbi.model.entity.BillPayBean;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.DailyTaskBean;
 import com.whzl.mengbi.model.entity.DemonCarBean;
+import com.whzl.mengbi.model.entity.FollowSortBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
@@ -622,4 +623,24 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<RoomUserBean>> roomUser(@FieldMap Map<String, String> params);
 
+
+    /**
+     * 守护列表接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/get-guards-programs")
+    @FormUrlEncoded
+    Observable<ApiResult<FollowSortBean>> getGuardProgram(@FieldMap Map<String, String> params);
+
+    /**
+     * 管理列表接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/get-manager-programs")
+    @FormUrlEncoded
+    Observable<ApiResult<FollowSortBean>> getManageProgram(@FieldMap Map<String, String> params);
 }

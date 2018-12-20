@@ -1,26 +1,37 @@
 package com.whzl.mengbi.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.contract.FollowSortContract;
+import com.whzl.mengbi.model.entity.FollowSortBean;
+import com.whzl.mengbi.presenter.FollowSortPresenter;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
+import com.whzl.mengbi.ui.widget.view.GlideRoundTransform;
+import com.whzl.mengbi.util.DateUtils;
+import com.whzl.mengbi.util.ResourceMap;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
  * @author nobody
  * @date 2018/12/18
  */
-public class FollowSortFragment extends BasePullListFragment {
+public class FollowSortFragment extends BasePullListFragment<FollowSortBean.ListBean, FollowSortPresenter> implements FollowSortContract.View {
 
     private String type;
 
@@ -30,6 +41,18 @@ public class FollowSortFragment extends BasePullListFragment {
         bundle.putString("type", type);
         followSortFragment.setArguments(bundle);
         return followSortFragment;
+    }
+
+    @Override
+    protected boolean setShouldLoadMore() {
+        return true;
+    }
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        mPresenter = new FollowSortPresenter();
+        mPresenter.attachView(this);
     }
 
     @Override
@@ -58,9 +81,17 @@ public class FollowSortFragment extends BasePullListFragment {
 
     @Override
     protected void loadData(int action, int mPage) {
-        List list = new ArrayList();
-        list.add("a");
-        loadSuccess(list);
+        switch (type) {
+            case "guard":
+                mPresenter.getGuardPrograms();
+                break;
+            case "manage":
+                mPresenter.getManageProgram();
+                break;
+            case "watch":
+                mPresenter.getWatchRecord(mPage);
+                break;
+        }
     }
 
     @Override
@@ -69,9 +100,34 @@ public class FollowSortFragment extends BasePullListFragment {
         return new ViewHolder(itemView);
     }
 
+    @Override
+    public void onGetGuardPrograms(FollowSortBean bean) {
+        loadSuccess(bean.list);
+    }
+
+    @Override
+    public void onGetManageProgram(FollowSortBean bean) {
+        loadSuccess(bean.list);
+    }
+
+    @Override
+    public void onGetWatchRecord(FollowSortBean bean) {
+        loadSuccess(bean.list);
+    }
+
     class ViewHolder extends BaseViewHolder {
-//        @BindView(R.id.tv_busname)
-//        TextView tvBusName;
+        @BindView(R.id.iv_avatar)
+        ImageView ivAvatar;
+        @BindView(R.id.tv_anchor_name)
+        TextView tvAnchorName;
+        @BindView(R.id.iv_level_icon)
+        ImageView ivLevelIcon;
+        @BindView(R.id.tv_status)
+        TextView tvStatus;
+        @BindView(R.id.tv_follow_state)
+        TextView tvFollowState;
+        @BindView(R.id.tv_last_time)
+        TextView tvLastTime;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -80,6 +136,39 @@ public class FollowSortFragment extends BasePullListFragment {
 
         @Override
         public void onBindViewHolder(int position) {
+            FollowSortBean.ListBean listBean = mDatas.get(position);
+            RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(5));
+            Glide.with(FollowSortFragment.this).load(listBean.anchorAvatar).apply(requestOptions).into(ivAvatar);
+            if ("T".equals(listBean.status)) {
+                tvStatus.setVisibility(View.VISIBLE);
+                tvLastTime.setVisibility(View.GONE);
+            } else {
+                tvStatus.setVisibility(View.GONE);
+                tvLastTime.setVisibility(View.VISIBLE);
+                tvLastTime.setText("上次直播:");
+                if (!TextUtils.isEmpty(listBean.lastShowBeginTime)) {
+                    String timeRange = DateUtils.getTimeRange(listBean.lastShowBeginTime);
+                    tvLastTime.append(timeRange);
+                } else {
+                    tvLastTime.append("无");
+                }
+            }
+            tvAnchorName.setText(listBean.anchorNickname);
+            ivLevelIcon.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue));
+            if (type.equals("guard")) {
+                tvFollowState.setVisibility(View.VISIBLE);
+            } else {
+                tvFollowState.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            FollowSortBean.ListBean listBean = mDatas.get(position);
+            Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
+            intent.putExtra(BundleConfig.PROGRAM_ID, listBean.programId);
+            startActivity(intent);
         }
     }
 }
