@@ -332,17 +332,25 @@ public class PersonalInfoActivity extends BaseActivity {
                 if ("PRETTY_NUM".equals(goodsListBean.getGoodsType())) {
                     tvPrettyNum.setVisibility(View.VISIBLE);
                     tvPrettyNum.setPrettyTextSize(12);
-                    if (goodsListBean.getGoodsName().length() == 5) {
+                    if ("A".equals(goodsListBean.getGoodsColor())) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
-                        tvPrettyNum.setPrettyType("");
-                    } else if (goodsListBean.getGoodsName().length() == 6) {
+                        tvPrettyNum.setPrettyType("A");
+                    } else if ("B".equals(goodsListBean.getGoodsColor())) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
-                        tvPrettyNum.setPrettyType("");
-                    } else if (goodsListBean.getGoodsName().length() == 7) {
+                        tvPrettyNum.setPrettyType("B");
+                    } else if ("C".equals(goodsListBean.getGoodsColor())) {
+                        tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
+                        tvPrettyNum.setPrettyType("C");
+                    }else if ("D".equals(goodsListBean.getGoodsColor())) {
+                        tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
+                        tvPrettyNum.setPrettyType("D");
+                    }else if ("E".equals(goodsListBean.getGoodsColor())) {
+                        tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
+                        tvPrettyNum.setPrettyType("E");
+                    }else{
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setPrettyType("");
                     }
-
                 }
             }
         }

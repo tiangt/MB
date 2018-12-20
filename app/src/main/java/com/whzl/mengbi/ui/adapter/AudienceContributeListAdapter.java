@@ -22,8 +22,7 @@ import java.util.List;
  */
 public class AudienceContributeListAdapter<T> extends CommonAdapter<RoomRankBean.DataBean.ListBean> {
 
-    private int[] rankIcons = new int[]{R.drawable.contribute_rank_1, R.drawable.contribute_rank_2, R.drawable.contribute_rank_3,
-            R.drawable.contribute_rank_4, R.drawable.contribute_rank_5};
+    private int[] rankIcons = new int[]{R.drawable.ic_headline_rank1, R.drawable.ic_headline_rank2, R.drawable.ic_headline_rank3};
 
     public AudienceContributeListAdapter(Context context, int layoutId, List<RoomRankBean.DataBean.ListBean> datas) {
         super(context, layoutId, datas);
@@ -37,17 +36,16 @@ public class AudienceContributeListAdapter<T> extends CommonAdapter<RoomRankBean
 
     @Override
     protected void convert(ViewHolder holder, RoomRankBean.DataBean.ListBean userInfoBean, int position) {
-        TextView ivRank = holder.getView(R.id.iv_rank);
+        TextView tvRank = holder.getView(R.id.tv_rank);
 //        ivRank.setVisibility(position < 5 ? View.VISIBLE : View.INVISIBLE);
         if (position < 3) {
-            ivRank.setBackgroundResource(rankIcons[position]);
-            ivRank.setText("");
+            tvRank.setBackgroundResource(rankIcons[position]);
+            tvRank.setText("");
         } else {
-            ivRank.setBackgroundResource(R.drawable.bg_contribute_rank);
-            ivRank.setText(String.valueOf(position + 1));
+            tvRank.setText(String.valueOf(position + 1));
         }
         holder.setText(R.id.tv_name, userInfoBean.nickname);
-        holder.setText(R.id.tv_amount, StringUtils.formatNumber(userInfoBean.value) + "");
+        holder.setText(R.id.tv_amount, StringUtils.formatNumber(userInfoBean.value) + "贡献");
         GlideImageLoader.getInstace().displayImage(mContext, userInfoBean.avatar, holder.getView(R.id.iv_avatar));
         int userLevelIcon = ResourceMap.getResourceMap().getUserLevelIcon(userInfoBean.level);
         holder.setImageResource(R.id.iv_level_icon, userLevelIcon);

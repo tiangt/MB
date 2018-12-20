@@ -22,9 +22,11 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.dialog.base.BaseFullScreenDialog;
 import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.ui.fragment.FollowFragment;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.StringUtils;
@@ -64,6 +66,8 @@ public class GuardianListDialog extends BaseFullScreenDialog {
 
     private int mProgramId;
     private BaseListAdapter mAdapter;
+    private int NORMAL = 0;
+    private int FOOTER = 1;
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
     private ArrayList<GuardListBean.GuardDetailBean> mData = new ArrayList<>();
 
@@ -147,6 +151,7 @@ public class GuardianListDialog extends BaseFullScreenDialog {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(divider);
+
         mAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
@@ -155,8 +160,22 @@ public class GuardianListDialog extends BaseFullScreenDialog {
 
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_guardian, parent, false);
-                return new GuardianViewHolder(itemView);
+                if(viewType == NORMAL){
+                    View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_guardian, parent, false);
+                    return new GuardianViewHolder(itemView);
+                }else {
+                    View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_load_more_end, parent, false);
+                    return new FooterViewHolder(itemView);
+                }
+            }
+
+            @Override
+            protected int getDataViewType(int position) {
+                if (position < mData.size()) {
+                    return NORMAL;
+                } else {
+                    return FOOTER;
+                }
             }
         };
         mRecyclerView.setAdapter(mAdapter);
@@ -202,6 +221,23 @@ public class GuardianListDialog extends BaseFullScreenDialog {
                     ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(guardDetailBean.userId, true);
                 }
             }
+        }
+
+    }
+
+    class FooterViewHolder extends BaseViewHolder{
+
+        @BindView(R.id.tv_foot)
+        TextView tvFoot;
+
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            tvFoot.setText("没有更多了~");
         }
     }
 

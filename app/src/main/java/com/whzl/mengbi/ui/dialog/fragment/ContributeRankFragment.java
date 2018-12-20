@@ -80,7 +80,7 @@ public class ContributeRankFragment extends BaseFragment {
             return;
         }
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        recycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+//        recycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recycler.setAdapter(mAdapter);
         getData(programId, mType);
     }

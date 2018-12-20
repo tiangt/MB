@@ -18,7 +18,7 @@ import java.util.List;
 public class HeadLineView extends ViewFlipper {
 
     private Context mContext;
-    private int mInterval = 5000; //间隔时间20s
+    private int mInterval = 2000; //间隔时间
 
     public HeadLineView(Context context) {
         super(context);

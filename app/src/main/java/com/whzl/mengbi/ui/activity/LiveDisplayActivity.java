@@ -8,16 +8,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -98,9 +95,8 @@ import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
-import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.dialog.GuardianListDialog;
-import com.whzl.mengbi.ui.dialog.HeadLineDialog;
+import com.whzl.mengbi.ui.dialog.HeadlineDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
@@ -142,7 +138,6 @@ import com.youth.banner.Transformer;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -1665,15 +1660,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         headLineView.setViews(views);
         headLineView.setOnItemClickListener((position, view) -> {
             if (0 == position) {
-                if (mRankDialog != null && mRankDialog.isAdded()) {
-                    return;
-                }
-                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
-                        .setDimAmount(0)
-                        .setShowBottom(true)
+//                if (mRankDialog != null && mRankDialog.isAdded()) {
+//                    return;
+//                }
+//                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
+//                        .setDimAmount(0)
+//                        .setShowBottom(true)
+//                        .show(getSupportFragmentManager());
+                HeadlineDialog.newInstance(0, mProgramId)
                         .show(getSupportFragmentManager());
             } else {
-                HeadLineDialog.newInstance()
+                HeadlineDialog.newInstance(1, mProgramId)
                         .show(getSupportFragmentManager());
             }
         });

@@ -214,8 +214,6 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
         }
     }
 
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();

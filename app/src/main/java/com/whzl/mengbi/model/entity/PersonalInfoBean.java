@@ -352,6 +352,7 @@ public class PersonalInfoBean {
              * goodsType : GUARD
              * goodsIcon : http://test-img.mengbitv.com/default/000/00/01/39.jpg
              * bindProgramId : 100079
+             * "goodsColor":"A"
              */
 
             private int goodsId;
@@ -359,6 +360,15 @@ public class PersonalInfoBean {
             private String goodsType;
             private String goodsIcon;
             private int bindProgramId;
+            private String goodsColor;
+
+            public String getGoodsColor() {
+                return goodsColor;
+            }
+
+            public void setGoodsColor(String goodsColor) {
+                this.goodsColor = goodsColor;
+            }
 
             public int getGoodsId() {
                 return goodsId;
