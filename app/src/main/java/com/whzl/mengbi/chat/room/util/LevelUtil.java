@@ -80,11 +80,11 @@ public class LevelUtil {
 
     public static String getPrettyNumColor(FromJson fromJson) {
         if (fromJson == null) {
-            return "A";
+            return "E";
         }
         List<FromJson.Good> goodsList = fromJson.getGoodsList();
         if (goodsList == null) {
-            return "A";
+            return "E";
         }
         for (FromJson.Good good : goodsList) {
             if (good.getGoodsType().equals("PRETTY_NUM") && good.goodsColor != null) {
@@ -92,7 +92,7 @@ public class LevelUtil {
                 return goodsColor;
             }
         }
-        return "A";
+        return "E";
     }
 
     public static String getPrettyNum(FromJson fromJson) {

@@ -14,6 +14,7 @@ import com.whzl.mengbi.model.entity.BillPayBean;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.DailyTaskBean;
 import com.whzl.mengbi.model.entity.DemonCarBean;
+import com.whzl.mengbi.model.entity.FollowSortBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
@@ -33,6 +34,7 @@ import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UserInfo;
@@ -621,5 +623,36 @@ public interface Api {
     @POST("v1/room/room-user")
     @FormUrlEncoded
     Observable<ApiResult<RoomUserBean>> roomUser(@FieldMap Map<String, String> params);
+
+
+    /**
+     * 守护列表接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/get-guards-programs")
+    @FormUrlEncoded
+    Observable<ApiResult<FollowSortBean>> getGuardProgram(@FieldMap Map<String, String> params);
+
+    /**
+     * 管理列表接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/get-manager-programs")
+    @FormUrlEncoded
+    Observable<ApiResult<FollowSortBean>> getManageProgram(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间当前跑道的萌币数
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/runway-value")
+    @FormUrlEncoded
+    Observable<ApiResult<RunWayValueBean>> getRunWayValue(@FieldMap Map<String, String> params);
 
 }

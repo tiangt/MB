@@ -77,7 +77,6 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
             android:gravity="center"
-            android:text="已关注"
             android:textColor="#20000000"
             android:textSize="12sp" />
     </RelativeLayout>

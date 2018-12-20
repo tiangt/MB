@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_draw_layout_live"
+    android:layout_width="236.5dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:background="#000000"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_activity_draw_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:switchMinWidth="38.5dp"
+        android:textOff=""
+        android:textOn=""
+        android:thumb="@drawable/switch_thumb_live"
+        android:track="@drawable/switch_draw_layout" />
+</LinearLayout>

@@ -5,7 +5,9 @@ import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
+import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ImageButton;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
@@ -26,6 +28,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Simple
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * @author nobody
@@ -36,7 +39,10 @@ public class FollowFragment extends BaseFragment {
     MagicIndicator tabFollow;
     @BindView(R.id.vp_follow)
     ViewPager vpFollow;
+    @BindView(R.id.ib_clear)
+    ImageButton ibClear;
     private ArrayList<String> titles;
+    private FragmentPagerAdaper fragmentPagerAdaper;
 
     public static Fragment newInstance() {
         FollowFragment followFragment = new FollowFragment();
@@ -60,8 +66,29 @@ public class FollowFragment extends BaseFragment {
         fragments.add(FollowSortFragment.newInstance("guard"));
         fragments.add(FollowSortFragment.newInstance("manage"));
         fragments.add(FollowSortFragment.newInstance("watch"));
-        vpFollow.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
+        fragmentPagerAdaper = new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles);
+        vpFollow.setAdapter(fragmentPagerAdaper);
         vpFollow.setOffscreenPageLimit(4);
+        vpFollow.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 3) {
+                    ibClear.setVisibility(View.VISIBLE);
+                } else {
+                    ibClear.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         initIndicator();
     }
 
@@ -93,7 +120,7 @@ public class FollowFragment extends BaseFragment {
                 LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
                 linePagerIndicator.setMode(LinePagerIndicator.MODE_EXACTLY);
                 linePagerIndicator.setRoundRadius(10);
-                linePagerIndicator.setYOffset(UIUtil.dip2px(context,5));
+                linePagerIndicator.setYOffset(UIUtil.dip2px(context, 5));
                 linePagerIndicator.setLineWidth(UIUtil.dip2px(context, 11));
                 linePagerIndicator.setLineHeight(UIUtil.dip2px(context, 2.5));
                 linePagerIndicator.setColors(Color.parseColor("#ffd634"));
@@ -119,6 +146,17 @@ public class FollowFragment extends BaseFragment {
                 fragmentContainerHelper.handlePageSelected(position);
             }
         });
+    }
+
+
+    @OnClick({R.id.ib_clear})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ib_clear:
+                FollowSortFragment item = (FollowSortFragment) fragmentPagerAdaper.getItem(3);
+                item.clickIbClear();
+                break;
+        }
     }
 
 }
