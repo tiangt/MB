@@ -14,4 +14,5 @@ public interface SpConfig {
     String KEY_HAS_RECHARGED = "hasRecharged";
     int MAX_LEVEL = 7;
     String DEFAULT_SENT_WORD = "defaultSentWord";
+    String PK_VIOCE_LIVE = "pkVioceLive";
 }
