@@ -34,7 +34,9 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -54,6 +56,8 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
 
     private int mProgramId;
     private Disposable disposable;
+    private int mIdentity;
+    private List<AudienceListBean.AudienceInfoBean> audienceInfoBeans = new ArrayList<>();
 
     public static ManagerListFragment newInstance(int programId) {
         Bundle args = new Bundle();
@@ -94,9 +98,20 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                         @Override
                         public void onSuccess(AudienceListBean.DataBean dataBean) {
                             if (dataBean != null) {
-                                loadSuccess(dataBean.getList());
-                                UserListDialog userListDialog = (UserListDialog) getParentFragment();
-                                userListDialog.setManagerTitle(0);
+                                audienceInfoBeans.clear();
+                                for (int i = 0; i < dataBean.getList().size(); i++) {
+                                    mIdentity = dataBean.getList().get(i).getIdentity();
+                                    if (mIdentity == UserIdentity.OPTR_MANAGER || mIdentity == UserIdentity.ROOM_MANAGER) {
+                                        audienceInfoBeans.add(dataBean.getList().get(i));
+                                    }
+                                }
+                                if (audienceInfoBeans != null) {
+                                    loadSuccess(audienceInfoBeans);
+                                    UserListDialog userListDialog = (UserListDialog) getParentFragment();
+                                    userListDialog.setManagerTitle(audienceInfoBeans.size());
+                                } else {
+                                    loadSuccess(null);
+                                }
                             } else {
                                 loadSuccess(null);
                             }
@@ -142,6 +157,8 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
             int identity = audienceInfoBean.getIdentity();
             if (identity == UserIdentity.ROOM_MANAGER || identity == UserIdentity.OPTR_MANAGER) {
                 levelLayout.removeAllViews();
+                managerLayout.removeAllViews();
+                ivCar.setVisibility(View.GONE);
                 tvName.setText(audienceInfoBean.getName());
                 GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
                 if (audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
@@ -150,7 +167,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                             getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
 //                royalImg.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL()));
                     LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 40), UIUtil.dip2px(getMyActivity(), 16));
-                    levelLayout.addView(royalImg, rparams);
+                    managerLayout.addView(royalImg, rparams);
                 }
 
                 ImageView imageView = new ImageView(getContext());
@@ -171,14 +188,14 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                             guardImage.setImageDrawable(getResources().getDrawable(R.drawable.guard));
                             LinearLayout.LayoutParams guard = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
                             guard.leftMargin = UIUtil.dip2px(getContext(), 3);
-                            levelLayout.addView(guardImage, guard);
+                            managerLayout.addView(guardImage, guard);
                         }
                         if ("VIP".equals(medalBean.getGoodsType())) {
                             ImageView vipImage = new ImageView(getContext());
                             vipImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_vip));
                             LinearLayout.LayoutParams vip = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
                             vip.leftMargin = UIUtil.dip2px(getContext(), 3);
-                            levelLayout.addView(vipImage, vip);
+                            managerLayout.addView(vipImage, vip);
                         }
                         if ("BADGE".equals(medalBean.getGoodsType())) {
                             Glide.with(getContext())
@@ -198,6 +215,11 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                                             levelLayout.addView(imageView, params);
                                         }
                                     });
+                        }
+                        //座驾
+                        if ("CAR".equals(medalBean.getGoodsType())) {
+                            ivCar.setVisibility(View.VISIBLE);
+                            GlideImageLoader.getInstace().displayImage(getMyActivity(), medalBean.getGoodsIcon(), ivCar);
                         }
                     }
                 }

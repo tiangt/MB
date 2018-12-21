@@ -11,6 +11,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.ContributionMasterFragment;
 import com.whzl.mengbi.ui.dialog.fragment.HeadlineMasterFragment;
 import com.whzl.mengbi.ui.dialog.fragment.ManagerListFragment;
+import com.whzl.mengbi.ui.dialog.fragment.WeekStarMasterFragment;
 import com.whzl.mengbi.ui.widget.tablayout.TabLayout;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class HeadlineDialog extends BaseAwesomeDialog {
         fragments = new ArrayList<>();
         fragments.add(HeadlineMasterFragment.newInstance());
         fragments.add(ContributionMasterFragment.newInstance(programId));
-        fragments.add(ManagerListFragment.newInstance(programId));
+        fragments.add(WeekStarMasterFragment.newInstance());
         viewPager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         viewPager.setCurrentItem(index);
 

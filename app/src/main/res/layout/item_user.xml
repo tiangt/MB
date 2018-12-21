@@ -8,28 +8,64 @@
         android:layout_width="44dp"
         android:layout_height="44dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp" />
-
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/iv_avatar"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
+        android:src="@mipmap/ic_launcher" />
 
     <LinearLayout
-        android:id="@+id/ll_level_container"
+        android:id="@+id/ll_info"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_below="@id/tv_name"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@id/iv_avatar"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_level_container"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" />
+
+        <com.whzl.mengbi.ui.widget.view.PrettyNumText
+            android:id="@+id/tv_pretty_num"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="3dp"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:singleLine="true"
+            android:layout_gravity="center_vertical"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_medal_container"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@id/ll_info"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/iv_avatar"
         android:gravity="center_vertical"
         android:orientation="horizontal" />
+
+    <ImageView
+        android:id="@+id/iv_car"
+        android:layout_width="97dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:visibility="gone"/>
 
     <View
         android:layout_width="match_parent"

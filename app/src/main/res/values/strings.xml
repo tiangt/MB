@@ -359,6 +359,15 @@
     <string name="guardian_count">守护玩家( %1$d )</string>
     <string name="user_list">玩家列表(%1$d)</string>
     <string name="room_manager_list">房管列表(%1$d)</string>
+    <string name="grab_list_time">每周一 00:00:00 到每周日 23:59:59</string>
+    <string name="anchor_rank_top">主播榜第一名</string>
+    <string name="anchor_top_condition">每周收到周星礼物总数量 第一名 的主播</string>
+    <string name="anchor_top_award_1">网页端首页6图推荐 7 天、手机端小编推荐 7 天、星光红人勋章 7 天、20 万萌币</string>
+    <string name="rich_rank_top">富豪榜第一名</string>
+    <string name="rich_top_award_1">每周送出周星礼物总数量 第一名 的用户</string>
+    <string name="rich_top_award_2">星光达人勋章 7 天、VIP 30 天</string>
+    <string name="award">奖励发放</string>
+    <string name="award_info">活动结束后系统自动发放</string>
 
     <array name="new_task">
         <item>领取</item>

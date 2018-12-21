@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
@@ -34,6 +36,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
+import com.whzl.mengbi.ui.widget.recyclerview.SpaceItemDecoration;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -76,6 +79,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private Banner banner;
     private ConstraintLayout bannerLayout;
     private RecyclerView recommendRecycler;
+    private RelativeLayout rlTopThree;
+    private RecyclerView topThreeRecycler;
+    private BaseListAdapter topThreeAdapter;
 
     @Override
     protected void initEnv() {
@@ -179,8 +185,11 @@ public class HomeFragment extends BaseFragment implements HomeView {
         banner = view.findViewById(R.id.banner);
         bannerLayout = view.findViewById(R.id.bannerLayout);
         recommendRecycler = view.findViewById(R.id.recommend_recycler);
+        rlTopThree = view.findViewById(R.id.rl_top_three);
+        topThreeRecycler = view.findViewById(R.id.rv_top_three);
         initRecommendRecycler();
         initBanner();
+        initTopThreeRecycler();
     }
 
 
@@ -382,6 +391,38 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             }
             refreshLayout.postDelayed(() -> refreshLayout.setEnableLoadMore(false), 300);
+        }
+    }
+
+    private void initTopThreeRecycler() {
+        LinearLayoutManager layoutManage = new LinearLayoutManager(getMyActivity());
+        layoutManage.setOrientation(LinearLayoutManager.HORIZONTAL);
+        topThreeRecycler.setLayoutManager(layoutManage);
+        topThreeRecycler.addItemDecoration(new SpacesItemDecoration(10));
+        topThreeAdapter = new BaseListAdapter(){
+            @Override
+            protected int getDataCount() {
+                return 3;
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_top_three, null);
+                return new TopThreeViewHolder(itemView);
+            }
+        };
+        topThreeRecycler.setAdapter(topThreeAdapter);
+    }
+
+    class TopThreeViewHolder extends BaseViewHolder{
+
+        public TopThreeViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+
         }
     }
 

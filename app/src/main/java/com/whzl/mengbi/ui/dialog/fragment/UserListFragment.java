@@ -25,6 +25,7 @@ import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.dialog.UserListDialog;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
@@ -120,10 +121,16 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
 
         @BindView(R.id.iv_avatar)
         CircleImageView ivAvatar;
+        @BindView(R.id.ll_level_container)
+        LinearLayout levelLayout;
+        @BindView(R.id.tv_pretty_num)
+        PrettyNumText tvPrettyNum;
         @BindView(R.id.tv_name)
         TextView tvName;
-        @BindView(R.id.ll_level_container)
-        LinearLayout linearLayout;
+        @BindView(R.id.iv_car)
+        ImageView ivCar;
+        @BindView(R.id.ll_medal_container)
+        LinearLayout medalLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -133,7 +140,9 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
         @Override
         public void onBindViewHolder(int position) {
             AudienceListBean.AudienceInfoBean audienceInfoBean = mDatas.get(position);
-            linearLayout.removeAllViews();
+            levelLayout.removeAllViews();
+            medalLayout.removeAllViews();
+            ivCar.setVisibility(View.GONE);
             tvName.setText(audienceInfoBean.getName());
             GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
             int identity = audienceInfoBean.getIdentity();
@@ -141,9 +150,8 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
                 ImageView royalImg = new ImageView(getContext());
                 Glide.with(getMyActivity()).asGif().load(ResourceMap.getResourceMap().
                         getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
-//                royalImg.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL()));
                 LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 40), UIUtil.dip2px(getMyActivity(), 16));
-                linearLayout.addView(royalImg, rparams);
+                levelLayout.addView(royalImg, rparams);
             }
 
             ImageView imageView = new ImageView(getContext());
@@ -154,24 +162,24 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
             }
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 38), UIUtil.dip2px(getMyActivity(), 16));
             params.leftMargin = UIUtil.dip2px(getContext(), 1);
-            linearLayout.addView(imageView, params);
+            medalLayout.addView(imageView, params);
 
             if (audienceInfoBean.getMedal() != null) {
                 for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
                     AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
-                    if ("GUARD".equals(medalBean.getGoodsType())) {
-                        ImageView guardImage = new ImageView(getContext());
-                        guardImage.setImageDrawable(getResources().getDrawable(R.drawable.guard));
-                        LinearLayout.LayoutParams guard = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
-                        guard.leftMargin = UIUtil.dip2px(getContext(), 3);
-                        linearLayout.addView(guardImage, guard);
-                    }
                     if ("VIP".equals(medalBean.getGoodsType())) {
                         ImageView vipImage = new ImageView(getContext());
                         vipImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_vip));
                         LinearLayout.LayoutParams vip = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
                         vip.leftMargin = UIUtil.dip2px(getContext(), 3);
-                        linearLayout.addView(vipImage, vip);
+                        levelLayout.addView(vipImage, vip);
+                    }
+                    if ("GUARD".equals(medalBean.getGoodsType())) {
+                        ImageView guardImage = new ImageView(getContext());
+                        guardImage.setImageDrawable(getResources().getDrawable(R.drawable.guard));
+                        LinearLayout.LayoutParams guard = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
+                        guard.leftMargin = UIUtil.dip2px(getContext(), 3);
+                        levelLayout.addView(guardImage, guard);
                     }
                     if ("BADGE".equals(medalBean.getGoodsType())) {
                         Glide.with(getContext())
@@ -188,9 +196,14 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
                                         imageView.setImageDrawable(resource);
                                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 18), UIUtil.dip2px(getMyActivity(), 16));
                                         params.leftMargin = UIUtil.dip2px(getContext(), 3);
-                                        linearLayout.addView(imageView, params);
+                                        medalLayout.addView(imageView, params);
                                     }
                                 });
+                    }
+                    //座驾
+                    if ("CAR".equals(medalBean.getGoodsType())) {
+                        ivCar.setVisibility(View.VISIBLE);
+                        GlideImageLoader.getInstace().displayImage(getMyActivity(), medalBean.getGoodsIcon(), ivCar);
                     }
                 }
             }
@@ -200,8 +213,9 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
                 mgrView.setImageResource(R.drawable.room_manager);
                 LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
                 mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 3);
-                linearLayout.addView(mgrView, mgrViewParams);
+                medalLayout.addView(mgrView, mgrViewParams);
             }
+
         }
 
         @Override

@@ -112,4 +112,5 @@ public class UserListDialog extends BaseFullScreenDialog {
         tabLayout.getTabAt(1).setText("房管列表（" + managerAmount + "）");
     }
 
+
 }
