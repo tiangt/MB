@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -100,7 +101,6 @@ import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardianListDialog;
 import com.whzl.mengbi.ui.dialog.HeadlineDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
-import com.whzl.mengbi.ui.dialog.LiveHouseRankDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
@@ -266,14 +266,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlWeekstar;
     @BindView(R.id.btn_more)
     ImageButton btnMore;
-    @BindView(R.id.live_draw_layout)
-    DrawerLayout drawerLayout;
-    @BindView(R.id.ll_draw_layout_live)
-    LinearLayout llDrawLayout;
-    @BindView(R.id.rv_activity_draw_layout)
-    RecyclerView rvActivityDrawLayout;
+    @BindView(R.id.draw_layout_out_live)
+    DrawerLayout drawerLayoutOut;
     @BindView(R.id.head_line)
     HeadLineView headLineView;
+    @BindView(R.id.draw_layout_include_live)
+    LinearLayout drawLayoutInclude;
+
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -305,6 +304,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private long mAudienceCount;
     private RunWayBroadControl mRunWayBroadControl;
     private PkControl pkControl;
+    /**
+     * 抽奖活动
+     */
     private List<GetActivityBean.ListBean> mBannerInfoList;
     private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
     private FragmentPagerAdaper mGrandAdaper;
@@ -459,13 +461,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     protected void setupView() {
-        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        drawerLayoutOut.setScrimColor(Color.TRANSPARENT);
         initPlayer();
         initFragment();
         initBanner();
         initVp();
         initProtectRecycler();
+        initDrawLayout(this);
     }
+
+    private void initDrawLayout(Activity liveDisplayActivity) {
+        DrawLayoutControl control = new DrawLayoutControl(liveDisplayActivity,drawLayoutInclude);
+        control.init();
+    }
+
 
     private void initProtectRecycler() {
         mAudienceRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -801,10 +810,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     login();
                     return;
                 }
-                if (drawerLayout.isDrawerOpen(llDrawLayout)) {
-                    drawerLayout.closeDrawer(llDrawLayout);
+                if (drawerLayoutOut.isDrawerOpen(drawLayoutInclude)) {
+                    drawerLayoutOut.closeDrawer(drawLayoutInclude);
                 } else {
-                    drawerLayout.openDrawer(llDrawLayout);
+                    drawerLayoutOut.openDrawer(drawLayoutInclude);
                 }
                 break;
             default:

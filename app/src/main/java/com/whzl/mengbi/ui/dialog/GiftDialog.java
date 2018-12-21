@@ -459,6 +459,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         if (giftDetailInfoBean.getRent() * giftCount < AppConfig.MIN_VALUE_GIFT_DIALOG) {
             checkBox.setChecked(false);
             tvAddSuperRun.setSelected(false);
+            tvTitleSuperRun.setText("是否上超跑");
         } else {
             checkBox.setChecked(true);
             tvAddSuperRun.setSelected(true);

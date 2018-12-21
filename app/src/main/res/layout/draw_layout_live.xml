@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_draw_layout_live"
     android:layout_width="236.5dp"
     android:layout_height="match_parent"
     android:layout_gravity="end"
@@ -14,6 +13,7 @@
         android:layout_height="wrap_content" />
 
     <Switch
+        android:id="@+id/switch_voice_draw_layout_live"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
         android:switchMinWidth="38.5dp"
