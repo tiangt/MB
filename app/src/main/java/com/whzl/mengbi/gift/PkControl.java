@@ -13,7 +13,6 @@ import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -39,6 +38,7 @@ import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.LivePkEvent;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
@@ -61,6 +61,9 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -162,6 +165,7 @@ public class PkControl {
         this.pkLayout = pkLayout;
         this.context = context;
         initEvent();
+        EventBus.getDefault().register(this);
     }
 
     private void initEvent() {
@@ -567,6 +571,7 @@ public class PkControl {
         }
         isMvp = false;
         needShow = false;
+        EventBus.getDefault().unregister(this);
     }
 
     private void showJumpLiveHouseDialog(int programId, String nickName) {
@@ -620,6 +625,19 @@ public class PkControl {
             e.printStackTrace();
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LivePkEvent event) {
+        if (ksyTextureView != null && ksyTextureView.isPlaying()) {
+            boolean pkVoice = (boolean) SPUtils.get(context, SpConfig.PK_VIOCE_LIVE, false);
+            if (pkVoice) {
+                ksyTextureView.setVolume(1, 1);
+            } else {
+                ksyTextureView.setVolume(0, 0);
+            }
+        }
+    }
+
 
     /**
      * PK结束

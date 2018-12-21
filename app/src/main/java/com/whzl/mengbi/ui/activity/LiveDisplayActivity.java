@@ -67,6 +67,7 @@ import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
+import com.whzl.mengbi.eventbus.event.LivePkEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gift.GifGiftControl;
@@ -829,6 +830,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
         }
 
+    }
+
+    /**
+     * 守护列表弹窗
+     */
+    public void showGuardDialog() {
+        if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
+            return;
+        }
+        mGuardianDialog = GuardianListDialog.newInstance(mProgramId, mAnchor)
+                .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
+                .show(getSupportFragmentManager());
     }
 
     public void login() {
@@ -1685,6 +1698,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView2.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LivePkEvent event) {
+        if (textureView2 != null && textureView2.isPlaying()) {
+            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, false);
+            if (pkVoice) {
+                textureView2.setVolume(1, 1);
+            } else {
+                textureView2.setVolume(0, 0);
+            }
         }
     }
 

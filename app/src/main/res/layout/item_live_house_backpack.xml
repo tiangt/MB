@@ -33,13 +33,13 @@
 
     <TextView
         android:id="@+id/tv_cost"
-        android:layout_width="21dp"
-        android:layout_height="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginRight="2.5dp"
+        android:layout_marginTop="2.5dp"
         android:background="@drawable/bg_live_pack_num"
         android:gravity="center"
         android:textColor="#fefefe"
-        android:textSize="6sp" />
+        android:textSize="7sp" />
 </RelativeLayout>
