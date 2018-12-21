@@ -62,6 +62,7 @@ import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -1593,6 +1594,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void setDateSourceForPlayer2(String stream) {
         pkStream = stream;
         try {
+            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, false);
+            if (pkVoice) {
+                textureView2.setVolume(1, 1);
+            } else {
+                textureView2.setVolume(0, 0);
+            }
             textureView2.setDataSource(stream);
             textureView2.prepareAsync();
         } catch (IOException e) {

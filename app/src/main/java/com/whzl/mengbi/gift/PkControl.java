@@ -38,6 +38,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
@@ -52,6 +53,7 @@ import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -605,6 +607,13 @@ public class PkControl {
         try {
             ksyTextureView.stop();
             ksyTextureView.reset();
+            boolean pkVoice = (boolean) SPUtils.get(context, SpConfig.PK_VIOCE_LIVE, false);
+            if (pkVoice) {
+                ksyTextureView.setVolume(1, 1);
+            } else {
+                ksyTextureView.setVolume(0, 0);
+            }
+            ksyTextureView.setVolume(0, 0);
             ksyTextureView.setDataSource(stream);
             ksyTextureView.prepareAsync();
         } catch (IOException e) {
