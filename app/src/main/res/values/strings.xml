@@ -397,4 +397,14 @@
 
     <string name="gift_dialog_super_run">可以登上超跑一次，还差%1$d萌币才能攻占当前超跑</string>
     <string name="edit_hint_gift_dialog_super_run">陪你哭，陪你笑，此生只为和你闹</string>
+
+    <array name="tips_title_draw_layout">
+        <item>充值</item>
+        <item>商城</item>
+        <item>背包</item>
+        <item>福利</item>
+        <item>守护</item>
+        <item>设置</item>
+        <item>客服</item>
+    </array>
 </resources>

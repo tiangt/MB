@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -65,7 +66,9 @@ import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
+import com.whzl.mengbi.eventbus.event.LivePkEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gift.GifGiftControl;
@@ -271,7 +274,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.head_line)
     HeadLineView headLineView;
     @BindView(R.id.draw_layout_include_live)
-    LinearLayout drawLayoutInclude;
+    NestedScrollView drawLayoutInclude;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -329,6 +332,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseFullScreenDialog mGuardianDialog;
     private BaseFullScreenDialog mUserListDialog;
     private String mRanking;
+    private DrawLayoutControl drawLayoutControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -470,9 +474,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initDrawLayout(this);
     }
 
+    /**
+     * 侧滑菜单
+     */
     private void initDrawLayout(Activity liveDisplayActivity) {
-        DrawLayoutControl control = new DrawLayoutControl(liveDisplayActivity,drawLayoutInclude);
-        control.init();
+        drawLayoutControl = new DrawLayoutControl(liveDisplayActivity, drawLayoutInclude);
+        drawLayoutControl.init();
     }
 
 
@@ -549,13 +556,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         banner.setOnBannerListener(position -> {
             if (mBannerInfoList != null && mBannerInfoList.size() > 0) {
                 GetActivityBean.ListBean listBean = mBannerInfoList.get(position);
-                startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
-                        .putExtra("anchorId", mAnchorId + "")
-                        .putExtra("programId", mProgramId + "")
-                        .putExtra("title", listBean.name)
-                        .putExtra("url", listBean.linkUrl), REQUEST_LOGIN);
+                jumpToBannerActivity(listBean);
             }
         });
+    }
+
+    public void jumpToBannerActivity(GetActivityBean.ListBean listBean) {
+        startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                .putExtra("anchorId", mAnchorId + "")
+                .putExtra("programId", mProgramId + "")
+                .putExtra("title", listBean.name)
+                .putExtra("url", listBean.linkUrl), REQUEST_LOGIN);
     }
 
     private void initFragment() {
@@ -820,6 +831,27 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
         }
 
+    }
+
+    /**
+     * 关闭侧滑菜单
+     */
+    public void closeDrawLayout() {
+        if (drawerLayoutOut.isDrawerOpen(drawLayoutInclude)) {
+            drawerLayoutOut.closeDrawer(drawLayoutInclude);
+        }
+    }
+
+    /**
+     * 守护列表弹窗
+     */
+    public void showGuardDialog() {
+        if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
+            return;
+        }
+        mGuardianDialog = GuardianListDialog.newInstance(mProgramId, mAnchor)
+                .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
+                .show(getSupportFragmentManager());
     }
 
     public void login() {
@@ -1150,6 +1182,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         banner.setImages(banners);
         banner.start();
+
+        drawLayoutControl.notifyData(mBannerInfoList);
     }
 
     @Override
@@ -1569,16 +1603,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         dialog.setMessage(getString(R.string.jump_live_house, nickName));
         dialog.setNegativeButton(R.string.cancel, null);
         dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
-            Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
-            intent.putExtra(BundleConfig.PROGRAM_ID, programId);
-            startActivity(intent);
-            rlOtherSide.setVisibility(View.GONE);
-            rlOtherSideInfo.setVisibility(View.GONE);
-            textureView.setVisibility(View.INVISIBLE);
-            pkLayout.setVisibility(View.GONE);
-            ivCountDown.clearAnimation();
+            jumpToLive(programId);
         });
         dialog.show();
+    }
+
+    public void jumpToLive(int programId) {
+        Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
+        intent.putExtra(BundleConfig.PROGRAM_ID, programId);
+        startActivity(intent);
+        rlOtherSide.setVisibility(View.GONE);
+        rlOtherSideInfo.setVisibility(View.GONE);
+        textureView.setVisibility(View.INVISIBLE);
+        pkLayout.setVisibility(View.GONE);
+        ivCountDown.clearAnimation();
     }
 
     @Override
@@ -1664,10 +1702,28 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void setDateSourceForPlayer2(String stream) {
         pkStream = stream;
         try {
+            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, false);
+            if (pkVoice) {
+                textureView2.setVolume(1, 1);
+            } else {
+                textureView2.setVolume(0, 0);
+            }
             textureView2.setDataSource(stream);
             textureView2.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LivePkEvent event) {
+        if (textureView2 != null && textureView2.isPlaying()) {
+            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, false);
+            if (pkVoice) {
+                textureView2.setVolume(1, 1);
+            } else {
+                textureView2.setVolume(0, 0);
+            }
         }
     }
 
