@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -273,7 +274,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.head_line)
     HeadLineView headLineView;
     @BindView(R.id.draw_layout_include_live)
-    LinearLayout drawLayoutInclude;
+    NestedScrollView drawLayoutInclude;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -830,6 +831,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
         }
 
+    }
+
+    /**
+     * 关闭侧滑菜单
+     */
+    public void closeDrawLayout() {
+        if (drawerLayoutOut.isDrawerOpen(drawLayoutInclude)) {
+            drawerLayoutOut.closeDrawer(drawLayoutInclude);
+        }
     }
 
     /**
@@ -1593,16 +1603,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         dialog.setMessage(getString(R.string.jump_live_house, nickName));
         dialog.setNegativeButton(R.string.cancel, null);
         dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
-            Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
-            intent.putExtra(BundleConfig.PROGRAM_ID, programId);
-            startActivity(intent);
-            rlOtherSide.setVisibility(View.GONE);
-            rlOtherSideInfo.setVisibility(View.GONE);
-            textureView.setVisibility(View.INVISIBLE);
-            pkLayout.setVisibility(View.GONE);
-            ivCountDown.clearAnimation();
+            jumpToLive(programId);
         });
         dialog.show();
+    }
+
+    public void jumpToLive(int programId) {
+        Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
+        intent.putExtra(BundleConfig.PROGRAM_ID, programId);
+        startActivity(intent);
+        rlOtherSide.setVisibility(View.GONE);
+        rlOtherSideInfo.setVisibility(View.GONE);
+        textureView.setVisibility(View.INVISIBLE);
+        pkLayout.setVisibility(View.GONE);
+        ivCountDown.clearAnimation();
     }
 
     @Override
