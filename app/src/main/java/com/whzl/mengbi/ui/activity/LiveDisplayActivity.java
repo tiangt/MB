@@ -329,6 +329,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseFullScreenDialog mGuardianDialog;
     private BaseFullScreenDialog mUserListDialog;
     private String mRanking;
+    private DrawLayoutControl drawLayoutControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -470,9 +471,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initDrawLayout(this);
     }
 
+    /**
+     * 侧滑菜单
+     */
     private void initDrawLayout(Activity liveDisplayActivity) {
-        DrawLayoutControl control = new DrawLayoutControl(liveDisplayActivity,drawLayoutInclude);
-        control.init();
+        drawLayoutControl = new DrawLayoutControl(liveDisplayActivity, drawLayoutInclude);
+        drawLayoutControl.init();
     }
 
 
@@ -549,13 +553,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         banner.setOnBannerListener(position -> {
             if (mBannerInfoList != null && mBannerInfoList.size() > 0) {
                 GetActivityBean.ListBean listBean = mBannerInfoList.get(position);
-                startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
-                        .putExtra("anchorId", mAnchorId + "")
-                        .putExtra("programId", mProgramId + "")
-                        .putExtra("title", listBean.name)
-                        .putExtra("url", listBean.linkUrl), REQUEST_LOGIN);
+                jumpToBannerActivity(listBean);
             }
         });
+    }
+
+    public void jumpToBannerActivity(GetActivityBean.ListBean listBean) {
+        startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                .putExtra("anchorId", mAnchorId + "")
+                .putExtra("programId", mProgramId + "")
+                .putExtra("title", listBean.name)
+                .putExtra("url", listBean.linkUrl), REQUEST_LOGIN);
     }
 
     private void initFragment() {
@@ -1150,6 +1158,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         banner.setImages(banners);
         banner.start();
+
+        drawLayoutControl.notifyData(mBannerInfoList);
     }
 
     @Override
