@@ -122,6 +122,7 @@ import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.HeadLineView;
+import com.whzl.mengbi.ui.widget.view.HeadlineLayout;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
@@ -275,7 +276,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     HeadLineView headLineView;
     @BindView(R.id.draw_layout_include_live)
     NestedScrollView drawLayoutInclude;
-
+    @BindView(R.id.hl_layout)
+    HeadlineLayout hlLayout;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -333,6 +335,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseFullScreenDialog mUserListDialog;
     private String mRanking;
     private DrawLayoutControl drawLayoutControl;
+    private HeadlineControl control;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5

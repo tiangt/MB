@@ -199,12 +199,14 @@
     <color name="text_purple">#ff36f3</color>
     <color name="tran_grey">#11eeeeee</color>
     <color name="tran_grey2">#66eeeeee</color>
+    <color name="tran_grey3">#50eeeeee</color>
     <color name="black">#000000</color>
     <color name="tran_black">#30000000</color>
     <color name="tran_black2">#70000000</color>
     <color name="tran_black3">#E0000000</color>
     <color name="tran_black4">#EE000000</color>
     <color name="tran_black5">#40000000</color>
+    <color name="tran_black6">#10000000</color>
     <color name="tran_white1">#90ffffff</color>
     <color name="tran_white2">#30ffffff</color>
     <color name="white2">#f5f9fa</color>

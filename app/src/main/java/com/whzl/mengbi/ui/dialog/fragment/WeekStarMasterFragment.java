@@ -42,8 +42,8 @@ public class WeekStarMasterFragment extends BaseFragment {
         titles.add("上周");
         titles.add("规则");
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(WeekStarListFragment.newInstance());
-        fragments.add(WeekStarListFragment.newInstance());
+        fragments.add(WeekStarListFragment.newInstance("T"));
+        fragments.add(WeekStarListFragment.newInstance("L"));
         fragments.add(WeekStarRuleFragment.newInstance());
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));

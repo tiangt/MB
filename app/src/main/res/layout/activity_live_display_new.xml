@@ -361,6 +361,16 @@
                         android:layout_alignParentBottom="true"
                         android:visibility="gone" />
 
+                    <com.whzl.mengbi.ui.widget.view.HeadlineLayout
+                        android:id="@+id/hl_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:visibility="gone"/>
+
                     <android.support.design.widget.CoordinatorLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

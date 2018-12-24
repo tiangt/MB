@@ -5,16 +5,19 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_week_star"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_weight="1">
+        android:layout_marginBottom="5dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_week_star"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="false"
+            android:nestedScrollingEnabled="false"/>
     </RelativeLayout>
 
     <RelativeLayout

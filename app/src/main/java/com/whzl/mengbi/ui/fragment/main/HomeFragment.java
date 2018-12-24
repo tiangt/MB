@@ -394,6 +394,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
         }
     }
 
+    /**
+     * 头条前三
+     */
     private void initTopThreeRecycler() {
         LinearLayoutManager layoutManage = new LinearLayoutManager(getMyActivity());
         layoutManage.setOrientation(LinearLayoutManager.HORIZONTAL);
