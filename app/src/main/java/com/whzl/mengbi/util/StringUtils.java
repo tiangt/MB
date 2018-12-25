@@ -137,4 +137,22 @@ public class StringUtils {
         return firstStr + middleStr;
     }
 
+    /**
+     * 格式化时间秒->mm:ss
+     *
+     * @param l
+     * @return
+     */
+    public static String formatLongToTimeStr(Long l) {
+        int minute = 0;
+        int second = 0;
+        second = l.intValue();
+        if (second > 60) {
+            minute = second / 60;   //取整
+            second = second % 60;   //取余
+        }
+        String strtime = String.format("%02d:%02d", minute, second);
+        return strtime;
+    }
+
 }

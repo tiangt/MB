@@ -35,7 +35,7 @@ public class HeadlineDialog extends BaseAwesomeDialog {
     private ArrayList<Fragment> fragments;
 
 
-    public static BaseAwesomeDialog newInstance(int index, int programId){
+    public static BaseAwesomeDialog newInstance(int index, int programId) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
         args.putInt("index", index);

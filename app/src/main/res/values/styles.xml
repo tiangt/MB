@@ -384,4 +384,13 @@
         <item name="android:textColor">#40323232</item>
         <item name="textAllCaps">true</item>
     </style>
+
+    <!-- 加载动画 -->
+    <style name="AVLoadingIndicatorView">
+        <item name="minWidth">50dp</item>
+        <item name="maxWidth">50dp</item>
+        <item name="minHeight">50dp</item>
+        <item name="maxHeight">50dp</item>
+        <item name="indicatorName">BallPulseSyncIndicator</item>
+    </style>
 </resources>

@@ -107,5 +107,15 @@
         <attr name="stroke_width" />
         <attr name="clip_background" />
     </declare-styleable>
+
+    <!-- 加载动画 -->
+    <declare-styleable name="AVLoadingIndicatorView">
+        <attr name="minWidth" format="dimension" />
+        <attr name="maxWidth" format="dimension"/>
+        <attr name="minHeight" format="dimension" />
+        <attr name="maxHeight" format="dimension"/>
+        <attr name="indicatorName" format="string"/>
+        <attr name="indicatorColor" format="color"/>
+    </declare-styleable>
 </resources>
 

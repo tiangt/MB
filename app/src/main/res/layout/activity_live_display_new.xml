@@ -52,8 +52,8 @@
                                 android:layout_width="50dp"
                                 android:layout_height="13dp"
                                 android:layout_marginLeft="6dp"
-                                android:layout_marginRight="6dp"
                                 android:layout_marginTop="3dp"
+                                android:layout_marginRight="6dp"
                                 android:textSize="11sp" />
 
 
@@ -62,10 +62,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
-                                android:layout_marginBottom="2dp"
                                 android:layout_marginLeft="6dp"
-                                android:layout_marginRight="6dp"
                                 android:layout_marginTop="6.5dp"
+                                android:layout_marginRight="6dp"
+                                android:layout_marginBottom="2dp"
                                 android:singleLine="true"
                                 android:textColor="@color/white"
                                 android:textSize="10sp" />
@@ -128,35 +128,35 @@
                     android:layout_marginLeft="6dp"
                     android:layout_marginTop="6.5dp">
 
-                <RelativeLayout
-                    android:id="@+id/rl_head"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/shape_live_display_contribution_btn_bg">
-
-                    <com.whzl.mengbi.ui.widget.view.HeadLineView
-                        android:id="@+id/head_line"
+                    <RelativeLayout
+                        android:id="@+id/rl_head"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent" />
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/shape_live_display_contribution_btn_bg">
 
-                    <ImageView
+                        <com.whzl.mengbi.ui.widget.view.HeadLineView
+                            android:id="@+id/head_line"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_toRightOf="@id/head_line"
+                            android:src="@drawable/live_display_arrow" />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/rl_guard_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_toRightOf="@id/head_line"
-                        android:src="@drawable/live_display_arrow" />
-                </RelativeLayout>
-
-
-                <RelativeLayout
-                    android:id="@+id/rl_guard_number"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
-                    android:layout_toRightOf="@id/rl_head">
+                        android:layout_marginLeft="6dp"
+                        android:layout_toRightOf="@id/rl_head">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -195,8 +195,8 @@
                             android:id="@+id/tv_run_way_gift"
                             android:layout_width="1000dp"
                             android:layout_height="20dp"
-                            android:layout_marginBottom="2dp"
                             android:layout_marginLeft="5dp"
+                            android:layout_marginBottom="2dp"
                             android:gravity="center_vertical"
                             android:singleLine="true"
                             android:textSize="12sp" />
@@ -276,10 +276,17 @@
 
                     </LinearLayout>
 
-                    <ProgressBar
+                    <!--<ProgressBar-->
+                    <!--android:id="@+id/progressbar"-->
+                    <!--android:layout_width="50dp"-->
+                    <!--android:layout_height="50dp"-->
+                    <!--android:layout_centerInParent="true" />-->
+
+                    <com.whzl.mengbi.ui.widget.loading.AVLoadingIndicatorView
                         android:id="@+id/progressbar"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/AVLoadingIndicatorView"
                         android:layout_centerInParent="true" />
 
                     <TextView
@@ -366,10 +373,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:visibility="gone"/>
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone" />
 
                     <android.support.design.widget.CoordinatorLayout
                         android:layout_width="match_parent"
@@ -377,21 +384,21 @@
                         android:layout_alignParentBottom="true"
                         android:layout_centerVertical="true">
 
-                    <com.whzl.mengbi.ui.widget.view.AutoScrollTextView2
-                        android:id="@+id/tv_run_way_broad"
-                        android:layout_width="1000dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:background="#702d2933"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="7dp"
-                        android:paddingTop="2dp"
-                        android:paddingRight="7dp"
-                        android:paddingBottom="3dp"
-                        android:singleLine="true"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
-                </android.support.design.widget.CoordinatorLayout>
+                        <com.whzl.mengbi.ui.widget.view.AutoScrollTextView2
+                            android:id="@+id/tv_run_way_broad"
+                            android:layout_width="1000dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:background="#702d2933"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="7dp"
+                            android:paddingTop="2dp"
+                            android:paddingRight="7dp"
+                            android:paddingBottom="3dp"
+                            android:singleLine="true"
+                            android:textSize="12sp"
+                            android:visibility="gone" />
+                    </android.support.design.widget.CoordinatorLayout>
 
                     <TextView
                         android:id="@+id/tv_count_down"
@@ -425,14 +432,14 @@
                             android:layout_height="40dp"
                             android:scaleType="fitEnd" />
 
-                    <android.support.constraint.ConstraintLayout
-                        android:id="@+id/cl_entenr"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="3dp"
-                        android:paddingRight="10dp"
-                        android:paddingBottom="4dp">
+                        <android.support.constraint.ConstraintLayout
+                            android:id="@+id/cl_entenr"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="3dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="4dp">
 
                             <com.whzl.mengbi.ui.widget.view.RoyalEnterView
                                 android:id="@+id/tv_enter"
@@ -481,8 +488,8 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="7dp"
-                        android:layout_marginTop="9dp">
+                        android:layout_marginTop="9dp"
+                        android:layout_marginRight="7dp">
 
 
                     </com.youth.banner.Banner>
@@ -490,10 +497,10 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginBottom="5dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_marginRight="7dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
@@ -553,10 +560,10 @@
                     android:id="@+id/view_message_notify"
                     android:layout_width="6dp"
                     android:layout_height="6dp"
-                    android:layout_alignRight="@id/btn_chat_private"
                     android:layout_alignTop="@id/btn_chat_private"
-                    android:layout_marginRight="2dp"
+                    android:layout_alignRight="@id/btn_chat_private"
                     android:layout_marginTop="2dp"
+                    android:layout_marginRight="2dp"
                     android:background="@drawable/shape_red_notify"
                     android:visibility="gone" />
 

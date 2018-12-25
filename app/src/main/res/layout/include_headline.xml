@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textColor="@color/black"
-                android:textSize="9sp"
+                android:textSize="12sp"
                 android:text="未上榜"
                 android:textStyle="bold" />
 
@@ -39,11 +39,11 @@
             android:src="@color/tran_black"/>
 
         <TextView
-            android:id="@+id/tv_own_name"
+            android:id="@+id/tv_nick_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_toRightOf="@id/iv_own_avatar"
             android:singleLine="true"
             android:textColor="@color/black"
@@ -55,7 +55,7 @@
             android:id="@+id/tv_need_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_own_name"
+            android:layout_below="@id/tv_nick_name"
             android:textColor="@color/tran_black2"
             android:textSize="9sp"
             android:text="@string/app_name"
@@ -76,8 +76,9 @@
             android:text="@string/tip"/>
 
         <TextView
+            android:id="@+id/tv_click_gift"
             android:layout_width="wrap_content"
-            android:layout_height="22dp"
+            android:layout_height="23dp"
             android:text="一键赠送"
             android:textSize="12dp"
             android:textColor="@color/white"
@@ -88,7 +89,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/tv_charm_value"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/shape_red_orange"/>
 
     </RelativeLayout>

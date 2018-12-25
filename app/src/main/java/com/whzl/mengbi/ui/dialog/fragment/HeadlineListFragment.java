@@ -11,15 +11,27 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.dialog.OneClickDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.util.ClickUtil;
+import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.StringUtils;
+
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 /**
  * @author cliang
@@ -31,12 +43,20 @@ public class HeadlineListFragment extends BaseFragment {
     RecyclerView recycler;
     @BindView(R.id.rl_gift)
     RelativeLayout rlGift;
+    @BindView(R.id.tv_click_gift)
+    TextView tvClickGift;
+    @BindView(R.id.tv_countdown)
+    TextView tvCountdown;
+    @BindView(R.id.tv_need_value)
+    TextView tvNeedValue;
 
     private BaseListAdapter mAdapter;
     private String mType = "T"; //"T"本轮头条，"L"上轮头条，默认本轮
+    private Disposable disposable;
     private int TOP_RANK = 0;
     private int OTHER_RANK = 1;
     private int[] rankIcons = new int[]{R.drawable.ic_headline_rank1, R.drawable.ic_headline_rank2, R.drawable.ic_headline_rank3};
+    private Long userId;
 
     public static HeadlineListFragment newInstance(String type) {
         Bundle args = new Bundle();
@@ -52,14 +72,59 @@ public class HeadlineListFragment extends BaseFragment {
     }
 
     @Override
+    protected void initEnv() {
+        super.initEnv();
+    }
+
+    @Override
     public void init() {
         mType = getArguments().getString("lineType");
         if ("T".equals(mType)) {
             rlGift.setVisibility(View.VISIBLE);
+            initCountdown();
         } else {
             rlGift.setVisibility(View.GONE);
         }
         initRecycler();
+        tvNeedValue.setText(getString(R.string.beyond_first,StringUtils.formatNumber(999999)));
+    }
+
+    @OnClick({R.id.tv_click_gift})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_click_gift:
+                userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
+                if (ClickUtil.isFastClick()) {
+                    if(userId == 0){
+                        ((LiveDisplayActivity) getActivity()).login();
+                        return;
+                    }
+                    OneClickDialog.newInstance()
+                            .setOutCancel(false)
+                            .show(getChildFragmentManager());
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 本轮剩余时间
+     */
+    private void initCountdown() {
+        tvCountdown.setVisibility(View.VISIBLE);
+        disposable = Observable.interval(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    if (20 - aLong <= 0) {
+                        tvCountdown.setText(getString(R.string.countdown, 0 + ""));
+                        disposable.dispose();
+                    } else {
+                        String strCountdown = StringUtils.formatLongToTimeStr(20 - aLong);
+                        tvCountdown.setText(getString(R.string.countdown, strCountdown));
+                    }
+                });
     }
 
     private void initRecycler() {
@@ -151,6 +216,14 @@ public class HeadlineListFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(int position) {
 
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
         }
     }
 }

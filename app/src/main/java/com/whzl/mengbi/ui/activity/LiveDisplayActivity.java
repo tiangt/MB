@@ -116,6 +116,7 @@ import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
 import com.whzl.mengbi.ui.view.LiveView;
+import com.whzl.mengbi.ui.widget.loading.AVLoadingIndicatorView;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
@@ -191,7 +192,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.tv_stop_tip)
     TextView tvStopTip;
     @BindView(R.id.progressbar)
-    ProgressBar progressBar;
+    AVLoadingIndicatorView progressBar;
     @BindView(R.id.tv_run_way_gift)
     AutoScrollTextView runWayText;
     @BindView(R.id.tv_lucky_gift)
@@ -336,6 +337,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private String mRanking;
     private DrawLayoutControl drawLayoutControl;
     private HeadlineControl control;
+    private BaseAwesomeDialog headlineDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -503,6 +505,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                             }
                             if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
                                 mGuardianDialog.dismiss();
+                            }
+                            if(headlineDialog != null && headlineDialog.isAdded()){
+                                headlineDialog.dismiss();
                             }
                         })
                         .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
@@ -698,6 +703,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                 }
                                 if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
                                     mGuardianDialog.dismiss();
+                                }
+                                if(headlineDialog != null && headlineDialog.isAdded()){
+                                    headlineDialog.dismiss();
                                 }
                             })
                             .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
@@ -1344,7 +1352,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //            tvContribute.setText(divide + "万");
             mRanking = divide + "万";
         }
-        String[] lines = {mRanking, "第一名"};
+        String[] lines = {"第一名", mRanking};
         setHeadLine(lines);
     }
 
@@ -1444,6 +1452,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     }
                     if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
                         mGuardianDialog.dismiss();
+                    }
+                    if(headlineDialog != null && headlineDialog.isAdded()){
+                        headlineDialog.dismiss();
                     }
                 })
                 .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
@@ -1744,7 +1755,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (line == null || line.length == 0) {
             return;
         }
-        int images[] = {R.drawable.live_display_cup, R.drawable.ic_head_line};
+        int images[] = {R.drawable.ic_head_line, R.drawable.live_display_cup};
         List<View> views = new ArrayList<>();
         for (int i = 0; i < line.length; i++) {
             View v = View.inflate(this, R.layout.item_head_line, null);
@@ -1764,10 +1775,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //                        .setDimAmount(0)
 //                        .setShowBottom(true)
 //                        .show(getSupportFragmentManager());
-                HeadlineDialog.newInstance(0, mProgramId)
+                headlineDialog = HeadlineDialog.newInstance(0, mProgramId)
                         .show(getSupportFragmentManager());
             } else {
-                HeadlineDialog.newInstance(1, mProgramId)
+                headlineDialog = HeadlineDialog.newInstance(1, mProgramId)
                         .show(getSupportFragmentManager());
             }
         });
