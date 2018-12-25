@@ -116,7 +116,7 @@ import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
 import com.whzl.mengbi.ui.view.LiveView;
-import com.whzl.mengbi.ui.widget.loading.AVLoadingIndicatorView;
+import com.whzl.mengbi.ui.widget.loading.LoadingIndicatorView;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
@@ -192,7 +192,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.tv_stop_tip)
     TextView tvStopTip;
     @BindView(R.id.progressbar)
-    AVLoadingIndicatorView progressBar;
+    ProgressBar progressBar;
     @BindView(R.id.tv_run_way_gift)
     AutoScrollTextView runWayText;
     @BindView(R.id.tv_lucky_gift)

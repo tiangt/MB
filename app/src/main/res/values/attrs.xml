@@ -109,7 +109,7 @@
     </declare-styleable>
 
     <!-- 加载动画 -->
-    <declare-styleable name="AVLoadingIndicatorView">
+    <declare-styleable name="LoadingIndicatorView">
         <attr name="minWidth" format="dimension" />
         <attr name="maxWidth" format="dimension"/>
         <attr name="minHeight" format="dimension" />
