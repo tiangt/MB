@@ -621,8 +621,8 @@
 
         <com.opensource.svgaplayer.SVGAImageView
             android:id="@+id/svga_guard_success"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
             android:layout_centerInParent="true"
             android:scaleType="fitCenter"
             app:autoPlay="true" />

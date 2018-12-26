@@ -35,4 +35,6 @@ public interface LivePresenter {
     void getRoomRankTotal(int mProgramId, String type);
 
     void getDailyTaskState(long mUserId);
+
+    void getHeadlineRank(int anchorId, String preRound);
 }

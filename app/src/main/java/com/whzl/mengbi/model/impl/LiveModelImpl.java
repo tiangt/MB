@@ -11,6 +11,7 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
+import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
@@ -384,6 +385,26 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(ApiResult<GetDailyTaskStateBean> body) {
+                    }
+                });
+    }
+
+    @Override
+    public void getHeadlineRank(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getHeadlineRank(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<HeadlineRankBean>() {
+                    @Override
+                    public void onSuccess(HeadlineRankBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetHeadlineRankSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<HeadlineRankBean> body) {
                     }
                 });
     }

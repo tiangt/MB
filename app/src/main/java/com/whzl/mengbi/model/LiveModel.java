@@ -36,4 +36,6 @@ public interface LiveModel {
     void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void getDailyTaskState(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void getHeadlineRank(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

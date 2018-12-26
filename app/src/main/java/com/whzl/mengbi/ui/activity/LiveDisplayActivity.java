@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -92,9 +93,11 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
+import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
+import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -104,6 +107,7 @@ import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
@@ -137,6 +141,7 @@ import com.whzl.mengbi.ui.widget.view.WeekStarView;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BitmapUtils;
 import com.whzl.mengbi.util.ClickUtil;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -144,6 +149,8 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
 import com.youth.banner.Banner;
@@ -345,6 +352,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog headlineDialog;
     private String mAnchorName;
     private String mAnchorAvatar;
+    private String mHeadlineRank;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -484,6 +492,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initVp();
         initProtectRecycler();
         initDrawLayout(this);
+    }
+
+    /**
+     * 头条榜单
+     */
+    private void initHeadline() {
+        String[] lines = {mHeadlineRank, mRanking};
+        setHeadLine(lines);
     }
 
     /**
@@ -1080,6 +1096,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
+        //头条榜单
+        mLivePresenter.getHeadlineRank(mAnchorId, "T");
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1326,6 +1344,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
+    @Override
+    public void onGetHeadlineRankSuccess(HeadlineRankBean dataBean) {
+        if (dataBean != null) {
+            if (dataBean.rank < 0) {
+                mHeadlineRank = "万名之外";
+            } else {
+                mHeadlineRank = String.valueOf(dataBean.rank);
+            }
+            initHeadline();
+        }
+    }
+
 
     /**
      * 活动下标黄点
@@ -1361,8 +1391,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //            tvContribute.setText(divide + "万");
             mRanking = divide + "万";
         }
-        String[] lines = {"第一名", mRanking};
-        setHeadLine(lines);
     }
 
 

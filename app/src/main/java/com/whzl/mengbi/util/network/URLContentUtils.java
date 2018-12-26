@@ -214,4 +214,9 @@ public class URLContentUtils {
      * 举报
      */
     public static final String REPORT = "v1/social/report";
+
+    /**
+     * 主播头条排名榜单
+     */
+    public static final String HEADLINE_TOP = "anchor/head-line-top-list";
 }

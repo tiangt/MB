@@ -8,6 +8,7 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
+import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -188,6 +189,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
+    @Override
+    public void onGetHeadlineRankSuccess(HeadlineRankBean dataBean) {
+        if(liveView != null){
+            liveView.onGetHeadlineRankSuccess(dataBean);
+        }
+    }
+
 
     @Override
     public void followHost(long userId, int mProgramId) {
@@ -197,7 +205,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     @Override
     public void getRoomUserInfo(long visitorId, int programId) {
         if (visitorId != 0) {
-            liveModel.doRoomUserInfo(visitorId,programId, this);
+            liveModel.doRoomUserInfo(visitorId, programId, this);
         }
     }
 
@@ -265,6 +273,15 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("userId", mUserId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getDailyTaskState(signPramsMap, this);
+    }
+
+    @Override
+    public void getHeadlineRank(int anchorId, String preRound) {
+        HashMap map = new HashMap();
+        map.put("userId", anchorId);
+        map.put("preRound", preRound);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getHeadlineRank(signPramsMap, this);
     }
 
     public void getAnchorTask(int mAnchorId) {

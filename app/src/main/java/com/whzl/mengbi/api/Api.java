@@ -23,6 +23,7 @@ import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
+import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.MyCouponBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
@@ -654,5 +655,10 @@ public interface Api {
     @POST("v1/room/runway-value")
     @FormUrlEncoded
     Observable<ApiResult<RunWayValueBean>> getRunWayValue(@FieldMap Map<String, String> params);
+
+
+    @POST("v1/rank/head-line-rank")
+    @FormUrlEncoded
+    Observable<ApiResult<HeadlineRankBean>> getHeadlineRank(@FieldMap Map<String, String> params);
 
 }

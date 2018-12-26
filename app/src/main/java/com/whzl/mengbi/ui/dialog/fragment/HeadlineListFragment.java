@@ -12,18 +12,29 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.HeadlineListBean;
+import com.whzl.mengbi.model.entity.HeadlineRankBean;
+import com.whzl.mengbi.model.entity.RoomRankBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.OneClickDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.ClickUtil;
+import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -51,12 +62,13 @@ public class HeadlineListFragment extends BaseFragment {
     TextView tvNeedValue;
 
     private BaseListAdapter mAdapter;
-    private String mType = "T"; //"T"本轮头条，"L"上轮头条，默认本轮
+    private String mType = "T"; //"T"本轮头条，"F"上轮头条，默认本轮
     private Disposable disposable;
     private int TOP_RANK = 0;
     private int OTHER_RANK = 1;
     private int[] rankIcons = new int[]{R.drawable.ic_headline_rank1, R.drawable.ic_headline_rank2, R.drawable.ic_headline_rank3};
     private Long userId;
+    private List<HeadlineListBean.DataBean.ListBean> mListData;
 
     public static HeadlineListFragment newInstance(String type) {
         Bundle args = new Bundle();
@@ -86,7 +98,8 @@ public class HeadlineListFragment extends BaseFragment {
             rlGift.setVisibility(View.GONE);
         }
         initRecycler();
-        tvNeedValue.setText(getString(R.string.beyond_first,StringUtils.formatNumber(999999)));
+        tvNeedValue.setText(getString(R.string.beyond_first, StringUtils.formatNumber(999999)));
+        getData(mType);
     }
 
     @OnClick({R.id.tv_click_gift})
@@ -95,7 +108,7 @@ public class HeadlineListFragment extends BaseFragment {
             case R.id.tv_click_gift:
                 userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
                 if (ClickUtil.isFastClick()) {
-                    if(userId == 0){
+                    if (userId == 0) {
                         ((LiveDisplayActivity) getActivity()).login();
                         return;
                     }
@@ -107,6 +120,32 @@ public class HeadlineListFragment extends BaseFragment {
             default:
                 break;
         }
+    }
+
+    private void getData(String type) {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("preRound", type);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.HEADLINE_TOP, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                if (getContext() == null) {
+                    return;
+                }
+                HeadlineListBean rankBean = GsonUtils.GsonToBean(result.toString(), HeadlineListBean.class);
+                if (rankBean.code == 200) {
+                    if (rankBean.data != null) {
+                        if (rankBean.data.list != null) {
+                            mListData.clear();
+                            mListData.addAll(rankBean.data.list);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+            }
+        });
     }
 
     /**
@@ -139,7 +178,7 @@ public class HeadlineListFragment extends BaseFragment {
         mAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return list.size();
+                return mListData == null ? 0 : mListData.size();
             }
 
             @Override
@@ -163,6 +202,7 @@ public class HeadlineListFragment extends BaseFragment {
             }
         };
         recycler.setAdapter(mAdapter);
+//        mAdapter.notifyDataSetChanged();
     }
 
     class ViewHolder extends BaseViewHolder {
@@ -196,6 +236,11 @@ public class HeadlineListFragment extends BaseFragment {
                 tvRank.setText(String.valueOf(position + 1));
             }
 
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), mListData.get(position).anchorAvatar, ivAvatar);
+            tvNickName.setText(mListData.get(position).anchorNickname);
+            tvCharm.setText(StringUtils.formatNumber(mListData.get(position).score));
+            int anchorLevelIcon = ResourceMap.getResourceMap().getAnchorLevelIcon(mListData.get(position).anchorLevelValue);
+            ivLevel.setImageResource(anchorLevelIcon);
         }
     }
 
@@ -215,7 +260,11 @@ public class HeadlineListFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(int position) {
-
+            if("F".equals(mType)){
+                GlideImageLoader.getInstace().displayImage(getMyActivity(), mListData.get(0).anchorAvatar, ivTopAvatar);
+                tvTopName.setText(mListData.get(0).anchorNickname);
+                tvTopCharm.setText(StringUtils.formatNumber(mListData.get(0).score));
+            }
         }
     }
 

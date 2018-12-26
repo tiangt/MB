@@ -125,7 +125,7 @@ public class BitmapUtils {
     }
 
     /**
-     * ImageUrl转Bitmap
+     * ImageUrl 转 Bitmap
      *
      * @param path
      * @param listener
