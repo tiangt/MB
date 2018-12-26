@@ -825,7 +825,7 @@ public class PkControl {
         svgaImageView.setLoops(1);
         SVGAParser parser = new SVGAParser(context);
         try {
-            parser.parse("start_pk.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("svga/start_pk.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem);

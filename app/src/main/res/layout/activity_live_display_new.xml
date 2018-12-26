@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/draw_layout_out_live"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -618,51 +619,14 @@
 
         </LinearLayout>
 
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_guard_success"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:scaleType="fitCenter"
+            app:autoPlay="true" />
 
-        <RelativeLayout
-            android:id="@+id/rl_guard_success"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:alpha="0"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/guard_success_bg" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <com.whzl.mengbi.ui.widget.view.CircleImageView
-                    android:id="@+id/iv_guard_avatar"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="30dp" />
-
-                <TextView
-                    android:id="@+id/tv_guard_nick_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/iv_guard_avatar"
-                    android:layout_marginTop="5dp"
-                    android:ellipsize="end"
-                    android:maxEms="7"
-                    android:paddingLeft="8dp"
-                    android:singleLine="true"
-                    android:textColor="#404040"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-        </RelativeLayout>
     </RelativeLayout>
 
     <!--<LinearLayout-->

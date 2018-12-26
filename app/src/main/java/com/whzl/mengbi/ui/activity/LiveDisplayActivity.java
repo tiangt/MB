@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.support.constraint.ConstraintLayout;
@@ -17,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +36,11 @@ import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
 import com.ksyun.media.player.KSYTextureView;
+import com.opensource.svgaplayer.SVGADrawable;
+import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
+import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
@@ -129,7 +135,9 @@ import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.ui.widget.view.WeekStarView;
 import com.whzl.mengbi.util.AppUtils;
+import com.whzl.mengbi.util.BitmapUtils;
 import com.whzl.mengbi.util.ClickUtil;
+import com.whzl.mengbi.util.HttpCallBackListener;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -145,6 +153,7 @@ import com.youth.banner.Transformer;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -205,16 +214,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     FrameLayout fragmentContainer;
     @BindView(R.id.rl_bottom_container)
     RelativeLayout rlBottomContainer;
-    @BindView(R.id.rl_guard_success)
-    RelativeLayout rlGuardSuccess;
     @BindView(R.id.btn_chat)
     ImageButton btnChat;
     @BindView(R.id.btn_chat_private)
     ImageButton btnChatPrivate;
-    @BindView(R.id.iv_guard_avatar)
-    CircleImageView ivGuardAvatar;
-    @BindView(R.id.tv_guard_nick_name)
-    TextView tvGuardNickName;
     @BindView(R.id.tv_run_way_broad)
     AutoScrollTextView2 runWayBroad;
     @BindView(R.id.pk_layout)
@@ -279,6 +282,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     NestedScrollView drawLayoutInclude;
     @BindView(R.id.hl_layout)
     HeadlineLayout hlLayout;
+    @BindView(R.id.svga_guard_success)
+    SVGAImageView svgaGuardSuccess;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -338,6 +343,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private DrawLayoutControl drawLayoutControl;
     private HeadlineControl control;
     private BaseAwesomeDialog headlineDialog;
+    private String mAnchorName;
+    private String mAnchorAvatar;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -506,7 +513,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                             if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
                                 mGuardianDialog.dismiss();
                             }
-                            if(headlineDialog != null && headlineDialog.isAdded()){
+                            if (headlineDialog != null && headlineDialog.isAdded()) {
                                 headlineDialog.dismiss();
                             }
                         })
@@ -704,7 +711,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                 if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
                                     mGuardianDialog.dismiss();
                                 }
-                                if(headlineDialog != null && headlineDialog.isAdded()){
+                                if (headlineDialog != null && headlineDialog.isAdded()) {
                                     headlineDialog.dismiss();
                                 }
                             })
@@ -1036,6 +1043,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mAnchor = roomInfoBean.getData().getAnchor();
                 PrivateChatListFragment fragment = (PrivateChatListFragment) fragments[1];
                 fragment.setUpWithAnchor(mAnchor);
+                mAnchorName = mAnchor.getName();
+                mAnchorAvatar = mAnchor.getAvatar();
                 GlideImageLoader.getInstace().circleCropImage(this, mAnchor.getAvatar(), ivHostAvatar);
 
                 tvHostName.setText(mAnchor.getName());
@@ -1399,7 +1408,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (event.userId == mUserId) {
             mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         }
-        showGuard(event.avatar, event.nickName);
+//        showGuard(event.avatar, event.nickName);
+        showOpenGuardAnim(event.avatar, event.nickName);
         mLivePresenter.getGuardTotal(mProgramId);
     }
 
@@ -1408,40 +1418,68 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         setTabChange(1);
     }
 
-    public void showGuard(String avatar, String nickName) {
-        GlideImageLoader.getInstace().displayImage(this, avatar, ivGuardAvatar);
-        tvGuardNickName.setText(nickName);
-        showGuardAnim = ObjectAnimator.ofFloat(rlGuardSuccess, "alpha", 0f, 1f);
-        showGuardAnim.setDuration(3000);
-        showGuardAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                hideGuard();
-                showGuardAnim = null;
-            }
+    /**
+     * 开通守护
+     *
+     * @param avatar
+     * @param nickName
+     */
+    private void showOpenGuardAnim(String avatar, String nickName) {
+        svgaGuardSuccess.setLoops(1);
+        SVGAParser parser = new SVGAParser(this);
+        try {
+            parser.parse("svga/guard.svga", new SVGAParser.ParseCompletion() {
+                @Override
+                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
+                    SVGADrawable drawable = new SVGADrawable(videoItem, requestImage(avatar, nickName));
+                    svgaGuardSuccess.setImageDrawable(drawable);
+                    svgaGuardSuccess.startAnimation();
+                }
 
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                rlGuardSuccess.setVisibility(View.VISIBLE);
-            }
-        });
-        showGuardAnim.start();
+                @Override
+                public void onError() {
+
+                }
+            });
+        } catch (Exception e) {
+            System.out.print(true);
+        }
     }
 
-    public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
-//        AudienceInfoDialog.newInstance(viewedUserID, mProgramId, mRoomUserInfo)
-//                .setListener(() -> {
-//                    if (mGuardListDialog != null && mGuardListDialog.isAdded()) {
-//                        mGuardListDialog.dismiss();
-//                    }
-//                })
-//                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
-//                .setDimAmount(0)
-//                .setShowBottom(isShowBottom)
-//                .show(getSupportFragmentManager());
+    private SVGADynamicEntity requestImage(String avatar, String nickName) {
+        final SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
+        TextPaint textPaint = new TextPaint();
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(20);
+        dynamicEntity.setDynamicText(nickName, textPaint, "Bitmap6");
+        dynamicEntity.setDynamicText(mAnchorName, textPaint, "Bitmap7");
+        BitmapUtils.returnBitmap(avatar, new HttpCallBackListener() {
+            @Override
+            public void onFinish(Bitmap bitmap) {
+                dynamicEntity.setDynamicImage(BitmapUtils.getOvalBitmap(bitmap), "Bitmap8");
+            }
 
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
+        BitmapUtils.returnBitmap(mAnchorAvatar, new HttpCallBackListener() {
+            @Override
+            public void onFinish(Bitmap bitmap) {
+                dynamicEntity.setDynamicImage(BitmapUtils.getOvalBitmap(bitmap), "Bitmap10");
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
+        return dynamicEntity;
+    }
+
+
+    public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
         PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
                 .setListener(() -> {
                     if (mUserListDialog != null && mUserListDialog.isAdded()) {
@@ -1453,7 +1491,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
                         mGuardianDialog.dismiss();
                     }
-                    if(headlineDialog != null && headlineDialog.isAdded()){
+                    if (headlineDialog != null && headlineDialog.isAdded()) {
                         headlineDialog.dismiss();
                     }
                 })
@@ -1473,21 +1511,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0)
                 .show(getSupportFragmentManager());
-    }
-
-    private void hideGuard() {
-        hideGuardAnim = ObjectAnimator.ofFloat(rlGuardSuccess, "alpha", 1f, 0f);
-        hideGuardAnim.setDuration(3000);
-        hideGuardAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                rlGuardSuccess.setVisibility(View.VISIBLE);
-                hideGuardAnim = null;
-            }
-        });
-        hideGuardAnim.setStartDelay(3000);
-        hideGuardAnim.start();
     }
 
     @Override
@@ -1751,6 +1774,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .show(getSupportFragmentManager());
     }
 
+    /**
+     * 直播间头条轮播
+     *
+     * @param line
+     */
     private void setHeadLine(String[] line) {
         if (line == null || line.length == 0) {
             return;
@@ -1768,13 +1796,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         headLineView.setViews(views);
         headLineView.setOnItemClickListener((position, view) -> {
             if (0 == position) {
-//                if (mRankDialog != null && mRankDialog.isAdded()) {
-//                    return;
-//                }
-//                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
-//                        .setDimAmount(0)
-//                        .setShowBottom(true)
-//                        .show(getSupportFragmentManager());
                 headlineDialog = HeadlineDialog.newInstance(0, mProgramId)
                         .show(getSupportFragmentManager());
             } else {
