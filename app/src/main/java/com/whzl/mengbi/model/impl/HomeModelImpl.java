@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.HomeModel;
 import com.whzl.mengbi.model.entity.BannerInfo;
+import com.whzl.mengbi.model.entity.HeadlineTopInfo;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
@@ -95,6 +96,30 @@ public class HomeModelImpl implements HomeModel {
                             listenter.onError(liveShowInfo.getMsg());
                         }
 
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.e("onReqFailed" + errorMsg);
+                        listenter.onError(errorMsg);
+                    }
+                });
+    }
+
+    @Override
+    public void doHeadlineTop(OnHomeFinishedListener listenter) {
+        HashMap hashMap = new HashMap();
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.HEADLINE_TOP, RequestManager.TYPE_POST_JSON, hashMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        String jsonStr = result.toString();
+                        HeadlineTopInfo headlineTopInfo = JSON.parseObject(jsonStr, HeadlineTopInfo.class);
+                        if (headlineTopInfo.getCode() == 200) {
+                            listenter.onHeadlineTopSuccess(headlineTopInfo);
+                        } else {
+                            listenter.onError(headlineTopInfo.getMsg());
+                        }
                     }
 
                     @Override

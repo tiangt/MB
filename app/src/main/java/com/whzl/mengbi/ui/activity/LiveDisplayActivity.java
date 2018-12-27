@@ -662,7 +662,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         return width;
     }
 
-
     @Override
     protected void loadData() {
         mLivePresenter.getProgramFirst(mProgramId);
@@ -1097,7 +1096,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
         //头条榜单
-        mLivePresenter.getHeadlineRank(mAnchorId, "T");
+        mLivePresenter.getHeadlineRank(mAnchorId, "F");
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1348,9 +1347,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onGetHeadlineRankSuccess(HeadlineRankBean dataBean) {
         if (dataBean != null) {
             if (dataBean.rank < 0) {
-                mHeadlineRank = "万名之外";
+                mHeadlineRank = "未上榜";
             } else {
-                mHeadlineRank = String.valueOf(dataBean.rank);
+                mHeadlineRank = getString(R.string.headline_rank, dataBean.rank);
             }
             initHeadline();
         }

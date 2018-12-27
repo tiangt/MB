@@ -8,5 +8,7 @@ public interface HomePresenter {
 
     void getAnchorList(int pager);
 
+    void getHeadlineTop();
+
     void onDestroy();
 }

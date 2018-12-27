@@ -12,9 +12,20 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
+import com.whzl.mengbi.model.entity.WeekStarGiftInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +48,7 @@ public class WeekStarRuleFragment extends BaseFragment {
     TextView tvRich2;
 
     private BaseListAdapter mAdapter;
-    private int[] gifts = {R.drawable.shape_gradient_magenta, R.drawable.shape_gradient_red, R.drawable.shape_gradient_yellow};
+    private List<WeekStarGiftInfo.DataBean.ListBean> mListBean = new ArrayList<>();
 
     public static WeekStarRuleFragment newInstance() {
         WeekStarRuleFragment fragment = new WeekStarRuleFragment();
@@ -52,6 +63,7 @@ public class WeekStarRuleFragment extends BaseFragment {
     @Override
     public void init() {
         initRule();
+        loadData();
         initRecycler();
     }
 
@@ -92,7 +104,7 @@ public class WeekStarRuleFragment extends BaseFragment {
         mAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return 5;
+                return mListBean == null ? 0 : mListBean.size();
             }
 
             @Override
@@ -123,6 +135,32 @@ public class WeekStarRuleFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(int position) {
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), mListBean.get(position).goodsPic, ivGift);
         }
+    }
+
+    private void loadData() {
+        HashMap hashMap = new HashMap();
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.WEEKSTAR_GIFT, RequestManager.TYPE_POST_JSON, hashMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        WeekStarGiftInfo weekStarGiftInfo = GsonUtils.GsonToBean(result.toString(), WeekStarGiftInfo.class);
+                        if (weekStarGiftInfo.getCode() == 200) {
+                            if (weekStarGiftInfo != null && weekStarGiftInfo.getData() != null && weekStarGiftInfo.getData().getList() != null) {
+                                mListBean.clear();
+                                if (weekStarGiftInfo.getData().getList() != null) {
+                                    mListBean.addAll(weekStarGiftInfo.getData().getList());
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("onReqFailed" + errorMsg.toString());
+                    }
+                });
     }
 }

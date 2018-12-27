@@ -13,4 +13,5 @@ public interface HomeModel {
 
     void doAnchorList(int pager, OnHomeFinishedListener listenter);
 
+    void doHeadlineTop(OnHomeFinishedListener listenter);
 }

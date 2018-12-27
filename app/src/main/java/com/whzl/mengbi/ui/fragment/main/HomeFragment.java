@@ -22,6 +22,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.BannerInfo;
+import com.whzl.mengbi.model.entity.HeadlineTopInfo;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
 import com.whzl.mengbi.model.entity.LiveShowListInfo;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
@@ -38,6 +39,7 @@ import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
 import com.whzl.mengbi.ui.widget.recyclerview.SpaceItemDecoration;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
+import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.glide.RoundImageLoader;
@@ -82,6 +84,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private RelativeLayout rlTopThree;
     private RecyclerView topThreeRecycler;
     private BaseListAdapter topThreeAdapter;
+    private ArrayList<HeadlineTopInfo.DataBean.ListBean> mHeadlineList = new ArrayList<>();
 
     @Override
     protected void initEnv() {
@@ -112,6 +115,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
             mHomePresenter.getBanner();
             mHomePresenter.getRecommend();
             mHomePresenter.getAnchorList(mCurrentPager++);
+            mHomePresenter.getHeadlineTop();
         });
         refreshLayout.setOnLoadMoreListener(refreshLayout -> mHomePresenter.getAnchorList(mCurrentPager++));
     }
@@ -330,6 +334,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         mHomePresenter.getBanner();
         mHomePresenter.getRecommend();
         mHomePresenter.getAnchorList(mCurrentPager++);
+        mHomePresenter.getHeadlineTop();
     }
 
     @Override
@@ -394,6 +399,21 @@ public class HomeFragment extends BaseFragment implements HomeView {
         }
     }
 
+    @Override
+    public void showHeadlineTop(HeadlineTopInfo headlineTopInfo) {
+        if (headlineTopInfo != null && headlineTopInfo.getData() != null && headlineTopInfo.getData().getList() != null) {
+
+            if (headlineTopInfo.getData().getList().size() == 0) {
+                rlTopThree.setVisibility(View.GONE);
+            } else {
+                rlTopThree.setVisibility(View.VISIBLE);
+                mHeadlineList.clear();
+                mHeadlineList.addAll(headlineTopInfo.getData().getList());
+                topThreeAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
     /**
      * 头条前三
      */
@@ -402,10 +422,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
         layoutManage.setOrientation(LinearLayoutManager.HORIZONTAL);
         topThreeRecycler.setLayoutManager(layoutManage);
         topThreeRecycler.addItemDecoration(new SpacesItemDecoration(10));
-        topThreeAdapter = new BaseListAdapter(){
+        topThreeAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return 3;
+                return mHeadlineList == null ? 0 : mHeadlineList.size();
             }
 
             @Override
@@ -417,15 +437,19 @@ public class HomeFragment extends BaseFragment implements HomeView {
         topThreeRecycler.setAdapter(topThreeAdapter);
     }
 
-    class TopThreeViewHolder extends BaseViewHolder{
+    class TopThreeViewHolder extends BaseViewHolder {
+
+        @BindView(R.id.iv_top_avatar)
+        CircleImageView ivTopAvatar;
 
         public TopThreeViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override
         public void onBindViewHolder(int position) {
-
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), mHeadlineList.get(position).anchorAvatar, ivTopAvatar);
         }
     }
 

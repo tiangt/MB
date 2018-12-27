@@ -8,13 +8,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.model.entity.WeekStarListInfo;
+import com.whzl.mengbi.model.entity.WeekStarRankListBean;
+import com.whzl.mengbi.model.entity.WeekStarGiftInfo;
+import com.whzl.mengbi.model.entity.WeekStarRankInfo;
+import com.whzl.mengbi.presenter.impl.WeekStarPresenterImpl;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.ui.view.WeekStarListView;
+import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.util.ClickUtil;
+import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 
-import butterknife.BindInt;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,8 +37,7 @@ import butterknife.ButterKnife;
  * @author cliang
  * @date 2018.12.21
  */
-public class WeekStarListFragment extends BaseFragment {
-
+public class WeekStarListFragment extends BaseFragment implements WeekStarListView {
 
     @BindView(R.id.rl_week_star)
     RelativeLayout relativeLayout;
@@ -36,6 +48,7 @@ public class WeekStarListFragment extends BaseFragment {
 
     private static final int TYPE_RICH = 0xa01;
     private static final int TYPE_ANCHOR = 0xa02;
+    private WeekStarPresenterImpl mPresenterImpl;
     private String mType;
     private BaseListAdapter userAdapter;
     private RecyclerView rvWeekGift;
@@ -43,6 +56,9 @@ public class WeekStarListFragment extends BaseFragment {
     private BaseListAdapter anchorAdapter;
     private BaseListAdapter giftAdapter;
     private int[] gifts = {R.drawable.shape_gradient_magenta, R.drawable.shape_gradient_red, R.drawable.shape_gradient_yellow};
+    private List<WeekStarGiftInfo.DataBean.ListBean> mListBean = new ArrayList<>();
+    private ArrayList<WeekStarRankListBean.RankListBean> mAnchorList = new ArrayList<>();
+    private List<WeekStarRankListBean.RankListBean> mUserList = new ArrayList<>();
 
     public static WeekStarListFragment newInstance(String type) {
         Bundle args = new Bundle();
@@ -60,12 +76,23 @@ public class WeekStarListFragment extends BaseFragment {
     @Override
     public void init() {
         mType = getArguments().getString("weekType");
-        if ("T".equals(mType)) {
+        if ("F".equals(mType)) {
             rlGift.setVisibility(View.VISIBLE);
         } else {
             rlGift.setVisibility(View.GONE);
         }
+        loadData();
         initUserRecycler();
+    }
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        mPresenterImpl = new WeekStarPresenterImpl(this);
+    }
+
+    private void loadData() {
+        mPresenterImpl.getGiftList();
     }
 
     private void initUserRecycler() {
@@ -79,7 +106,7 @@ public class WeekStarListFragment extends BaseFragment {
         userAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return 5;
+                return mUserList == null ? 0 : mUserList.size();
             }
 
             @Override
@@ -111,7 +138,7 @@ public class WeekStarListFragment extends BaseFragment {
         giftAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return 5;
+                return mListBean == null ? 0 : mListBean.size();
             }
 
             @Override
@@ -123,7 +150,6 @@ public class WeekStarListFragment extends BaseFragment {
                 layoutParams.width = parentWidth / 3;
                 return viewHolder;
             }
-
 
         };
         rvWeekGift.setAdapter(giftAdapter);
@@ -139,7 +165,7 @@ public class WeekStarListFragment extends BaseFragment {
         anchorAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return 3;
+                return mAnchorList == null ? 0 : mAnchorList.size();
             }
 
             @Override
@@ -151,9 +177,61 @@ public class WeekStarListFragment extends BaseFragment {
         rvAnchor.setAdapter(anchorAdapter);
     }
 
+    @Override
+    public void showGiftList(WeekStarGiftInfo weekStarGiftInfo) {
+        if (weekStarGiftInfo != null && weekStarGiftInfo.getData() != null && weekStarGiftInfo.getData().getList() != null) {
+            if (weekStarGiftInfo.getData().getList() != null) {
+                mListBean.addAll(weekStarGiftInfo.getData().getList());
+                for (int i = 0; i < mListBean.size(); i++) {
+                    if (i == 0) {
+                        mPresenterImpl.getRankList(mListBean.get(i).giftType, mType);
+                        break;
+                    }
+                }
+                giftAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void showRankList(WeekStarRankInfo weekStarRankInfo) {
+        if (weekStarRankInfo != null && weekStarRankInfo.getData() != null) {
+            if (weekStarRankInfo.getData().getAnchor() != null) {
+                mAnchorList.clear();
+                if (weekStarRankInfo.getData().getAnchor().getRankList() != null) {
+                    mAnchorList.addAll(weekStarRankInfo.getData().getAnchor().getRankList());
+                    anchorAdapter.notifyDataSetChanged();
+                }
+            }
+
+            if (weekStarRankInfo.getData().getUser() != null) {
+                mUserList.clear();
+                if (weekStarRankInfo.getData().getUser().getRankList() != null) {
+                    mUserList.addAll(weekStarRankInfo.getData().getUser().getRankList());
+                    userAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onError(String msg) {
+
+    }
+
     class UserViewHolder extends BaseViewHolder {
 
         private final int type;
+        @BindView(R.id.tv_ranking)
+        TextView tvRank;
+        @BindView(R.id.tv_nick_name)
+        TextView tvNickName;
+        @BindView(R.id.iv_avatar)
+        CircleImageView ivAcatar;
+        @BindView(R.id.iv_level)
+        ImageView ivLevel;
+        @BindView(R.id.tv_value)
+        TextView tvValue;
 
         public UserViewHolder(View itemView, int type) {
             super(itemView);
@@ -165,8 +243,16 @@ public class WeekStarListFragment extends BaseFragment {
         public void onBindViewHolder(int position) {
             switch (type) {
                 case TYPE_ANCHOR:
+                    tvNickName.setText(mAnchorList.get(position).nickname);
+                    tvRank.setText(position + 1 + "");
+                    tvValue.setText(StringUtils.formatNumber(mAnchorList.get(position).value)+"个");
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), mAnchorList.get(position).avatar, ivAcatar);
                     break;
                 case TYPE_RICH:
+                    tvNickName.setText(mUserList.get(position).nickname);
+                    tvRank.setText(position + 1 + "");
+                    tvValue.setText(StringUtils.formatNumber(mUserList.get(position).value)+"个");
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), mUserList.get(position).avatar, ivAcatar);
                     break;
                 default:
                     break;
@@ -200,6 +286,16 @@ public class WeekStarListFragment extends BaseFragment {
                 rlGift.setBackgroundResource(gifts[1]);
             } else {
                 rlGift.setBackgroundResource(gifts[2]);
+            }
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), mListBean.get(position).goodsPic, ivGift);
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            String giftType = mListBean.get(position).giftType;
+            if (ClickUtil.isFastClick()) {
+                mPresenterImpl.getRankList(giftType, mType);
             }
         }
     }

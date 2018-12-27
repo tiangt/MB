@@ -657,6 +657,12 @@ public interface Api {
     Observable<ApiResult<RunWayValueBean>> getRunWayValue(@FieldMap Map<String, String> params);
 
 
+    /**
+     * 主播的头条排名
+     *
+     * @param params
+     * @return
+     */
     @POST("v1/rank/head-line-rank")
     @FormUrlEncoded
     Observable<ApiResult<HeadlineRankBean>> getHeadlineRank(@FieldMap Map<String, String> params);

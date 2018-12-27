@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
@@ -60,15 +61,18 @@ public class HeadlineListFragment extends BaseFragment {
     TextView tvCountdown;
     @BindView(R.id.tv_need_value)
     TextView tvNeedValue;
+    @BindView(R.id.rl_empty)
+    RelativeLayout rlEmpty;
 
     private BaseListAdapter mAdapter;
-    private String mType = "T"; //"T"本轮头条，"F"上轮头条，默认本轮
+    private String mType = "F"; //"F"本轮头条，"T"上轮头条，默认本轮
     private Disposable disposable;
     private int TOP_RANK = 0;
     private int OTHER_RANK = 1;
     private int[] rankIcons = new int[]{R.drawable.ic_headline_rank1, R.drawable.ic_headline_rank2, R.drawable.ic_headline_rank3};
     private Long userId;
-    private List<HeadlineListBean.DataBean.ListBean> mListData;
+    private List<HeadlineListBean.DataBean.ListBean> mListData = new ArrayList<>();
+    private int mLeftTime;
 
     public static HeadlineListFragment newInstance(String type) {
         Bundle args = new Bundle();
@@ -91,15 +95,14 @@ public class HeadlineListFragment extends BaseFragment {
     @Override
     public void init() {
         mType = getArguments().getString("lineType");
-        if ("T".equals(mType)) {
+        if ("F".equals(mType)) {
             rlGift.setVisibility(View.VISIBLE);
-            initCountdown();
         } else {
             rlGift.setVisibility(View.GONE);
         }
+        getData(mType);
         initRecycler();
         tvNeedValue.setText(getString(R.string.beyond_first, StringUtils.formatNumber(999999)));
-        getData(mType);
     }
 
     @OnClick({R.id.tv_click_gift})
@@ -125,7 +128,7 @@ public class HeadlineListFragment extends BaseFragment {
     private void getData(String type) {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("preRound", type);
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.HEADLINE_TOP, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.HEADLINE_LIST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 if (getContext() == null) {
@@ -133,11 +136,24 @@ public class HeadlineListFragment extends BaseFragment {
                 }
                 HeadlineListBean rankBean = GsonUtils.GsonToBean(result.toString(), HeadlineListBean.class);
                 if (rankBean.code == 200) {
-                    if (rankBean.data != null) {
-                        if (rankBean.data.list != null) {
+                    if (rankBean.data != null && rankBean.data.list != null) {
+                        if (rankBean.data.list.size() == 0) {
+                            rlEmpty.setVisibility(View.VISIBLE);
+                        } else {
+                            rlEmpty.setVisibility(View.GONE);
                             mListData.clear();
                             mListData.addAll(rankBean.data.list);
+                            mAdapter.notifyDataSetChanged();
                         }
+
+                        if ("F".equals(mType)) {
+                            tvCountdown.setVisibility(View.VISIBLE);
+                            mLeftTime = rankBean.data.leftTime;
+                            initCountdown(mLeftTime);
+                        }
+                    } else {
+                        rlEmpty.setVisibility(View.VISIBLE);
+                        Toast.makeText(getMyActivity(), "空", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -151,26 +167,22 @@ public class HeadlineListFragment extends BaseFragment {
     /**
      * 本轮剩余时间
      */
-    private void initCountdown() {
+    private void initCountdown(int time) {
         tvCountdown.setVisibility(View.VISIBLE);
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    if (20 - aLong <= 0) {
+                    if (time - aLong <= 0) {
                         tvCountdown.setText(getString(R.string.countdown, 0 + ""));
                         disposable.dispose();
                     } else {
-                        String strCountdown = StringUtils.formatLongToTimeStr(20 - aLong);
+                        String strCountdown = StringUtils.formatLongToTimeStr(time - aLong);
                         tvCountdown.setText(getString(R.string.countdown, strCountdown));
                     }
                 });
     }
 
     private void initRecycler() {
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            list.add(i + "");
-        }
         recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         recycler.setFocusableInTouchMode(false);
         recycler.setHasFixedSize(true);
@@ -183,7 +195,7 @@ public class HeadlineListFragment extends BaseFragment {
 
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                if (viewType == TOP_RANK && "L".equals(mType)) {
+                if (viewType == TOP_RANK && "T".equals(mType)) {
                     View topView = LayoutInflater.from(getActivity()).inflate(R.layout.item_head_top, parent, false);
                     return new TopViewHolder(topView);
                 } else {
@@ -202,7 +214,7 @@ public class HeadlineListFragment extends BaseFragment {
             }
         };
         recycler.setAdapter(mAdapter);
-//        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     class ViewHolder extends BaseViewHolder {
@@ -225,7 +237,7 @@ public class HeadlineListFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(int position) {
-            if ("T".equals(mType)) {
+            if ("F".equals(mType)) {
                 if (position < 3) {
                     tvRank.setBackgroundResource(rankIcons[position]);
                     tvRank.setText("");
@@ -238,7 +250,7 @@ public class HeadlineListFragment extends BaseFragment {
 
             GlideImageLoader.getInstace().displayImage(getMyActivity(), mListData.get(position).anchorAvatar, ivAvatar);
             tvNickName.setText(mListData.get(position).anchorNickname);
-            tvCharm.setText(StringUtils.formatNumber(mListData.get(position).score));
+            tvCharm.setText(StringUtils.formatNumber(mListData.get(position).score) + "魅力");
             int anchorLevelIcon = ResourceMap.getResourceMap().getAnchorLevelIcon(mListData.get(position).anchorLevelValue);
             ivLevel.setImageResource(anchorLevelIcon);
         }
@@ -260,12 +272,11 @@ public class HeadlineListFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(int position) {
-            if("F".equals(mType)){
-                GlideImageLoader.getInstace().displayImage(getMyActivity(), mListData.get(0).anchorAvatar, ivTopAvatar);
-                tvTopName.setText(mListData.get(0).anchorNickname);
-                tvTopCharm.setText(StringUtils.formatNumber(mListData.get(0).score));
-            }
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), mListData.get(0).anchorAvatar, ivTopAvatar);
+            tvTopName.setText(mListData.get(0).anchorNickname);
+            tvTopCharm.setText(StringUtils.formatNumber(mListData.get(0).score) + "魅力");
         }
+
     }
 
     @Override

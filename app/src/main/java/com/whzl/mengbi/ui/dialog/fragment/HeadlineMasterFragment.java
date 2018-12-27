@@ -39,8 +39,8 @@ public class HeadlineMasterFragment extends BaseFragment {
         titles.add("本轮头条");
         titles.add("上轮头条");
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(HeadlineListFragment.newInstance("T"));
         fragments.add(HeadlineListFragment.newInstance("F"));
+        fragments.add(HeadlineListFragment.newInstance("T"));
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         tabLayout.setupWithViewPager(viewPager);

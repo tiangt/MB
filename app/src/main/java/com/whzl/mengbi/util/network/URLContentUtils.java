@@ -218,5 +218,20 @@ public class URLContentUtils {
     /**
      * 主播头条排名榜单
      */
-    public static final String HEADLINE_TOP = "anchor/head-line-top-list";
+    public static final String HEADLINE_LIST = "v1/rank/head-line-rank-list";
+
+    /**
+     * 首页主播头条排名
+     */
+    public static final String HEADLINE_TOP = "v1/anchor/head-line-top-list";
+
+    /**
+     * 周星礼物列表
+     */
+    public static final String WEEKSTAR_GIFT = "v1/rank/week-star-gift-list";
+
+    /**
+     * 周星榜单
+     */
+    public static final String WEEKSTAR_RANK = "v1/rank/week-star-rank-list";
 }
