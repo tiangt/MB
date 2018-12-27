@@ -8,6 +8,8 @@ import com.whzl.mengbi.presenter.OnWeekStarFinishedListener;
 import com.whzl.mengbi.presenter.WeekStarPresenter;
 import com.whzl.mengbi.ui.view.WeekStarListView;
 
+import java.util.List;
+
 /**
  * @author cliang
  * @date 2018.12.27
@@ -42,8 +44,8 @@ public class WeekStarPresenterImpl implements WeekStarPresenter, OnWeekStarFinis
     }
 
     @Override
-    public void getRankList(String type, String preRound) {
-        weekStarModel.doRankList(type, preRound, this);
+    public void getRankList(String rankIds, String preRound) {
+        weekStarModel.doRankList(rankIds, preRound, this);
     }
 
     @Override

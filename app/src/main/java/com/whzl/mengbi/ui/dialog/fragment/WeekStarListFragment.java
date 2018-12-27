@@ -26,6 +26,7 @@ import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -59,6 +60,7 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
     private List<WeekStarGiftInfo.DataBean.ListBean> mListBean = new ArrayList<>();
     private ArrayList<WeekStarRankListBean.RankListBean> mAnchorList = new ArrayList<>();
     private List<WeekStarRankListBean.RankListBean> mUserList = new ArrayList<>();
+    private List<Integer> mRankList = new ArrayList<>();
 
     public static WeekStarListFragment newInstance(String type) {
         Bundle args = new Bundle();
@@ -184,7 +186,9 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
                 mListBean.addAll(weekStarGiftInfo.getData().getList());
                 for (int i = 0; i < mListBean.size(); i++) {
                     if (i == 0) {
-                        mPresenterImpl.getRankList(mListBean.get(i).giftType, mType);
+                        mRankList.add(mListBean.get(i).anchorRankId);
+                        mRankList.add(mListBean.get(i).userRankId);
+                        mPresenterImpl.getRankList(Arrays.toString(mRankList.toArray()), mType);
                         break;
                     }
                 }
@@ -295,7 +299,7 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
             super.onItemClick(view, position);
             String giftType = mListBean.get(position).giftType;
             if (ClickUtil.isFastClick()) {
-                mPresenterImpl.getRankList(giftType, mType);
+//                mPresenterImpl.getRankList(giftType, mType);
             }
         }
     }

@@ -11,6 +11,7 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author cliang
@@ -42,9 +43,9 @@ public class WeekStarModelImpl implements WeekStarModel {
     }
 
     @Override
-    public void doRankList(String type, String preRound, OnWeekStarFinishedListener listener) {
+    public void doRankList(String rankIds, String preRound, OnWeekStarFinishedListener listener) {
         HashMap hashMap = new HashMap();
-        hashMap.put("type", type);
+        hashMap.put("rankIdList", rankIds);
         hashMap.put("preRound", preRound);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.WEEKSTAR_RANK, RequestManager.TYPE_POST_JSON, hashMap,
                 new RequestManager.ReqCallBack<Object>() {

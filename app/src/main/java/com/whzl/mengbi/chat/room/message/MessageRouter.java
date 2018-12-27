@@ -15,6 +15,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.BroadCastAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.EverydayTaskAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.HeadlineAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LotteryAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftBigAction;
@@ -93,6 +94,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("WeekStarFirstNotify", new WeekStarAction());
         actionsMap.put("EVERY_DAY_TASK", new EverydayTaskAction());
         actionsMap.put("ANCHOR_WEEK_TASK", new AnchorWeekTaskAction());
+        actionsMap.put("HEADLINES_MSG", new HeadlineAction());
     }
 
     private void initChatAction() {

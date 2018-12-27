@@ -25,6 +25,8 @@ public class HeadlineListBean {
          */
 
         public int leftTime;
+        public int goodsId; //物品id(获取超越第一名的数据时需要)
+        public int rankId; //榜单id(获取超越第一名的数据时需要)
         public List<ListBean> list;
 
         public static class ListBean {

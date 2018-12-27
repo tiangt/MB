@@ -35,10 +35,12 @@ public class WeekStarGiftInfo extends ResponseInfo {
              * goodsName : 幸运520
              * goodsPic : https://localtest-img.mengbitv.com/app-img/week-star/37060.jpg
              */
-
             public String giftType;
             public String goodsName;
             public String goodsPic;
+            public int anchorRankId;
+            public int userRankId;
+            public int goodsId;
         }
     }
 }
