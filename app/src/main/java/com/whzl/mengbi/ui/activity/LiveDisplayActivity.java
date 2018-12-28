@@ -1823,10 +1823,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         headLineView.setViews(views);
         headLineView.setOnItemClickListener((position, view) -> {
             if (0 == position) {
-                headlineDialog = HeadlineDialog.newInstance(0, mProgramId)
+                headlineDialog = HeadlineDialog.newInstance(0, mProgramId, mAnchorId, mAnchorName, mAnchorAvatar)
                         .show(getSupportFragmentManager());
             } else {
-                headlineDialog = HeadlineDialog.newInstance(1, mProgramId)
+                headlineDialog = HeadlineDialog.newInstance(1, mProgramId, mAnchorId, mAnchorName, mAnchorAvatar)
                         .show(getSupportFragmentManager());
             }
         });

@@ -11,7 +11,5 @@ public interface WeekStarListView {
 
     void showGiftList(WeekStarGiftInfo weekStarGiftInfo);
 
-    void showRankList(WeekStarRankInfo weekStarRankInfo);
-
     void onError(String msg);
 }

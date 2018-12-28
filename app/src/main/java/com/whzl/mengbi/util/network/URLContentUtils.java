@@ -234,4 +234,14 @@ public class URLContentUtils {
      * 周星榜单
      */
     public static final String WEEKSTAR_RANK = "v1/rank/week-star-rank-list";
+
+    /**
+     * 获取排行榜主播超越第一名需要的萌币数和礼物数量
+     */
+    public static final String RANK_BEYOND_FIRST = "v1/rank/rank-list-beyond-first-val";
+
+    /**
+     *
+     */
+    public static final String GOODS_PRICE = "v1/goods/goods-price";
 }

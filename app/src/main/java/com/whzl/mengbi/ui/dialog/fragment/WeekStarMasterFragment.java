@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -25,8 +26,14 @@ public class WeekStarMasterFragment extends BaseFragment {
     @BindView(R.id.viewpager_week_star)
     ViewPager viewPager;
 
-    public static WeekStarMasterFragment newInstance(){
+    public static WeekStarMasterFragment newInstance(int anchorId, String nickName, String avatar, int programId) {
+        Bundle args = new Bundle();
+        args.putInt("anchorId", anchorId);
+        args.putString("nickName", nickName);
+        args.putString("avatar", avatar);
+        args.putInt("programId", programId);
         WeekStarMasterFragment fragment = new WeekStarMasterFragment();
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -37,13 +44,17 @@ public class WeekStarMasterFragment extends BaseFragment {
 
     @Override
     public void init() {
+        int anchorId = getArguments().getInt("anchorId", 0);
+        String nickName = getArguments().getString("nickName");
+        String avatar = getArguments().getString("avatar");
+        int programId = getArguments().getInt("programId");
         ArrayList<String> titles = new ArrayList<>();
         titles.add("本周");
         titles.add("上周");
         titles.add("规则");
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(WeekStarListFragment.newInstance("F"));
-        fragments.add(WeekStarListFragment.newInstance("T"));
+        fragments.add(WeekStarListFragment.newInstance("F", anchorId, nickName, avatar, programId));
+        fragments.add(WeekStarListFragment.newInstance("T", anchorId, nickName, avatar, programId));
         fragments.add(WeekStarRuleFragment.newInstance());
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));

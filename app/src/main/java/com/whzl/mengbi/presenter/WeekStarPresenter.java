@@ -10,7 +10,5 @@ public interface WeekStarPresenter {
 
     void getGiftList();
 
-    void getRankList(String rankIds, String preRound);
-
     void onDestroy();
 }

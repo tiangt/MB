@@ -11,7 +11,5 @@ public interface OnWeekStarFinishedListener {
 
     void onGiftListSuccess(WeekStarGiftInfo weekStarGiftInfo);
 
-    void onRankListSuccess(WeekStarRankInfo weekStarRankInfo);
-
     void onError(String msg);
 }

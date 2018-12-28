@@ -24,7 +24,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="您需要赠送 9999 个上头条"
                 android:gravity="center"
                 android:textSize="12sp"
                 android:textColor="@color/tran_black2"

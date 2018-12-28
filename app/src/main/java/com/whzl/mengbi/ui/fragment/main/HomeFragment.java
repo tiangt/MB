@@ -402,7 +402,6 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void showHeadlineTop(HeadlineTopInfo headlineTopInfo) {
         if (headlineTopInfo != null && headlineTopInfo.getData() != null && headlineTopInfo.getData().getList() != null) {
-
             if (headlineTopInfo.getData().getList().size() == 0) {
                 rlTopThree.setVisibility(View.GONE);
             } else {

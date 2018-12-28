@@ -371,6 +371,8 @@
     <string name="countdown">本轮剩余时间&#160;%1$s</string>
     <string name="beyond_first">超越第1名需要&#160;%1$s&#160;魅力</string>
     <string name="headline_rank">第%1$d名</string>
+    <string name="need_goods">您需要赠送&#160;%1$d&#160;个%2$s</string>
+    <string name="need_mengbi">花费&#160;%1$s&#160;萌币，才能超越第1名</string>
 
     <array name="new_task">
         <item>领取</item>

@@ -1,8 +1,10 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +15,10 @@ import android.widget.Toast;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.GoodsPriceInfo;
 import com.whzl.mengbi.model.entity.HeadlineListBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
+import com.whzl.mengbi.model.entity.RankBeyondInfo;
 import com.whzl.mengbi.model.entity.RoomRankBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -63,6 +67,14 @@ public class HeadlineListFragment extends BaseFragment {
     TextView tvNeedValue;
     @BindView(R.id.rl_empty)
     RelativeLayout rlEmpty;
+    @BindView(R.id.tv_own_ranking)
+    TextView tvRank;
+    @BindView(R.id.iv_own_avatar)
+    CircleImageView ivOwnAvatar;
+    @BindView(R.id.tv_nick_name)
+    TextView tvNickName;
+    @BindView(R.id.tv_charm_value)
+    TextView tvCharmValue;
 
     private BaseListAdapter mAdapter;
     private String mType = "F"; //"F"本轮头条，"T"上轮头条，默认本轮
@@ -73,14 +85,28 @@ public class HeadlineListFragment extends BaseFragment {
     private Long userId;
     private List<HeadlineListBean.DataBean.ListBean> mListData = new ArrayList<>();
     private int mLeftTime;
+    private int mGoodsId;
+    private int mRankId;
+    private int mAnchorId;
+    private String mNickName;
+    private String mAvatar;
+    private int needGifts;
+    private int mProgramId;
+    private int goodsRent;
+    private String goodsName;
 
-    public static HeadlineListFragment newInstance(String type) {
+    public static HeadlineListFragment newInstance(String type, int anchorId, String nickName, String avatar, int programId) {
         Bundle args = new Bundle();
         args.putString("lineType", type);
+        args.putInt("anchorId", anchorId);
+        args.putString("nickName", nickName);
+        args.putString("avatar", avatar);
+        args.putInt("programId", programId);
         HeadlineListFragment fragment = new HeadlineListFragment();
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public int getLayoutId() {
@@ -95,6 +121,10 @@ public class HeadlineListFragment extends BaseFragment {
     @Override
     public void init() {
         mType = getArguments().getString("lineType");
+        mAnchorId = getArguments().getInt("anchorId", 0);
+        mNickName = getArguments().getString("nickName");
+        mAvatar = getArguments().getString("avatar");
+        mProgramId = getArguments().getInt("programId");
         if ("F".equals(mType)) {
             rlGift.setVisibility(View.VISIBLE);
         } else {
@@ -102,7 +132,6 @@ public class HeadlineListFragment extends BaseFragment {
         }
         getData(mType);
         initRecycler();
-        tvNeedValue.setText(getString(R.string.beyond_first, StringUtils.formatNumber(999999)));
     }
 
     @OnClick({R.id.tv_click_gift})
@@ -115,7 +144,7 @@ public class HeadlineListFragment extends BaseFragment {
                         ((LiveDisplayActivity) getActivity()).login();
                         return;
                     }
-                    OneClickDialog.newInstance()
+                    OneClickDialog.newInstance(mProgramId, mAnchorId, mGoodsId, needGifts, userId, goodsRent, goodsName)
                             .setOutCancel(false)
                             .show(getChildFragmentManager());
                 }
@@ -149,11 +178,17 @@ public class HeadlineListFragment extends BaseFragment {
                         if ("F".equals(mType)) {
                             tvCountdown.setVisibility(View.VISIBLE);
                             mLeftTime = rankBean.data.leftTime;
+                            mGoodsId = rankBean.data.goodsId;
+                            mRankId = rankBean.data.rankId;
                             initCountdown(mLeftTime);
                         }
                     } else {
                         rlEmpty.setVisibility(View.VISIBLE);
                         Toast.makeText(getMyActivity(), "空", Toast.LENGTH_SHORT).show();
+                    }
+
+                    if (rankBean.data != null) {
+                        getBeyondFirst(mAnchorId, rankBean.data.goodsId, rankBean.data.rankId, "魅力");
                     }
                 }
             }
@@ -254,6 +289,14 @@ public class HeadlineListFragment extends BaseFragment {
             int anchorLevelIcon = ResourceMap.getResourceMap().getAnchorLevelIcon(mListData.get(position).anchorLevelValue);
             ivLevel.setImageResource(anchorLevelIcon);
         }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            if (getMyActivity() != null) {
+                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mListData.get(position).anchorId, true);
+            }
+        }
     }
 
     class TopViewHolder extends BaseViewHolder {
@@ -277,6 +320,95 @@ public class HeadlineListFragment extends BaseFragment {
             tvTopCharm.setText(StringUtils.formatNumber(mListData.get(0).score) + "魅力");
         }
 
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            if (getMyActivity() != null) {
+                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mListData.get(position).anchorId, true);
+            }
+        }
+    }
+
+    /**
+     * 获取物品价格
+     *
+     * @param goodsId
+     * @param diffScore
+     */
+    private void getNeedGoods(int goodsId, int diffScore) {
+        HashMap paramsMap = new HashMap<>();
+        paramsMap.put("goodsId", goodsId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GOODS_PRICE, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                GoodsPriceInfo goodsPriceInfo = GsonUtils.GsonToBean(result.toString(), GoodsPriceInfo.class);
+                if (goodsPriceInfo.getCode() == 200) {
+                    if (goodsPriceInfo.getData() != null) {
+                        goodsRent = goodsPriceInfo.getData().rent;
+                        goodsName = goodsPriceInfo.getData().goodsName;
+                        int anchorExp = goodsPriceInfo.getData().anchorExp;
+                        //需要的礼物个数
+                        needGifts = (diffScore / (goodsRent * anchorExp / 100)) + 1;
+                        //需要的魅力值
+                        int needValue = needGifts * (goodsRent * anchorExp / 100);
+                        tvNeedValue.setText("超越第1名需要");
+                        SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needValue), Color.parseColor("#000000"));
+                        tvNeedValue.append(ss);
+                        SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
+                        tvNeedValue.append(goods);
+                    }
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+            }
+        });
+    }
+
+    /**
+     * 一键超越
+     *
+     * @param userId
+     * @param goodsId
+     * @param rankId
+     * @param goodsName
+     */
+    private void getBeyondFirst(int userId, int goodsId, int rankId, String goodsName) {
+        HashMap paramsMap = new HashMap<>();
+        paramsMap.put("userId", userId);
+        paramsMap.put("goodsId", goodsId);
+        paramsMap.put("rankId", rankId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.RANK_BEYOND_FIRST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                RankBeyondInfo beyondInfo = GsonUtils.GsonToBean(result.toString(), RankBeyondInfo.class);
+                if (beyondInfo.getCode() == 200) {
+                    if (beyondInfo.data != null) {
+                        int selfScore = beyondInfo.data.selfScore;
+                        int topScore = beyondInfo.data.topScore;
+                        int rank = beyondInfo.data.rank;
+                        if (rank < 0) {
+                            tvRank.setText("未上榜");
+                            tvRank.setTextColor(Color.BLACK);
+                        } else {
+                            tvRank.setText(rank + "");
+                            tvRank.setTextColor(Color.RED);
+                        }
+                        tvCharmValue.setText(selfScore + "魅力");
+                        tvNickName.setText(mNickName);
+                        tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
+                        GlideImageLoader.getInstace().displayImage(getMyActivity(), mAvatar, ivOwnAvatar);
+                        int diff = topScore - selfScore;
+                        getNeedGoods(goodsId, diff);
+                    }
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+            }
+        });
     }
 
     @Override

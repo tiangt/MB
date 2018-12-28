@@ -32,20 +32,8 @@ public class WeekStarPresenterImpl implements WeekStarPresenter, OnWeekStarFinis
     }
 
     @Override
-    public void onRankListSuccess(WeekStarRankInfo weekStarRankInfo) {
-        if (weekStarListView != null) {
-            weekStarListView.showRankList(weekStarRankInfo);
-        }
-    }
-
-    @Override
     public void getGiftList() {
         weekStarModel.doGiftList(this);
-    }
-
-    @Override
-    public void getRankList(String rankIds, String preRound) {
-        weekStarModel.doRankList(rankIds, preRound, this);
     }
 
     @Override
