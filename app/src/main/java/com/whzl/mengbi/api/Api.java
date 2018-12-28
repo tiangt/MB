@@ -29,6 +29,8 @@ import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
+import com.whzl.mengbi.model.entity.PkRecordListBean;
+import com.whzl.mengbi.model.entity.PkTimeBean;
 import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RebateBean;
@@ -667,4 +669,23 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<HeadlineRankBean>> getHeadlineRank(@FieldMap Map<String, String> params);
 
+    /**
+     * 获取主播总的胜负平次数
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/pk-times")
+    @FormUrlEncoded
+    Observable<ApiResult<PkTimeBean>> getPkTimes(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取主播最近的pk记录
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/pk-record-list")
+    @FormUrlEncoded
+    Observable<ApiResult<PkRecordListBean>> getPkRecordList(@FieldMap Map<String, String> params);
 }

@@ -63,6 +63,7 @@ public class DrawLayoutControl {
             R.drawable.ic_welfare_draw_layout,
             R.drawable.ic_guard_draw_layout,
             R.drawable.ic_set_draw_layout,
+            R.drawable.ic_manage_draw_layout,
             R.drawable.ic_manage_draw_layout};
     private RecyclerView recommendRecycler;
     private BaseListAdapter recommendAdapter;
@@ -304,6 +305,13 @@ public class DrawLayoutControl {
                     break;
                 case 6:
                     activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
+                    break;
+                case 7:
+                    activity.startActivity(new Intent(activity, PkRecordActivity.class)
+                            .putExtra("anchorLever", ((LiveDisplayActivity) activity).anchorLevel)
+                            .putExtra("anchorName", ((LiveDisplayActivity) activity).mAnchorName)
+                            .putExtra("anchorId", ((LiveDisplayActivity) activity).mAnchorId)
+                            .putExtra("anchorAvatar", ((LiveDisplayActivity) activity).mAnchorAvatar));
                     break;
             }
         }
