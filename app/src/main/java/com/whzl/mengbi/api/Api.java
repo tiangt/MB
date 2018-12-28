@@ -11,6 +11,7 @@ import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.BillAwardBean;
 import com.whzl.mengbi.model.entity.BillGiftBean;
 import com.whzl.mengbi.model.entity.BillPayBean;
+import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.DailyTaskBean;
 import com.whzl.mengbi.model.entity.DemonCarBean;
@@ -29,6 +30,8 @@ import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
+import com.whzl.mengbi.model.entity.PkRecordListBean;
+import com.whzl.mengbi.model.entity.PkTimeBean;
 import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RebateBean;
@@ -667,4 +670,43 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<HeadlineRankBean>> getHeadlineRank(@FieldMap Map<String, String> params);
 
+    /**
+     * 获取主播总的胜负平次数
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/pk-times")
+    @FormUrlEncoded
+    Observable<ApiResult<PkTimeBean>> getPkTimes(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取主播最近的pk记录
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/pk-record-list")
+    @FormUrlEncoded
+    Observable<ApiResult<PkRecordListBean>> getPkRecordList(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取主播的小黑屋时间
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/block-room-time")
+    @FormUrlEncoded
+    Observable<ApiResult<BlackRoomTimeBean>> getRoomTime(@FieldMap Map<String, String> params);
+
+    /**
+     * 从小黑屋中解救主播
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/rescue")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> rescue(@FieldMap Map<String, String> params);
 }

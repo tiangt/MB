@@ -1,7 +1,5 @@
 package com.whzl.mengbi.ui.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -72,6 +69,7 @@ import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
+import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
@@ -97,7 +95,6 @@ import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
-import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -107,7 +104,6 @@ import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
-import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
@@ -126,7 +122,6 @@ import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
 import com.whzl.mengbi.ui.view.LiveView;
-import com.whzl.mengbi.ui.widget.loading.LoadingIndicatorView;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
@@ -141,7 +136,6 @@ import com.whzl.mengbi.ui.widget.view.WeekStarView;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BitmapUtils;
 import com.whzl.mengbi.util.ClickUtil;
-import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -149,8 +143,6 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.util.network.RequestManager;
-import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
 import com.youth.banner.Banner;
@@ -298,7 +290,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private GiftInfo mGiftData;
     private long mUserId;
     private BaseAwesomeDialog mGiftDialog;
-    private int mAnchorId;
+    public int mAnchorId;
     private int REQUEST_LOGIN = 120;
     private long coin;
     private GiftControl giftControl;
@@ -350,9 +342,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private DrawLayoutControl drawLayoutControl;
     private HeadlineControl control;
     private BaseAwesomeDialog headlineDialog;
-    private String mAnchorName;
-    private String mAnchorAvatar;
+    public String mAnchorName;
+    public String mAnchorAvatar;
     private String mHeadlineRank;
+    public int anchorLevel;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1060,6 +1053,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 fragment.setUpWithAnchor(mAnchor);
                 mAnchorName = mAnchor.getName();
                 mAnchorAvatar = mAnchor.getAvatar();
+                anchorLevel = LevelUtil.getAnchorLevel(mAnchor);
                 GlideImageLoader.getInstace().circleCropImage(this, mAnchor.getAvatar(), ivHostAvatar);
 
                 tvHostName.setText(mAnchor.getName());
@@ -1766,7 +1760,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void setDateSourceForPlayer2(String stream) {
         pkStream = stream;
         try {
-            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, false);
+            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, true);
             if (pkVoice) {
                 textureView2.setVolume(1, 1);
             } else {
@@ -1782,7 +1776,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LivePkEvent event) {
         if (textureView2 != null && textureView2.isPlaying()) {
-            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, false);
+            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, true);
             if (pkVoice) {
                 textureView2.setVolume(1, 1);
             } else {

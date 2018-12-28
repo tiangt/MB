@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.FromJson;
+import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -130,7 +131,7 @@ public class LevelUtil {
         int originHeight = levelIconDrawable.getIntrinsicHeight();
         float dpHeight = ImageUrl.IMAGE_HIGHT;
         float dpWidth = originWidth * dpHeight / originHeight;
-        levelIconDrawable.setBounds(0, 0, UIUtil.sp2px(context,dpWidth), UIUtil.sp2px(context,dpHeight));
+        levelIconDrawable.setBounds(0, 0, UIUtil.sp2px(context, dpWidth), UIUtil.sp2px(context, dpHeight));
         ImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
         levelIcon.setSpan(imageSpan, 0, levelIcon.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -161,7 +162,7 @@ public class LevelUtil {
             int originHeight = drawable.getIntrinsicHeight();
             float dpHeight = 14;
             float dpWidth = originWidth * dpHeight / originHeight;
-            drawable.setBounds(0, 0, UIUtil.sp2px(context,dpWidth), UIUtil.sp2px(context,dpHeight));
+            drawable.setBounds(0, 0, UIUtil.sp2px(context, dpWidth), UIUtil.sp2px(context, dpHeight));
             ImageSpan span = new CenterAlignImageSpan(drawable);
             levelIcon.setSpan(span, 0, levelIcon.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
@@ -214,5 +215,22 @@ public class LevelUtil {
         levelIcon.setSpan(imageSpan, 0, levelIcon.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return levelIcon;
+    }
+
+    public static int getAnchorLevel(RoomInfoBean.DataBean.AnchorBean level) {
+        if (level == null) {
+            return -1;
+        }
+        List<RoomInfoBean.DataBean.AnchorBean.LevelBean> levelBeans = level.getLevel();
+        if (levelBeans == null) {
+            return -1;
+        }
+        for (RoomInfoBean.DataBean.AnchorBean.LevelBean bean : levelBeans) {
+            if (bean.getLevelType().equals("ANCHOR_LEVEL")) {
+                int levelVal = bean.getLevelValue();
+                return levelVal;
+            }
+        }
+        return -1;
     }
 }

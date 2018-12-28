@@ -323,6 +323,7 @@
             android:theme="@style/TransparentTheme" />
         <activity android:name=".ui.activity.BuySuccubusActivity" />
 
-        <activity android:name=".ui.activity.PersonalInfoActivity"/>
+        <activity android:name=".ui.activity.PersonalInfoActivity" />
+        <activity android:name=".ui.activity.PkRecordActivity" />
     </application>
 </manifest>
