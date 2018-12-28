@@ -406,10 +406,10 @@
         <item>商城</item>
         <item>背包</item>
         <item>福利</item>
+        <item>战绩</item>
         <item>守护</item>
         <item>设置</item>
         <item>客服</item>
-        <item>PK战绩</item>
     </array>
 
     <string name="history_record">最近%1$d条记录</string>

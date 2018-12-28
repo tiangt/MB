@@ -612,7 +612,7 @@ public class PkControl {
         try {
             ksyTextureView.stop();
             ksyTextureView.reset();
-            boolean pkVoice = (boolean) SPUtils.get(context, SpConfig.PK_VIOCE_LIVE, false);
+            boolean pkVoice = (boolean) SPUtils.get(context, SpConfig.PK_VIOCE_LIVE, true);
             if (pkVoice) {
                 ksyTextureView.setVolume(1, 1);
             } else {
@@ -629,7 +629,7 @@ public class PkControl {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LivePkEvent event) {
         if (ksyTextureView != null && ksyTextureView.isPlaying()) {
-            boolean pkVoice = (boolean) SPUtils.get(context, SpConfig.PK_VIOCE_LIVE, false);
+            boolean pkVoice = (boolean) SPUtils.get(context, SpConfig.PK_VIOCE_LIVE, true);
             if (pkVoice) {
                 ksyTextureView.setVolume(1, 1);
             } else {

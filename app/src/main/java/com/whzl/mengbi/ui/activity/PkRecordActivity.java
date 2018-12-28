@@ -3,12 +3,14 @@ package com.whzl.mengbi.ui.activity;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
@@ -74,6 +76,8 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
     TextView tvStateBlack;
     @BindView(R.id.ll_state_black)
     LinearLayout llStateBlack;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     private int anchorLever;
     private int anchorId;
     private String anchorName;
@@ -234,7 +238,17 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
     @Override
     protected void onToolbarMenuClick() {
         super.onToolbarMenuClick();
-        ToastUtils.showToast("s");
+        showPopWindow();
+    }
+
+
+    private void showPopWindow() {
+        View popView = getLayoutInflater().inflate(R.layout.popwindow_pk_record, null);
+        PopupWindow popupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+        popupWindow.showAsDropDown(toolbar, 0, -UIUtil.dip2px(PkRecordActivity.this, 8));
     }
 
     @Override

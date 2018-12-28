@@ -61,9 +61,9 @@ public class DrawLayoutControl {
             R.drawable.ic_shop_draw_layout,
             R.drawable.ic_pack_draw_layout,
             R.drawable.ic_welfare_draw_layout,
+            R.drawable.ic_pk_draw_layout,
             R.drawable.ic_guard_draw_layout,
             R.drawable.ic_set_draw_layout,
-            R.drawable.ic_manage_draw_layout,
             R.drawable.ic_manage_draw_layout};
     private RecyclerView recommendRecycler;
     private BaseListAdapter recommendAdapter;
@@ -187,7 +187,7 @@ public class DrawLayoutControl {
     }
 
     private void initSwitch() {
-        switchVoice.setChecked((boolean) SPUtils.get(activity, SpConfig.PK_VIOCE_LIVE, false));
+        switchVoice.setChecked((boolean) SPUtils.get(activity, SpConfig.PK_VIOCE_LIVE, true));
         switchVoice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -298,21 +298,21 @@ public class DrawLayoutControl {
                             .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
                     break;
                 case 4:
-                    ((LiveDisplayActivity) activity).showGuardDialog();
-                    break;
-                case 5:
-                    activity.startActivity(new Intent(activity, SettingActivity.class));
-                    break;
-                case 6:
-                    activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
-                    break;
-                case 7:
                     activity.startActivity(new Intent(activity, PkRecordActivity.class)
                             .putExtra("anchorLever", ((LiveDisplayActivity) activity).anchorLevel)
                             .putExtra("anchorName", ((LiveDisplayActivity) activity).mAnchorName)
                             .putExtra("anchorId", ((LiveDisplayActivity) activity).mAnchorId)
                             .putExtra("anchorAvatar", ((LiveDisplayActivity) activity).mAnchorAvatar));
                     break;
+                case 5:
+                ((LiveDisplayActivity) activity).showGuardDialog();
+                break;
+                case 6:
+                activity.startActivity(new Intent(activity, SettingActivity.class));
+                break;
+                case 7:
+                activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
+                break;
             }
         }
     }

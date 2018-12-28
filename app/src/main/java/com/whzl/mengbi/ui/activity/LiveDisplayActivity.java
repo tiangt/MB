@@ -1760,7 +1760,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void setDateSourceForPlayer2(String stream) {
         pkStream = stream;
         try {
-            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, false);
+            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, true);
             if (pkVoice) {
                 textureView2.setVolume(1, 1);
             } else {
@@ -1776,7 +1776,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LivePkEvent event) {
         if (textureView2 != null && textureView2.isPlaying()) {
-            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, false);
+            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, true);
             if (pkVoice) {
                 textureView2.setVolume(1, 1);
             } else {
