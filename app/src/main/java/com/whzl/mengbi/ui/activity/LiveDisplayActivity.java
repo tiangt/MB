@@ -352,6 +352,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public String mAnchorAvatar;
     private String mHeadlineRank;
     public int anchorLevel;
+    private Disposable headlineDisposable;
     private int totalHours;
     private Disposable blackRoomDisposable;
 
@@ -1104,6 +1105,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         //头条榜单
         mLivePresenter.getHeadlineRank(mAnchorId, "F");
         mLivePresenter.getBlackRoomTime(mAnchorId);
+        headlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            mLivePresenter.getHeadlineRank(mAnchorId, "F");
+        });
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1672,6 +1676,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (blackRoomDisposable != null) {
             blackRoomDisposable.dispose();
+        }
+        if(headlineDisposable != null){
+            headlineDisposable.dispose();
         }
     }
 
