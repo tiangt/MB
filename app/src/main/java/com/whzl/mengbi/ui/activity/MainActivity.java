@@ -21,6 +21,7 @@ import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
+import com.whzl.mengbi.ui.dialog.QuitAppDialog;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
@@ -67,7 +68,7 @@ public class MainActivity extends BaseActivity {
     private Fragment[] fragments;
     private int currentSelectedIndex = 0;
     private ProgressDialog progressDialog;
-    private boolean isExit;
+    public boolean isExit;
     private AwesomeDialog awesomeDialog;
 
     @Override

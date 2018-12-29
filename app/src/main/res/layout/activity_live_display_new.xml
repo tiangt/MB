@@ -53,8 +53,8 @@
                                 android:layout_width="50dp"
                                 android:layout_height="13dp"
                                 android:layout_marginLeft="6dp"
-                                android:layout_marginRight="6dp"
                                 android:layout_marginTop="3dp"
+                                android:layout_marginRight="6dp"
                                 android:textSize="11sp" />
 
 
@@ -63,10 +63,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
-                                android:layout_marginBottom="2dp"
                                 android:layout_marginLeft="6dp"
-                                android:layout_marginRight="6dp"
                                 android:layout_marginTop="6.5dp"
+                                android:layout_marginRight="6dp"
+                                android:layout_marginBottom="2dp"
                                 android:singleLine="true"
                                 android:textColor="@color/white"
                                 android:textSize="10sp" />
@@ -196,8 +196,8 @@
                             android:id="@+id/tv_run_way_gift"
                             android:layout_width="1000dp"
                             android:layout_height="20dp"
-                            android:layout_marginBottom="2dp"
                             android:layout_marginLeft="5dp"
+                            android:layout_marginBottom="2dp"
                             android:gravity="center_vertical"
                             android:singleLine="true"
                             android:textSize="12sp" />
@@ -333,6 +333,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:visibility="gone" />
+
+                    <com.opensource.svgaplayer.SVGAImageView
+                        android:id="@+id/svga_gift"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        app:autoPlay="true"/>
 
                     <LinearLayout
                         android:id="@+id/ll_gift_container"
@@ -660,6 +667,7 @@
             android:layout_height="350dp"
             android:layout_centerInParent="true"
             android:scaleType="fitCenter"
+            android:visibility="gone"
             app:autoPlay="true" />
 
     </RelativeLayout>

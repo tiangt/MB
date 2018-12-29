@@ -210,7 +210,7 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
     }
 
     private void setTopInfo() {
-        if (tvRank != null && tvNeedValue != null) {
+        if (tvRank != null && tvNeedValue != null && tvValue != null) {
             tvRank.setText(1 + "");
             tvRank.setTextColor(Color.RED);
             tvValue.setText(needGifts + selfScore + "个");
@@ -485,7 +485,7 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
                         selfScore = beyondInfo.data.selfScore;
                         topScore = beyondInfo.data.topScore;
                         int rank = beyondInfo.data.rank;
-                        if (tvRank != null) {
+                        if (tvRank != null && tvNickName != null && tvValue != null) {
                             if (rank < 0) {
                                 tvRank.setText("未上榜");
                                 tvRank.setTextColor(Color.BLACK);
