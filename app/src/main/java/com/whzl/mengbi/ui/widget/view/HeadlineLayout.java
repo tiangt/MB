@@ -17,7 +17,8 @@ public class HeadlineLayout extends RelativeLayout {
 
     private Context mContext;
     private View mView;
-    private TextView tvHeadline;
+    public TextView tvNameHeadline;
+    public TextView tvNumHeadline;
 
     public HeadlineLayout(Context context) {
         super(context);
@@ -37,15 +38,13 @@ public class HeadlineLayout extends RelativeLayout {
         init(context);
     }
 
-    public TextView getTextView(){
-        return tvHeadline;
-    }
 
     private void init(Context context) {
         LayoutInflater from = LayoutInflater.from(context);
         mView = from.inflate(R.layout.layout_headline, this, false);
         addView(mView);
-        tvHeadline = mView.findViewById(R.id.tv_headline_info);
+        tvNameHeadline = mView.findViewById(R.id.tv_name_headline_info);
+        tvNumHeadline = mView.findViewById(R.id.tv_num_headline_info);
     }
 
 

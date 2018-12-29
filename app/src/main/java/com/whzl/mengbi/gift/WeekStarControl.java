@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.message.events.WeekHeadEvent;
 import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.WeekStarJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
@@ -44,22 +45,22 @@ public class WeekStarControl {
         this.tvEnter = tvEnter;
     }
 
-    private List<WeekStarEvent> list = new ArrayList<>();
+    private List<WeekHeadEvent> list = new ArrayList<>();
 
     private boolean isPlay = false;
 
-    public void showEnter(WeekStarEvent welcomeMsg) {
+    public void showEnter(WeekHeadEvent welcomeMsg) {
         list.add(welcomeMsg);
         if (!isPlay && list.size() != 0) {
             startAnimal();
         }
-
     }
 
     private void startAnimal() {
         isPlay = true;
         flEnter.setVisibility(View.VISIBLE);
-        initTv(list.get(0));
+        WeekHeadEvent weekHeadEvent = list.get(0);
+        weekHeadEvent.init(tvEnter);
         tvEnter.init();
         GlideImageLoader.getInstace().loadOneTimeGif(context, R.drawable.bg_zhouxing, ivEnter, new GlideImageLoader.GifListener2() {
             @Override
@@ -75,17 +76,17 @@ public class WeekStarControl {
         });
     }
 
-    private void initTv(WeekStarEvent weekStarEvent) {
-        if (weekStarEvent.weekStarJson != null) {
-            WeekStarJson.ContextBean bean = weekStarEvent.weekStarJson.context;
-            tvEnter.setText(LevelUtil.getImageResourceSpanByHeight(this.context, R.drawable.ic_week_star_play, 12));
-            tvEnter.append(" 恭喜 ");
-            tvEnter.append(bean.nickName);
-            tvEnter.append(" 在周星礼物 ");
-            tvEnter.append(bean.giftName);
-            tvEnter.append(" 争夺中，上升到第一名");
-        }
-    }
+//    private void initTv(WeekStarEvent weekStarEvent) {
+//        if (weekStarEvent.weekStarJson != null) {
+//            WeekStarJson.ContextBean bean = weekStarEvent.weekStarJson.context;
+//            tvEnter.setText(LevelUtil.getImageResourceSpanByHeight(this.context, R.drawable.ic_week_star_play, 12));
+//            tvEnter.append(" 恭喜 ");
+//            tvEnter.append(bean.nickName);
+//            tvEnter.append(" 在周星礼物 ");
+//            tvEnter.append(bean.giftName);
+//            tvEnter.append(" 争夺中，上升到第一名");
+//        }
+//    }
 
     private void outAnim() {
         list.remove(0);

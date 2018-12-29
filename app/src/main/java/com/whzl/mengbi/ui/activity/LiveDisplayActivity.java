@@ -47,6 +47,7 @@ import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
 import com.whzl.mengbi.chat.room.message.events.EverydayEvent;
 import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
+import com.whzl.mengbi.chat.room.message.events.HeadLineEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
@@ -78,6 +79,7 @@ import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
+import com.whzl.mengbi.gift.HeadLineControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.PkControl;
 import com.whzl.mengbi.gift.RoyalEnterControl;
@@ -346,7 +348,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseFullScreenDialog mUserListDialog;
     private String mRanking;
     private DrawLayoutControl drawLayoutControl;
-    private HeadlineControl control;
     private BaseAwesomeDialog headlineDialog;
     public String mAnchorName;
     public String mAnchorAvatar;
@@ -355,6 +356,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Disposable headlineDisposable;
     private int totalHours;
     private Disposable blackRoomDisposable;
+    private HeadLineControl headLineControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1385,7 +1387,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         blackRoomDisposable = Observable.interval(0, 60, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((Long aLong) -> {
-                    LogUtils.e("pkAction   " + aLong * 60);
                     double v = (dataBean.time - aLong * 60) / 60 / 60;
                     totalHours = (int) Math.ceil(v);
                     if (totalHours <= 0) {
@@ -1677,8 +1678,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (blackRoomDisposable != null) {
             blackRoomDisposable.dispose();
         }
-        if(headlineDisposable != null){
+        if (headlineDisposable != null) {
             headlineDisposable.dispose();
+        }
+        if (headLineControl != null) {
+            headLineControl.destroy();
         }
     }
 
@@ -1789,6 +1793,25 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         weekStarControl.showEnter(weekStarEvent);
         if (weekRankFragment != null) {
             weekRankFragment.loaddata();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(HeadLineEvent event) {
+        if (event.headLineJson.context.programId == mProgramId) {
+            if (headLineControl == null) {
+                headLineControl = new HeadLineControl(hlLayout);
+            }
+            headLineControl.load(event);
+            if (event.headLineJson.context.rank == 1) {
+                if (weekStarControl == null) {
+                    weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+                    weekStarControl.setTvEnter(wsvWeekstar);
+                    weekStarControl.setIvEnter(ivWeekstar);
+                    weekStarControl.setRlEnter(rlWeekstar);
+                }
+                weekStarControl.showEnter(event);
+            }
         }
     }
 

@@ -404,7 +404,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                     <android.support.design.widget.CoordinatorLayout
                         android:layout_width="match_parent"
@@ -452,22 +452,23 @@
                         android:layout_marginBottom="20dp"
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <ImageView
                             android:id="@+id/iv_enter_car"
                             android:layout_width="64dp"
                             android:layout_height="40dp"
-                            android:scaleType="fitEnd" />
+                            android:scaleType="fitEnd"
+                            android:visibility="gone"/>
 
                         <android.support.constraint.ConstraintLayout
                             android:id="@+id/cl_entenr"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="4dp"
+                            android:paddingBottom="6dp"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:paddingTop="3dp">
+                            android:paddingTop="4dp">
 
                             <com.whzl.mengbi.ui.widget.view.RoyalEnterView
                                 android:id="@+id/tv_enter"
