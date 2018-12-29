@@ -101,6 +101,9 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
     private int needGifts;
     private int mProgramId;
     private int mGoodsId;
+    private ArrayList<Boolean> isCheck = new ArrayList<>();
+    private int selfScore;
+    private int topScore;
 
     public static WeekStarListFragment newInstance(String type, int anchorId, String nickName, String avatar, int programId) {
         Bundle args = new Bundle();
@@ -191,12 +194,30 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
                         return;
                     }
                     OneClickDialog.newInstance(mProgramId, mAnchorId, mGoodsId, needGifts, userId, goodsRent, goodsName)
+                            .setListener(new OneClickDialog.OnClickListener() {
+                                @Override
+                                public void onSendSuccess() {
+                                    setTopInfo();
+                                }
+                            })
                             .setOutCancel(false)
                             .show(getChildFragmentManager());
                 }
                 break;
             default:
                 break;
+        }
+    }
+
+    private void setTopInfo() {
+        if (tvRank != null && tvNeedValue != null) {
+            tvRank.setText(1 + "");
+            tvRank.setTextColor(Color.RED);
+            tvValue.setText(needGifts + selfScore + "个");
+            tvNeedValue.setText("超越第1名需要");
+            tvNeedValue.append(0 + "");
+            SpannableString goods = StringUtils.spannableStringColor("个" + goodsName, Color.parseColor("#70000000"));
+            tvNeedValue.append(goods);
         }
     }
 
@@ -252,14 +273,19 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
     public void showGiftList(WeekStarGiftInfo weekStarGiftInfo) {
         if (weekStarGiftInfo != null && weekStarGiftInfo.getData() != null && weekStarGiftInfo.getData().getList() != null) {
             if (weekStarGiftInfo.getData().getList() != null) {
-                mListBean.addAll(weekStarGiftInfo.getData().getList());
+                for (int j = 0; j < weekStarGiftInfo.getData().getList().size(); j++) {
+                    mListBean.add(weekStarGiftInfo.getData().getList().get(j));
+                    isCheck.add(false);
+                }
                 for (int i = 0; i < mListBean.size(); i++) {
                     if (i == 0) {
                         mAnchorRankId = mListBean.get(i).anchorRankId;
                         mUserRankId = mListBean.get(i).userRankId;
                         loadRankList(mAnchorRankId, mUserRankId, mType);
                         mGoodsId = mListBean.get(i).goodsId;
-                        getBeyondFirst(mAnchorId, mListBean.get(i).goodsId, mListBean.get(i).anchorRankId, mListBean.get(i).goodsName);
+                        if ("F".equals(mType)) {
+                            getBeyondFirst(mAnchorId, mListBean.get(i).goodsId, mListBean.get(i).anchorRankId, mListBean.get(i).goodsName);
+                        }
                         break;
                     }
                 }
@@ -277,7 +303,7 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
 
         private final int type;
         @BindView(R.id.tv_ranking)
-        TextView tvRank;
+        TextView tvRanking;
         @BindView(R.id.tv_nick_name)
         TextView tvNickName;
         @BindView(R.id.iv_avatar)
@@ -285,7 +311,7 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
         @BindView(R.id.iv_level)
         ImageView ivLevel;
         @BindView(R.id.tv_value)
-        TextView tvValue;
+        TextView tvUserValue;
 
         public UserViewHolder(View itemView, int type) {
             super(itemView);
@@ -298,16 +324,16 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
             switch (type) {
                 case TYPE_ANCHOR:
                     tvNickName.setText(mAnchorList.get(position).nickname);
-                    tvRank.setText(position + 1 + "");
-                    tvValue.setText(StringUtils.formatNumber(mAnchorList.get(position).value) + "个");
+                    tvRanking.setText(position + 1 + "");
+                    tvUserValue.setText(StringUtils.formatNumber(mAnchorList.get(position).value) + "个");
                     GlideImageLoader.getInstace().displayImage(getMyActivity(), mAnchorList.get(position).avatar, ivAvatar);
                     ivLevel.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(mAnchorList.get(position).getUserLevelMap().ANCHOR_LEVEL));
                     break;
 
                 case TYPE_RICH:
                     tvNickName.setText(mUserList.get(position).nickname);
-                    tvRank.setText(position + 1 + "");
-                    tvValue.setText(StringUtils.formatNumber(mUserList.get(position).value) + "个");
+                    tvRanking.setText(position + 1 + "");
+                    tvUserValue.setText(StringUtils.formatNumber(mUserList.get(position).value) + "个");
                     GlideImageLoader.getInstace().displayImage(getMyActivity(), mUserList.get(position).avatar, ivAvatar);
                     ivLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(mUserList.get(position).getUserLevelMap().USER_LEVEL));
                     break;
@@ -340,7 +366,7 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
     class GiftViewHolder extends BaseViewHolder {
 
         @BindView(R.id.rl_week_gift)
-        RelativeLayout rlGift;
+        RelativeLayout rlWeekGift;
         @BindView(R.id.iv_week_gift)
         ImageView ivGift;
 
@@ -357,12 +383,16 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
             } else {
                 remainder = position % 3;
             }
-            if (0 == remainder) {
-                rlGift.setBackgroundResource(gifts[0]);
-            } else if (1 == remainder) {
-                rlGift.setBackgroundResource(gifts[1]);
+            if (isCheck.get(position)) {
+                if (0 == remainder) {
+                    rlWeekGift.setBackgroundResource(gifts[0]);
+                } else if (1 == remainder) {
+                    rlWeekGift.setBackgroundResource(gifts[1]);
+                } else {
+                    rlWeekGift.setBackgroundResource(gifts[2]);
+                }
             } else {
-                rlGift.setBackgroundResource(gifts[2]);
+                rlWeekGift.setBackgroundColor(Color.WHITE);
             }
             GlideImageLoader.getInstace().displayImage(getMyActivity(), mListBean.get(position).goodsPic, ivGift);
         }
@@ -370,15 +400,21 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
+            for (int i = 0; i < isCheck.size(); i++) {
+                isCheck.set(i, false);
+            }
+            isCheck.set(position, true);
             mAnchorRankId = mListBean.get(position).anchorRankId;
             mUserRankId = mListBean.get(position).userRankId;
             if (ClickUtil.isFastClick()) {
-                Toast.makeText(getMyActivity(), mListBean.get(position).goodsName, Toast.LENGTH_SHORT).show();
                 //点击更换RankList
                 loadRankList(mAnchorRankId, mUserRankId, mType);
                 mGoodsId = mListBean.get(position).goodsId;
-                getBeyondFirst(mAnchorId, mListBean.get(position).goodsId, mListBean.get(position).anchorRankId, mListBean.get(position).goodsName);
+                if ("F".equals(mType)) {
+                    getBeyondFirst(mAnchorId, mListBean.get(position).goodsId, mListBean.get(position).anchorRankId, mListBean.get(position).goodsName);
+                }
             }
+            giftAdapter.notifyDataSetChanged();
         }
     }
 
@@ -446,22 +482,24 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
                 RankBeyondInfo beyondInfo = GsonUtils.GsonToBean(result.toString(), RankBeyondInfo.class);
                 if (beyondInfo.getCode() == 200) {
                     if (beyondInfo.data != null) {
-                        int selfScore = beyondInfo.data.selfScore;
-                        int topScore = beyondInfo.data.topScore;
+                        selfScore = beyondInfo.data.selfScore;
+                        topScore = beyondInfo.data.topScore;
                         int rank = beyondInfo.data.rank;
-                        if (rank < 0) {
-                            tvRank.setText("未上榜");
-                            tvRank.setTextColor(Color.BLACK);
-                        } else {
-                            tvRank.setText(rank + "");
-                            tvRank.setTextColor(Color.RED);
+                        if (tvRank != null) {
+                            if (rank < 0) {
+                                tvRank.setText("未上榜");
+                                tvRank.setTextColor(Color.BLACK);
+                            } else {
+                                tvRank.setText(rank + "");
+                                tvRank.setTextColor(Color.RED);
+                            }
+                            tvValue.setText(selfScore + "个");
+                            tvNickName.setText(mNickName);
+                            tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
+                            GlideImageLoader.getInstace().displayImage(getMyActivity(), mAvatar, ivOwnAvatar);
+                            int diff = topScore - selfScore;
+                            getNeedGoods(goodsId, diff);
                         }
-                        tvValue.setText(selfScore+"个");
-                        tvNickName.setText(mNickName);
-                        tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
-                        GlideImageLoader.getInstace().displayImage(getMyActivity(), mAvatar, ivOwnAvatar);
-                        int diff = topScore - selfScore;
-                        getNeedGoods(goodsId, diff);
                     }
                 }
             }
@@ -491,14 +529,19 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
                         goodsName = goodsPriceInfo.getData().goodsName;
                         int anchorExp = goodsPriceInfo.getData().anchorExp;
                         //需要的礼物个数
-                        needGifts = (diffScore / (goodsRent * anchorExp / 100)) + 1;
-                        //需要的魅力值
-                        int needValue = needGifts * (goodsRent * anchorExp / 100);
-                        tvNeedValue.setText("超越第1名需要");
-                        SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needGifts), Color.parseColor("#000000"));
-                        tvNeedValue.append(ss);
-                        SpannableString goods = StringUtils.spannableStringColor("个" + goodsName, Color.parseColor("#70000000"));
-                        tvNeedValue.append(goods);
+                        needGifts = diffScore + 1;
+                        if (tvNeedValue != null) {
+                            tvNeedValue.setText("超越第1名需要");
+                            if (diffScore > 0) {
+                                SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needGifts), Color.parseColor("#000000"));
+                                tvNeedValue.append(ss);
+                            } else {
+                                tvNeedValue.append(0 + "");
+                            }
+
+                            SpannableString goods = StringUtils.spannableStringColor("个" + goodsName, Color.parseColor("#70000000"));
+                            tvNeedValue.append(goods);
+                        }
                     }
                 }
             }

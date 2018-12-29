@@ -4,13 +4,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -43,13 +46,9 @@ public class OneClickDialog extends BaseAwesomeDialog {
     private int mCount;
     private long mUserId;
     private int mGoodsRent;
+    private OnClickListener listener;
 
-    public static BaseAwesomeDialog newInstance() {
-        OneClickDialog dialog = new OneClickDialog();
-        return dialog;
-    }
-
-    public static BaseAwesomeDialog newInstance(int programId, int targetId, int goodsId, int count, Long userId, int goodsRent, String goodsName) {
+    public static OneClickDialog newInstance(int programId, int targetId, int goodsId, int count, Long userId, int goodsRent, String goodsName) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
         args.putInt("targetId", targetId);
@@ -86,6 +85,7 @@ public class OneClickDialog extends BaseAwesomeDialog {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_confirm:
+                sendGift();
                 break;
 
             case R.id.btn_cancel:
@@ -97,23 +97,45 @@ public class OneClickDialog extends BaseAwesomeDialog {
         }
     }
 
-    private void sendGift(){
-        HashMap paramsMap = new HashMap<>();
-        paramsMap.put("roomId", mProgramId);
-        paramsMap.put("programId", mProgramId);
+    private void sendGift() {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("roomId", mProgramId + "");
+        paramsMap.put("programId", mProgramId + "");
+        paramsMap.put("targetId", mTargetId + "");
+        paramsMap.put("goodsId", mGoodsId + "");
+        paramsMap.put("count", mCount + "");
+        paramsMap.put("userId", mUserId + "");
+        paramsMap.put("runwayShowMark", "T");
+        paramsMap.put("runwayAppend", "");
+        paramsMap.put("useBag", false + "");
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SEND_GIFT, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
-
+                    if (listener != null) {
+                        listener.onSendSuccess();
+                    }
+                    dismiss();
+                } else {
+                    Toast.makeText(getActivity(), responseInfo.getMsg(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onReqFailed(String errorMsg) {
-
+                LogUtils.e(errorMsg);
             }
         });
+    }
+
+
+    public interface OnClickListener {
+        void onSendSuccess();
+    }
+
+    public BaseAwesomeDialog setListener(OnClickListener listener) {
+        this.listener = listener;
+        return this;
     }
 }

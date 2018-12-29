@@ -346,6 +346,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public String mAnchorAvatar;
     private String mHeadlineRank;
     public int anchorLevel;
+    private Disposable headlineDisposable;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1090,7 +1091,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
         //头条榜单
-        mLivePresenter.getHeadlineRank(mAnchorId, "F");
+        headlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            mLivePresenter.getHeadlineRank(mAnchorId, "F");
+        });
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1625,6 +1628,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (llPagerIndex.getChildCount() > 0) {
             llPagerIndex.removeAllViews();
+        }
+        if(headlineDisposable != null){
+            headlineDisposable.dispose();
         }
     }
 

@@ -94,6 +94,9 @@ public class HeadlineListFragment extends BaseFragment {
     private int mProgramId;
     private int goodsRent;
     private String goodsName;
+    private int selfScore;
+    private int topScore;
+    private int needValue;
 
     public static HeadlineListFragment newInstance(String type, int anchorId, String nickName, String avatar, int programId) {
         Bundle args = new Bundle();
@@ -145,6 +148,15 @@ public class HeadlineListFragment extends BaseFragment {
                         return;
                     }
                     OneClickDialog.newInstance(mProgramId, mAnchorId, mGoodsId, needGifts, userId, goodsRent, goodsName)
+                            .setListener(new OneClickDialog.OnClickListener() {
+                                @Override
+                                public void onSendSuccess() {
+                                    if (disposable != null) {
+                                        disposable.dispose();
+                                    }
+                                    setTopAnchorInfo();
+                                }
+                            })
                             .setOutCancel(false)
                             .show(getChildFragmentManager());
                 }
@@ -255,7 +267,7 @@ public class HeadlineListFragment extends BaseFragment {
     class ViewHolder extends BaseViewHolder {
 
         @BindView(R.id.tv_ranking)
-        TextView tvRank;
+        TextView tvRanking;
         @BindView(R.id.iv_avatar)
         CircleImageView ivAvatar;
         @BindView(R.id.tv_nick_name)
@@ -274,13 +286,13 @@ public class HeadlineListFragment extends BaseFragment {
         public void onBindViewHolder(int position) {
             if ("F".equals(mType)) {
                 if (position < 3) {
-                    tvRank.setBackgroundResource(rankIcons[position]);
-                    tvRank.setText("");
+                    tvRanking.setBackgroundResource(rankIcons[position]);
+                    tvRanking.setText("");
                 } else {
-                    tvRank.setText(String.valueOf(position + 1));
+                    tvRanking.setText(String.valueOf(position + 1));
                 }
             } else {
-                tvRank.setText(String.valueOf(position + 1));
+                tvRanking.setText(String.valueOf(position + 1));
             }
 
             GlideImageLoader.getInstace().displayImage(getMyActivity(), mListData.get(position).anchorAvatar, ivAvatar);
@@ -350,12 +362,18 @@ public class HeadlineListFragment extends BaseFragment {
                         //需要的礼物个数
                         needGifts = (diffScore / (goodsRent * anchorExp / 100)) + 1;
                         //需要的魅力值
-                        int needValue = needGifts * (goodsRent * anchorExp / 100);
-                        tvNeedValue.setText("超越第1名需要");
-                        SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needValue), Color.parseColor("#000000"));
-                        tvNeedValue.append(ss);
-                        SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
-                        tvNeedValue.append(goods);
+                        needValue = needGifts * (goodsRent * anchorExp / 100);
+                        if (tvNeedValue != null) {
+                            tvNeedValue.setText("超越第1名需要");
+                            if (diffScore > 0) {
+                                SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needValue), Color.parseColor("#000000"));
+                                tvNeedValue.append(ss);
+                            } else {
+                                tvNeedValue.append(0 + "");
+                            }
+                            SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
+                            tvNeedValue.append(goods);
+                        }
                     }
                 }
             }
@@ -385,22 +403,24 @@ public class HeadlineListFragment extends BaseFragment {
                 RankBeyondInfo beyondInfo = GsonUtils.GsonToBean(result.toString(), RankBeyondInfo.class);
                 if (beyondInfo.getCode() == 200) {
                     if (beyondInfo.data != null) {
-                        int selfScore = beyondInfo.data.selfScore;
-                        int topScore = beyondInfo.data.topScore;
+                        selfScore = beyondInfo.data.selfScore;
+                        topScore = beyondInfo.data.topScore;
                         int rank = beyondInfo.data.rank;
-                        if (rank < 0) {
-                            tvRank.setText("未上榜");
-                            tvRank.setTextColor(Color.BLACK);
-                        } else {
-                            tvRank.setText(rank + "");
-                            tvRank.setTextColor(Color.RED);
+                        if (tvRank != null) {
+                            if (rank < 0) {
+                                tvRank.setText("未上榜");
+                                tvRank.setTextColor(Color.BLACK);
+                            } else {
+                                tvRank.setText(rank + "");
+                                tvRank.setTextColor(Color.RED);
+                            }
+                            tvCharmValue.setText(selfScore + "魅力");
+                            tvNickName.setText(mNickName);
+                            tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
+                            GlideImageLoader.getInstace().displayImage(getMyActivity(), mAvatar, ivOwnAvatar);
+                            int diff = topScore - selfScore;
+                            getNeedGoods(goodsId, diff);
                         }
-                        tvCharmValue.setText(selfScore + "魅力");
-                        tvNickName.setText(mNickName);
-                        tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
-                        GlideImageLoader.getInstace().displayImage(getMyActivity(), mAvatar, ivOwnAvatar);
-                        int diff = topScore - selfScore;
-                        getNeedGoods(goodsId, diff);
                     }
                 }
             }
@@ -409,6 +429,18 @@ public class HeadlineListFragment extends BaseFragment {
             public void onReqFailed(String errorMsg) {
             }
         });
+    }
+
+    private void setTopAnchorInfo() {
+        if (tvRank != null && tvNeedValue != null) {
+            tvRank.setText(1 + "");
+            tvRank.setTextColor(Color.RED);
+            tvCharmValue.setText(needValue + selfScore + "魅力");
+            tvNeedValue.setText("超越第1名需要");
+            tvNeedValue.append(0 + "");
+            SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
+            tvNeedValue.append(goods);
+        }
     }
 
     @Override

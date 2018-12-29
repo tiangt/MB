@@ -362,13 +362,13 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 } else if ("C".equals(goodsListBean.getGoodsColor())) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setPrettyType("C");
-                }else if ("D".equals(goodsListBean.getGoodsColor())) {
+                } else if ("D".equals(goodsListBean.getGoodsColor())) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setPrettyType("D");
-                }else if ("E".equals(goodsListBean.getGoodsColor())) {
+                } else if ("E".equals(goodsListBean.getGoodsColor())) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setPrettyType("E");
-                }else{
+                } else {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setPrettyType("");
                 }
