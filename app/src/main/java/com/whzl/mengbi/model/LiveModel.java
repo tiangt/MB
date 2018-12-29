@@ -1,6 +1,7 @@
 package com.whzl.mengbi.model;
 
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
+import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 
 import java.util.HashMap;
 
@@ -38,4 +39,6 @@ public interface LiveModel {
     void getDailyTaskState(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void getHeadlineRank(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void getBlackRoomTime(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

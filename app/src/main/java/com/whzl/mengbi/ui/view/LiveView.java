@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.view;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
+import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -55,4 +56,6 @@ public interface LiveView {
     void onGetDailyTaskStateSuccess(GetDailyTaskStateBean dailyTaskStateBean);
 
     void onGetHeadlineRankSuccess(HeadlineRankBean dataBean);
+
+    void onGetBlackRoomTimeSuccess(BlackRoomTimeBean dataBean);
 }

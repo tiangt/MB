@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,6 +146,9 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
                         holder.setOnClickListener(R.id.tv_save, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                if (TextUtils.isEmpty(etHours.getText())) {
+                                    return;
+                                }
                                 String trim = etHours.getText().toString().trim();
                                 editHours = Integer.parseInt(trim);
                                 if (editHours == 0 || editHours > totalHours) {

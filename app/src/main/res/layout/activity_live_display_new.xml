@@ -277,6 +277,40 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/ll_black_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="11.5dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_black_room_live"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_black_room_live" />
+
+                        <TextView
+                            android:id="@+id/tv_time_black_room"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4.5dp"
+                            android:textColor="#ffc91e"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="3.5dp"
+                            android:layout_marginRight="5dp"
+                            android:text="小时"
+                            android:textColor="#fef3f3"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+
                     <ProgressBar
                         android:id="@+id/progressbar"
                         android:layout_width="50dp"

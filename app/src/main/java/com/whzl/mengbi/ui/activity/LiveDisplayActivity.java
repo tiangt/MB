@@ -87,6 +87,7 @@ import com.whzl.mengbi.gift.WeekStarControl;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
+import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -164,6 +165,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -283,6 +285,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     HeadlineLayout hlLayout;
     @BindView(R.id.svga_guard_success)
     SVGAImageView svgaGuardSuccess;
+    @BindView(R.id.ll_black_room)
+    LinearLayout llBlackRoom;
+    @BindView(R.id.tv_time_black_room)
+    TextView tvTimeBlackRoom;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -346,6 +352,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public String mAnchorAvatar;
     private String mHeadlineRank;
     public int anchorLevel;
+    private int totalHours;
+    private Disposable blackRoomDisposable;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1091,6 +1099,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
         //头条榜单
         mLivePresenter.getHeadlineRank(mAnchorId, "F");
+        mLivePresenter.getBlackRoomTime(mAnchorId);
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1347,6 +1356,34 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
             initHeadline();
         }
+    }
+
+    /**
+     * 小黑屋时间
+     */
+    @Override
+    public void onGetBlackRoomTimeSuccess(BlackRoomTimeBean dataBean) {
+        double l = dataBean.time / 60 / 60;
+        totalHours = (int) Math.ceil(l);
+        if (totalHours <= 0) {
+            llBlackRoom.setVisibility(View.GONE);
+            return;
+        }
+        llBlackRoom.setVisibility(View.VISIBLE);
+        tvTimeBlackRoom.setText(totalHours + "");
+        blackRoomDisposable = Observable.interval(0, 60, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((Long aLong) -> {
+                    LogUtils.e("sssssssssssss  " + aLong * 60);
+                    double v = (dataBean.time - aLong * 60) / 60 / 60;
+                    totalHours = (int) Math.ceil(v);
+                    if (totalHours <= 0) {
+                        llBlackRoom.setVisibility(View.GONE);
+                        return;
+                    }
+                    llBlackRoom.setVisibility(View.VISIBLE);
+                    tvTimeBlackRoom.setText(totalHours + "");
+                });
     }
 
 
@@ -1625,6 +1662,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (llPagerIndex.getChildCount() > 0) {
             llPagerIndex.removeAllViews();
+        }
+        if (blackRoomDisposable != null) {
+            blackRoomDisposable.dispose();
         }
     }
 
