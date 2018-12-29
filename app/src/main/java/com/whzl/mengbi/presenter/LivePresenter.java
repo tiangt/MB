@@ -37,4 +37,6 @@ public interface LivePresenter {
     void getDailyTaskState(long mUserId);
 
     void getHeadlineRank(int anchorId, String preRound);
+
+    void getBlackRoomTime(int mAnchorId);
 }
