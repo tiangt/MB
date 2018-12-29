@@ -1,6 +1,7 @@
 package com.whzl.mengbi.chat.room.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.activity.PkRecordActivity;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.UIUtil;
 
@@ -35,10 +37,27 @@ public class LightSpanString {
                     return;
                 }
                 Log.i("chatMsg", "点击了 " + nickName);
-                if(ClickUtil.isFastClick()){
+                if (ClickUtil.isFastClick()) {
                     ((LiveDisplayActivity) context).showAudienceInfoDialog(uid, false);
                 }
                 //new EnterUserPop().enterUserPop(mContext,uid, ChatRoomInfo.getProgramId());
+            }
+        };
+
+        nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return nickSpan;
+    }
+
+    public static SpannableString getSaveBlackRoomSpan(Context context, final String content, int color) {
+        SpannableString nickSpan = new SpannableString(content);
+        BlackRoomSpan clickSpan = new BlackRoomSpan(context, color) {
+            @Override
+            public void onClick(View widget) {
+                context.startActivity(new Intent(context, PkRecordActivity.class)
+                        .putExtra("anchorLever", ((LiveDisplayActivity) context).anchorLevel)
+                        .putExtra("anchorName", ((LiveDisplayActivity) context).mAnchorName)
+                        .putExtra("anchorId", ((LiveDisplayActivity) context).mAnchorId)
+                        .putExtra("anchorAvatar", ((LiveDisplayActivity) context).mAnchorAvatar));
             }
         };
 

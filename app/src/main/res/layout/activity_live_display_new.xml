@@ -404,7 +404,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <android.support.design.widget.CoordinatorLayout
                         android:layout_width="match_parent"

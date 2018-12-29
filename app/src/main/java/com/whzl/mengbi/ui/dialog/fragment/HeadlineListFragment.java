@@ -130,8 +130,8 @@ public class HeadlineListFragment extends BaseFragment {
         } else {
             rlGift.setVisibility(View.GONE);
         }
-        getData(mType);
         initRecycler();
+        getData(mType);
     }
 
     @OnClick({R.id.tv_click_gift})
@@ -249,7 +249,7 @@ public class HeadlineListFragment extends BaseFragment {
             }
         };
         recycler.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+//        mAdapter.notifyDataSetChanged();
     }
 
     class ViewHolder extends BaseViewHolder {

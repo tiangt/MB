@@ -131,8 +131,8 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
         } else {
             rlGift.setVisibility(View.GONE);
         }
-        loadData();
         initUserRecycler();
+        loadData();
     }
 
     @Override

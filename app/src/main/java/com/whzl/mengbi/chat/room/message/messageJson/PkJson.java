@@ -17,6 +17,7 @@ public class PkJson {
     public ContextBean context;
 
     public static class ContextBean {
+
         /**
          * busiCode : PK_ACCEPT_REQUEST
          * launchPkUserInfo : {"lastUpdateTime":1529054670000,"nickname":"土豪30000149","userId":30000149}
@@ -59,6 +60,28 @@ public class PkJson {
 
         public PkUserLiveAndStreamAddressBean pkUserLiveAndStreamAddress;
         public PkUserLiveAndStreamAddressBean launchPkUserLiveAndStreamAddress;
+        /**
+         * anchorNickname : 你一定要幸福哦哈嘿嗯
+         * userNickname : 你一定要幸福哦哈嘿嗯
+         * userRoom : [100079]
+         * rescueHour : 10
+         * wholeRescue : true
+         */
+
+        public String anchorNickname;
+        public String userNickname;
+        public int rescueHour;
+        public String wholeRescue;
+        public List<Integer> userRoom;
+        /**
+         * nickname : 土豪30000159
+         * userId : 30000159
+         * blackHouseMinute : 600
+         */
+
+        public String nickname;
+        public int userId;
+        public int blackHouseMinute;
 
 
         public static class LaunchPkUserInfoBean {

@@ -991,6 +991,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if ("PK_RECORD".equals(bean.busiCode)) {
             return;
         }
+        if ("BALCK_HOUSE".equals(bean.busiCode) || "uRescueAnchor".equals(bean.busiCode)) {
+            mLivePresenter.getBlackRoomTime(mAnchorId);
+            return;
+        }
         if (pkControl == null) {
             pkControl = new PkControl(pkLayout, this);
         }
@@ -1363,6 +1367,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onGetBlackRoomTimeSuccess(BlackRoomTimeBean dataBean) {
+        if (blackRoomDisposable != null) {
+            blackRoomDisposable.dispose();
+        }
         double l = dataBean.time / 60 / 60;
         totalHours = (int) Math.ceil(l);
         if (totalHours <= 0) {
@@ -1374,7 +1381,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         blackRoomDisposable = Observable.interval(0, 60, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((Long aLong) -> {
-                    LogUtils.e("sssssssssssss  " + aLong * 60);
+                    LogUtils.e("pkAction   " + aLong * 60);
                     double v = (dataBean.time - aLong * 60) / 60 / 60;
                     totalHours = (int) Math.ceil(v);
                     if (totalHours <= 0) {
