@@ -16,6 +16,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
+import android.text.SpannableStringBuilder;
+import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
@@ -197,8 +200,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout llGiftContainer;
     @BindView(R.id.btn_close)
     ImageButton btnClose;
-    @BindView(R.id.iv_gift_gif)
-    ImageView ivGiftGif;
+//    @BindView(R.id.iv_gift_gif)
+//    ImageView ivGiftGif;
     @BindView(R.id.tv_stop_tip)
     TextView tvStopTip;
     @BindView(R.id.progressbar)
@@ -289,6 +292,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout llBlackRoom;
     @BindView(R.id.tv_time_black_room)
     TextView tvTimeBlackRoom;
+    @BindView(R.id.svga_gift)
+    SVGAImageView svgaGift;
 
     private LivePresenterImpl mLivePresenter;
     private int mProgramId;
@@ -938,10 +943,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
             giftControl.loadGift(animJson);
         } else {
-            if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
-                    || "MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
+//            if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
+//                    || "MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
+//                if (mGifGiftControl == null) {
+//                    mGifGiftControl = new GifGiftControl(this, ivGiftGif);
+//                }
+//                mGifGiftControl.load(animEvent);
+//            }
+
+            if("MOBILE_CAR_SVGA".equals(animEvent.getAnimJson().getAnimType())
+                    ||"MOBILE_GIFT_SVGA".equals(animEvent.getAnimJson().getAnimType())){
                 if (mGifGiftControl == null) {
-                    mGifGiftControl = new GifGiftControl(this, ivGiftGif);
+                    mGifGiftControl = new GifGiftControl(this, svgaGift);
                 }
                 mGifGiftControl.load(animEvent);
             }
@@ -1487,6 +1500,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * @param nickName
      */
     private void showOpenGuardAnim(String avatar, String nickName) {
+        svgaGuardSuccess.setVisibility(View.VISIBLE);
         svgaGuardSuccess.setLoops(1);
         SVGAParser parser = new SVGAParser(this);
         try {
@@ -1510,11 +1524,33 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private SVGADynamicEntity requestImage(String avatar, String nickName) {
         final SVGADynamicEntity dynamicEntity = new SVGADynamicEntity();
+        SpannableStringBuilder sbNickName = new SpannableStringBuilder(nickName);
+        SpannableStringBuilder sbAnchorName = new SpannableStringBuilder(mAnchorName);
         TextPaint textPaint = new TextPaint();
         textPaint.setColor(Color.WHITE);
-        textPaint.setTextSize(20);
-        dynamicEntity.setDynamicText(nickName, textPaint, "Bitmap6");
-        dynamicEntity.setDynamicText(mAnchorName, textPaint, "Bitmap7");
+        textPaint.setTextSize(15);
+        dynamicEntity.setDynamicText(new StaticLayout(
+                sbNickName,
+                0,
+                sbNickName.length(),
+                textPaint,
+                0,
+                Layout.Alignment.ALIGN_CENTER,
+                1.0f,
+                0.0f,
+                false
+        ), "Bitmap6");
+        dynamicEntity.setDynamicText(new StaticLayout(
+                sbAnchorName,
+                0,
+                sbAnchorName.length(),
+                textPaint,
+                0,
+                Layout.Alignment.ALIGN_CENTER,
+                1.0f,
+                0.0f,
+                false
+        ), "Bitmap7");
         BitmapUtils.returnBitmap(avatar, new HttpCallBackListener() {
             @Override
             public void onFinish(Bitmap bitmap) {

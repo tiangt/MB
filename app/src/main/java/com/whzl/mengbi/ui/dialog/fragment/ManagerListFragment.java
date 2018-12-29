@@ -221,6 +221,30 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                             ivCar.setVisibility(View.VISIBLE);
                             GlideImageLoader.getInstace().displayImage(getMyActivity(), medalBean.getGoodsIcon(), ivCar);
                         }
+
+                        if ("PRETTY_NUM".equals(medalBean.getGoodsType())) {
+                            tvPrettyNum.setVisibility(View.VISIBLE);
+                            tvPrettyNum.setPrettyTextSize(10);
+                            if ("A".equals(medalBean.getGoodsColor())) {
+                                tvPrettyNum.setPrettyNum(medalBean.getGoodsName());
+                                tvPrettyNum.setPrettyType("A");
+                            } else if ("B".equals(medalBean.getGoodsColor())) {
+                                tvPrettyNum.setPrettyNum(medalBean.getGoodsName());
+                                tvPrettyNum.setPrettyType("B");
+                            } else if ("C".equals(medalBean.getGoodsColor())) {
+                                tvPrettyNum.setPrettyNum(medalBean.getGoodsName());
+                                tvPrettyNum.setPrettyType("C");
+                            } else if ("D".equals(medalBean.getGoodsColor())) {
+                                tvPrettyNum.setPrettyNum(medalBean.getGoodsName());
+                                tvPrettyNum.setPrettyType("D");
+                            } else if ("E".equals(medalBean.getGoodsColor())) {
+                                tvPrettyNum.setPrettyNum(medalBean.getGoodsName());
+                                tvPrettyNum.setPrettyType("E");
+                            } else {
+                                tvPrettyNum.setPrettyNum(medalBean.getGoodsName());
+                                tvPrettyNum.setPrettyType("");
+                            }
+                        }
                     }
                 }
 

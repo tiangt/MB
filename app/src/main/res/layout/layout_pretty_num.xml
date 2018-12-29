@@ -19,6 +19,7 @@
             android:paddingRight="1dp"
             android:paddingBottom="1dp"
             android:text="靓"
+            android:textStyle="bold"
             android:textColor="@color/white" />
 
         <TextView
@@ -26,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:textStyle="bold"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
             android:paddingBottom="1dp"/>

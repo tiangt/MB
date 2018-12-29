@@ -406,7 +406,7 @@ public class HeadlineListFragment extends BaseFragment {
                         selfScore = beyondInfo.data.selfScore;
                         topScore = beyondInfo.data.topScore;
                         int rank = beyondInfo.data.rank;
-                        if (tvRank != null) {
+                        if (tvRank != null && tvNickName != null && tvCharmValue != null) {
                             if (rank < 0) {
                                 tvRank.setText("未上榜");
                                 tvRank.setTextColor(Color.BLACK);
@@ -414,7 +414,7 @@ public class HeadlineListFragment extends BaseFragment {
                                 tvRank.setText(rank + "");
                                 tvRank.setTextColor(Color.RED);
                             }
-                            tvCharmValue.setText(selfScore + "魅力");
+                            tvCharmValue.setText(StringUtils.formatNumber((long) selfScore) + "魅力");
                             tvNickName.setText(mNickName);
                             tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
                             GlideImageLoader.getInstace().displayImage(getMyActivity(), mAvatar, ivOwnAvatar);
@@ -432,10 +432,11 @@ public class HeadlineListFragment extends BaseFragment {
     }
 
     private void setTopAnchorInfo() {
-        if (tvRank != null && tvNeedValue != null) {
+        if (tvRank != null && tvNeedValue != null && tvCharmValue != null) {
             tvRank.setText(1 + "");
             tvRank.setTextColor(Color.RED);
-            tvCharmValue.setText(needValue + selfScore + "魅力");
+            long score = (long) (needValue + selfScore);
+            tvCharmValue.setText(StringUtils.formatNumber(score) + "魅力");
             tvNeedValue.setText("超越第1名需要");
             tvNeedValue.append(0 + "");
             SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));

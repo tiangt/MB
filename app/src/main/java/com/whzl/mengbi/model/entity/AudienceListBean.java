@@ -215,6 +215,7 @@ public class AudienceListBean {
         private String goodsType;
         private String goodsIcon;
         private int bindProgramId;
+        private String goodsColor;
 
         protected MedalBean(Parcel in) {
             goodsId = in.readInt();
@@ -222,6 +223,7 @@ public class AudienceListBean {
             goodsType = in.readString();
             goodsIcon = in.readString();
             bindProgramId = in.readInt();
+            goodsColor = in.readString();
         }
 
         public final Creator<MedalBean> CREATOR = new Creator<MedalBean>() {
@@ -276,6 +278,14 @@ public class AudienceListBean {
             this.bindProgramId = bindProgramId;
         }
 
+        public String getGoodsColor(){
+            return goodsColor;
+        }
+
+        public void setGoodsColor(String goodsColor){
+            this.goodsColor = goodsColor;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -288,6 +298,7 @@ public class AudienceListBean {
             dest.writeString(goodsType);
             dest.writeString(goodsIcon);
             dest.writeInt(bindProgramId);
+            dest.writeString(goodsColor);
         }
     }
 }

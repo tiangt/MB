@@ -53,8 +53,8 @@
                                 android:layout_width="50dp"
                                 android:layout_height="13dp"
                                 android:layout_marginLeft="6dp"
-                                android:layout_marginRight="6dp"
                                 android:layout_marginTop="3dp"
+                                android:layout_marginRight="6dp"
                                 android:textSize="11sp" />
 
 
@@ -63,10 +63,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
-                                android:layout_marginBottom="2dp"
                                 android:layout_marginLeft="6dp"
-                                android:layout_marginRight="6dp"
                                 android:layout_marginTop="6.5dp"
+                                android:layout_marginRight="6dp"
+                                android:layout_marginBottom="2dp"
                                 android:singleLine="true"
                                 android:textColor="@color/white"
                                 android:textSize="10sp" />
@@ -196,8 +196,8 @@
                             android:id="@+id/tv_run_way_gift"
                             android:layout_width="1000dp"
                             android:layout_height="20dp"
-                            android:layout_marginBottom="2dp"
                             android:layout_marginLeft="5dp"
+                            android:layout_marginBottom="2dp"
                             android:gravity="center_vertical"
                             android:singleLine="true"
                             android:textSize="12sp" />
@@ -328,11 +328,14 @@
                         android:textStyle="bold"
                         android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/iv_gift_gif"
+                    <com.opensource.svgaplayer.SVGAImageView
+                        android:id="@+id/svga_gift"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:visibility="gone" />
+                        android:layout_centerInParent="true"
+                        android:scaleType="fitCenter"
+                        android:visibility="gone"
+                        app:autoPlay="true" />
 
                     <LinearLayout
                         android:id="@+id/ll_gift_container"
@@ -401,9 +404,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
                         android:visibility="gone" />
 
                     <android.support.design.widget.CoordinatorLayout
@@ -419,10 +422,10 @@
                             android:layout_alignParentBottom="true"
                             android:background="#702d2933"
                             android:gravity="center_vertical"
-                            android:paddingBottom="3dp"
                             android:paddingLeft="7dp"
-                            android:paddingRight="7dp"
                             android:paddingTop="2dp"
+                            android:paddingRight="7dp"
+                            android:paddingBottom="3dp"
                             android:singleLine="true"
                             android:textSize="12sp"
                             android:visibility="gone" />
@@ -464,10 +467,10 @@
                             android:id="@+id/cl_entenr"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="4dp"
                             android:paddingLeft="10dp"
+                            android:paddingTop="3dp"
                             android:paddingRight="10dp"
-                            android:paddingTop="3dp">
+                            android:paddingBottom="4dp">
 
                             <com.whzl.mengbi.ui.widget.view.RoyalEnterView
                                 android:id="@+id/tv_enter"
@@ -516,8 +519,8 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="7dp"
-                        android:layout_marginTop="9dp">
+                        android:layout_marginTop="9dp"
+                        android:layout_marginRight="7dp">
 
 
                     </com.youth.banner.Banner>
@@ -525,10 +528,10 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
-                        android:layout_marginBottom="5dp"
+                        android:layout_alignParentBottom="true"
                         android:layout_marginRight="7dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
@@ -588,10 +591,10 @@
                     android:id="@+id/view_message_notify"
                     android:layout_width="6dp"
                     android:layout_height="6dp"
-                    android:layout_alignRight="@id/btn_chat_private"
                     android:layout_alignTop="@id/btn_chat_private"
-                    android:layout_marginRight="2dp"
+                    android:layout_alignRight="@id/btn_chat_private"
                     android:layout_marginTop="2dp"
+                    android:layout_marginRight="2dp"
                     android:background="@drawable/shape_red_notify"
                     android:visibility="gone" />
 
@@ -659,6 +662,7 @@
             android:layout_height="350dp"
             android:layout_centerInParent="true"
             android:scaleType="fitCenter"
+            android:visibility="gone"
             app:autoPlay="true" />
 
     </RelativeLayout>
