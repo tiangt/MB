@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.BannerInfo;
@@ -424,7 +425,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         topThreeAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return mHeadlineList == null ? 0 : mHeadlineList.size();
+                return mHeadlineList == null ? 0 : (mHeadlineList.size() > 3 ? 3 : mHeadlineList.size());
             }
 
             @Override
@@ -440,6 +441,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
         @BindView(R.id.iv_top_avatar)
         CircleImageView ivTopAvatar;
+        @BindView(R.id.im)
+        ImageView ivTopBg;
 
         public TopThreeViewHolder(View itemView) {
             super(itemView);
@@ -448,7 +451,22 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
         @Override
         public void onBindViewHolder(int position) {
-            GlideImageLoader.getInstace().displayImage(getMyActivity(), mHeadlineList.get(position).anchorAvatar, ivTopAvatar);
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), mHeadlineList.get(position).getAnchorAvatar(), ivTopAvatar);
+            if (0 == position) {
+                ivTopBg.setImageResource(R.drawable.ic_head_top_1);
+            } else if (1 == position) {
+                ivTopBg.setImageResource(R.drawable.ic_head_top_2);
+            } else if (2 == position) {
+                ivTopBg.setImageResource(R.drawable.ic_head_top_2);
+            }
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
+            intent.putExtra(BundleConfig.PROGRAM_ID, mHeadlineList.get(position).getProgramId());
+            startActivity(intent);
         }
     }
 

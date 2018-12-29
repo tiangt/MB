@@ -6,13 +6,9 @@ import java.util.List;
  * @author cliang
  * @date 2018.12.27
  */
-public class HeadlineTopInfo extends ResponseInfo{
+public class HeadlineTopInfo extends ResponseInfo {
+    private DataBean data;
 
-    /**
-     * data : {"list":[{"programId":100069,"programName":"土豪30000219","status":"F","roomUserCount":0,"cover":"http://dev.img.mengbitv.com/default/000/00/00/44.jpg","anchorId":30000219,"anchorNickname":"土豪30000219","anchorLevelName":"蓝钻1","anchorLevelValue":6,"anchorAvatar":"http://test-img.mengbitv.com/avatar/030/00/01/39_100x100.jpg?1531813740","showStreamData":[],"avatar":"http://dev.img.mengbitv.com/avatar/030/00/02/19.jpg?1525313863"}]}
-     */
-
-    public DataBean data;
     public DataBean getData() {
         return data;
     }
@@ -34,40 +30,29 @@ public class HeadlineTopInfo extends ResponseInfo{
 
         public static class ListBean {
             /**
-             * programId : 100069
-             * programName : 土豪30000219
-             * status : F
-             * roomUserCount : 0
-             * cover : http://dev.img.mengbitv.com/default/000/00/00/44.jpg
-             * anchorId : 30000219
-             * anchorNickname : 土豪30000219
-             * anchorLevelName : 蓝钻1
-             * anchorLevelValue : 6
-             * anchorAvatar : http://test-img.mengbitv.com/avatar/030/00/01/39_100x100.jpg?1531813740
-             * showStreamData : []
-             * avatar : http://dev.img.mengbitv.com/avatar/030/00/02/19.jpg?1525313863
+             * programId : 100079
+             * anchorAvatar : http://localtest-img.mengbitv.com/avatar/030/00/01/39_100x100.jpg?1545983901
              */
 
-            public int programId;
-            public String programName;
-            public String status;
-            public int roomUserCount;
-            public String cover;
-            public int anchorId;
-            public String anchorNickname;
-            public String anchorLevelName;
-            public int anchorLevelValue;
-            public String anchorAvatar;
-            public String avatar;
-            public List<?> showStreamData;
+            private int programId;
+            private String anchorAvatar;
 
-            public List<?> getShowStreamData() {
-                return showStreamData;
+            public int getProgramId() {
+                return programId;
             }
 
-            public void setShowStreamData(List<?> showStreamData) {
-                this.showStreamData = showStreamData;
+            public void setProgramId(int programId) {
+                this.programId = programId;
             }
+
+            public String getAnchorAvatar() {
+                return anchorAvatar;
+            }
+
+            public void setAnchorAvatar(String anchorAvatar) {
+                this.anchorAvatar = anchorAvatar;
+            }
+
         }
     }
 }

@@ -12,14 +12,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@mipmap/ic_launcher" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
         android:id="@+id/im"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:src="@drawable/ic_head_top_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
