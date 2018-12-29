@@ -12,7 +12,6 @@ public abstract class BlackRoomSpan extends ClickableSpan {
     private Context context;
     private int color = -1;
 
-    //TODO:add color
     public BlackRoomSpan(Context mContext) {
         this.context = mContext;
     }
@@ -23,7 +22,6 @@ public abstract class BlackRoomSpan extends ClickableSpan {
     }
     @Override
     public void updateDrawState(TextPaint ds) {
-        //TODO:修改color
         //ds.setColor(context.getResources().getColor(0));
         int dsColor = Color.parseColor("#75bbfb");
         if (this.color != -1) {

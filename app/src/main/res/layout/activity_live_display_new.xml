@@ -334,6 +334,13 @@
                         android:layout_height="match_parent"
                         android:visibility="gone" />
 
+                    <com.opensource.svgaplayer.SVGAImageView
+                        android:id="@+id/svga_gift"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        app:autoPlay="true"/>
+
                     <LinearLayout
                         android:id="@+id/ll_gift_container"
                         android:layout_width="match_parent"
