@@ -12,6 +12,6 @@ import com.whzl.mengbi.util.LogUtils;
 public class HeadlineAction implements Actions {
     @Override
     public void performAction(String msgStr, Context context) {
-        LogUtils.e("Headline  ====== "+msgStr);
+        LogUtils.e("ssssssssssssss  "+msgStr);
     }
 }

@@ -159,6 +159,7 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
                                     mPresenter.rescure((long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L),
                                             anchorId, totalHours);
                                     KeyBoardUtil.closeKeybord(etHours, PkRecordActivity.this);
+                                    dialog.dismiss();
                                     return;
                                 }
                                 isAll = false;

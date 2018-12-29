@@ -18,15 +18,16 @@ import org.greenrobot.eventbus.EventBus;
 public class PkAction implements Actions {
     @Override
     public void performAction(String msgStr, Context context) {
-        LogUtils.e2("pkAction "+msgStr);
+        LogUtils.e2("pkAction " + msgStr);
         PkJson pkJson = GsonUtils.GsonToBean(msgStr, PkJson.class);
         if (null == pkJson || pkJson.context == null) {
             return;
         }
         EventBus.getDefault().post(new PkEvent(pkJson, context));
 
-        if ("PK_FIRST_BLOOD".equals(pkJson.context.busiCode) || "PK_RECORD".equals(pkJson.context.busiCode)) {
-            PkMessage pkMessage = new PkMessage(pkJson,context);
+        if ("PK_FIRST_BLOOD".equals(pkJson.context.busiCode) || "PK_RECORD".equals(pkJson.context.busiCode)
+                || "BALCK_HOUSE".equals(pkJson.context.busiCode) || "uRescueAnchor".equals(pkJson.context.busiCode)) {
+            PkMessage pkMessage = new PkMessage(pkJson, context);
             UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(pkMessage);
             EventBus.getDefault().post(chatEvent);
         }

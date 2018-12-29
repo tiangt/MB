@@ -328,14 +328,11 @@
                         android:textStyle="bold"
                         android:visibility="gone" />
 
-                    <com.opensource.svgaplayer.SVGAImageView
-                        android:id="@+id/svga_gift"
+                    <ImageView
+                        android:id="@+id/iv_gift_gif"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:scaleType="fitCenter"
-                        android:visibility="gone"
-                        app:autoPlay="true" />
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/ll_gift_container"
@@ -404,10 +401,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <android.support.design.widget.CoordinatorLayout
                         android:layout_width="match_parent"
@@ -422,10 +419,10 @@
                             android:layout_alignParentBottom="true"
                             android:background="#702d2933"
                             android:gravity="center_vertical"
-                            android:paddingLeft="7dp"
-                            android:paddingTop="2dp"
-                            android:paddingRight="7dp"
                             android:paddingBottom="3dp"
+                            android:paddingLeft="7dp"
+                            android:paddingRight="7dp"
+                            android:paddingTop="2dp"
                             android:singleLine="true"
                             android:textSize="12sp"
                             android:visibility="gone" />
@@ -467,10 +464,10 @@
                             android:id="@+id/cl_entenr"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:paddingBottom="4dp"
                             android:paddingLeft="10dp"
-                            android:paddingTop="3dp"
                             android:paddingRight="10dp"
-                            android:paddingBottom="4dp">
+                            android:paddingTop="3dp">
 
                             <com.whzl.mengbi.ui.widget.view.RoyalEnterView
                                 android:id="@+id/tv_enter"
@@ -519,8 +516,8 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="9dp"
-                        android:layout_marginRight="7dp">
+                        android:layout_marginRight="7dp"
+                        android:layout_marginTop="9dp">
 
 
                     </com.youth.banner.Banner>
@@ -528,10 +525,10 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginRight="7dp"
+                        android:layout_alignParentRight="true"
                         android:layout_marginBottom="5dp"
+                        android:layout_marginRight="7dp"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
@@ -591,10 +588,10 @@
                     android:id="@+id/view_message_notify"
                     android:layout_width="6dp"
                     android:layout_height="6dp"
-                    android:layout_alignTop="@id/btn_chat_private"
                     android:layout_alignRight="@id/btn_chat_private"
-                    android:layout_marginTop="2dp"
+                    android:layout_alignTop="@id/btn_chat_private"
                     android:layout_marginRight="2dp"
+                    android:layout_marginTop="2dp"
                     android:background="@drawable/shape_red_notify"
                     android:visibility="gone" />
 

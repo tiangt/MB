@@ -56,7 +56,7 @@ public class PkMessage implements FillHolderMessage {
         if ("PK_FIRST_BLOOD".equals(busiCode)) {
             mholder.textView.setText("");
             mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
-            mholder.textView.append(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_pk_icon,10));
+            mholder.textView.append(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_pk_icon, 10));
             mholder.textView.append(" ");
             mholder.textView.append(LightSpanString.getLightString("恭喜 ", Color.parseColor("#f9f9f9")));
             mholder.textView.append(LightSpanString.getNickNameSpan(context, nickname + " ", Long.parseLong(userId), 0, Color.parseColor("#FF3C7AED")));
@@ -67,7 +67,7 @@ public class PkMessage implements FillHolderMessage {
         } else if ("PK_RECORD".equals(busiCode)) {
             mholder.textView.setText("");
             mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
-            mholder.textView.append(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_pk_icon,10));
+            mholder.textView.append(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_pk_icon, 10));
             mholder.textView.append(" ");
             mholder.textView.append(LightSpanString.getLightString("恭喜 ", Color.parseColor("#f9f9f9")));
             mholder.textView.append("V".equals(result) ?
@@ -81,6 +81,46 @@ public class PkMessage implements FillHolderMessage {
             );
             mholder.textView.append(LightSpanString.getLightString("赢下一局。本场最佳MVP为 ", Color.parseColor("#f9f9f9")));
             mholder.textView.append(LightSpanString.getLightString(mvpNickname, Color.parseColor("#FFF8C330")));
+        } else if ("BALCK_HOUSE".equals(busiCode)) {
+            mholder.textView.setText("");
+            mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+            mholder.textView.append(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_pk_icon, 10));
+            mholder.textView.append(" ");
+            mholder.textView.append(LightSpanString.getLightString("很遗憾 ", Color.parseColor("#f9f9f9")));
+            mholder.textView.append(LightSpanString.getLightString(pkJson.context.nickname, Color.parseColor("#FFFF538C")));
+            mholder.textView.append(LightSpanString.getLightString(" PK战绩不佳，关入小黑屋 ", Color.parseColor("#f9f9f9")));
+            double l = pkJson.context.blackHouseMinute / 60;
+            int ceil = (int) Math.ceil(l);
+            mholder.textView.append(LightSpanString.getLightString(ceil + "", Color.parseColor("#FFFF538C")));
+            mholder.textView.append(LightSpanString.getLightString(" 小时,", Color.parseColor("#f9f9f9")));
+            mholder.textView.append(LightSpanString.getSaveBlackRoomSpan(context, "解救主播", Color.parseColor("#FFF8B930")));
+        } else if ("uRescueAnchor".equals(busiCode) && pkJson.context.userRoom != null
+                && pkJson.context.userRoom.get(0) != null
+                && pkJson.context.userRoom.get(0) == currentProgramId) {
+            if ("true".equals(pkJson.context.wholeRescue)) {
+                mholder.textView.setText("");
+                mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+                mholder.textView.append(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_pk_icon, 10));
+                mholder.textView.append(" ");
+                mholder.textView.append(LightSpanString.getLightString("感谢 ", Color.parseColor("#f9f9f9")));
+                mholder.textView.append(LightSpanString.getLightString(pkJson.context.userNickname, Color.parseColor("#FF3C7AED")));
+                mholder.textView.append(LightSpanString.getLightString(" 帮 ", Color.parseColor("#f9f9f9")));
+                mholder.textView.append(LightSpanString.getLightString(pkJson.context.anchorNickname + " ", Color.parseColor("#FFFF538C")));
+                mholder.textView.append(LightSpanString.getLightString(" 从小黑屋解救出来。", Color.parseColor("#f9f9f9")));
+            } else {
+                mholder.textView.setText("");
+                mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+                mholder.textView.append(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_pk_icon, 10));
+                mholder.textView.append(" ");
+                mholder.textView.append(LightSpanString.getLightString("感谢 ", Color.parseColor("#f9f9f9")));
+                mholder.textView.append(LightSpanString.getLightString(pkJson.context.userNickname, Color.parseColor("#FF3C7AED")));
+                mholder.textView.append(LightSpanString.getLightString(" 帮 ", Color.parseColor("#f9f9f9")));
+                mholder.textView.append(LightSpanString.getLightString(pkJson.context.anchorNickname + " ", Color.parseColor("#FFFF538C")));
+                mholder.textView.append(LightSpanString.getLightString(" 解救了小黑屋 ", Color.parseColor("#f9f9f9")));
+                mholder.textView.append(LightSpanString.getLightString(pkJson.context.rescueHour + "", Color.parseColor("#FFFF538C")));
+                mholder.textView.append(LightSpanString.getLightString(" 小时,", Color.parseColor("#f9f9f9")));
+                mholder.textView.append(LightSpanString.getSaveBlackRoomSpan(context, "我也要解救主播", Color.parseColor("#FFF8B930")));
+            }
         }
     }
 
