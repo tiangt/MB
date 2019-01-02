@@ -7,6 +7,7 @@
 
 
     <LinearLayout
+        android:id="@+id/ll_week_rank"
         android:layout_width="99dp"
         android:layout_height="62dp"
         android:background="@drawable/bg_week_rank"

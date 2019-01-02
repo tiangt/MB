@@ -203,7 +203,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout llGiftContainer;
     @BindView(R.id.btn_close)
     ImageButton btnClose;
-//    @BindView(R.id.iv_gift_gif)
+    //    @BindView(R.id.iv_gift_gif)
 //    ImageView ivGiftGif;
     @BindView(R.id.tv_stop_tip)
     TextView tvStopTip;
@@ -954,8 +954,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //                mGifGiftControl.load(animEvent);
 //            }
 
-            if("MOBILE_CAR_SVGA".equals(animEvent.getAnimJson().getAnimType())
-                    ||"MOBILE_GIFT_SVGA".equals(animEvent.getAnimJson().getAnimType())){
+            if ("MOBILE_CAR_SVGA".equals(animEvent.getAnimJson().getAnimType())
+                    || "MOBILE_GIFT_SVGA".equals(animEvent.getAnimJson().getAnimType())) {
                 if (mGifGiftControl == null) {
                     mGifGiftControl = new GifGiftControl(this, svgaGift);
                 }
@@ -1960,5 +1960,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
             }
         });
+    }
+
+    public void jumpToWeekRank() {
+        if (headlineDialog != null && headlineDialog.isAdded()) {
+            return;
+        }
+        headlineDialog = HeadlineDialog.newInstance(2, mProgramId, mAnchorId, mAnchorName, mAnchorAvatar)
+                .show(getSupportFragmentManager());
     }
 }

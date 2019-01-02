@@ -28,8 +28,8 @@
             app:layout_constraintLeft_toRightOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
-    
-    <RelativeLayout
+
+    <LinearLayout
         android:id="@+id/rl_top_three"
         android:layout_width="match_parent"
         android:layout_height="52dp"
@@ -37,15 +37,17 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/bg_headline"
-        android:visibility="gone">
+        android:gravity="center"
+        android:visibility="visible">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_top_three"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:overScrollMode="never" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"

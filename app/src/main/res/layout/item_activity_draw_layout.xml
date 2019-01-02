@@ -18,6 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6.5dp"
         android:gravity="center"
-        android:textColor="#40ffffff"
+        android:textColor="@color/text_color_draw_layout"
         android:textSize="9sp" />
 </LinearLayout>

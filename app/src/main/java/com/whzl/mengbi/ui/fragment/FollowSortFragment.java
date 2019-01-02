@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
@@ -20,10 +21,9 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
-import com.whzl.mengbi.ui.widget.view.GlideRoundTransform;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.ResourceMap;
-import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.UIUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -143,7 +143,8 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
         @Override
         public void onBindViewHolder(int position) {
             FollowSortBean.ListBean listBean = mDatas.get(position);
-            RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(5));
+            RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(getContext(), 5));
+            RequestOptions requestOptions = new RequestOptions().transform(roundedCorners);
             Glide.with(FollowSortFragment.this).load(listBean.anchorAvatar).apply(requestOptions).into(ivAvatar);
             if ("T".equals(listBean.status)) {
                 tvStatus.setVisibility(View.VISIBLE);

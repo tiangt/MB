@@ -224,4 +224,5 @@
     <color name="text_color_ok_add_super_run">#ffeb00</color>
 
     <color name="week_star_blue">#4295ff</color>
+    <color name="text_color_draw_layout">#ffffff</color>
 </resources>
