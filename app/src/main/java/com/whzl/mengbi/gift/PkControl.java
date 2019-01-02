@@ -406,8 +406,8 @@ public class PkControl {
             } else if (mProgramId == bean.pkUserProgramId) {
                 myPkInfo = bean.pkUserInfo;
                 otherPkInfo = bean.launchUserInfo;
-                leftAvatar = bean.launchUserInfo.avatar;
-                rightAvatar = bean.pkUserInfo.avatar;
+                rightAvatar = bean.launchUserInfo.avatar;
+                leftAvatar = bean.pkUserInfo.avatar;
                 GlideImageLoader.getInstace().displayImage(context, bean.launchUserInfo.avatar, ivRightHead);
                 tvRightName.setText(bean.launchUserInfo.nickname);
                 pkLayout.setLeftScore(bean.pkUserScore);
