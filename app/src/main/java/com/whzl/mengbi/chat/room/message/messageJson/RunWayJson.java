@@ -71,6 +71,7 @@ public class RunWayJson {
         private String toNickname;
         private String goodsName;
         private String runWayType;
+        public String runwayAppend;
 
         public String getRunWayType() {
             return runWayType;

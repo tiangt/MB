@@ -74,6 +74,7 @@ public class RunwayBean {
         private String toNickname;
         private String goodsName;
         private String runwayType;
+        public String runwayAppend;
 
         public String getRunwayType() {
             return runwayType;

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import com.whzl.mengbi.chat.room.message.messageJson.RunWayJson;
@@ -86,6 +84,9 @@ public class RunWayEvent {
         }
         tvRunWayGift.append(LightSpanString.getLightString(" " + "围观ing",
                 Color.parseColor("#fff00a")));
+        if (!TextUtils.isEmpty(runWayJson.getContext().runwayAppend)) {
+            tvRunWayGift.append(LightSpanString.getLightString("(" + runWayJson.getContext().runwayAppend + ")", Color.parseColor("#fff00a")));
+        }
     }
 
     public void showNetRunWay(TextView tvRunWayGift) throws Exception {
@@ -114,6 +115,9 @@ public class RunWayEvent {
         }
         tvRunWayGift.append(LightSpanString.getLightString(" " + "围观ing",
                 Color.parseColor("#fff00a")));
+        if (!TextUtils.isEmpty(runwayBean.getContext().runwayAppend)) {
+            tvRunWayGift.append(LightSpanString.getLightString("(" + runwayBean.getContext().runwayAppend + ")", Color.parseColor("#fff00a")));
+        }
     }
 
     /*
