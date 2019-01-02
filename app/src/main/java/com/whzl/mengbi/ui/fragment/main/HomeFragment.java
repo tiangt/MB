@@ -82,7 +82,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private Banner banner;
     private ConstraintLayout bannerLayout;
     private RecyclerView recommendRecycler;
-    private RelativeLayout rlTopThree;
+    private LinearLayout rlTopThree;
     private RecyclerView topThreeRecycler;
     private BaseListAdapter topThreeAdapter;
     private ArrayList<HeadlineTopInfo.DataBean.ListBean> mHeadlineList = new ArrayList<>();
@@ -402,19 +402,14 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void showHeadlineTop(HeadlineTopInfo headlineTopInfo) {
-        if (headlineTopInfo != null && headlineTopInfo.getData() != null && headlineTopInfo.getData().getList() != null) {
-            if (headlineTopInfo.getData().getList().size() == 0) {
-                rlTopThree.setVisibility(View.GONE);
-            } else {
-                if (mCurrentPager == 2) {
-                    mAnchorInfoList.clear();
-                    refreshLayout.finishRefresh();
-                }
-                rlTopThree.setVisibility(View.VISIBLE);
-                mHeadlineList.clear();
-                mHeadlineList.addAll(headlineTopInfo.getData().getList());
-                topThreeAdapter.notifyDataSetChanged();
-            }
+        if (headlineTopInfo != null && headlineTopInfo.getData() != null && headlineTopInfo.getData().getList() != null
+                && headlineTopInfo.getData().getList().size() != 0) {
+            rlTopThree.setVisibility(View.VISIBLE);
+            mHeadlineList.clear();
+            mHeadlineList.addAll(headlineTopInfo.getData().getList());
+            topThreeAdapter.notifyDataSetChanged();
+        } else {
+            rlTopThree.setVisibility(View.GONE);
         }
     }
 
