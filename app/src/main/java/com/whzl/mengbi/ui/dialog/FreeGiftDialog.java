@@ -364,6 +364,7 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
             case R.id.tv_buy_card:
                 getActivity().startActivity(new Intent(getActivity(), BuySuccubusActivity.class)
                         .putExtra("mProgramId", mProgramId).putExtra("mAnchorId", mAnchorId));
+                dismiss();
                 break;
         }
     }

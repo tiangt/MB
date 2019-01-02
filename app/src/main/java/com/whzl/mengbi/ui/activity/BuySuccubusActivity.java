@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.activity;
 
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,6 +12,9 @@ import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.DemonCarBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -45,6 +47,8 @@ public class BuySuccubusActivity extends BaseActivity {
     private int priceId;
     private int mAnchorId;
     private int mProgramId;
+    private int rent;
+    private AwesomeDialog dialog;
 
     @Override
     protected void initEnv() {
@@ -78,7 +82,8 @@ public class BuySuccubusActivity extends BaseActivity {
                     public void onSuccess(DemonCarBean bean) {
                         goodsId = bean.goodsId;
                         priceId = bean.prices.month.priceId;
-                        tvPrice.setText(bean.prices.month.rent + "");
+                        rent = bean.prices.month.rent;
+                        tvPrice.setText(rent + "");
                     }
 
                     @Override
@@ -93,15 +98,30 @@ public class BuySuccubusActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_buy:
-                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setTitle(R.string.alert);
-                dialog.setMessage("是否购买妖姬卡？");
-                dialog.setNegativeButton(R.string.cancel, null);
-                dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
-                    buy();
-                });
-                dialog.show();
-
+                if (dialog != null && dialog.isAdded()) {
+                    return;
+                }
+                dialog = AwesomeDialog.init();
+                dialog.setLayoutId(R.layout.dialog_buy_succubus)
+                        .setConvertListener(new ViewConvertListener() {
+                            @Override
+                            protected void convertView(com.whzl.mengbi.ui.dialog.base.ViewHolder holder, BaseAwesomeDialog dialog) {
+                                holder.setText(R.id.tv_price, rent + "萌币");
+                                holder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                holder.setOnClickListener(R.id.tv_ok, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        buy();
+                                        dialog.dismiss();
+                                    }
+                                });
+                            }
+                        }).setOutCancel(false).show(getSupportFragmentManager());
                 break;
         }
     }
@@ -112,7 +132,7 @@ public class BuySuccubusActivity extends BaseActivity {
                 "", "", new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
-                        ToastUtils.toastMessage(BuySuccubusActivity.this, "购买成功");
+                        ToastUtils.showToastUnify(BuySuccubusActivity.this, "购买成功");
                         finish();
                         EventBus.getDefault().post(new SendBroadEvent());
                     }

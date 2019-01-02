@@ -71,4 +71,17 @@ public class ToastUtils {
         toast.setView(view);
         toast.show();
     }
+
+    public static void showToastUnify(Activity activity, String content) {
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View view = inflater.inflate(R.layout.toast_unify, null);
+        TextView tv = view.findViewById(R.id.tv_content);
+        tv.setText(content);
+        Toast toast = new Toast(activity);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(view);
+        toast.show();
+    }
+
 }
