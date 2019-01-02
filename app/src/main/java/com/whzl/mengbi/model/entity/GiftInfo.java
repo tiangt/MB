@@ -83,7 +83,7 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
 //
 //    }
 
-    public class  DataBean{
+    public class DataBean {
         private List<DataBean.ListBean> list;
 
         public List<DataBean.ListBean> getList() {
@@ -127,7 +127,7 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
         private int rent;
         private String feeType;
         private Object tagId;
-        private Object tagName;
+        private String tagName;
         private String goodPic;
         private boolean isBackpack;
 
@@ -150,7 +150,8 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
             goodPic = in.readString();
         }
 
-        public GiftDetailInfoBean(){}
+        public GiftDetailInfoBean() {
+        }
 
         public final Creator<GiftDetailInfoBean> CREATOR = new Creator<GiftDetailInfoBean>() {
             @Override
@@ -236,11 +237,11 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
             this.tagId = tagId;
         }
 
-        public Object getTagName() {
+        public String getTagName() {
             return tagName;
         }
 
-        public void setTagName(Object tagName) {
+        public void setTagName(String tagName) {
             this.tagName = tagName;
         }
 

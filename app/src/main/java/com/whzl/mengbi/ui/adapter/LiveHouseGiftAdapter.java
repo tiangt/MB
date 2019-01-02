@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -42,6 +43,12 @@ public class LiveHouseGiftAdapter extends CommonAdapter<GiftInfo.GiftDetailInfoB
 //            holder.getView(R.id.rl).setBackground();
         } else {
             (holder.getView(R.id.rl)).setBackground(null);
+        }
+        if (TextUtils.isEmpty(giftDetailInfoBean.getTagName())) {
+            holder.setVisible(R.id.tv_tag, false);
+        } else {
+            holder.setVisible(R.id.tv_tag, true);
+            holder.setText(R.id.tv_tag, giftDetailInfoBean.getTagName());
         }
     }
 
