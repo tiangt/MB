@@ -406,6 +406,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
             if (headlineTopInfo.getData().getList().size() == 0) {
                 rlTopThree.setVisibility(View.GONE);
             } else {
+                if (mCurrentPager == 2) {
+                    mAnchorInfoList.clear();
+                    refreshLayout.finishRefresh();
+                }
                 rlTopThree.setVisibility(View.VISIBLE);
                 mHeadlineList.clear();
                 mHeadlineList.addAll(headlineTopInfo.getData().getList());
