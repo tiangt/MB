@@ -9,14 +9,36 @@
         android:layout_height="match_parent">
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:visibility="gone" />
+            android:layout_height="match_parent">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:visibility="gone" />
 
+            <RelativeLayout
+                android:id="@+id/rl_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:paddingBottom="50dp"
+                    android:text="当前列表为空"
+                    android:textColor="#c5c5c5"
+                    android:textSize="20sp"
+                    android:visibility="visible" />
+            </RelativeLayout>
+        </FrameLayout>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <LinearLayout
@@ -39,24 +61,5 @@
             android:text="加载中..." />
     </LinearLayout>
 
-
-    <RelativeLayout
-        android:id="@+id/rl_empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:paddingBottom="50dp"
-            android:text="当前列表为空"
-            android:textColor="#c5c5c5"
-            android:textSize="20sp"
-            android:visibility="visible" />
-    </RelativeLayout>
 
 </RelativeLayout>
