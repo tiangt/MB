@@ -70,6 +70,7 @@ public class MainActivity extends BaseActivity {
     private ProgressDialog progressDialog;
     public boolean isExit;
     private AwesomeDialog awesomeDialog;
+    private static final String TAG_EXIT = "exit";
 
     @Override
     protected void initEnv() {
@@ -355,30 +356,39 @@ public class MainActivity extends BaseActivity {
             super.onBackPressed();
             return;
         }
-        Observable.just(1)
-                .delay(2, TimeUnit.SECONDS)
-                .subscribe(new Observer<Integer>() {
+//        Observable.just(1)
+//                .delay(2, TimeUnit.SECONDS)
+//                .subscribe(new Observer<Integer>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        isExit = true;
+//                        showToast("再按一次退出");
+//                    }
+//
+//                    @Override
+//                    public void onNext(Integer integer) {
+//                        isExit = false;
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+        QuitAppDialog.newInstance()
+                .setListener(new QuitAppDialog.OnClickListener() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-                        isExit = true;
-                        showToast("再按一次退出");
+                    public void onQuitAppClick() {
+                        exit();
                     }
-
-                    @Override
-                    public void onNext(Integer integer) {
-                        isExit = false;
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                })
+                .setOutCancel(false)
+                .show(getSupportFragmentManager());
     }
 
     @Override
@@ -392,5 +402,29 @@ public class MainActivity extends BaseActivity {
     public void onMessageEvent(JumpMainActivityEvent event) {
         setTabChange(event.check);
         setCheck(event.check);
+    }
+
+    /**
+     * 退出应用
+     */
+    private void exit() {
+//        super.finish();
+//        android.os.Process.killProcess(android.os.Process.myPid());
+//        System.exit(0);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(MainActivity.TAG_EXIT, true);
+        startActivity(intent);
+        System.exit(0);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) {
+            boolean isExit = intent.getBooleanExtra(TAG_EXIT, false);
+            if (isExit) {
+                this.finish();
+            }
+        }
     }
 }
