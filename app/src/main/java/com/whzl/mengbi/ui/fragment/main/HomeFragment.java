@@ -13,13 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.BannerInfo;
@@ -38,7 +36,6 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
-import com.whzl.mengbi.ui.widget.recyclerview.SpaceItemDecoration;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.SPUtils;
@@ -104,7 +101,6 @@ public class HomeFragment extends BaseFragment implements HomeView {
         StatusBarUtil.setColor(getMyActivity(), Color.parseColor("#23273e"));
 //        initBanner();
         initAnchorRecycler();
-        loadData();
         refreshLayout.setReboundDuration(0);
         refreshLayout.setEnablePureScrollMode(false);
         refreshLayout.setEnableOverScrollBounce(true);
@@ -114,11 +110,12 @@ public class HomeFragment extends BaseFragment implements HomeView {
             anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             mCurrentPager = 1;
             mHomePresenter.getBanner();
+            mHomePresenter.getHeadlineTop();
             mHomePresenter.getRecommend();
             mHomePresenter.getAnchorList(mCurrentPager++);
-            mHomePresenter.getHeadlineTop();
         });
         refreshLayout.setOnLoadMoreListener(refreshLayout -> mHomePresenter.getAnchorList(mCurrentPager++));
+        loadData();
     }
 
     private void initRecommendRecycler() {
@@ -333,9 +330,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     private void loadData() {
         mHomePresenter.getBanner();
+        mHomePresenter.getHeadlineTop();
         mHomePresenter.getRecommend();
         mHomePresenter.getAnchorList(mCurrentPager++);
-        mHomePresenter.getHeadlineTop();
     }
 
     @Override
