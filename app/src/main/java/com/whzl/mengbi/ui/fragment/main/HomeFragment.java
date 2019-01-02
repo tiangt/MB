@@ -457,7 +457,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
             } else if (1 == position) {
                 ivTopBg.setImageResource(R.drawable.ic_head_top_2);
             } else if (2 == position) {
-                ivTopBg.setImageResource(R.drawable.ic_head_top_2);
+                ivTopBg.setImageResource(R.drawable.ic_head_top_3);
             }
         }
 
