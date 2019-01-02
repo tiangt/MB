@@ -1,5 +1,6 @@
 package com.whzl.mengbi.contract;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.FollowSortBean;
 
@@ -16,6 +17,8 @@ public interface FollowSortContract {
         Observable<ApiResult<FollowSortBean>> getManageProgram(int page);
 
         Observable<ApiResult<FollowSortBean>> getWatchReord(int page);
+
+        Observable<ApiResult<JsonElement>> clearWatchRecord();
     }
 
     interface View extends BaseView {
@@ -24,6 +27,8 @@ public interface FollowSortContract {
         void onGetManageProgram(FollowSortBean bean);
 
         void onGetWatchRecord(FollowSortBean bean);
+
+        void onClearWatchRecord();
     }
 
     interface Presenter {
@@ -32,5 +37,7 @@ public interface FollowSortContract {
         void getManageProgram(int page);
 
         void getWatchRecord(int page);
+
+        void clearWatchRecord();
     }
 }

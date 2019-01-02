@@ -709,4 +709,14 @@ public interface Api {
     @POST("v1/pk/rescue")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> rescue(@FieldMap Map<String, String> params);
+
+    /**
+     * 观看记录接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/clear-watch-record")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> clearWatchRecord(@FieldMap Map<String, String> params);
 }

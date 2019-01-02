@@ -1,5 +1,6 @@
 package com.whzl.mengbi.model;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
@@ -48,5 +49,13 @@ public class FollowSortModel implements FollowSortContract.Model {
         param.put("pageSize", NetConfig.DEFAULT_PAGER_SIZE);
         return ApiFactory.getInstance().getApi(Api.class)
                 .getWatchHistory(ParamsUtils.getSignPramsMap(param));
+    }
+
+    @Override
+    public Observable<ApiResult<JsonElement>> clearWatchRecord() {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
+        return ApiFactory.getInstance().getApi(Api.class)
+                .clearWatchRecord(ParamsUtils.getSignPramsMap(paramsMap));
     }
 }

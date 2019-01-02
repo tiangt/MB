@@ -116,6 +116,11 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
         loadSuccess(bean.list);
     }
 
+    @Override
+    public void onClearWatchRecord() {
+        loadSuccess(null);
+    }
+
     class ViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_avatar)
         ImageView ivAvatar;
@@ -174,6 +179,6 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
     }
 
     public void clickIbClear() {
-        ToastUtils.showToast("s");
+        mPresenter.clearWatchRecord();
     }
 }

@@ -1,5 +1,6 @@
 package com.whzl.mengbi.presenter;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.contract.FollowSortContract;
 import com.whzl.mengbi.model.FollowSortModel;
@@ -83,6 +84,29 @@ public class FollowSortPresenter extends BasePresenter<FollowSortContract.View> 
                     @Override
                     public void onSuccess(FollowSortBean bean) {
                         mView.onGetWatchRecord(bean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void clearWatchRecord() {
+        if (!isViewAttached()) {
+            return;
+        }
+        followSortModel.clearWatchRecord()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(mView.<ApiResult<JsonElement>>bindAutoDispose())
+                .subscribe(new ApiObserver<JsonElement>() {
+
+                    @Override
+                    public void onSuccess(JsonElement bean) {
+                        mView.onClearWatchRecord();
                     }
 
                     @Override
