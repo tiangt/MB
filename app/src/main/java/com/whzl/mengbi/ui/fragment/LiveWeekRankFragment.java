@@ -2,13 +2,16 @@ package com.whzl.mengbi.ui.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.WeekRankBean;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -46,6 +49,8 @@ public class LiveWeekRankFragment extends BaseFragment {
     TextView tvName3;
     @BindView(R.id.tv_rank_3)
     TextView tvRank3;
+    @BindView(R.id.ll_week_rank)
+    LinearLayout llWeekRank;
     private int mAnchorId;
     private Disposable disposable;
 
@@ -68,6 +73,9 @@ public class LiveWeekRankFragment extends BaseFragment {
         mAnchorId = getArguments().getInt("mAnchorId");
         disposable = Observable.interval(0, 10, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             loaddata();
+        });
+        llWeekRank.setOnClickListener(v -> {
+            ((LiveDisplayActivity) getActivity()).jumpToWeekRank();
         });
     }
 
