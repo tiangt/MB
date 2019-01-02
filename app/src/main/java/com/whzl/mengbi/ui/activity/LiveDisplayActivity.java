@@ -41,6 +41,7 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
+import com.opensource.svgaplayer.SVGAPlayer;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
@@ -1618,6 +1619,28 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .setDimAmount(0)
                 .show(getSupportFragmentManager());
     }
+
+//    public void showAnchorInfoDialog(long viewedUserID, int anchorLevel){
+//        PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
+//                .setListener(() -> {
+//                    if (mUserListDialog != null && mUserListDialog.isAdded()) {
+//                        mUserListDialog.dismiss();
+//                    }
+//                    if (mRankDialog != null && mRankDialog.isAdded()) {
+//                        mRankDialog.dismiss();
+//                    }
+//                    if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
+//                        mGuardianDialog.dismiss();
+//                    }
+//                    if (headlineDialog != null && headlineDialog.isAdded()) {
+//                        headlineDialog.dismiss();
+//                    }
+//                })
+//                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+//                .setDimAmount(0)
+//                .setShowBottom(false)
+//                .show(getSupportFragmentManager());
+//    }
 
     @Override
     protected void onPause() {

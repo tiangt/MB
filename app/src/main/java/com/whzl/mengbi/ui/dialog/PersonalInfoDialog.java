@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -101,6 +102,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private long mVisitorId;
     private String liveState;
     private PersonalInfoBean.DataBean userBean;
+    private int mAnchorLevel;
 
     public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId) {
         Bundle args = new Bundle();
@@ -112,6 +114,18 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         dialog.setArguments(args);
         return dialog;
     }
+
+//    public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId, int level) {
+//        Bundle args = new Bundle();
+//        args.putLong("userId", userId);
+//        args.putInt("programId", programId);
+//        args.putLong("visitorId", visitorId); //当前用户ID
+//        args.putInt("anchorLevel", level);
+//        args.putParcelable("user", user);
+//        PersonalInfoDialog dialog = new PersonalInfoDialog();
+//        dialog.setArguments(args);
+//        return dialog;
+//    }
 
     public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId, String isFollowed, String liveState) {
         Bundle args = new Bundle();
@@ -150,6 +164,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         mVisitorId = getArguments().getLong("visitorId");
         liveState = getArguments().getString("liveState");
         mUser = getArguments().getParcelable("user");
+        mAnchorLevel = getArguments().getInt("anchorLevel");
         mTvAnchorId.setText("ID " + mUserId);
         tvAt.setText("@Ta");
         getUserInfo(mUserId, mProgramId, mVisitorId);
@@ -434,8 +449,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     if ("ANCHOR_LEVEL".equals(levelType)) {
                         imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
                     }
-                } else if ("USER_LEVEL".equals(levelType)) {
-                    imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
+                } else {
+                    if ("USER_LEVEL".equals(levelType)) {
+                        imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
+                    }
                 }
             }
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 38), UIUtil.dip2px(getContext(), 16));

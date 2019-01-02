@@ -40,7 +40,7 @@ import okhttp3.Response;
  */
 public class GifGiftControl {
     private Context mContext;
-//    private ImageView ivGif;
+    //    private ImageView ivGif;
     private ArrayList<AnimEvent> mGifGiftQueue = new ArrayList<>();
     private boolean isShow;
     private SVGAImageView svgaImageView;
@@ -50,7 +50,7 @@ public class GifGiftControl {
 //        ivGif = imageView;
 //    }
 
-    public GifGiftControl(Context context, SVGAImageView svgaView){
+    public GifGiftControl(Context context, SVGAImageView svgaView) {
         mContext = context;
         svgaImageView = svgaView;
     }
@@ -142,12 +142,12 @@ public class GifGiftControl {
         mGifGiftQueue.clear();
     }
 
-    public void showSVGA(AnimEvent event){
+    public void showSVGA(AnimEvent event) {
         svgaImageView.setVisibility(View.VISIBLE);
         svgaImageView.setLoops(1);
         SVGAParser parser = new SVGAParser(mContext);
         resetDownloader(parser);
-        Log.i("chenliang","event.getAnimUrl() = "+event.getAnimUrl());
+        Log.i("SVGA", "event.getAnimUrl() = " + event.getAnimUrl());
         try {
             parser.parse(new URL(event.getAnimUrl()), new SVGAParser.ParseCompletion() {
                 @Override
@@ -156,6 +156,7 @@ public class GifGiftControl {
                     svgaImageView.setImageDrawable(drawable);
                     svgaImageView.startAnimation();
                 }
+
                 @Override
                 public void onError() {
 
@@ -168,7 +169,6 @@ public class GifGiftControl {
         svgaImageView.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
-
             }
 
             @Override
@@ -186,21 +186,17 @@ public class GifGiftControl {
                             if (mGifGiftQueue.size() > 0) {
                                 showSVGA(mGifGiftQueue.get(0));
                                 mGifGiftQueue.remove(0);
-                            } else {
-                                isShow = false;
-                                svgaImageView.setVisibility(View.GONE);
                             }
                         });
             }
 
             @Override
             public void onRepeat() {
-
+                stopAnim();
             }
 
             @Override
             public void onStep(int i, double v) {
-
             }
         });
     }
@@ -230,5 +226,12 @@ public class GifGiftControl {
                 }).start();
             }
         });
+    }
+
+    private void stopAnim(){
+        if(svgaImageView.isAnimating() && mGifGiftQueue.size() == 0){
+            svgaImageView.stopAnimation();
+            svgaImageView.setVisibility(View.GONE);
+        }
     }
 }
