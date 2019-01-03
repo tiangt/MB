@@ -2,11 +2,13 @@ package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.ui.activity.AnchorCardActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -71,6 +73,9 @@ public class ShareDialog extends BaseAwesomeDialog {
         mShareUrl = getArguments().getString("shareUrl", "");
         strHostName = mAnchorBean.getName();
         anchorId = mAnchorBean.getId();
+        if (TextUtils.isEmpty(mAnchorCover)) {
+            mAnchorCover = ImageUrl.getAvatarUrl(anchorId, "png", System.currentTimeMillis());
+        }
     }
 
     @OnClick({R.id.tv_host_card, R.id.tv_weixin_circle, R.id.tv_weixin_friend,
