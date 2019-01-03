@@ -47,6 +47,7 @@ public class OneClickDialog extends BaseAwesomeDialog {
     private long mUserId;
     private int mGoodsRent;
     private OnClickListener listener;
+    private int amount;
 
     public static OneClickDialog newInstance(int programId, int targetId, int goodsId, int count, Long userId, int goodsRent, String goodsName) {
         Bundle args = new Bundle();
@@ -76,8 +77,8 @@ public class OneClickDialog extends BaseAwesomeDialog {
         mUserId = getArguments().getLong("userId");
         mGoodsRent = getArguments().getInt("goodsRent");
         String goodsName = getArguments().getString("goodsName");
+        amount = mCount * mGoodsRent;
         tvGiftCount.setText(getString(R.string.need_goods, mCount, goodsName));
-        long amount = mCount * mGoodsRent;
         tvGiftAmount.setText(getString(R.string.need_mengbi, StringUtils.formatNumber(amount)));
     }
 

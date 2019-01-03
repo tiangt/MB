@@ -368,11 +368,11 @@ public class HeadlineListFragment extends BaseFragment {
                             if (diffScore > 0) {
                                 SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needValue), Color.parseColor("#000000"));
                                 tvNeedValue.append(ss);
+                                SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
+                                tvNeedValue.append(goods);
                             } else {
-                                tvNeedValue.append(0 + "");
+                                tvNeedValue.setText(R.string.top_rank);
                             }
-                            SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
-                            tvNeedValue.append(goods);
                         }
                     }
                 }
@@ -414,6 +414,9 @@ public class HeadlineListFragment extends BaseFragment {
                                 tvRank.setText(rank + "");
                                 tvRank.setTextColor(Color.RED);
                             }
+                            if(rank == 1){
+                                tvClickGift.setVisibility(View.GONE);
+                            }
                             tvCharmValue.setText(StringUtils.formatNumber((long) selfScore) + "魅力");
                             tvNickName.setText(mNickName);
                             tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
@@ -433,14 +436,15 @@ public class HeadlineListFragment extends BaseFragment {
 
     private void setTopAnchorInfo() {
         if (tvRank != null && tvNeedValue != null && tvCharmValue != null) {
+            tvClickGift.setVisibility(View.GONE);
             tvRank.setText(1 + "");
             tvRank.setTextColor(Color.RED);
             long score = (long) (needValue + selfScore);
             tvCharmValue.setText(StringUtils.formatNumber(score) + "魅力");
-            tvNeedValue.setText("超越第1名需要");
-            tvNeedValue.append(0 + "");
-            SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
-            tvNeedValue.append(goods);
+            tvNeedValue.setText(R.string.top_rank);
+//            tvNeedValue.append(0 + "");
+//            SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
+//            tvNeedValue.append(goods);
         }
     }
 

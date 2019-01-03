@@ -211,13 +211,14 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
 
     private void setTopInfo() {
         if (tvRank != null && tvNeedValue != null && tvValue != null) {
+            tvClickGift.setVisibility(View.GONE);
             tvRank.setText(1 + "");
             tvRank.setTextColor(Color.RED);
             tvValue.setText(needGifts + selfScore + "个");
-            tvNeedValue.setText("超越第1名需要");
-            tvNeedValue.append(0 + "");
-            SpannableString goods = StringUtils.spannableStringColor("个" + goodsName, Color.parseColor("#70000000"));
-            tvNeedValue.append(goods);
+            tvNeedValue.setText(R.string.top_rank);
+//            tvNeedValue.append(0 + "");
+//            SpannableString goods = StringUtils.spannableStringColor("个" + goodsName, Color.parseColor("#70000000"));
+//            tvNeedValue.append(goods);
         }
     }
 
@@ -275,7 +276,12 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
             if (weekStarGiftInfo.getData().getList() != null) {
                 for (int j = 0; j < weekStarGiftInfo.getData().getList().size(); j++) {
                     mListBean.add(weekStarGiftInfo.getData().getList().get(j));
-                    isCheck.add(false);
+                    if(j == 0){
+                        isCheck.add(true);
+                    }else{
+                        isCheck.add(false);
+                    }
+
                 }
                 for (int i = 0; i < mListBean.size(); i++) {
                     if (i == 0) {
@@ -493,6 +499,11 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
                                 tvRank.setText(rank + "");
                                 tvRank.setTextColor(Color.RED);
                             }
+                            if(rank == 1){
+                                tvClickGift.setVisibility(View.GONE);
+                            }else{
+                                tvClickGift.setVisibility(View.VISIBLE);
+                            }
                             tvValue.setText(selfScore + "个");
                             tvNickName.setText(mNickName);
                             tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
@@ -535,12 +546,11 @@ public class WeekStarListFragment extends BaseFragment implements WeekStarListVi
                             if (diffScore > 0) {
                                 SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needGifts), Color.parseColor("#000000"));
                                 tvNeedValue.append(ss);
+                                SpannableString goods = StringUtils.spannableStringColor("个" + goodsName, Color.parseColor("#70000000"));
+                                tvNeedValue.append(goods);
                             } else {
-                                tvNeedValue.append(0 + "");
+                                tvNeedValue.setText(R.string.top_rank);
                             }
-
-                            SpannableString goods = StringUtils.spannableStringColor("个" + goodsName, Color.parseColor("#70000000"));
-                            tvNeedValue.append(goods);
                         }
                     }
                 }
