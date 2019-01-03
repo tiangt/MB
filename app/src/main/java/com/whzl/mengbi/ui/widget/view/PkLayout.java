@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.util.LogUtils;
@@ -91,7 +92,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     private void init(Context context) {
-        rxTimerUtil=new RxTimerUtil();
+        rxTimerUtil = new RxTimerUtil();
         LayoutInflater from = LayoutInflater.from(context);
         inflate = from.inflate(R.layout.layout_pk_new, this, false);
         addView(inflate);
@@ -485,6 +486,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             }
         });
         popupWindow.showAsDropDown(view);
+        ((LiveDisplayActivity) context).closeDrawLayout();
     }
 
     private void showRanking(int ranking, ImageView imageView) {

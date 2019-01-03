@@ -282,22 +282,43 @@ public class DrawLayoutControl {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
+            ((LiveDisplayActivity) activity).closeDrawLayout();
             switch (position) {
                 case 0:
+                    if (((LiveDisplayActivity) activity).mUserId == 0) {
+                        ((LiveDisplayActivity) activity).login();
+                        return;
+                    }
                     Intent intent = new Intent(activity, WXPayEntryActivity.class);
                     activity.startActivity(intent);
                     break;
                 case 1:
+                    if (((LiveDisplayActivity) activity).mUserId == 0) {
+                        ((LiveDisplayActivity) activity).login();
+                        return;
+                    }
                     activity.startActivity(new Intent(activity, ShopActivity.class));
                     break;
                 case 2:
+                    if (((LiveDisplayActivity) activity).mUserId == 0) {
+                        ((LiveDisplayActivity) activity).login();
+                        return;
+                    }
                     activity.startActivity(new Intent(activity, PackActivity.class));
                     break;
                 case 3:
+                    if (((LiveDisplayActivity) activity).mUserId == 0) {
+                        ((LiveDisplayActivity) activity).login();
+                        return;
+                    }
                     activity.startActivity(new Intent(activity, FrgActivity.class)
                             .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
                     break;
                 case 4:
+                    if (((LiveDisplayActivity) activity).mUserId == 0) {
+                        ((LiveDisplayActivity) activity).login();
+                        return;
+                    }
                     activity.startActivity(new Intent(activity, PkRecordActivity.class)
                             .putExtra("anchorLever", ((LiveDisplayActivity) activity).anchorLevel)
                             .putExtra("anchorName", ((LiveDisplayActivity) activity).mAnchorName)
@@ -305,14 +326,15 @@ public class DrawLayoutControl {
                             .putExtra("anchorAvatar", ((LiveDisplayActivity) activity).mAnchorAvatar));
                     break;
                 case 5:
-                ((LiveDisplayActivity) activity).showGuardDialog();
-                break;
+
+                    ((LiveDisplayActivity) activity).showGuardDialog();
+                    break;
                 case 6:
-                activity.startActivity(new Intent(activity, SettingActivity.class));
-                break;
+                    activity.startActivity(new Intent(activity, SettingActivity.class));
+                    break;
                 case 7:
-                activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
-                break;
+                    activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
+                    break;
             }
         }
     }

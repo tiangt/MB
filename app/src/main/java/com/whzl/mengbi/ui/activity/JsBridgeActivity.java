@@ -21,7 +21,10 @@ import com.google.gson.Gson;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.js.JumpRoomBean;
 import com.whzl.mengbi.model.entity.js.LoginCallbackBean;
@@ -137,7 +140,7 @@ public class JsBridgeActivity extends BaseActivity {
             function.onCallBack(gson.toJson(bean));
         });
 
-
+        bridgeWebView.registerHandler("jumpToRandomRoom", (data, function) -> jumpToRandomRoom());
         button.setOnClickListener(v -> {
 
             /**
@@ -168,6 +171,28 @@ public class JsBridgeActivity extends BaseActivity {
     public void jumpToRechargeActivity() {
         Intent intent = new Intent(this, WXPayEntryActivity.class);
         startActivity(intent);
+    }
+
+    public void jumpToRandomRoom() {
+        HashMap paramsMap = new HashMap();
+        ApiFactory.getInstance().getApi(Api.class)
+                .random(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JumpRandomRoomBean>() {
+
+                    @Override
+                    public void onSuccess(JumpRandomRoomBean bean) {
+                        Intent intent = new Intent(JsBridgeActivity.this, LiveDisplayActivity.class);
+                        intent.putExtra(BundleConfig.PROGRAM_ID, bean.programId);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
     }
 
     private void getUserInfo(CallBackFunction function) {

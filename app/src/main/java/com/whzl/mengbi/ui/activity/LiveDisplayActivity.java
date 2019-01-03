@@ -302,7 +302,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private int mProgramId;
     private ChatRoomPresenterImpl chatRoomPresenter;
     private GiftInfo mGiftData;
-    private long mUserId;
+    public long mUserId;
     private BaseAwesomeDialog mGiftDialog;
     public int mAnchorId;
     private int REQUEST_LOGIN = 120;
@@ -860,10 +860,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mFreeGiftDialog.show(getSupportFragmentManager());
                 break;
             case R.id.btn_more:
-                if (mUserId == 0) {
-                    login();
-                    return;
-                }
+//                if (mUserId == 0) {
+//                    login();
+//                    return;
+//                }
                 if (drawerLayoutOut.isDrawerOpen(drawLayoutInclude)) {
                     drawerLayoutOut.closeDrawer(drawLayoutInclude);
                 } else {

@@ -572,6 +572,9 @@ public class PkControl {
         isMvp = false;
         needShow = false;
         EventBus.getDefault().unregister(this);
+        if (svgaImageView != null) {
+            svgaImageView.stopAnimation();
+        }
     }
 
     private void showJumpLiveHouseDialog(int programId, String nickName) {
@@ -643,6 +646,7 @@ public class PkControl {
      * PK结束
      */
     private void showPKResult(int status) {
+        ((LiveDisplayActivity) context).closeDrawLayout();
         View popView = LayoutInflater.from(context).inflate(R.layout.pop_pk_end, null);
         pkResultPop = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         pkResultPop.setOutsideTouchable(true);
@@ -706,6 +710,7 @@ public class PkControl {
      * 惩罚
      */
     private void showPunishment(boolean isMvp) {
+        ((LiveDisplayActivity) context).closeDrawLayout();
         View popView = LayoutInflater.from(context).inflate(R.layout.pop_mvp, null);
         mvpWindow = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         mvpWindow.setOutsideTouchable(true);
