@@ -130,6 +130,7 @@ public class PkControl {
     private String punishment;
     private boolean isMvp;
     private boolean needShow;
+    private AnimationDrawable animationDrawable;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -515,7 +516,8 @@ public class PkControl {
 
     private void endPkCountDown() {
         ivCountDown.setImageResource(R.drawable.anim_pk_countdown);
-        AnimationDrawable animationDrawable = (AnimationDrawable) ivCountDown.getDrawable();
+        animationDrawable = (AnimationDrawable) ivCountDown.getDrawable();
+        ivCountDown.setVisibility(View.VISIBLE);
         animationDrawable.start();
 
         int duration = 0;
@@ -550,6 +552,9 @@ public class PkControl {
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
+                    if (animatorSetsuofang == null) {
+                        disposable.dispose();
+                    }
                     LogUtils.e("ssssssss  animal" + aLong);
                     tvCountDown.setText(String.valueOf(count - 1 - aLong));
                     animatorSetsuofang.start();
@@ -566,14 +571,18 @@ public class PkControl {
             disposable.dispose();
         }
         if (animatorSetsuofang != null) {
-            animatorSetsuofang.cancel();
-            animatorSetsuofang = null;
+            tvCountDown.clearAnimation();
+            tvCountDown.setVisibility(View.GONE);
         }
         isMvp = false;
         needShow = false;
         EventBus.getDefault().unregister(this);
         if (svgaImageView != null) {
             svgaImageView.stopAnimation();
+        }
+        if (animationDrawable != null) {
+            animationDrawable.stop();
+            ivCountDown.setVisibility(View.GONE);
         }
     }
 

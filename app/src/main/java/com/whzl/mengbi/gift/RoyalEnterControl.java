@@ -3,28 +3,26 @@ package com.whzl.mengbi.gift;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
-import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
-import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,9 +35,12 @@ import java.util.List;
 public class RoyalEnterControl {
     LinearLayout llEnter;
     RoyalEnterView tvEnter;
-    ImageView ivEnter;
     ConstraintLayout clEnter;
     private final int screenWidthPixels;
+    private ObjectAnimator translationX;
+    private ObjectAnimator translationXOut;
+    private ValueAnimator showAnim;
+    private ValueAnimator hideAnim;
 
     public RoyalEnterControl() {
         screenWidthPixels = UIUtil.getScreenWidthPixels(BaseApplication.getInstance());
@@ -49,9 +50,6 @@ public class RoyalEnterControl {
         this.clEnter = clEnter;
     }
 
-    public void setIvEnter(ImageView ivEnter) {
-        this.ivEnter = ivEnter;
-    }
 
     Context context;
 
@@ -71,6 +69,7 @@ public class RoyalEnterControl {
 
     private boolean isPlay = false;
 
+
     public void showEnter(WelcomeMsg welcomeMsg) {
         list.add(welcomeMsg);
         if (!isPlay && list.size() != 0) {
@@ -84,34 +83,39 @@ public class RoyalEnterControl {
         llEnter.setVisibility(View.VISIBLE);
         initTv(list.get(0));
         tvEnter.init();
-        String imageUrl = ImageUrl.getImageUrl(list.get(0).getCarId(), "jpg");
-        GlideImageLoader.getInstace().displayImage(context, imageUrl, ivEnter);
 
-//        ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
-//                -UIUtil.dip2px(context, 255), 0);
-        ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
-                screenWidthPixels, screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2);
-        translationX.setDuration(1000);  //设置动画时间
-        translationX.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
+//        if (translationX == null) {
+//            translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
+//                    screenWidthPixels, screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2);
+//            translationX.setDuration(1000);  //设置动画时间
+//            translationX.addListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    super.onAnimationEnd(animation);
+//                    tvEnter.startScroll();
+//                    new Handler().postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            outAnim();
+//                        }
+//                    }, 5000);
+//                }
+//            });
+//        }
+//        translationX.start();
+
+        showAnim = ValueAnimator.ofFloat(screenWidthPixels, screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2);
+        showAnim.setInterpolator(new DecelerateInterpolator());
+        showAnim.setDuration(1000);
+        showAnim.addUpdateListener(animation -> {
+            float animatedValue = ((float) animation.getAnimatedValue());
+            llEnter.setTranslationX(animatedValue);
+            if (animatedValue == screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2) {
                 tvEnter.startScroll();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        outAnim();
-                    }
-                }, 5000);
-//                RxTimerUtil.timer(5000, new RxTimerUtil.IRxNext() {
-//                    @Override
-//                    public void doNext(long number) {
-//                        outAnim();
-//                    }
-//                });
+                hideTranslateAnim();
             }
         });
-        translationX.start();
+        showAnim.start();
     }
 
     private void initTv(WelcomeMsg welcomeMsg) {
@@ -200,16 +204,15 @@ public class RoyalEnterControl {
         }
     }
 
-    private void outAnim() {
-//        ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
-//                0, -UIUtil.dip2px(context, 255));
-        ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
-                screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2, -UIUtil.dip2px(context, 255));
-        translationX.setDuration(1000);
-        translationX.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
+    private void hideTranslateAnim() {
+        hideAnim = ValueAnimator.ofFloat(screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2, -UIUtil.dip2px(context, 255));
+        hideAnim.setInterpolator(new AccelerateInterpolator());
+        hideAnim.setDuration(1000);
+        hideAnim.addUpdateListener(animation -> {
+            float animatedValue = ((float) animation.getAnimatedValue());
+            llEnter.setTranslationX(animatedValue);
+            if (animatedValue == -UIUtil.dip2px(context, 255)) {
+                llEnter.setVisibility(View.GONE);
                 list.remove(0);
                 tvEnter.stopScroll();
                 tvEnter.setText("");
@@ -221,7 +224,56 @@ public class RoyalEnterControl {
                 }
             }
         });
-        translationX.start();
+        hideAnim.setStartDelay(5000);
+        hideAnim.start();
+    }
+
+    private void outAnim() {
+//        ObjectAnimator translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
+//                0, -UIUtil.dip2px(context, 255));
+        if (translationXOut == null) {
+            translationXOut = new ObjectAnimator().ofFloat(llEnter, "translationX",
+                    screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2, -UIUtil.dip2px(context, 255));
+            translationXOut.setDuration(1000);
+            translationXOut.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    list.remove(0);
+                    tvEnter.stopScroll();
+                    tvEnter.setText("");
+                    if (list.size() > 0) {
+                        startAnimal();
+                    } else {
+                        isPlay = false;
+                        llEnter.setVisibility(View.GONE);
+                    }
+                }
+            });
+            translationXOut.start();
+        }
+    }
+
+    public void destroy() {
+        isPlay = false;
+        llEnter.setVisibility(View.GONE);
+        if (tvEnter != null) {
+            tvEnter.stopScroll();
+            tvEnter.setText("");
+        }
+        if (showAnim != null) {
+            showAnim.removeAllUpdateListeners();
+            showAnim.cancel();
+            showAnim.end();
+            showAnim = null;
+        }
+        if (hideAnim != null) {
+            hideAnim.removeAllUpdateListeners();
+            hideAnim.cancel();
+            hideAnim.end();
+            hideAnim = null;
+        }
+        list.clear();
     }
 
     public String getPrettyNumColor(List<WelcomeJson.UserBagItem> userBagList) {

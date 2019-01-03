@@ -246,8 +246,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout llEnter;
     @BindView(R.id.tv_enter)
     RoyalEnterView tvEnter;
-    @BindView(R.id.iv_enter_car)
-    ImageView ivEnterCar;
     @BindView(R.id.svga_start_pk)
     SVGAImageView svgaStartPk;
     @BindView(R.id.cl_entenr)
@@ -300,7 +298,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     SVGAImageView svgaGift;
 
     private LivePresenterImpl mLivePresenter;
-    private int mProgramId;
+    public int mProgramId;
     private ChatRoomPresenterImpl chatRoomPresenter;
     private GiftInfo mGiftData;
     public long mUserId;
@@ -520,6 +518,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initDrawLayout(Activity liveDisplayActivity) {
         drawLayoutControl = new DrawLayoutControl(liveDisplayActivity, drawLayoutInclude);
         drawLayoutControl.init();
+        drawerLayoutOut.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                if (pkLayout.popupWindow != null && pkLayout.popupWindow.isShowing()) {
+                    pkLayout.popupWindow.dismiss();
+                    pkLayout.tvFansRank.setText("点击打开助力粉丝榜");
+                }
+            }
+        });
     }
 
 
@@ -1746,6 +1754,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (headLineControl != null) {
             headLineControl.destroy();
         }
+        if (royalEnterControl != null) {
+            royalEnterControl.destroy();
+        }
     }
 
     @Override
@@ -1827,7 +1838,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     royalEnterControl = new RoyalEnterControl();
                     royalEnterControl.setLlEnter(llEnter);
                     royalEnterControl.setTvEnter(tvEnter);
-                    royalEnterControl.setIvEnter(ivEnterCar);
                     royalEnterControl.setContext(this);
                     royalEnterControl.setClEnter(clEnter);
                 }
