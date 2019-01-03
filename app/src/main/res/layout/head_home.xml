@@ -38,7 +38,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/bg_headline"
         android:gravity="center"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_top_three"

@@ -470,7 +470,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     public void onError(String msg) {
         refreshLayout.finishLoadMore();
         refreshLayout.finishRefresh();
-//        mCurrentPager--;
+        mCurrentPager--;
     }
 
     @Override
