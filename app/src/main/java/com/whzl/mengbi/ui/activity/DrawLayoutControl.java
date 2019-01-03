@@ -164,6 +164,9 @@ public class DrawLayoutControl {
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(recommendAdapter.getRealPosition(this));
+            if (((LiveDisplayActivity) activity).mProgramId == recommendAnchorInfoBean.getProgramId()) {
+                return;
+            }
             ((LiveDisplayActivity) activity).jumpToLive(recommendAnchorInfoBean.getProgramId());
             ((LiveDisplayActivity) activity).closeDrawLayout();
         }
