@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.opensource.svgaplayer.SVGACallback;
@@ -40,22 +41,17 @@ import okhttp3.Response;
  */
 public class GifGiftControl {
     private Context mContext;
-    //    private ImageView ivGif;
+    private ImageView ivGif;
     private ArrayList<AnimEvent> mGifGiftQueue = new ArrayList<>();
     private boolean isShow;
-    private SVGAImageView svgaImageView;
 
-//    public GifGiftControl(Context context, ImageView imageView) {
-//        mContext = context;
-//        ivGif = imageView;
-//    }
-
-    public GifGiftControl(Context context, SVGAImageView svgaView) {
+    public GifGiftControl(Context context, ImageView imageView) {
         mContext = context;
-        svgaImageView = svgaView;
+        ivGif = imageView;
     }
 
-    public void load(AnimEvent event) {
+    public void loadGif(AnimEvent event) {
+        Log.i("chenliang","show gif");
         if (event == null || event.getAnimJson() == null || event.getAnimJson().getResources() == null) {
             return;
         }
@@ -79,100 +75,19 @@ public class GifGiftControl {
         }
         event.setSeconds(seconds);
         if (!isShow) {
-//            show(event);
-            showSVGA(event);
+            show(event);
             return;
         }
         mGifGiftQueue.add(event);
     }
 
-//    private void show(AnimEvent event) {
-//        isShow = true;
-//        ivGif.setVisibility(View.VISIBLE);
-//        GlideImageLoader.getInstace().loadGif(mContext, event.getAnimUrl(), ivGif, new GlideImageLoader.GifListener() {
-//            @Override
-//            public void onResourceReady() {
-//                if (mContext == null) {
-//                    return;
-//                }
-//                Observable.just(1)
-//                        .delay(((long) (event.getSeconds() * 1000)), TimeUnit.MILLISECONDS)
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(integer -> {
-//                            if (mContext == null) {
-//                                return;
-//                            }
-//                            if (mGifGiftQueue.size() > 0) {
-//                                show(mGifGiftQueue.get(0));
-//                                mGifGiftQueue.remove(0);
-//                            } else {
-//                                isShow = false;
-//                                ivGif.setVisibility(View.GONE);
-//                            }
-//                        });
-//            }
-//
-//            @Override
-//            public void onFail() {
-//                if (mContext == null) {
-//                    return;
-//                }
-//                Observable.just(1)
-//                        .delay(((long) (event.getSeconds() * 1000)), TimeUnit.MILLISECONDS)
-//                        .observeOn(AndroidSchedulers.mainThread())
-//                        .subscribe(integer -> {
-//                            ivGif.setVisibility(View.GONE);
-//                            if (mContext == null) {
-//                                return;
-//                            }
-//                            if (mGifGiftQueue.size() > 0) {
-//                                show(mGifGiftQueue.get(0));
-//                                mGifGiftQueue.remove(0);
-//                            } else {
-//                                isShow = false;
-//                            }
-//                        });
-//            }
-//        });
-//    }
-
-    public void destroy() {
-//        ivGif.setVisibility(View.GONE);
-        svgaImageView.setVisibility(View.GONE);
-        mGifGiftQueue.clear();
-    }
-
-    public void showSVGA(AnimEvent event) {
-        svgaImageView.setVisibility(View.VISIBLE);
-        svgaImageView.setLoops(1);
-        SVGAParser parser = new SVGAParser(mContext);
-        resetDownloader(parser);
-        Log.i("SVGA", "event.getAnimUrl() = " + event.getAnimUrl());
-        try {
-            parser.parse(new URL(event.getAnimUrl()), new SVGAParser.ParseCompletion() {
-                @Override
-                public void onComplete(@NotNull SVGAVideoEntity videoItem) {
-                    SVGADrawable drawable = new SVGADrawable(videoItem);
-                    svgaImageView.setImageDrawable(drawable);
-                    svgaImageView.startAnimation();
-                }
-
-                @Override
-                public void onError() {
-
-                }
-            });
-        } catch (Exception e) {
-            System.out.print(true);
-        }
-
-        svgaImageView.setCallback(new SVGACallback() {
+    private void show(AnimEvent event) {
+        isShow = true;
+        ivGif.setVisibility(View.VISIBLE);
+        Log.i("chenliang","GIF = "+event.getAnimUrl());
+        GlideImageLoader.getInstace().loadGif(mContext, event.getAnimUrl(), ivGif, new GlideImageLoader.GifListener() {
             @Override
-            public void onPause() {
-            }
-
-            @Override
-            public void onFinished() {
+            public void onResourceReady() {
                 if (mContext == null) {
                     return;
                 }
@@ -184,54 +99,43 @@ public class GifGiftControl {
                                 return;
                             }
                             if (mGifGiftQueue.size() > 0) {
-                                showSVGA(mGifGiftQueue.get(0));
+                                show(mGifGiftQueue.get(0));
                                 mGifGiftQueue.remove(0);
+                            } else {
+                                isShow = false;
+                                ivGif.setVisibility(View.GONE);
                             }
                         });
             }
 
             @Override
-            public void onRepeat() {
-                stopAnim();
-            }
-
-            @Override
-            public void onStep(int i, double v) {
-            }
-        });
-    }
-
-    /**
-     * 设置下载器，这是一个可选的配置项。
-     *
-     * @param parser
-     */
-    private void resetDownloader(SVGAParser parser) {
-        parser.setFileDownloader(new SVGAParser.FileDownloader() {
-            @Override
-            public void resume(final URL url, final Function1<? super InputStream, Unit> complete, final Function1<? super Exception, Unit> failure) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        OkHttpClient client = new OkHttpClient();
-                        Request request = new Request.Builder().url(url).get().build();
-                        try {
-                            Response response = client.newCall(request).execute();
-                            complete.invoke(response.body().byteStream());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            failure.invoke(e);
-                        }
-                    }
-                }).start();
+            public void onFail() {
+                if (mContext == null) {
+                    return;
+                }
+                Observable.just(1)
+                        .delay(((long) (event.getSeconds() * 1000)), TimeUnit.MILLISECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(integer -> {
+                            ivGif.setVisibility(View.GONE);
+                            if (mContext == null) {
+                                return;
+                            }
+                            if (mGifGiftQueue.size() > 0) {
+                                show(mGifGiftQueue.get(0));
+                                mGifGiftQueue.remove(0);
+                            } else {
+                                isShow = false;
+                            }
+                        });
             }
         });
     }
 
-    private void stopAnim(){
-        if(svgaImageView.isAnimating() && mGifGiftQueue.size() == 0){
-            svgaImageView.stopAnimation();
-            svgaImageView.setVisibility(View.GONE);
+    public void destroy() {
+        if(ivGif != null){
+            ivGif.setVisibility(View.GONE);
         }
+        mGifGiftQueue.clear();
     }
 }

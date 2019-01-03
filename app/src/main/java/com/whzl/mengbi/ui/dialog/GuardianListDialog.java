@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
@@ -59,8 +60,8 @@ public class GuardianListDialog extends BaseFullScreenDialog {
     RecyclerView mRecyclerView;
     @BindView(R.id.btn_open_guard)
     Button mBtnGuard;
-    @BindView(R.id.tv_empty_text)
-    TextView tvEmpty;
+    @BindView(R.id.rl_empty_user)
+    RelativeLayout rlEmpty;
 
     private int mProgramId;
     private BaseListAdapter mAdapter;
@@ -121,14 +122,15 @@ public class GuardianListDialog extends BaseFullScreenDialog {
                     @Override
                     public void onSuccess(GuardListBean guardListBean) {
                         if (guardListBean != null) {
-                            tvEmpty.setVisibility(View.GONE);
                             tvGuardTitle.setText(getString(R.string.guardian_count, guardListBean.list.size()));
                             mData.clear();
                             mData.addAll(guardListBean.list);
                             mAdapter.notifyDataSetChanged();
-                        } else {
-                            tvEmpty.setVisibility(View.VISIBLE);
-                            tvEmpty.setText(getString(R.string.empty_guard_list));
+                            if (guardListBean.list == null || guardListBean.list.size() == 0) {
+                                rlEmpty.setVisibility(View.VISIBLE);
+                            } else {
+                                rlEmpty.setVisibility(View.GONE);
+                            }
                         }
                     }
 
@@ -156,8 +158,8 @@ public class GuardianListDialog extends BaseFullScreenDialog {
 
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                    View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_guardian, parent, false);
-                    return new GuardianViewHolder(itemView);
+                View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_guardian, parent, false);
+                return new GuardianViewHolder(itemView);
             }
 
         };

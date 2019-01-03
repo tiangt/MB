@@ -25,24 +25,22 @@ public class AnimAction implements Actions {
         String imageType;
         int resourceId;
         String aniType = animJson.getAnimType();
-//        if (aniType.equals("MOBILE_GIFT_GIF") || aniType.equals("MOBILE_CAR_GIF")) {
-//            imageType = "gif";
-//            String strResId = "";
-//            for (AnimJson.ResourcesEntity resource : animJson.getResources()) {
-//                if (resource.getResType().equals("GIF")) {
-//                    strResId = resource.getResValue();
-//                    break;
-//                }
-//            }
-//            try {
-//                resourceId = Integer.valueOf(strResId);
-//            } catch (Exception e) {
-//                Log.e("chatMsg", "resourceId=" + strResId + " error");
-//                return;
-//            }
-//        } else
-
-        if (aniType.equals("TOTAl") || "DIV".equals(aniType)) {
+        if (aniType.equals("MOBILE_GIFT_GIF") || aniType.equals("MOBILE_CAR_GIF")) {
+            imageType = "gif";
+            String strResId = "";
+            for (AnimJson.ResourcesEntity resource : animJson.getResources()) {
+                if (resource.getResType().equals("GIF")) {
+                    strResId = resource.getResValue();
+                    break;
+                }
+            }
+            try {
+                resourceId = Integer.valueOf(strResId);
+            } catch (Exception e) {
+                Log.e("chatMsg", "resourceId=" + strResId + " error");
+                return;
+            }
+        } else if (aniType.equals("TOTAl") || "DIV".equals(aniType)) {
             imageType = "jpg";
             if (animJson.getContext() == null) {
                 return;
@@ -66,6 +64,7 @@ public class AnimAction implements Actions {
         } else {
             return;
         }
+        Log.i("chenliang", "resourceId = " + resourceId + ", imageType = " + imageType);
         String animUrl = ImageUrl.getImageUrl(resourceId, imageType);
         EventBus.getDefault().post(new AnimEvent(animJson, animUrl));
     }

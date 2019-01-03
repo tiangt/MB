@@ -406,7 +406,7 @@ public class HeadlineListFragment extends BaseFragment {
                         selfScore = beyondInfo.data.selfScore;
                         topScore = beyondInfo.data.topScore;
                         int rank = beyondInfo.data.rank;
-                        if (tvRank != null && tvNickName != null && tvCharmValue != null) {
+                        if (tvRank != null && tvNickName != null && tvCharmValue != null && tvClickGift != null) {
                             if (rank < 0) {
                                 tvRank.setText("未上榜");
                                 tvRank.setTextColor(Color.BLACK);

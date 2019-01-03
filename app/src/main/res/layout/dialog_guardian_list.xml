@@ -36,15 +36,28 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/tv_empty_text"
+        <RelativeLayout
+            android:id="@+id/rl_empty_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="#c5c5c5"
-            android:textSize="21sp"
-            android:text="当前列表为空"
-            android:visibility="gone"/>
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_empty_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_empty_follow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_empty_user"
+                android:layout_centerHorizontal="true"
+                android:text="当前列表为空"
+                android:textColor="@color/tran_white1"
+                android:textSize="18sp" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout

@@ -5,6 +5,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.ContributeDataBean;
@@ -33,6 +34,8 @@ import butterknife.BindView;
 public class ContributeRankFragment extends BaseFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.rl_empty_user)
+    RelativeLayout relativeLayout;
     private ArrayList<RoomRankBean.DataBean.ListBean> mDatas = new ArrayList<>();
     private String mType;
     private AudienceContributeListAdapter mAdapter;
@@ -48,7 +51,7 @@ public class ContributeRankFragment extends BaseFragment {
 
     @Override
     public int getLayoutId() {
-        return R.layout.comm_recycler;
+        return R.layout.fragment_con_rank;
     }
 
     @Override
@@ -102,6 +105,13 @@ public class ContributeRankFragment extends BaseFragment {
 //                    } else {
 //                        mAdapter.setDatas(contributeDataBean.data.week);
 //                    }
+                    if (relativeLayout != null) {
+                        if (roomRankBean.data.list == null || roomRankBean.data.list.size() == 0) {
+                            relativeLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            relativeLayout.setVisibility(View.GONE);
+                        }
+                    }
                     mAdapter.setDatas(roomRankBean.data.list);
                 }
             }

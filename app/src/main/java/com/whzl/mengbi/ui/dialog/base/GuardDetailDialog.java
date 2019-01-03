@@ -87,12 +87,21 @@ public class GuardDetailDialog extends BaseAwesomeDialog {
                     }
                 });
         if (mAnchorBean != null) {
-            tvNickName.setText(mAnchorBean.getName());
+            if (mAnchorBean.getName().length() > 6) {
+                tvNickName.setText(mAnchorBean.getName().substring(0, 6) + "...");
+            } else {
+                tvNickName.setText(mAnchorBean.getName());
+            }
+
             GlideImageLoader.getInstace().displayImage(getContext(), mAnchorBean.getAvatar(), ivAvatar);
         }
         String userName = (String) SPUtils.get(getContext(), SpConfig.KEY_USER_NAME, "");
         long userId = (long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
-        tvUserName.setText(userName);
+        if(userName.length() > 6){
+            tvUserName.setText(userName.substring(0,6)+"...");
+        }else{
+            tvUserName.setText(userName);
+        }
         String userAvatar = ImageUrl.getAvatarUrl(userId, "png", System.currentTimeMillis());
         GlideImageLoader.getInstace().displayImage(getContext(), userAvatar, ivUserAvatar);
     }

@@ -450,20 +450,24 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                                             mAnchorList.clear();
                                             mAnchorList.addAll(weekStarRankInfo.getData().getList().get(i).getRankList());
                                             anchorAdapter.notifyDataSetChanged();
-                                            if (mAnchorList == null || mAnchorList.size() == 0) {
-                                                ivEmptyAnchor.setVisibility(View.VISIBLE);
-                                            } else {
-                                                ivEmptyAnchor.setVisibility(View.GONE);
+                                            if (ivEmptyAnchor != null) {
+                                                if (mAnchorList == null || mAnchorList.size() == 0) {
+                                                    ivEmptyAnchor.setVisibility(View.VISIBLE);
+                                                } else {
+                                                    ivEmptyAnchor.setVisibility(View.GONE);
+                                                }
                                             }
                                         } else if (rankId.equals(mUserRankId + "")) {
                                             //富豪周星榜
                                             mUserList.clear();
                                             mUserList.addAll(weekStarRankInfo.getData().getList().get(i).getRankList());
                                             userAdapter.notifyDataSetChanged();
-                                            if (mUserList == null || mUserList.size() == 0) {
-                                                ivEmptyUser.setVisibility(View.VISIBLE);
-                                            } else {
-                                                ivEmptyUser.setVisibility(View.GONE);
+                                            if (ivEmptyUser != null) {
+                                                if (mUserList == null || mUserList.size() == 0) {
+                                                    ivEmptyUser.setVisibility(View.VISIBLE);
+                                                } else {
+                                                    ivEmptyUser.setVisibility(View.GONE);
+                                                }
                                             }
                                         }
                                     }
@@ -501,7 +505,7 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                         selfScore = beyondInfo.data.selfScore;
                         topScore = beyondInfo.data.topScore;
                         int rank = beyondInfo.data.rank;
-                        if (tvRank != null && tvNickName != null && tvValue != null) {
+                        if (tvRank != null && tvNickName != null && tvValue != null && tvClickGift != null) {
                             if (rank < 0) {
                                 tvRank.setText("未上榜");
                                 tvRank.setTextColor(Color.BLACK);

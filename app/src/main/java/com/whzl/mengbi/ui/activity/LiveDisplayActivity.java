@@ -89,6 +89,7 @@ import com.whzl.mengbi.gift.PkControl;
 import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
+import com.whzl.mengbi.gift.SvgaGiftControl;
 import com.whzl.mengbi.gift.WeekStarControl;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
@@ -203,8 +204,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout llGiftContainer;
     @BindView(R.id.btn_close)
     ImageButton btnClose;
-    //    @BindView(R.id.iv_gift_gif)
-//    ImageView ivGiftGif;
+    @BindView(R.id.iv_gift_gif)
+    ImageView ivGiftGif;
     @BindView(R.id.tv_stop_tip)
     TextView tvStopTip;
     @BindView(R.id.progressbar)
@@ -312,6 +313,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RunWayGiftControl mRunWayGiftControl;
     private LuckGiftControl mLuckyGiftControl;
     private GifGiftControl mGifGiftControl;
+    private SvgaGiftControl mSvgaGiftControl;
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
     public boolean isGuard;
     private boolean isVip;
@@ -936,6 +938,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnimEvent animEvent) {
+        Log.i("chenliang", "animEvent.getAnimJson().getAnimType() = " + animEvent.getAnimJson().getAnimType());
         if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())
                 || "DIV".equals(animEvent.getAnimJson().getAnimType())) {
             AnimJson animJson = animEvent.getAnimJson();
@@ -945,22 +948,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 giftControl.setGiftLayout(llGiftContainer, 3);
             }
             giftControl.loadGift(animJson);
-        } else {
-//            if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
-//                    || "MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
-//                if (mGifGiftControl == null) {
-//                    mGifGiftControl = new GifGiftControl(this, ivGiftGif);
-//                }
-//                mGifGiftControl.load(animEvent);
-//            }
-
-            if ("MOBILE_CAR_SVGA".equals(animEvent.getAnimJson().getAnimType())
-                    || "MOBILE_GIFT_SVGA".equals(animEvent.getAnimJson().getAnimType())) {
-                if (mGifGiftControl == null) {
-                    mGifGiftControl = new GifGiftControl(this, svgaGift);
-                }
-                mGifGiftControl.load(animEvent);
+        }
+        else if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
+                || "MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
+            if (mGifGiftControl == null) {
+                mGifGiftControl = new GifGiftControl(this, ivGiftGif);
             }
+            mGifGiftControl.loadGif(animEvent);
+        } else if ("MOBILE_CAR_SVGA".equals(animEvent.getAnimJson().getAnimType())
+                || "MOBILE_GIFT_SVGA".equals(animEvent.getAnimJson().getAnimType())) {
+            if (mSvgaGiftControl == null) {
+                mSvgaGiftControl = new SvgaGiftControl(this, svgaGift);
+            }
+            mSvgaGiftControl.load(animEvent);
         }
 
     }
@@ -1696,6 +1696,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         if (mGifGiftControl != null) {
             mGifGiftControl.destroy();
+        }
+        if(mSvgaGiftControl != null){
+            mSvgaGiftControl.destroy();
         }
         if (giftControl != null) {
             giftControl.destroy();
