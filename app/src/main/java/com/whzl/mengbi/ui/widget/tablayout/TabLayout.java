@@ -34,6 +34,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.v4.util.Pools;
@@ -2044,6 +2045,7 @@ public class TabLayout extends HorizontalScrollView {
             }
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void draw(Canvas canvas) {
             super.draw(canvas);
@@ -2065,14 +2067,14 @@ public class TabLayout extends HorizontalScrollView {
                         left = mIndicatorLeft + (getChildAt(getSelectedTabPosition()).getMeasuredWidth() - mSelectedIndicatorWidth) / 2.0f;
                         right = left + mSelectedIndicatorWidth;
                     }
-                    canvas.drawRect(left,
+                    canvas.drawRoundRect(left,
                             getHeight() - mSelectedIndicatorHeight,
                             right,
-                            getHeight(), mSelectedIndicatorPaint);
+                            getHeight(), dpToPx(2),dpToPx(2),mSelectedIndicatorPaint);
                     mIsDefaultIndicatorWidth = false;
                 } else {
-                    canvas.drawRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
-                            mIndicatorRight, getHeight(), mSelectedIndicatorPaint);
+                    canvas.drawRoundRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
+                            mIndicatorRight, getHeight(),dpToPx(2),dpToPx(2), mSelectedIndicatorPaint);
                     mIsDefaultIndicatorWidth = true;
                 }
             }

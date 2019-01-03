@@ -182,4 +182,5 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
     public void clickIbClear() {
         mPresenter.clearWatchRecord();
     }
+
 }

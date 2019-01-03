@@ -393,4 +393,14 @@
         <item name="maxHeight">50dp</item>
         <item name="indicatorName">BallPulseSyncIndicator</item>
     </style>
+
+    <style name="HomeFollowTab" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorHeight">2.5dp</item>
+        <item name="tabBackground">@color/white</item>
+        <item name="tabIndicatorColor">#ffd634</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#40000000</item>
+        <item name="android:textStyle">bold</item>
+        <item name="tabSelectedTextColor">#323232</item>
+    </style>
 </resources>
