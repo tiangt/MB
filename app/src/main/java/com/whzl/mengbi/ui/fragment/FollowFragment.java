@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
@@ -44,6 +46,10 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,6 +93,12 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         refreshLayout.setOnLoadMoreListener(this);
         getAnchorList(mCurrentPager++);
         initRecommendRecycler();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        EventBus.getDefault().register(this);
     }
 
     private void initRecommendRecycler() {
@@ -459,4 +471,14 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LoginSuccussEvent event) {
+        refreshLayout.autoRefresh();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

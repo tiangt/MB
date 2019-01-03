@@ -15,6 +15,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
@@ -29,6 +30,8 @@ import com.whzl.mengbi.ui.view.LoginView;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -205,6 +208,7 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
                 != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
         loginSuccessListener.onLoginSuccessListener();
         dismiss();
+        EventBus.getDefault().post(new LoginSuccussEvent());
     }
 
     public interface LoginSuccessListener {

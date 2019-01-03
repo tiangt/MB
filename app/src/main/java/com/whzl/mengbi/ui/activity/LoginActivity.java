@@ -18,6 +18,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
+import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
@@ -241,6 +242,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         } else if ("logindialog".equals(activityFrom)) {
             setResult(RESULT_OK);
         }
+        EventBus.getDefault().post(new LoginSuccussEvent());
         finish();
     }
 
