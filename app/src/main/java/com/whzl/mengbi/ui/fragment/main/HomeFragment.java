@@ -110,7 +110,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
             anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             mCurrentPager = 1;
             mHomePresenter.getBanner();
-            mHomePresenter.getHeadlineTop();
+//            mHomePresenter.getHeadlineTop();
             mHomePresenter.getRecommend();
             mHomePresenter.getAnchorList(mCurrentPager++);
         });
@@ -399,14 +399,19 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void showHeadlineTop(HeadlineTopInfo headlineTopInfo) {
-        if (headlineTopInfo != null && headlineTopInfo.getData() != null && headlineTopInfo.getData().getList() != null &&
-                headlineTopInfo.getData().getList().size() != 0) {
-            rlTopThree.setVisibility(View.VISIBLE);
-            mHeadlineList.clear();
-            mHeadlineList.addAll(headlineTopInfo.getData().getList());
-            topThreeAdapter.notifyDataSetChanged();
-        } else {
-            rlTopThree.setVisibility(View.GONE);
+        if (headlineTopInfo != null && headlineTopInfo.getData() != null && headlineTopInfo.getData().getList() != null) {
+            if (headlineTopInfo.getData().getList().size() == 0) {
+                rlTopThree.setVisibility(View.GONE);
+            } else {
+                if (mCurrentPager == 2) {
+                    mAnchorInfoList.clear();
+                    refreshLayout.finishRefresh();
+                }
+                rlTopThree.setVisibility(View.VISIBLE);
+                mHeadlineList.clear();
+                mHeadlineList.addAll(headlineTopInfo.getData().getList());
+                topThreeAdapter.notifyDataSetChanged();
+            }
         }
     }
 

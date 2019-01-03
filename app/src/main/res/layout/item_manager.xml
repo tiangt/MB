@@ -1,76 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="62dp">
-
-    <com.whzl.mengbi.ui.widget.view.CircleImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="15dp" />
+    android:layout_height="63dp"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/ll_name"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/iv_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
         android:orientation="horizontal">
 
+        <com.whzl.mengbi.ui.widget.view.CircleImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp" />
+
         <LinearLayout
-            android:id="@+id/ll_manager_container"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" />
-
-        <com.whzl.mengbi.ui.widget.view.PrettyNumText
-            android:id="@+id/tv_pretty_num"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="3dp"
-            android:visibility="gone"/>
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_name"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/iv_avatar"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_manager_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" />
+
+                <com.whzl.mengbi.ui.widget.view.PrettyNumText
+                    android:id="@+id/tv_pretty_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginBottom="2dp"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_level_container"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_below="@id/ll_info"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/iv_avatar"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_car"
+            android:layout_width="97dp"
+            android:layout_height="45dp"
             android:layout_gravity="center_vertical"
-            android:singleLine="true"
-            android:textColor="@color/white"
-            android:layout_marginLeft="3dp"
-            android:textSize="15sp" />
+            android:visibility="gone" />
+
     </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/ll_level_container"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_below="@id/ll_name"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@id/iv_avatar"
-        android:gravity="center_vertical"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal" />
-
-    <ImageView
-        android:id="@+id/iv_car"
-        android:layout_width="97dp"
-        android:layout_height="45dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:visibility="gone"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
         android:layout_marginLeft="74dp"
         android:background="#30ffffff" />
 
-</RelativeLayout>
+</LinearLayout>

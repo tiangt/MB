@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
+import com.whzl.mengbi.ui.fragment.WeekStarListsFragment;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 
 import java.util.ArrayList;
@@ -53,8 +54,8 @@ public class WeekStarMasterFragment extends BaseFragment {
         titles.add("上周");
         titles.add("规则");
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(WeekStarListFragment.newInstance("F", anchorId, nickName, avatar, programId));
-        fragments.add(WeekStarListFragment.newInstance("T", anchorId, nickName, avatar, programId));
+        fragments.add(WeekStarListsFragment.newInstance("F", anchorId, nickName, avatar, programId));
+        fragments.add(WeekStarListsFragment.newInstance("T", anchorId, nickName, avatar, programId));
         fragments.add(WeekStarRuleFragment.newInstance());
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));

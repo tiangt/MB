@@ -347,7 +347,7 @@ public class HeadlineListFragment extends BaseFragment {
      * @param goodsId
      * @param diffScore
      */
-    private void getNeedGoods(int goodsId, int diffScore) {
+    private void getNeedGoods(int goodsId, int diffScore, int rank) {
         HashMap paramsMap = new HashMap<>();
         paramsMap.put("goodsId", goodsId);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GOODS_PRICE, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
@@ -365,13 +365,13 @@ public class HeadlineListFragment extends BaseFragment {
                         needValue = needGifts * (goodsRent * anchorExp / 100);
                         if (tvNeedValue != null) {
                             tvNeedValue.setText("超越第1名需要");
-                            if (diffScore > 0) {
+                            if (rank == 1) {
+                                tvNeedValue.setText(R.string.top_rank);
+                            } else {
                                 SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needValue), Color.parseColor("#000000"));
                                 tvNeedValue.append(ss);
                                 SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
                                 tvNeedValue.append(goods);
-                            } else {
-                                tvNeedValue.setText(R.string.top_rank);
                             }
                         }
                     }
@@ -416,13 +416,15 @@ public class HeadlineListFragment extends BaseFragment {
                             }
                             if(rank == 1){
                                 tvClickGift.setVisibility(View.GONE);
+                            }else{
+                                tvClickGift.setVisibility(View.VISIBLE);
                             }
                             tvCharmValue.setText(StringUtils.formatNumber((long) selfScore) + "魅力");
                             tvNickName.setText(mNickName);
                             tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
                             GlideImageLoader.getInstace().displayImage(getMyActivity(), mAvatar, ivOwnAvatar);
                             int diff = topScore - selfScore;
-                            getNeedGoods(goodsId, diff);
+                            getNeedGoods(goodsId, diff,rank);
                         }
                     }
                 }
