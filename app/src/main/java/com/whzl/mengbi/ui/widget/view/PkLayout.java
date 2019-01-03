@@ -57,7 +57,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private TextView tvRightScore;
     private ValueAnimator animator;
     private TimeDwonListener listener;
-    private PopupWindow popupWindow;
+    public PopupWindow popupWindow;
     private RecyclerView myFollow;
     private RecyclerView oppositeSide;
     private List<String> list;
@@ -71,7 +71,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private RelativeLayout rlPunishWay;
     private LinearLayout llPkProgress;
     private PopupWindow mvpPopupWindow;
-    private TextView tvFansRank;
+    public TextView tvFansRank;
     private RxTimerUtil rxTimerUtil;
 
     public PkLayout(Context context) {

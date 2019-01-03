@@ -516,6 +516,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initDrawLayout(Activity liveDisplayActivity) {
         drawLayoutControl = new DrawLayoutControl(liveDisplayActivity, drawLayoutInclude);
         drawLayoutControl.init();
+        drawerLayoutOut.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                if (pkLayout.popupWindow != null && pkLayout.popupWindow.isShowing()) {
+                    pkLayout.popupWindow.dismiss();
+                    pkLayout.tvFansRank.setText("点击打开助力粉丝榜");
+                }
+            }
+        });
     }
 
 
