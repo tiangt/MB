@@ -1875,6 +1875,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 headLineControl = new HeadLineControl(hlLayout);
             }
             headLineControl.load(event);
+        } else {
             if (event.headLineJson.context.rank == 1) {
                 if (weekStarControl == null) {
                     weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
