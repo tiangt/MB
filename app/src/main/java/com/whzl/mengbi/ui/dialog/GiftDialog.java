@@ -30,6 +30,7 @@ import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
+import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.SendSuperWordEvent;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -114,6 +115,8 @@ public class GiftDialog extends BaseAwesomeDialog {
     private String CAN_NOT_SUPER_RUN = "单笔超过" + AppConfig.MIN_VALUE_GIFT_DIALOG + "萌币才可以上超跑";
     private AddSendWordDialog addSendWordDialog;
     private long currentValue = 0;
+    public boolean superValue = false;
+    private int totalValue;
 
     public static BaseAwesomeDialog newInstance(GiftInfo giftInfo, long coin) {
         Bundle args = new Bundle();
@@ -228,6 +231,12 @@ public class GiftDialog extends BaseAwesomeDialog {
         currentSelectedIndex = index;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(SendGiftSuccessEvent event) {
+        currentValue = totalValue;
+        setCheckChange();
+    }
+
     @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm, R.id.tv_top_up, R.id.first_top_up, R.id.checkbox, R.id.tv_add_superrun})
     public void onClick(View view) {
         long mUserId = Long.parseLong(SPUtils.get(getActivity(), "userId", 0L).toString());
@@ -236,7 +245,6 @@ public class GiftDialog extends BaseAwesomeDialog {
                 showCountSelectPopWindow();
                 break;
             case R.id.btn_send_gift:
-
                 if (mUserId == 0) {
                     ((LiveDisplayActivity) getActivity()).login();
                     return;
@@ -256,9 +264,14 @@ public class GiftDialog extends BaseAwesomeDialog {
                     ToastUtils.showToast("礼物数量不能为0");
                     return;
                 }
+                superValue = false;
                 ((LiveDisplayActivity) getActivity()).sendGift(giftCount, giftDetailInfoBean.getGoodsId(),
                         giftDetailInfoBean.isBackpack(), checkBox.isChecked() ? "T" : "F",
                         SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString());
+                totalValue = giftCount * giftDetailInfoBean.getRent();
+                if (totalValue > currentValue) {
+                    superValue = true;
+                }
                 break;
             case R.id.btn_count_confirm:
                 KeyBoardUtil.closeKeybord(etCount, getContext());
@@ -450,6 +463,11 @@ public class GiftDialog extends BaseAwesomeDialog {
                 tvTitleSuperRun.setText(SPUtils.get(getActivity(), SpConfig.DEFAULT_SENT_WORD, "").toString());
             }
         }
+    }
+
+    public void refreshPrice() {
+        getRunWayGiftDetail();
+        setCheckChange();
     }
 
     private void setCheckChange() {

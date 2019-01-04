@@ -80,6 +80,7 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.LivePkEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
+import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
@@ -1180,6 +1181,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onSendGiftSuccess() {
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        if (mGiftDialog != null && ((GiftDialog) mGiftDialog).superValue) {
+            EventBus.getDefault().post(new SendGiftSuccessEvent());
+        }
     }
 
     /**
