@@ -407,8 +407,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter = new LivePresenterImpl(this);
         if (getIntent() != null) {
             mProgramId = getIntent().getIntExtra(BundleConfig.PROGRAM_ID, -1);
-            //主播封面
-            mAnchorCover = getIntent().getStringExtra(BundleConfig.ANCHOR_COVER);
             SPUtils.put(this, "programId", mProgramId);
         }
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
@@ -1007,6 +1005,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(BroadCastBottomEvent broadCastBottomEvent) {
         initRunWayBroad();
         broadCastBottomEvent.setProgramId(mProgramId);
+        broadCastBottomEvent.setPkLayoutVisibility(rlOtherSide,rlOtherSideInfo,textureView,pkLayout,ivCountDown);
         mRunWayBroadControl.load(broadCastBottomEvent);
     }
 
@@ -1116,6 +1115,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mShareUrl = roomInfoBean.getData().getShareUrl();
 
             mLiveState = roomInfoBean.getData().getProgramStatus();
+            mAnchorCover = roomInfoBean.getData().getCover();
         }
 
         initAboutAnchor(mProgramId, mAnchorId);
