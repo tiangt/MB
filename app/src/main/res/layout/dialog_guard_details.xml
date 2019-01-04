@@ -80,6 +80,8 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginLeft="10dp"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -91,7 +93,8 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="10dp"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
             </LinearLayout>

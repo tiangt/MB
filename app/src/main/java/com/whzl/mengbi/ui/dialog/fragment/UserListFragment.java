@@ -201,10 +201,10 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
                                 });
                     }
                     //座驾
-                    if ("CAR".equals(medalBean.getGoodsType())) {
-                        ivCar.setVisibility(View.VISIBLE);
-                        GlideImageLoader.getInstace().displayImage(getMyActivity(), medalBean.getGoodsIcon(), ivCar);
-                    }
+//                    if ("CAR".equals(medalBean.getGoodsType())) {
+//                        ivCar.setVisibility(View.VISIBLE);
+//                        GlideImageLoader.getInstace().displayImage(getMyActivity(), medalBean.getGoodsIcon(), ivCar);
+//                    }
 
                     if ("PRETTY_NUM".equals(medalBean.getGoodsType())) {
                         tvPrettyNum.setVisibility(View.VISIBLE);

@@ -282,12 +282,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 case TYPE_RECOMMEND:
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
                     intent.putExtra(BundleConfig.PROGRAM_ID, recommendAnchorInfoBean.getProgramId());
-                    intent.putExtra(BundleConfig.ANCHOR_COVER, recommendAnchorInfoBean.getCover());
                     break;
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position - 1);
                     intent.putExtra(BundleConfig.PROGRAM_ID, liveShowListInfo.getProgramId());
-                    intent.putExtra(BundleConfig.ANCHOR_COVER, liveShowListInfo.getCover());
                     break;
                 default:
                     break;

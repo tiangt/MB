@@ -199,7 +199,6 @@ public class SearchActivity extends BaseActivity {
             super.onItemClick(view, position);
             Intent intent = new Intent(SearchActivity.this, LiveDisplayActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, mAnchorInfoList.get(position).programId);
-            intent.putExtra(BundleConfig.ANCHOR_COVER, mAnchorInfoList.get(position).cover);
             startActivity(intent);
         }
     }
