@@ -83,7 +83,7 @@ public class OneClickDialog extends BaseAwesomeDialog {
 //        tvGiftCount.setText(getString(R.string.need_goods, mCount, goodsName));
         tvGiftCount.setText(LightSpanString.getLightString("您需要赠送 ", Color.parseColor("#70000000")));
         tvGiftCount.append(LightSpanString.getLightString(mCount + " ", Color.parseColor("#70FF792F")));
-        tvGiftCount.append(LightSpanString.getLightString(goodsName, Color.parseColor("#70000000")));
+        tvGiftCount.append(LightSpanString.getLightString("个" + goodsName, Color.parseColor("#70000000")));
 //        tvGiftAmount.setText(getString(R.string.need_mengbi, StringUtils.formatNumber(amount)));
         tvGiftAmount.setText(LightSpanString.getLightString("花费 ", Color.parseColor("#70000000")));
         tvGiftAmount.append(LightSpanString.getLightString(StringUtils.formatNumber(amount), Color.parseColor("#70FF004B")));
