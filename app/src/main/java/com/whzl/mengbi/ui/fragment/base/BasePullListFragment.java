@@ -29,7 +29,7 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
     protected ArrayList<K> mDatas = new ArrayList<>();
     private BaseListAdapter mAdapter;
     private boolean mIsViewCreate;
-    private boolean hasLoadData;
+    public boolean hasLoadData;
 
     protected int mPage = 1;
 

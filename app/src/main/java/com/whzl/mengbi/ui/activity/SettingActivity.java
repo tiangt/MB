@@ -57,6 +57,8 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void setupView() {
         tvVersionName.setText("当前版本v" + AppUtils.getVersionName(this));
+        String from = getIntent().getStringExtra("from");
+        btnLoginOut.setVisibility("live".equals(from) ? View.GONE : View.VISIBLE);
     }
 
     @Override

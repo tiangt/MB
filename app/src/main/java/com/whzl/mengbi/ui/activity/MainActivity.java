@@ -15,6 +15,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
@@ -103,6 +104,7 @@ public class MainActivity extends BaseActivity {
                 case R.id.rb_follow:
                     if (checkLogin()) {
                         setTabChange(2);
+                        EventBus.getDefault().post(new FollowRefreshEvent());
                         return;
                     }
                     login();

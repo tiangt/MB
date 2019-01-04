@@ -329,7 +329,10 @@ public class DrawLayoutControl {
                             .putExtra("anchorAvatar", ((LiveDisplayActivity) activity).mAnchorAvatar));
                     break;
                 case 5:
-
+                    if (((LiveDisplayActivity) activity).mUserId == 0) {
+                        ((LiveDisplayActivity) activity).login();
+                        return;
+                    }
                     ((LiveDisplayActivity) activity).showGuardDialog();
                     break;
                 case 6:
@@ -337,7 +340,7 @@ public class DrawLayoutControl {
                         ((LiveDisplayActivity) activity).login();
                         return;
                     }
-                    activity.startActivity(new Intent(activity, SettingActivity.class));
+                    activity.startActivity(new Intent(activity, SettingActivity.class).putExtra("from", "live"));
                     break;
                 case 7:
                     activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));

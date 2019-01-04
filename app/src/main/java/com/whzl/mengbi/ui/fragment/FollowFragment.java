@@ -25,6 +25,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
@@ -75,6 +76,8 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     private long userId;
     private BaseListAdapter recommendAdapter;
     private ArrayList<RecommendAnchorInfoBean> mRecommendAnchorInfoList = new ArrayList<>();
+    private boolean needRefresh = false;
+    private boolean hasLoadData = false;
 
     @Override
     protected void initEnv() {
@@ -184,6 +187,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     public void getAnchorList(int pager) {
+        needRefresh = false;
         userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         HashMap hashMap = new HashMap();
         hashMap.put("userId", userId);
@@ -214,6 +218,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     private void loadSuccess(AnchorFollowedDataBean anchorFollowedDataBean) {
+        hasLoadData = true;
         recommendRecycler.setVisibility(View.GONE);
         if (anchorFollowedDataBean != null && anchorFollowedDataBean.data != null && anchorFollowedDataBean.data.list != null) {
             if (mCurrentPager == 2) {
@@ -473,7 +478,14 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LoginSuccussEvent event) {
-        refreshLayout.autoRefresh();
+        needRefresh = true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(FollowRefreshEvent event) {
+        if (hasLoadData && needRefresh) {
+            refreshLayout.autoRefresh();
+        }
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.contract.FollowSortContract;
+import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
 import com.whzl.mengbi.model.entity.FollowSortBean;
 import com.whzl.mengbi.presenter.FollowSortPresenter;
@@ -41,6 +42,7 @@ import butterknife.ButterKnife;
 public class FollowSortFragment extends BasePullListFragment<FollowSortBean.ListBean, FollowSortPresenter> implements FollowSortContract.View {
 
     private String type;
+    private boolean needFresh = false;
 
     public static FollowSortFragment newInstance(String type) {
         FollowSortFragment followSortFragment = new FollowSortFragment();
@@ -94,6 +96,7 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
 
     @Override
     protected void loadData(int action, int mPage) {
+        needFresh = false;
         switch (type) {
             case "guard":
                 mPresenter.getGuardPrograms(mPage);
@@ -203,7 +206,14 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LoginSuccussEvent event) {
-        getRefreshLayout().autoRefresh(2000);
+//        getRefreshLayout().autoRefresh(2000);
+        needFresh = true;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(FollowRefreshEvent event) {
+        if (hasLoadData && needFresh) {
+            getRefreshLayout().autoRefresh();
+        }
+    }
 }
