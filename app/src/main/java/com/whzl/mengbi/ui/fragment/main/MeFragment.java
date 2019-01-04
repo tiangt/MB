@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.fragment.main;
 
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -194,7 +195,8 @@ public class MeFragment extends BaseFragment implements MeView {
     private void jumpToPersonalInfoActivity() {
         Intent intent = new Intent(getContext(), UserInfoActivity.class);
         intent.putExtra("userbean", mUserinfo);
-        startActivity(intent);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getMyActivity(), ivAvatar, "iv_avatar");
+        startActivity(intent,optionsCompat.toBundle());
     }
 
     private void jumpToSettingActivity() {
