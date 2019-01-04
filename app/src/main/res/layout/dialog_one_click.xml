@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:gravity="center"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="@color/tran_black2"
                 android:layout_centerInParent="true"/>
 
@@ -34,9 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="花费 1,338,888 萌币,才能超越 第5名"
                 android:gravity="center"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textColor="@color/tran_black2"
                 android:layout_marginTop="10dp"
                 android:layout_below="@id/tv_gift_count"/>

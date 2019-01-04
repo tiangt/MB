@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -78,8 +80,15 @@ public class OneClickDialog extends BaseAwesomeDialog {
         mGoodsRent = getArguments().getInt("goodsRent");
         String goodsName = getArguments().getString("goodsName");
         amount = mCount * mGoodsRent;
-        tvGiftCount.setText(getString(R.string.need_goods, mCount, goodsName));
-        tvGiftAmount.setText(getString(R.string.need_mengbi, StringUtils.formatNumber(amount)));
+//        tvGiftCount.setText(getString(R.string.need_goods, mCount, goodsName));
+        tvGiftCount.setText(LightSpanString.getLightString("您需要赠送 ", Color.parseColor("#70000000")));
+        tvGiftCount.append(LightSpanString.getLightString(mCount + " ", Color.parseColor("#70FF792F")));
+        tvGiftCount.append(LightSpanString.getLightString(goodsName, Color.parseColor("#70000000")));
+//        tvGiftAmount.setText(getString(R.string.need_mengbi, StringUtils.formatNumber(amount)));
+        tvGiftAmount.setText(LightSpanString.getLightString("花费 ", Color.parseColor("#70000000")));
+        tvGiftAmount.append(LightSpanString.getLightString(StringUtils.formatNumber(amount), Color.parseColor("#70FF004B")));
+        tvGiftAmount.append(LightSpanString.getLightString(" 萌币,才能超越 ", Color.parseColor("#70000000")));
+        tvGiftAmount.append(LightSpanString.getLightString(" 第一名", Color.parseColor("#70FF004B")));
     }
 
     @OnClick({R.id.btn_confirm, R.id.btn_cancel})
