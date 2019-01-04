@@ -73,9 +73,6 @@ public class ShareDialog extends BaseAwesomeDialog {
         mShareUrl = getArguments().getString("shareUrl", "");
         strHostName = mAnchorBean.getName();
         anchorId = mAnchorBean.getId();
-        if (TextUtils.isEmpty(mAnchorCover)) {
-            mAnchorCover = ImageUrl.getAvatarUrl(anchorId, "png", System.currentTimeMillis());
-        }
     }
 
     @OnClick({R.id.tv_host_card, R.id.tv_weixin_circle, R.id.tv_weixin_friend,
