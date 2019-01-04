@@ -30,7 +30,7 @@ public class FollowFragment extends BaseFragment {
     private ArrayList<String> titles;
     private FragmentPagerAdaper fragmentPagerAdaper;
 
-    public static Fragment newInstance() {
+    public static FollowFragment newInstance() {
         FollowFragment followFragment = new FollowFragment();
         return followFragment;
     }

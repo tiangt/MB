@@ -230,7 +230,7 @@
 
         <TextView
             style="@style/text_note_vip"
-            android:text="每天免费领取10张广播卡" />
+            android:text="每天免费领取1张广播卡" />
     </LinearLayout>
 
     <LinearLayout
