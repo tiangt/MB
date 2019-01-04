@@ -333,6 +333,10 @@ public class DrawLayoutControl {
                     ((LiveDisplayActivity) activity).showGuardDialog();
                     break;
                 case 6:
+                    if (((LiveDisplayActivity) activity).mUserId == 0) {
+                        ((LiveDisplayActivity) activity).login();
+                        return;
+                    }
                     activity.startActivity(new Intent(activity, SettingActivity.class));
                     break;
                 case 7:
