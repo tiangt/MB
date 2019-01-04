@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment.main;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
@@ -10,11 +11,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -33,6 +34,8 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.LoginActivity;
 import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.activity.SearchActivity;
+import com.whzl.mengbi.ui.adapter.BaseAnimation;
+import com.whzl.mengbi.ui.adapter.SlideInRightAnimation;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -49,13 +52,10 @@ import com.youth.banner.Transformer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 
 
 /**
@@ -87,6 +87,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private RecyclerView topThreeRecycler;
     private BaseListAdapter topThreeAdapter;
     private ArrayList<HeadlineTopInfo.DataBean.ListBean> mHeadlineList = new ArrayList<>();
+    private boolean needAnimal = true;
 
     @Override
     protected void initEnv() {
@@ -113,6 +114,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
             refreshLayout.setEnableLoadMore(true);
             anchorAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             mCurrentPager = 1;
+            mLastPosition = -1;
+            mLastPositionB = -1;
             mHomePresenter.getBanner();
 //            mHomePresenter.getHeadlineTop();
             mHomePresenter.getRecommend();
@@ -246,6 +249,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     }
                     tvWatchCount.setText(recommendAnchorInfoBean.getRoomUserCount() + "");
                     GlideImageLoader.getInstace().loadRoundImage(getContext(), recommendAnchorInfoBean.getCover(), ivCover, 5);
+                    if (needAnimal) {
+                        addAnimation(this, position, TYPE_RECOMMEND);
+                    }
                     break;
                 case TYPE_ANCHOR:
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
@@ -259,6 +265,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     }
                     tvWatchCount.setText(liveShowListInfo.getRoomUserCount() + "");
                     GlideImageLoader.getInstace().loadRoundImage(getContext(), liveShowListInfo.getCover(), ivCover, 5);
+                    if (needAnimal) {
+                        addAnimation(this, position, TYPE_ANCHOR);
+                    }
                     break;
                 default:
                     break;
@@ -286,6 +295,39 @@ public class HomeFragment extends BaseFragment implements HomeView {
             startActivity(intent);
         }
     }
+
+    private int mLastPosition = -1;
+    private int mLastPositionB = -1;
+
+    public void addAnimation(RecyclerView.ViewHolder holder, int position, int typeRecommend) {
+        switch (typeRecommend) {
+            case TYPE_ANCHOR:
+                if (position > mLastPosition) {
+                    BaseAnimation animation = new SlideInRightAnimation();
+                    for (Animator anim : animation.getAnimators(holder.itemView)) {
+                        startAnim(anim);
+                    }
+                    mLastPosition = position;
+                }
+                break;
+            case TYPE_RECOMMEND:
+                if (position > mLastPositionB) {
+                    BaseAnimation animation = new SlideInRightAnimation();
+                    for (Animator anim : animation.getAnimators(holder.itemView)) {
+                        startAnim(anim);
+                    }
+                    mLastPositionB = position;
+                }
+                break;
+        }
+
+    }
+
+    private void startAnim(Animator animator) {
+        animator.setDuration(400).start();
+        animator.setInterpolator(new LinearInterpolator());
+    }
+
 
     private void initBanner() {
         //设置banner样式
