@@ -137,6 +137,7 @@ import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.HeadLineView;
 import com.whzl.mengbi.ui.widget.view.HeadlineLayout;
+import com.whzl.mengbi.ui.widget.view.LeftRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
@@ -296,6 +297,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvTimeBlackRoom;
     @BindView(R.id.svga_gift)
     SVGAImageView svgaGift;
+    @BindView(R.id.lrl_live)
+    LeftRelativeLayout leftRelativeLayout;
 
     private LivePresenterImpl mLivePresenter;
     public int mProgramId;
@@ -524,6 +527,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (pkLayout.popupWindow != null && pkLayout.popupWindow.isShowing()) {
                     pkLayout.popupWindow.dismiss();
                     pkLayout.tvFansRank.setText("点击打开助力粉丝榜");
+                }
+            }
+        });
+
+        leftRelativeLayout.setLeftSlideListener(new LeftRelativeLayout.LeftSlideListener() {
+            @Override
+            public void onLeftSlideListener() {
+                if (drawerLayoutOut.isDrawerOpen(drawLayoutInclude)) {
+                    return;
+                } else {
+                    drawerLayoutOut.openDrawer(drawLayoutInclude);
                 }
             }
         });
