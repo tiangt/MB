@@ -417,4 +417,5 @@
     </array>
 
     <string name="history_record">最近%1$d条记录</string>
+    <string name="guard_follow_days">剩余%1$d天</string>
 </resources>

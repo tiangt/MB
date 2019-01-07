@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,8 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
     TextView tvStateBlack;
     @BindView(R.id.ll_state_black)
     LinearLayout llStateBlack;
+    @BindView(R.id.ll_state)
+    LinearLayout llState;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     private int anchorLever;
@@ -286,11 +289,17 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
         totalHours = (int) Math.ceil(l);
         if (totalHours == 0) {
             llStateBlack.setVisibility(View.GONE);
+            llState.setBackgroundResource(R.drawable.bg_black_room_normal);
+            tvStateBlack.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            tvStateBlack.setTextColor(Color.parseColor("#f59362"));
             tvStateBlack.setText("当前战绩良好，请继续加油!");
             return;
         }
         llStateBlack.setVisibility(View.VISIBLE);
+        llState.setBackgroundResource(R.drawable.bg_black_room);
         tvTimeBlack.setText(totalHours + "小时");
+        tvStateBlack.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        tvStateBlack.setTextColor(Color.parseColor("#aaaaaa"));
         tvStateBlack.setText("战绩不佳,已被关小黑屋，无法继续PK");
     }
 

@@ -286,6 +286,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                 tvCount.setText(count + "");
                 llCountCustomContainer.setVisibility(View.GONE);
                 rlSendContainer.setVisibility(View.VISIBLE);
+                setCheckChange();
                 break;
             case R.id.tv_top_up:
                 if (mUserId == 0) {
@@ -361,6 +362,9 @@ public class GiftDialog extends BaseAwesomeDialog {
                 if (giftDetailInfoBean == null) {
                     ToastUtils.showToast("请选择礼物");
                     checkBox.setChecked(false);
+                    return;
+                }
+                if (!tvAddSuperRun.isSelected()) {
                     return;
                 }
                 String countStr3 = tvCount.getText().toString().trim();

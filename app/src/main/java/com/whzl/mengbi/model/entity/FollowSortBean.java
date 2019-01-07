@@ -34,6 +34,7 @@ public class FollowSortBean {
         public int roomUserCount;
         public String cover;
         public int anchorId;
+        public int expDate;
         public String anchorNickname;
         public String anchorLevelName;
         public int anchorLevelValue;

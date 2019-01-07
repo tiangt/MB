@@ -179,6 +179,7 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
             ivLevelIcon.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue));
             if (type.equals("guard")) {
                 tvFollowState.setVisibility(View.VISIBLE);
+                tvFollowState.setText(getString(R.string.guard_follow_days,listBean.expDate));
             } else {
                 tvFollowState.setVisibility(View.GONE);
             }
