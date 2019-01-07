@@ -66,9 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusableInTouchMode="false"
-        android:nestedScrollingEnabled="false"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp">
+        android:nestedScrollingEnabled="false">
 
     </android.support.v7.widget.RecyclerView>
 

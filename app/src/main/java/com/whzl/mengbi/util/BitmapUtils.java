@@ -170,7 +170,8 @@ public class BitmapUtils {
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
         Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
+//        matrix.postScale(scaleWidth, scaleHeight);
+        matrix.postScale(0.8f, 0.8f);
         Bitmap newBitMap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         if (needRecycler) bitmap.recycle();
         return newBitMap;
