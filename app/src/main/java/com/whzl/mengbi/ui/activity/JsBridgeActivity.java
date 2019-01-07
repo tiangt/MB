@@ -175,25 +175,26 @@ public class JsBridgeActivity extends BaseActivity {
     }
 
     public void jumpToRandomRoom() {
-        HashMap paramsMap = new HashMap();
-        ApiFactory.getInstance().getApi(Api.class)
-                .random(ParamsUtils.getSignPramsMap(paramsMap))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<JumpRandomRoomBean>() {
-
-                    @Override
-                    public void onSuccess(JumpRandomRoomBean bean) {
-                        Intent intent = new Intent(JsBridgeActivity.this, LiveDisplayActivity.class);
-                        intent.putExtra(BundleConfig.PROGRAM_ID, bean.programId);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onError(int code) {
-
-                    }
-                });
+        finish();
+//        HashMap paramsMap = new HashMap();
+//        ApiFactory.getInstance().getApi(Api.class)
+//                .random(ParamsUtils.getSignPramsMap(paramsMap))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new ApiObserver<JumpRandomRoomBean>() {
+//
+//                    @Override
+//                    public void onSuccess(JumpRandomRoomBean bean) {
+//                        Intent intent = new Intent(JsBridgeActivity.this, LiveDisplayActivity.class);
+//                        intent.putExtra(BundleConfig.PROGRAM_ID, bean.programId);
+//                        startActivity(intent);
+//                    }
+//
+//                    @Override
+//                    public void onError(int code) {
+//
+//                    }
+//                });
     }
 
     private void getUserInfo(CallBackFunction function) {
