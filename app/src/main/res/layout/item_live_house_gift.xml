@@ -45,7 +45,7 @@
         android:background="@drawable/bg_tag_gift_sort"
         android:gravity="center"
         android:textColor="@color/comm_white"
-        android:textSize="7sp"
+        android:textSize="8sp"
         android:visibility="gone" />
 
     <!--<View-->

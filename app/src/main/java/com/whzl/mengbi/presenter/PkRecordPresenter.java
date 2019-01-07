@@ -1,6 +1,7 @@
 package com.whzl.mengbi.presenter;
 
 import com.google.gson.JsonElement;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.contract.PkRecordContract;
 import com.whzl.mengbi.model.PkRecordModel;
@@ -8,6 +9,7 @@ import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.PkRecordListBean;
 import com.whzl.mengbi.model.entity.PkTimeBean;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -81,7 +83,7 @@ public class PkRecordPresenter extends BasePresenter<PkRecordContract.View> impl
         if (!isViewAttached()) {
             return;
         }
-        pkRecordModel.rescure(userId,anchorId,hourTime)
+        pkRecordModel.rescure(userId, anchorId, hourTime)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(mView.<ApiResult<JsonElement>>bindAutoDispose())
@@ -93,7 +95,9 @@ public class PkRecordPresenter extends BasePresenter<PkRecordContract.View> impl
 
                     @Override
                     public void onError(ApiResult<JsonElement> body) {
-                        super.onError(body);
+                        if (body.code == AppConfig.ANCHOR_NOT_IN_BLACK_ROOM) {
+                            ToastUtils.showToast("主播已被解救成功，无需重复解救。");
+                        }
                     }
                 });
     }
