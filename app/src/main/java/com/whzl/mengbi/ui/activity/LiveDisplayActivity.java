@@ -41,7 +41,6 @@ import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
-import com.opensource.svgaplayer.SVGAPlayer;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
@@ -1504,7 +1503,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (event.userId == mUserId) {
             mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         }
-//        showGuard(event.avatar, event.nickName);
         showOpenGuardAnim(event.avatar, event.nickName);
         mLivePresenter.getGuardTotal(mProgramId);
     }
@@ -1525,7 +1523,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         svgaGuardSuccess.setLoops(1);
         SVGAParser parser = new SVGAParser(this);
         try {
-            parser.parse("svga/guard.svga", new SVGAParser.ParseCompletion() {
+            parser.parse("svga/guard1.svga", new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     SVGADrawable drawable = new SVGADrawable(videoItem, requestImage(avatar, nickName));
