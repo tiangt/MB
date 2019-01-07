@@ -363,6 +363,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private int totalHours;
     private Disposable blackRoomDisposable;
     private HeadLineControl headLineControl;
+    private boolean ignoreChat = false;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -765,6 +766,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 finish();
                 break;
             case R.id.btn_chat:
+                if (mUserId == 0 && ignoreChat) {
+                    login();
+                    return;
+                }
                 if (mChatDialog != null && mChatDialog.isAdded()) {
                     return;
                 }
@@ -954,8 +959,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 giftControl.setGiftLayout(llGiftContainer, 3);
             }
             giftControl.loadGift(animJson);
-        }
-        else if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
+        } else if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
                 || "MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
             if (mGifGiftControl == null) {
                 mGifGiftControl = new GifGiftControl(this, ivGiftGif);
@@ -1005,7 +1009,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(BroadCastBottomEvent broadCastBottomEvent) {
         initRunWayBroad();
         broadCastBottomEvent.setProgramId(mProgramId);
-        broadCastBottomEvent.setPkLayoutVisibility(rlOtherSide,rlOtherSideInfo,textureView,pkLayout,ivCountDown);
+        broadCastBottomEvent.setPkLayoutVisibility(rlOtherSide, rlOtherSideInfo, textureView, pkLayout, ivCountDown);
         mRunWayBroadControl.load(broadCastBottomEvent);
     }
 
@@ -1119,6 +1123,21 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
 
         initAboutAnchor(mProgramId, mAnchorId);
+        initIgnore(roomInfoBean);
+    }
+
+    /**
+     * 屏蔽消息
+     */
+    private void initIgnore(RoomInfoBean roomInfoBean) {
+        if (roomInfoBean.getData().extendInfo != null) {
+            for (int i = 0; i < roomInfoBean.getData().extendInfo.size(); i++) {
+                if ("noSpeakServer".equals(roomInfoBean.getData().extendInfo.get(i).itemKey) &&
+                        roomInfoBean.getData().extendInfo.get(i).itemValue.contains("80")) {
+                    ignoreChat = true;
+                }
+            }
+        }
     }
 
     /**
@@ -1707,7 +1726,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (mGifGiftControl != null) {
             mGifGiftControl.destroy();
         }
-        if(mSvgaGiftControl != null){
+        if (mSvgaGiftControl != null) {
             mSvgaGiftControl.destroy();
         }
         if (giftControl != null) {

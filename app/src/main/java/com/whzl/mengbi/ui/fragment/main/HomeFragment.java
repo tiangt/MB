@@ -2,7 +2,6 @@ package com.whzl.mengbi.ui.fragment.main;
 
 import android.animation.Animator;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
@@ -103,8 +101,6 @@ public class HomeFragment extends BaseFragment implements HomeView {
 
     @Override
     public void init() {
-        StatusBarUtil.setColor(getMyActivity(), Color.parseColor("#23273e"));
-//        initBanner();
         initAnchorRecycler();
         refreshLayout.setReboundDuration(0);
         refreshLayout.setEnablePureScrollMode(false);

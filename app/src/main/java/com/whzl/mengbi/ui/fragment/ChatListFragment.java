@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,9 +24,13 @@ import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
+import com.whzl.mengbi.ui.adapter.BaseAnimation;
+import com.whzl.mengbi.ui.adapter.ChatMsgAnimation;
+import com.whzl.mengbi.ui.adapter.SlideInRightAnimation;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -46,7 +52,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 public class ChatListFragment extends BaseFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
-//    @BindView(R.id.ll_enter)
+    //    @BindView(R.id.ll_enter)
     LinearLayout llEnter;
 //    @BindView(R.id.tv_enter)
 //    RollTextView tvEnter;
@@ -70,7 +76,7 @@ public class ChatListFragment extends BaseFragment {
     private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     //    private RoyalEnterControl royalEnterControl;
     private int mProgramId;
-
+    private boolean openAnimal = true;
 
 
     public static ChatListFragment newInstance(int programId) {
@@ -97,6 +103,7 @@ public class ChatListFragment extends BaseFragment {
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
         if (chatList.size() >= TOTAL_CHAT_MSG) {
+
             chatList.remove(0);
         }
         chatList.add(message);
@@ -125,8 +132,6 @@ public class ChatListFragment extends BaseFragment {
 //            }
 //        }
     }
-
-
 
 
     private void initChatRecycler() {
@@ -228,6 +233,9 @@ public class ChatListFragment extends BaseFragment {
                         ivAnnounce.setVisibility(View.GONE);
                     }
                 }
+                if (openAnimal) {
+                    addAnimation(holder, position);
+                }
             }
 
             @Override
@@ -243,7 +251,7 @@ public class ChatListFragment extends BaseFragment {
                 switch (newState) {
                     case SCROLL_STATE_IDLE:
                         isRecyclerScrolling = false;
-                        chatAdapter.notifyDataSetChanged();
+//                        chatAdapter.notifyDataSetChanged();
                         break;
                     case SCROLL_STATE_DRAGGING:
                         isRecyclerScrolling = true;
@@ -256,6 +264,27 @@ public class ChatListFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    private int mLastPositionB = -1;
+
+    public void addAnimation(RecyclerView.ViewHolder holder, int position) {
+        if (position >= TOTAL_CHAT_MSG - 1&&!isRecyclerScrolling) {
+            mLastPositionB = mLastPositionB-1;
+        }
+        if (position > mLastPositionB) {
+            BaseAnimation animation = new ChatMsgAnimation();
+            for (Animator anim : animation.getAnimators(holder.itemView)) {
+                startAnim(anim);
+            }
+            mLastPositionB = position;
+        }
+    }
+
+
+    private void startAnim(Animator animator) {
+        animator.setDuration(200).start();
+        animator.setInterpolator(new LinearInterpolator());
     }
 
     @Override

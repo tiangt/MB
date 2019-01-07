@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.webkit.WebChromeClient;
@@ -242,6 +243,19 @@ public class JsBridgeActivity extends BaseActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (bridgeWebView != null && bridgeWebView.canGoBack()) {
+                bridgeWebView.goBack();
+                return true;
+            } else {
+                finish();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.activity;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.jaeger.library.StatusBarUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
@@ -70,11 +72,15 @@ public class MainActivity extends BaseActivity {
     public boolean isExit;
     private AwesomeDialog awesomeDialog;
     private static final String TAG_EXIT = "exit";
+    private int[] colors = new int[]{Color.parseColor("#f9f9f9"), Color.parseColor("#f9f9f9"),
+            Color.parseColor("#ffffff"), Color.parseColor("#21D790")};
 
     @Override
     protected void initEnv() {
         super.initEnv();
         EventBus.getDefault().register(this);
+        StatusBarUtil.setLightMode(this);
+        StatusBarUtil.setColor(this, colors[0], 0);
     }
 
     @Override
@@ -144,6 +150,7 @@ public class MainActivity extends BaseActivity {
         if (index == currentSelectedIndex) {
             return;
         }
+        StatusBarUtil.setColor(this, colors[index], 0);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
         if (fragments[index].isAdded()) {
