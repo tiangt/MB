@@ -23,6 +23,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.OpenGuardAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PkAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.PrizePoolFullAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ProgramFirstAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RoyalLevelChangeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RunWayAction;
@@ -95,6 +96,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("EVERY_DAY_TASK", new EverydayTaskAction());
         actionsMap.put("ANCHOR_WEEK_TASK", new AnchorWeekTaskAction());
         actionsMap.put("HEADLINES_MSG", new HeadlineAction());
+        actionsMap.put("PRIZE_POOL_FULL", new PrizePoolFullAction());
     }
 
     private void initChatAction() {
