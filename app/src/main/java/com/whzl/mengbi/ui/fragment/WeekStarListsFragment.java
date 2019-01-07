@@ -152,6 +152,7 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     public void showGiftList(WeekStarGiftInfo weekStarGiftInfo) {
         if (weekStarGiftInfo != null && weekStarGiftInfo.getData() != null && weekStarGiftInfo.getData().getList() != null) {
             if (weekStarGiftInfo.getData().getList() != null) {
+                mListBean.clear();
                 for (int j = 0; j < weekStarGiftInfo.getData().getList().size(); j++) {
                     mListBean.add(weekStarGiftInfo.getData().getList().get(j));
                     if (j == 0) {
