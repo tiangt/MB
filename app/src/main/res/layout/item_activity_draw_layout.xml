@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="6dp"
+    android:layout_marginTop="12dp"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -16,8 +16,8 @@
         android:id="@+id/tv_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6.5dp"
+        android:layout_marginTop="4.5dp"
         android:gravity="center"
         android:textColor="@color/text_color_draw_layout"
-        android:textSize="9sp" />
+        android:textSize="10sp" />
 </LinearLayout>

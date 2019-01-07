@@ -51,7 +51,7 @@
             android:id="@+id/rv_tips_draw_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp" />
+            android:layout_marginTop="40dp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -66,6 +66,8 @@
             android:id="@+id/rv_anchor_draw_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:overScrollMode="never" />
 

@@ -29,6 +29,7 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.me.WelfareFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -116,7 +117,7 @@ public class DrawLayoutControl {
         recommendRecycler.setFocusableInTouchMode(false);
         recommendRecycler.setHasFixedSize(true);
         recommendRecycler.setLayoutManager(new GridLayoutManager(activity, 2));
-        recommendRecycler.addItemDecoration(new SpacesItemDecoration(5));
+        recommendRecycler.addItemDecoration(new SpacesItemDecoration(UIUtil.dip2px(activity,5.5f)));
         recommendAdapter = new BaseListAdapter() {
 
             @Override
@@ -262,6 +263,7 @@ public class DrawLayoutControl {
                 return;
             }
             ((LiveDisplayActivity) activity).jumpToBannerActivity(bannerInfoList.get(position));
+            ((LiveDisplayActivity) activity).closeDrawLayout();
         }
     }
 
