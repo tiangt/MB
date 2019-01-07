@@ -168,7 +168,6 @@ public class ChatListFragment extends BaseFragment {
 
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                LogUtils.e("sssssssssssssss  " + position);
                 FillHolderMessage message = chatList.get(position);
                 if (message instanceof PkMessage) {
                     ((PkMessage) message).setProgramId(mProgramId);

@@ -46,6 +46,7 @@ public class RoomInfoBean {
     }
 
     public static class DataBean {
+        public List<ExtendInfoBean> extendInfo;
         /**
          * programId : 100079
          * programName : 土豪30000139
@@ -486,6 +487,18 @@ public class RoomInfoBean {
                     this.hls = hls;
                 }
             }
+        }
+
+        public static class ExtendInfoBean {
+            /**
+             * roomId : 100145
+             * itemKey : noSpeakServer
+             * itemValue : 80,70
+             */
+
+            public int roomId;
+            public String itemKey;
+            public String itemValue;
         }
     }
 }
