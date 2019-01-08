@@ -2,10 +2,9 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
 
+import com.whzl.mengbi.chat.room.message.events.FirstPrizeUserEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
-import com.whzl.mengbi.chat.room.message.messageJson.BetsEndJson;
 import com.whzl.mengbi.chat.room.message.messageJson.FirstPrizeUserJson;
-import com.whzl.mengbi.chat.room.message.messages.BetsEndMessage;
 import com.whzl.mengbi.chat.room.message.messages.FirsrPrizeUserMessage;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
@@ -26,5 +25,6 @@ public class FirstPrizeUserAction implements Actions {
         }
         FirsrPrizeUserMessage message = new FirsrPrizeUserMessage(betsEndJson, context);
         EventBus.getDefault().post(new UpdatePubChatEvent(message));
+        EventBus.getDefault().post(new FirstPrizeUserEvent(context,betsEndJson));
     }
 }

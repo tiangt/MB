@@ -25,7 +25,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -48,14 +47,17 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
+import com.whzl.mengbi.chat.room.message.events.BetsEndEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
 import com.whzl.mengbi.chat.room.message.events.EverydayEvent;
+import com.whzl.mengbi.chat.room.message.events.FirstPrizeUserEvent;
 import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.chat.room.message.events.HeadLineEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.PkEvent;
+import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
 import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
@@ -66,7 +68,6 @@ import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
-import com.whzl.mengbi.chat.room.message.messageJson.HeadLineJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
@@ -1907,6 +1908,48 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (weekRankFragment != null) {
             weekRankFragment.loaddata();
         }
+    }
+
+    /**
+     * 奖池满用户下注消息
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PrizePoolFullEvent weekStarEvent) {
+        if (weekStarControl == null) {
+            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+            weekStarControl.setTvEnter(wsvWeekstar);
+            weekStarControl.setIvEnter(ivWeekstar);
+            weekStarControl.setRlEnter(rlWeekstar);
+        }
+        weekStarControl.showEnter(weekStarEvent);
+    }
+
+    /**
+     * 下注时间结束
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(BetsEndEvent weekStarEvent) {
+        if (weekStarControl == null) {
+            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+            weekStarControl.setTvEnter(wsvWeekstar);
+            weekStarControl.setIvEnter(ivWeekstar);
+            weekStarControl.setRlEnter(rlWeekstar);
+        }
+        weekStarControl.showEnter(weekStarEvent);
+    }
+
+    /**
+     * 用户中奖消息
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(FirstPrizeUserEvent weekStarEvent) {
+        if (weekStarControl == null) {
+            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+            weekStarControl.setTvEnter(wsvWeekstar);
+            weekStarControl.setIvEnter(ivWeekstar);
+            weekStarControl.setRlEnter(rlWeekstar);
+        }
+        weekStarControl.showEnter(weekStarEvent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -2,6 +2,7 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
 
+import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.PrizePoolFullJson;
 import com.whzl.mengbi.chat.room.message.messages.PrizePoolFullMessage;
@@ -24,5 +25,6 @@ public class PrizePoolFullAction implements Actions {
         }
         PrizePoolFullMessage message = new PrizePoolFullMessage(prizePoolFullJson, context);
         EventBus.getDefault().post(new UpdatePubChatEvent(message));
+        EventBus.getDefault().post(new PrizePoolFullEvent(context,prizePoolFullJson));
     }
 }

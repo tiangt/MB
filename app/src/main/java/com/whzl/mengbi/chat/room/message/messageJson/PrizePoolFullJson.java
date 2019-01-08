@@ -21,6 +21,6 @@ public class PrizePoolFullJson {
 
         public long countDownSecond;
         public String periodNumber;
-        public int prizePoolNumber;
+        public long prizePoolNumber;
     }
 }

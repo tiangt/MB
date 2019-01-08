@@ -2,6 +2,7 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
 
+import com.whzl.mengbi.chat.room.message.events.BetsEndEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.BetsEndJson;
 import com.whzl.mengbi.chat.room.message.messages.BetsEndMessage;
@@ -24,5 +25,6 @@ public class BetsEndAction implements Actions {
         }
         BetsEndMessage message = new BetsEndMessage(betsEndJson, context);
         EventBus.getDefault().post(new UpdatePubChatEvent(message));
+        EventBus.getDefault().post(new BetsEndEvent(context,betsEndJson));
     }
 }
