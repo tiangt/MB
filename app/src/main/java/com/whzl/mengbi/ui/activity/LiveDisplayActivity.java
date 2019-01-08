@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -65,6 +66,7 @@ import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
+import com.whzl.mengbi.chat.room.message.messageJson.HeadLineJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
@@ -175,6 +177,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * @author shaw
@@ -272,7 +275,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.btn_free_gift)
     ImageButton btnFreeGift;
     @BindView(R.id.iv_weekstar)
-    ImageView ivWeekstar;
+    GifImageView ivWeekstar;
     @BindView(R.id.wsv_weekstar)
     WeekStarView wsvWeekstar;
     @BindView(R.id.cl_weekstar)
@@ -1792,6 +1795,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (royalEnterControl != null) {
             royalEnterControl.destroy();
         }
+        if (weekStarControl != null) {
+            weekStarControl.destroy();
+        }
     }
 
     @Override
@@ -1905,21 +1911,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(HeadLineEvent event) {
+        if (weekStarControl == null) {
+            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+            weekStarControl.setTvEnter(wsvWeekstar);
+            weekStarControl.setIvEnter(ivWeekstar);
+            weekStarControl.setRlEnter(rlWeekstar);
+        }
+        weekStarControl.showEnter(event);
         if (event.headLineJson.context.programId == mProgramId) {
             if (headLineControl == null) {
                 headLineControl = new HeadLineControl(hlLayout);
             }
             headLineControl.load(event);
-        } else {
-            if (event.headLineJson.context.rank == 1) {
-                if (weekStarControl == null) {
-                    weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
-                    weekStarControl.setTvEnter(wsvWeekstar);
-                    weekStarControl.setIvEnter(ivWeekstar);
-                    weekStarControl.setRlEnter(rlWeekstar);
-                }
-                weekStarControl.showEnter(event);
-            }
         }
     }
 

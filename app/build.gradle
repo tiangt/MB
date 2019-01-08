@@ -17,7 +17,7 @@ android {
     buildToolsVersion "27.1.1"
     defaultConfig {
         applicationId "com.whzl.mengbi"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 27
         multiDexEnabled true
         versionCode 10
@@ -145,7 +145,7 @@ dependencies {
     implementation files('libs/alipaySdk-20180601.jar')
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
     //gif动态图,聊天中动态表情显示
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.14'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
     //状态栏颜色控制
     implementation 'com.jaeger.statusbarutil:library:1.5.1'
     //微信支付

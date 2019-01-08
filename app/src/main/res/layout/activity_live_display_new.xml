@@ -356,9 +356,9 @@
                         android:id="@+id/rl_weekstar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
-                        <ImageView
+                        <pl.droidsonroids.gif.GifImageView
                             android:id="@+id/iv_weekstar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -670,4 +670,6 @@
     <include
         android:id="@+id/draw_layout_include_live"
         layout="@layout/draw_layout_live" />
+
+
 </android.support.v4.widget.DrawerLayout>
