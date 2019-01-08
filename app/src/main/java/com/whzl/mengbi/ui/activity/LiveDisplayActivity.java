@@ -1954,19 +1954,22 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(HeadLineEvent event) {
-        if (weekStarControl == null) {
-            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
-            weekStarControl.setTvEnter(wsvWeekstar);
-            weekStarControl.setIvEnter(ivWeekstar);
-            weekStarControl.setRlEnter(rlWeekstar);
+        if (event.headLineJson.context.rank == 1) {
+            if (weekStarControl == null) {
+                weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+                weekStarControl.setTvEnter(wsvWeekstar);
+                weekStarControl.setIvEnter(ivWeekstar);
+                weekStarControl.setRlEnter(rlWeekstar);
+            }
+            weekStarControl.showEnter(event);
         }
-        weekStarControl.showEnter(event);
         if (event.headLineJson.context.programId == mProgramId) {
             if (headLineControl == null) {
                 headLineControl = new HeadLineControl(hlLayout);
             }
             headLineControl.load(event);
         }
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

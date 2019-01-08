@@ -10,7 +10,6 @@ import com.whzl.mengbi.chat.room.message.messageJson.BetsEndJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
-import com.whzl.mengbi.util.AmountConversionUitls;
 
 /**
  * @author nobody
@@ -34,7 +33,8 @@ public class BetsEndMessage implements FillHolderMessage {
         mholder.textView.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_happy_ball_chat));
         mholder.textView.append(LightSpanString.getLightString(prizePoolFullJson.context.period, Color.parseColor("#FFFFCB00")));
         mholder.textView.append(LightSpanString.getLightString("期欢乐球 ", Color.parseColor("#ffffff")));
-        mholder.textView.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(prizePoolFullJson.context.frozenCountDownSecond),
+        int ceil = (int) Math.ceil(prizePoolFullJson.context.frozenCountDownSecond / 60);
+        mholder.textView.append(LightSpanString.getLightString(String.valueOf(ceil),
                 Color.parseColor("#FFFFCB00")));
         mholder.textView.append(LightSpanString.getLightString(" 分钟后开奖，百万大奖花落谁家，尽请期待！", Color.parseColor("#ffffff")));
     }

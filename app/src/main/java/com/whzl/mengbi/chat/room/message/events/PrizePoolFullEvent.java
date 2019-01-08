@@ -33,7 +33,8 @@ public class PrizePoolFullEvent implements WeekHeadEvent {
             tvEnter.append(LightSpanString.getLightString(" 期欢乐球奖池已达到", Color.parseColor("#ffffff")));
             tvEnter.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(bean.prizePoolNumber), Color.parseColor("#FFFFCB00")));
             tvEnter.append(LightSpanString.getLightString("萌豆， ", Color.parseColor("#ffffff")));
-            tvEnter.append(LightSpanString.getLightString(DateUtils.msToM(bean.countDownSecond), Color.parseColor("#FFFFCB00")));
+            int ceil = (int) Math.ceil(bean.countDownSecond / 60);
+            tvEnter.append(LightSpanString.getLightString(String.valueOf(ceil), Color.parseColor("#FFFFCB00")));
             tvEnter.append(LightSpanString.getLightString(" 分钟投注正式开始，我要投注。", Color.parseColor("#ffffff")));
         }
     }
