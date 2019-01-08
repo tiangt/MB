@@ -308,4 +308,31 @@ public class DateUtils {
         return outTime;
     }
 
+    /**
+     * 秒转分
+     * @param seconds
+     * @return
+     */
+    public static String msToM(long seconds) {
+        int minutes = (int)seconds / 60;
+        seconds = seconds % 60;
+
+        String m = null;
+        String s = null;
+
+        if (minutes == 0 && seconds == 0)
+            seconds = 1;
+
+        if (minutes < 10)
+            m = "0" + minutes;
+        else
+            m = "" + minutes;
+
+        if (seconds < 10)
+            s = "0" + seconds;
+        else
+            s = "" + seconds;
+
+        return m + ":" + s;
+    }
 }

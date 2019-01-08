@@ -19,7 +19,7 @@ public class PrizePoolFullJson {
          * prizePoolNumber : 380000
          */
 
-        public int countDownSecond;
+        public long countDownSecond;
         public String periodNumber;
         public int prizePoolNumber;
     }

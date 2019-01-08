@@ -11,9 +11,11 @@ import com.whzl.mengbi.chat.room.message.messagesActions.Actions;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnchorLevelChangeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnchorWeekTaskAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.BetsEndAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.BroadCastAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.EverydayTaskAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.FirstPrizeUserAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.HeadlineAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LotteryAction;
@@ -97,6 +99,8 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("ANCHOR_WEEK_TASK", new AnchorWeekTaskAction());
         actionsMap.put("HEADLINES_MSG", new HeadlineAction());
         actionsMap.put("PRIZE_POOL_FULL", new PrizePoolFullAction());
+        actionsMap.put("BETS_END", new BetsEndAction());
+        actionsMap.put("FIRST_PRIZE_USER", new FirstPrizeUserAction());
     }
 
     private void initChatAction() {
