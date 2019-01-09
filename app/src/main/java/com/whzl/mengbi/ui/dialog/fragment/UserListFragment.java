@@ -143,6 +143,7 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
             AudienceListBean.AudienceInfoBean audienceInfoBean = mDatas.get(position);
             levelLayout.removeAllViews();
             medalLayout.removeAllViews();
+            tvPrettyNum.setVisibility(View.GONE);
             ivCar.setVisibility(View.GONE);
             tvName.setText(audienceInfoBean.getName());
             GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
