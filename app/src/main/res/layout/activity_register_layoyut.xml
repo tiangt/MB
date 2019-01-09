@@ -21,7 +21,7 @@
         android:layout_height="54dp"
         android:layout_marginTop="34dp"
         android:background="@drawable/login_edit_text_bg"
-        android:drawableLeft="@drawable/ic_login_phone"
+        android:drawableLeft="@drawable/ic_login_number"
         android:drawablePadding="10dp"
         android:hint="@string/register_phone_editetxt"
         android:textSize="22sp"

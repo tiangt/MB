@@ -1,14 +1,20 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.RegisterInfo;
 import com.whzl.mengbi.presenter.impl.RegisterPresenterImpl;
@@ -38,6 +44,10 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
     EditText etPassword;
     @BindView(R.id.btn_register)
     Button btnRegister;
+    @BindView(R.id.cb_agree)
+    CheckBox cbAgree;
+    @BindView(R.id.tv_agreement)
+    TextView tvAgreement;
     private CountDownTimer cdt;
     private RegisterPresenterImpl registerPresenter;
 
@@ -45,12 +55,13 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
     @Override
     protected void initEnv() {
         super.initEnv();
+        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
         registerPresenter = new RegisterPresenterImpl(this);
     }
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_register, R.string.register, true);
+        setContentView(R.layout.activity_register, "注册", "登陆", true);
     }
 
     @Override
@@ -84,6 +95,14 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
     @Override
     public void onError(String msg) {
         showToast(msg);
+    }
+
+    @Override
+    protected void onToolbarMenuClick() {
+        super.onToolbarMenuClick();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /**
@@ -130,7 +149,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         }
     }
 
-    @OnClick({R.id.btn_get_verify_code, R.id.btn_register})
+    @OnClick({R.id.btn_get_verify_code, R.id.btn_register, R.id.tv_agreement})
     public void onClick(View view) {
         KeyBoardUtil.hideInputMethod(this);
         switch (view.getId()) {
@@ -142,12 +161,27 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
                 }
                 registerPresenter.getRegexCode(phone);
                 break;
+
             case R.id.btn_register:
                 String phoneStr = etPhone.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
                 String md5Psd = EncryptUtils.md5Hex(password);
                 String verifyCode = etVerifyCode.getText().toString().trim();
-                registerPresenter.getRegister(phoneStr, md5Psd, verifyCode);
+                if(cbAgree.isChecked()){
+                    registerPresenter.getRegister(phoneStr, md5Psd, verifyCode);
+                }else{
+                    showToast("请先阅读用户协议");
+                }
+                break;
+
+            case R.id.tv_agreement:
+                Intent intent = new Intent(this, JsBridgeActivity.class);
+                intent.putExtra("url", NetConfig.USER_DEAL);
+                intent.putExtra("title", "用户协议");
+                startActivity(intent);
+                break;
+
+            default:
                 break;
         }
     }

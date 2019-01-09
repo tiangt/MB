@@ -13,7 +13,7 @@
         android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:src="@drawable/login_logo" />
+        android:src="@drawable/login_logo1" />
 
     <TextView
         android:id="@+id/tv_home"
