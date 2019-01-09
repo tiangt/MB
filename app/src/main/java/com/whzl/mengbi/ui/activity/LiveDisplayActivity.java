@@ -1532,7 +1532,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         paramsMap.put("count", count + "");
         paramsMap.put("userId", mUserId + "");
         paramsMap.put("useBag", useBag + "");
-        paramsMap.put("runwayShowMark", runwayShowMark);
+        paramsMap.put("runwayShowMark", useBag ? "T" : runwayShowMark);
         if (runwayShowMark.equals("T") && TextUtils.isEmpty(runwayAppend)) {
             paramsMap.put("runwayAppend", getResources().getString(R.string.edit_hint_gift_dialog_super_run));
         } else {

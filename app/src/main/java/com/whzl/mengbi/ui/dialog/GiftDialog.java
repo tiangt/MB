@@ -104,6 +104,10 @@ public class GiftDialog extends BaseAwesomeDialog {
     TextView tvContentSuperRun;
     @BindView(R.id.tv_add_superrun)
     TextView tvAddSuperRun;
+    @BindView(R.id.view_super)
+    View viewSuper;
+    @BindView(R.id.ll_super)
+    LinearLayout llSuper;
 
     private ArrayList<GiftCountInfoBean> giftCountInfoList;
     private CommonAdapter<GiftCountInfoBean> adapter;
@@ -177,7 +181,23 @@ public class GiftDialog extends BaseAwesomeDialog {
         setTabWidth(tabLayout, UIUtil.dip2px(getActivity(), 18));
         tabLayout.setupWithViewPager(viewpager);
         viewpager.setCurrentItem(0);
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                viewSuper.setVisibility(position == fragments.size() - 1 ? View.INVISIBLE : View.VISIBLE);
+                llSuper.setVisibility(position == fragments.size() - 1 ? View.INVISIBLE : View.VISIBLE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         tvAmount.setText(AmountConversionUitls.amountConversionFormat(coin));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -475,6 +495,9 @@ public class GiftDialog extends BaseAwesomeDialog {
     }
 
     private void setCheckChange() {
+        if (giftDetailInfoBean == null || giftDetailInfoBean.getRent() == 0) {
+            return;
+        }
         String countStr = tvCount.getText().toString().trim();
         int giftCount = 0;
         giftCount = Integer.parseInt(countStr);

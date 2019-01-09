@@ -39,6 +39,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -146,7 +147,7 @@ public class BackpackFragment extends BaseFragment {
             if (position == selectedPosition) {
 //                try {
 //                    GifDrawable drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
-                    rl.setBackgroundResource(R.drawable.bg_live_house_gift_bg);
+                rl.setBackgroundResource(R.drawable.bg_live_house_gift_bg);
 //                ((ImageView) holder.getView(R.id.iv)).setImageDrawable(drawable);
 //                } catch (IOException e) {
 //                    e.printStackTrace();
@@ -172,7 +173,7 @@ public class BackpackFragment extends BaseFragment {
 //            GifDrawable drawable = null;
 //            try {
 //                drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
-                (view.findViewById(R.id.rl)).setBackgroundResource(R.drawable.bg_live_house_gift_bg);
+            (view.findViewById(R.id.rl)).setBackgroundResource(R.drawable.bg_live_house_gift_bg);
 //            } catch (IOException e) {
 //                e.printStackTrace();
 //            }
@@ -230,13 +231,33 @@ public class BackpackFragment extends BaseFragment {
 //                                    }
 //                                }
 //                            }
-                            if (mDatas.size() != backpackListBean.list.size()) {
-                                selectedPosition = -1;
-                                EventBus.getDefault().post(new GiftSelectedEvent(null));
+
+                            int check = check(backpackListBean.list, selectId);
+                            if (check != -1) {
+                                for (int i = 0; i < mDatas.size(); i++) {
+                                    if (mDatas.get(i).goodsId == selectId) {
+                                        mDatas.get(i).count = check;
+                                    }
+                                }
+                                giftAdapter.notifyDataSetChanged();
+                            } else {
+                                for (int i = 0; i < mDatas.size(); i++) {
+                                    if (mDatas.get(i).goodsId == selectId) {
+                                        mDatas.remove(i);
+                                        selectId = -1;
+                                        selectedPosition = -1;
+                                        EventBus.getDefault().post(new GiftSelectedEvent(null));
+                                    }
+                                }
+                                giftAdapter.notifyDataSetChanged();
                             }
-                            mDatas.clear();
-                            mDatas.addAll(backpackListBean.list);
-                            giftAdapter.notifyDataSetChanged();
+//                            if (mDatas.size() != backpackListBean.list.size()) {
+//                                selectedPosition = -1;
+//                                EventBus.getDefault().post(new GiftSelectedEvent(null));
+//                            }
+//                            mDatas.clear();
+//                            mDatas.addAll(backpackListBean.list);
+//                            giftAdapter.notifyDataSetChanged();
                         } else {
                             ((BackpackMotherFragment) getParentFragment()).llBackPack.setVisibility(View.VISIBLE);
                         }
@@ -247,4 +268,14 @@ public class BackpackFragment extends BaseFragment {
                     }
                 });
     }
+
+    private int check(List<BackpackListBean.GoodsDetailBean> list, int selectId) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).goodsId == selectId) {
+                return list.get(i).count;
+            }
+        }
+        return -1;
+    }
+
 }
