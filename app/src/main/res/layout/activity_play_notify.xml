@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -24,17 +25,19 @@
             android:textSize="15sp" />
 
         <Switch
+            android:id="@+id/switch_play"
+            style="@style/switch_play_notify"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textOff=""
-            android:textOn=""
-            android:thumb="@drawable/switch_thumb_play_notify_selector"
-            android:track="@drawable/switch_play_notify" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
+
     <TextView
+        android:id="@+id/tv_tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/point_play_notify"
+        android:drawablePadding="4dp"
         android:paddingBottom="6dp"
         android:paddingLeft="12dp"
         android:paddingTop="6dp"
@@ -42,8 +45,18 @@
         android:textColor="#70000000"
         android:textSize="13sp" />
 
-    <android.support.v7.widget.RecyclerView
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/comm_white" />
+        android:background="@color/comm_white"
+        app:srlEnableLoadMore="true"
+        app:srlEnableRefresh="false">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

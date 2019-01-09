@@ -404,4 +404,11 @@
         <item name="android:textStyle">bold</item>
         <item name="tabSelectedTextColor">#323232</item>
     </style>
+
+    <style name="switch_play_notify">
+        <item name="android:textOff"></item>
+        <item name="android:textOn"></item>
+        <item name="android:thumb">@drawable/switch_thumb_play_notify_selector</item>
+        <item name="android:track">@drawable/switch_play_notify</item>
+    </style>
 </resources>

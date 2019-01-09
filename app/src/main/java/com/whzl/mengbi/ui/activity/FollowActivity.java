@@ -295,7 +295,7 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
 
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(FollowActivity.this).inflate(R.layout.item_follow_follow, parent, false);
+                View itemView = LayoutInflater.from(FollowActivity.this).inflate(R.layout.item_follow_me, parent, false);
                 return new AnchorViewHolder(itemView);
             }
 
