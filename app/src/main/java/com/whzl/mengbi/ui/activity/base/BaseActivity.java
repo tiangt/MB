@@ -43,6 +43,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     private boolean isClickable = true;
     private long lastClickTime;
     protected Toolbar toolbar;
+    private TextView tvToolbarMenuText;
 
     /**
      * 输出日志
@@ -81,7 +82,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         toolbar = findViewById(R.id.toolbar);
         TextView tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
         tvToolbarTitle.setText(titleRes);
-        TextView tvToolbarMenuText = findViewById(R.id.tv_toolbar_menu_text);
+        tvToolbarMenuText = findViewById(R.id.tv_toolbar_menu_text);
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -100,7 +101,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
         tvToolbarTitle.setText(title);
-        TextView tvToolbarMenuText = findViewById(R.id.tv_toolbar_menu_text);
+        tvToolbarMenuText = findViewById(R.id.tv_toolbar_menu_text);
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -112,6 +113,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             tvToolbarMenuText.setText(rightMenu);
             tvToolbarMenuText.setOnClickListener(v -> onToolbarMenuClick());
         }
+    }
+
+    public TextView getTitleRightText() {
+        return tvToolbarMenuText;
     }
 
     protected void setContentView(int layoutId, int titleRes, boolean isShowBack) {

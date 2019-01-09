@@ -197,7 +197,7 @@
         style="@style/me_option_item"
         android:layout_marginTop="3dp"
         android:drawableLeft="@drawable/mefollow"
-        android:text="我的关注" />
+        android:text="我的订阅" />
 
     <View
         android:layout_width="match_parent"

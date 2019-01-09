@@ -325,5 +325,6 @@
 
         <activity android:name=".ui.activity.PersonalInfoActivity" />
         <activity android:name=".ui.activity.PkRecordActivity" />
+        <activity android:name=".ui.activity.me.PlayNotifyActivity" />
     </application>
 </manifest>
