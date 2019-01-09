@@ -19,6 +19,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.AudienceListBean;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.dialog.UserListDialog;
@@ -26,6 +27,7 @@ import com.whzl.mengbi.ui.fragment.base.BaseListFragment;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
@@ -254,6 +256,17 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                     LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
                     mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 3);
                     levelLayout.addView(mgrView, mgrViewParams);
+                }
+            }
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            AudienceListBean.AudienceInfoBean audienceInfoBean = mDatas.get(position);
+            if(ClickUtil.isFastClick()){
+                if (getActivity() != null) {
+                    ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid(), true);
                 }
             }
         }

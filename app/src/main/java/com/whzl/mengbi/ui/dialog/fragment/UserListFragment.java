@@ -26,6 +26,7 @@ import com.whzl.mengbi.ui.dialog.UserListDialog;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
@@ -246,8 +247,10 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             AudienceListBean.AudienceInfoBean audienceInfoBean = mDatas.get(position);
-            if (getActivity() != null) {
-                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid(), true);
+            if(ClickUtil.isFastClick()){
+                if (getActivity() != null) {
+                    ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid(), true);
+                }
             }
         }
     }
