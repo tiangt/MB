@@ -160,6 +160,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
             if (identity == UserIdentity.ROOM_MANAGER || identity == UserIdentity.OPTR_MANAGER) {
                 levelLayout.removeAllViews();
                 managerLayout.removeAllViews();
+                tvPrettyNum.setVisibility(View.GONE);
                 ivCar.setVisibility(View.GONE);
                 tvName.setText(audienceInfoBean.getName());
                 GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
