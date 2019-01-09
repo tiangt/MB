@@ -215,6 +215,37 @@
         android:layout_height="1dp"
         android:layout_marginLeft="15dp" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#f9f9f9">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:drawableLeft="@drawable/ic_binding_phone"
+            android:gravity="center_vertical"
+            android:paddingLeft="18dp"
+            android:drawablePadding="10dp"
+            android:layout_marginLeft="3dp"
+            android:textSize="15sp"
+            android:textColor="#323232"
+            android:text="绑定手机"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrowright"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp" />
+
     <TextView
         android:id="@+id/tv_setting"
         style="@style/me_option_item"
