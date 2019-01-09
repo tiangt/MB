@@ -742,7 +742,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.btn_chat, R.id.btn_chat_private
             , R.id.rootView, R.id.fragment_container, R.id.rl_guard_number
-            , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more})
+            , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more, R.id.ll_black_room})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
@@ -900,6 +900,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 } else {
                     drawerLayoutOut.openDrawer(drawLayoutInclude);
                 }
+                break;
+            case R.id.ll_black_room:
+                if (mUserId == 0) {
+                    login();
+                    return;
+                }
+                startActivity(new Intent(LiveDisplayActivity.this, PkRecordActivity.class)
+                        .putExtra("anchorLever", anchorLevel)
+                        .putExtra("anchorName", mAnchorName)
+                        .putExtra("anchorId", mAnchorId)
+                        .putExtra("anchorAvatar", mAnchorAvatar));
                 break;
             default:
                 break;
