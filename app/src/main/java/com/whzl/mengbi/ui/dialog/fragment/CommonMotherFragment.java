@@ -16,11 +16,9 @@ import com.whzl.mengbi.greendao.CommonGiftBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
-import com.whzl.mengbi.model.entity.WatchHistoryListBean;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -134,19 +132,25 @@ public class CommonMotherFragment extends BaseFragment {
                     }
                 });
                 if (hobbyList.size() > AppConfig.NUM_TOTAL_GIFT_DIALOG * 2) {
-                    hobbyList.subList(0, AppConfig.NUM_TOTAL_GIFT_DIALOG * 2);
+                    List<CommonGiftBean> list = hobbyList.subList(0, AppConfig.NUM_TOTAL_GIFT_DIALOG * 2);
+                    getGoodIds(list);
+                } else {
+                    getGoodIds(hobbyList);
                 }
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hobbyList.size(); i++) {
-                    if (i != hobbyList.size() - 1) {
-                        sb.append(hobbyList.get(i).giftId + ",");
-                    } else {
-                        sb.append(hobbyList.get(i).giftId + "");
-                    }
-                }
-                getDatasByGoodIds(sb.toString());
             }
         }
+    }
+
+    private void getGoodIds(List<CommonGiftBean> hobbyList) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < hobbyList.size(); i++) {
+            if (i != hobbyList.size() - 1) {
+                sb.append(hobbyList.get(i).giftId + ",");
+            } else {
+                sb.append(hobbyList.get(i).giftId + "");
+            }
+        }
+        getDatasByGoodIds(sb.toString());
     }
 
     private void getDatasByGoodIds(String string) {

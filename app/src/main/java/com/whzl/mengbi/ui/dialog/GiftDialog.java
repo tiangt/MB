@@ -186,7 +186,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         //关联TabLayout和ViewPager
         setTabWidth(tabLayout, UIUtil.dip2px(getActivity(), 18));
         tabLayout.setupWithViewPager(viewpager);
-        viewpager.setCurrentItem(0);
+        viewpager.setCurrentItem(1);
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
