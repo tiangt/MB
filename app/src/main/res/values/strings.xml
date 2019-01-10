@@ -426,4 +426,5 @@
 
     <string name="play_notify_off">开播通知已关闭，开启后可收到主播的开播提醒</string>
     <string name="play_notify_on">已订阅主播列表</string>
+    <string name="empty_commom">你的背包空空如也！</string>
 </resources>

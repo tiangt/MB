@@ -54,7 +54,6 @@ public class RoyalEnterView extends AppCompatTextView {
         step = 0f;
         textLength = paint.measureText(text);
         viewWidth = UIUtil.dip2px(getContext(), 235);
-        LogUtils.e("sssssssss   textLength  "+textLength+" viewWidth  "+viewWidth);
     }
 
 

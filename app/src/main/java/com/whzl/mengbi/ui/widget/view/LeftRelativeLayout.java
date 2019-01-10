@@ -45,14 +45,12 @@ public class LeftRelativeLayout extends RelativeLayout {
             case MotionEvent.ACTION_DOWN:
                 lastX = event.getX();
                 lastY = event.getY();
-                LogUtils.e("sssssssssss  " + lastX);
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_UP:
                 float newX = event.getX();
                 float newY = event.getY();
-                LogUtils.e("sssssssssss  " + newX);
                 if (Math.abs(newX - lastX) > Math.abs(newY - lastY) && lastX - newX > UIUtil.dip2px(context, 90)) {
                     leftSlideListener.onLeftSlideListener();
                 }

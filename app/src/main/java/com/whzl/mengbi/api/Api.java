@@ -22,6 +22,7 @@ import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
+import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
@@ -719,4 +720,14 @@ public interface Api {
     @POST("v1/user/clear-watch-record")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> clearWatchRecord(@FieldMap Map<String, String> params);
+
+    /**
+     * 根据物品id获取物品的价格信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/goods/goods-price-batch")
+    @FormUrlEncoded
+    Observable<ApiResult<GoodsPriceBatchBean>> goodsPriceBatch(@FieldMap Map<String, String> params);
 }

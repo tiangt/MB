@@ -3,10 +3,12 @@ package com.whzl.mengbi.ui.common;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.baidu.mobstat.StatService;
+import com.github.yuweiguocn.library.greendao.MigrationHelper;
 import com.lht.paintview.util.LogUtil;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -20,6 +22,9 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SDKConfig;
+import com.whzl.mengbi.gen.DaoMaster;
+import com.whzl.mengbi.gen.DaoSession;
+import com.whzl.mengbi.greendao.MyOpenHelper;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 
@@ -77,10 +82,26 @@ public class BaseApplication extends Application {
         initUM();
         initApi();
         initBaiduStatistic();
+        initGreenDao();
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         int heapSize = manager.getMemoryClass();
         int maxHeapSize = manager.getLargeMemoryClass();
     }
+
+    private DaoSession daoSession;
+
+    public DaoSession getDaoSession() {
+        return daoSession;
+    }
+
+    private void initGreenDao() {
+        MigrationHelper.DEBUG = false;
+        MyOpenHelper helper = new MyOpenHelper(this, "common_gift.db",null);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+    }
+
 
     private void initBaiduStatistic() {
         StatService.setDebugOn(true);
