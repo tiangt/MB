@@ -23,6 +23,7 @@ import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.dialog.BindingPhoneDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.QuitAppDialog;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
@@ -355,6 +356,12 @@ public class MainActivity extends BaseActivity {
 
     public void setCheck(int index) {
         rgTab.check(rgTab.getChildAt(index).getId());
+    }
+
+    private void showBindingDialog(){
+        BindingPhoneDialog.newInstance()
+                .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
+                .show(getSupportFragmentManager());
     }
 
     @Override

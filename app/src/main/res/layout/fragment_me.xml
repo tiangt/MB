@@ -216,6 +216,7 @@
         android:layout_marginLeft="15dp" />
 
     <RelativeLayout
+        android:id="@+id/rl_binding_phone"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="#f9f9f9">
@@ -226,7 +227,7 @@
             android:drawableLeft="@drawable/ic_binding_phone"
             android:gravity="center_vertical"
             android:paddingLeft="18dp"
-            android:drawablePadding="10dp"
+            android:drawablePadding="12dp"
             android:layout_marginLeft="3dp"
             android:textSize="15sp"
             android:textColor="#323232"
@@ -246,8 +247,8 @@
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/iv_arrow"
             android:gravity="center_vertical"
-            android:textSize="15sp"
-            android:textColor="#323232"
+            android:textSize="12sp"
+            android:textColor="@color/tran_black5"
             android:layout_marginRight="10dp"
             android:text="绑定手机"/>
     </RelativeLayout>

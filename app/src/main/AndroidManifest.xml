@@ -326,5 +326,7 @@
         <activity android:name=".ui.activity.PersonalInfoActivity" />
         <activity android:name=".ui.activity.PkRecordActivity" />
         <activity android:name=".ui.activity.me.PlayNotifyActivity" />
+        <activity android:name=".ui.activity.me.BindingPhoneActivity"/>
+        <activity android:name=".ui.activity.me.ChangePhoneActivity"/>
     </application>
 </manifest>
