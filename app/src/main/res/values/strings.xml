@@ -376,6 +376,9 @@
     <string name="quit_app">您确定要关闭萌比直播APP吗？</string>
     <string name="top_rank">当前主播已是第1名，请继续保持！</string>
 
+    <string name="set_password">设置密码（6~16位非纯数字）</string>
+    <string name="former_phone">原手机号码 : </string>
+
     <array name="new_task">
         <item>领取</item>
         <item>改昵称</item>

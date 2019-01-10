@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
@@ -22,6 +23,7 @@ import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.activity.me.BillActivity;
+import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity;
 import com.whzl.mengbi.ui.activity.me.PackActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -81,6 +83,9 @@ public class MeFragment extends BaseFragment implements MeView {
     TextView tvBill;
     @BindView(R.id.view_notify)
     View viewNotify;
+    @BindView(R.id.rl_binding_phone)
+    RelativeLayout rlBindingPhone;
+
     Unbinder unbinder;
     private MePresenter mPresent;
     private UserInfo mUserinfo;
@@ -159,7 +164,8 @@ public class MeFragment extends BaseFragment implements MeView {
         EventBus.getDefault().unregister(this);
     }
 
-    @OnClick({R.id.btn_recharge, R.id.tv_my_follow, R.id.tv_setting, R.id.btn_edit, R.id.tv_watch_history})
+    @OnClick({R.id.btn_recharge, R.id.tv_my_follow, R.id.tv_setting, R.id.btn_edit,
+            R.id.tv_watch_history, R.id.rl_binding_phone})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_recharge:
@@ -176,6 +182,9 @@ public class MeFragment extends BaseFragment implements MeView {
                 break;
             case R.id.tv_watch_history:
                 jumpToWatchHistoryActivity();
+                break;
+            case R.id.rl_binding_phone:
+                jumpToBindingPhoneActivity();
                 break;
             default:
                 break;
@@ -196,7 +205,7 @@ public class MeFragment extends BaseFragment implements MeView {
         Intent intent = new Intent(getContext(), UserInfoActivity.class);
         intent.putExtra("userbean", mUserinfo);
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getMyActivity(), ivAvatar, "iv_avatar");
-        startActivity(intent,optionsCompat.toBundle());
+        startActivity(intent, optionsCompat.toBundle());
     }
 
     private void jumpToSettingActivity() {
@@ -206,6 +215,11 @@ public class MeFragment extends BaseFragment implements MeView {
 
     private void jumpToRechargeActivity() {
         Intent intent = new Intent(getContext(), WXPayEntryActivity.class);
+        startActivity(intent);
+    }
+
+    private void jumpToBindingPhoneActivity(){
+        Intent intent = new Intent(getContext(), BindingPhoneActivity.class);
         startActivity(intent);
     }
 
