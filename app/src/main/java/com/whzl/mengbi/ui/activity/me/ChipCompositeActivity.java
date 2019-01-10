@@ -2,10 +2,14 @@ package com.whzl.mengbi.ui.activity.me;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+
+import butterknife.BindView;
 
 /**
  * 合成碎片
@@ -15,9 +19,12 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity;
  */
 public class ChipCompositeActivity extends BaseActivity {
 
+    @BindView(R.id.rv_parent_chip)
+    RecyclerView recycler;
+
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_chip_composite,"物品合成","我的碎片",true);
+        setContentView(R.layout.activity_chip_composite, "物品合成", "我的碎片", true);
     }
 
     @Override
@@ -28,7 +35,7 @@ public class ChipCompositeActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-
+        initRecycler();
     }
 
     @Override
@@ -41,5 +48,13 @@ public class ChipCompositeActivity extends BaseActivity {
         super.onToolbarMenuClick();
         Intent intent = new Intent(ChipCompositeActivity.this, MyChipActivity.class);
         startActivity(intent);
+    }
+
+    private void initRecycler() {
+        recycler.setNestedScrollingEnabled(false);
+        recycler.setFocusableInTouchMode(false);
+        recycler.setHasFixedSize(true);
+        recycler.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        recycler.setLayoutManager(new LinearLayoutManager(this));
     }
 }

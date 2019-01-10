@@ -12,4 +12,9 @@
         android:layout_height="5dp"
         android:background="#F5F5F5"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_parent_chip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>
