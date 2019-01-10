@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +18,7 @@ import com.whzl.mengbi.util.UIUtil;
 
 public class LightSpanString {
     public static SpannableString getLightString(String content, int color) {
-        SpannableString ss = new SpannableString(content);
+        SpannableString ss = new SpannableString(TextUtils.isEmpty(content) ? "" : content);
         //设置字符颜色
         ss.setSpan(new ForegroundColorSpan(color), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return ss;
