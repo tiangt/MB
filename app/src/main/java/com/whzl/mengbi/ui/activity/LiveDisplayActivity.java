@@ -84,6 +84,7 @@ import com.whzl.mengbi.eventbus.event.LivePkEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.gen.CommonGiftDao;
 import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.HeadLineControl;
@@ -94,6 +95,8 @@ import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.gift.SvgaGiftControl;
 import com.whzl.mengbi.gift.WeekStarControl;
+import com.whzl.mengbi.greendao.CommonGift;
+import com.whzl.mengbi.greendao.CommonGiftBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
@@ -115,6 +118,7 @@ import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
@@ -746,11 +750,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
-//                if (mUserId == 0) {
-//                    login();
-//                    return;
-//                }
-//                showAudienceInfoDialog(mAnchorId, false);
                 if (ClickUtil.isFastClick()) {
                     PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
                             .setListener(() -> {
@@ -806,8 +805,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     return;
                 }
                 setTabChange(1);
-
-
                 break;
             case R.id.rootView:
                 if (currentSelectedIndex == 1) {
@@ -891,10 +888,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mFreeGiftDialog.show(getSupportFragmentManager());
                 break;
             case R.id.btn_more:
-//                if (mUserId == 0) {
-//                    login();
-//                    return;
-//                }
                 if (drawerLayoutOut.isDrawerOpen(drawLayoutInclude)) {
                     drawerLayoutOut.closeDrawer(drawLayoutInclude);
                 } else {
@@ -1539,6 +1532,55 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             paramsMap.put("runwayAppend", runwayAppend);
         }
         mLivePresenter.sendGift(paramsMap);
+        CommonGiftBean commonGift = new CommonGiftBean();
+        commonGift.giftId = goodId;
+        addCommonGift(commonGift, goodId + "");
+    }
+
+    /**
+     * 常送礼物
+     */
+    private void addCommonGift(CommonGiftBean commonGift, String goodId) {
+        CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
+        CommonGift unique = commonGiftDao.queryBuilder().
+                where(CommonGiftDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(this, "userId", 0L).toString())))
+                .unique();
+        if (unique == null) {
+            CommonGift commonGift1 = new CommonGift();
+            commonGift1.setUserId(Long.parseLong(SPUtils.get(this, "userId", 0L).toString()));
+            commonGift.times = 1;
+            List<CommonGiftBean> list = new ArrayList<>();
+            list.add(commonGift);
+            commonGift1.setHobbyList(list);
+            commonGiftDao.insert(commonGift1);
+        } else {
+            if (checkGift(unique.getHobbyList(), commonGift) != null) {
+                CommonGiftBean commonGiftBean = checkGift(unique.getHobbyList(), commonGift);
+                for (int i = 0; i < unique.getHobbyList().size(); i++) {
+                    if (unique.getHobbyList().get(i).giftId == commonGiftBean.giftId) {
+                        unique.getHobbyList().get(i).times = unique.getHobbyList().get(i).times + 1;
+                        break;
+                    }
+                }
+                commonGiftDao.update(unique);
+            } else {
+                commonGift.times = 1;
+                unique.getHobbyList().add(commonGift);
+                commonGiftDao.update(unique);
+            }
+        }
+    }
+
+    private CommonGiftBean checkGift(List<CommonGiftBean> hobbyList, CommonGiftBean commonGift) {
+        if (hobbyList.isEmpty()) {
+            return null;
+        }
+        for (int i = 0; i < hobbyList.size(); i++) {
+            if (hobbyList.get(i).giftId == commonGift.giftId) {
+                return hobbyList.get(i);
+            }
+        }
+        return null;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
