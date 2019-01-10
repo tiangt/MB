@@ -102,8 +102,6 @@ public class HomeFragment extends BaseFragment implements HomeView {
     @Override
     public void init() {
         initAnchorRecycler();
-        refreshLayout.setReboundDuration(0);
-        refreshLayout.setEnablePureScrollMode(false);
         refreshLayout.setEnableOverScrollBounce(true);
         refreshLayout.setEnableOverScrollDrag(true);
         refreshLayout.setOnRefreshListener(refreshLayout -> {
