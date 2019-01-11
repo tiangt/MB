@@ -22,6 +22,7 @@ import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
+import com.whzl.mengbi.ui.activity.me.AccountSwitchActivity;
 import com.whzl.mengbi.ui.activity.me.BillActivity;
 import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity;
 import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
@@ -169,7 +170,7 @@ public class MeFragment extends BaseFragment implements MeView {
     }
 
     @OnClick({R.id.btn_recharge, R.id.tv_my_follow, R.id.tv_setting, R.id.btn_edit,
-            R.id.tv_watch_history, R.id.rl_binding_phone, R.id.tv_composite})
+            R.id.tv_watch_history, R.id.rl_binding_phone, R.id.tv_composite,R.id.btn_switch})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_recharge:
@@ -193,9 +194,17 @@ public class MeFragment extends BaseFragment implements MeView {
             case R.id.tv_composite:
                 jumpToChipCompositeActivity();
                 break;
+            case R.id.btn_switch:
+                jumpToAccountSwitchActivity();
+                break;
             default:
                 break;
         }
+    }
+
+    private void jumpToAccountSwitchActivity() {
+        Intent intent = new Intent(getContext(), AccountSwitchActivity.class);
+        startActivity(intent);
     }
 
     private void jumpToWatchHistoryActivity() {

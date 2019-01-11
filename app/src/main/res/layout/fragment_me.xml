@@ -12,12 +12,12 @@
         android:background="@color/colorPrimary">
 
         <com.whzl.mengbi.ui.widget.view.CircleImageView
-            android:transitionName="iv_avatar"
             android:id="@+id/iv_avatar"
             android:layout_width="67dp"
             android:layout_height="67dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="27dp" />
+            android:layout_marginTop="27dp"
+            android:transitionName="iv_avatar" />
 
         <LinearLayout
             android:id="@+id/ll_nick_name_container"
@@ -61,6 +61,16 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
+            android:background="@null"
+            android:src="@drawable/edit" />
+
+        <ImageButton
+            android:id="@+id/btn_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toLeftOf="@id/btn_edit"
             android:background="@null"
             android:src="@drawable/edit" />
 
@@ -224,33 +234,33 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="45dp"
+            android:layout_marginLeft="3dp"
             android:drawableLeft="@drawable/ic_binding_phone"
+            android:drawablePadding="12dp"
             android:gravity="center_vertical"
             android:paddingLeft="18dp"
-            android:drawablePadding="12dp"
-            android:layout_marginLeft="3dp"
-            android:textSize="15sp"
+            android:text="绑定手机"
             android:textColor="#323232"
-            android:text="绑定手机"/>
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/iv_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/arrowright"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="20dp"
+            android:src="@drawable/arrowright" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:layout_toLeftOf="@id/iv_arrow"
             android:gravity="center_vertical"
-            android:textSize="12sp"
+            android:text="绑定手机"
             android:textColor="@color/tran_black5"
-            android:layout_marginRight="10dp"
-            android:text="绑定手机"/>
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <View
