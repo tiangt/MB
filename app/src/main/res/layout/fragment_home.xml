@@ -18,7 +18,7 @@
 
         <LinearLayout
             android:id="@+id/ll_search"
-            android:layout_width="46dp"
+            android:layout_width="50dp"
             android:layout_height="46dp"
             android:gravity="center">
 

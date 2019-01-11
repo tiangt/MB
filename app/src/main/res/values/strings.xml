@@ -379,6 +379,8 @@
     <string name="set_password">设置密码（6~16位非纯数字）</string>
     <string name="former_phone">原手机号码 : </string>
 
+    <string name="delete_search_history">确定要清除搜索记录吗?</string>
+
     <array name="new_task">
         <item>领取</item>
         <item>改昵称</item>

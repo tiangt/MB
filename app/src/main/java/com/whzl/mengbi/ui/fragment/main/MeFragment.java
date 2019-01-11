@@ -24,6 +24,8 @@ import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.activity.me.BillActivity;
 import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity;
+import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
+import com.whzl.mengbi.ui.activity.me.MyChipActivity;
 import com.whzl.mengbi.ui.activity.me.PackActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -85,6 +87,8 @@ public class MeFragment extends BaseFragment implements MeView {
     View viewNotify;
     @BindView(R.id.rl_binding_phone)
     RelativeLayout rlBindingPhone;
+    @BindView(R.id.tv_composite)
+    TextView tvComposite;
 
     Unbinder unbinder;
     private MePresenter mPresent;
@@ -165,7 +169,7 @@ public class MeFragment extends BaseFragment implements MeView {
     }
 
     @OnClick({R.id.btn_recharge, R.id.tv_my_follow, R.id.tv_setting, R.id.btn_edit,
-            R.id.tv_watch_history, R.id.rl_binding_phone})
+            R.id.tv_watch_history, R.id.rl_binding_phone, R.id.tv_composite})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_recharge:
@@ -185,6 +189,9 @@ public class MeFragment extends BaseFragment implements MeView {
                 break;
             case R.id.rl_binding_phone:
                 jumpToBindingPhoneActivity();
+                break;
+            case R.id.tv_composite:
+                jumpToChipCompositeActivity();
                 break;
             default:
                 break;
@@ -218,8 +225,13 @@ public class MeFragment extends BaseFragment implements MeView {
         startActivity(intent);
     }
 
-    private void jumpToBindingPhoneActivity(){
+    private void jumpToBindingPhoneActivity() {
         Intent intent = new Intent(getContext(), BindingPhoneActivity.class);
+        startActivity(intent);
+    }
+
+    private void jumpToChipCompositeActivity(){
+        Intent intent = new Intent(getContext(), ChipCompositeActivity.class);
         startActivity(intent);
     }
 

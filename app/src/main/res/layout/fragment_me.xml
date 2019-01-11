@@ -264,4 +264,15 @@
         android:drawableLeft="@drawable/settings"
         android:text="设置" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="15dp" />
+
+    <TextView
+        android:id="@+id/tv_composite"
+        style="@style/me_option_item"
+        android:drawableLeft="@drawable/ic_composite"
+        android:text="物品合成" />
+
 </LinearLayout>
