@@ -11,6 +11,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.gen.CommonGiftDao;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
@@ -170,7 +171,7 @@ public class MeFragment extends BaseFragment implements MeView {
     }
 
     @OnClick({R.id.btn_recharge, R.id.tv_my_follow, R.id.tv_setting, R.id.btn_edit,
-            R.id.tv_watch_history, R.id.rl_binding_phone, R.id.tv_composite,R.id.btn_switch})
+            R.id.tv_watch_history, R.id.rl_binding_phone, R.id.tv_composite, R.id.btn_switch})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_recharge:
@@ -239,7 +240,7 @@ public class MeFragment extends BaseFragment implements MeView {
         startActivity(intent);
     }
 
-    private void jumpToChipCompositeActivity(){
+    private void jumpToChipCompositeActivity() {
         Intent intent = new Intent(getContext(), ChipCompositeActivity.class);
         startActivity(intent);
     }
@@ -250,6 +251,8 @@ public class MeFragment extends BaseFragment implements MeView {
         if (requestCode == REQUEST_SETTING) {
             if (resultCode == RESULT_OK) {
                 ((MainActivity) getActivity()).setCheck(0);
+                Long aLong = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
+                removeGreenDao(aLong);
                 SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
                 HashMap paramsMap = new HashMap();
                 paramsMap.put("platform", RequestManager.CLIENTTYPE);
@@ -270,6 +273,11 @@ public class MeFragment extends BaseFragment implements MeView {
 //                visitorLogin(paramsMap);
             }
         }
+    }
+
+    private void removeGreenDao(Long aLong) {
+        CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
+        commonGiftDao.deleteByKey(aLong);
     }
 
     private void visitorLogin(HashMap paramsMap) {

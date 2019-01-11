@@ -29,6 +29,10 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
     public static class Properties {
         public final static Property UserId = new Property(0, Long.class, "userId", true, "_id");
         public final static Property HobbyList = new Property(1, String.class, "hobbyList", false, "HOBBY_LIST");
+        public final static Property Avatar = new Property(2, String.class, "avatar", false, "AVATAR");
+        public final static Property Nickname = new Property(3, String.class, "nickname", false, "NICKNAME");
+        public final static Property SeesionId = new Property(4, String.class, "seesionId", false, "SEESION_ID");
+        public final static Property Recharged = new Property(5, boolean.class, "recharged", false, "RECHARGED");
     }
 
     private final CommonGift_Converter hobbyListConverter = new CommonGift_Converter();
@@ -46,7 +50,11 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"COMMON_GIFT\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: userId
-                "\"HOBBY_LIST\" TEXT);"); // 1: hobbyList
+                "\"HOBBY_LIST\" TEXT," + // 1: hobbyList
+                "\"AVATAR\" TEXT," + // 2: avatar
+                "\"NICKNAME\" TEXT," + // 3: nickname
+                "\"SEESION_ID\" TEXT," + // 4: seesionId
+                "\"RECHARGED\" INTEGER NOT NULL );"); // 5: recharged
     }
 
     /** Drops the underlying database table. */
@@ -68,6 +76,22 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
         if (hobbyList != null) {
             stmt.bindString(2, hobbyListConverter.convertToDatabaseValue(hobbyList));
         }
+ 
+        String avatar = entity.getAvatar();
+        if (avatar != null) {
+            stmt.bindString(3, avatar);
+        }
+ 
+        String nickname = entity.getNickname();
+        if (nickname != null) {
+            stmt.bindString(4, nickname);
+        }
+ 
+        String seesionId = entity.getSeesionId();
+        if (seesionId != null) {
+            stmt.bindString(5, seesionId);
+        }
+        stmt.bindLong(6, entity.getRecharged() ? 1L: 0L);
     }
 
     @Override
@@ -83,6 +107,22 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
         if (hobbyList != null) {
             stmt.bindString(2, hobbyListConverter.convertToDatabaseValue(hobbyList));
         }
+ 
+        String avatar = entity.getAvatar();
+        if (avatar != null) {
+            stmt.bindString(3, avatar);
+        }
+ 
+        String nickname = entity.getNickname();
+        if (nickname != null) {
+            stmt.bindString(4, nickname);
+        }
+ 
+        String seesionId = entity.getSeesionId();
+        if (seesionId != null) {
+            stmt.bindString(5, seesionId);
+        }
+        stmt.bindLong(6, entity.getRecharged() ? 1L: 0L);
     }
 
     @Override
@@ -94,7 +134,11 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
     public CommonGift readEntity(Cursor cursor, int offset) {
         CommonGift entity = new CommonGift( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // userId
-            cursor.isNull(offset + 1) ? null : hobbyListConverter.convertToEntityProperty(cursor.getString(offset + 1)) // hobbyList
+            cursor.isNull(offset + 1) ? null : hobbyListConverter.convertToEntityProperty(cursor.getString(offset + 1)), // hobbyList
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // avatar
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // nickname
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // seesionId
+            cursor.getShort(offset + 5) != 0 // recharged
         );
         return entity;
     }
@@ -103,6 +147,10 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
     public void readEntity(Cursor cursor, CommonGift entity, int offset) {
         entity.setUserId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setHobbyList(cursor.isNull(offset + 1) ? null : hobbyListConverter.convertToEntityProperty(cursor.getString(offset + 1)));
+        entity.setAvatar(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setNickname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setSeesionId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setRecharged(cursor.getShort(offset + 5) != 0);
      }
     
     @Override
