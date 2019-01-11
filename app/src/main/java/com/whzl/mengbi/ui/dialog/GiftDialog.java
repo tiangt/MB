@@ -24,6 +24,7 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.AppConfig;
@@ -33,8 +34,11 @@ import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.SendSuperWordEvent;
 import com.whzl.mengbi.gen.CommonGiftDao;
+import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.FreeGiftBean;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -42,11 +46,13 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.BackpackMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.CommonMotherFragment;
+import com.whzl.mengbi.ui.dialog.fragment.GiftCommonFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GiftSortMotherFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -63,6 +69,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -136,6 +143,34 @@ public class GiftDialog extends BaseAwesomeDialog {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
+        getFreeGift();
+    }
+
+    private void getFreeGift() {
+        if (!TextUtils.isEmpty(SPUtils.get(getContext(), SpConfig.FREE_GOODS_IDS, "").toString())) {
+            return;
+        }
+        HashMap paramsMap = new HashMap();
+        Map signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
+        ApiFactory.getInstance().getApi(Api.class)
+                .freeGoodsIds(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<FreeGiftBean>(this) {
+
+                    @Override
+                    public void onSuccess(FreeGiftBean freeGiftBean) {
+                        if (freeGiftBean != null && !freeGiftBean.list.isEmpty()) {
+                            Gson gson = new Gson();
+                            String s = gson.toJson(freeGiftBean);
+                            SPUtils.put(getContext(), SpConfig.FREE_GOODS_IDS, s);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<FreeGiftBean> body) {
+                    }
+                });
     }
 
     @Override

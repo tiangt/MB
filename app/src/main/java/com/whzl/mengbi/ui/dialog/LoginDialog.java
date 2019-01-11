@@ -16,6 +16,8 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
+import com.whzl.mengbi.gen.CommonGiftDao;
+import com.whzl.mengbi.greendao.CommonGift;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
@@ -201,6 +203,7 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
     public void loginSuccess(UserInfo userInfo) {
         ((BaseActivity) getActivity()).dismissLoading();
         showToast(R.string.login_success);
+        saveGreenDao(userInfo);
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, userInfo.getData().getNickname());
@@ -209,6 +212,27 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
         loginSuccessListener.onLoginSuccessListener();
         dismiss();
         EventBus.getDefault().post(new LoginSuccussEvent());
+    }
+
+    private void saveGreenDao(UserInfo userInfo) {
+        CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
+        CommonGift unique = commonGiftDao.queryBuilder().where(CommonGiftDao.Properties.UserId.eq(userInfo.getData().getUserId())).unique();
+        if (unique == null) {
+            CommonGift commonGift = new CommonGift();
+            commonGift.setUserId(userInfo.getData().getUserId());
+            commonGift.setAvatar(userInfo.getData().getAvatar());
+            commonGift.setNickname(userInfo.getData().getNickname());
+            commonGift.setSeesionId(userInfo.getData().getSessionId());
+            commonGift.setRecharged(userInfo.getData().getLastRechargeTime() != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
+            commonGiftDao.insert(commonGift);
+        } else {
+            unique.setUserId(userInfo.getData().getUserId());
+            unique.setAvatar(userInfo.getData().getAvatar());
+            unique.setNickname(userInfo.getData().getNickname());
+            unique.setSeesionId(userInfo.getData().getSessionId());
+            unique.setRecharged(userInfo.getData().getLastRechargeTime() != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
+            commonGiftDao.update(unique);
+        }
     }
 
     public interface LoginSuccessListener {

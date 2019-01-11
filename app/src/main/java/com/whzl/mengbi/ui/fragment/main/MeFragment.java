@@ -11,6 +11,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.gen.CommonGiftDao;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
@@ -22,6 +23,7 @@ import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
+import com.whzl.mengbi.ui.activity.me.AccountSwitchActivity;
 import com.whzl.mengbi.ui.activity.me.BillActivity;
 import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity;
 import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
@@ -169,7 +171,7 @@ public class MeFragment extends BaseFragment implements MeView {
     }
 
     @OnClick({R.id.btn_recharge, R.id.tv_my_follow, R.id.tv_setting, R.id.btn_edit,
-            R.id.tv_watch_history, R.id.rl_binding_phone, R.id.tv_composite})
+            R.id.tv_watch_history, R.id.rl_binding_phone, R.id.tv_composite, R.id.btn_switch})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_recharge:
@@ -193,9 +195,17 @@ public class MeFragment extends BaseFragment implements MeView {
             case R.id.tv_composite:
                 jumpToChipCompositeActivity();
                 break;
+            case R.id.btn_switch:
+                jumpToAccountSwitchActivity();
+                break;
             default:
                 break;
         }
+    }
+
+    private void jumpToAccountSwitchActivity() {
+        Intent intent = new Intent(getContext(), AccountSwitchActivity.class);
+        startActivity(intent);
     }
 
     private void jumpToWatchHistoryActivity() {
@@ -230,7 +240,7 @@ public class MeFragment extends BaseFragment implements MeView {
         startActivity(intent);
     }
 
-    private void jumpToChipCompositeActivity(){
+    private void jumpToChipCompositeActivity() {
         Intent intent = new Intent(getContext(), ChipCompositeActivity.class);
         startActivity(intent);
     }
@@ -241,6 +251,8 @@ public class MeFragment extends BaseFragment implements MeView {
         if (requestCode == REQUEST_SETTING) {
             if (resultCode == RESULT_OK) {
                 ((MainActivity) getActivity()).setCheck(0);
+                Long aLong = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
+                removeGreenDao(aLong);
                 SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
                 HashMap paramsMap = new HashMap();
                 paramsMap.put("platform", RequestManager.CLIENTTYPE);
@@ -261,6 +273,11 @@ public class MeFragment extends BaseFragment implements MeView {
 //                visitorLogin(paramsMap);
             }
         }
+    }
+
+    private void removeGreenDao(Long aLong) {
+        CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
+        commonGiftDao.deleteByKey(aLong);
     }
 
     private void visitorLogin(HashMap paramsMap) {

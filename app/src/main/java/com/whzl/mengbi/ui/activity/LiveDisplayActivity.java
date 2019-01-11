@@ -1541,6 +1541,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 常送礼物
      */
     private void addCommonGift(CommonGiftBean commonGift, String goodId) {
+        if (SPUtils.get(this, SpConfig.FREE_GOODS_IDS, "").toString().contains(goodId)) {
+            return;
+        }
         CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
         CommonGift unique = commonGiftDao.queryBuilder().
                 where(CommonGiftDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(this, "userId", 0L).toString())))
