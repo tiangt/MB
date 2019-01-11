@@ -16,6 +16,7 @@ import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.DailyTaskBean;
 import com.whzl.mengbi.model.entity.DemonCarBean;
 import com.whzl.mengbi.model.entity.FollowSortBean;
+import com.whzl.mengbi.model.entity.FreeGiftBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
@@ -730,4 +731,15 @@ public interface Api {
     @POST("v1/goods/goods-price-batch")
     @FormUrlEncoded
     Observable<ApiResult<GoodsPriceBatchBean>> goodsPriceBatch(@FieldMap Map<String, String> params);
+
+    /**
+     * 根据免费礼物goodsId列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/goods/free-goods-ids")
+    @FormUrlEncoded
+    Observable<ApiResult<FreeGiftBean>> freeGoodsIds(@FieldMap Map<String, String> params);
+
 }
