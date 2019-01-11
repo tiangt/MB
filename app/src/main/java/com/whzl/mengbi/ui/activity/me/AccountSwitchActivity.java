@@ -203,6 +203,7 @@ public class AccountSwitchActivity extends BaseActivity {
     }
 
     private void checkLogin(CommonGift commonGift) {
+        showLoading("切换中");
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, commonGift.getSeesionId());
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", commonGift.getUserId());
@@ -210,6 +211,7 @@ public class AccountSwitchActivity extends BaseActivity {
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object object) {
+                        dismissLoading();
                         CheckLoginResultBean resultBean = GsonUtils.GsonToBean(object.toString(), CheckLoginResultBean.class);
                         if (resultBean.code == RequestManager.RESPONSE_CODE) {
                             if (resultBean.data.isLogin) {
@@ -229,6 +231,7 @@ public class AccountSwitchActivity extends BaseActivity {
 
                     @Override
                     public void onReqFailed(String errorMsg) {
+                        dismissLoading();
                         jumpToLogin();
                     }
                 });
