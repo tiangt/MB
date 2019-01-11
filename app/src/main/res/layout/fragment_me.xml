@@ -56,23 +56,25 @@
 
         <ImageButton
             android:id="@+id/btn_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="15dp"
             android:layout_marginTop="10dp"
             android:background="@null"
+            android:scaleType="fitXY"
             android:src="@drawable/edit" />
 
         <ImageButton
             android:id="@+id/btn_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
             android:layout_toLeftOf="@id/btn_edit"
             android:background="@null"
-            android:src="@drawable/edit" />
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_account_switch" />
 
     </RelativeLayout>
 

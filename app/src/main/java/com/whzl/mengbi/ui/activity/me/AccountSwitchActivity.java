@@ -17,7 +17,6 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.gen.CommonGiftDao;
 import com.whzl.mengbi.greendao.CommonGift;
 import com.whzl.mengbi.model.entity.CheckLoginResultBean;
-import com.whzl.mengbi.ui.activity.FollowActivity;
 import com.whzl.mengbi.ui.activity.LoginActivity;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -28,14 +27,11 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
