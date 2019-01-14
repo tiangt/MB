@@ -58,6 +58,7 @@ import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.PkEvent;
+import com.whzl.mengbi.chat.room.message.events.PlayNotifyEvent;
 import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
 import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
@@ -70,6 +71,7 @@ import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
+import com.whzl.mengbi.chat.room.message.messageJson.PlayNotifyJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
@@ -77,6 +79,7 @@ import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
@@ -132,8 +135,11 @@ import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
 import com.whzl.mengbi.ui.dialog.UserListDialog;
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseFullScreenDialog;
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
+import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
@@ -1124,6 +1130,35 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(UpdateProgramEvent updateProgramEvent) {
         tvFansCount.setText(getString(R.string.subscriptions
                 , updateProgramEvent.getmProgramJson().getContext().getProgram().getSubscriptionNum()));
+    }
+
+    /**
+     * 开播提醒
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PlayNotifyEvent playNotifyEvent) {
+        PlayNotifyJson.ContextBean contextBean = playNotifyEvent.playNotifyJson.context;
+        if (!playNotify || contextBean.programId == mProgramId) {
+            return;
+        }
+        AwesomeDialog.init().setLayoutId(R.layout.dialog_play_notify)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                        holder.setText(R.id.tv_nick_play_notify, contextBean.nickname);
+                        String jpg = ImageUrl.getAvatarUrl(contextBean.userId, "jpg", contextBean.lastUpdateTime);
+                        GlideImageLoader.getInstace().circleCropImage(
+                                LiveDisplayActivity.this, jpg, holder.getView(R.id.iv_avatar_play_notify));
+                        holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
+                        holder.setOnClickListener(R.id.tv_transfer, v -> {
+                            Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
+                            intent.putExtra("programId", contextBean.programId);
+                            startActivity(intent);
+                            dialog.dismiss();
+                        });
+                    }
+                })
+                .show(getSupportFragmentManager());
     }
 
     @Override

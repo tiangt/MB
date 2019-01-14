@@ -24,6 +24,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftBigAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.OpenGuardAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PkAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.PlayNotifyAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrivateChatAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PrizePoolFullAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ProgramFirstAction;
@@ -101,6 +102,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("PRIZE_POOL_FULL", new PrizePoolFullAction());
         actionsMap.put("BETS_END", new BetsEndAction());
         actionsMap.put("FIRST_PRIZE_USER", new FirstPrizeUserAction());
+        actionsMap.put("StartLiving", new PlayNotifyAction());
     }
 
     private void initChatAction() {
