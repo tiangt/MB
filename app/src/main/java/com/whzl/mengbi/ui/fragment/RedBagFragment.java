@@ -1,7 +1,12 @@
 package com.whzl.mengbi.ui.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +15,8 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -75,7 +82,43 @@ public class RedBagFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_send:
+                KeyBoardUtil.closeKeybord(etNumber,getContext());
+                if (type.equals(NORMAL)) {
+                    if (checkNormal()) {
+                        ToastUtils.showToast("send" + Integer.parseInt(etMoney.getText().toString()));
+                    }
+                } else if (type.equals(LUCK)) {
+                    if (checkLuck()) {
+                        ToastUtils.showToast("send" + Integer.parseInt(etMoney.getText().toString()));
+                    }
+                }
                 break;
         }
+    }
+
+    private boolean checkLuck() {
+        if (TextUtils.isEmpty(etMoney.getText()) || Integer.parseInt(etMoney.getText().toString()) == 0
+                || Integer.parseInt(etMoney.getText().toString()) % 10000 != 0) {
+            ToastUtils.snack(etMoney, "请输入10000的倍数");
+            return false;
+        }
+        if (TextUtils.isEmpty(etNumber.getText()) || Integer.parseInt(etNumber.getText().toString()) < 5) {
+            ToastUtils.snack(etMoney, "红包个数不得小于5个");
+            return false;
+        } else
+            return true;
+    }
+
+    private boolean checkNormal() {
+        if (TextUtils.isEmpty(etMoney.getText()) || Integer.parseInt(etMoney.getText().toString()) == 0
+                || Integer.parseInt(etMoney.getText().toString()) % 2000 != 0) {
+            ToastUtils.snack(etMoney, "请输入2000的倍数");
+            return false;
+        }
+        if (TextUtils.isEmpty(etNumber.getText()) || Integer.parseInt(etNumber.getText().toString()) < 5) {
+            ToastUtils.snack(etMoney, "红包个数不得小于5个");
+            return false;
+        } else
+            return true;
     }
 }
