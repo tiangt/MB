@@ -1,10 +1,12 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseFullScreenDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -46,6 +48,8 @@ public class BindingPhoneDialog extends BaseFullScreenDialog {
                 break;
 
             case R.id.btn_binding:
+                Intent intent = new Intent(getActivity(), BindingPhoneActivity.class);
+                startActivity(intent);
                 dismiss();
                 break;
 

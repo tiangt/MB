@@ -149,7 +149,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         }
     }
 
-    @OnClick({R.id.btn_get_verify_code, R.id.btn_register, R.id.tv_agreement})
+    @OnClick({R.id.btn_get_verify_code, R.id.btn_register, R.id.tv_agreement, R.id.ib_clean_phone, R.id.ib_clean_psw})
     public void onClick(View view) {
         KeyBoardUtil.hideInputMethod(this);
         switch (view.getId()) {
@@ -167,10 +167,10 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
                 String password = etPassword.getText().toString().trim();
                 String md5Psd = EncryptUtils.md5Hex(password);
                 String verifyCode = etVerifyCode.getText().toString().trim();
-                if(cbAgree.isChecked()){
+                if (cbAgree.isChecked()) {
                     registerPresenter.getRegister(phoneStr, md5Psd, verifyCode);
-                }else{
-                    showToast("请先阅读用户协议");
+                } else {
+                    showToast("请先阅读用户服务协议");
                 }
                 break;
 
@@ -179,6 +179,14 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
                 intent.putExtra("url", NetConfig.USER_DEAL);
                 intent.putExtra("title", "用户协议");
                 startActivity(intent);
+                break;
+
+            case R.id.ib_clean_phone:
+                etPhone.setText("");
+                break;
+
+            case R.id.ib_clean_psw:
+                etPassword.setText("");
                 break;
 
             default:

@@ -259,4 +259,9 @@ public class URLContentUtils {
      * 我的碎片
      */
     public static final String MY_DEBRIS_LIST = "v1/debris/my-debris-list";
+
+    /**
+     * 绑定手机或者邮箱
+     */
+    public static final String BIND_PHONE = "v1/user/bind-email-or-mobile";
 }

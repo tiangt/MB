@@ -154,7 +154,8 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
                 mChildList.clear();
                 for (int i = 0; i < mParentList.get(position).goodsDetails.size(); i++) {
                     chipName.setText(mParentList.get(position).goodsDetails.get(i).goodsName);
-                    String chipPic = ImageUrl.getImageUrl(mParentList.get(position).goodsDetails.get(i).picId, "jpg");
+//                    String chipPic = ImageUrl.getImageUrl(mParentList.get(position).goodsDetails.get(i).picId, "jpg");
+                    String chipPic = mParentList.get(position).goodsDetails.get(i).goodsPic;
                     Log.i("chenliang", "碎片 = " + chipPic);
                     GlideImageLoader.getInstace().displayImage(ChipCompositeActivity.this, chipPic, ivChipPic);
                     if (mParentList.get(position).isComposition == 0) {

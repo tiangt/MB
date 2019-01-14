@@ -21,6 +21,7 @@ import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
+import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.BindingPhoneDialog;
@@ -129,8 +130,20 @@ public class MainActivity extends BaseActivity {
 //        currentSelectedIndex = 0;
 //        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 //        startActivityForResult(intent, REQUEST_LOGIN);
+//        LoginDialog.newInstance()
+//                .setLoginSuccessListener(() -> getNewUserAward(true))
+//                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+//                .setDimAmount(0.7f)
+//                .show(getSupportFragmentManager());
+
         LoginDialog.newInstance()
-                .setLoginSuccessListener(() -> getNewUserAward(true))
+                .setLoginSuccessListener(new LoginDialog.LoginSuccessListener() {
+                    @Override
+                    public void onLoginSuccessListener() {
+                        getNewUserAward(true);
+                        isFirstLogin();
+                    }
+                })
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0.7f)
                 .show(getSupportFragmentManager());
@@ -350,6 +363,7 @@ public class MainActivity extends BaseActivity {
         if (requestCode == AppUtils.REQUEST_LOGIN) {
             if (resultCode == RESULT_OK) {
                 getNewUserAward(true);
+                isFirstLogin();
             }
         }
     }
@@ -440,5 +454,36 @@ public class MainActivity extends BaseActivity {
                 this.finish();
             }
         }
+    }
+
+    /**
+     * 判断用户是否首次登陆
+     */
+    private void isFirstLogin(){
+        HashMap paramsMap = new HashMap();
+        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+        paramsMap.put("userId", userId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap,
+                new RequestManager.ReqCallBack() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        UserInfo userInfo = GsonUtils.GsonToBean(result.toString(), UserInfo.class);
+                        if (userInfo.getCode() == 200) {
+                            String createTime = userInfo.getData().getCreateTime();
+                            String lastLoginTime = userInfo.getData().getLastLoginTime();
+                            String mobile = userInfo.getData().getBindMobile();
+                            if(createTime.equals(lastLoginTime) && TextUtils.isEmpty(mobile)){
+                                showBindingDialog();
+                            }else{
+                                showToast("aaaaaaaaaa");
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("onReqFailed" + errorMsg);
+                    }
+                });
     }
 }

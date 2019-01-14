@@ -65,7 +65,8 @@
 
                         <EditText
                             android:id="@+id/et_phone"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="10dp"
                             android:background="@null"
@@ -75,6 +76,13 @@
                             android:maxLength="11"
                             android:textColorHint="#B9B9B9"
                             android:textSize="13sp" />
+
+                        <ImageButton
+                            android:id="@+id/ib_clean_phone"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginRight="7dp"
+                            android:background="@drawable/ic_search_close" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -108,7 +116,8 @@
 
                         <EditText
                             android:id="@+id/et_password"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="10dp"
@@ -118,6 +127,13 @@
                             android:maxLength="16"
                             android:textColorHint="#B9B9B9"
                             android:textSize="13sp" />
+
+                        <ImageButton
+                            android:id="@+id/ib_clean_psw"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_marginRight="7dp"
+                            android:background="@drawable/ic_search_close" />
                     </LinearLayout>
                 </LinearLayout>
 

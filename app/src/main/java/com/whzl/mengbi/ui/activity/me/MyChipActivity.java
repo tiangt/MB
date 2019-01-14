@@ -175,8 +175,9 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
             String chipPic = ImageUrl.getImageUrl(mList.get(position).goods.picId, "jpg");
             GlideImageLoader.getInstace().displayImage(MyChipActivity.this, chipPic, ivChipPic);
             tvCount.setText(mList.get(position).goodsSum + "");
-            String str = mList.get(position).goods.createTime;
+            String str = mList.get(position).expDate;
             if (str.contains(" ")) {
+                //截取时间
                 int index = str.indexOf(" ");
                 String date = str.substring(0, index);
                 String time = str.substring(index + 1);

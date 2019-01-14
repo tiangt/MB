@@ -2,6 +2,8 @@ package com.whzl.mengbi.ui.fragment.main;
 
 import android.content.Intent;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,6 +28,7 @@ import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.activity.me.AccountSwitchActivity;
 import com.whzl.mengbi.ui.activity.me.BillActivity;
 import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity;
+import com.whzl.mengbi.ui.activity.me.ChangePhoneActivity;
 import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
 import com.whzl.mengbi.ui.activity.me.MyChipActivity;
 import com.whzl.mengbi.ui.activity.me.PackActivity;
@@ -65,6 +68,7 @@ import static android.app.Activity.RESULT_OK;
 public class MeFragment extends BaseFragment implements MeView {
 
     private static final int REQUEST_SETTING = 100;
+    private static final int REQUEST_BINDING = 101;
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
     @BindView(R.id.tv_nick_name)
@@ -75,8 +79,8 @@ public class MeFragment extends BaseFragment implements MeView {
     TextView tvId;
     @BindView(R.id.tv_mengbi_amount)
     TextView tvMengbiAmount;
-    @BindView(R.id.tv_mengdou_amount)
-    TextView tvMengdouAmount;
+    @BindView(R.id.tv_mengdian)
+    TextView tvMengdian;
     @BindView(R.id.tv_shop)
     TextView tvShop;
     @BindView(R.id.tv_packsack)
@@ -91,11 +95,16 @@ public class MeFragment extends BaseFragment implements MeView {
     RelativeLayout rlBindingPhone;
     @BindView(R.id.tv_composite)
     TextView tvComposite;
+    @BindView(R.id.tv_bind_phone)
+    TextView tvBindPhone;
+    @BindView(R.id.tv_mengdou)
+    TextView tvMengDou;
 
     Unbinder unbinder;
     private MePresenter mPresent;
     private UserInfo mUserinfo;
     private String deviceId;
+    private String mMobile;
 
     public static MeFragment newInstance() {
         return new MeFragment();
@@ -120,7 +129,16 @@ public class MeFragment extends BaseFragment implements MeView {
         SPUtils.put(getContext(), SpConfig.KEY_USER_NAME, mUserinfo.getData().getNickname().trim());
         tvId.setText("萌号：" + userInfo.getData().getUserId());
         tvMengbiAmount.setText(userInfo.getData().getWealth().getCoin() + "");
-        tvMengdouAmount.setText(userInfo.getData().getWealth().getChengPonit() + "");
+        tvMengdian.setText(userInfo.getData().getWealth().getChengPonit() + "");
+        tvMengDou.setText(userInfo.getData().getWealth().getMengDou() + "");
+        mMobile = userInfo.getData().getBindMobile();
+        Log.i("chenliang", "Mobile = " + mMobile);
+        if (!TextUtils.isEmpty(mMobile)) {
+            String maskNum = mMobile.substring(0, 3) + "xxxx" + mMobile.substring(7, mMobile.length());
+            tvBindPhone.setText("已绑定 " + maskNum);
+        } else {
+            tvBindPhone.setText("未绑定");
+        }
         List<UserInfo.DataBean.LevelListBean> levelList = userInfo.getData().getLevelList();
         if (NetConfig.USER_TYPE_ANCHOR.equals(userInfo.getData().getUserType())) {
             for (UserInfo.DataBean.LevelListBean levelListBean : levelList) {
@@ -190,7 +208,11 @@ public class MeFragment extends BaseFragment implements MeView {
                 jumpToWatchHistoryActivity();
                 break;
             case R.id.rl_binding_phone:
-                jumpToBindingPhoneActivity();
+                if (TextUtils.isEmpty(mMobile)) {
+                    jumpToBindingPhoneActivity();
+                } else {
+                    jumpToChangePhoneActivity();
+                }
                 break;
             case R.id.tv_composite:
                 jumpToChipCompositeActivity();
@@ -237,6 +259,12 @@ public class MeFragment extends BaseFragment implements MeView {
 
     private void jumpToBindingPhoneActivity() {
         Intent intent = new Intent(getContext(), BindingPhoneActivity.class);
+        startActivityForResult(intent, REQUEST_BINDING);
+    }
+
+    private void jumpToChangePhoneActivity() {
+        Intent intent = new Intent(getContext(), ChangePhoneActivity.class);
+        intent.putExtra("bindMobile", mMobile);
         startActivity(intent);
     }
 
@@ -271,6 +299,12 @@ public class MeFragment extends BaseFragment implements MeView {
                     }
                 });
 //                visitorLogin(paramsMap);
+            }
+        }
+
+        if (requestCode == REQUEST_BINDING) {
+            if (resultCode == RESULT_OK) {
+                mPresent.getUserInfo();
             }
         }
     }

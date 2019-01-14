@@ -66,6 +66,7 @@ public class CompositionListInfo extends ResponseInfo {
                 public String type;
                 public Object effDays;
                 public int picId;
+                public String goodsPic;
             }
         }
     }
