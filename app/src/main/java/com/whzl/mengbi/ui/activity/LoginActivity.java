@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -64,6 +65,11 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     RadioGroup rgEnvSwitch;
     @BindView(R.id.tv_forget_psw)
     TextView tvForgetPsw;
+    @BindView(R.id.ib_clean_phone)
+    ImageButton ibCleanPhone;
+    @BindView(R.id.ib_clean_psw)
+    ImageButton ibCleanPsw;
+
     private LoginPresent mLoginPresent;
     private UMShareAPI umShareAPI;
 
@@ -190,6 +196,15 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         } else {
             btnLogin.setEnabled(false);
         }
+
+        String phone = etPhone.getText().toString().trim();
+        if(!TextUtils.isEmpty(phone)){
+            ibCleanPhone.setOnClickListener((v) -> etPhone.setText(""));
+        }
+
+        if(!TextUtils.isEmpty(password)){
+            ibCleanPsw.setOnClickListener((v) -> etPassword.setText(""));
+        }
     }
 
     @Override
@@ -234,7 +249,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         dismissLoading();
         showToast(R.string.login_success);
         saveGreenDao(userInfo);
-        LogUtils.e("sssssssssssss    "+userInfo.getData().getSessionId());
+        LogUtils.e("sssssssssssss    " + userInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, userInfo.getData().getNickname());
@@ -247,7 +262,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
             setResult(RESULT_OK);
         } else if (JsBridgeActivity.class.toString().equals(activityFrom)) {
             setResult(RESULT_OK);
-        } else if ("logindialog".equals(activityFrom)||"account".equals(activityFrom)) {
+        } else if ("logindialog".equals(activityFrom) || "account".equals(activityFrom)) {
             setResult(RESULT_OK);
         }
         EventBus.getDefault().post(new LoginSuccussEvent());

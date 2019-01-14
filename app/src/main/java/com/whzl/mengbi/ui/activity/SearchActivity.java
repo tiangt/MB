@@ -172,8 +172,8 @@ public class SearchActivity extends BaseActivity {
                             SpannableString string2 = StringUtils.spannableStringColor(" " + etSearch.getText().toString().trim() + " ",
                                     Color.parseColor("#ff611b"));
                             SpannableString string3 = StringUtils.spannableStringColor("的主播共 ", Color.parseColor("#4b4b4b"));
-                            SpannableString string4 = StringUtils.spannableStringColor( bean.total+"", Color.parseColor("#ff611b"));
-                            SpannableString string5 = StringUtils.spannableStringColor( " 位", Color.parseColor("#4b4b4b"));
+                            SpannableString string4 = StringUtils.spannableStringColor(bean.total + "", Color.parseColor("#ff611b"));
+                            SpannableString string5 = StringUtils.spannableStringColor(" 位", Color.parseColor("#4b4b4b"));
                             tvName.setText(string);
                             tvName.append(string2);
                             tvName.append(string3);
@@ -385,8 +385,12 @@ public class SearchActivity extends BaseActivity {
                     TextView tv = (TextView) layoutInflater.inflate(R.layout.item_flow, flSearch, false);
                     tv.setText(mHistoryKeywords.get(i));
                     final String str = tv.getText().toString();
-                    tv.setOnClickListener((view) -> {
-                        etSearch.setText(str);
+                    tv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            etSearch.setText(str);
+                            search(str);
+                        }
                     });
                     flSearch.addView(tv);
                 }

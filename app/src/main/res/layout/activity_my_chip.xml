@@ -10,7 +10,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:background="#F5F5F5" />
+        android:background="#EBEAEA" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"

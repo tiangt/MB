@@ -61,6 +61,7 @@ public class UserInfo extends ResponseInfo implements Parcelable {
         private String introduce;
         private WealthBean wealth;
         private String sessionId;
+        private String bindMobile;
 
         protected DataBean(Parcel in) {
             userId = in.readLong();
@@ -78,6 +79,7 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             createTime = in.readString();
             lastLoginTime = in.readString();
             levelList = in.createTypedArrayList(LevelListBean.CREATOR);
+            bindMobile = in.readString();
         }
 
         public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
@@ -201,6 +203,14 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             this.levelList = levelList;
         }
 
+        public void setBindMobile(String bindMobile){
+            this.bindMobile = bindMobile;
+        }
+
+        public String getBindMobile(){
+            return bindMobile;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -223,16 +233,19 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             dest.writeString(createTime);
             dest.writeString(lastLoginTime);
             dest.writeTypedList(levelList);
+            dest.writeString(bindMobile);
         }
 
         public static class WealthBean implements Parcelable {
 
             private long coin;
             private long chengPonit;
+            private long mengDou;
 
             protected WealthBean(Parcel in) {
                 coin = in.readLong();
                 chengPonit = in.readLong();
+                mengDou = in.readLong();
             }
 
             public static final Creator<WealthBean> CREATOR = new Creator<WealthBean>() {
@@ -255,6 +268,10 @@ public class UserInfo extends ResponseInfo implements Parcelable {
                 return chengPonit;
             }
 
+            public long getMengDou(){
+                return mengDou;
+            }
+
             @Override
             public int describeContents() {
                 return 0;
@@ -264,6 +281,7 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             public void writeToParcel(Parcel dest, int flags) {
                 dest.writeLong(coin);
                 dest.writeLong(chengPonit);
+                dest.writeLong(mengDou);
             }
 
         }

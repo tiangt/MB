@@ -382,6 +382,7 @@
     <string name="delete_search_history">确定要清除搜索记录吗?</string>
 
     <string name="chip_count">%1$d/%2$d</string>
+    <string name="empty_phone">手机号码不能为空</string>
 
     <array name="new_task">
         <item>领取</item>
