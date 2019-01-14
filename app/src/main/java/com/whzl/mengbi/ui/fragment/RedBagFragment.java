@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.ToastUtils;
 
@@ -75,6 +76,53 @@ public class RedBagFragment extends BaseFragment {
                 llRedBag.setVisibility(View.GONE);
                 break;
         }
+        initMoney();
+    }
+
+    private void initMoney() {
+        etMoney.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                setTotalText();
+            }
+        });
+        etNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                setTotalText();
+            }
+        });
+
+    }
+
+    private void setTotalText() {
+        if (TextUtils.isEmpty(etMoney.getText()) || TextUtils.isEmpty(etNumber.getText())) {
+            tvTotal.setText("0");
+            return;
+        }
+        long money = Long.parseLong(etMoney.getText().toString());
+        long num = Long.parseLong(etNumber.getText().toString());
+        tvTotal.setText(AmountConversionUitls.amountConversionFormat(money*num));
     }
 
 
@@ -97,12 +145,12 @@ public class RedBagFragment extends BaseFragment {
     }
 
     private boolean checkLuck() {
-        if (TextUtils.isEmpty(etMoney.getText()) || Integer.parseInt(etMoney.getText().toString()) == 0
-                || Integer.parseInt(etMoney.getText().toString()) % 10000 != 0) {
+        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
+                || Long.parseLong(etMoney.getText().toString()) % 10000 != 0) {
             ToastUtils.snack(etMoney, "请输入10000的倍数");
             return false;
         }
-        if (TextUtils.isEmpty(etNumber.getText()) || Integer.parseInt(etNumber.getText().toString()) < 5) {
+        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
             ToastUtils.snack(etMoney, "红包个数不得小于5个");
             return false;
         } else
@@ -110,12 +158,12 @@ public class RedBagFragment extends BaseFragment {
     }
 
     private boolean checkNormal() {
-        if (TextUtils.isEmpty(etMoney.getText()) || Integer.parseInt(etMoney.getText().toString()) == 0
-                || Integer.parseInt(etMoney.getText().toString()) % 2000 != 0) {
+        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
+                || Long.parseLong(etMoney.getText().toString()) % 2000 != 0) {
             ToastUtils.snack(etMoney, "请输入2000的倍数");
             return false;
         }
-        if (TextUtils.isEmpty(etNumber.getText()) || Integer.parseInt(etNumber.getText().toString()) < 5) {
+        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
             ToastUtils.snack(etMoney, "红包个数不得小于5个");
             return false;
         } else
