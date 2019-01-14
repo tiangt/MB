@@ -27,6 +27,7 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 public class ClassicsHeader extends LinearLayout implements RefreshHeader {
 
     private ImageView mProgressView;//刷新动画视图
+    private Context context;
 
     public ClassicsHeader(Context context) {
         super(context);
@@ -44,9 +45,10 @@ public class ClassicsHeader extends LinearLayout implements RefreshHeader {
     }
 
     private void initView(Context context) {
+        this.context = context;
         setGravity(Gravity.CENTER);
         mProgressView = new ImageView(context);
-        GlideImageLoader.getInstace().displayImage(context, R.drawable.home_head_refresh, mProgressView);
+//        GlideImageLoader.getInstace().displayImage(context, R.drawable.home_head_refresh, mProgressView);
         addView(mProgressView, DensityUtil.dp2px(29), DensityUtil.dp2px(32));
 //        addView(new View(context), DensityUtil.dp2px(20), DensityUtil.dp2px(20));
         setMinimumHeight(DensityUtil.dp2px(51));
@@ -76,12 +78,15 @@ public class ClassicsHeader extends LinearLayout implements RefreshHeader {
         switch (newState) {
             case None:
             case PullDownToRefresh:
+                Glide.with(context).asBitmap().load(R.drawable.home_head_refresh).into(mProgressView);
 //                mProgressView.setVisibility(GONE);//隐藏动画
                 break;
             case Refreshing:
-                mProgressView.setVisibility(VISIBLE);//显示加载动画
+//                mProgressView.setVisibility(VISIBLE);//显示加载动画
+                Glide.with(context).asGif().load(R.drawable.home_head_refresh).into(mProgressView);
                 break;
             case ReleaseToRefresh:
+                Glide.with(context).asGif().load(R.drawable.home_head_refresh).into(mProgressView);
                 break;
         }
     }

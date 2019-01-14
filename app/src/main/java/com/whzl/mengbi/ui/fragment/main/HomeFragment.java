@@ -85,7 +85,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private RecyclerView topThreeRecycler;
     private BaseListAdapter topThreeAdapter;
     private ArrayList<HeadlineTopInfo.DataBean.ListBean> mHeadlineList = new ArrayList<>();
-    private boolean needAnimal = false;
+    private boolean needAnimal = true;
 
     @Override
     protected void initEnv() {
