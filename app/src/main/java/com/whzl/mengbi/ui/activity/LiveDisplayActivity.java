@@ -29,6 +29,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -103,6 +104,7 @@ import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
+import com.whzl.mengbi.model.entity.GetUserSetBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
@@ -307,6 +309,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     SVGAImageView svgaGift;
     @BindView(R.id.lrl_live)
     LeftRelativeLayout leftRelativeLayout;
+    @BindView(R.id.ll_red_bag)
+    LinearLayout llRedBag;
+    @BindView(R.id.tv_red_bag)
+    TextView tvRedBag;
+
 
     private LivePresenterImpl mLivePresenter;
     public int mProgramId;
@@ -375,6 +382,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Disposable blackRoomDisposable;
     private HeadLineControl headLineControl;
     private boolean ignoreChat = false;
+    private boolean playNotify = false;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -724,6 +732,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } else {
             mLivePresenter.getDailyTaskState(mUserId);
         }
+        mLivePresenter.getUserSet(mUserId);
     }
 
     private void getRoomToken() {
@@ -746,7 +755,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.btn_chat, R.id.btn_chat_private
             , R.id.rootView, R.id.fragment_container, R.id.rl_guard_number
-            , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more, R.id.ll_black_room})
+            , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more, R.id.ll_black_room, R.id.ll_red_bag})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
@@ -905,10 +914,24 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .putExtra("anchorId", mAnchorId)
                         .putExtra("anchorAvatar", mAnchorAvatar));
                 break;
+            case R.id.ll_red_bag:
+                showRedbagPopwindow();
+                break;
             default:
                 break;
         }
 
+    }
+
+    private void showRedbagPopwindow() {
+        View popView = getLayoutInflater().inflate(R.layout.popwindow_redbag_live, null);
+        TextView tvSend = popView.findViewById(R.id.tv_send);
+        tvSend.setSelected(mAnchorId == mUserId);
+        PopupWindow popupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+        popupWindow.showAsDropDown(llRedBag, 0, UIUtil.dip2px(LiveDisplayActivity.this, 1));
     }
 
     /**
@@ -1462,6 +1485,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     llBlackRoom.setVisibility(View.VISIBLE);
                     tvTimeBlackRoom.setText(totalHours + "");
                 });
+    }
+
+    /**
+     * 开播提醒
+     */
+    @Override
+    public void onGetUsetSetSuccesd(GetUserSetBean bean) {
+        if (bean.list == null || bean.list.size() == 0) {
+            playNotify = false;
+        } else {
+            for (int i = 0; i < bean.list.size(); i++) {
+                if (bean.list.get(i).setType.equals("subscribe")) {
+                    playNotify = bean.list.get(i).setValue.equals("1");
+                    break;
+                }
+            }
+        }
     }
 
 

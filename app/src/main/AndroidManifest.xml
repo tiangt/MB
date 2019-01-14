@@ -331,5 +331,6 @@
         <activity android:name=".ui.activity.me.ChipCompositeActivity" />
         <activity android:name=".ui.activity.me.MyChipActivity" />
         <activity android:name=".ui.activity.me.AccountSwitchActivity" />
+        <activity android:name=".ui.activity.RedbagActivity" />
     </application>
 </manifest>

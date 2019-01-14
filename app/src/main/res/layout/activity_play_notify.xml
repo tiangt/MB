@@ -28,7 +28,8 @@
             android:id="@+id/switch_play"
             style="@style/switch_play_notify"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:checked="true" />
     </LinearLayout>
 
 

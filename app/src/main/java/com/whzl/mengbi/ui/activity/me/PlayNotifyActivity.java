@@ -16,21 +16,28 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
+import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.GetUserSetBean;
 import com.whzl.mengbi.ui.activity.FollowActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.dialog.fragment.BackpackMotherFragment;
 import com.whzl.mengbi.ui.widget.view.GlideRoundTransform;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
@@ -39,12 +46,19 @@ import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author nobody
@@ -78,6 +92,7 @@ public class PlayNotifyActivity extends BaseActivity implements OnLoadMoreListen
 
     @Override
     protected void setupView() {
+        userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         initSmart();
         initRecycler();
         recycler.setVisibility(switchPlay.isChecked() ? View.VISIBLE : View.GONE);
@@ -88,11 +103,35 @@ public class PlayNotifyActivity extends BaseActivity implements OnLoadMoreListen
                 tvTips.setText(switchPlay.isChecked() ? getString(R.string.play_notify_on) : getString(R.string.play_notify_off));
                 if (isChecked) {
                     recycler.setVisibility(View.VISIBLE);
+                    addUserSet("1");
                 } else {
                     recycler.setVisibility(View.GONE);
+                    addUserSet("0");
                 }
             }
         });
+    }
+
+    private void addUserSet(String s) {
+        HashMap hashMap = new HashMap();
+        hashMap.put("userId", userId);
+        hashMap.put("setType", "subscribe");
+        hashMap.put("setValue", s);
+        ApiFactory.getInstance().getApi(Api.class)
+                .addUserSet(ParamsUtils.getSignPramsMap(hashMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>(this) {
+
+                    @Override
+                    public void onSuccess(JsonElement bean) {
+
+                    }
+
+                    @Override
+                    public void onError(ApiResult<JsonElement> body) {
+                    }
+                });
     }
 
     private void initSmart() {
@@ -130,7 +169,6 @@ public class PlayNotifyActivity extends BaseActivity implements OnLoadMoreListen
     }
 
     public void getAnchorList(int pager) {
-        userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         HashMap hashMap = new HashMap();
         hashMap.put("userId", userId);
         hashMap.put("page", pager);
@@ -273,6 +311,36 @@ public class PlayNotifyActivity extends BaseActivity implements OnLoadMoreListen
     @Override
     protected void loadData() {
         getAnchorList(mCurrentPager++);
+        getUserSet();
+    }
+
+    private void getUserSet() {
+        HashMap hashMap = new HashMap();
+        hashMap.put("userId", userId);
+        ApiFactory.getInstance().getApi(Api.class)
+                .getUserSet(ParamsUtils.getSignPramsMap(hashMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<GetUserSetBean>(this) {
+
+                    @Override
+                    public void onSuccess(GetUserSetBean bean) {
+                        if (bean.list == null || bean.list.size() == 0) {
+                            switchPlay.setChecked(false);
+                        } else {
+                            for (int i = 0; i < bean.list.size(); i++) {
+                                if (bean.list.get(i).setType.equals("subscribe")) {
+                                    switchPlay.setChecked(bean.list.get(i).setValue.equals("1"));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<GetUserSetBean> body) {
+                    }
+                });
     }
 
 }

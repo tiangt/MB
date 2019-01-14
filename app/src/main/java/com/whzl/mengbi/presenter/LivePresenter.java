@@ -39,4 +39,6 @@ public interface LivePresenter {
     void getHeadlineRank(int anchorId, String preRound);
 
     void getBlackRoomTime(int mAnchorId);
+
+    void getUserSet(long mUserId);
 }

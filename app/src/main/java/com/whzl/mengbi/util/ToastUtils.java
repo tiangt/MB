@@ -1,6 +1,10 @@
 package com.whzl.mengbi.util;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.support.annotation.ColorInt;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +86,55 @@ public class ToastUtils {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(view);
         toast.show();
+    }
+
+    public static Snackbar snack(View view, String text) {
+        return snack(view, text, null, null);
+    }
+
+    public static Snackbar snackLong(View view, String text) {
+        return snackLong(view, text, null, null);
+    }
+
+    public static Snackbar snack(View view, String text, @Nullable String action, @Nullable View
+            .OnClickListener onClickListener) {
+        final Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_SHORT);
+        snackbar.setDuration(Snackbar.LENGTH_SHORT);
+        snackbar.setAction(action, onClickListener);
+        snackbar.getView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+            }
+        });
+        setSnackbarColor(snackbar,Color.parseColor("#fefefe"),Color.parseColor("#181818"),Color.parseColor("#fefefe"));
+        snackbar.show();
+        return snackbar;
+    }
+
+    public static Snackbar snackLong(View view, String text, @Nullable String action, @Nullable View
+            .OnClickListener onClickListener) {
+        final Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG);
+        snackbar.setDuration(Snackbar.LENGTH_LONG);
+        snackbar.setAction(action, onClickListener);
+        snackbar.addCallback(new Snackbar.Callback());
+        snackbar.getView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                snackbar.dismiss();
+            }
+        });
+        setSnackbarColor(snackbar,Color.parseColor("#fefefe"),Color.parseColor("#181818"),Color.parseColor("#fefefe"));
+        snackbar.show();
+        return snackbar;
+    }
+
+    private static void setSnackbarColor(Snackbar snackbar, @ColorInt int messageColor, @ColorInt int
+            backgroundColor, @ColorInt int actionColor) {
+        View view = snackbar.getView();//获取Snackbar的view
+        view.setBackgroundColor(backgroundColor);//修改view的背景色
+        ((TextView) view.findViewById(R.id.snackbar_text)).setTextColor(messageColor);
+        snackbar.setActionTextColor(actionColor);
     }
 
 }
