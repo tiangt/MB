@@ -10,10 +10,10 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -21,29 +21,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="超级跑车"
+                android:layout_gravity="center_horizontal"
                 android:textColor="@color/text_red"
+                android:maxLines="1"
                 android:textSize="15sp" />
 
             <ImageView
+                android:id="@+id/iv_chip_pic"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="13dp"
-                android:src="@mipmap/ic_launcher" />
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:orientation="vertical">
 
-        </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="所需碎片"
+                android:textSize="14sp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/tran_black5"
+                android:gravity="center_horizontal"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_chip_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"/>
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="100dp"
             android:layout_height="match_parent">
 
             <Button
+                android:id="@+id/btn_composite"
                 android:layout_width="70dp"
                 android:layout_height="30dp"
                 android:layout_centerInParent="true"
@@ -52,5 +71,10 @@
                 android:textColor="@color/tran_black2" />
         </RelativeLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/tran_black7"/>
 
 </LinearLayout>

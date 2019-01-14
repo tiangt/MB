@@ -244,4 +244,19 @@ public class URLContentUtils {
      *
      */
     public static final String GOODS_PRICE = "v1/goods/goods-price";
+
+    /**
+     * 获取用户的碎片合成列表
+     */
+    public static final String COMPOSITE_LIST = "v1/debris/composite-list";
+
+    /**
+     * 合成碎片
+     */
+    public static final String COMPOSITE_CHIP = "v1/debris/composition";
+
+    /**
+     * 我的碎片
+     */
+    public static final String MY_DEBRIS_LIST = "v1/debris/my-debris-list";
 }

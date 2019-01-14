@@ -89,6 +89,8 @@ public class SearchActivity extends BaseActivity {
     ScrollView scrollView;
     @BindView(R.id.ll_search)
     LinearLayout llSearch;
+    @BindView(R.id.ll_hot_anchor)
+    LinearLayout llHotAnchor;
 
     private BaseListAdapter anchorAdapter;
     private BaseListAdapter hotAdapter;
@@ -136,9 +138,8 @@ public class SearchActivity extends BaseActivity {
 
         initSrl();
 
-        initHotAchor();
+        initHotAnchor();
         initData();
-
     }
 
     private void initSrl() {
@@ -288,7 +289,7 @@ public class SearchActivity extends BaseActivity {
     /**
      * 热搜主播
      */
-    private void initHotAchor() {
+    private void initHotAnchor() {
         for (int i = 0; i < 20; i++) {
             mHotAnchorList.add(i + "");
         }
@@ -333,7 +334,6 @@ public class SearchActivity extends BaseActivity {
         public void onBindViewHolder(int position) {
             RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(SearchActivity.this, 5));
             RequestOptions requestOptions = new RequestOptions().transform(roundedCorners);
-            tvName.setText("AAAAAA" + position);
         }
     }
 

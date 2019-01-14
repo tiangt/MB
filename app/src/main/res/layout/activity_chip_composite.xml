@@ -12,9 +12,22 @@
         android:layout_height="5dp"
         android:background="#F5F5F5"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_parent_chip"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/comm_white">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_parent_chip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"/>
+        </FrameLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>
