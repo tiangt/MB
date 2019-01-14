@@ -10,6 +10,7 @@ import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
+import com.whzl.mengbi.model.entity.GetUserSetBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
@@ -426,6 +427,26 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(ApiResult<BlackRoomTimeBean> body) {
+                    }
+                });
+    }
+
+    @Override
+    public void getUserSet(HashMap signPramsMap, OnLiveFinishedListener livePresenter) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getUserSet(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<GetUserSetBean>() {
+                    @Override
+                    public void onSuccess(GetUserSetBean dataBean) {
+                        if (dataBean != null) {
+                            livePresenter.onGetUserSet(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<GetUserSetBean> body) {
                     }
                 });
     }

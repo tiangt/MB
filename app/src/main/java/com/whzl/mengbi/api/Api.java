@@ -21,6 +21,7 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
+import com.whzl.mengbi.model.entity.GetUserSetBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
@@ -742,4 +743,24 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<FreeGiftBean>> freeGoodsIds(@FieldMap Map<String, String> params);
 
+
+    /**
+     * 获取用户偏好设置接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/get-user-set")
+    @FormUrlEncoded
+    Observable<ApiResult<GetUserSetBean>> getUserSet(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取用户偏好设置接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/add-user-set")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> addUserSet(@FieldMap Map<String, String> params);
 }

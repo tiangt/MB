@@ -104,6 +104,7 @@ import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
+import com.whzl.mengbi.model.entity.GetUserSetBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
@@ -381,6 +382,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Disposable blackRoomDisposable;
     private HeadLineControl headLineControl;
     private boolean ignoreChat = false;
+    private boolean playNotify = false;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -730,6 +732,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } else {
             mLivePresenter.getDailyTaskState(mUserId);
         }
+        mLivePresenter.getUserSet(mUserId);
     }
 
     private void getRoomToken() {
@@ -1482,6 +1485,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     llBlackRoom.setVisibility(View.VISIBLE);
                     tvTimeBlackRoom.setText(totalHours + "");
                 });
+    }
+
+    /**
+     * 开播提醒
+     */
+    @Override
+    public void onGetUsetSetSuccesd(GetUserSetBean bean) {
+        if (bean.list == null || bean.list.size() == 0) {
+            playNotify = false;
+        } else {
+            for (int i = 0; i < bean.list.size(); i++) {
+                if (bean.list.get(i).setType.equals("subscribe")) {
+                    playNotify = bean.list.get(i).setValue.equals("1");
+                    break;
+                }
+            }
+        }
     }
 
 

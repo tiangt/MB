@@ -41,4 +41,6 @@ public interface LiveModel {
     void getHeadlineRank(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void getBlackRoomTime(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void getUserSet(HashMap signPramsMap, OnLiveFinishedListener livePresenter);
 }
