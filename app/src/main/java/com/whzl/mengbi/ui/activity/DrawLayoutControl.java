@@ -65,6 +65,7 @@ public class DrawLayoutControl {
             R.drawable.ic_pk_draw_layout,
             R.drawable.ic_guard_draw_layout,
             R.drawable.ic_set_draw_layout,
+            R.drawable.ic_manage_draw_layout,
             R.drawable.ic_manage_draw_layout};
     private RecyclerView recommendRecycler;
     private BaseListAdapter recommendAdapter;
@@ -117,7 +118,7 @@ public class DrawLayoutControl {
         recommendRecycler.setFocusableInTouchMode(false);
         recommendRecycler.setHasFixedSize(true);
         recommendRecycler.setLayoutManager(new GridLayoutManager(activity, 2));
-        recommendRecycler.addItemDecoration(new SpacesItemDecoration(UIUtil.dip2px(activity,5.5f)));
+        recommendRecycler.addItemDecoration(new SpacesItemDecoration(UIUtil.dip2px(activity, 5.5f)));
         recommendAdapter = new BaseListAdapter() {
 
             @Override
@@ -346,6 +347,9 @@ public class DrawLayoutControl {
                     break;
                 case 7:
                     activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
+                    break;
+                case 8:
+                    activity.startActivity(new Intent(activity, RedbagActivity.class));
                     break;
             }
         }

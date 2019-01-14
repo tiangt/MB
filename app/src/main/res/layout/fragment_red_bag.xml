@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_red_bag"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:layout_marginRight="37dp"
+            android:background="@drawable/bg_edit_red_bag"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="12dp">
+
+            <TextView
+                android:id="@+id/tv_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="总金额"
+                android:textColor="#323232"
+                android:textSize="14.5sp" />
+
+            <EditText
+                android:id="@+id/et_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6.5dp"
+                android:layout_marginRight="6.5dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="end"
+                android:hint="2000"
+                android:inputType="number"
+                android:textColor="#323232"
+                android:textSize="14.5sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="币"
+                android:textColor="#323232"
+                android:textSize="14.5sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:layout_marginRight="37dp"
+            android:layout_marginTop="14.5dp"
+            android:background="@drawable/bg_edit_red_bag"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="红包个数"
+                android:textColor="#323232"
+                android:textSize="14.5sp" />
+
+            <EditText
+                android:id="@+id/et_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6.5dp"
+                android:layout_marginRight="6.5dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:gravity="end"
+                android:hint="5"
+                android:inputType="number"
+                android:textColor="#323232"
+                android:textSize="14.5sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="币"
+                android:textColor="#323232"
+                android:textSize="14.5sp" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21.5dp"
+            android:drawableLeft="@drawable/ic_money_red_bag"
+            android:drawablePadding="9.5dp"
+            android:text="100000"
+            android:textColor="#ff5705"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="37dp"
+            android:layout_marginRight="37dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/btn_red_bag"
+            android:text="塞币进红包"
+            android:textColor="#fefefe"
+            android:textSize="16.4sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/ic_wait_red_bag" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20.5dp"
+            android:gravity="center"
+            android:text="敬请期待"
+            android:textColor="#FFAAAAAA"
+            android:textSize="18sp" />
+    </LinearLayout>
+</RelativeLayout>
