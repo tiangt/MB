@@ -1,8 +1,6 @@
 package com.whzl.mengbi.ui.activity.base;
 
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -55,7 +53,7 @@ public abstract class BaseListActivity<T> extends BaseActivity implements OnRefr
         refresh.setOnRefreshListener(this);
         refresh.setOnLoadMoreListener(this);
         recycler.setLayoutManager(new LinearLayoutManager(this));
-        recycler.addItemDecoration(new DividerItemDecoration(this, RecyclerView.VERTICAL));
+//        recycler.addItemDecoration(new DividerItemDecoration(this, RecyclerView.VERTICAL));
         adapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {

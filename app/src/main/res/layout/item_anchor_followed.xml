@@ -34,8 +34,7 @@
             <ImageView
                 android:id="@+id/iv_level_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
-                />
+                android:layout_height="14dp" />
         </LinearLayout>
 
         <TextView
@@ -59,4 +58,11 @@
         android:textColor="#f1275b"
         android:textSize="15sp"
         android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="60dp"
+        android:background="#05000000" />
 </RelativeLayout>

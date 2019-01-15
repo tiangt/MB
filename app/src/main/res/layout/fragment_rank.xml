@@ -1,45 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl_rank_title"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:background="@color/main_tab_color"
-            android:textColor="#323232"
-            style="@style/fragmentTitleText"
-            android:text="@string/rank_title" />
-
-        <TextView
-            android:id="@+id/tv_rank_desc"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/rl_rank_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:text="说明"
-            android:textColor="@color/text_view"
-            android:textSize="17sp" />
-    </RelativeLayout>
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/sort_tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        style="@style/RankTab">
+            <TextView
+                style="@style/fragmentTitleText"
+                android:background="@color/main_tab_color"
+                android:text="@string/rank_title"
+                android:textColor="#323232" />
+
+            <TextView
+                android:id="@+id/tv_rank_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text="说明"
+                android:textColor="@color/text_view"
+                android:textSize="17sp" />
+        </RelativeLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sort_tab_layout"
+            style="@style/RankTab"
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
 
 
-    </android.support.design.widget.TabLayout>
+        </android.support.design.widget.TabLayout>
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_color"/>
+        android:background="@color/bg_color" />
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
