@@ -1,12 +1,14 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.BundleConfig;
@@ -34,6 +36,12 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class WatchHistoryActivity extends BaseListActivity<WatchHistoryListBean.AnchorDetailBean> {
 
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        StatusBarUtil.setLightMode(this);
+        StatusBarUtil.setColor(this, Color.parseColor("#f9f9f9"),0);
+    }
 
     @Override
     protected String getActivityTitle() {

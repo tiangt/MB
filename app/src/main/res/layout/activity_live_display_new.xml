@@ -282,7 +282,7 @@
                         android:id="@+id/ll_red_bag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="11.5dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/bg_red_bag_live"
                         android:gravity="center_vertical"
@@ -292,7 +292,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_black_room_live" />
+                            android:src="@drawable/ic_red_bag_live" />
 
                         <TextView
                             android:id="@+id/tv_red_bag"
@@ -317,8 +317,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/ll_red_bag"
-                        android:layout_marginLeft="11.5dp"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="4dp"
                         android:background="@drawable/bg_black_room_live"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
