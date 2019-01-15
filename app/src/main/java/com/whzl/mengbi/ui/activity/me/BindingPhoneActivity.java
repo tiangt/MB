@@ -130,7 +130,11 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
 
     @Override
     public void showRegexCodeMsg(String code, String msg) {
-        startTimer();
+        if(code.equals("200")){
+            startTimer();
+        }else{
+            showToast(msg);
+        }
     }
 
     @Override
