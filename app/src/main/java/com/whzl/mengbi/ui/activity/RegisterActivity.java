@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
@@ -48,6 +49,10 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
     CheckBox cbAgree;
     @BindView(R.id.tv_agreement)
     TextView tvAgreement;
+    @BindView(R.id.ib_clean_phone)
+    ImageButton ibCleanPhone;
+    @BindView(R.id.ib_clean_psw)
+    ImageButton ibCleanPsw;
     private CountDownTimer cdt;
     private RegisterPresenterImpl registerPresenter;
 
@@ -146,6 +151,19 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
             btnRegister.setEnabled(true);
         } else {
             btnRegister.setEnabled(false);
+        }
+
+        String phone = etPhone.getText().toString().trim();
+        if (!TextUtils.isEmpty(phone)) {
+            ibCleanPhone.setVisibility(View.VISIBLE);
+        } else {
+            ibCleanPhone.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(password)) {
+            ibCleanPsw.setVisibility(View.VISIBLE);
+        } else {
+            ibCleanPsw.setVisibility(View.GONE);
         }
     }
 

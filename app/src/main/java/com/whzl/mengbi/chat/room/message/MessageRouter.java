@@ -14,6 +14,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.BetsEndAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.BroadCastAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.ChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.CompositeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.EverydayTaskAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.FirstPrizeUserAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.GiftAction;
@@ -103,6 +104,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("BETS_END", new BetsEndAction());
         actionsMap.put("FIRST_PRIZE_USER", new FirstPrizeUserAction());
         actionsMap.put("StartLiving", new PlayNotifyAction());
+        actionsMap.put("COMPOSITION2", new CompositeAction());
     }
 
     private void initChatAction() {

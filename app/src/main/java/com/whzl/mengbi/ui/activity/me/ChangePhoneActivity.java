@@ -50,6 +50,7 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
     Button btnNext;
 
     private CountDownTimer cdt;
+    private String mMobile;
 
     @Override
     protected void setupContentView() {
@@ -64,8 +65,8 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void setupView() {
-        String mobile = getIntent().getStringExtra("bindMobile");
-        String maskNum = mobile.substring(0, 3) + "****" + mobile.substring(7, mobile.length());
+        mMobile = getIntent().getStringExtra("bindMobile");
+        String maskNum = mMobile.substring(0, 3) + "****" + mMobile.substring(7, mMobile.length());
         tvOldPhone.setText(maskNum);
         etOldPhone.addTextChangedListener(this);
         etVerifyCode.addTextChangedListener(this);
@@ -85,7 +86,7 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
                     showToast("原手机号不能为空");
                     return;
                 }
-                if (!StringUtils.isPhone(phone)) {
+                if (!StringUtils.isPhone(phone) || !phone.equals(mMobile)) {
                     showToast("请输入正确的手机号");
                     return;
                 }
@@ -106,11 +107,11 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
                     showToast("验证码不能为空");
                     return;
                 }
-
-                Intent intent = new Intent(ChangePhoneActivity.this, BindingPhoneActivity.class);
-                startActivity(intent);
-                finish();
-//                next(mobile, verifyCode);
+                if (!mobile.equals(mMobile)) {
+                    showToast("手机号输入错误");
+                    return;
+                }
+                checkCode(mobile, verifyCode);
                 break;
 
             default:
@@ -145,7 +146,6 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
      * @param mobile
      */
     private void getVerifyCode(String mobile) {
-        startTimer();
         HashMap hashMap = new HashMap();
         hashMap.put("mobile", mobile);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SEND_CODE, RequestManager.TYPE_POST_JSON, hashMap,
@@ -155,21 +155,31 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
                         JSONObject jsonObject = JSON.parseObject(result.toString());
                         String code = jsonObject.get("code").toString();
                         String msg = jsonObject.get("msg").toString();
-                        if (!code.equals("200")) {
+                        if (code.equals("200")) {
+                            startTimer();
+                        }else{
                             showToast(msg);
                         }
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        LogUtils.d("errorMsg" + errorMsg.toString());
+                        LogUtils.d("errorMsg" + errorMsg);
                     }
                 });
     }
 
-    private void next(String mobile, String verifyCode) {
+    /**
+     * 检验验证码
+     *
+     * @param mobile
+     * @param code
+     */
+    private void checkCode(String mobile, String code) {
         HashMap hashMap = new HashMap();
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SEND_CODE, RequestManager.TYPE_POST_JSON, hashMap,
+        hashMap.put("identifyCode", mobile);
+        hashMap.put("code", code);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.VERIFY_CHECK_CODE, RequestManager.TYPE_POST_JSON, hashMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
@@ -187,7 +197,7 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        LogUtils.d("errorMsg" + errorMsg.toString());
+                        LogUtils.d("errorMsg" + errorMsg);
                     }
                 });
     }
@@ -207,5 +217,13 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
             }
         };
         cdt.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (cdt != null) {
+            cdt.cancel();
+        }
     }
 }

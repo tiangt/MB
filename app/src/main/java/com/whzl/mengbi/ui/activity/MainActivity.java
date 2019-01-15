@@ -372,7 +372,7 @@ public class MainActivity extends BaseActivity {
         rgTab.check(rgTab.getChildAt(index).getId());
     }
 
-    private void showBindingDialog(){
+    private void showBindingDialog() {
         BindingPhoneDialog.newInstance()
                 .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
                 .show(getSupportFragmentManager());
@@ -459,7 +459,7 @@ public class MainActivity extends BaseActivity {
     /**
      * 判断用户是否首次登陆
      */
-    private void isFirstLogin(){
+    private void isFirstLogin() {
         HashMap paramsMap = new HashMap();
         long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         paramsMap.put("userId", userId);
@@ -472,10 +472,8 @@ public class MainActivity extends BaseActivity {
                             String createTime = userInfo.getData().getCreateTime();
                             String lastLoginTime = userInfo.getData().getLastLoginTime();
                             String mobile = userInfo.getData().getBindMobile();
-                            if(createTime.equals(lastLoginTime) && TextUtils.isEmpty(mobile)){
+                            if (createTime.equals(lastLoginTime) && TextUtils.isEmpty(mobile)) {
                                 showBindingDialog();
-                            }else{
-                                showToast("aaaaaaaaaa");
                             }
                         }
                     }

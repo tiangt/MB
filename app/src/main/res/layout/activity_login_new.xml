@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <LinearLayout
@@ -25,131 +26,141 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="170dp"
             android:layout_marginTop="30dp">
 
-            <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="145dp"
+            <com.whzl.mengbi.ui.widget.view.ShadowContainer
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:orientation="vertical"
-                android:background="@drawable/selector_shadow_login">
+                app:containerCornerRadius="20dp"
+                app:containerDeltaLength="5dp"
+                app:containerShadowColor="@color/font_color_53"
+                app:containerShadowRadius="5dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_login_phone"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="33dp"/>
+                    android:layout_width="300dp"
+                    android:layout_height="145dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_login_round">
 
                     <LinearLayout
-                        android:layout_width="207dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/login_edit_text_bg"
-                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="13dp"
+                            android:src="@drawable/ic_login_phone"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_login_red" />
+                            android:layout_marginLeft="33dp"/>
 
-                        <EditText
-                            android:id="@+id/et_phone"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
+                        <LinearLayout
+                            android:layout_width="207dp"
+                            android:layout_height="30dp"
                             android:layout_marginLeft="10dp"
-                            android:background="@null"
+                            android:background="@drawable/login_edit_text_bg"
                             android:gravity="center_vertical"
-                            android:hint="@string/phone_number_hint"
-                            android:inputType="phone"
-                            android:maxLength="11"
-                            android:textColorHint="#B9B9B9"
-                            android:textSize="13sp" />
+                            android:orientation="horizontal">
 
-                        <ImageButton
-                            android:id="@+id/ib_clean_phone"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_marginRight="7dp"
-                            android:background="@drawable/ic_search_close" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="13dp"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/ic_login_red" />
+
+                            <EditText
+                                android:id="@+id/et_phone"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:background="@null"
+                                android:gravity="center_vertical"
+                                android:hint="@string/phone_number_hint"
+                                android:inputType="phone"
+                                android:maxLength="11"
+                                android:textColorHint="#B9B9B9"
+                                android:textSize="13sp" />
+
+                            <ImageButton
+                                android:id="@+id/ib_clean_phone"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginRight="7dp"
+                                android:background="@drawable/ic_search_close"
+                                android:visibility="gone"/>
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_login_psw"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="33dp"/>
 
                     <LinearLayout
-                        android:layout_width="207dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginLeft="10dp"
-                        android:background="@drawable/login_edit_text_bg"
-                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:src="@drawable/ic_login_yellow" />
-
-                        <EditText
-                            android:id="@+id/et_password"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_login_psw"
                             android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="33dp"/>
+
+                        <LinearLayout
+                            android:layout_width="207dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_horizontal"
                             android:layout_marginLeft="10dp"
-                            android:background="@null"
-                            android:hint="@string/password_hint"
-                            android:inputType="textPassword"
-                            android:maxLength="16"
-                            android:textColorHint="#B9B9B9"
-                            android:textSize="13sp" />
+                            android:background="@drawable/login_edit_text_bg"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                        <ImageButton
-                            android:id="@+id/ib_clean_psw"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_marginRight="7dp"
-                            android:background="@drawable/ic_search_close" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:src="@drawable/ic_login_yellow" />
+
+                            <EditText
+                                android:id="@+id/et_password"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:background="@null"
+                                android:hint="@string/password_hint"
+                                android:inputType="textPassword"
+                                android:maxLength="16"
+                                android:textColorHint="#B9B9B9"
+                                android:textSize="13sp" />
+
+                            <ImageButton
+                                android:id="@+id/ib_clean_psw"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginRight="7dp"
+                                android:background="@drawable/ic_search_close"
+                                android:visibility="gone"/>
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_forget_psw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="5dp"
+                        android:text="忘记密码"
+                        android:textColor="@color/tran_black"
+                        android:textSize="12sp" />
+
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_forget_psw"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:text="忘记密码"
-                    android:textColor="@color/tran_black"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
+            </com.whzl.mengbi.ui.widget.view.ShadowContainer>
 
             <Button
                 android:id="@+id/btn_login"

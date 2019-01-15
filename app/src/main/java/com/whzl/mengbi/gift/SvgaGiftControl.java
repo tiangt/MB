@@ -89,7 +89,6 @@ public class SvgaGiftControl {
         svgaImageView.setLoops(1);
         SVGAParser parser = new SVGAParser(mContext);
         resetDownloader(parser);
-        Log.i("chenliang", "event.getAnimUrl() = " + event.getAnimUrl());
         try {
             parser.parse(new URL(event.getAnimUrl()), new SVGAParser.ParseCompletion() {
                 @Override

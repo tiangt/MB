@@ -51,7 +51,6 @@ public class GifGiftControl {
     }
 
     public void loadGif(AnimEvent event) {
-        Log.i("chenliang","show gif");
         if (event == null || event.getAnimJson() == null || event.getAnimJson().getResources() == null) {
             return;
         }
@@ -84,7 +83,6 @@ public class GifGiftControl {
     private void show(AnimEvent event) {
         isShow = true;
         ivGif.setVisibility(View.VISIBLE);
-        Log.i("chenliang","GIF = "+event.getAnimUrl());
         GlideImageLoader.getInstace().loadGif(mContext, event.getAnimUrl(), ivGif, new GlideImageLoader.GifListener() {
             @Override
             public void onResourceReady() {

@@ -132,7 +132,6 @@ public class MeFragment extends BaseFragment implements MeView {
         tvMengdian.setText(userInfo.getData().getWealth().getChengPonit() + "");
         tvMengDou.setText(userInfo.getData().getWealth().getMengDou() + "");
         mMobile = userInfo.getData().getBindMobile();
-        Log.i("chenliang", "Mobile = " + mMobile);
         if (!TextUtils.isEmpty(mMobile)) {
             String maskNum = mMobile.substring(0, 3) + "xxxx" + mMobile.substring(7, mMobile.length());
             tvBindPhone.setText("已绑定 " + maskNum);

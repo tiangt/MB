@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -50,6 +51,8 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
     RecyclerView recycler;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.rl_empty)
+    RelativeLayout rlEmpty;
 
     private int mCurrentPager = 1;
     private BaseListAdapter adapter;
@@ -138,6 +141,11 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
                         MyChipListInfo listInfo = JSON.parseObject(result.toString(), MyChipListInfo.class);
                         if (listInfo.getCode() == 200) {
                             loadSuccess(listInfo);
+                        } else {
+                            rlEmpty.setVisibility(View.VISIBLE);
+                            refreshLayout.finishRefresh();
+                            refreshLayout.finishLoadMore();
+                            mCurrentPager--;
                         }
                     }
 
@@ -208,6 +216,7 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
 
     private void loadSuccess(MyChipListInfo listInfo) {
         if (listInfo != null && listInfo.data != null && listInfo.data.list != null) {
+            rlEmpty.setVisibility(View.GONE);
             if (mCurrentPager == 2) {
                 mList.clear();
                 refreshLayout.finishRefresh();
@@ -234,6 +243,7 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
                 adapter.notifyDataSetChanged();
             }
         } else {
+            rlEmpty.setVisibility(View.VISIBLE);
             if (mList.size() > 0) {
                 adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
             } else {
