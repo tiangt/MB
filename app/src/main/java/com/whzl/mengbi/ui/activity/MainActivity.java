@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
     private AwesomeDialog awesomeDialog;
     private static final String TAG_EXIT = "exit";
     private int[] colors = new int[]{Color.parseColor("#f9f9f9"), Color.parseColor("#f9f9f9"),
-            Color.parseColor("#ffffff"), Color.parseColor("#21D790")};
+            Color.parseColor("#f9f9f9"), Color.parseColor("#21D790")};
 
     @Override
     protected void initEnv() {
