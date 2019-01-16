@@ -39,6 +39,7 @@ import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
+import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
@@ -783,4 +784,14 @@ public interface Api {
     @POST("v1/redpacket/room-redpacket-treasure")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> getRoomRedpacketTreasure(@FieldMap Map<String, String> params);
+
+    /**
+     * 查询直播间红包列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/redpacket/room-redpacket-list")
+    @FormUrlEncoded
+    Observable<ApiResult<RoomRedpackList>> getRoomRedpacketList(@FieldMap Map<String, String> params);
 }

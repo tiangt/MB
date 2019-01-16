@@ -16,6 +16,7 @@ import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
+import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.impl.LiveModelImpl;
@@ -220,6 +221,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
+    @Override
+    public void onGetRoomRedList(RoomRedpackList dataBean) {
+        if(liveView != null){
+            liveView.onGetRoomRedListSuccess(dataBean);
+        }
+    }
+
 
     @Override
     public void followHost(long userId, int mProgramId) {
@@ -336,5 +344,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("programId", mProgramId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getRedPackTreasure(signPramsMap, this);
+    }
+
+    public void getRedPackList(int mProgramId, long mUserId) {
+        HashMap map = new HashMap();
+        map.put("programId", mProgramId);
+        map.put("userId", mUserId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getRedPackList(signPramsMap, this);
     }
 }

@@ -44,4 +44,6 @@ public interface LiveModel {
     void getUserSet(HashMap signPramsMap, OnLiveFinishedListener livePresenter);
 
     void getRedPackTreasure(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void getRedPackList(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

@@ -437,11 +437,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="aaaaaaaaaa"
                         android:background="@drawable/bg_red_pack_long_live"
                         android:gravity="center_vertical"
                         android:paddingLeft="45dp"
                         android:singleLine="true"
+                        android:text="aaaaaaaaaa"
                         android:textColor="#fefefe"
                         android:textSize="8.5sp"
                         android:visibility="gone" />
@@ -606,6 +606,7 @@
                         android:layout_height="26dp"
                         android:layout_alignParentTop="true"
                         android:background="@drawable/bg_chat_top_translate" />
+
                 </RelativeLayout>
             </LinearLayout>
 

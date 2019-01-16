@@ -20,6 +20,7 @@ import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
+import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
@@ -468,6 +469,26 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(ApiResult<RoomRedPackTreasure> body) {
+                    }
+                });
+    }
+
+    @Override
+    public void getRedPackList(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getRoomRedpacketList(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<RoomRedpackList>() {
+                    @Override
+                    public void onSuccess(RoomRedpackList dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetRoomRedList(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<RoomRedpackList> body) {
                     }
                 });
     }

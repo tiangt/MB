@@ -16,6 +16,7 @@ import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
+import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 
@@ -64,4 +65,6 @@ public interface LiveView {
     void onGetUsetSetSuccesd(GetUserSetBean dataBean);
 
     void onGetRoomRedpackTreasureSuccess(RoomRedPackTreasure dataBean);
+
+    void onGetRoomRedListSuccess(RoomRedpackList dataBean);
 }

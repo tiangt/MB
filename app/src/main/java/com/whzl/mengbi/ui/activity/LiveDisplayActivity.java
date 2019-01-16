@@ -122,6 +122,7 @@ import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
+import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunwayBean;
@@ -740,6 +741,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         mLivePresenter.getUserSet(mUserId);
         mLivePresenter.getRedPackTreasure(mProgramId);
+        mLivePresenter.getRedPackList(mProgramId,mUserId);
     }
 
     private void getRoomToken() {
@@ -1604,6 +1606,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetRoomRedpackTreasureSuccess(RoomRedPackTreasure dataBean) {
         tvRedBag.setText(String.valueOf(dataBean.amountTotal));
+    }
+
+    /**
+     * 直播间红包列表
+     */
+    @Override
+    public void onGetRoomRedListSuccess(RoomRedpackList dataBean) {
+
     }
 
 
