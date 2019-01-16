@@ -15,19 +15,18 @@
             android:text="@string/home_title"
             android:textColor="#323232" />
 
-        <LinearLayout
-            android:id="@+id/ll_search"
+        <RelativeLayout
+            android:id="@+id/rl_search"
             android:layout_width="50dp"
-            android:layout_height="46dp"
-            android:gravity="center">
+            android:layout_height="46dp">
 
             <ImageButton
                 android:id="@+id/ib_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
                 android:background="@drawable/ic_search_home" />
-        </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

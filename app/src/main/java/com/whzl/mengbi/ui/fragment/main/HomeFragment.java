@@ -14,6 +14,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -69,8 +70,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.ib_search)
     ImageButton ibSearch;
-    @BindView(R.id.ll_search)
-    LinearLayout llSearch;
+    @BindView(R.id.rl_search)
+    RelativeLayout llSearch;
     private HomePresenterImpl mHomePresenter;
     private int mCurrentPager = 1;
     private ArrayList<RecommendAnchorInfoBean> mRecommendAnchorInfoList = new ArrayList<>();
@@ -196,10 +197,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
     }
 
 
-    @OnClick(R.id.ll_search)
+    @OnClick(R.id.rl_search)
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ll_search:
+            case R.id.rl_search:
                 startActivity(new Intent(getMyActivity(), SearchActivity.class));
                 break;
         }
@@ -521,6 +522,5 @@ public class HomeFragment extends BaseFragment implements HomeView {
         super.onDestroy();
         mHomePresenter.onDestroy();
     }
-
 
 }
