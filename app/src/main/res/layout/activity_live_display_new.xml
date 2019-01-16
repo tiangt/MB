@@ -432,6 +432,20 @@
                         android:textSize="11sp"
                         android:visibility="gone" />
 
+                    <TextView
+                        android:id="@+id/tv_red_bag_run_way"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="aaaaaaaaaa"
+                        android:background="@drawable/bg_red_pack_long_live"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="45dp"
+                        android:singleLine="true"
+                        android:textColor="#fefefe"
+                        android:textSize="8.5sp"
+                        android:visibility="gone" />
+
                     <com.whzl.mengbi.ui.widget.view.PkLayout
                         android:id="@+id/pk_layout"
                         android:layout_width="match_parent"

@@ -44,7 +44,6 @@ import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.squareup.haha.perflib.Main;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
@@ -53,7 +52,6 @@ import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.BetsEndEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
-import com.whzl.mengbi.chat.room.message.events.CompositeEvent;
 import com.whzl.mengbi.chat.room.message.events.EverydayEvent;
 import com.whzl.mengbi.chat.room.message.events.FirstPrizeUserEvent;
 import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
@@ -99,6 +97,7 @@ import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.HeadLineControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.PkControl;
+import com.whzl.mengbi.gift.RedPackRunWayControl;
 import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
@@ -177,7 +176,6 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
-import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -327,6 +325,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout llRedBag;
     @BindView(R.id.tv_red_bag)
     TextView tvRedBag;
+    @BindView(R.id.tv_red_bag_run_way)
+    TextView tvRedBagRunWay;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -398,6 +398,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private boolean ignoreChat = false;
     private boolean playNotify = false;
     private PopupWindow redPopupWindow;
+    private RedPackRunWayControl redPackRunWayControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1213,6 +1214,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RedPackTreasureEvent redPackTreasureEvent) {
         tvRedBag.setText(redPackTreasureEvent.treasureNum.context.programTreasureNum + "");
+        if (redPackRunWayControl == null) {
+            redPackRunWayControl = new RedPackRunWayControl(this,tvRedBagRunWay);
+        }
+        redPackRunWayControl.load(redPackTreasureEvent);
     }
 
     @Override
@@ -1991,6 +1996,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (weekStarControl != null) {
             weekStarControl.destroy();
+        }
+        if (redPackRunWayControl != null) {
+            redPackRunWayControl.destroy();
         }
     }
 
