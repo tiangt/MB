@@ -130,7 +130,11 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
 
     @Override
     public void showRegexCodeMsg(String code, String msg) {
-        startTimer();
+        if(code.equals("200")){
+            startTimer();
+        }else{
+            showToast(msg);
+        }
     }
 
     @Override
@@ -191,7 +195,6 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
         params.put("bindType", "MOBILE");
         params.put("code", verifyCode);
         params.put("passwd", md5Psd);
-        Log.i("chenliang", "identifyCode = " + mobile + ", code = " + verifyCode + ", password = " + md5Psd);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.BIND_PHONE, RequestManager.TYPE_POST_JSON, params,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
@@ -199,7 +202,6 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
                         JSONObject jsonObject = JSON.parseObject(result.toString());
                         String code = jsonObject.get("code").toString();
                         String msg = jsonObject.get("msg").toString();
-                        Log.i("chenliang", "code = " + code + ", msg = " + msg);
                         if (code.equals("200")) {
                             showToast("绑定成功");
                             setResult(RESULT_OK);

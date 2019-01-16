@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <LinearLayout
@@ -25,174 +26,186 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="205dp"
+            android:layout_height="215dp"
             android:layout_marginTop="30dp">
 
-            <LinearLayout
-                android:layout_width="300dp"
-                android:layout_height="190dp"
+            <com.whzl.mengbi.ui.widget.view.ShadowContainer
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/selector_shadow_login"
-                android:orientation="vertical">
+                app:containerCornerRadius="20dp"
+                app:containerDeltaLength="5dp"
+                app:containerShadowColor="@color/font_color_53"
+                app:containerShadowRadius="5dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="33dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_login_number"/>
+                    android:layout_width="300dp"
+                    android:layout_height="190dp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/bg_login_round"
+                    android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="207dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/login_edit_text_bg"
-                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
+                            android:layout_marginLeft="33dp"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_login_red" />
+                            android:src="@drawable/ic_login_number"/>
 
-                        <EditText
-                            android:id="@+id/et_phone"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
+                        <LinearLayout
+                            android:layout_width="207dp"
+                            android:layout_height="30dp"
                             android:layout_marginLeft="10dp"
-                            android:background="@null"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/login_edit_text_bg"
                             android:gravity="center_vertical"
-                            android:hint="@string/phone_number_hint"
-                            android:inputType="phone"
-                            android:maxLength="11"
-                            android:textColorHint="#B9B9B9"
-                            android:textSize="13sp" />
+                            android:orientation="horizontal">
 
-                        <ImageButton
-                            android:id="@+id/ib_clean_phone"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_marginRight="7dp"
-                            android:background="@drawable/ic_search_close" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/ic_login_red" />
+
+                            <EditText
+                                android:id="@+id/et_phone"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:background="@null"
+                                android:gravity="center_vertical"
+                                android:hint="@string/phone_number_hint"
+                                android:inputType="phone"
+                                android:maxLength="11"
+                                android:textColorHint="#B9B9B9"
+                                android:textSize="13sp" />
+
+                            <ImageButton
+                                android:id="@+id/ib_clean_phone"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginRight="7dp"
+                                android:background="@drawable/ic_search_close"
+                                android:visibility="gone"/>
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="33dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_login_code" />
 
                     <LinearLayout
-                        android:layout_width="129dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/login_edit_text_bg"
-                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
+                            android:layout_marginLeft="33dp"
                             android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_login_green"/>
-                        <EditText
-                            android:id="@+id/et_verify_code"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_login_code" />
+
+                        <LinearLayout
+                            android:layout_width="129dp"
+                            android:layout_height="30dp"
                             android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:background="@null"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/login_edit_text_bg"
                             android:gravity="center_vertical"
-                            android:hint="@string/verify_code_hint"
-                            android:inputType="phone"
-                            android:maxLength="6"
-                            android:textColorHint="#B9B9B9"
-                            android:textSize="13sp" />
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/ic_login_green"/>
+                            <EditText
+                                android:id="@+id/et_verify_code"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:gravity="center_vertical"
+                                android:hint="@string/verify_code_hint"
+                                android:inputType="phone"
+                                android:maxLength="6"
+                                android:textColorHint="#B9B9B9"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btn_get_verify_code"
+                            android:layout_width="70dp"
+                            android:layout_height="27dp"
+                            android:layout_marginLeft="7dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/selector_login_verify_code"
+                            android:text="@string/get_verify_code"
+                            android:textSize="11sp"
+                            android:textColor="#FEFEFE"/>
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/btn_get_verify_code"
-                        android:layout_width="70dp"
-                        android:layout_height="27dp"
-                        android:layout_marginLeft="7dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/selector_login_verify_code"
-                        android:text="@string/get_verify_code"
-                        android:textSize="11sp"
-                        android:textColor="#FEFEFE"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="33dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_login_psw" />
-
                     <LinearLayout
-                        android:layout_width="207dp"
-                        android:layout_height="30dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center_horizontal"
-                        android:background="@drawable/login_edit_text_bg"
-                        android:gravity="center_vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:src="@drawable/ic_login_yellow" />
-
-                        <EditText
-                            android:id="@+id/et_password"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="match_parent"
+                            android:layout_marginLeft="33dp"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:background="@null"
-                            android:hint="@string/password_hint"
-                            android:inputType="textPassword"
-                            android:maxLength="16"
-                            android:textColorHint="#B9B9B9"
-                            android:textSize="13sp" />
+                            android:src="@drawable/ic_login_psw" />
 
-                        <ImageButton
-                            android:id="@+id/ib_clean_psw"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_marginRight="7dp"
-                            android:background="@drawable/ic_search_close" />
+                        <LinearLayout
+                            android:layout_width="207dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/login_edit_text_bg"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="15dp"
+                                android:src="@drawable/ic_login_yellow" />
+
+                            <EditText
+                                android:id="@+id/et_password"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:background="@null"
+                                android:hint="@string/password_hint"
+                                android:inputType="textPassword"
+                                android:maxLength="16"
+                                android:textColorHint="#B9B9B9"
+                                android:textSize="13sp" />
+
+                            <ImageButton
+                                android:id="@+id/ib_clean_psw"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_marginRight="7dp"
+                                android:background="@drawable/ic_search_close"
+                                android:visibility="gone"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
+            </com.whzl.mengbi.ui.widget.view.ShadowContainer>
 
             <Button
                 android:id="@+id/btn_register"

@@ -264,4 +264,9 @@ public class URLContentUtils {
      * 绑定手机或者邮箱
      */
     public static final String BIND_PHONE = "v1/user/bind-email-or-mobile";
+
+    /**
+     * 更改手机号--验证验证码
+     */
+    public static final String VERIFY_CHECK_CODE = "v1/user/verify-check-code";
 }

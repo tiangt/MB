@@ -44,7 +44,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="7dp"
-                android:background="@drawable/ic_search_close" />
+                android:background="@drawable/ic_search_close"
+                android:visibility="gone"/>
         </RelativeLayout>
 
         <TextView

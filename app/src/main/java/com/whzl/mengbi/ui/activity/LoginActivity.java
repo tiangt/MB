@@ -198,12 +198,18 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         }
 
         String phone = etPhone.getText().toString().trim();
-        if(!TextUtils.isEmpty(phone)){
+        if (!TextUtils.isEmpty(phone)) {
+            ibCleanPhone.setVisibility(View.VISIBLE);
             ibCleanPhone.setOnClickListener((v) -> etPhone.setText(""));
+        } else {
+            ibCleanPhone.setVisibility(View.GONE);
         }
 
-        if(!TextUtils.isEmpty(password)){
+        if (!TextUtils.isEmpty(password)) {
+            ibCleanPsw.setVisibility(View.VISIBLE);
             ibCleanPsw.setOnClickListener((v) -> etPassword.setText(""));
+        } else {
+            ibCleanPsw.setVisibility(View.GONE);
         }
     }
 

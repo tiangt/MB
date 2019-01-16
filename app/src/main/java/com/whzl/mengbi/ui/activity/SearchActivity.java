@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +60,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author nobody
  * @date 2018/9/20
  */
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity implements TextWatcher {
     @BindView(R.id.et_search)
     EditText etSearch;
     @BindView(R.id.ib_clean)
@@ -119,6 +121,7 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
+        etSearch.addTextChangedListener(this);
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (TextUtils.isEmpty(etSearch.getText().toString())) {
@@ -216,6 +219,26 @@ public class SearchActivity extends BaseActivity {
             }
         };
         rvSearch.setAdapter(anchorAdapter);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String strSearch = etSearch.getText().toString().trim();
+        if (!TextUtils.isEmpty(strSearch)) {
+            ibClean.setVisibility(View.VISIBLE);
+        } else {
+            ibClean.setVisibility(View.GONE);
+        }
     }
 
     class SearchViewHolder extends BaseViewHolder {

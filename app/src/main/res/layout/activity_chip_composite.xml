@@ -22,6 +22,31 @@
             android:layout_height="match_parent"
             android:background="@color/comm_white">
 
+            <RelativeLayout
+                android:id="@+id/rl_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/img_empty_follow"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="80dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="您暂时没有碎片"
+                    android:layout_below="@id/iv_empty"
+                    android:textColor="@color/tran_black5"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:textSize="13sp"/>
+            </RelativeLayout>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_parent_chip"
                 android:layout_width="match_parent"

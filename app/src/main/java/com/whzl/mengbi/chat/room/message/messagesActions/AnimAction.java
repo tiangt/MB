@@ -64,7 +64,6 @@ public class AnimAction implements Actions {
         } else {
             return;
         }
-        Log.i("chenliang", "resourceId = " + resourceId + ", imageType = " + imageType);
         String animUrl = ImageUrl.getImageUrl(resourceId, imageType);
         EventBus.getDefault().post(new AnimEvent(animJson, animUrl));
     }

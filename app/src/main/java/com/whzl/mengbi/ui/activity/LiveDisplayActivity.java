@@ -43,6 +43,7 @@ import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
+import com.squareup.haha.perflib.Main;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
@@ -50,6 +51,7 @@ import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.BetsEndEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
+import com.whzl.mengbi.chat.room.message.events.CompositeEvent;
 import com.whzl.mengbi.chat.room.message.events.EverydayEvent;
 import com.whzl.mengbi.chat.room.message.events.FirstPrizeUserEvent;
 import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
@@ -987,7 +989,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnimEvent animEvent) {
-        Log.i("chenliang", "animEvent.getAnimJson().getAnimType() = " + animEvent.getAnimJson().getAnimType());
         if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())
                 || "DIV".equals(animEvent.getAnimJson().getAnimType())) {
             AnimJson animJson = animEvent.getAnimJson();
@@ -1147,6 +1148,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 })
                 .show(getSupportFragmentManager());
     }
+
+    /**
+     * 物品合成
+     */
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void onMessageEvent(CompositeEvent compositeEvent){
+//
+//    }
 
     @Override
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {

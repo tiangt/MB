@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -55,6 +56,8 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
     RecyclerView recycler;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.rl_empty)
+    RelativeLayout rlEmpty;
 
     private ArrayList<CompositionListInfo.DataBean.ListBean> mParentList = new ArrayList<>();
     private ArrayList<CompositionListInfo.DataBean.ListBean.DetailDtosBean> mChildList = new ArrayList<>();
@@ -156,7 +159,6 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
                     chipName.setText(mParentList.get(position).goodsDetails.get(i).goodsName);
 //                    String chipPic = ImageUrl.getImageUrl(mParentList.get(position).goodsDetails.get(i).picId, "jpg");
                     String chipPic = mParentList.get(position).goodsDetails.get(i).goodsPic;
-                    Log.i("chenliang", "碎片 = " + chipPic);
                     GlideImageLoader.getInstace().displayImage(ChipCompositeActivity.this, chipPic, ivChipPic);
                     if (mParentList.get(position).isComposition == 0) {
                         btnComposite.setEnabled(false);
@@ -188,6 +190,11 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
                         CompositionListInfo listInfo = JSON.parseObject(result.toString(), CompositionListInfo.class);
                         if (listInfo.getCode() == 200) {
                             loadSuccess(listInfo);
+                        } else {
+                            rlEmpty.setVisibility(View.VISIBLE);
+                            refreshLayout.finishRefresh();
+                            refreshLayout.finishLoadMore();
+                            mCurrentPager--;
                         }
                     }
 
@@ -208,6 +215,7 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
      */
     private void loadSuccess(CompositionListInfo listInfo) {
         if (listInfo != null && listInfo.data != null && listInfo.data.list != null) {
+            rlEmpty.setVisibility(View.GONE);
             if (mCurrentPager == 2) {
                 mParentList.clear();
                 refreshLayout.finishRefresh();
@@ -234,6 +242,7 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
                 adapter.notifyDataSetChanged();
             }
         } else {
+            rlEmpty.setVisibility(View.VISIBLE);
             if (mParentList.size() > 0) {
                 adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
             } else {
