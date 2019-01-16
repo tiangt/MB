@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +23,7 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -130,6 +132,8 @@ import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
+import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
+import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
@@ -194,6 +198,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -328,6 +333,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvRedBag;
     @BindView(R.id.tv_red_bag_run_way)
     TextView tvRedBagRunWay;
+    @BindView(R.id.rv_redpack)
+    RecyclerView rvRedPack;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -400,6 +407,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private boolean playNotify = false;
     private PopupWindow redPopupWindow;
     private RedPackRunWayControl redPackRunWayControl;
+    private BaseListAdapter redpackAdapter;
+    private List<RoomRedpackList.ListBean> redPackList = new ArrayList();
+    private Handler handler = new Handler();
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -537,6 +547,72 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initVp();
         initProtectRecycler();
         initDrawLayout(this);
+        initRvRedpack();
+    }
+
+    private void initRvRedpack() {
+        rvRedPack.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        redpackAdapter = new BaseListAdapter() {
+            @Override
+            protected int getDataCount() {
+                return redPackList == null ? 0 : redPackList.size();
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(LiveDisplayActivity.this).inflate(R.layout.item_redpack_live, null);
+                return new RedPackViewHolder(itemView);
+            }
+        };
+        rvRedPack.setAdapter(redpackAdapter);
+    }
+
+    class RedPackViewHolder extends BaseViewHolder {
+        @BindView(R.id.iv_state)
+        ImageView ivState;
+        @BindView(R.id.tv_time)
+        TextView tvTime;
+        @BindView(R.id.rl_red_bag)
+        RelativeLayout rlRedBag;
+
+        public RedPackViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, R.drawable.ic_red_pack_off_live, ivState);
+            RoomRedpackList.ListBean listBean = redPackList.get(position);
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (listBean.leftSeconds <= 0) {
+                        GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, R.drawable.ic_red_pack_on_live, ivState);
+                        tvTime.setText("");
+                        handler.removeCallbacks(this);
+                        return;
+                    }
+                    listBean.leftSeconds = listBean.leftSeconds - 1;
+                    tvTime.setText((listBean.leftSeconds) + "");
+                    handler.postDelayed(this, 1000);
+                }
+            };
+            handler.post(runnable);
+            ivState.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!TextUtils.isEmpty(tvTime.getText())) {
+                        return;
+                    }
+                    redPackList.remove(position);
+                    handler.removeCallbacksAndMessages(null);
+                    redpackAdapter.notifyDataSetChanged();
+//                    mLivePresenter.getRedPackList(mProgramId,mUserId);
+                }
+            });
+        }
+
     }
 
     /**
@@ -741,7 +817,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         mLivePresenter.getUserSet(mUserId);
         mLivePresenter.getRedPackTreasure(mProgramId);
-        mLivePresenter.getRedPackList(mProgramId,mUserId);
+        mLivePresenter.getRedPackList(mProgramId, mUserId);
     }
 
     private void getRoomToken() {
@@ -1217,7 +1293,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(RedPackTreasureEvent redPackTreasureEvent) {
         tvRedBag.setText(redPackTreasureEvent.treasureNum.context.programTreasureNum + "");
         if (redPackRunWayControl == null) {
-            redPackRunWayControl = new RedPackRunWayControl(this,tvRedBagRunWay);
+            redPackRunWayControl = new RedPackRunWayControl(this, tvRedBagRunWay);
         }
         redPackRunWayControl.load(redPackTreasureEvent);
     }
@@ -1613,7 +1689,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onGetRoomRedListSuccess(RoomRedpackList dataBean) {
-
+        redPackList.clear();
+        redPackList.addAll(dataBean.list);
+        redpackAdapter.notifyDataSetChanged();
     }
 
 

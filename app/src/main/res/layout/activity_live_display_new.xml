@@ -607,6 +607,13 @@
                         android:layout_alignParentTop="true"
                         android:background="@drawable/bg_chat_top_translate" />
 
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_redpack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="37dp"
+                        android:layout_marginTop="12dp"
+                        android:overScrollMode="never" />
+
                 </RelativeLayout>
             </LinearLayout>
 
