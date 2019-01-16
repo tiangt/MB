@@ -1162,14 +1162,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .show(getSupportFragmentManager());
     }
 
-    /**
-     * 物品合成
-     */
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onMessageEvent(CompositeEvent compositeEvent){
-//
-//    }
-
     @Override
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
         mAnchorId = roomInfoBean.getData().getAnchor().getId();

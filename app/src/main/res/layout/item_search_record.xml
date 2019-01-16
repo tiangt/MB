@@ -61,7 +61,7 @@
             android:gravity="center"
             android:text="直播中"
             android:textColor="#ff2b3f"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:visibility="gone"/>
     </RelativeLayout>
 

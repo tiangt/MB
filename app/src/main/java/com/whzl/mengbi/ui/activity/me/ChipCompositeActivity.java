@@ -157,7 +157,6 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
                 mChildList.clear();
                 for (int i = 0; i < mParentList.get(position).goodsDetails.size(); i++) {
                     chipName.setText(mParentList.get(position).goodsDetails.get(i).goodsName);
-//                    String chipPic = ImageUrl.getImageUrl(mParentList.get(position).goodsDetails.get(i).picId, "jpg");
                     String chipPic = mParentList.get(position).goodsDetails.get(i).goodsPic;
                     GlideImageLoader.getInstace().displayImage(ChipCompositeActivity.this, chipPic, ivChipPic);
                     if (mParentList.get(position).isComposition == 0) {
@@ -167,10 +166,10 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
                     }
                     mChildList.addAll(mParentList.get(position).detailDtos);
                 }
+
                 initChildRecycler(rvChipList);
                 compositeChip(btnComposite, mParentList.get(position).compositionId);
             }
-
         }
     }
 

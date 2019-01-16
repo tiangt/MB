@@ -109,8 +109,8 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                                 }
                                 if (audienceInfoBeans != null) {
                                     loadSuccess(audienceInfoBeans);
-                                    UserListDialog userListDialog = (UserListDialog) getParentFragment();
-                                    userListDialog.setManagerTitle(audienceInfoBeans.size());
+//                                    UserListDialog userListDialog = (UserListDialog) getParentFragment();
+//                                    userListDialog.setManagerTitle(audienceInfoBeans.size());
                                 } else {
                                     loadSuccess(null);
                                 }

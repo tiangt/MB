@@ -268,6 +268,11 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
 //            GlideImageLoader.getInstace().displayImage(SearchActivity.this, mAnchorInfoList.get(position).anchorAvatar, ivIcon);
             Glide.with(SearchActivity.this).load(mAnchorInfoList.get(position).anchorAvatar).apply(requestOptions).into(ivIcon);
             tvRoom.setText(getString(R.string.room_num, mAnchorInfoList.get(position).programId));
+            if ("T".equals(mAnchorInfoList.get(position).status)) {
+                tvStatus.setVisibility(View.VISIBLE);
+            } else {
+                tvStatus.setVisibility(View.GONE);
+            }
         }
 
         @Override
