@@ -145,9 +145,9 @@ public class CommonMotherFragment extends BaseFragment {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < hobbyList.size(); i++) {
             if (i != hobbyList.size() - 1) {
-                sb.append(hobbyList.get(i).giftId + ",");
+                sb.append(hobbyList.get(i).giftId.intValue() + ",");
             } else {
-                sb.append(hobbyList.get(i).giftId + "");
+                sb.append(hobbyList.get(i).giftId.intValue() + "");
             }
         }
         getDatasByGoodIds(sb.toString());

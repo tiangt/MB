@@ -24,10 +24,10 @@ public class CommonGift {
     String avatar;
     String nickname;
     String seesionId;
-    boolean recharged;
-    @Generated(hash = 1169883968)
+    Boolean recharged;
+    @Generated(hash = 173288943)
     public CommonGift(Long userId, List<CommonGiftBean> hobbyList, String avatar,
-            String nickname, String seesionId, boolean recharged) {
+            String nickname, String seesionId, Boolean recharged) {
         this.userId = userId;
         this.hobbyList = hobbyList;
         this.avatar = avatar;
@@ -68,11 +68,12 @@ public class CommonGift {
     public void setSeesionId(String seesionId) {
         this.seesionId = seesionId;
     }
-    public boolean getRecharged() {
+    public Boolean getRecharged() {
         return this.recharged;
     }
-    public void setRecharged(boolean recharged) {
+    public void setRecharged(Boolean recharged) {
         this.recharged = recharged;
     }
+
 
 }

@@ -5,6 +5,6 @@ package com.whzl.mengbi.greendao;
  * @date 2019/1/10
  */
 public class CommonGiftBean {
-    public int giftId;
-    public int times;
+    public Integer giftId;
+    public Integer times;
 }
