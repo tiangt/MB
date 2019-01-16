@@ -76,6 +76,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/tran_black7"/>
+        android:background="@color/tran_black7"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"/>
 
 </LinearLayout>
