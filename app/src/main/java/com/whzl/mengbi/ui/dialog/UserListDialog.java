@@ -28,6 +28,7 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -54,12 +55,10 @@ public class UserListDialog extends BaseFullScreenDialog {
 
     private int mProgramId;
     private Disposable disposable;
-    private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
     private ArrayList<String> titles;
-    private FragmentPagerAdaper mAdapter;
     private ArrayList<Fragment> fragments;
-    private ArrayList<AudienceListBean.AudienceInfoBean> audienceList = new ArrayList<>();
-    private ArrayList<AudienceListBean.AudienceInfoBean> managerList = new ArrayList<>();
+    private List<AudienceListBean.AudienceInfoBean> audienceInfoBeans = new ArrayList<>();
+    private int mIdentity;
 
     public static BaseFullScreenDialog newInstance(int programId) {
         Bundle args = new Bundle();
@@ -91,6 +90,8 @@ public class UserListDialog extends BaseFullScreenDialog {
         tabLayout.setNeedSwitchAnimation(true);
         tabLayout.setSelectedTabIndicatorWidth(20);
         tabLayout.setupWithViewPager(viewpager);
+
+        getManagerAmount();
     }
 
     @OnClick({R.id.ib_back})
@@ -112,5 +113,46 @@ public class UserListDialog extends BaseFullScreenDialog {
         tabLayout.getTabAt(1).setText("房管列表（" + managerAmount + "）");
     }
 
+    private void getManagerAmount(){
+        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            mProgramId = getArguments().getInt("programId");
+            HashMap paramsMap = new HashMap();
+            paramsMap.put("programId", mProgramId);
+            HashMap signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
+            ApiFactory.getInstance().getApi(Api.class)
+                    .getAudienceList(signPramsMap)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
+                        @Override
+                        public void onSuccess(AudienceListBean.DataBean dataBean) {
+                            if (dataBean != null) {
+                                audienceInfoBeans.clear();
+                                for (int i = 0; i < dataBean.getList().size(); i++) {
+                                    mIdentity = dataBean.getList().get(i).getIdentity();
+                                    if (mIdentity == UserIdentity.OPTR_MANAGER || mIdentity == UserIdentity.ROOM_MANAGER) {
+                                        audienceInfoBeans.add(dataBean.getList().get(i));
+                                    }
+                                }
+                                if(audienceInfoBeans != null){
+                                    setManagerTitle(audienceInfoBeans.size());
+                                }
+                            }
+                        }
 
+                        @Override
+                        public void onError(int code) {
+
+                        }
+                    });
+        });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
 }
