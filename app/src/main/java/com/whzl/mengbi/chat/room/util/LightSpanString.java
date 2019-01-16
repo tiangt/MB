@@ -1,5 +1,6 @@
 package com.whzl.mengbi.chat.room.util;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +12,8 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 
+import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.PkRecordActivity;
 import com.whzl.mengbi.util.ClickUtil;
@@ -87,5 +90,34 @@ public class LightSpanString {
         return spannableString;
     }
 
+    public static SpannableString getJumpNameSpan(Context context, final String nickName, final int programId, int color) {
+        SpannableString nickSpan = new SpannableString(nickName);
+        NickNameSpan clickSpan = new NickNameSpan(context, color) {
+            @Override
+            public void onClick(View widget) {
+                jumpToActivity(context,nickName,programId);
+            }
+        };
+
+        nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return nickSpan;
+    }
+
+    private static void jumpToActivity(Context context, String nickName, int programId) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle(R.string.alert);
+        dialog.setMessage(context.getString(R.string.jump_live_house, nickName));
+        dialog.setNegativeButton(R.string.cancel, null);
+        dialog.setPositiveButton(R.string.confirm, (dialog1, which) -> {
+            jumpToLive(context, programId);
+        });
+        dialog.show();
+    }
+
+    public static void jumpToLive(Context context, int programId) {
+        Intent intent = new Intent(context, LiveDisplayActivity.class);
+        intent.putExtra(BundleConfig.PROGRAM_ID, programId);
+        context.startActivity(intent);
+    }
 
 }

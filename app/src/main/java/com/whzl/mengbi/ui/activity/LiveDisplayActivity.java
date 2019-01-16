@@ -64,6 +64,7 @@ import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.PlayNotifyEvent;
 import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
+import com.whzl.mengbi.chat.room.message.events.RedPackTreasureEvent;
 import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
@@ -1204,6 +1205,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     }
                 })
                 .show(getSupportFragmentManager());
+    }
+
+    /**
+     * 发送红包消息
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RedPackTreasureEvent redPackTreasureEvent) {
+        tvRedBag.setText(redPackTreasureEvent.treasureNum.context.programTreasureNum + "");
     }
 
     @Override

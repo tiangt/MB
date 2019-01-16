@@ -26,11 +26,9 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
 import com.whzl.mengbi.ui.adapter.ChatMsgAnimation;
-import com.whzl.mengbi.ui.adapter.SlideInRightAnimation;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -103,7 +101,6 @@ public class ChatListFragment extends BaseFragment {
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
         if (chatList.size() >= TOTAL_CHAT_MSG) {
-
             chatList.remove(0);
         }
         chatList.add(message);
@@ -269,8 +266,8 @@ public class ChatListFragment extends BaseFragment {
     private int mLastPositionB = -1;
 
     public void addAnimation(RecyclerView.ViewHolder holder, int position) {
-        if (position >= TOTAL_CHAT_MSG - 1&&!isRecyclerScrolling) {
-            mLastPositionB = mLastPositionB-1;
+        if (position >= TOTAL_CHAT_MSG - 1 && !isRecyclerScrolling) {
+            mLastPositionB = mLastPositionB - 1;
         }
         if (position > mLastPositionB) {
             BaseAnimation animation = new ChatMsgAnimation();
