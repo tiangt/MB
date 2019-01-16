@@ -773,4 +773,14 @@ public interface Api {
     @POST("v1/redpacket/send-redpacket")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> sendRedPacket(@FieldMap Map<String, String> params);
+
+    /**
+     * 查询直播间红包池金额
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/redpacket/room-redpacket-treasure")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> getRoomRedpacketTreasure(@FieldMap Map<String, String> params);
 }

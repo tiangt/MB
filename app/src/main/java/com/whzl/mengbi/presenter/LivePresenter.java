@@ -41,4 +41,6 @@ public interface LivePresenter {
     void getBlackRoomTime(int mAnchorId);
 
     void getUserSet(long mUserId);
+
+    void getRedPackTreasure(int mProgramId);
 }

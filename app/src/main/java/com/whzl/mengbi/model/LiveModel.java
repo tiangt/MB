@@ -1,7 +1,6 @@
 package com.whzl.mengbi.model;
 
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
-import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 
 import java.util.HashMap;
 
@@ -43,4 +42,6 @@ public interface LiveModel {
     void getBlackRoomTime(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void getUserSet(HashMap signPramsMap, OnLiveFinishedListener livePresenter);
+
+    void getRedPackTreasure(HashMap signPramsMap, OnLiveFinishedListener listener);
 }
