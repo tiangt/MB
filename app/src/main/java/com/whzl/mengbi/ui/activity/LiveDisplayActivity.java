@@ -152,7 +152,6 @@ import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.HeadLineView;
 import com.whzl.mengbi.ui.widget.view.HeadlineLayout;
-import com.whzl.mengbi.ui.widget.view.LeftRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
@@ -313,8 +312,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvTimeBlackRoom;
     @BindView(R.id.svga_gift)
     SVGAImageView svgaGift;
-    @BindView(R.id.lrl_live)
-    LeftRelativeLayout leftRelativeLayout;
     @BindView(R.id.ll_red_bag)
     LinearLayout llRedBag;
     @BindView(R.id.tv_red_bag)
@@ -553,16 +550,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
         });
 
-        leftRelativeLayout.setLeftSlideListener(new LeftRelativeLayout.LeftSlideListener() {
-            @Override
-            public void onLeftSlideListener() {
-                if (drawerLayoutOut.isDrawerOpen(drawLayoutInclude)) {
-                    return;
-                } else {
-                    drawerLayoutOut.openDrawer(drawLayoutInclude);
-                }
-            }
-        });
     }
 
 
@@ -1635,7 +1622,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (checkGift(unique.getHobbyList(), commonGift) != null) {
                 CommonGiftBean commonGiftBean = checkGift(unique.getHobbyList(), commonGift);
                 for (int i = 0; i < unique.getHobbyList().size(); i++) {
-                    if (unique.getHobbyList().get(i).giftId == commonGiftBean.giftId) {
+                    if (unique.getHobbyList().get(i).giftId.intValue() == commonGiftBean.giftId.intValue()) {
                         unique.getHobbyList().get(i).times = unique.getHobbyList().get(i).times + 1;
                         break;
                     }
@@ -1654,7 +1641,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             return null;
         }
         for (int i = 0; i < hobbyList.size(); i++) {
-            if (hobbyList.get(i).giftId == commonGift.giftId) {
+            if (hobbyList.get(i).giftId.intValue() == commonGift.giftId.intValue()) {
                 return hobbyList.get(i);
             }
         }

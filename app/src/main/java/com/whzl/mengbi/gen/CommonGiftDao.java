@@ -32,7 +32,7 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
         public final static Property Avatar = new Property(2, String.class, "avatar", false, "AVATAR");
         public final static Property Nickname = new Property(3, String.class, "nickname", false, "NICKNAME");
         public final static Property SeesionId = new Property(4, String.class, "seesionId", false, "SEESION_ID");
-        public final static Property Recharged = new Property(5, boolean.class, "recharged", false, "RECHARGED");
+        public final static Property Recharged = new Property(5, Boolean.class, "recharged", false, "RECHARGED");
     }
 
     private final CommonGift_Converter hobbyListConverter = new CommonGift_Converter();
@@ -54,7 +54,7 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
                 "\"AVATAR\" TEXT," + // 2: avatar
                 "\"NICKNAME\" TEXT," + // 3: nickname
                 "\"SEESION_ID\" TEXT," + // 4: seesionId
-                "\"RECHARGED\" INTEGER NOT NULL );"); // 5: recharged
+                "\"RECHARGED\" INTEGER);"); // 5: recharged
     }
 
     /** Drops the underlying database table. */
@@ -91,7 +91,11 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
         if (seesionId != null) {
             stmt.bindString(5, seesionId);
         }
-        stmt.bindLong(6, entity.getRecharged() ? 1L: 0L);
+ 
+        Boolean recharged = entity.getRecharged();
+        if (recharged != null) {
+            stmt.bindLong(6, recharged ? 1L: 0L);
+        }
     }
 
     @Override
@@ -122,7 +126,11 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
         if (seesionId != null) {
             stmt.bindString(5, seesionId);
         }
-        stmt.bindLong(6, entity.getRecharged() ? 1L: 0L);
+ 
+        Boolean recharged = entity.getRecharged();
+        if (recharged != null) {
+            stmt.bindLong(6, recharged ? 1L: 0L);
+        }
     }
 
     @Override
@@ -138,7 +146,7 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // avatar
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // nickname
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // seesionId
-            cursor.getShort(offset + 5) != 0 // recharged
+            cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0 // recharged
         );
         return entity;
     }
@@ -150,7 +158,7 @@ public class CommonGiftDao extends AbstractDao<CommonGift, Long> {
         entity.setAvatar(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setNickname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setSeesionId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setRecharged(cursor.getShort(offset + 5) != 0);
+        entity.setRecharged(cursor.isNull(offset + 5) ? null : cursor.getShort(offset + 5) != 0);
      }
     
     @Override

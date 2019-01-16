@@ -91,7 +91,7 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
         initRecycler();
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
-        getAnchorList(mCurrentPager++);
+//        getAnchorList(mCurrentPager++);
         initRecommendRecycler();
     }
 
@@ -103,7 +103,7 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
 
     @Override
     protected void loadData() {
-
+        refreshLayout.autoRefresh();
     }
 
 
