@@ -1,8 +1,7 @@
 package com.whzl.mengbi.ui.fragment;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -13,15 +12,27 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.ui.activity.RedbagActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author nobody
@@ -122,7 +133,11 @@ public class RedBagFragment extends BaseFragment {
         }
         long money = Long.parseLong(etMoney.getText().toString());
         long num = Long.parseLong(etNumber.getText().toString());
-        tvTotal.setText(AmountConversionUitls.amountConversionFormat(money*num));
+        if (type.equals(NORMAL)) {
+            tvTotal.setText(AmountConversionUitls.amountConversionFormat(money * num));
+        } else {
+            tvTotal.setText(AmountConversionUitls.amountConversionFormat(money));
+        }
     }
 
 
@@ -130,28 +145,70 @@ public class RedBagFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_send:
-                KeyBoardUtil.closeKeybord(etNumber,getContext());
+                KeyBoardUtil.closeKeybord(etNumber, getContext());
                 if (type.equals(NORMAL)) {
                     if (checkNormal()) {
-                        ToastUtils.showToast("send" + Integer.parseInt(etMoney.getText().toString()));
+                        sendRedPack("NORMAL");
                     }
                 } else if (type.equals(LUCK)) {
                     if (checkLuck()) {
-                        ToastUtils.showToast("send" + Integer.parseInt(etMoney.getText().toString()));
+                        sendRedPack("RANDOM");
                     }
                 }
                 break;
         }
     }
 
+    private void sendRedPack(String s) {
+        HashMap hashMap = new HashMap();
+        hashMap.put("amount", Long.parseLong(tvTotal.getText().toString().replaceAll(",", "")));
+        hashMap.put("contentType", "COIN");
+        hashMap.put("objectType", "USER");
+        hashMap.put("programId", ((RedbagActivity) getActivity()).programId);
+        hashMap.put("quantity", Integer.parseInt(etNumber.getText().toString()));
+        hashMap.put("redPacketType", s);
+        ApiFactory.getInstance().getApi(Api.class)
+                .sendRedPacket(ParamsUtils.getSignPramsMap(hashMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>(this) {
+
+                    @Override
+                    public void onSuccess(JsonElement bean) {
+                        ToastUtils.showToastUnify(getActivity(), "发送成功");
+                    }
+
+                    @Override
+                    public void onError(ApiResult<JsonElement> body) {
+                        switch (body.code) {
+                            case -1211:
+                                ToastUtils.snackLong(btnSend, "您的萌币余额不足", "充值", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        getActivity().startActivity(new Intent(getActivity(), WXPayEntryActivity.class));
+                                    }
+                                });
+                                break;
+                            case -1265:
+                                ToastUtils.showToastUnify(getActivity(), getString(R.string.red_pack_full));
+                                break;
+                            case -1135:
+                                ToastUtils.showToastUnify(getActivity(), getString(R.string.red_pack_unplay));
+                                break;
+                        }
+                    }
+                });
+    }
+
+
     private boolean checkLuck() {
         if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
                 || Long.parseLong(etMoney.getText().toString()) % 10000 != 0) {
-            ToastUtils.snack(etMoney, "请输入10000的倍数");
+            ToastUtils.showToastUnify(getActivity(), "请输入10000的倍数");
             return false;
         }
         if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
-            ToastUtils.snack(etMoney, "红包个数不得小于5个");
+            ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
             return false;
         } else
             return true;
@@ -160,11 +217,11 @@ public class RedBagFragment extends BaseFragment {
     private boolean checkNormal() {
         if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
                 || Long.parseLong(etMoney.getText().toString()) % 2000 != 0) {
-            ToastUtils.snack(etMoney, "请输入2000的倍数");
+            ToastUtils.showToastUnify(getActivity(), "请输入2000的倍数");
             return false;
         }
         if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
-            ToastUtils.snack(etMoney, "红包个数不得小于5个");
+            ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
             return false;
         } else
             return true;

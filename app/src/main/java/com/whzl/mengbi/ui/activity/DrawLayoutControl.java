@@ -349,7 +349,8 @@ public class DrawLayoutControl {
                     activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
                     break;
                 case 8:
-                    activity.startActivity(new Intent(activity, RedbagActivity.class));
+                    activity.startActivity(new Intent(activity, RedbagActivity.class).
+                            putExtra("programId", ((LiveDisplayActivity) activity).mProgramId));
                     break;
             }
         }

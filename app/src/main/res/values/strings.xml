@@ -431,4 +431,6 @@
     <string name="play_notify_off">开播通知已关闭，开启后可收到主播的开播提醒</string>
     <string name="play_notify_on">已订阅主播列表</string>
     <string name="empty_commom">暂无常送礼物</string>
+    <string name="red_pack_full">本房间红包个数超过5个，不能再发送，请稍后再发</string>
+    <string name="red_pack_unplay">直播间未开播</string>
 </resources>

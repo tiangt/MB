@@ -34,6 +34,7 @@ public class RedbagActivity extends BaseActivity {
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
+    public int programId;
 
     @Override
     protected void setupContentView() {
@@ -43,6 +44,7 @@ public class RedbagActivity extends BaseActivity {
     @Override
     protected void setupView() {
         StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.statusbar_black));
+        programId = getIntent().getIntExtra("programId", 0);
     }
 
     @Override

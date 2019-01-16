@@ -763,4 +763,14 @@ public interface Api {
     @POST("v1/user/add-user-set")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> addUserSet(@FieldMap Map<String, String> params);
+
+    /**
+     * 发送红包接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/redpacket/send-redpacket")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> sendRedPacket(@FieldMap Map<String, String> params);
 }

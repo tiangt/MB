@@ -34,6 +34,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
@@ -46,6 +47,7 @@ import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.squareup.haha.perflib.Main;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
@@ -105,6 +107,7 @@ import com.whzl.mengbi.greendao.CommonGift;
 import com.whzl.mengbi.greendao.CommonGiftBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
@@ -168,8 +171,11 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -191,6 +197,7 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import pl.droidsonroids.gif.GifImageView;
 
 /**
@@ -388,6 +395,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private HeadLineControl headLineControl;
     private boolean ignoreChat = false;
     private boolean playNotify = false;
+    private PopupWindow redPopupWindow;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -922,11 +930,58 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         View popView = getLayoutInflater().inflate(R.layout.popwindow_redbag_live, null);
         TextView tvSend = popView.findViewById(R.id.tv_send);
         tvSend.setSelected(mAnchorId == mUserId);
-        PopupWindow popupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
+        tvSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (tvSend.isSelected()) {
+                    sendRedPack();
+                }
+            }
+        });
+        redPopupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setFocusable(true);
-        popupWindow.showAsDropDown(llRedBag, 0, UIUtil.dip2px(LiveDisplayActivity.this, 1));
+        redPopupWindow.setOutsideTouchable(true);
+        redPopupWindow.setFocusable(true);
+        redPopupWindow.showAsDropDown(llRedBag, 0, UIUtil.dip2px(LiveDisplayActivity.this, 1));
+    }
+
+    /**
+     * 发送红包
+     */
+    private void sendRedPack() {
+        HashMap hashMap = new HashMap();
+        hashMap.put("amount", 180000);
+        hashMap.put("contentType", "COIN");
+        hashMap.put("objectType", "PROGRAM_TREASURE");
+        hashMap.put("programId", mProgramId);
+        hashMap.put("quantity", 20);
+        hashMap.put("redPacketType", "RANDOM");
+        ApiFactory.getInstance().getApi(Api.class)
+                .sendRedPacket(ParamsUtils.getSignPramsMap(hashMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>(this) {
+
+                    @Override
+                    public void onSuccess(JsonElement bean) {
+                        if (redPopupWindow != null && redPopupWindow.isShowing()) {
+                            redPopupWindow.dismiss();
+                        }
+                        ToastUtils.showToastUnify(LiveDisplayActivity.this, "发送成功");
+                    }
+
+                    @Override
+                    public void onError(ApiResult<JsonElement> body) {
+                        switch (body.code) {
+                            case -1265:
+                                ToastUtils.showToastUnify(LiveDisplayActivity.this, getString(R.string.red_pack_full));
+                                break;
+                            case -1135:
+                                ToastUtils.showToastUnify(LiveDisplayActivity.this, getString(R.string.red_pack_unplay));
+                                break;
+                        }
+                    }
+                });
     }
 
     /**
@@ -1156,7 +1211,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //    public void onMessageEvent(CompositeEvent compositeEvent){
 //
 //    }
-
     @Override
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
         mAnchorId = roomInfoBean.getData().getAnchor().getId();
