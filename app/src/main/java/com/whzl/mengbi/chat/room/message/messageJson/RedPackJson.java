@@ -44,10 +44,12 @@ public class RedPackJson {
         public long sendObjectLastUpdateTime;
         public long programTreasureNum;
         public String founderUserNickname;
-        public String sendObjectNickname;
         public String contentType;
         public String redPacketId;
+        public String openUserNickname;
+        public String sendObjectNickname;
         public int programId;
         public int leftSeconds;
+        public long openAmount;
     }
 }
