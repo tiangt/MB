@@ -9,20 +9,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * @author nobody
@@ -34,6 +49,8 @@ public class RedPacketControl {
     public List<RoomRedpackList.ListBean> redPackList = new ArrayList();
     private Handler handler = new Handler();
     public BaseListAdapter redpackAdapter;
+    private Long userId;
+    private String sessionId;
 
     public RedPacketControl(Context context, RecyclerView rvRedPack) {
         this.context = context;
@@ -41,6 +58,8 @@ public class RedPacketControl {
     }
 
     public void init() {
+        userId = (Long) SPUtils.get(context, SpConfig.KEY_USER_ID, 0L);
+        sessionId = (String) SPUtils.get(context, SpConfig.KEY_SESSION_ID, "");
         rvRedPack.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         redpackAdapter = new BaseListAdapter() {
             @Override
@@ -62,8 +81,8 @@ public class RedPacketControl {
         ImageView ivState;
         @BindView(R.id.tv_time)
         TextView tvTime;
-        @BindView(R.id.rl_red_bag)
-        RelativeLayout rlRedBag;
+        @BindView(R.id.tv_second)
+        TextView tvSecond;
 
         public RedPackViewHolder(View itemView) {
             super(itemView);
@@ -72,6 +91,7 @@ public class RedPacketControl {
 
         @Override
         public void onBindViewHolder(int position) {
+            tvSecond.setText("s");
             GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_red_pack_off_live, ivState);
             RoomRedpackList.ListBean listBean = redPackList.get(position);
             Runnable runnable = new Runnable() {
@@ -80,6 +100,7 @@ public class RedPacketControl {
                     if (listBean.leftSeconds == 0) {
                         GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_red_pack_on_live, ivState);
                         tvTime.setText("");
+                        tvSecond.setText("");
                         handler.removeCallbacks(this);
                         Runnable runnableWait = new Runnable() {
                             @Override
@@ -109,6 +130,7 @@ public class RedPacketControl {
                     if (!TextUtils.isEmpty(tvTime.getText())) {
                         return;
                     }
+                    openRed(listBean);
                     redPackList.remove(position);
                     handler.removeCallbacksAndMessages(null);
                     redpackAdapter.notifyDataSetChanged();
@@ -116,6 +138,26 @@ public class RedPacketControl {
             });
         }
 
+    }
+
+    public void openRed(RoomRedpackList.ListBean listBean) {
+        HashMap params = new HashMap();
+        params.put("packed", listBean.redPacketId);
+        params.put("userId", userId+"");
+        params.put("token", sessionId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn("red_packed", RequestManager.TYPE_POST_URL, params,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        JSONObject jsonObject = JSON.parseObject(result.toString());
+                        LogUtils.e("sssssssssss   "+result.toString());
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("errorMsg" + errorMsg.toString());
+                    }
+                });
     }
 
     public void destroy() {

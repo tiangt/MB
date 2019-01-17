@@ -441,7 +441,6 @@
                         android:gravity="center_vertical"
                         android:paddingLeft="45dp"
                         android:singleLine="true"
-                        android:text="aaaaaaaaaa"
                         android:textColor="#fefefe"
                         android:textSize="8.5sp"
                         android:visibility="gone" />

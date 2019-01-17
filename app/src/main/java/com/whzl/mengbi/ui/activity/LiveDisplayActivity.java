@@ -1244,6 +1244,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             bean.leftSeconds = redPackTreasureEvent.treasureNum.context.leftSeconds;
             bean.effDate = redPackTreasureEvent.treasureNum.context.effDate;
             bean.expDate = redPackTreasureEvent.treasureNum.context.expDate;
+            bean.redPacketId = redPackTreasureEvent.treasureNum.context.redPacketId;
             redPacketControl.redPackList.add(bean);
             redPacketControl.redpackAdapter.notifyDataSetChanged();
         }

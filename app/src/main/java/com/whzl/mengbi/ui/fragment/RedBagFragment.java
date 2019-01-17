@@ -176,6 +176,7 @@ public class RedBagFragment extends BaseFragment {
                     @Override
                     public void onSuccess(JsonElement bean) {
                         ToastUtils.showToastUnify(getActivity(), "发送成功");
+                        getActivity().finish();
                     }
 
                     @Override

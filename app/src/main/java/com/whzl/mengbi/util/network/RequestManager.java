@@ -49,6 +49,7 @@ public class RequestManager {
     public static final int TYPE_GET = 0;//get请求
     public static final int TYPE_POST_JSON = 1;//post请求参数为json
     public static final int TYPE_POST_FORM = 2;//post请求参数为表单
+    public static final int TYPE_POST_URL = 3;//post请求参数为表单
     public static final int RESPONSE_CODE = 200;//响应成功标识码
     private OkHttpClient mOkHttpClient;//okHttpClient 实例
     private Handler okHttpHandler;//全局处理子线程和M主线程通信
@@ -276,6 +277,9 @@ public class RequestManager {
                 break;
             case TYPE_POST_FORM:
                 call = requestPostByAsynWithForm(actionUrl, paramsMap, callBack);
+                break;
+            case TYPE_POST_URL:
+                call = requestPostByUrl(actionUrl, paramsMap, callBack);
                 break;
         }
         return call;
@@ -574,5 +578,51 @@ public class RequestManager {
                 }
             }
         });
+    }
+
+    /**
+     * okHttp post异步请求
+     *
+     * @param <T>       数据泛型
+     * @param actionUrl 接口地址
+     * @param paramsMap 请求参数
+     * @param callBack  请求返回数据回调
+     * @return
+     */
+    private <T> Call requestPostByUrl(String actionUrl, HashMap<String, String> paramsMap, ReqCallBack<T> callBack) {
+        try {
+            FormBody.Builder builder = new FormBody.Builder();
+            for (String key : paramsMap.keySet()) {
+                builder.add(key, paramsMap.get(key));
+            }
+            String params = JSON.toJSONString(paramsMap);
+            LogUtils.e(params.toString());
+            RequestBody formBody = builder.build();
+            String requestUrl = String.format("%s/%s", "https://t3.mengbitv.com/", actionUrl);
+            final Request request = addHeaders().url(requestUrl).post(formBody).build();
+            final Call call = mOkHttpClient.newCall(request);
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    failedCallBack("访问失败", callBack);
+                    LogUtils.e(e.toString());
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        String string = response.body().string();
+                        LogUtils.e("response ----->" + string);
+                        successCallBack((T) string, callBack);
+                    } else {
+                        failedCallBack("服务器错误", callBack);
+                    }
+                }
+            });
+            return call;
+        } catch (Exception e) {
+            LogUtils.e(e.toString());
+        }
+        return null;
     }
 }
