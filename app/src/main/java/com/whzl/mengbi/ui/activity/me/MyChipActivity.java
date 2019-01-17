@@ -20,6 +20,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.NetConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.CompositionListInfo;
 import com.whzl.mengbi.model.entity.MyChipListInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -27,6 +28,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.DateUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -58,6 +60,7 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
     private BaseListAdapter adapter;
     private ArrayList<MyChipListInfo.DataBean.ListBean> mList = new ArrayList<>();
     private ArrayList<MyChipListInfo.DataBean.ListBean.GoodsBean> mGoodsList = new ArrayList<>();
+    private long userId;
 
     @Override
     protected void setupContentView() {
@@ -68,6 +71,7 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
     protected void initEnv() {
         super.initEnv();
         StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
+        userId = (long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
     }
 
     @Override
@@ -132,6 +136,7 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
      */
     private void getMyChipList(int page) {
         HashMap hashMap = new HashMap();
+        hashMap.put("userId", userId);
         hashMap.put("page", page);
         hashMap.put("pageSize", 20);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.MY_DEBRIS_LIST, RequestManager.TYPE_POST_JSON, hashMap,
@@ -215,7 +220,7 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
     }
 
     private void loadSuccess(MyChipListInfo listInfo) {
-        if (listInfo != null && listInfo.data != null && listInfo.data.list != null) {
+        if (listInfo != null && listInfo.data != null && listInfo.data.list != null ) {
             rlEmpty.setVisibility(View.GONE);
             if (mCurrentPager == 2) {
                 mList.clear();
@@ -225,6 +230,9 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
             }
             mList.addAll(listInfo.data.list);
             if (mList == null || mList.size() < NetConfig.DEFAULT_PAGER_SIZE) {
+                if(mList.size() == 0){
+                    rlEmpty.setVisibility(View.VISIBLE);
+                }
                 adapter.notifyDataSetChanged();
                 if (mList.size() > 0) {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
