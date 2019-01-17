@@ -84,6 +84,7 @@ import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
@@ -1231,6 +1232,21 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             redPackRunWayControl = new RedPackRunWayControl(this, tvRedBagRunWay);
         }
         redPackRunWayControl.load(redPackTreasureEvent);
+        if ((redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.USER_SEND_REDPACKET) &&
+                redPackTreasureEvent.treasureNum.context.programId == mProgramId) ||
+                redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.PROGRAM_TREASURE_SEND_REDPACKET) ||
+                redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OFFICIAL_SEND_REDPACKET)) {
+            if (redPacketControl == null) {
+                redPacketControl = new RedPacketControl(this, rvRedPack);
+            }
+            redPacketControl.destroy();
+            RoomRedpackList.ListBean bean = new RoomRedpackList.ListBean();
+            bean.leftSeconds = redPackTreasureEvent.treasureNum.context.leftSeconds;
+            bean.effDate = redPackTreasureEvent.treasureNum.context.effDate;
+            bean.expDate = redPackTreasureEvent.treasureNum.context.expDate;
+            redPacketControl.redPackList.add(bean);
+            redPacketControl.redpackAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -2025,6 +2041,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (redPackRunWayControl != null) {
             redPackRunWayControl.destroy();
+        }
+        if (redPacketControl != null) {
+            redPacketControl.destroy();
         }
     }
 

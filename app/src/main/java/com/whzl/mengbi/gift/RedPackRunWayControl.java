@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.whzl.mengbi.chat.room.message.events.RedPackTreasureEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.RedPackJson;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.UIUtil;
 
@@ -38,23 +39,27 @@ public class RedPackRunWayControl {
     }
 
     public void load(RedPackTreasureEvent redPackTreasureEvent) {
-        if (redPackTreasureEvent == null || redPackTreasureEvent.treasureNum == null || redPackTreasureEvent.treasureNum.context == null
-                || redPackTreasureEvent.treasureNum.context.messageSubType == null || !redPackTreasureEvent.treasureNum.context.messageSubType.equals("broadcast")) {
+        if (redPackTreasureEvent == null || redPackTreasureEvent.treasureNum == null || redPackTreasureEvent.treasureNum.context == null) {
             return;
         }
-        if (!isShow) {
-            show(redPackTreasureEvent);
-            return;
+        if (redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OFFICIAL_SEND_REDPACKET) || redPackTreasureEvent
+                .treasureNum.context.busiCodeName.equals(AppConfig.PROGRAM_TREASURE_SEND_REDPACKET) ||
+                (redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.USER_SEND_REDPACKET) && redPackTreasureEvent.treasureNum
+                        .context.messageSubType.equals("broadcast"))) {
+            if (!isShow) {
+                show(redPackTreasureEvent);
+                return;
+            }
+            giftQueue.add(redPackTreasureEvent);
         }
-        giftQueue.add(redPackTreasureEvent);
     }
 
     private void show(RedPackTreasureEvent redPackTreasureEvent) {
         isShow = true;
         tvRedPack.setTranslationX(screenWidthPixels);
         RedPackJson.ContextBean context = redPackTreasureEvent.treasureNum.context;
-        switch (redPackTreasureEvent.treasureNum.context.sendObjectType) {
-            case "USER":
+        switch (redPackTreasureEvent.treasureNum.context.busiCodeName) {
+            case AppConfig.USER_SEND_REDPACKET:
                 tvRedPack.append(LightSpanString.getLightString(context.sendObjectNickname, Color.parseColor("#FFF8CF2C")));
                 tvRedPack.append(LightSpanString.getLightString("在", Color.parseColor("#ffffff")));
                 tvRedPack.append(LightSpanString.getLightString(context.founderUserNickname, Color.parseColor("#FFF8CF2C")));
@@ -63,14 +68,14 @@ public class RedPackRunWayControl {
                 tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒", Color.parseColor("#FFF8CF2C")));
                 tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
                 break;
-            case "PROGRAM_TREASURE":
+            case AppConfig.PROGRAM_TREASURE_SEND_REDPACKET:
                 tvRedPack.append(LightSpanString.getLightString(context.founderUserNickname, Color.parseColor("#FFFFE68E")));
                 tvRedPack.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
                 tvRedPack.append(LightSpanString.getLightString("红包", Color.parseColor("#FFF8CF2C")));
                 tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFF8CF2C")));
                 tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
                 break;
-            case "OFFICAL":
+            case AppConfig.OFFICIAL_SEND_REDPACKET:
                 tvRedPack.append(LightSpanString.getLightString(" 萌比直播官方", Color.parseColor("#FF81ECFF")));
                 tvRedPack.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
                 tvRedPack.append(LightSpanString.getLightString("红包", Color.parseColor("#FFF8CF2C")));

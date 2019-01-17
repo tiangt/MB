@@ -16,7 +16,6 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.widget.recyclerview.SpaceItemDecoration;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
@@ -117,5 +116,9 @@ public class RedPacketControl {
             });
         }
 
+    }
+
+    public void destroy() {
+        handler.removeCallbacksAndMessages(null);
     }
 }
