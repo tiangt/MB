@@ -24,7 +24,9 @@ public class RedPacketAction implements Actions {
             return;
         }
         RedPackMessage message = new RedPackMessage(context, redPackJson);
-        EventBus.getDefault().post(new UpdatePubChatEvent(message));
+        if (!redPackJson.context.busiCodeName.equals("RP_RETURN_TO_PT") && !redPackJson.context.busiCodeName.equals("RP_HAD_FINISHED")) {
+            EventBus.getDefault().post(new UpdatePubChatEvent(message));
+        }
         EventBus.getDefault().post(new RedPackTreasureEvent(redPackJson));
     }
 }

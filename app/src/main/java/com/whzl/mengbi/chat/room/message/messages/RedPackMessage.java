@@ -32,7 +32,7 @@ public class RedPackMessage implements FillHolderMessage {
         if (context.busiCodeName.equals("RP_RETURN_TO_U")) {
             mholder.textView.append(LightSpanString.getLightString(" " + context.returnObjectNickname, Color.parseColor("#FF2EE9FF")));
             mholder.textView.append(LightSpanString.getLightString(" 未抢到红包余额已退回到您的账号,请注意查收", Color.parseColor("#ffffff")));
-        } else {
+        } else if (context.busiCodeName.equals("USER_SEND_REDPACKET")) {
             if ("localroom".equals(context.messageSubType)) {
                 mholder.textView.append(LightSpanString.getLightString(" " + context.sendObjectNickname, Color.parseColor("#FF2EE9FF")));
                 mholder.textView.append(LightSpanString.getLightString("发了一个", Color.parseColor("#ffffff")));
@@ -51,20 +51,22 @@ public class RedPackMessage implements FillHolderMessage {
                     mholder.textView.append(LightSpanString.getLightString(context.redPacketType.equals("RANDOM") ? "手气红包," : "普通红包,", Color.parseColor("#FFFC3C79")));
                     mholder.textView.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFFC3C79")));
                     mholder.textView.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
-                } else if (context.sendObjectType.equals("PROGRAM_TREASURE")) {
-                    mholder.textView.append(LightSpanString.getJumpNameSpan(this.context, " " + context.founderUserNickname, context.programId, Color.parseColor("#FFFF7E97")));
-                    mholder.textView.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
-                    mholder.textView.append(LightSpanString.getLightString("红包", Color.parseColor("#FFFC3C79")));
-                    mholder.textView.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFFC3C79")));
-                    mholder.textView.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
-                } else if (context.sendObjectType.equals("OFFICAL")) {
-                    mholder.textView.append(LightSpanString.getLightString(" 萌比直播官方", Color.parseColor("#FF78CBFF")));
-                    mholder.textView.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
-                    mholder.textView.append(LightSpanString.getLightString("红包", Color.parseColor("#FFFC3C79")));
-                    mholder.textView.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFFC3C79")));
-                    mholder.textView.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
                 }
             }
+        } else if (context.busiCodeName.equals("OFFICIAL_SEND_REDPACKET")) {
+            mholder.textView.append(LightSpanString.getLightString(" 萌比直播官方", Color.parseColor("#FF78CBFF")));
+            mholder.textView.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
+            mholder.textView.append(LightSpanString.getLightString("红包", Color.parseColor("#FFFC3C79")));
+            mholder.textView.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFFC3C79")));
+            mholder.textView.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
+
+        } else if (context.busiCodeName.equals("PROGRAM_TREASURE")) {
+            mholder.textView.append(LightSpanString.getJumpNameSpan(this.context, " " + context.founderUserNickname, context.programId, Color.parseColor("#FFFF7E97")));
+            mholder.textView.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
+            mholder.textView.append(LightSpanString.getLightString("红包", Color.parseColor("#FFFC3C79")));
+            mholder.textView.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFFC3C79")));
+            mholder.textView.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
+
         }
     }
 
