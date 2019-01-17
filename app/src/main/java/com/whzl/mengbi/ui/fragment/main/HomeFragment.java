@@ -52,6 +52,7 @@ import com.youth.banner.Transformer;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -220,6 +221,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
         TextView tvIsLive;
         @BindView(R.id.iv_pk)
         ImageView ivIsPk;
+        @BindView(R.id.iv_week_star)
+        ImageView ivWeekStar;
+        @BindView(R.id.iv_popularity)
+        ImageView ivPop;
 
         private final int type;
 
@@ -236,6 +241,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     RecommendAnchorInfoBean recommendAnchorInfoBean = mRecommendAnchorInfoList.get(position);
                     tvIsLive.setVisibility("T".equals(recommendAnchorInfoBean.getStatus()) ? View.VISIBLE : View.GONE);
                     ivIsPk.setVisibility("T".equals(recommendAnchorInfoBean.getIsPk()) ? View.VISIBLE : View.GONE);
+                    ivWeekStar.setVisibility("T".equals(recommendAnchorInfoBean.getIsWeekStar()) ? View.VISIBLE : View.GONE);
+                    ivPop.setVisibility("T".equals(recommendAnchorInfoBean.getIsPopularity()) ? View.VISIBLE : View.GONE);
                     String recommendName = recommendAnchorInfoBean.getAnchorNickname();
                     if (recommendName.length() > 8) {
                         tvAnchorName.setText(recommendName.substring(0, 8) + "...");
@@ -252,6 +259,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     LiveShowListInfo liveShowListInfo = mAnchorInfoList.get(position);
                     tvIsLive.setVisibility("T".equals(liveShowListInfo.getStatus()) ? View.VISIBLE : View.GONE);
                     ivIsPk.setVisibility("T".equals(liveShowListInfo.getIsPk()) ? View.VISIBLE : View.GONE);
+                    ivWeekStar.setVisibility("T".equals(liveShowListInfo.getIsWeekStar()) ? View.VISIBLE : View.GONE);
+                    ivPop.setVisibility("T".equals(liveShowListInfo.getIsPopularity()) ? View.VISIBLE : View.GONE);
                     String anchorName = liveShowListInfo.getAnchorNickname();
                     if (anchorName.length() > 8) {
                         tvAnchorName.setText(anchorName.substring(0, 8) + "...");

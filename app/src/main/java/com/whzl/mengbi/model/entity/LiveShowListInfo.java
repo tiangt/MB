@@ -10,8 +10,25 @@ public class LiveShowListInfo {
     private String anchorNickname;
     private String anchorLevelName;
     private ShowStreamDataInfo showStreamData;
-
     private String isPk;
+    private String isWeekStar;
+    private String isPopularity;
+
+    public String getIsWeekStar() {
+        return isWeekStar;
+    }
+
+    public void setIsWeekStar(String isWeekStar) {
+        this.isWeekStar = isWeekStar;
+    }
+
+    public String getIsPopularity() {
+        return isPopularity;
+    }
+
+    public void setIsPopularity(String isPopularity) {
+        this.isPopularity = isPopularity;
+    }
 
     public String getIsPk() {
         return isPk;
