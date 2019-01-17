@@ -66,7 +66,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_register, "注册", "登陆", true);
+        setContentView(R.layout.activity_register, "注册", "登录", true);
     }
 
     @Override

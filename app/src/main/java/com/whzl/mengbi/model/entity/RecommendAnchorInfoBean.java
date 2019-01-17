@@ -22,6 +22,26 @@ public class RecommendAnchorInfoBean {
 
     private String isPk;
 
+    private String isWeekStar;
+
+    public String getIsWeekStar() {
+        return isWeekStar;
+    }
+
+    public void setIsWeekStar(String isWeekStar) {
+        this.isWeekStar = isWeekStar;
+    }
+
+    public String getIsPopularity() {
+        return isPopularity;
+    }
+
+    public void setIsPopularity(String isPopularity) {
+        this.isPopularity = isPopularity;
+    }
+
+    private String isPopularity;
+
     public String getIsPk() {
         return isPk;
     }

@@ -30,18 +30,24 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
+import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
+import com.whzl.mengbi.model.entity.TrendingAnchorInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.ConfirmDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.widget.view.FlowLayout;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -97,7 +103,7 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
     private BaseListAdapter anchorAdapter;
     private BaseListAdapter hotAdapter;
     private List<SearchAnchorBean.ListBean> mAnchorInfoList = new ArrayList();
-    private List<String> mHotAnchorList = new ArrayList<>();
+    private ArrayList<TrendingAnchorInfo.DataBean.ListBean> mTrendingInfo = new ArrayList<>();
     private int mCurrentPager = 1;
     private String key;
     private SharedPreferences mPref;//使用SharedPreferences记录搜索历史
@@ -278,6 +284,8 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
+            //保存热搜主播
+            saveAnchorSearch(mAnchorInfoList.get(position).anchorId);
             Intent intent = new Intent(SearchActivity.this, LiveDisplayActivity.class);
             intent.putExtra(BundleConfig.PROGRAM_ID, mAnchorInfoList.get(position).programId);
             startActivity(intent);
@@ -286,7 +294,8 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void loadData() {
-
+        //获取热搜列表
+        trendingAnchor();
     }
 
     @OnClick({R.id.ib_clean, R.id.tv_cancel, R.id.ll_list, R.id.iv_delete})
@@ -303,12 +312,7 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
                 break;
             case R.id.iv_delete:
                 confirmDialog = ConfirmDialog.newInstance(getString(R.string.delete_search_history))
-                        .setListener(new ConfirmDialog.OnClickListener() {
-                            @Override
-                            public void onClickSuccess() {
-                                cleanHistory();
-                            }
-                        })
+                        .setListener(() -> cleanHistory())
                         .show(getSupportFragmentManager());
                 break;
         }
@@ -318,9 +322,6 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
      * 热搜主播
      */
     private void initHotAnchor() {
-        for (int i = 0; i < 20; i++) {
-            mHotAnchorList.add(i + "");
-        }
         rvHotAnchor.setNestedScrollingEnabled(false);
         rvHotAnchor.setFocusableInTouchMode(false);
         rvHotAnchor.setHasFixedSize(true);
@@ -329,7 +330,7 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
         hotAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return mHotAnchorList == null ? 0 : mHotAnchorList.size();
+                return mTrendingInfo == null ? 0 : mTrendingInfo.size();
             }
 
             @Override
@@ -360,8 +361,28 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
 
         @Override
         public void onBindViewHolder(int position) {
+            tvName.setText(mTrendingInfo.get(position).anchorNickname);
             RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(SearchActivity.this, 5));
             RequestOptions requestOptions = new RequestOptions().transform(roundedCorners);
+            GlideImageLoader.getInstace().displayImage(SearchActivity.this,
+                    ResourceMap.getResourceMap().getAnchorLevelIcon(mTrendingInfo.get(position).anchorLevelValue), ivLevel);
+            Glide.with(SearchActivity.this).load(mTrendingInfo.get(position).anchorAvatar).apply(requestOptions).into(ivIcon);
+            tvRoom.setText(getString(R.string.room_num, mTrendingInfo.get(position).programId));
+            if ("T".equals(mTrendingInfo.get(position).status)) {
+                tvStatus.setVisibility(View.VISIBLE);
+            } else {
+                tvStatus.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            //保存热搜主播
+            saveAnchorSearch(mTrendingInfo.get(position).anchorId);
+            Intent intent = new Intent(SearchActivity.this, LiveDisplayActivity.class);
+            intent.putExtra(BundleConfig.PROGRAM_ID, mTrendingInfo.get(position).programId);
+            startActivity(intent);
         }
     }
 
@@ -424,6 +445,58 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
                 }
             }
         }
+    }
+
+    /**
+     * 保存搜索热度
+     *
+     * @param anchorId
+     */
+    private void saveAnchorSearch(int anchorId) {
+        HashMap hashMap = new HashMap();
+        hashMap.put("anchorId", anchorId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SAVE_ANCHOR_SEARCH, RequestManager.TYPE_POST_JSON, hashMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        ResponseInfo reportBean = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
+                        if (reportBean.getCode() != 200) {
+                            showToast(reportBean.getMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        showToast(errorMsg);
+                    }
+                });
+    }
+
+    /**
+     * 热搜主播列表
+     */
+    private void trendingAnchor() {
+        HashMap hashMap = new HashMap();
+        hashMap.put("count", 10);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.TRENDING_ANCHOR, RequestManager.TYPE_POST_JSON, hashMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        TrendingAnchorInfo anchorInfo = GsonUtils.GsonToBean(result.toString(), TrendingAnchorInfo.class);
+                        if (anchorInfo.getCode() == 200) {
+                            if (anchorInfo != null && anchorInfo.data != null && anchorInfo.data.list != null) {
+                                llHotAnchor.setVisibility(View.VISIBLE);
+                                mTrendingInfo.addAll(anchorInfo.data.list);
+                                hotAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        showToast(errorMsg);
+                    }
+                });
     }
 
     @Override
