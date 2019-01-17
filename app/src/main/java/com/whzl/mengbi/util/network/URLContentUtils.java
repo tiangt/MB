@@ -269,4 +269,14 @@ public class URLContentUtils {
      * 更改手机号--验证验证码
      */
     public static final String VERIFY_CHECK_CODE = "v1/user/verify-check-code";
+
+    /**
+     * 增加主播热搜度
+     */
+    public static final String SAVE_ANCHOR_SEARCH = "v1/anchor/save-anchor-heat-degree";
+
+    /**
+     * 获取热搜主播列表
+     */
+    public static final String TRENDING_ANCHOR = "v1/anchor/heat-degree-list";
 }
