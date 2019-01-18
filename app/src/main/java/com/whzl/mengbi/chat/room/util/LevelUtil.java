@@ -13,11 +13,9 @@ import android.text.style.ImageSpan;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
-import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.FromJson;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.util.FileUtils;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.io.IOException;

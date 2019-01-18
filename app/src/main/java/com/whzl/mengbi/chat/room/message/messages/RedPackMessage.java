@@ -72,7 +72,7 @@ public class RedPackMessage implements FillHolderMessage {
             mholder.textView.append(LightSpanString.getLightString(context.openUserNickname, Color.parseColor("#FFFC3C79")));
             mholder.textView.append(LightSpanString.getLightString(" 抢到了 ", Color.parseColor("#ffffff")));
             mholder.textView.append(LightSpanString.getLightString(context.sendObjectNickname, Color.parseColor("#FFFC3C79")));
-            mholder.textView.append(LightSpanString.getLightString("发的", Color.parseColor("#ffffff")));
+            mholder.textView.append(LightSpanString.getLightString("发的 ", Color.parseColor("#ffffff")));
             mholder.textView.append(LightSpanString.getLightString(context.openAmount + " 萌币", Color.parseColor("#FFFF5705")));
         }
     }
