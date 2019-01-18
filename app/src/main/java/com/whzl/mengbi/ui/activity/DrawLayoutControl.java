@@ -65,7 +65,6 @@ public class DrawLayoutControl {
             R.drawable.ic_pk_draw_layout,
             R.drawable.ic_guard_draw_layout,
             R.drawable.ic_set_draw_layout,
-            R.drawable.ic_manage_draw_layout,
             R.drawable.ic_manage_draw_layout};
     private RecyclerView recommendRecycler;
     private BaseListAdapter recommendAdapter;
@@ -211,7 +210,7 @@ public class DrawLayoutControl {
         baseListAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return bannerInfoList == null ? 1 : bannerInfoList.size() + 1;
+                return bannerInfoList == null ? 2 : bannerInfoList.size() + 2;
             }
 
             @Override
@@ -247,9 +246,14 @@ public class DrawLayoutControl {
 
         @Override
         public void onBindViewHolder(int position) {
-            if (position == bannerInfoList.size()) {
+            if (position == bannerInfoList.size() + 1) {
                 GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_wait_draw_layout_live, ivActivity);
                 tvActivity.setText("敬请期待");
+                return;
+            }
+            if (position == bannerInfoList.size()) {
+                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_redpacket_draw_layout_live, ivActivity);
+                tvActivity.setText("红包");
                 return;
             }
             GetActivityBean.ListBean listBean = bannerInfoList.get(position);
@@ -260,7 +264,13 @@ public class DrawLayoutControl {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
+            if (position == bannerInfoList.size() + 1) {
+                return;
+            }
             if (position == bannerInfoList.size()) {
+                activity.startActivity(new Intent(activity, RedbagActivity.class).
+                        putExtra("programId", ((LiveDisplayActivity) activity).mProgramId));
+                ((LiveDisplayActivity) activity).closeDrawLayout();
                 return;
             }
             ((LiveDisplayActivity) activity).jumpToBannerActivity(bannerInfoList.get(position));
@@ -347,10 +357,6 @@ public class DrawLayoutControl {
                     break;
                 case 7:
                     activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
-                    break;
-                case 8:
-                    activity.startActivity(new Intent(activity, RedbagActivity.class).
-                            putExtra("programId", ((LiveDisplayActivity) activity).mProgramId));
                     break;
             }
         }

@@ -327,7 +327,9 @@ public class PkControl {
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);
-                pkResultPop.dismiss();
+                if (pkResultPop != null && pkResultPop.isShowing()) {
+                    pkResultPop.dismiss();
+                }
                 needShow = false;
                 break;
             case "PK_PUNISH_FINISH"://惩罚时间结束
@@ -336,7 +338,9 @@ public class PkControl {
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);
-                mvpWindow.dismiss();
+                if (mvpWindow != null && mvpWindow.isShowing()) {
+                    mvpWindow.dismiss();
+                }
                 needShow = false;
                 break;
             case "PK_SCORE_PUSH"://用户分数推送

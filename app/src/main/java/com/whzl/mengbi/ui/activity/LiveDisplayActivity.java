@@ -1502,6 +1502,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
                     @Override
                     public void clickListener() {
+                        if (TextUtils.isEmpty(listBean.jumpUrl)) {
+                            return;
+                        }
                         startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
                                 .putExtra("anchorId", mAnchorId + "")
                                 .putExtra("programId", mProgramId + "")
@@ -1959,7 +1962,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
             getRoomToken();
         }
-//        mLivePresenter.getPkInfo(mProgramId);
     }
 
     @Override

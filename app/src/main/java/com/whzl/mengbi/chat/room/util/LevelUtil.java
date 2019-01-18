@@ -2,10 +2,9 @@ package com.whzl.mengbi.chat.room.util;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -21,6 +20,8 @@ import com.whzl.mengbi.util.UIUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import pl.droidsonroids.gif.GifDrawable;
 
 
 public class LevelUtil {
@@ -145,20 +146,16 @@ public class LevelUtil {
     public static SpannableString getRoyalImageResourceSpan(Context context, int resourceId, TextView textView) throws IOException {
         SpannableString levelIcon = new SpannableString("icon");
         Drawable drawable = null;
-
-        Resources res = context.getResources();
-        Bitmap oldBmp = BitmapFactory.decodeResource(res, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
-        Bitmap newBmp = Bitmap.createScaledBitmap(oldBmp, UIUtil.dip2px(context, 27.5f), UIUtil.dip2px(context, 10f), true);
-        drawable = new BitmapDrawable(res, newBmp);
-
-//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
 //            Bitmap bitmap = FileUtils.readBitmapFromAssetsFile("images/face/royal/royal_" + resourceId + ".gif", context);
 //            drawable = new BitmapDrawable(context.getResources(), bitmap);
 //            bitmap.recycle();
-//        } else {
+            drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
+        } else {
 //            drawable = new GifDrawable(getFileContent(context, "images/face/royal/royal_" + resourceId + ".gif"));
-//            drawable.setCallback(new DrawableCallback(textView));
-//        }
+            drawable = new GifDrawable(context.getResources(), ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
+            drawable.setCallback(new DrawableCallback(textView));
+        }
         if (drawable != null) {
             int originWidth = drawable.getIntrinsicWidth();
             int originHeight = drawable.getIntrinsicHeight();
@@ -169,20 +166,6 @@ public class LevelUtil {
             levelIcon.setSpan(span, 0, levelIcon.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
         }
 
-
-//        Resources res = context.getResources();
-//        Drawable levelIconDrawable = res.getDrawable(resourceId);
-//        if(levelIconDrawable == null){
-//            return levelIcon;
-//        }
-//        int originWidth = levelIconDrawable.getIntrinsicWidth();
-//        int originHeight = levelIconDrawable.getIntrinsicHeight();
-//        float dpHeight = ImageUrl.IMAGE_HIGHT;
-//        float dpWidth = originWidth * dpHeight / originHeight;
-//        levelIconDrawable.setBounds(0, 0, DensityUtil.dp2px(dpWidth), DensityUtil.dp2px(dpHeight));
-//        CenterAlignImageSpan imageSpan = new CenterAlignImageSpan(levelIconDrawable);
-//        levelIcon.setSpan(imageSpan,0,levelIcon.length(),
-//                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return levelIcon;
     }
 

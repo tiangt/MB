@@ -301,7 +301,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    LogUtils.e("ssssss  state" + aLong);
                     if (aLong < second - 1) {
                         if (aLong < second - 1) {
                             if ("惩罚时刻 ".equals(state)) {
