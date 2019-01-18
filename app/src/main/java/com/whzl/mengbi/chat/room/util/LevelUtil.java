@@ -3,9 +3,9 @@ package com.whzl.mengbi.chat.room.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -15,14 +15,12 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.chat.room.message.messageJson.FromJson;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
-import com.whzl.mengbi.util.FileUtils;
+import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
-import pl.droidsonroids.gif.GifDrawable;
 
 
 public class LevelUtil {
@@ -147,14 +145,20 @@ public class LevelUtil {
     public static SpannableString getRoyalImageResourceSpan(Context context, int resourceId, TextView textView) throws IOException {
         SpannableString levelIcon = new SpannableString("icon");
         Drawable drawable = null;
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-            Bitmap bitmap = FileUtils.readBitmapFromAssetsFile("images/face/royal/royal_" + resourceId + ".gif", context);
-            drawable = new BitmapDrawable(context.getResources(), bitmap);
-            bitmap.recycle();
-        } else {
-            drawable = new GifDrawable(getFileContent(context, "images/face/royal/royal_" + resourceId + ".gif"));
-            drawable.setCallback(new DrawableCallback(textView));
-        }
+
+        Resources res = context.getResources();
+        Bitmap oldBmp = BitmapFactory.decodeResource(res, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
+        Bitmap newBmp = Bitmap.createScaledBitmap(oldBmp, UIUtil.dip2px(context, 27.5f), UIUtil.dip2px(context, 10f), true);
+        drawable = new BitmapDrawable(res, newBmp);
+
+//        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+//            Bitmap bitmap = FileUtils.readBitmapFromAssetsFile("images/face/royal/royal_" + resourceId + ".gif", context);
+//            drawable = new BitmapDrawable(context.getResources(), bitmap);
+//            bitmap.recycle();
+//        } else {
+//            drawable = new GifDrawable(getFileContent(context, "images/face/royal/royal_" + resourceId + ".gif"));
+//            drawable.setCallback(new DrawableCallback(textView));
+//        }
         if (drawable != null) {
             int originWidth = drawable.getIntrinsicWidth();
             int originHeight = drawable.getIntrinsicHeight();
