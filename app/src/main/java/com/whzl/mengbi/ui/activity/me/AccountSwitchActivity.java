@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
 import com.whzl.mengbi.gen.CommonGiftDao;
 import com.whzl.mengbi.greendao.CommonGift;
 import com.whzl.mengbi.model.entity.CheckLoginResultBean;
@@ -32,6 +33,8 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -220,6 +223,7 @@ public class AccountSwitchActivity extends BaseActivity {
                                 SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, commonGift.getNickname());
                                 SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, commonGift.getRecharged());
                                 currentUserId = commonGift.getUserId();
+                                EventBus.getDefault().post(new LoginSuccussEvent());
                                 baseListAdapter.notifyDataSetChanged();
                             } else {
                                 jumpToLogin();
