@@ -9,8 +9,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/view_space"
-        android:background="@drawable/view_space"/>
+        android:layout_height="6.5dp"
+        android:background="@drawable/view_space" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
@@ -20,7 +20,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/comm_white">
+            android:background="@color/comm_white"
+            android:paddingLeft="12dp">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler"
