@@ -10,7 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,6 +60,7 @@ public class BackpackFragment extends BaseFragment {
     private int selectedPosition = -1;
 
     private int selectId = -1;
+    private AnimatorSet animatorSetsuofang;
 
 
     public static BackpackFragment newInstance(ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList) {
@@ -164,6 +165,10 @@ public class BackpackFragment extends BaseFragment {
             if (selectedPosition == position) {
                 return;
             }
+            if (animatorSetsuofang != null) {
+                animatorSetsuofang.end();
+                animatorSetsuofang = null;
+            }
             selectedPosition = position;
             if (recycler.getChildCount() > 0) {
                 for (int i = 0; i < recycler.getChildCount(); i++) {
@@ -189,21 +194,20 @@ public class BackpackFragment extends BaseFragment {
     }
 
     public void startAnimal(View imageView, int position) {
+        animatorSetsuofang = new AnimatorSet();
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 1.2f, 1f, 0.8f, 1f);
+        scaleX.setRepeatCount(-1);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 1.2f, 1f, 0.8f, 1f);
+        scaleY.setRepeatCount(-1);
 
-        AnimatorSet animatorSetsuofang = new AnimatorSet();
-
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 2f, 1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 2f, 1f);
-
-        animatorSetsuofang.setDuration(300);
-        animatorSetsuofang.setInterpolator(new OvershootInterpolator());
+        animatorSetsuofang.setDuration(1500);
+        animatorSetsuofang.setInterpolator(new LinearInterpolator());
         animatorSetsuofang.play(scaleX).with(scaleY);//两个动画同时开始
         animatorSetsuofang.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-//                selectedPosition = position;
-//                giftAdapter.notifyDataSetChanged();
+//                giftAdapter.setSelectedPosition(position);
             }
         });
         animatorSetsuofang.start();

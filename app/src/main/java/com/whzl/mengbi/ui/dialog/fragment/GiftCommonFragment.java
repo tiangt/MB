@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.AppConfig;
@@ -16,7 +16,6 @@ import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
 import com.whzl.mengbi.ui.adapter.GiftCommonAdapter;
-import com.whzl.mengbi.ui.adapter.LiveHouseGiftAdapter;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
 
@@ -38,6 +37,7 @@ public class GiftCommonFragment extends BaseFragment {
     private GiftCommonAdapter giftAdapter;
     private boolean flagOnMessageEvent = true;
     private int currentPosition = -1;
+    private AnimatorSet animatorSetsuofang;
 
 
     public static GiftCommonFragment newInstance(ArrayList<GoodsPriceBatchBean.ListBean> giftList) {
@@ -66,6 +66,10 @@ public class GiftCommonFragment extends BaseFragment {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (currentPosition == position) {
                     return;
+                }
+                if (animatorSetsuofang != null) {
+                    animatorSetsuofang.end();
+                    animatorSetsuofang = null;
                 }
                 try {
                     currentPosition = position;
@@ -96,14 +100,14 @@ public class GiftCommonFragment extends BaseFragment {
     }
 
     public void startAnimal(View imageView, int position) {
+        animatorSetsuofang = new AnimatorSet();
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 1.2f, 1f, 0.8f, 1f);
+        scaleX.setRepeatCount(-1);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 1.2f, 1f, 0.8f, 1f);
+        scaleY.setRepeatCount(-1);
 
-        AnimatorSet animatorSetsuofang = new AnimatorSet();
-
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 1.5f, 1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 1.5f, 1f);
-
-        animatorSetsuofang.setDuration(300);
-        animatorSetsuofang.setInterpolator(new OvershootInterpolator());
+        animatorSetsuofang.setDuration(1500);
+        animatorSetsuofang.setInterpolator(new LinearInterpolator());
         animatorSetsuofang.play(scaleX).with(scaleY);//两个动画同时开始
         animatorSetsuofang.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -119,6 +123,10 @@ public class GiftCommonFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (animatorSetsuofang != null) {
+            animatorSetsuofang.end();
+            animatorSetsuofang = null;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

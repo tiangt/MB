@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.AppConfig;
@@ -36,6 +36,7 @@ public class GiftSortFragment extends BaseFragment {
     private LiveHouseGiftAdapter giftAdapter;
     private boolean flagOnMessageEvent = true;
     private int currentPosition = -1;
+    private AnimatorSet animatorSetsuofang;
 
 
     public static GiftSortFragment newInstance(ArrayList<GiftInfo.GiftDetailInfoBean> giftList) {
@@ -65,14 +66,22 @@ public class GiftSortFragment extends BaseFragment {
                 if (currentPosition == position) {
                     return;
                 }
+                if (animatorSetsuofang != null) {
+                    animatorSetsuofang.end();
+                    animatorSetsuofang = null;
+                }
                 try {
 //                    giftAdapter.setSelectedPosition(position);
                     currentPosition = position;
-                    if (recycler.getChildCount() > 0) {
-                        for (int i = 0; i < recycler.getChildCount(); i++) {
-                            recycler.getChildAt(i).findViewById(R.id.rl).setBackground(null);
-                        }
+                    for (int i = 0; i < gridLayoutManager.getChildCount(); i++) {
+                        gridLayoutManager.getChildAt(i).findViewById(R.id.rl).setBackground(null);
+                        gridLayoutManager.getChildAt(i).findViewById(R.id.iv_gift).getAnimation();
                     }
+//                    if (recycler.getChildCount() > 0) {
+//                        for (int i = 0; i < recycler.getChildCount(); i++) {
+//                            recycler.getChildAt(i).findViewById(R.id.rl).setBackground(null);
+//                        }
+//                    }
 //                    GifDrawable drawable = new GifDrawable(getResources(), R.drawable.bg_live_house_select);
                     (view.findViewById(R.id.rl)).setBackgroundResource(R.drawable.bg_live_house_gift_bg);
                     startAnimal(view.findViewById(R.id.iv_gift), position);
@@ -93,14 +102,14 @@ public class GiftSortFragment extends BaseFragment {
     }
 
     public void startAnimal(View imageView, int position) {
+        animatorSetsuofang = new AnimatorSet();
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 1.2f, 1f, 0.8f, 1f);
+        scaleX.setRepeatCount(-1);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 1.2f, 1f, 0.8f, 1f);
+        scaleY.setRepeatCount(-1);
 
-        AnimatorSet animatorSetsuofang = new AnimatorSet();
-
-        ObjectAnimator scaleX = ObjectAnimator.ofFloat(imageView, "scaleX", 1f, 1.5f, 1f);
-        ObjectAnimator scaleY = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 1.5f, 1f);
-
-        animatorSetsuofang.setDuration(300);
-        animatorSetsuofang.setInterpolator(new OvershootInterpolator());
+        animatorSetsuofang.setDuration(1500);
+        animatorSetsuofang.setInterpolator(new LinearInterpolator());
         animatorSetsuofang.play(scaleX).with(scaleY);//两个动画同时开始
         animatorSetsuofang.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -116,6 +125,10 @@ public class GiftSortFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (animatorSetsuofang != null) {
+            animatorSetsuofang.end();
+            animatorSetsuofang = null;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
