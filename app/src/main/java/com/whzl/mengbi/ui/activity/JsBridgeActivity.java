@@ -26,6 +26,7 @@ import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
+import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.js.JumpRoomBean;
 import com.whzl.mengbi.model.entity.js.LoginCallbackBean;
@@ -155,6 +156,44 @@ public class JsBridgeActivity extends BaseActivity {
 //                    showToast("===" + data)
             );
         });
+
+        bridgeWebView.registerHandler("jumpToLiveActivityByAnchorId", (data, function) -> {
+            JumpRoomBean jumpRoomBean = GsonUtils.GsonToBean(data, JumpRoomBean.class);
+            if (jumpRoomBean == null) {
+                return;
+            }
+            if (programId.equals(jumpRoomBean.pId)) {
+                finish();
+            } else {
+                jumpToLiveHouseByAnchorId(Integer.parseInt(jumpRoomBean.pId));
+            }
+        });
+    }
+
+    private void jumpToLiveHouseByAnchorId(int i) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("anchorId", i);
+        ApiFactory.getInstance().getApi(Api.class)
+                .programInfoByAnchorid(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<ProgramInfoByAnchorBean>(this) {
+
+                    @Override
+                    public void onSuccess(ProgramInfoByAnchorBean dataBean) {
+                        if (dataBean != null && dataBean.list != null && !dataBean.list.isEmpty()) {
+                            Intent intent = new Intent(JsBridgeActivity.this, LiveDisplayActivity.class);
+                            intent.putExtra("programId", dataBean.list.get(0).programId);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
     }
 
     public void jumpToLoginActivity() {

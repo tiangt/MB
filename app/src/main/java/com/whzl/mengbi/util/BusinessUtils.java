@@ -35,7 +35,7 @@ public class BusinessUtils {
                 .mallBuy(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<JsonElement>(context) {
+                .subscribe(new ApiObserver<JsonElement>() {
 
                     @Override
                     public void onSuccess(JsonElement bean) {
@@ -58,7 +58,7 @@ public class BusinessUtils {
                 .getUserInfo(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<UserInfo.DataBean>(context) {
+                .subscribe(new ApiObserver<UserInfo.DataBean>() {
 
                     @Override
                     public void onSuccess(UserInfo.DataBean bean) {
@@ -81,7 +81,7 @@ public class BusinessUtils {
                 .getRoomInfo(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<AnchorInfo>(context) {
+                .subscribe(new ApiObserver<AnchorInfo>() {
 
                     @Override
                     public void onSuccess(AnchorInfo bean) {

@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.js.JumpRoomBean;
 import com.whzl.mengbi.model.entity.js.LoginStateBean;
@@ -160,6 +161,35 @@ public class LiveWebFragment extends BaseFragment {
             function.onCallBack(gson.toJson(bean));
         });
 
+        bridgeWebView.registerHandler("jumpToLiveActivityByAnchorId", (data, function) -> {
+            JumpRoomBean jumpRoomBean = GsonUtils.GsonToBean(data, JumpRoomBean.class);
+            jumpToLiveHouseByAnchorId(Integer.parseInt(jumpRoomBean.pId));
+        });
+    }
+
+    private void jumpToLiveHouseByAnchorId(int i) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("anchorId", i);
+        ApiFactory.getInstance().getApi(Api.class)
+                .programInfoByAnchorid(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<ProgramInfoByAnchorBean>(this) {
+
+                    @Override
+                    public void onSuccess(ProgramInfoByAnchorBean dataBean) {
+                        if (dataBean != null && dataBean.list != null && !dataBean.list.isEmpty()) {
+                            Intent intent = new Intent(getMyActivity(), LiveDisplayActivity.class);
+                            intent.putExtra("programId", dataBean.list.get(0).programId);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
     }
 
     public void jumpToLoginActivity() {

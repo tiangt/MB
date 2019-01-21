@@ -35,6 +35,7 @@ import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.model.entity.PkRecordListBean;
 import com.whzl.mengbi.model.entity.PkTimeBean;
+import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RebateBean;
@@ -794,4 +795,14 @@ public interface Api {
     @POST("v1/redpacket/room-redpacket-list")
     @FormUrlEncoded
     Observable<ApiResult<RoomRedpackList>> getRoomRedpacketList(@FieldMap Map<String, String> params);
+
+    /**
+     * 根据主播id查询房间信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/anchor/program-info-by-anchorid")
+    @FormUrlEncoded
+    Observable<ApiResult<ProgramInfoByAnchorBean>> programInfoByAnchorid(@FieldMap Map<String, String> params);
 }
