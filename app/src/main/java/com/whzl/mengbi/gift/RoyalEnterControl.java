@@ -84,26 +84,6 @@ public class RoyalEnterControl {
         initTv(list.get(0));
         tvEnter.init();
 
-//        if (translationX == null) {
-//            translationX = new ObjectAnimator().ofFloat(llEnter, "translationX",
-//                    screenWidthPixels, screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2);
-//            translationX.setDuration(1000);  //设置动画时间
-//            translationX.addListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    super.onAnimationEnd(animation);
-//                    tvEnter.startScroll();
-//                    new Handler().postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            outAnim();
-//                        }
-//                    }, 5000);
-//                }
-//            });
-//        }
-//        translationX.start();
-
         showAnim = ValueAnimator.ofFloat(screenWidthPixels, screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2);
         showAnim.setInterpolator(new DecelerateInterpolator());
         showAnim.setDuration(1000);

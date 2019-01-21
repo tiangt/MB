@@ -359,7 +359,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     }
 
     private void setPrettyNum(PersonalInfoBean.DataBean userBean) {
-        if (userBean.getGoodsList() == null) {
+        if (userBean == null || userBean.getGoodsList() == null || userBean.getGoodsList().isEmpty()) {
             return;
         }
         for (int i = 0; i < userBean.getGoodsList().size(); i++) {

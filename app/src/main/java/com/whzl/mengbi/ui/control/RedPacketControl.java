@@ -21,6 +21,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.WeakHandler;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -47,7 +48,7 @@ public class RedPacketControl {
     private Context context;
     private RecyclerView rvRedPack;
     public List<RoomRedpackList.ListBean> redPackList = new ArrayList();
-    private Handler handler = new Handler();
+    private WeakHandler handler = new WeakHandler();
     public BaseListAdapter redpackAdapter;
     private Long userId;
     private String sessionId;

@@ -7,6 +7,11 @@
 
     <include layout="@layout/comm_white_toolbar" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_space"
+        android:background="@drawable/view_space"/>
+
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"

@@ -26,6 +26,7 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
 import com.whzl.mengbi.ui.adapter.ChatMsgAnimation;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
@@ -185,7 +186,7 @@ public class ChatListFragment extends BaseFragment {
 //                        tvPrettyDesc.setText(welcomeMsg.getPrettyNum() == 0 ? "普号" : "靓号");
 //                        tvPrettyNum.setText(welcomeMsg.getPrettyNum() == 0 ? welcomeMsg.getUid() + "" : welcomeMsg.getPrettyNum() + "");
                         String imageUrl = ImageUrl.getImageUrl(welcomeMsg.getCarId(), "jpg");
-                        GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivCar);
+                        GlideImageLoader.getInstace().displayImage(BaseApplication.getInstance(), imageUrl, ivCar);
 //                        String goodsColor = welcomeMsg.getGoodsColor();
 //                        if ("A".equals(goodsColor)) {
 //                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
@@ -215,12 +216,12 @@ public class ChatListFragment extends BaseFragment {
                             ivAnnounce.setVisibility(View.GONE);
                         } else {
                             ivAnnounce.setVisibility(View.VISIBLE);
-                            Glide.with(getContext()).load(systemMessage.getPic())
+                            Glide.with(BaseApplication.getInstance()).load(systemMessage.getPic())
                                     .into(ivAnnounce);
                         }
                         if (!TextUtils.isEmpty(((SystemMessage) message).getLink())) {
                             holder.itemView.setOnClickListener(v -> {
-                                Intent intent = new Intent(getContext(), CommWebActivity.class);
+                                Intent intent = new Intent(getMyActivity(), CommWebActivity.class);
                                 intent.putExtra("title", "公告");
                                 intent.putExtra("url", systemMessage.getLink());
                                 startActivity(intent);

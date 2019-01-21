@@ -54,6 +54,7 @@ import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.WeakHandler;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -131,6 +132,7 @@ public class PkControl {
     private boolean isMvp;
     private boolean needShow;
     private AnimationDrawable animationDrawable;
+    private WeakHandler handler = new WeakHandler();
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -528,10 +530,10 @@ public class PkControl {
         for (int i = 0; i < animationDrawable.getNumberOfFrames(); i++) {
             duration += animationDrawable.getDuration(i);
         }
-        Handler handler = new Handler();
+
         handler.postDelayed(new Runnable() {
             public void run() {
-                LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
+                LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
                 ivCountDown.setVisibility(View.GONE);
                 animationDrawable.stop();
             }
@@ -588,6 +590,9 @@ public class PkControl {
         if (animationDrawable != null) {
             animationDrawable.stop();
             ivCountDown.setVisibility(View.GONE);
+        }
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
         }
     }
 
@@ -689,7 +694,7 @@ public class PkControl {
         pkLayout.post(new Runnable() {
             @Override
             public void run() {
-                LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
+                LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     PopupWindowCompat.showAsDropDown(pkResultPop, pkLayout, offsetX, offsetY, Gravity.START);
                 }
@@ -761,7 +766,7 @@ public class PkControl {
             pkLayout.post(new Runnable() {
                 @Override
                 public void run() {
-                    LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
+                    LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !mvpWindow.isShowing()) {
                         PopupWindowCompat.showAsDropDown(mvpWindow, pkLayout, offsetX, offsetY, Gravity.START);
                     }

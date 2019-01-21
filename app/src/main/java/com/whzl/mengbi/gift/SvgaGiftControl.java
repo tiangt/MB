@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 import okhttp3.OkHttpClient;
@@ -41,6 +42,7 @@ public class SvgaGiftControl {
     private ArrayList<AnimEvent> mGifGiftQueue = new ArrayList<>();
     private boolean isShow;
     private SVGAImageView svgaImageView;
+    private Disposable disposable;
 
     public SvgaGiftControl(Context context, SVGAImageView svgaView) {
         mContext = context;
@@ -78,6 +80,9 @@ public class SvgaGiftControl {
     }
 
     public void destroy() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
         if(svgaImageView != null){
             svgaImageView.setVisibility(View.GONE);
         }
@@ -118,7 +123,7 @@ public class SvgaGiftControl {
                 if (mContext == null) {
                     return;
                 }
-                Observable.just(1)
+                disposable = Observable.just(1)
                         .delay(((long) (event.getSeconds() * 1000)), TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(integer -> {
@@ -128,7 +133,7 @@ public class SvgaGiftControl {
                             if (mGifGiftQueue.size() > 0) {
                                 showSVGA(mGifGiftQueue.get(0));
                                 mGifGiftQueue.remove(0);
-                            }else{
+                            } else {
                                 isShow = false;
                             }
                         });
