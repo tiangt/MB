@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
@@ -35,6 +36,12 @@ import butterknife.OnClick;
  * @date 2018/7/23
  */
 public class RegisterActivity extends BaseActivity implements RegisterView, TextWatcher {
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_menu_text)
+    TextView tvMenu;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.et_verify_code)
@@ -66,15 +73,23 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_register, "注册", "登录", true);
+        setContentView(R.layout.activity_register);
     }
 
     @Override
     protected void setupView() {
+        tvTitle.setText("注册");
+        tvMenu.setText("登录");
+        rlBack.setOnClickListener((v -> finish()));
+        tvMenu.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
         etPhone.addTextChangedListener(this);
         etPassword.addTextChangedListener(this);
         etVerifyCode.addTextChangedListener(this);
-
     }
 
     @Override
@@ -102,13 +117,13 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         showToast(msg);
     }
 
-    @Override
-    protected void onToolbarMenuClick() {
-        super.onToolbarMenuClick();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    @Override
+//    protected void onToolbarMenuClick() {
+//        super.onToolbarMenuClick();
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 
     /**
      * 获取验证码时间定时器

@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -42,6 +44,10 @@ import butterknife.OnClick;
  */
 public class BindingPhoneActivity extends BaseActivity implements BindingPhoneView, TextWatcher {
 
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     @BindView(R.id.et_binding_phone)
     EditText etPhone;
     @BindView(R.id.et_verify_code)
@@ -58,7 +64,7 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_binding_phone, "绑定手机", true);
+        setContentView(R.layout.activity_binding_phone);
         bindingPresenter = new BindingPresenterImpl(this);
     }
 
@@ -70,6 +76,8 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
 
     @Override
     protected void setupView() {
+        tvTitle.setText("绑定手机");
+        rlBack.setOnClickListener((v -> finish()));
         etPhone.addTextChangedListener(this);
         etVerifyCode.addTextChangedListener(this);
         etPsw.addTextChangedListener(this);

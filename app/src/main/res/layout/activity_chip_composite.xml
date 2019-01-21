@@ -5,12 +5,12 @@
     android:orientation="vertical"
     android:background="@color/white">
 
-    <include layout="@layout/login_toolbar" />
+    <include layout="@layout/layout_title" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="#EBEAEA"/>
+        android:layout_height="6.5dp"
+        android:background="@drawable/view_space" />
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"

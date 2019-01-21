@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -38,6 +39,10 @@ import butterknife.OnClick;
  */
 public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
 
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     @BindView(R.id.tv_old_phone)
     TextView tvOldPhone;
     @BindView(R.id.et_old_phone)
@@ -54,7 +59,7 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_change_phone, "更换手机", true);
+        setContentView(R.layout.activity_change_phone);
     }
 
     @Override
@@ -65,6 +70,8 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
 
     @Override
     protected void setupView() {
+        tvTitle.setText("更换手机");
+        rlBack.setOnClickListener((v -> finish()));
         mMobile = getIntent().getStringExtra("bindMobile");
         String maskNum = mMobile.substring(0, 3) + "****" + mMobile.substring(7, mMobile.length());
         tvOldPhone.setText(maskNum);
