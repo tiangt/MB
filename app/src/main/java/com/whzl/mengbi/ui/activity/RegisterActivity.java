@@ -11,8 +11,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
@@ -24,8 +27,13 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.RegisterView;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,6 +43,13 @@ import butterknife.OnClick;
  * @date 2018/7/23
  */
 public class RegisterActivity extends BaseActivity implements RegisterView, TextWatcher {
+
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_menu_text)
+    TextView tvMenu;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.et_verify_code)
@@ -55,7 +70,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
     ImageButton ibCleanPsw;
     private CountDownTimer cdt;
     private RegisterPresenterImpl registerPresenter;
-
+    private boolean isBindPhone = true;
 
     @Override
     protected void initEnv() {
@@ -66,15 +81,23 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_register, "注册", "登录", true);
+        setContentView(R.layout.activity_register);
     }
 
     @Override
     protected void setupView() {
+        tvTitle.setText("注册");
+        tvMenu.setText("登录");
+        rlBack.setOnClickListener((v -> finish()));
+        tvMenu.setOnClickListener(v -> {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
         etPhone.addTextChangedListener(this);
         etPassword.addTextChangedListener(this);
         etVerifyCode.addTextChangedListener(this);
-
     }
 
     @Override
@@ -102,13 +125,13 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         showToast(msg);
     }
 
-    @Override
-    protected void onToolbarMenuClick() {
-        super.onToolbarMenuClick();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    @Override
+//    protected void onToolbarMenuClick() {
+//        super.onToolbarMenuClick();
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 
     /**
      * 获取验证码时间定时器
@@ -146,6 +169,16 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         boolean isPhone = StringUtils.isPhone(etPhone.getText().toString().trim());
         String password = etPassword.getText().toString().trim();
         String verifyCode = etVerifyCode.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
+        if (!isPhone && !TextUtils.isEmpty(phone) && phone.length() == 11) {
+            showToast("请输入正确的手机号");
+            return;
+        }
+
+        if (phone.length() == 11) {
+            getVerifyCode(phone);
+        }
+
         if (isPhone && !TextUtils.isEmpty(password) && password.length() >= 6
                 && !TextUtils.isEmpty(verifyCode) && verifyCode.length() == 6) {
             btnRegister.setEnabled(true);
@@ -153,7 +186,6 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
             btnRegister.setEnabled(false);
         }
 
-        String phone = etPhone.getText().toString().trim();
         if (!TextUtils.isEmpty(phone)) {
             ibCleanPhone.setVisibility(View.VISIBLE);
         } else {
@@ -173,11 +205,19 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         switch (view.getId()) {
             case R.id.btn_get_verify_code:
                 String phone = etPhone.getText().toString().trim();
+                if (TextUtils.isEmpty(phone)) {
+                    showToast("手机号码不能为空");
+                    return;
+                }
+
                 if (!StringUtils.isPhone(phone)) {
                     showToast("请输入正确的手机号");
                     return;
                 }
-                registerPresenter.getRegexCode(phone);
+
+                if (!isBindPhone) {
+                    registerPresenter.getRegexCode(phone);
+                }
                 break;
 
             case R.id.btn_register:
@@ -210,6 +250,35 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
             default:
                 break;
         }
+    }
+
+    /**
+     * 验证手机号是否存在
+     * <p>
+     * 验证手机
+     */
+    private void getVerifyCode(String mobile) {
+        HashMap paramsMapMobile = new HashMap();
+        paramsMapMobile.put("identifyCode", mobile);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.IS_PHONE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        JSONObject jsonObject = JSON.parseObject(result.toString());
+                        String code = jsonObject.get("code").toString();
+                        if (code.equals("-1231")) {
+                            isBindPhone = false;
+                        } else if (code.equals("200")) {
+                            isBindPhone = true;
+                            showToast("该手机号码已存在");
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("errorMsg" + errorMsg.toString());
+                    }
+                });
     }
 
     @Override

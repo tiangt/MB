@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
@@ -55,6 +56,12 @@ import butterknife.OnClick;
 public class LoginActivity extends BaseActivity implements LoginView, TextWatcher {
 
     private static final int REQUEST_REGISTER = 520;
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_menu_text)
+    TextView tvMenu;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.et_password)
@@ -149,11 +156,20 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_login_new, R.string.login, R.string.register, true);
+        setContentView(R.layout.activity_login_new);
     }
 
     @Override
     protected void setupView() {
+        tvTitle.setText("登录");
+        tvMenu.setText("注册");
+        rlBack.setOnClickListener((v -> finish()));
+        tvMenu.setOnClickListener(v -> {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivityForResult(intent, REQUEST_REGISTER);
+            finish();
+        });
+
         rgEnvSwitch.setVisibility(BuildConfig.API_DEBUG_ENT ? View.VISIBLE : View.GONE);
         rgEnvSwitch.check(URLContentUtils.isDebug ? R.id.rb_debug : R.id.rb_release);
         rgEnvSwitch.setOnCheckedChangeListener((group, checkedId) -> {
@@ -218,13 +234,14 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
 
     }
 
-    @Override
-    protected void onToolbarMenuClick() {
-        super.onToolbarMenuClick();
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivityForResult(intent, REQUEST_REGISTER);
-        finish();
-    }
+//    @Override
+//    protected void onToolbarMenuClick() {
+//        super.onToolbarMenuClick();
+//        Intent intent = new Intent(this, RegisterActivity.class);
+//        startActivityForResult(intent, REQUEST_REGISTER);
+//        finish();
+//    }
+
 
     @OnClick({R.id.btn_wechat_login, R.id.btn_qq_login, R.id.btn_login})
     public void onClick(View view) {

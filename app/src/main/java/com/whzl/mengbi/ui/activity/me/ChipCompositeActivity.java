@@ -43,6 +43,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 合成碎片
@@ -52,6 +53,12 @@ import butterknife.ButterKnife;
  */
 public class ChipCompositeActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener {
 
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_menu_text)
+    TextView tvMenu;
     @BindView(R.id.rv_parent_chip)
     RecyclerView recycler;
     @BindView(R.id.refresh_layout)
@@ -67,7 +74,7 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_chip_composite, "物品合成", "我的碎片", true);
+        setContentView(R.layout.activity_chip_composite);
     }
 
     @Override
@@ -78,6 +85,9 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
 
     @Override
     protected void setupView() {
+        tvTitle.setText("物品合成");
+        tvMenu.setText("我的碎片");
+        rlBack.setOnClickListener((v -> finish()));
         initRecycler();
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
@@ -88,12 +98,25 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
     protected void loadData() {
     }
 
-    @Override
-    protected void onToolbarMenuClick() {
-        super.onToolbarMenuClick();
-        Intent intent = new Intent(ChipCompositeActivity.this, MyChipActivity.class);
-        startActivity(intent);
+    @OnClick({R.id.tv_menu_text})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_menu_text:
+                Intent intent = new Intent(ChipCompositeActivity.this, MyChipActivity.class);
+                startActivity(intent);
+                break;
+
+            default:
+                break;
+        }
     }
+
+//    @Override
+//    protected void onToolbarMenuClick() {
+//        super.onToolbarMenuClick();
+//        Intent intent = new Intent(ChipCompositeActivity.this, MyChipActivity.class);
+//        startActivity(intent);
+//    }
 
     private void initRecycler() {
         recycler.setNestedScrollingEnabled(false);
