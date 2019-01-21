@@ -182,6 +182,15 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         invalidate();
     }
 
+    public void destyoy() {
+        if (rxTimerUtil != null) {
+            rxTimerUtil.cancel();
+        }
+        scrollTimes = 1;
+        isStarting = false;
+        invalidate();
+    }
+
     @Nullable
     @Override
     public void onDraw(Canvas canvas) {
@@ -189,8 +198,8 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
             canvas.drawText(text, viewWidth - step, y, paint);
         }
         if (paint != null && scrollTimes == 3) {
-            if (text.length() > 5) {
-                canvas.drawText(text.substring(0, 5) + "...", viewWidth - step, y, paint);
+            if (paint.measureText(text) > viewWidth) {
+                canvas.drawText(text.substring(0, 4) + "...", viewWidth - step, y, paint);
             } else {
                 canvas.drawText(text, viewWidth - step, y, paint);
             }

@@ -1985,7 +1985,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void destroy() {
-
+        if (tvHostName != null) {
+            tvHostName.destyoy();
+        }
         if (mGifGiftControl != null) {
             mGifGiftControl.destroy();
         }

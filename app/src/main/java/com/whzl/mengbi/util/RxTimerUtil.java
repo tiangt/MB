@@ -14,25 +14,26 @@ import io.reactivex.disposables.Disposable;
  */
 public class RxTimerUtil {
 
-    private  Disposable mDisposable;
+    private Disposable mDisposable;
 
-    /** milliseconds毫秒后执行next操作
+    /**
+     * milliseconds毫秒后执行next操作
      *
      * @param milliseconds
      * @param next
      */
-    public void timer(long milliseconds,final IRxNext next) {
+    public void timer(long milliseconds, final IRxNext next) {
         Observable.timer(milliseconds, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable disposable) {
-                        mDisposable=disposable;
+                        mDisposable = disposable;
                     }
 
                     @Override
                     public void onNext(@NonNull Long number) {
-                        if(next!=null){
+                        if (next != null) {
                             next.doNext(number);
                         }
                     }
@@ -52,23 +53,24 @@ public class RxTimerUtil {
     }
 
 
-    /** 每隔milliseconds毫秒后执行next操作
+    /**
+     * 每隔milliseconds毫秒后执行next操作
      *
      * @param milliseconds
      * @param next
      */
-    public  void interval(long milliseconds,final IRxNext next){
+    public void interval(long milliseconds, final IRxNext next) {
         Observable.interval(milliseconds, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable disposable) {
-                        mDisposable=disposable;
+                        mDisposable = disposable;
                     }
 
                     @Override
                     public void onNext(@NonNull Long number) {
-                        if(next!=null){
+                        if (next != null) {
                             next.doNext(number);
                         }
                     }
@@ -89,13 +91,13 @@ public class RxTimerUtil {
     /**
      * 取消订阅
      */
-    public  void cancel(){
-        if(mDisposable!=null&&!mDisposable.isDisposed()){
+    public void cancel() {
+        if (mDisposable != null) {
             mDisposable.dispose();
         }
     }
 
-    public interface IRxNext{
+    public interface IRxNext {
         void doNext(long number);
     }
 }
