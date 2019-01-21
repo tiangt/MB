@@ -629,6 +629,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
+                LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
                 try {
                     //拿到tabLayout的mTabStrip属性
                     LinearLayout mTabStrip = (LinearLayout) tabLayout.getChildAt(0);

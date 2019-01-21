@@ -1238,6 +1238,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OFFICIAL_SEND_REDPACKET)) {
             if (redPacketControl == null) {
                 redPacketControl = new RedPacketControl(this, rvRedPack);
+                redPacketControl.init();
             }
             redPacketControl.destroy();
             RoomRedpackList.ListBean bean = new RoomRedpackList.ListBean();
@@ -1646,6 +1647,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onGetRoomRedListSuccess(RoomRedpackList dataBean) {
         if (redPacketControl == null) {
             redPacketControl = new RedPacketControl(this, rvRedPack);
+            redPacketControl.init();
         }
         redPacketControl.redPackList.clear();
         redPacketControl.redPackList.addAll(dataBean.list);

@@ -36,6 +36,7 @@ import com.whzl.mengbi.ui.dialog.fragment.CommonEmojiMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GuardEmojiFragment;
 import com.whzl.mengbi.ui.dialog.fragment.VipEmojiFragment;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -311,6 +312,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                             .postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
+                                    LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
                                     llEmojiContiner.setVisibility(View.VISIBLE);
                                     isShowSoftInput = false;
                                 }

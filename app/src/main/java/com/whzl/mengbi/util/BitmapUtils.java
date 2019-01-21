@@ -134,6 +134,7 @@ public class BitmapUtils {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
                 URL imageUrl = null;
                 try {
                     imageUrl = new URL(path);

@@ -531,6 +531,7 @@ public class PkControl {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
+                LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
                 ivCountDown.setVisibility(View.GONE);
                 animationDrawable.stop();
             }
@@ -688,6 +689,7 @@ public class PkControl {
         pkLayout.post(new Runnable() {
             @Override
             public void run() {
+                LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     PopupWindowCompat.showAsDropDown(pkResultPop, pkLayout, offsetX, offsetY, Gravity.START);
                 }
@@ -759,6 +761,7 @@ public class PkControl {
             pkLayout.post(new Runnable() {
                 @Override
                 public void run() {
+                    LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !mvpWindow.isShowing()) {
                         PopupWindowCompat.showAsDropDown(mvpWindow, pkLayout, offsetX, offsetY, Gravity.START);
                     }

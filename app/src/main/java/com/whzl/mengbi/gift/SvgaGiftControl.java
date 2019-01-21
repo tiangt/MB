@@ -12,6 +12,7 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
+import com.whzl.mengbi.util.LogUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -156,6 +157,7 @@ public class SvgaGiftControl {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
                         OkHttpClient client = new OkHttpClient();
                         Request request = new Request.Builder().url(url).get().build();
                         try {
