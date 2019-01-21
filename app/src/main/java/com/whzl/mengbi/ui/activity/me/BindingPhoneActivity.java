@@ -61,6 +61,7 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
 
     private BindingPresenterImpl bindingPresenter;
     private CountDownTimer cdt;
+    private boolean isBindPhone = true;
 
     @Override
     protected void setupContentView() {
@@ -102,8 +103,10 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
                     showToast("请输入正确的手机号");
                     return;
                 }
-                if (ClickUtil.isFastClick()) {
-                    bindingPresenter.getRegexCode(phone);
+                if (!isBindPhone) {
+                    if (ClickUtil.isFastClick()) {
+                        bindingPresenter.getRegexCode(phone);
+                    }
                 }
                 break;
 
@@ -138,9 +141,9 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
 
     @Override
     public void showRegexCodeMsg(String code, String msg) {
-        if(code.equals("200")){
+        if (code.equals("200")) {
             startTimer();
-        }else{
+        } else {
             showToast(msg);
         }
     }
@@ -163,8 +166,18 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
     @Override
     public void afterTextChanged(Editable s) {
         boolean isPhone = StringUtils.isPhone(etPhone.getText().toString().trim());
+        String phone = etPhone.getText().toString().trim();
         String verifyCode = etVerifyCode.getText().toString().trim();
         String password = etPsw.getText().toString().trim();
+        if (!isPhone && !TextUtils.isEmpty(phone) && phone.length() == 11) {
+            showToast("请输入正确的手机号");
+            return;
+        }
+
+        if (phone.length() == 11) {
+            getVerifyCode(phone);
+        }
+
         if (isPhone && !TextUtils.isEmpty(password) && password.length() >= 6
                 && !TextUtils.isEmpty(verifyCode) && verifyCode.length() == 6) {
             btnConfirm.setEnabled(true);
@@ -216,6 +229,35 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
                             finish();
                         } else {
                             showToast(msg);
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("errorMsg" + errorMsg.toString());
+                    }
+                });
+    }
+
+    /**
+     * 验证手机号是否存在
+     * <p>
+     * 验证手机
+     */
+    private void getVerifyCode(String mobile) {
+        HashMap paramsMapMobile = new HashMap();
+        paramsMapMobile.put("identifyCode", mobile);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.IS_PHONE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        JSONObject jsonObject = JSON.parseObject(result.toString());
+                        String code = jsonObject.get("code").toString();
+                        if (code.equals("-1231")) {
+                            isBindPhone = false;
+                        } else if (code.equals("200")) {
+                            isBindPhone = true;
+                            showToast("该手机号码已存在");
                         }
                     }
 
