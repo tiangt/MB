@@ -49,6 +49,12 @@ import butterknife.ButterKnife;
  */
 public class MyChipActivity extends BaseActivity implements OnRefreshListener, OnLoadMoreListener {
 
+    @BindView(R.id.rl_back)
+    RelativeLayout rlBack;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_menu_text)
+    TextView tvMenu;
     @BindView(R.id.rv_my_chip)
     RecyclerView recycler;
     @BindView(R.id.refresh_layout)
@@ -64,7 +70,8 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_my_chip, "我的碎片", true);
+//        setContentView(R.layout.activity_my_chip, "我的碎片", true);
+        setContentView(R.layout.activity_my_chip);
     }
 
     @Override
@@ -76,6 +83,8 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
 
     @Override
     protected void setupView() {
+        tvTitle.setText("我的碎片");
+        rlBack.setOnClickListener((v -> finish()));
         initRecycler();
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
@@ -220,7 +229,7 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
     }
 
     private void loadSuccess(MyChipListInfo listInfo) {
-        if (listInfo != null && listInfo.data != null && listInfo.data.list != null ) {
+        if (listInfo != null && listInfo.data != null && listInfo.data.list != null) {
             rlEmpty.setVisibility(View.GONE);
             if (mCurrentPager == 2) {
                 mList.clear();
@@ -230,7 +239,7 @@ public class MyChipActivity extends BaseActivity implements OnRefreshListener, O
             }
             mList.addAll(listInfo.data.list);
             if (mList == null || mList.size() < NetConfig.DEFAULT_PAGER_SIZE) {
-                if(mList.size() == 0){
+                if (mList.size() == 0) {
                     rlEmpty.setVisibility(View.VISIBLE);
                 }
                 adapter.notifyDataSetChanged();

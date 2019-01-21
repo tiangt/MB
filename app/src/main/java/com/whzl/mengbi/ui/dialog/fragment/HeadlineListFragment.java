@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.dialog.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -13,6 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.GoodsPriceInfo;
@@ -53,7 +57,7 @@ import io.reactivex.disposables.Disposable;
  * @author cliang
  * @date 2018.12.20
  */
-public class HeadlineListFragment extends BaseFragment {
+public class HeadlineListFragment extends BaseFragment implements OnRefreshListener {
 
     @BindView(R.id.rv_headline)
     RecyclerView recycler;
@@ -75,6 +79,8 @@ public class HeadlineListFragment extends BaseFragment {
     TextView tvNickName;
     @BindView(R.id.tv_charm_value)
     TextView tvCharmValue;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refreshLayout;
 
     private BaseListAdapter mAdapter;
     private String mType = "F"; //"F"本轮头条，"T"上轮头条，默认本轮
@@ -134,6 +140,8 @@ public class HeadlineListFragment extends BaseFragment {
             rlGift.setVisibility(View.GONE);
         }
         initRecycler();
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setEnableLoadMore(false);
         getData(mType);
     }
 
@@ -178,6 +186,7 @@ public class HeadlineListFragment extends BaseFragment {
                 HeadlineListBean rankBean = GsonUtils.GsonToBean(result.toString(), HeadlineListBean.class);
                 if (rankBean.code == 200) {
                     if (rankBean.data != null && rankBean.data.list != null) {
+                        refreshLayout.finishRefresh();
                         if (rankBean.data.list.size() == 0) {
                             rlEmpty.setVisibility(View.VISIBLE);
                         } else {
@@ -196,9 +205,8 @@ public class HeadlineListFragment extends BaseFragment {
                         }
                     } else {
                         rlEmpty.setVisibility(View.VISIBLE);
-                        Toast.makeText(getMyActivity(), "空", Toast.LENGTH_SHORT).show();
+                        refreshLayout.finishRefresh();
                     }
-
                     if (rankBean.data != null) {
                         getBeyondFirst(mAnchorId, rankBean.data.goodsId, rankBean.data.rankId, "魅力");
                     }
@@ -207,6 +215,7 @@ public class HeadlineListFragment extends BaseFragment {
 
             @Override
             public void onReqFailed(String errorMsg) {
+                refreshLayout.finishRefresh();
             }
         });
     }
@@ -262,6 +271,14 @@ public class HeadlineListFragment extends BaseFragment {
         };
         recycler.setAdapter(mAdapter);
 //        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        getData(mType);
     }
 
     class ViewHolder extends BaseViewHolder {
@@ -414,9 +431,9 @@ public class HeadlineListFragment extends BaseFragment {
                                 tvRank.setText(rank + "");
                                 tvRank.setTextColor(Color.RED);
                             }
-                            if(rank == 1){
+                            if (rank == 1) {
                                 tvClickGift.setVisibility(View.GONE);
-                            }else{
+                            } else {
                                 tvClickGift.setVisibility(View.VISIBLE);
                             }
                             tvCharmValue.setText(StringUtils.formatNumber((long) selfScore) + "魅力");
@@ -424,7 +441,7 @@ public class HeadlineListFragment extends BaseFragment {
                             tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
                             GlideImageLoader.getInstace().displayImage(getMyActivity(), mAvatar, ivOwnAvatar);
                             int diff = topScore - selfScore;
-                            getNeedGoods(goodsId, diff,rank);
+                            getNeedGoods(goodsId, diff, rank);
                         }
                     }
                 }
