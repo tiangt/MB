@@ -340,7 +340,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private GiftInfo mGiftData;
     public long mUserId;
     private BaseAwesomeDialog mGiftDialog;
-    public int mAnchorId;
+    public int mAnchorId = 0;
     private int REQUEST_LOGIN = 120;
     private long coin;
     private GiftControl giftControl;
@@ -947,7 +947,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void showRedbagPopwindow() {
         View popView = getLayoutInflater().inflate(R.layout.popwindow_redbag_live, null);
         TextView tvSend = popView.findViewById(R.id.tv_send);
-        tvSend.setSelected(mAnchorId == mUserId);
+        tvSend.setVisibility(mAnchorId == mUserId ? View.VISIBLE : View.GONE);
         tvSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -996,6 +996,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                 break;
                             case -1135:
                                 ToastUtils.showToastUnify(LiveDisplayActivity.this, getString(R.string.red_pack_unplay));
+                                break;
+                            case -1211:
+                                ToastUtils.showToastUnify(LiveDisplayActivity.this, getString(R.string.red_pack_money_unfull));
+                                break;
+                            default:
+                                ToastUtils.showToastUnify(LiveDisplayActivity.this, body.msg);
                                 break;
                         }
                     }
@@ -1227,7 +1233,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RedPackTreasureEvent redPackTreasureEvent) {
-        if (!redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OPEN_REDPACKET)&&
+        if (!redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OPEN_REDPACKET) &&
                 !redPackTreasureEvent.treasureNum.context.busiCodeName.equals("RP_RETURN_TO_U")) {
             tvRedBag.setText(redPackTreasureEvent.treasureNum.context.programTreasureNum + "");
         }

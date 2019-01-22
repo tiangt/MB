@@ -78,11 +78,11 @@ public class RedBagFragment extends BaseFragment {
         switch (type) {
             case NORMAL:
                 tvMoney.setText("单个金额");
-                etMoney.setHint("请输入2000的倍数");
+                etMoney.setText("2000");
                 break;
             case LUCK:
                 tvMoney.setText("总金额");
-                etMoney.setHint("请输入10000的倍数");
+                etMoney.setText("10000");
                 break;
             case FUND:
                 llEmpty.setVisibility(View.VISIBLE);
@@ -205,36 +205,68 @@ public class RedBagFragment extends BaseFragment {
 
 
     private boolean checkLuck() {
-        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
-                || Long.parseLong(etMoney.getText().toString()) % 10000 != 0) {
-            ToastUtils.showToastUnify(getActivity(), "请输入10000的倍数");
-            return false;
-        }
+//        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
+//                || Long.parseLong(etMoney.getText().toString()) % 10000 != 0) {
+//            ToastUtils.showToastUnify(getActivity(), "请输入10000的倍数");
+//            return false;
+//        }
+//        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
+//            ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
+//            return false;
+//        }
+//        if (Long.parseLong(etNumber.getText().toString()) > 50) {
+//            ToastUtils.showToastUnify(getActivity(), "红包个数不得大于50个");
+//            return false;
+//        } else
+//            return true;
+
         if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
-            ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
+            etNumber.setText("5");
             return false;
         }
-        if (Long.parseLong(etNumber.getText().toString()) > 50) {
-            ToastUtils.showToastUnify(getActivity(), "红包个数不得大于50个");
+        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 10000) {
+            etMoney.setText("10000");
             return false;
-        } else
+
+        }
+        if (Long.parseLong(etMoney.getText().toString()) % 10000 != 0) {
+            etMoney.setText((Long.parseLong(etMoney.getText().toString()) / 10000) * 10000 + "");
+            return false;
+        } else {
             return true;
+        }
     }
 
     private boolean checkNormal() {
-        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
-                || Long.parseLong(etMoney.getText().toString()) % 2000 != 0) {
-            ToastUtils.showToastUnify(getActivity(), "请输入2000的倍数");
-            return false;
-        }
+//        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
+//                || Long.parseLong(etMoney.getText().toString()) % 2000 != 0) {
+//            ToastUtils.showToastUnify(getActivity(), "请输入2000的倍数");
+//            return false;
+//        }
+//        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
+//            ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
+//            return false;
+//        }
+//        if (Long.parseLong(etNumber.getText().toString()) > 50) {
+//            ToastUtils.showToastUnify(getActivity(), "红包个数不得大于50个");
+//            return false;
+//        } else
+//            return true;
+
         if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
-            ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
+            etNumber.setText("5");
             return false;
         }
-        if (Long.parseLong(etNumber.getText().toString()) > 50) {
-            ToastUtils.showToastUnify(getActivity(), "红包个数不得大于50个");
+        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 2000) {
+            etMoney.setText("2000");
             return false;
-        } else
+
+        }
+        if (Long.parseLong(etMoney.getText().toString()) % 2000 != 0) {
+            etMoney.setText((Long.parseLong(etMoney.getText().toString()) / 2000) * 2000 + "");
+            return false;
+        } else {
             return true;
+        }
     }
 }

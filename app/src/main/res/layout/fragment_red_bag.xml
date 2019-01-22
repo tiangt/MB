@@ -81,13 +81,13 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:gravity="end"
-                android:hint="5～50个"
                 android:inputType="number"
                 android:maxLength="8"
                 android:paddingBottom="12dp"
                 android:paddingLeft="6.5dp"
                 android:paddingRight="6.5dp"
                 android:paddingTop="12dp"
+                android:text="5"
                 android:textColor="#323232"
                 android:textColorHint="#d9d9d9"
                 android:textSize="14.5sp" />
@@ -108,7 +108,7 @@
             android:layout_marginTop="21.5dp"
             android:drawableLeft="@drawable/ic_money_red_bag"
             android:drawablePadding="9.5dp"
-            android:text="0"
+            android:text="10,000"
             android:textColor="#ff5705"
             android:textSize="20sp"
             android:textStyle="bold" />

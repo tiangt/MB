@@ -432,4 +432,5 @@
     <string name="empty_commom">暂无常送礼物</string>
     <string name="red_pack_full">本房间红包个数超过5个，不能再发送，请稍后再发</string>
     <string name="red_pack_unplay">直播间未开播</string>
+    <string name="red_pack_money_unfull">余额不足</string>
 </resources>
