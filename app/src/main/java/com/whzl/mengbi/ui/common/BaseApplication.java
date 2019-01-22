@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.baidu.mobstat.StatService;
@@ -21,13 +22,24 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SDKConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.gen.DaoMaster;
 import com.whzl.mengbi.gen.DaoSession;
 import com.whzl.mengbi.greendao.MyOpenHelper;
+import com.whzl.mengbi.model.entity.AppDataBean;
+import com.whzl.mengbi.ui.activity.MainActivity;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
+import java.util.HashMap;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -86,6 +98,7 @@ public class BaseApplication extends Application {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         int heapSize = manager.getMemoryClass();
         int maxHeapSize = manager.getLargeMemoryClass();
+        initUrl();
     }
 
     private DaoSession daoSession;
@@ -96,7 +109,7 @@ public class BaseApplication extends Application {
 
     private void initGreenDao() {
         MigrationHelper.DEBUG = false;
-        MyOpenHelper helper = new MyOpenHelper(this, "common_gift.db",null);
+        MyOpenHelper helper = new MyOpenHelper(this, "common_gift.db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
@@ -164,5 +177,30 @@ public class BaseApplication extends Application {
                     .build();
             return r;
         });
+    }
+
+    private void initUrl() {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getImgUrl(ParamsUtils.getSignPramsMap(new HashMap<>()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<AppDataBean>() {
+                    @Override
+                    public void onSuccess(AppDataBean appDataBean) {
+                        if (appDataBean == null) {
+                            return;
+                        }
+                        SPUtils.put(instance, SpConfig.REDPACKETURL, appDataBean.redpacketUrl);
+                        if (appDataBean != null && appDataBean.newUserAward != null) {
+                            if (!TextUtils.isEmpty(appDataBean.newUserAward.guestUserAward)) {
+                                SPUtils.put(instance, SpConfig.AWARD_SHOW_TIME, System.currentTimeMillis());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                    }
+                });
     }
 }

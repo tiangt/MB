@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="266dp"
+        android:layout_height="135dp">
+
+        <LinearLayout
+            android:layout_width="252.5dp"
+            android:layout_height="121.5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="31.5dp"
+                android:background="#ff706e"
+                android:gravity="center"
+                android:text="温馨提示"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19dp"
+                android:gravity="center"
+                android:text="手速不够快"
+                android:textColor="#505050"
+                android:textSize="17sp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="红包已被抢完"
+                android:textColor="#505050"
+                android:textSize="17sp" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="65dp"
+            android:layout_height="75.5dp"
+            android:src="@drawable/ic_off_redpack_dialog" />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.control;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -11,34 +10,31 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.OpenRedBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
+import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.util.AmountConversionUitls;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.WeakHandler;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
-import com.whzl.mengbi.util.network.URLContentUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * @author nobody
@@ -144,19 +140,37 @@ public class RedPacketControl {
     public void openRed(RoomRedpackList.ListBean listBean) {
         HashMap params = new HashMap();
         params.put("packed", listBean.redPacketId);
-        params.put("userId", userId+"");
+        params.put("userId", userId + "");
         params.put("token", sessionId);
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn("red_packed", RequestManager.TYPE_POST_URL, params,
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(SPUtils.get(context, SpConfig.REDPACKETURL, "").toString(), RequestManager.TYPE_POST_URL, params,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
-                        JSONObject jsonObject = JSON.parseObject(result.toString());
-                        LogUtils.e("sssssssssss   "+result.toString());
+                        OpenRedBean openRedBean = GsonUtils.GsonToBean(result.toString(), OpenRedBean.class);
+                        if (openRedBean.code == 200) {
+                            AwesomeDialog.init().setLayoutId(R.layout.dialog_redpack_ok)
+                                    .setConvertListener(new ViewConvertListener() {
+                                        @Override
+                                        protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                                            holder.setText(R.id.tv_amount, AmountConversionUitls.amountConversionFormat(openRedBean.data.amount));
+                                        }
+                                    })
+                                    .setOutCancel(true)
+                                    .show(((LiveDisplayActivity) context).getSupportFragmentManager());
+                        }
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        LogUtils.d("errorMsg" + errorMsg.toString());
+                        AwesomeDialog.init().setLayoutId(R.layout.dialog_redpack_off)
+                                .setConvertListener(new ViewConvertListener() {
+                                    @Override
+                                    protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+
+                                    }
+                                })
+                                .setOutCancel(true)
+                                .show(((LiveDisplayActivity) context).getSupportFragmentManager());
                     }
                 });
     }

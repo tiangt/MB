@@ -1227,7 +1227,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RedPackTreasureEvent redPackTreasureEvent) {
-        tvRedBag.setText(redPackTreasureEvent.treasureNum.context.programTreasureNum + "");
+        if (!redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OPEN_REDPACKET)&&
+                !redPackTreasureEvent.treasureNum.context.busiCodeName.equals("RP_RETURN_TO_U")) {
+            tvRedBag.setText(redPackTreasureEvent.treasureNum.context.programTreasureNum + "");
+        }
         if (redPackRunWayControl == null) {
             redPackRunWayControl = new RedPackRunWayControl(this, tvRedBagRunWay);
         }

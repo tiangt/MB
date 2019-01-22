@@ -598,7 +598,8 @@ public class RequestManager {
             String params = JSON.toJSONString(paramsMap);
             LogUtils.e(params.toString());
             RequestBody formBody = builder.build();
-            String requestUrl = String.format("%s/%s", "https://t3.mengbitv.com/", actionUrl);
+            String requestUrl = String.format("%s", /*"https://t3.mengbitv.com/",*/ actionUrl);
+            LogUtils.e("ssssssssss   "+requestUrl);
             final Request request = addHeaders().url(requestUrl).post(formBody).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {

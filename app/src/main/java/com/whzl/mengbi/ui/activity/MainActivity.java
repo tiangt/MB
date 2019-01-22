@@ -217,6 +217,7 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new ApiObserver<AppDataBean>() {
                     @Override
                     public void onSuccess(AppDataBean appDataBean) {
+                        SPUtils.put(MainActivity.this, SpConfig.REDPACKETURL, appDataBean.redpacketUrl);
                         if (appDataBean != null && appDataBean.newUserAward != null) {
                             if (!isLogin && !TextUtils.isEmpty(appDataBean.newUserAward.guestUserAward)) {
                                 SPUtils.put(MainActivity.this, SpConfig.AWARD_SHOW_TIME, System.currentTimeMillis());

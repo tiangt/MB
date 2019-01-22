@@ -16,4 +16,5 @@ public interface SpConfig {
     String DEFAULT_SENT_WORD = "defaultSentWord";
     String PK_VIOCE_LIVE = "pkVioceLive";
     String FREE_GOODS_IDS = "free_goods_ids";
+    String REDPACKETURL = "redpacketUrl";
 }

@@ -7,6 +7,7 @@ package com.whzl.mengbi.model.entity;
 public class AppDataBean {
     public String imgHost;
     public String userProtocolUrl;
+    public String redpacketUrl;
     public UserAwardBean newUserAward;
 
     public class UserAwardBean {

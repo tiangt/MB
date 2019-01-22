@@ -78,9 +78,11 @@ public class RedBagFragment extends BaseFragment {
         switch (type) {
             case NORMAL:
                 tvMoney.setText("单个金额");
+                etMoney.setHint("请输入2000的倍数");
                 break;
             case LUCK:
                 tvMoney.setText("总金额");
+                etMoney.setHint("请输入10000的倍数");
                 break;
             case FUND:
                 llEmpty.setVisibility(View.VISIBLE);
@@ -211,6 +213,10 @@ public class RedBagFragment extends BaseFragment {
         if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
             ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
             return false;
+        }
+        if (Long.parseLong(etNumber.getText().toString()) > 50) {
+            ToastUtils.showToastUnify(getActivity(), "红包个数不得大于50个");
+            return false;
         } else
             return true;
     }
@@ -223,6 +229,10 @@ public class RedBagFragment extends BaseFragment {
         }
         if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
             ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
+            return false;
+        }
+        if (Long.parseLong(etNumber.getText().toString()) > 50) {
+            ToastUtils.showToastUnify(getActivity(), "红包个数不得大于50个");
             return false;
         } else
             return true;

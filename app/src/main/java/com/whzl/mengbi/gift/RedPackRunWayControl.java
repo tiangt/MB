@@ -57,6 +57,7 @@ public class RedPackRunWayControl {
     private void show(RedPackTreasureEvent redPackTreasureEvent) {
         isShow = true;
         tvRedPack.setTranslationX(screenWidthPixels);
+        tvRedPack.setText("");
         RedPackJson.ContextBean context = redPackTreasureEvent.treasureNum.context;
         switch (redPackTreasureEvent.treasureNum.context.busiCodeName) {
             case AppConfig.USER_SEND_REDPACKET:
@@ -69,7 +70,7 @@ public class RedPackRunWayControl {
                 tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
                 break;
             case AppConfig.PROGRAM_TREASURE_SEND_REDPACKET:
-                tvRedPack.append(LightSpanString.getLightString(context.founderUserNickname, Color.parseColor("#FFFFE68E")));
+                tvRedPack.append(LightSpanString.getLightString(context.sendObjectNickname, Color.parseColor("#FFFFE68E")));
                 tvRedPack.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
                 tvRedPack.append(LightSpanString.getLightString("红包", Color.parseColor("#FFF8CF2C")));
                 tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFF8CF2C")));
