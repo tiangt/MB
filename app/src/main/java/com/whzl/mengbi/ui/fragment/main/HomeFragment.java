@@ -69,10 +69,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
     RecyclerView anchorRecycler;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
-    @BindView(R.id.ib_search)
-    ImageButton ibSearch;
-    @BindView(R.id.rl_search)
-    RelativeLayout llSearch;
+    @BindView(R.id.iv_search)
+    ImageView ivSearch;
+//    @BindView(R.id.rl_search)
+//    RelativeLayout rlSearch;
     private HomePresenterImpl mHomePresenter;
     private int mCurrentPager = 1;
     private ArrayList<RecommendAnchorInfoBean> mRecommendAnchorInfoList = new ArrayList<>();
@@ -198,10 +198,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
     }
 
 
-    @OnClick(R.id.rl_search)
+    @OnClick(R.id.iv_search)
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.rl_search:
+            case R.id.iv_search:
                 startActivity(new Intent(getMyActivity(), SearchActivity.class));
                 break;
         }

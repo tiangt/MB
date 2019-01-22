@@ -76,7 +76,7 @@
                 android:id="@+id/ll_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -99,6 +99,7 @@
                         android:layout_toRightOf="@id/iv_point"
                         android:text="搜索历史"
                         android:textColor="@color/tran_black2"
+                        android:layout_centerVertical="true"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -109,6 +110,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="12dp"
+                        android:padding="10dp"
                         android:src="@drawable/ic_search_delete" />
 
                 </RelativeLayout>
@@ -117,9 +119,9 @@
                     android:id="@+id/fl_history_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginRight="12dp" />
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp" />
             </LinearLayout>
 
             <!-- 热搜主播 -->

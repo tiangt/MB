@@ -162,7 +162,7 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
     }
 
 
-    @OnClick({R.id.ll_wechat, R.id.ll_qq, R.id.ll_close, R.id.ll_phone_login, R.id.tv_register, R.id.tv_deal})
+    @OnClick({R.id.ll_wechat, R.id.ll_qq, R.id.ll_close, R.id.ll_phone_login, R.id.tv_register, R.id.tv_deal, R.id.ib_close})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_wechat:
@@ -189,6 +189,9 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
                 getActivity().startActivity(new Intent(getActivity(), JsBridgeActivity.class)
                         .putExtra("url", NetConfig.USER_DEAL)
                         .putExtra("title", "用户协议"));
+                break;
+            case R.id.ib_close:
+                dismiss();
                 break;
         }
     }
