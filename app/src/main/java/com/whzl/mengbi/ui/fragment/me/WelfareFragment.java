@@ -16,6 +16,7 @@ import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.WelfareContract;
 import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
+import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.NewTaskBean;
 import com.whzl.mengbi.presenter.WelfarePresenter;
@@ -212,6 +213,7 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
         tv.setText("已领取");
         tv.setBackgroundResource(R.drawable.btn_have_receive_walfare);
         tv.setEnabled(false);
+        EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 
     @Override

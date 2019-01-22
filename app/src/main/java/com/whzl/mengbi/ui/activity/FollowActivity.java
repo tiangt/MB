@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -37,13 +38,13 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.FollowFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
-import com.whzl.mengbi.ui.widget.view.GlideRoundTransform;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -165,7 +166,10 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
                 tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
             }
             tvWatchCount.setText(recommendAnchorInfoBean.getRoomUserCount() + "");
-            GlideImageLoader.getInstace().loadRoundImage(FollowActivity.this, recommendAnchorInfoBean.getCover(), ivCover, 5);
+            RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(FollowActivity.this, 5));
+            RequestOptions requestOptions = new RequestOptions().transform(roundedCorners);
+            Glide.with(FollowActivity.this).load(recommendAnchorInfoBean.getCover()).apply(requestOptions).into(ivCover);
+//            GlideImageLoader.getInstace().loadRoundImage(FollowActivity.this, recommendAnchorInfoBean.getCover(), ivCover, 5);
         }
 
         @Override
@@ -356,8 +360,9 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
         public void onBindViewHolder(int position) {
             AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
 //            GlideImageLoader.getInstace().displayImage(getContext(), anchorInfoBean.avatar, ivAvatar);
-            RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(5));
-            Glide.with(FollowActivity.this).load(anchorInfoBean.avatar).apply(requestOptions).into(ivAvatar);
+//            RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(5));
+//            Glide.with(FollowActivity.this).load(anchorInfoBean.avatar).apply(requestOptions).into(ivAvatar);
+            GlideImageLoader.getInstace().loadRoundImage(FollowActivity.this, anchorInfoBean.avatar, ivAvatar, 5);
 //            tvStatus.setVisibility("T".equals(anchorInfoBean.status) ? View.VISIBLE : View.GONE);
             if ("T".equals(anchorInfoBean.status)) {
                 tvStatus.setVisibility(View.VISIBLE);

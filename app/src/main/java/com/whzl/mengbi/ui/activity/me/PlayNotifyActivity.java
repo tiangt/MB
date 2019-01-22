@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -26,31 +24,25 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
 import com.whzl.mengbi.model.entity.ApiResult;
-import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GetUserSetBean;
-import com.whzl.mengbi.ui.activity.FollowActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.ui.dialog.fragment.BackpackMotherFragment;
-import com.whzl.mengbi.ui.widget.view.GlideRoundTransform;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -255,8 +247,9 @@ public class PlayNotifyActivity extends BaseActivity implements OnLoadMoreListen
         public void onBindViewHolder(int position) {
             AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
 //            GlideImageLoader.getInstace().displayImage(getContext(), anchorInfoBean.avatar, ivAvatar);
-            RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(5));
-            Glide.with(PlayNotifyActivity.this).load(anchorInfoBean.avatar).apply(requestOptions).into(ivAvatar);
+//            RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(5));
+//            Glide.with(PlayNotifyActivity.this).load(anchorInfoBean.avatar).apply(requestOptions).into(ivAvatar);
+            GlideImageLoader.getInstace().loadRoundImage(PlayNotifyActivity.this, anchorInfoBean.avatar, ivAvatar, 5);
 //            tvStatus.setVisibility("T".equals(anchorInfoBean.status) ? View.VISIBLE : View.GONE);
             if ("T".equals(anchorInfoBean.status)) {
                 tvStatus.setVisibility(View.VISIBLE);

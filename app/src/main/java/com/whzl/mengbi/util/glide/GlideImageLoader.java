@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
@@ -127,8 +128,11 @@ public class GlideImageLoader extends ImageLoader {
 
     public void loadRoundImage(Context context, Object object, ImageView imageView, int radius) {
         if (isValidContextForGlide(context)) {
-            RequestOptions transform = new RequestOptions().transform(new GlideRoundTransform(context, radius));
-            Glide.with(context).load(object).apply(transform).into(imageView);
+            RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(context, radius));
+            RequestOptions requestOptions = new RequestOptions().transform(roundedCorners);
+            Glide.with(context).load(object).apply(requestOptions).into(imageView);
+//            RequestOptions transform = new RequestOptions().transform(new GlideRoundTransform(context, radius));
+//            Glide.with(context).load(object).apply(transform).into(imageView);
         }
     }
 
