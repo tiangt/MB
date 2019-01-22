@@ -90,12 +90,14 @@ public class LightSpanString {
         return spannableString;
     }
 
-    public static SpannableString getJumpNameSpan(Context context, final String nickName, final int programId, int color) {
+    public static SpannableString getJumpNameSpan(Context context, final String nickName, final int programId, int currentProgramId, int color) {
         SpannableString nickSpan = new SpannableString(nickName);
         NickNameSpan clickSpan = new NickNameSpan(context, color) {
             @Override
             public void onClick(View widget) {
-                jumpToActivity(context,nickName,programId);
+                if (programId != currentProgramId) {
+                    jumpToActivity(context, nickName, programId);
+                }
             }
         };
 

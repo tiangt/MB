@@ -19,6 +19,7 @@ import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 public class RedPackMessage implements FillHolderMessage {
     private RedPackJson redPackJson;
     private Context context;
+    private int currentProgramId;
 
     public RedPackMessage(Context context, RedPackJson redPackJson) {
         this.redPackJson = redPackJson;
@@ -47,7 +48,7 @@ public class RedPackMessage implements FillHolderMessage {
                 if (context.sendObjectType.equals("USER")) {
                     mholder.textView.append(LightSpanString.getLightString(" " + context.sendObjectNickname, Color.parseColor("#FF2EE9FF")));
                     mholder.textView.append(LightSpanString.getLightString(" 在 ", Color.parseColor("#ffffff")));
-                    mholder.textView.append(LightSpanString.getJumpNameSpan(this.context, context.founderUserNickname, context.programId, Color.parseColor("#FF2EE9FF")));
+                    mholder.textView.append(LightSpanString.getJumpNameSpan(this.context, context.founderUserNickname, context.programId, currentProgramId, Color.parseColor("#FF2EE9FF")));
                     mholder.textView.append(LightSpanString.getLightString(" 的直播间发了一个", Color.parseColor("#ffffff")));
                     mholder.textView.append(LightSpanString.getLightString(context.redPacketType.equals("RANDOM") ? "手气红包," : "普通红包,", Color.parseColor("#FFFC3C79")));
                     mholder.textView.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFFC3C79")));
@@ -62,7 +63,7 @@ public class RedPackMessage implements FillHolderMessage {
             mholder.textView.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
 
         } else if (context.busiCodeName.equals(AppConfig.PROGRAM_TREASURE_SEND_REDPACKET)) {
-            mholder.textView.append(LightSpanString.getJumpNameSpan(this.context, " " + context.sendObjectNickname, context.programId, Color.parseColor("#FFFF7E97")));
+            mholder.textView.append(LightSpanString.getJumpNameSpan(this.context, " " + context.sendObjectNickname, context.programId, currentProgramId, Color.parseColor("#FFFF7E97")));
             mholder.textView.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
             mholder.textView.append(LightSpanString.getLightString("红包", Color.parseColor("#FFFC3C79")));
             mholder.textView.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFFC3C79")));
@@ -89,4 +90,7 @@ public class RedPackMessage implements FillHolderMessage {
         return SINGLE_TEXTVIEW;
     }
 
+    public void setProgramId(int mProgramId) {
+        currentProgramId = mProgramId;
+    }
 }

@@ -20,6 +20,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.message.messages.PkMessage;
+import com.whzl.mengbi.chat.room.message.messages.RedPackMessage;
 import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
@@ -169,6 +170,9 @@ public class ChatListFragment extends BaseFragment {
                 FillHolderMessage message = chatList.get(position);
                 if (message instanceof PkMessage) {
                     ((PkMessage) message).setProgramId(mProgramId);
+                }
+                if (message instanceof RedPackMessage) {
+                    ((RedPackMessage) message).setProgramId(mProgramId);
                 }
                 message.fillHolder(holder);
                 holder.itemView.setOnClickListener(null);
