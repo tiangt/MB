@@ -14,8 +14,8 @@
 
         <RelativeLayout
             android:id="@+id/ll_title"
-            android:layout_width="204dp"
-            android:layout_height="wrap_content"
+            android:layout_width="214dp"
+            android:layout_height="41dp"
             android:layout_centerHorizontal="true">
 
             <TextView
@@ -30,11 +30,11 @@
 
             <LinearLayout
                 android:id="@+id/ll_close"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="17dp"
-                android:gravity="right">
+                android:layout_marginTop="9dp"
+                android:gravity="center">
 
                 <ImageButton
                     android:id="@+id/ib_close"

@@ -485,9 +485,11 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
                         TrendingAnchorInfo anchorInfo = GsonUtils.GsonToBean(result.toString(), TrendingAnchorInfo.class);
                         if (anchorInfo.getCode() == 200) {
                             if (anchorInfo != null && anchorInfo.data != null && anchorInfo.data.list != null) {
-                                llHotAnchor.setVisibility(View.VISIBLE);
-                                mTrendingInfo.addAll(anchorInfo.data.list);
-                                hotAdapter.notifyDataSetChanged();
+                                if (anchorInfo.data.list.size() > 0) {
+                                    llHotAnchor.setVisibility(View.VISIBLE);
+                                    mTrendingInfo.addAll(anchorInfo.data.list);
+                                    hotAdapter.notifyDataSetChanged();
+                                }
                             }
                         }
                     }
