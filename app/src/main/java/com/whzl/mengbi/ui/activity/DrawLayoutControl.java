@@ -268,6 +268,11 @@ public class DrawLayoutControl {
                 return;
             }
             if (position == bannerInfoList.size()) {
+                if (((LiveDisplayActivity) activity).mUserId == 0) {
+                    ((LiveDisplayActivity) activity).login();
+                    ((LiveDisplayActivity) activity).closeDrawLayout();
+                    return;
+                }
                 activity.startActivity(new Intent(activity, RedbagActivity.class).
                         putExtra("programId", ((LiveDisplayActivity) activity).mProgramId));
                 ((LiveDisplayActivity) activity).closeDrawLayout();

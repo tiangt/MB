@@ -948,6 +948,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         View popView = getLayoutInflater().inflate(R.layout.popwindow_redbag_live, null);
         TextView tvSend = popView.findViewById(R.id.tv_send);
         tvSend.setVisibility(mAnchorId == mUserId ? View.VISIBLE : View.GONE);
+        tvSend.setSelected(mAnchorId == mUserId);
         tvSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

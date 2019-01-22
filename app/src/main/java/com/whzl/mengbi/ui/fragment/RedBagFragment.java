@@ -163,7 +163,7 @@ public class RedBagFragment extends BaseFragment {
 
     private void sendRedPack(String s) {
         HashMap hashMap = new HashMap();
-        hashMap.put("amount", Long.parseLong(tvTotal.getText().toString().replaceAll(",", "")));
+        hashMap.put("amount", Long.parseLong(etMoney.getText().toString()));
         hashMap.put("contentType", "COIN");
         hashMap.put("objectType", "USER");
         hashMap.put("programId", ((RedbagActivity) getActivity()).programId);

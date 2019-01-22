@@ -127,6 +127,10 @@ public class RedPacketControl {
             ivState.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (((LiveDisplayActivity) context).mUserId == 0) {
+                        ((LiveDisplayActivity) context).login();
+                        return;
+                    }
                     if (!TextUtils.isEmpty(tvTime.getText())) {
                         return;
                     }
