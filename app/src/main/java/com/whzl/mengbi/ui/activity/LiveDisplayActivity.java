@@ -985,6 +985,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         if (redPopupWindow != null && redPopupWindow.isShowing()) {
                             redPopupWindow.dismiss();
                         }
+                        EventBus.getDefault().post(new UserInfoUpdateEvent());
                         ToastUtils.showToastUnify(LiveDisplayActivity.this, "发送成功");
                     }
 

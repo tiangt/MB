@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.OpenRedBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
@@ -28,6 +29,8 @@ import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.WeakHandler;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -157,6 +160,7 @@ public class RedPacketControl {
                                     })
                                     .setOutCancel(true)
                                     .show(((LiveDisplayActivity) context).getSupportFragmentManager());
+                            EventBus.getDefault().post(new UserInfoUpdateEvent());
                         }
                     }
 
