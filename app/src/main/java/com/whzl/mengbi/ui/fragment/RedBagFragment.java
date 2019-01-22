@@ -79,20 +79,25 @@ public class RedBagFragment extends BaseFragment {
             case NORMAL:
                 tvMoney.setText("单个金额");
                 etMoney.setText("2000");
+                initMoney(NORMAL);
                 break;
             case LUCK:
                 tvMoney.setText("总金额");
                 etMoney.setText("10000");
+                initMoney(LUCK);
                 break;
             case FUND:
                 llEmpty.setVisibility(View.VISIBLE);
                 llRedBag.setVisibility(View.GONE);
                 break;
         }
-        initMoney();
     }
 
-    private void initMoney() {
+    private void initMoney(String luck) {
+        etMoney.setOnFocusChangeListener((v, hasFocus) -> {
+            boolean b = NORMAL.equals(luck) ? checkNormal() : checkLuck();
+        });
+
         etMoney.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -101,14 +106,15 @@ public class RedBagFragment extends BaseFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                setTotalText();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                setTotalText();
+
             }
         });
+
         etNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -117,15 +123,14 @@ public class RedBagFragment extends BaseFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                setTotalText();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                setTotalText();
+
             }
         });
-
     }
 
     private void setTotalText() {
@@ -205,32 +210,22 @@ public class RedBagFragment extends BaseFragment {
 
 
     private boolean checkLuck() {
-//        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
-//                || Long.parseLong(etMoney.getText().toString()) % 10000 != 0) {
-//            ToastUtils.showToastUnify(getActivity(), "请输入10000的倍数");
-//            return false;
-//        }
-//        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
-//            ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
-//            return false;
-//        }
-//        if (Long.parseLong(etNumber.getText().toString()) > 50) {
-//            ToastUtils.showToastUnify(getActivity(), "红包个数不得大于50个");
-//            return false;
-//        } else
-//            return true;
-
-        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
-            etNumber.setText("5");
-            return false;
-        }
-        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 10000) {
-            etMoney.setText("10000");
-            return false;
-
-        }
-        if (Long.parseLong(etMoney.getText().toString()) % 10000 != 0) {
-            etMoney.setText((Long.parseLong(etMoney.getText().toString()) / 10000) * 10000 + "");
+        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5 ||
+                Long.parseLong(etNumber.getText().toString()) > 50 ||
+                TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 10000 ||
+                Long.parseLong(etMoney.getText().toString()) % 10000 != 0) {
+            if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
+                etNumber.setText("5");
+            }
+            if (Long.parseLong(etNumber.getText().toString()) > 50) {
+                etNumber.setText("50");
+            }
+            if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 10000) {
+                etMoney.setText("10000");
+            }
+            if (Long.parseLong(etMoney.getText().toString()) % 10000 != 0) {
+                etMoney.setText((Long.parseLong(etMoney.getText().toString()) / 10000) * 10000 + "");
+            }
             return false;
         } else {
             return true;
@@ -238,32 +233,23 @@ public class RedBagFragment extends BaseFragment {
     }
 
     private boolean checkNormal() {
-//        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) == 0
-//                || Long.parseLong(etMoney.getText().toString()) % 2000 != 0) {
-//            ToastUtils.showToastUnify(getActivity(), "请输入2000的倍数");
-//            return false;
-//        }
-//        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
-//            ToastUtils.showToastUnify(getActivity(), "红包个数不得小于5个");
-//            return false;
-//        }
-//        if (Long.parseLong(etNumber.getText().toString()) > 50) {
-//            ToastUtils.showToastUnify(getActivity(), "红包个数不得大于50个");
-//            return false;
-//        } else
-//            return true;
+        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5
+                || Long.parseLong(etNumber.getText().toString()) > 50
+                || TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 2000
+                || Long.parseLong(etMoney.getText().toString()) % 2000 != 0) {
+            if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
+                etNumber.setText("5");
+            }
+            if (Long.parseLong(etNumber.getText().toString()) > 50) {
+                etNumber.setText("50");
+            }
+            if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 2000) {
+                etMoney.setText("2000");
 
-        if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5) {
-            etNumber.setText("5");
-            return false;
-        }
-        if (TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 2000) {
-            etMoney.setText("2000");
-            return false;
-
-        }
-        if (Long.parseLong(etMoney.getText().toString()) % 2000 != 0) {
-            etMoney.setText((Long.parseLong(etMoney.getText().toString()) / 2000) * 2000 + "");
+            }
+            if (Long.parseLong(etMoney.getText().toString()) % 2000 != 0) {
+                etMoney.setText((Long.parseLong(etMoney.getText().toString()) / 2000) * 2000 + "");
+            }
             return false;
         } else {
             return true;

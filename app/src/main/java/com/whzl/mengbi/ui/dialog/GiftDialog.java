@@ -33,20 +33,16 @@ import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.SendSuperWordEvent;
-import com.whzl.mengbi.gen.CommonGiftDao;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.FreeGiftBean;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
-import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.BackpackMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.CommonMotherFragment;
-import com.whzl.mengbi.ui.dialog.fragment.GiftCommonFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GiftSortMotherFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
@@ -196,8 +192,8 @@ public class GiftDialog extends BaseAwesomeDialog {
         ArrayList<String> titles = new ArrayList<>();
 
         fragments.add(CommonMotherFragment.newInstance());
-        tabLayout.addTab(tabLayout.newTab().setText("常用"));
-        titles.add("常用");
+        tabLayout.addTab(tabLayout.newTab().setText("常送"));
+        titles.add("常送");
 
         if (mGiftInfo.getData() != null && mGiftInfo.getData().getList() != null) {
             List<GiftInfo.DataBean.ListBean> listBeans = mGiftInfo.getData().getList();

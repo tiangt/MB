@@ -61,9 +61,13 @@ public class RedPackRunWayControl {
         RedPackJson.ContextBean context = redPackTreasureEvent.treasureNum.context;
         switch (redPackTreasureEvent.treasureNum.context.busiCodeName) {
             case AppConfig.USER_SEND_REDPACKET:
-                tvRedPack.append(LightSpanString.getLightString(context.sendObjectNickname, Color.parseColor("#FFF8CF2C")));
+                tvRedPack.append(LightSpanString.getLightString(context.sendObjectNickname.length() > 4 ?
+                                context.sendObjectNickname.substring(0, 4) + "..." : context.sendObjectNickname,
+                        Color.parseColor("#FFF8CF2C")));
                 tvRedPack.append(LightSpanString.getLightString("在", Color.parseColor("#ffffff")));
-                tvRedPack.append(LightSpanString.getLightString(context.founderUserNickname, Color.parseColor("#FFF8CF2C")));
+                tvRedPack.append(LightSpanString.getLightString(context.founderUserNickname.length() > 4 ?
+                                context.founderUserNickname.substring(0, 4) + "..." : context.founderUserNickname,
+                        Color.parseColor("#FFF8CF2C")));
                 tvRedPack.append(LightSpanString.getLightString("的直播间发了一个", Color.parseColor("#ffffff")));
                 tvRedPack.append(LightSpanString.getLightString(context.redPacketType.equals("RANDOM") ? "手气红包," : "普通红包,", Color.parseColor("#FFF8CF2C")));
                 tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒", Color.parseColor("#FFF8CF2C")));
