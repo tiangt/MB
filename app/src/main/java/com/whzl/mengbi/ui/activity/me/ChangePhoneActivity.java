@@ -140,6 +140,11 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
     public void afterTextChanged(Editable s) {
         String oldPhone = etOldPhone.getText().toString().trim();
         String verifyCode = etVerifyCode.getText().toString().trim();
+        if (!TextUtils.isEmpty(oldPhone) && oldPhone.length() == 11 && !mMobile.equals(oldPhone)) {
+            showToast("请输入正确的手机号");
+            return;
+        }
+
         if (!TextUtils.isEmpty(oldPhone) && !TextUtils.isEmpty(verifyCode)) {
             btnNext.setEnabled(true);
         } else {
@@ -164,7 +169,7 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
                         String msg = jsonObject.get("msg").toString();
                         if (code.equals("200")) {
                             startTimer();
-                        }else{
+                        } else {
                             showToast(msg);
                         }
                     }

@@ -13,6 +13,8 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.jaeger.library.StatusBarUtil;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -37,6 +39,7 @@ import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.OnMultiClickListener;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -79,7 +82,6 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
 
     private LoginPresent mLoginPresent;
     private UMShareAPI umShareAPI;
-
 
     private UMAuthListener umAuthListener = new UMAuthListener() {
         /**
@@ -207,13 +209,23 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     public void afterTextChanged(Editable s) {
         boolean isPhone = StringUtils.isPhone(etPhone.getText().toString().trim());
         String password = etPassword.getText().toString().trim();
+        String phone = etPhone.getText().toString().trim();
+
+        if (!isPhone && !TextUtils.isEmpty(phone) && phone.length() == 11) {
+            showToast("请输入正确的手机号");
+            return;
+        }
+
+        if (phone.length() == 11) {
+            getVerifyCode(phone);
+        }
+
         if (isPhone && !TextUtils.isEmpty(password) && password.length() >= 6) {
             btnLogin.setEnabled(true);
         } else {
             btnLogin.setEnabled(false);
         }
 
-        String phone = etPhone.getText().toString().trim();
         if (!TextUtils.isEmpty(phone)) {
             ibCleanPhone.setVisibility(View.VISIBLE);
             ibCleanPhone.setOnClickListener((v) -> etPhone.setText(""));
@@ -341,5 +353,32 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(ActivityFinishEvent event) {
 
+    }
+
+    /**
+     * 验证手机号是否存在
+     * <p>
+     * 验证手机
+     */
+    private void getVerifyCode(String mobile) {
+        HashMap paramsMapMobile = new HashMap();
+        paramsMapMobile.put("identifyCode", mobile);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.IS_PHONE, RequestManager.TYPE_POST_JSON, paramsMapMobile,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        JSONObject jsonObject = JSON.parseObject(result.toString());
+                        String code = jsonObject.get("code").toString();
+                        if (code.equals("-1231")) {
+                            showToast("该手机号不存在");
+                            btnLogin.setEnabled(false);
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("errorMsg" + errorMsg.toString());
+                    }
+                });
     }
 }
