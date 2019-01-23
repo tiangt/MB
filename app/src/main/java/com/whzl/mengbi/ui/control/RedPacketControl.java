@@ -87,6 +87,7 @@ public class RedPacketControl {
         public RedPackViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            setIsRecyclable(false);
         }
 
         @Override

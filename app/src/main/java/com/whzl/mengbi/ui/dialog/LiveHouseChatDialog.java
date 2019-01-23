@@ -20,7 +20,6 @@ import android.widget.RadioGroup;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.chat.room.message.events.AnchorWeekTaskEvent;
 import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
@@ -341,7 +340,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 }
                 btnInputBroad.setSelected(!btnInputBroad.isSelected());
                 if (btnInputBroad.isSelected()) {
-                    etContent.setHint("广播每条1000萌币 (广播卡:" + total + ")");
+                    etContent.setHint("广播每条10000萌币 (广播卡:" + total + ")");
                 } else {
                     etContent.setHint(getString(R.string.live_house_chat_edit_text_hint));
                 }
