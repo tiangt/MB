@@ -1526,7 +1526,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 });
                 mActivityGrands.add(liveWebFragment);
             }
-//            mGrandAdaper.notifyDataSetChanged();
         }
         //周星榜
         weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);

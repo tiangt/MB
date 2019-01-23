@@ -148,5 +148,7 @@ public class UserListDialog extends BaseFullScreenDialog {
         if (disposable != null) {
             disposable.dispose();
         }
+        fragments.clear();
+        fragments = null;
     }
 }

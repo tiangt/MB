@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.ui.activity.RedbagActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -25,6 +26,8 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -184,6 +187,7 @@ public class RedBagFragment extends BaseFragment {
                     public void onSuccess(JsonElement bean) {
                         ToastUtils.showToastUnify(getActivity(), "发送成功");
                         getActivity().finish();
+                        EventBus.getDefault().post(new UserInfoUpdateEvent());
                     }
 
                     @Override
