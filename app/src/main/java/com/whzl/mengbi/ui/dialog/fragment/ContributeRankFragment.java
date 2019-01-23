@@ -18,6 +18,7 @@ import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -69,8 +70,10 @@ public class ContributeRankFragment extends BaseFragment {
 //                        .setShowBottom(true)
 //                        .show(getChildFragmentManager());
 //                getUserInfo(userInfoBean.userId, programId, mVisitorId);
-                if (getActivity() != null) {
-                    ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(userInfoBean.userId, true);
+                if (ClickUtil.isFastClick()) {
+                    if (getActivity() != null) {
+                        ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(userInfoBean.userId, true);
+                    }
                 }
             }
 
