@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
+import android.arch.lifecycle.Lifecycle;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.GoodsPriceInfo;
@@ -227,6 +230,7 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
         tvCountdown.setVisibility(View.VISIBLE);
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(aLong -> {
                     if (time - aLong <= 0) {
                         tvCountdown.setText(getString(R.string.countdown, 0 + ""));

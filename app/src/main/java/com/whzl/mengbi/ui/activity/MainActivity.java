@@ -385,30 +385,6 @@ public class MainActivity extends BaseActivity {
             super.onBackPressed();
             return;
         }
-//        Observable.just(1)
-//                .delay(2, TimeUnit.SECONDS)
-//                .subscribe(new Observer<Integer>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        isExit = true;
-//                        showToast("再按一次退出");
-//                    }
-//
-//                    @Override
-//                    public void onNext(Integer integer) {
-//                        isExit = false;
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
         QuitAppDialog.newInstance()
                 .setListener(new QuitAppDialog.OnClickListener() {
                     @Override
