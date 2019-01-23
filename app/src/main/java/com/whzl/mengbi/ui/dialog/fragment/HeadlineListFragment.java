@@ -326,8 +326,10 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            if (getMyActivity() != null) {
-                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mListData.get(position).anchorId, true);
+            if(ClickUtil.isFastClick()){
+                if (getMyActivity() != null) {
+                    ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mListData.get(position).anchorId, true);
+                }
             }
         }
     }
@@ -356,8 +358,10 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            if (getMyActivity() != null) {
-                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mListData.get(position).anchorId, true);
+            if(ClickUtil.isFastClick()){
+                if (getMyActivity() != null) {
+                    ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mListData.get(position).anchorId, true);
+                }
             }
         }
     }

@@ -326,8 +326,10 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
 
         @Override
         public void onItemClick(View view, int position) {
-            if (getMyActivity() != null) {
-                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mUserList.get(position).userId, true);
+            if(ClickUtil.isFastClick()){
+                if (getMyActivity() != null) {
+                    ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mUserList.get(position).userId, true);
+                }
             }
         }
     }
@@ -366,8 +368,10 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            if (getMyActivity() != null) {
-                ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mAnchorList.get(position).userId, true);
+            if(ClickUtil.isFastClick()){
+                if (getMyActivity() != null) {
+                    ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mAnchorList.get(position).userId, true);
+                }
             }
         }
     }
