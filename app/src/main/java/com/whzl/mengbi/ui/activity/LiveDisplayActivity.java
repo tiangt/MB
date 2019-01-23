@@ -1431,7 +1431,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initRunWay() {
         if (mRunWayGiftControl == null) {
-            mRunWayGiftControl = new RunWayGiftControl(runWayText, frameSupercarTrack, ivRocket);
+            mRunWayGiftControl = new RunWayGiftControl(this,runWayText, frameSupercarTrack, ivRocket);
             mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
         }
     }

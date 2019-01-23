@@ -359,7 +359,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                             if (1 == second - aLong - 1) {
                                 tvPkTitle.setText(state);
                                 tvTime.setText((second - aLong - 1) + "s");
-                                rxTimerUtil.timer(1000, new RxTimerUtil.IRxNext() {
+                                rxTimerUtil.timer(context,1000, new RxTimerUtil.IRxNext() {
                                     @Override
                                     public void doNext(long number) {
                                         tvTime.setText(0 + "s");

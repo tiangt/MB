@@ -1,5 +1,6 @@
 package com.whzl.mengbi.gift;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -24,15 +25,14 @@ public class RunWayGiftControl {
     private TrackAnim trackAnim;
     private String type;
     private RxTimerUtil rxTimerUtil;
+    private Context context;
 
-    public RunWayGiftControl(AutoScrollTextView autoScrollTextView) {
-        this.autoScrollView = autoScrollTextView;
-    }
 
-    public RunWayGiftControl(AutoScrollTextView autoScrollTextView, FrameLayout frameLayout, ImageView imageView) {
+    public RunWayGiftControl(Context context,AutoScrollTextView autoScrollTextView, FrameLayout frameLayout, ImageView imageView) {
         this.autoScrollView = autoScrollTextView;
         this.frameLayout = frameLayout;
         this.imageView = imageView;
+        this.context = context;
         rxTimerUtil = new RxTimerUtil();
     }
 
@@ -85,7 +85,7 @@ public class RunWayGiftControl {
             }
         });
         autoScrollView.startScroll();
-        rxTimerUtil.timer(200, new RxTimerUtil.IRxNext() {
+        rxTimerUtil.timer(context,200, new RxTimerUtil.IRxNext() {
             @Override
             public void doNext(long number) {
                 frameLayout.setVisibility(View.VISIBLE);
