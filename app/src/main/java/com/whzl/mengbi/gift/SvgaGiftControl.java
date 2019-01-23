@@ -1,21 +1,15 @@
 package com.whzl.mengbi.gift;
 
-import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.util.LogUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -87,7 +81,7 @@ public class SvgaGiftControl {
         if (disposable != null) {
             disposable.dispose();
         }
-        if(svgaImageView != null){
+        if (svgaImageView != null) {
             svgaImageView.setVisibility(View.GONE);
         }
         mGifGiftQueue.clear();
@@ -130,7 +124,6 @@ public class SvgaGiftControl {
                 disposable = Observable.just(1)
                         .delay(((long) (event.getSeconds() * 1000)), TimeUnit.MILLISECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from((LiveDisplayActivity)mContext, Lifecycle.Event.ON_DESTROY)))
                         .subscribe(integer -> {
                             if (mContext == null) {
                                 return;
@@ -167,7 +160,7 @@ public class SvgaGiftControl {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
+                        LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
                         OkHttpClient client = new OkHttpClient();
                         Request request = new Request.Builder().url(url).get().build();
                         try {

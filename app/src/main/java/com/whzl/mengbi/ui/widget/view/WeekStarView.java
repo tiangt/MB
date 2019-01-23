@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.widget.view;
 
-import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,9 +8,6 @@ import android.os.Parcelable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.util.UIUtil;
 
 import io.reactivex.Observable;
@@ -161,7 +157,6 @@ public class WeekStarView extends AppCompatTextView {
         }
         Observable.just(1)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from((LiveDisplayActivity) context, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(integer -> {
 //                    if (textLength > viewWidth && textLength - step + 130 <= viewWidth) {
 //                        return;

@@ -205,7 +205,7 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
             } else {
                 canvas.drawText(text, viewWidth - step, y, paint);
             }
-            rxTimerUtil.timer(context,5 * 60 * 1000, number -> {
+            rxTimerUtil.timer(5 * 60 * 1000, number -> {
                 step = 0f;
                 scrollTimes = 1;
                 startScroll();

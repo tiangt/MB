@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
-import android.arch.lifecycle.Lifecycle;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,20 +12,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.GoodsPriceInfo;
 import com.whzl.mengbi.model.entity.HeadlineListBean;
-import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.RankBeyondInfo;
-import com.whzl.mengbi.model.entity.RoomRankBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -42,7 +36,6 @@ import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -230,7 +223,6 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
         tvCountdown.setVisibility(View.VISIBLE);
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(aLong -> {
                     if (time - aLong <= 0) {
                         tvCountdown.setText(getString(R.string.countdown, 0 + ""));
@@ -326,7 +318,7 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            if(ClickUtil.isFastClick()){
+            if (ClickUtil.isFastClick()) {
                 if (getMyActivity() != null) {
                     ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mListData.get(position).anchorId, true);
                 }
@@ -358,7 +350,7 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            if(ClickUtil.isFastClick()){
+            if (ClickUtil.isFastClick()) {
                 if (getMyActivity() != null) {
                     ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mListData.get(position).anchorId, true);
                 }

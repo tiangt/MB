@@ -1,12 +1,5 @@
 package com.whzl.mengbi.util;
 
-import android.arch.lifecycle.Lifecycle;
-import android.content.Context;
-
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -29,10 +22,9 @@ public class RxTimerUtil {
      * @param milliseconds
      * @param next
      */
-    public void timer(Context context,long milliseconds, final IRxNext next) {
+    public void timer(long milliseconds, final IRxNext next) {
         Observable.timer(milliseconds, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from((LiveDisplayActivity)context, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new Observer<Long>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable disposable) {

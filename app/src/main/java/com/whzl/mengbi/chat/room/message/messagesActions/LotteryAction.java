@@ -1,14 +1,10 @@
 package com.whzl.mengbi.chat.room.message.messagesActions;
 
-import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.LotteryJson;
 import com.whzl.mengbi.chat.room.message.messages.LotteryMessage;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 
@@ -38,7 +34,6 @@ public class LotteryAction implements Actions {
         }
         Observable.timer(10, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from((LiveDisplayActivity) context, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {

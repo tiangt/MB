@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
-import android.arch.lifecycle.Lifecycle;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,16 +14,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.AudienceListBean;
-import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
-import com.whzl.mengbi.ui.dialog.GuardListDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseListFragment;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
@@ -69,32 +63,31 @@ public class AudienceListFragment extends BaseListFragment<AudienceListBean.Audi
 
     @Override
     protected void loadData() {
-        disposable = Observable.interval(0, 60, TimeUnit.SECONDS)
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY))).subscribe((Long aLong) -> {
-                    mProgramId = getArguments().getInt("programId");
-                    HashMap paramsMap = new HashMap();
-                    paramsMap.put("programId", mProgramId);
-                    HashMap signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
-                    ApiFactory.getInstance().getApi(Api.class)
-                            .getAudienceList(signPramsMap)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
-                                @Override
-                                public void onSuccess(AudienceListBean.DataBean dataBean) {
-                                    if (dataBean != null) {
-                                        loadSuccess(dataBean.getList());
-                                    } else {
-                                        loadSuccess(null);
-                                    }
-                                }
+        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            mProgramId = getArguments().getInt("programId");
+            HashMap paramsMap = new HashMap();
+            paramsMap.put("programId", mProgramId);
+            HashMap signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
+            ApiFactory.getInstance().getApi(Api.class)
+                    .getAudienceList(signPramsMap)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
+                        @Override
+                        public void onSuccess(AudienceListBean.DataBean dataBean) {
+                            if (dataBean != null) {
+                                loadSuccess(dataBean.getList());
+                            } else {
+                                loadSuccess(null);
+                            }
+                        }
 
-                                @Override
-                                public void onError(int code) {
+                        @Override
+                        public void onError(int code) {
 
-                                }
-                            });
-                });
+                        }
+                    });
+        });
 
     }
 

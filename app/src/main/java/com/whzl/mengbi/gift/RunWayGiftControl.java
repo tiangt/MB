@@ -28,7 +28,7 @@ public class RunWayGiftControl {
     private Context context;
 
 
-    public RunWayGiftControl(Context context,AutoScrollTextView autoScrollTextView, FrameLayout frameLayout, ImageView imageView) {
+    public RunWayGiftControl(Context context, AutoScrollTextView autoScrollTextView, FrameLayout frameLayout, ImageView imageView) {
         this.autoScrollView = autoScrollTextView;
         this.frameLayout = frameLayout;
         this.imageView = imageView;
@@ -85,7 +85,7 @@ public class RunWayGiftControl {
             }
         });
         autoScrollView.startScroll();
-        rxTimerUtil.timer(context,200, new RxTimerUtil.IRxNext() {
+        rxTimerUtil.timer(200, new RxTimerUtil.IRxNext() {
             @Override
             public void doNext(long number) {
                 frameLayout.setVisibility(View.VISIBLE);

@@ -3,7 +3,6 @@ package com.whzl.mengbi.ui.activity;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.arch.lifecycle.Lifecycle;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -45,8 +44,6 @@ import com.opensource.svgaplayer.SVGADynamicEntity;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
@@ -742,13 +739,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
         mLivePresenter.getActivityList();
         mLivePresenter.getPkInfo(mProgramId);
-        roomOnlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS)
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY))).subscribe((Long aLong) -> {
-                    mLivePresenter.getAudienceList(mProgramId);
-                });
+        roomOnlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+            mLivePresenter.getAudienceList(mProgramId);
+        });
         mLivePresenter.getGuardTotal(mProgramId);
-        roomRankTotalDisposable = Observable.interval(0, 60, TimeUnit.SECONDS)
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY))).subscribe((Long aLong) -> {
+        roomRankTotalDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
                     mLivePresenter.getRoomRankTotal(mProgramId, "day");
                 });
         if (mUserId == 0) {
@@ -1334,8 +1329,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         //头条榜单
         mLivePresenter.getHeadlineRank(mAnchorId, "F");
         mLivePresenter.getBlackRoomTime(mAnchorId);
-        headlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS)
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY))).subscribe((Long aLong) -> {
+        headlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             mLivePresenter.getHeadlineRank(mAnchorId, "F");
         });
     }
@@ -1431,7 +1425,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initRunWay() {
         if (mRunWayGiftControl == null) {
-            mRunWayGiftControl = new RunWayGiftControl(this,runWayText, frameSupercarTrack, ivRocket);
+            mRunWayGiftControl = new RunWayGiftControl(this, runWayText, frameSupercarTrack, ivRocket);
             mRunWayGiftControl.setListener((programId, nickname) -> showJumpLiveHouseDialog(programId, nickname));
         }
     }
@@ -1620,7 +1614,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         tvTimeBlackRoom.setText(totalHours + "");
         blackRoomDisposable = Observable.interval(0, 60, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY)))
                 .subscribe((Long aLong) -> {
                     double v = (dataBean.time - aLong * 60) / 60 / 60;
                     totalHours = (int) Math.ceil(v);

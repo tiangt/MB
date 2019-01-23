@@ -2,7 +2,6 @@ package com.whzl.mengbi.ui.widget.view;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
@@ -20,8 +19,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
@@ -303,7 +300,6 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     public void timer(String state, int second) {
         disposable = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from((LiveDisplayActivity) context, Lifecycle.Event.ON_DESTROY)))
                 .subscribe(aLong -> {
                     if (aLong < second - 1) {
                         if (aLong < second - 1) {
@@ -359,7 +355,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                             if (1 == second - aLong - 1) {
                                 tvPkTitle.setText(state);
                                 tvTime.setText((second - aLong - 1) + "s");
-                                rxTimerUtil.timer(context,1000, new RxTimerUtil.IRxNext() {
+                                rxTimerUtil.timer( 1000, new RxTimerUtil.IRxNext() {
                                     @Override
                                     public void doNext(long number) {
                                         tvTime.setText(0 + "s");
