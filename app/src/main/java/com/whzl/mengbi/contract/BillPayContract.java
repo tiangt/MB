@@ -2,7 +2,6 @@ package com.whzl.mengbi.contract;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.entity.ApiResult;
-import com.whzl.mengbi.model.entity.PackPrettyBean;
 
 import io.reactivex.Observable;
 

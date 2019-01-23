@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
+import android.arch.lifecycle.Lifecycle;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.contract.BasePresenter;
@@ -22,8 +25,6 @@ import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
-import com.whzl.mengbi.ui.dialog.UserListDialog;
-import com.whzl.mengbi.ui.fragment.base.BaseListFragment;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
@@ -87,7 +88,8 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
 
     @Override
     protected void loadData(int action, int mPage) {
-        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).
+                as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY))).subscribe((Long aLong) -> {
             mProgramId = getArguments().getInt("programId");
             HashMap paramsMap = new HashMap();
             paramsMap.put("programId", mProgramId);
@@ -265,7 +267,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             AudienceListBean.AudienceInfoBean audienceInfoBean = mDatas.get(position);
-            if(ClickUtil.isFastClick()){
+            if (ClickUtil.isFastClick()) {
                 if (getActivity() != null) {
                     ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(audienceInfoBean.getUserid(), true);
                 }

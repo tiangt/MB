@@ -285,7 +285,7 @@ public class ChatListFragment extends BaseFragment {
 
 
     private void startAnim(Animator animator) {
-        animator.setDuration(200).start();
+        animator.setDuration(300).start();
         animator.setInterpolator(new LinearInterpolator());
     }
 

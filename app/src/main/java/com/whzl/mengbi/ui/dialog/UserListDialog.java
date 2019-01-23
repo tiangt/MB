@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.arch.lifecycle.Lifecycle;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -7,6 +8,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.AudienceListBean;
@@ -114,7 +117,8 @@ public class UserListDialog extends BaseFullScreenDialog {
     }
 
     private void getManagerAmount(){
-        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
+        disposable = Observable.interval(0, 60, TimeUnit.SECONDS)
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY))).subscribe((Long aLong) -> {
             mProgramId = getArguments().getInt("programId");
             HashMap paramsMap = new HashMap();
             paramsMap.put("programId", mProgramId);

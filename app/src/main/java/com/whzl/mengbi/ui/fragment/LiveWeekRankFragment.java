@@ -1,13 +1,15 @@
 package com.whzl.mengbi.ui.fragment;
 
+import android.arch.lifecycle.Lifecycle;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.uber.autodispose.AutoDispose;
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.WeekRankBean;
@@ -71,9 +73,10 @@ public class LiveWeekRankFragment extends BaseFragment {
     @Override
     public void init() {
         mAnchorId = getArguments().getInt("mAnchorId");
-        disposable = Observable.interval(0, 10, TimeUnit.SECONDS).subscribe((Long aLong) -> {
-            loaddata();
-        });
+        disposable = Observable.interval(0, 10, TimeUnit.SECONDS)
+                .as(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY))).subscribe((Long aLong) -> {
+                    loaddata();
+                });
         llWeekRank.setOnClickListener(v -> {
             ((LiveDisplayActivity) getActivity()).jumpToWeekRank();
         });
