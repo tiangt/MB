@@ -1990,6 +1990,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView2.release();
             textureView2 = null;
         }
+        if (mSvgaGiftControl != null) {
+            mSvgaGiftControl.destroy();
+            mSvgaGiftControl = null;
+        }
         mLivePresenter.onDestory();
         super.onDestroy();
         unregisterReceiver(mReceiver);
