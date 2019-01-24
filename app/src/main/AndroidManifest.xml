@@ -228,7 +228,8 @@
         <activity
             android:name=".ui.activity.LiveDisplayActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing"
+            android:hardwareAccelerated="true">
 
         </activity>
 

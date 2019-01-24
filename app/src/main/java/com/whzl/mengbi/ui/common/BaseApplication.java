@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.http.HttpResponseCache;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,6 +37,8 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -99,6 +102,12 @@ public class BaseApplication extends Application {
         int heapSize = manager.getMemoryClass();
         int maxHeapSize = manager.getLargeMemoryClass();
         initUrl();
+        try {
+            File cacheDir = new File(getApplicationContext().getCacheDir(), "http");
+            HttpResponseCache.install(cacheDir, 1024 * 1024 * 128);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private DaoSession daoSession;

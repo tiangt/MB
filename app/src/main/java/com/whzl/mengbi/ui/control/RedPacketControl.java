@@ -166,6 +166,16 @@ public class RedPacketControl {
                                     .setOutCancel(true)
                                     .show(((LiveDisplayActivity) context).getSupportFragmentManager());
                             EventBus.getDefault().post(new UserInfoUpdateEvent());
+                        } else {
+                            AwesomeDialog.init().setLayoutId(R.layout.dialog_redpack_off)
+                                    .setConvertListener(new ViewConvertListener() {
+                                        @Override
+                                        protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+
+                                        }
+                                    })
+                                    .setOutCancel(true)
+                                    .show(((LiveDisplayActivity) context).getSupportFragmentManager());
                         }
                     }
 
