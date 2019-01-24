@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -959,6 +960,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         });
         redPopupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        redPopupWindow.setBackgroundDrawable(new BitmapDrawable());
         redPopupWindow.setOutsideTouchable(true);
         redPopupWindow.setFocusable(true);
         redPopupWindow.showAsDropDown(llRedBag, 0, UIUtil.dip2px(LiveDisplayActivity.this, 1));

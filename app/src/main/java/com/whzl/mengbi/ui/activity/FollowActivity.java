@@ -25,7 +25,6 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
-import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
@@ -227,7 +226,7 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
                 refreshLayout.finishLoadMore();
             }
             mAnchorList.addAll(anchorFollowedDataBean.data.list);
-            if (anchorFollowedDataBean.data.list == null || anchorFollowedDataBean.data.list.size() < NetConfig.DEFAULT_PAGER_SIZE) {
+            if (anchorFollowedDataBean.data.list == null || anchorFollowedDataBean.data.list.size() == 0/*< NetConfig.DEFAULT_PAGER_SIZE*/) {
                 adapter.notifyDataSetChanged();
                 if (mAnchorList.size() > 0) {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);

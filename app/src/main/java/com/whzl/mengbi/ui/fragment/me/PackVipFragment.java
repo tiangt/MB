@@ -45,7 +45,7 @@ public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean,B
 
     @Override
     protected boolean setShouldLoadMore() {
-        return true;
+        return false;
     }
 
     @Override

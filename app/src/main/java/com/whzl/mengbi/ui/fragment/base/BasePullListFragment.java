@@ -31,6 +31,12 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
     private boolean mIsViewCreate;
     public boolean hasLoadData;
 
+    public void setAboutAnchor(boolean aboutAnchor) {
+        this.aboutAnchor = aboutAnchor;
+    }
+
+    private boolean aboutAnchor = false;
+
     protected int mPage = 1;
 
     @Override
@@ -146,7 +152,7 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
             mAdapter.onLoadMoreStateChanged(setLoadMoreEndShow() ? BaseListAdapter.LOAD_MORE_STATE_END_SHOW : BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             pullRecycler.OnActionComplete(PullRecycler.LOAD_RESULT_LOAD_MORE_END);
         } else {
-            if (data.size() < NetConfig.DEFAULT_PAGER_SIZE) {
+            if (aboutAnchor?/*data.size() < NetConfig.DEFAULT_PAGER_SIZE*/data.size()==0:data.size() < NetConfig.DEFAULT_PAGER_SIZE) {
                 mAdapter.onLoadMoreStateChanged(setLoadMoreEndShow() ? BaseListAdapter.LOAD_MORE_STATE_END_SHOW : BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
                 pullRecycler.OnActionComplete(PullRecycler.LOAD_RESULT_LOAD_MORE_END);
             } else {

@@ -73,6 +73,7 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
     @Override
     public void init() {
         super.init();
+        setAboutAnchor(true);
         type = getArguments().getString("type");
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_follow_sort, getPullView(), false);
         TextView tv = view.findViewById(R.id.tv_content);

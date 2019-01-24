@@ -15,15 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
-import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
@@ -37,7 +34,6 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
-import com.whzl.mengbi.ui.widget.view.GlideRoundTransform;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
@@ -228,7 +224,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                 refreshLayout.finishLoadMore();
             }
             mAnchorList.addAll(anchorFollowedDataBean.data.list);
-            if (anchorFollowedDataBean.data.list == null || anchorFollowedDataBean.data.list.size() < NetConfig.DEFAULT_PAGER_SIZE) {
+            if (anchorFollowedDataBean.data.list == null || anchorFollowedDataBean.data.list.size() == 0) {
                 adapter.notifyDataSetChanged();
                 if (mAnchorList.size() > 0) {
                     adapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
