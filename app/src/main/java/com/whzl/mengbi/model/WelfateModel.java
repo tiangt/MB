@@ -21,8 +21,8 @@ import io.reactivex.Observable;
  * @author nobody
  * @date 2018/10/18
  */
-public class WelfateModel implements WelfareContract.Model {
-    @Override
+public class WelfateModel/* implements WelfareContract.Model*/ {
+//    @Override
     public Observable<ApiResult<NewTaskBean>> newTask(String userId) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
@@ -30,7 +30,7 @@ public class WelfateModel implements WelfareContract.Model {
                 .newTask(ParamsUtils.getSignPramsMap(paramsMap));
     }
 
-    @Override
+//    @Override
     public Observable<ApiResult<JsonElement>> receive(String userId, String awardSn) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
@@ -39,7 +39,7 @@ public class WelfateModel implements WelfareContract.Model {
                 .receive(ParamsUtils.getSignPramsMap(paramsMap));
     }
 
-    @Override
+//    @Override
     public Observable<ApiResult<JumpRandomRoomBean>> jumpRandom() {
         HashMap paramsMap = new HashMap();
         return ApiFactory.getInstance().getApi(Api.class)

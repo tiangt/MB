@@ -20,7 +20,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class WelfarePresenter extends BasePresenter<WelfareContract.View> implements WelfareContract.Presenter {
 
-    private WelfareContract.Model welfateModel;
+    private WelfateModel welfateModel;
 
     public WelfarePresenter() {
         welfateModel = new WelfateModel();

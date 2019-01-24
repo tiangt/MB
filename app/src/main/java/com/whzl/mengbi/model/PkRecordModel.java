@@ -2,7 +2,6 @@ package com.whzl.mengbi.model;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.contract.PkRecordContract;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.PkRecordListBean;
@@ -18,8 +17,7 @@ import io.reactivex.Observable;
  * @author nobody
  * @date 2018/12/28
  */
-public class PkRecordModel implements PkRecordContract.Model {
-    @Override
+public class PkRecordModel {
     public Observable<ApiResult<PkTimeBean>> getPkTimes(int userId) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", userId);
@@ -27,7 +25,6 @@ public class PkRecordModel implements PkRecordContract.Model {
                 .getPkTimes(ParamsUtils.getSignPramsMap(paramsMap));
     }
 
-    @Override
     public Observable<ApiResult<PkRecordListBean>> getPkRecordList(int userId) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", userId);
@@ -35,7 +32,6 @@ public class PkRecordModel implements PkRecordContract.Model {
                 .getPkRecordList(ParamsUtils.getSignPramsMap(paramsMap));
     }
 
-    @Override
     public Observable<ApiResult<BlackRoomTimeBean>> getRoomTime(int userId) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", userId);
@@ -43,7 +39,6 @@ public class PkRecordModel implements PkRecordContract.Model {
                 .getRoomTime(ParamsUtils.getSignPramsMap(paramsMap));
     }
 
-    @Override
     public Observable<ApiResult<JsonElement>> rescure(long userId, int anchorId, int hourTime) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", userId);

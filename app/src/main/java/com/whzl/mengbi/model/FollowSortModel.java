@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.contract.FollowSortContract;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.FollowSortBean;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -20,8 +19,7 @@ import io.reactivex.Observable;
  * @author nobody
  * @date 2018/12/20
  */
-public class FollowSortModel implements FollowSortContract.Model {
-    @Override
+public class FollowSortModel {
     public Observable<ApiResult<FollowSortBean>> getGuardPrograms(int page) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
@@ -31,7 +29,6 @@ public class FollowSortModel implements FollowSortContract.Model {
                 .getGuardProgram(ParamsUtils.getSignPramsMap(paramsMap));
     }
 
-    @Override
     public Observable<ApiResult<FollowSortBean>> getManageProgram(int page) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
@@ -41,7 +38,6 @@ public class FollowSortModel implements FollowSortContract.Model {
                 .getManageProgram(ParamsUtils.getSignPramsMap(paramsMap));
     }
 
-    @Override
     public Observable<ApiResult<FollowSortBean>> getWatchReord(int page) {
         HashMap param = new HashMap();
         param.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
@@ -51,7 +47,6 @@ public class FollowSortModel implements FollowSortContract.Model {
                 .getWatchHistory(ParamsUtils.getSignPramsMap(param));
     }
 
-    @Override
     public Observable<ApiResult<JsonElement>> clearWatchRecord() {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L));
