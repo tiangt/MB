@@ -47,7 +47,7 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
         }
     }
 
-    private void loadData() {
+    protected void loadData() {
         pullRecycler.setRecyclerAction(PullRecycler.ACTION_LOAD_DATA);
         loadData(PullRecycler.ACTION_LOAD_DATA, 1);
     }
