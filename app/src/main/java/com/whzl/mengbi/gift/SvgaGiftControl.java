@@ -114,6 +114,7 @@ public class SvgaGiftControl {
         svgaImageView.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
+                destroy();
             }
 
             @Override

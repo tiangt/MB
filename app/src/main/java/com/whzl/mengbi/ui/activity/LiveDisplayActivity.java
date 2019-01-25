@@ -1960,6 +1960,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView2 != null) {
             textureView2.runInBackground(true);
         }
+        if(mSvgaGiftControl != null){
+            mSvgaGiftControl.destroy();
+            mSvgaGiftControl = null;
+        }
     }
 
     @Override
@@ -1989,10 +1993,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView2.stop();
             textureView2.release();
             textureView2 = null;
-        }
-        if (mSvgaGiftControl != null) {
-            mSvgaGiftControl.destroy();
-            mSvgaGiftControl = null;
         }
         mLivePresenter.onDestory();
         super.onDestroy();
