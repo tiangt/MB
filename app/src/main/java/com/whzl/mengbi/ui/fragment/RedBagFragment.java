@@ -145,6 +145,7 @@ public class RedBagFragment extends BaseFragment {
         long num = Long.parseLong(etNumber.getText().toString());
         if (num > 50) {
             etNumber.setText("50");
+            etNumber.setSelection(2);
         }
         num = Long.parseLong(etNumber.getText().toString());
         if (type.equals(NORMAL)) {
