@@ -143,6 +143,10 @@ public class RedBagFragment extends BaseFragment {
         }
         long money = Long.parseLong(etMoney.getText().toString());
         long num = Long.parseLong(etNumber.getText().toString());
+        if (num > 50) {
+            etNumber.setText("50");
+        }
+        num = Long.parseLong(etNumber.getText().toString());
         if (type.equals(NORMAL)) {
             tvTotal.setText(AmountConversionUitls.amountConversionFormat(money * num));
         } else {
