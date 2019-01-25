@@ -31,6 +31,7 @@ import com.whzl.mengbi.gen.DaoSession;
 import com.whzl.mengbi.greendao.MyOpenHelper;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.ui.activity.MainActivity;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -108,6 +109,9 @@ public class BaseApplication extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        int memClass = activityManager.getMemoryClass();//64，以m为单位
+        LogUtils.e("ssssssssssssss  "+memClass);
     }
 
     private DaoSession daoSession;
