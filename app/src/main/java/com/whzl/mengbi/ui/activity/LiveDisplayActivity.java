@@ -190,6 +190,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1092,7 +1093,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (mSvgaGiftControl == null) {
                 mSvgaGiftControl = new SvgaGiftControl(this, svgaGift);
             }
-            mSvgaGiftControl.load(animEvent);
+            WeakReference<SvgaGiftControl> weakReference = new WeakReference<>(mSvgaGiftControl);
+            if(weakReference.get() != null){
+                weakReference.get().load(animEvent);
+            }
+//            mSvgaGiftControl.load(animEvent);
         }
 
     }
@@ -2009,6 +2014,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (mSvgaGiftControl != null) {
             mSvgaGiftControl.destroy();
+            mSvgaGiftControl = null;
         }
         if (giftControl != null) {
             giftControl.destroy();
