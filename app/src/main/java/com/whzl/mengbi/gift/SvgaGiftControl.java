@@ -82,6 +82,9 @@ public class SvgaGiftControl {
             disposable.dispose();
         }
         if (svgaImageView != null) {
+            if (svgaImageView.isAnimating()) {
+                svgaImageView.stopAnimation();
+            }
             svgaImageView.setVisibility(View.GONE);
         }
         mGifGiftQueue.clear();
