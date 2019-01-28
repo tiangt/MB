@@ -201,6 +201,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import pl.droidsonroids.gif.GifImageView;
@@ -407,6 +408,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private PopupWindow redPopupWindow;
     private RedPackRunWayControl redPackRunWayControl;
     private RedPacketControl redPacketControl;
+    private CompositeDisposable compositeDisposable;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -537,6 +539,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     protected void setupView() {
+        compositeDisposable = new CompositeDisposable();
         drawerLayoutOut.setScrimColor(Color.TRANSPARENT);
         initPlayer();
         initFragment();
@@ -744,10 +747,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         roomOnlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             mLivePresenter.getAudienceList(mProgramId);
         });
+        compositeDisposable.add(roomOnlineDisposable);
         mLivePresenter.getGuardTotal(mProgramId);
         roomRankTotalDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
                     mLivePresenter.getRoomRankTotal(mProgramId, "day");
                 });
+        compositeDisposable.add(roomRankTotalDisposable);
         if (mUserId == 0) {
             btnFreeGift.setImageResource(R.drawable.ic_live_free_gift);
         } else {
@@ -1339,6 +1344,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         headlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             mLivePresenter.getHeadlineRank(mAnchorId, "F");
         });
+        compositeDisposable.add(headlineDisposable);
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1630,6 +1636,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     llBlackRoom.setVisibility(View.VISIBLE);
                     tvTimeBlackRoom.setText(totalHours + "");
                 });
+        compositeDisposable.add(blackRoomDisposable);
     }
 
     /**
@@ -1930,27 +1937,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .show(getSupportFragmentManager());
     }
 
-//    public void showAnchorInfoDialog(long viewedUserID, int anchorLevel){
-//        PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
-//                .setListener(() -> {
-//                    if (mUserListDialog != null && mUserListDialog.isAdded()) {
-//                        mUserListDialog.dismiss();
-//                    }
-//                    if (mRankDialog != null && mRankDialog.isAdded()) {
-//                        mRankDialog.dismiss();
-//                    }
-//                    if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
-//                        mGuardianDialog.dismiss();
-//                    }
-//                    if (headlineDialog != null && headlineDialog.isAdded()) {
-//                        headlineDialog.dismiss();
-//                    }
-//                })
-//                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
-//                .setDimAmount(0)
-//                .setShowBottom(false)
-//                .show(getSupportFragmentManager());
-//    }
 
     @Override
     protected void onPause() {
@@ -1965,10 +1951,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView2 != null) {
             textureView2.runInBackground(true);
         }
-//        if(mSvgaGiftControl != null){
-//            mSvgaGiftControl.destroy();
-//            mSvgaGiftControl = null;
-//        }
     }
 
     @Override
@@ -1998,6 +1980,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView2.stop();
             textureView2.release();
             textureView2 = null;
+        }
+        if (compositeDisposable != null) {
+            compositeDisposable.clear();
+            compositeDisposable = null;
         }
         mLivePresenter.onDestory();
         super.onDestroy();
@@ -2040,24 +2026,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (pkControl != null) {
             pkControl.destroy();
         }
-        if (roomRankTotalDisposable != null) {
-            roomRankTotalDisposable.dispose();
-        }
-        if (roomOnlineDisposable != null) {
-            roomOnlineDisposable.dispose();
-        }
         if (mActivityGrands.size() > 0) {
             mActivityGrands.clear();
             mGrandAdaper.notifyDataSetChanged();
         }
         if (llPagerIndex.getChildCount() > 0) {
             llPagerIndex.removeAllViews();
-        }
-        if (blackRoomDisposable != null) {
-            blackRoomDisposable.dispose();
-        }
-        if (headlineDisposable != null) {
-            headlineDisposable.dispose();
         }
         if (headLineControl != null) {
             headLineControl.destroy();
@@ -2073,6 +2047,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (redPacketControl != null) {
             redPacketControl.destroy();
+        }
+        if (compositeDisposable != null) {
+            compositeDisposable.clear();
         }
     }
 
