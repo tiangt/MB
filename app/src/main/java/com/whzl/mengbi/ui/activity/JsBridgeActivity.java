@@ -7,12 +7,14 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
@@ -63,6 +65,7 @@ public class JsBridgeActivity extends BaseActivity {
     private String programId;
     private String url;
     private String title;
+    private ProgressBar progressbar;
 
     @Override
     protected void initEnv() {
@@ -83,6 +86,7 @@ public class JsBridgeActivity extends BaseActivity {
     protected void setupView() {
         button = findViewById(R.id.button3);
         bridgeWebView = findViewById(R.id.JsBridgeWebView);
+        progressbar = findViewById(R.id.progressbar);
 
         bridgeWebView.setDefaultHandler(new DefaultHandler());
         bridgeWebView.setWebChromeClient(new WebChromeClient());
@@ -95,6 +99,19 @@ public class JsBridgeActivity extends BaseActivity {
             bridgeWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         }
 
+        bridgeWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                if (isFinishing()) {
+                    return;
+                }
+                progressbar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    progressbar.setVisibility(View.GONE);
+                }
+            }
+        });
 //        bridgeWebView.loadUrl("file:///android_asset/test5.html");
         bridgeWebView.loadUrl(url);
         initRegisterHandler();

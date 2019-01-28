@@ -4,17 +4,17 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="46dp"
+    android:background="@color/white"
     android:minHeight="46dp"
-    android:background="#FFAC85"
     app:contentInsetLeft="0dp"
-    app:navigationIcon="@drawable/ic_login_return">
+    app:navigationIcon="@drawable/ic_return_gray">
 
     <TextView
         android:id="@+id/tv_toolbar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="#F0F0F0"
+        android:textColor="@color/text_view"
         android:textSize="19sp"
         android:textStyle="bold" />
 

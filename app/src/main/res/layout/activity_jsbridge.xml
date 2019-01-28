@@ -3,10 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.activity.JsBridgeActivity">
 
-    <include layout="@layout/comm_white_toolbar" />
+    <include layout="@layout/comm_web_toolbar" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="@style/ProgressBar_Web"
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
 
     <com.github.lzyzsd.jsbridge.BridgeWebView
         android:id="@+id/JsBridgeWebView"
