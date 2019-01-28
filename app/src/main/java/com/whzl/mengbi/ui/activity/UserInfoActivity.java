@@ -137,7 +137,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     @Override
     protected void setupView() {
-        GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getData().getAvatar(), ivAvatar);
+        if (mUserInfo != null && mUserInfo.getData() != null) {
+            GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getData().getAvatar(), ivAvatar);
+        }
         tvAccount.setText(mUserInfo.getData().getUserId() + "");
         tvNickName.setText(mUserInfo.getData().getNickname());
         mSex = mUserInfo.getData().getGender();
