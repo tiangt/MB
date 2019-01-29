@@ -1661,6 +1661,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onGetRoomRedpackTreasureSuccess(RoomRedPackTreasure dataBean) {
+        llRedBag.setVisibility(View.VISIBLE);
         tvRedBag.setText(String.valueOf(dataBean.amountTotal));
     }
 
