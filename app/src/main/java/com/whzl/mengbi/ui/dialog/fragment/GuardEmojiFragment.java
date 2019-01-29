@@ -2,9 +2,13 @@ package com.whzl.mengbi.ui.dialog.fragment;
 
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +19,13 @@ import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.FileUtils;
+import com.whzl.mengbi.util.UIUtil;
 
 import java.util.List;
 
@@ -108,8 +114,18 @@ public class GuardEmojiFragment extends BaseFragment {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
+//            String emojiDesc = publicBeans.get(position).getValue();
+//            messageEditText.append(emojiDesc);
+
+            String emojiPath = publicBeans.get(position).getIcon();
             String emojiDesc = publicBeans.get(position).getValue();
-            messageEditText.append(emojiDesc);
+            Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(emojiPath, getContext());
+            BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
+            drawable.setBounds(0, 0, UIUtil.dip2px(getContext(), ImageUrl.IMAGE_HIGHT), UIUtil.dip2px(getContext(), ImageUrl.IMAGE_HIGHT));
+            ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
+            SpannableString spannableString = new SpannableString(emojiDesc);
+            spannableString.setSpan(imageSpan, 0, emojiDesc.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            messageEditText.append(spannableString);
         }
     }
 
@@ -125,7 +141,7 @@ public class GuardEmojiFragment extends BaseFragment {
                 messageEditText.onKeyUp(keyCode, keyEventUp);
                 break;
             case R.id.btn_guard:
-                if(listener != null){
+                if (listener != null) {
                     listener.onGuardClick();
                 }
                 break;
@@ -138,7 +154,7 @@ public class GuardEmojiFragment extends BaseFragment {
 
     private OnGuardClickListener listener;
 
-    public interface OnGuardClickListener{
+    public interface OnGuardClickListener {
         void onGuardClick();
     }
 }

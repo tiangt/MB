@@ -17,4 +17,5 @@ public interface SpConfig {
     String PK_VIOCE_LIVE = "pkVioceLive";
     String FREE_GOODS_IDS = "free_goods_ids";
     String REDPACKETURL = "redpacketUrl";
+    String CHATCACHE = "chat_cache";
 }

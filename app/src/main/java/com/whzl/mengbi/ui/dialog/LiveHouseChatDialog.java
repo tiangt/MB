@@ -1,11 +1,13 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,6 +23,8 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
+import com.whzl.mengbi.chat.room.util.ChatCacheFaceReplace;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -126,9 +130,11 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-        userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
         isGuard = getArguments().getBoolean("isGuard");
         isVip = getArguments().getBoolean("isVip");
+
+        initCacheEdit();
+        userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
         mProgramId = getArguments().getInt("programId");
         mAnchorBean = getArguments().getParcelable("anchor");
         mChatToUser = getArguments().getParcelable("chatToUser");
@@ -144,6 +150,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         etContent.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == 1) {
                 KeyBoardUtil.closeKeybord(etContent, getContext());
+                saveEdit();
                 dismiss();
             }
             return false;
@@ -163,6 +170,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     etContent.getText().clear();
                     KeyBoardUtil.closeKeybord(etContent, getContext());
                 }
+                clearSaveEdit();
                 dismiss();
                 return true;
             }
@@ -186,6 +194,21 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
             }
         });
         getBroadNum();
+    }
+
+    private void initCacheEdit() {
+        String cache = SPUtils.get(BaseApplication.getInstance(), SpConfig.CHATCACHE, "").toString();
+        etContent.setText("");
+        etContent.setSelection(etContent.getText().toString().length());
+        SpannableString spanString = LightSpanString.getLightString(cache, Color.parseColor("#323232"));
+        ChatCacheFaceReplace.getInstance().faceReplace(etContent, spanString, BaseApplication.getInstance());
+        if (isVip) {
+            ChatCacheFaceReplace.getInstance().vipFaceReplace(etContent, spanString, BaseApplication.getInstance());
+        }
+        if (isGuard) {
+            ChatCacheFaceReplace.getInstance().guardFaceReplace(etContent, spanString, BaseApplication.getInstance());
+        }
+        etContent.append(spanString);
     }
 
     private void getBroadNum() {
@@ -265,6 +288,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         }
         if (dialogOut.getHeight() - height > 100 && !btnInputChange.isSelected() && isShowSoftInput) {
             dismiss();
+            saveEdit();
         }
         if (dialogOut.getHeight() - height < -100 && !btnInputChange.isSelected()) {
             isShowSoftInput = true;
@@ -301,6 +325,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     etContent.getText().clear();
                     KeyBoardUtil.closeKeybord(etContent, getContext());
                 }
+                clearSaveEdit();
                 dismiss();
                 break;
             case R.id.btn_input_change:
@@ -311,7 +336,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                             .postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
+                                    LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
                                     llEmojiContiner.setVisibility(View.VISIBLE);
                                     isShowSoftInput = false;
                                 }
@@ -328,6 +353,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 break;
             case R.id.dialog_out:
                 KeyBoardUtil.closeKeybord(etContent, getContext());
+                saveEdit();
                 dismiss();
                 break;
             case R.id.btn_input_broad:
@@ -382,4 +408,11 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         super.onDestroyView();
     }
 
+    public void saveEdit() {
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.CHATCACHE, etContent.getText().toString().trim());
+    }
+
+    public void clearSaveEdit() {
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.CHATCACHE, "");
+    }
 }

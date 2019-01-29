@@ -41,6 +41,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.UpdateProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UserLevelChangeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WeekStarAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
+import com.whzl.mengbi.chat.room.util.ChatCacheFaceReplace;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.util.GsonUtils;
 
@@ -66,6 +67,7 @@ public class MessageRouter implements MessageCallback {
         initChatAction();
         //初始化表情
         FaceReplace.getInstance().init(context);
+        ChatCacheFaceReplace.getInstance().init(context);
         EventBus.getDefault().register(context);
     }
 

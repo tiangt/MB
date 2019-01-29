@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -23,14 +22,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pl.droidsonroids.gif.GifDrawable;
 
-
-public class FaceReplace {
+public class ChatCacheFaceReplace {
     private List<FacePattern> patternList = null;
     private List<FacePattern> guardPatternList = null;
     private List<FacePattern> vipPatternList = null;
     private EmjoyInfo emjoyInfo = null;
+    private int textSize = 14;
 
     public void setGuardEmjoyInfo(EmjoyInfo guardEmjoyInfo) {
         this.guardEmjoyInfo = guardEmjoyInfo;
@@ -50,10 +48,10 @@ public class FaceReplace {
     }
 
     private static class FaceReplaceHolder {
-        private static final FaceReplace instance = new FaceReplace();
+        private static final ChatCacheFaceReplace instance = new ChatCacheFaceReplace();
     }
 
-    public static final FaceReplace getInstance() {
+    public static final ChatCacheFaceReplace getInstance() {
         return FaceReplaceHolder.instance;
     }
 
@@ -107,34 +105,18 @@ public class FaceReplace {
                 int end = m.end();
                 Drawable drawable = null;
                 try {
-//                    if ("/顶你".equals(fp.getValue()) || "/加油".equals(fp.getValue())) {
-//                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-//                        drawable = new BitmapDrawable(context.getResources(), bitmap);
-//                        return;
-//                    }
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                        if ("/顶你".equals(fp.getValue()) || "/加油".equals(fp.getValue())) {
-                            Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-                            drawable = new BitmapDrawable(context.getResources(), bitmap);
-                        } else {
-                            drawable = new GifDrawable(fp.getFileContent());
-                            drawable.setCallback(new DrawableCallback(textView));
-                        }
-                    } else {
-                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-                        drawable = new BitmapDrawable(context.getResources(), bitmap);
-                    }
+                    Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
+                    drawable = new BitmapDrawable(context.getResources(), bitmap);
+
                 } catch (Exception ignored) {
-//                    Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-//                    drawable = new BitmapDrawable(context.getResources(), bitmap);
                     ignored.printStackTrace();
                 }
                 if (drawable == null) {
                     break;
                 }
-                drawable.setBounds(0, 0, UIUtil.sp2px(context, ImageUrl.IMAGE_HIGHT), UIUtil.sp2px(context, ImageUrl.IMAGE_HIGHT));
-                ImageSpan span = new CenterAlignImageSpan(drawable);
-                spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                drawable.setBounds(0, 0, UIUtil.sp2px(context, textSize), UIUtil.sp2px(context, textSize));
+                ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
+                spanString.setSpan(span, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
     }
@@ -150,56 +132,21 @@ public class FaceReplace {
                 int end = m.end();
                 Drawable drawable;
                 try {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                        drawable = new GifDrawable(fp.getFileContent());
-                        drawable.setCallback(new DrawableCallback(textView));
-                    } else {
-                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-                        drawable = new BitmapDrawable(context.getResources(), bitmap);
-                    }
+                    Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
+                    drawable = new BitmapDrawable(context.getResources(), bitmap);
                 } catch (Exception ignored) {
                     break;
                 }
                 if (drawable == null) {
                     break;
                 }
-                drawable.setBounds(0, 0, DensityUtil.dp2px(31), DensityUtil.dp2px(31));
-                ImageSpan span = new ImageSpan(drawable);
-                spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                drawable.setBounds(0, 0, DensityUtil.dp2px(textSize), DensityUtil.dp2px(textSize));
+                ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
+                spanString.setSpan(span, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
     }
 
-    public void guardFaceReplace16(TextView textView, SpannableString spanString, Context context) {
-        textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        DrawableCallback callback = new DrawableCallback(textView);
-        for (FacePattern fp : guardPatternList) {
-            Matcher m = fp.getPattern().matcher(spanString);
-            //Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(facePath, context);
-            while (m.find()) {
-                int start = m.start();
-                int end = m.end();
-                Drawable drawable;
-                try {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                        drawable = new GifDrawable(fp.getFileContent());
-                        drawable.setCallback(new DrawableCallback(textView));
-                    } else {
-                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-                        drawable = new BitmapDrawable(context.getResources(), bitmap);
-                    }
-                } catch (Exception ignored) {
-                    break;
-                }
-                if (drawable == null) {
-                    break;
-                }
-                drawable.setBounds(0, 0, DensityUtil.dp2px(20), DensityUtil.dp2px(20));
-                ImageSpan span = new ImageSpan(drawable);
-                spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            }
-        }
-    }
 
     public void vipFaceReplace(TextView textView, SpannableString spanString, Context context) {
         textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
@@ -211,52 +158,17 @@ public class FaceReplace {
                 int end = m.end();
                 Drawable drawable;
                 try {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                        drawable = new GifDrawable(fp.getFileContent());
-                        drawable.setCallback(new DrawableCallback(textView));
-                    } else {
-                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-                        drawable = new BitmapDrawable(context.getResources(), bitmap);
-                    }
+                    Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
+                    drawable = new BitmapDrawable(context.getResources(), bitmap);
                 } catch (Exception e) {
                     break;
                 }
                 if (drawable == null) {
                     break;
                 }
-                drawable.setBounds(0, 0, DensityUtil.dp2px(50), DensityUtil.dp2px(50));
-                ImageSpan span = new ImageSpan(drawable);
-                spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-            }
-        }
-    }
-
-    public void vipFaceReplace16(TextView textView, SpannableString spanString, Context context) {
-        textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        DrawableCallback callback = new DrawableCallback(textView);
-        for (FacePattern fp : vipPatternList) {
-            Matcher m = fp.getPattern().matcher(spanString);
-            while (m.find()) {
-                int start = m.start();
-                int end = m.end();
-                Drawable drawable;
-                try {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                        drawable = new GifDrawable(fp.getFileContent());
-                        drawable.setCallback(new DrawableCallback(textView));
-                    } else {
-                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-                        drawable = new BitmapDrawable(context.getResources(), bitmap);
-                    }
-                } catch (Exception e) {
-                    break;
-                }
-                if (drawable == null) {
-                    break;
-                }
-                drawable.setBounds(0, 0, DensityUtil.dp2px(20), DensityUtil.dp2px(20));
-                ImageSpan span = new ImageSpan(drawable);
-                spanString.setSpan(span, start, end, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+                drawable.setBounds(0, 0, DensityUtil.dp2px(textSize), DensityUtil.dp2px(textSize));
+                ImageSpan span = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
+                spanString.setSpan(span, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
     }

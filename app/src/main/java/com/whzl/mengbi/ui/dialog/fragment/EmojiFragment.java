@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
 import com.whzl.mengbi.ui.adapter.ChatEmojiAdapter;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -86,7 +87,7 @@ public class EmojiFragment extends BaseFragment {
                 String emojiDesc = publicBeans.get(position).getValue();
                 Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(emojiPath, getContext());
                 BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
-                drawable.setBounds(0, 0, UIUtil.dip2px(getContext(), 20), UIUtil.dip2px(getContext(), 20));
+                drawable.setBounds(0, 0, UIUtil.dip2px(getContext(), ImageUrl.IMAGE_HIGHT), UIUtil.dip2px(getContext(), ImageUrl.IMAGE_HIGHT));
                 ImageSpan imageSpan = new ImageSpan(drawable, ImageSpan.ALIGN_BOTTOM);
                 SpannableString spannableString = new SpannableString(emojiDesc);
                 spannableString.setSpan(imageSpan, 0, emojiDesc.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

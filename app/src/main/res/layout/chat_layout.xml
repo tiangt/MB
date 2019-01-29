@@ -47,6 +47,7 @@
                 android:paddingRight="7dp"
                 android:singleLine="true"
                 android:textColorHint="#cececf"
+                android:textColor="@color/text_view"
                 android:textSize="12sp" />
 
             <Button
