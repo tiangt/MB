@@ -335,6 +335,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvRedBagRunWay;
     @BindView(R.id.rv_redpack)
     RecyclerView rvRedPack;
+    @BindView(R.id.chatActivityContainer)
+    RelativeLayout chatActivityContainer;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -377,8 +379,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList = new ArrayList<>();
     private RoyalEnterControl royalEnterControl;
-    private boolean showActivityGrand = true;
-    private boolean showBanner = false;
     private Disposable roomRankTotalDisposable;
     private Disposable roomOnlineDisposable;
     private NetStateChangeReceiver mPkReceiver;
@@ -431,6 +431,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         textureView.setVisibility(View.INVISIBLE);
         textureView2.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+
+        if (currentSelectedIndex == 1) {
+            currentSelectedIndex = 0;
+            setBottomContainerHeight(50);
+            chatActivityContainer.setVisibility(View.VISIBLE);
+        }
+
         mProgramId = intent.getIntExtra(BundleConfig.PROGRAM_ID, -1);
         SPUtils.put(this, "programId", mProgramId);
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
@@ -442,8 +449,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         fragmentTransaction.commit();
         initFragment();
         loadData();
-        showActivityGrand = false;
-        showBanner = false;
     }
 
     @Override
@@ -589,7 +594,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pollAdapter = new AutoPollAdapter(mAudienceList, this);
         pollAdapter.setListerner(position -> {
             long userId = mAudienceList.get(position + 1).getUserid();
-//            showAudienceInfoDialog(userId, false);
             if (ClickUtil.isFastClick()) {
                 PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
                         .setListener(() -> {
@@ -676,9 +680,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         ChatListFragment chatListFragment = ChatListFragment.newInstance(mProgramId);
-//        chatListFragment.setLlEnter(llEnter);
-//        chatListFragment.setTvEnter(tvEnter);
-//        chatListFragment.setIvEnter(ivEnterCar);
         fragments = new Fragment[]{chatListFragment, PrivateChatListFragment.newInstance(mProgramId)};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.add(R.id.fragment_container, fragments[1]);
@@ -692,14 +693,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (index == 1) {
             viewMessageNotify.setVisibility(View.GONE);
-
-            if (showActivityGrand) {
-                vpActivity.setVisibility(View.GONE);
-                llPagerIndex.setVisibility(View.GONE);
-            }
-            if (showBanner) {
-                banner.setVisibility(View.GONE);
-            }
+            chatActivityContainer.setVisibility(View.GONE);
+        } else {
+            chatActivityContainer.setVisibility(View.VISIBLE);
         }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
@@ -846,14 +842,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             case R.id.rootView:
                 if (currentSelectedIndex == 1) {
                     setTabChange(0);
-
-                    if (showActivityGrand) {
-                        vpActivity.setVisibility(View.VISIBLE);
-                        vpActivity.setVisibility(View.VISIBLE);
-                    }
-                    if (showBanner) {
-                        banner.setVisibility(View.VISIBLE);
-                    }
                 }
                 break;
             case R.id.btn_send_gift:
@@ -873,32 +861,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (mUserListDialog != null && mUserListDialog.isAdded()) {
                     return;
                 }
-//                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 1, mAudienceCount)
-//                        .setShowBottom(true)
-//                        .setDimAmount(0)
-//                        .show(getSupportFragmentManager());
                 if (ClickUtil.isFastClick()) {
                     mUserListDialog = UserListDialog.newInstance(mProgramId)
                             .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
                             .show(getSupportFragmentManager());
                 }
                 break;
-
-//            case R.id.tv_contribute:
-//                if (mRankDialog != null && mRankDialog.isAdded()) {
-//                    return;
-//                }
-//                mRankDialog = LiveHouseRankDialog.newInstance(mProgramId)
-//                        .setDimAmount(0)
-//                        .setShowBottom(true)
-//                        .show(getSupportFragmentManager());
-//                break;
             case R.id.rl_guard_number:
-//                mGuardListDialog = GuardListDialog.newInstance(mProgramId, mAnchor, 0, mAudienceCount)
-//                        .setShowBottom(true)
-//                        .setDimAmount(0)
-//                        .show(getSupportFragmentManager());
-
                 if (ClickUtil.isFastClick()) {
                     mGuardianDialog = GuardianListDialog.newInstance(mProgramId, mAnchor)
                             .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
@@ -1040,9 +1009,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void login() {
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        intent.putExtra("from", this.getClass().toString());
-//        startActivityForResult(intent, REQUEST_LOGIN);
         LoginDialog.newInstance()
                 .setLoginSuccessListener(() -> {
                     mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
@@ -1458,10 +1424,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 || bean.list == null
                 || bean.list.isEmpty()) {
             banner.setVisibility(View.GONE);
-            showBanner = false;
             return;
         }
-        showBanner = true;
         banner.setVisibility(View.VISIBLE);
         mBannerInfoList = bean.list;
         ArrayList<String> banners = new ArrayList<>();
@@ -1707,11 +1671,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
         if (bean.total.compareTo(new BigDecimal(10000)) < 0) {
-//            tvContribute.setText(bean.total + "");
             mRanking = bean.total + "";
         } else {
             BigDecimal divide = bean.total.divide(new BigDecimal(10000), 1, BigDecimal.ROUND_DOWN);
-//            tvContribute.setText(divide + "万");
             mRanking = divide + "万";
         }
     }
@@ -2136,9 +2098,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     royalEnterControl.setContext(this);
                     royalEnterControl.setClEnter(clEnter);
                 }
-//            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
-//            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
-//            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
                 royalEnterControl.showEnter((WelcomeMsg) message);
             }
         } else if (message instanceof PkMessage && ((PkMessage) message).pkJson.context.busiCode.equals("PK_RECORD")) {

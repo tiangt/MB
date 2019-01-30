@@ -356,11 +356,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         @Override
         public void onBindViewHolder(int position) {
             AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
-//            GlideImageLoader.getInstace().displayImage(getContext(), anchorInfoBean.avatar, ivAvatar);
-//            RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(5));
-//            Glide.with(FollowFragment.this).load(anchorInfoBean.avatar).apply(requestOptions).into(ivAvatar);
             GlideImageLoader.getInstace().loadRoundImage(getMyActivity(), anchorInfoBean.avatar, ivAvatar, 5);
-//            tvStatus.setVisibility("T".equals(anchorInfoBean.status) ? View.VISIBLE : View.GONE);
             if ("T".equals(anchorInfoBean.status)) {
                 tvStatus.setVisibility(View.VISIBLE);
                 tvLastTime.setVisibility(View.GONE);
@@ -397,17 +393,10 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         tvFollowState.setTextColor(Color.parseColor("#20000000"));
         tvFollowState.setText("已订阅");
         tvFollowState.setOnClickListener(v -> {
-//            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-//            dialog.setTitle("提示");
-//            dialog.setMessage("是否确定取消关注该主播");
-//            dialog.setNegativeButton("取消", null);
-//            dialog.setPositiveButton("确定", (dialog1, which) -> {
             HashMap map = new HashMap();
             map.put("userId", userId);
             map.put("programId", anchorInfoBean.programId);
             unFollow(map, tvFollowState, anchorInfoBean);
-//            });
-//            dialog.show();
         });
     }
 
@@ -422,8 +411,6 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                         String jsonStr = result.toString();
                         ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
                         if (responseInfo.getCode() == 200) {
-//                            mCurrentPager = 1;
-//                            getAnchorList(mCurrentPager++);
                             ToastUtils.showToast("取消订阅成功");
                             setUnFollowState(tvFollowState, anchorInfoBean);
                         }
