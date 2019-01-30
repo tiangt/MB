@@ -264,6 +264,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
             return;
         }
         FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
         if (fragments[index].isAdded()) {
             fragmentTransaction.show(fragments[index]);

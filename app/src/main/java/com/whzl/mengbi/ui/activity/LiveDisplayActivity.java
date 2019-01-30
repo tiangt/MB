@@ -698,6 +698,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             chatActivityContainer.setVisibility(View.VISIBLE);
         }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
         if (fragments[index].isAdded()) {
             fragmentTransaction.show(fragments[index]);
