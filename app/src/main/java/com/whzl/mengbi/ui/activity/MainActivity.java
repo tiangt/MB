@@ -165,7 +165,6 @@ public class MainActivity extends BaseActivity {
         }
         StatusBarUtil.setColor(this, colors[index], 0);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
         if (fragments[index].isAdded()) {
             fragmentTransaction.show(fragments[index]);
