@@ -1,12 +1,16 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.ContributeDataBean;
 import com.whzl.mengbi.model.entity.RoomRankBean;
@@ -32,7 +36,9 @@ import butterknife.BindView;
  * @author shaw
  * @date 2018/7/11
  */
-public class ContributeRankFragment extends BaseFragment {
+public class ContributeRankFragment extends BaseFragment implements OnRefreshListener {
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refreshLayout;
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.rl_empty_user)
@@ -40,6 +46,7 @@ public class ContributeRankFragment extends BaseFragment {
     private ArrayList<RoomRankBean.DataBean.ListBean> mDatas = new ArrayList<>();
     private String mType;
     private AudienceContributeListAdapter mAdapter;
+    private int programId;
 
     public static ContributeRankFragment newInstance(String type, int programId) {
         Bundle args = new Bundle();
@@ -57,7 +64,7 @@ public class ContributeRankFragment extends BaseFragment {
 
     @Override
     public void init() {
-        int programId = getArguments().getInt("programId");
+        programId = getArguments().getInt("programId");
         mType = getArguments().getString("type");
         mAdapter = new AudienceContributeListAdapter(getContext(), R.layout.item_audience_contribuate, mDatas);
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
@@ -89,6 +96,9 @@ public class ContributeRankFragment extends BaseFragment {
 //        recycler.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recycler.setAdapter(mAdapter);
         getData(programId, mType);
+
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setEnableLoadMore(false);
     }
 
     private void getData(int programId, String type) {
@@ -101,6 +111,7 @@ public class ContributeRankFragment extends BaseFragment {
                 if (getContext() == null) {
                     return;
                 }
+                refreshLayout.finishRefresh();
                 RoomRankBean roomRankBean = GsonUtils.GsonToBean(result.toString(), RoomRankBean.class);
                 if (roomRankBean.code == 200) {
 //                    if ("day".equals(type)) {
@@ -121,8 +132,13 @@ public class ContributeRankFragment extends BaseFragment {
 
             @Override
             public void onReqFailed(String errorMsg) {
+                refreshLayout.finishRefresh();
             }
         });
     }
 
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        getData(programId, mType);
+    }
 }
