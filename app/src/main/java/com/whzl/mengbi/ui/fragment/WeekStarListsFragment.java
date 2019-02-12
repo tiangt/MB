@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -13,6 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.GoodsPriceInfo;
@@ -52,7 +56,7 @@ import butterknife.OnClick;
  * @author cliang
  * @date 2019.1.3
  */
-public class WeekStarListsFragment extends BaseFragment implements WeekStarListView {
+public class WeekStarListsFragment extends BaseFragment implements WeekStarListView, OnRefreshListener {
 
     @BindView(R.id.rv_week_gift)
     RecyclerView rvWeekGift;
@@ -78,6 +82,8 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     RelativeLayout ivEmptyAnchor;
     @BindView(R.id.rl_empty_user)
     RelativeLayout ivEmptyUser;
+    @BindView(R.id.refresh_layout)
+    SmartRefreshLayout refreshLayout;
 
     private WeekStarPresenterImpl mPresenterImpl;
     private String mType;
@@ -136,6 +142,9 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         }
         loadData();
         initGift();
+
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setEnableLoadMore(false);
     }
 
     @Override
@@ -293,6 +302,11 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         rvUser.setAdapter(userAdapter);
     }
 
+    @Override
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        loadData();
+    }
+
     class UserViewHolder extends BaseViewHolder {
         @BindView(R.id.tv_ranking)
         TextView tvRanking;
@@ -444,6 +458,7 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
+                        refreshLayout.finishRefresh();
                         WeekStarRankInfo weekStarRankInfo = GsonUtils.GsonToBean(result.toString(), WeekStarRankInfo.class);
                         if (weekStarRankInfo.getCode() == 200) {
                             if (weekStarRankInfo != null && weekStarRankInfo.getData() != null) {
@@ -484,6 +499,7 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                     @Override
                     public void onReqFailed(String errorMsg) {
                         LogUtils.d("onReqFailed" + errorMsg.toString());
+                        refreshLayout.finishRefresh();
                     }
                 });
     }

@@ -3,35 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:paddingTop="4dp"/>
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/rl_empty_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_empty_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/img_empty_follow" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:paddingTop="4dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_empty_user"
-            android:layout_centerHorizontal="true"
-            android:text="当前列表为空"
-            android:textColor="@color/tran_black2"
-            android:layout_marginTop="10dp"
-            android:textSize="12sp" />
-    </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rl_empty_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_empty_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/img_empty_follow" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_empty_user"
+                    android:layout_centerHorizontal="true"
+                    android:text="当前列表为空"
+                    android:textColor="@color/tran_black2"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </RelativeLayout>
