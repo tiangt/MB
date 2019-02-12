@@ -142,6 +142,7 @@ import com.whzl.mengbi.ui.dialog.HeadlineDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
+import com.whzl.mengbi.ui.dialog.PrivateChatListDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
 import com.whzl.mengbi.ui.dialog.UserListDialog;
@@ -409,6 +410,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RedPackRunWayControl redPackRunWayControl;
     private RedPacketControl redPacketControl;
     private CompositeDisposable compositeDisposable;
+    private BaseAwesomeDialog privateChatListDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -838,7 +840,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     showToast(R.string.private_chat_permission_deny);
                     return;
                 }
-                setTabChange(1);
+//                setTabChange(1);
+                if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
+                    return;
+                }
+                privateChatListDialog = PrivateChatListDialog.newInstance()
+                        .setShowBottom(true)
+                        .setDimAmount(0)
+                        .show(getSupportFragmentManager());
+                ((PrivateChatListDialog)privateChatListDialog).setUpWithAnchor(mAnchor);
+                ((PrivateChatListDialog)privateChatListDialog).setIsGuard(isGuard);
+                ((PrivateChatListDialog)privateChatListDialog).setProgramId(mProgramId);
                 break;
             case R.id.rootView:
                 if (currentSelectedIndex == 1) {

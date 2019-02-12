@@ -26,9 +26,10 @@ import java.util.List;
 
 
 public class ChatMessage implements FillHolderMessage {
+    public ChatCommonJson chatJson;
     private int from_level;
     private int royal_level;
-    private int from_uid;
+    public int from_uid;
     private String from_nickname;
 
     private String contentString;
@@ -49,6 +50,7 @@ public class ChatMessage implements FillHolderMessage {
     private String prettyNum;
 
     public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList, boolean isPrivate) {
+        this.chatJson = msgJson;
         this.isPrivate = isPrivate;
         this.mContext = context;
         from_nickname = msgJson.getFrom_nickname();

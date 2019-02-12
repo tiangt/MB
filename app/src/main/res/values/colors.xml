@@ -228,4 +228,5 @@
     <color name="text_color_draw_layout">#ffffff</color>
     <color name="statusbar_black">#181818</color>
     <color name="red_bag">#ff2626</color>
+    <color name="text_color_private_chat">#000000</color>
 </resources>
