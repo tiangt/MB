@@ -18,12 +18,12 @@
 
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingBottom="8dp"
             android:paddingTop="7.5dp"
-            android:text="私聊区"
             android:textColor="@color/text_color_private_chat"
             android:textSize="12sp" />
 

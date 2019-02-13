@@ -94,6 +94,9 @@ import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gen.CommonGiftDao;
+import com.whzl.mengbi.gen.PrivateChatContentDao;
+import com.whzl.mengbi.gen.PrivateChatUserDao;
+import com.whzl.mengbi.gen.UserDao;
 import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.HeadLineControl;
@@ -107,6 +110,9 @@ import com.whzl.mengbi.gift.SvgaGiftControl;
 import com.whzl.mengbi.gift.WeekStarControl;
 import com.whzl.mengbi.greendao.CommonGift;
 import com.whzl.mengbi.greendao.CommonGiftBean;
+import com.whzl.mengbi.greendao.PrivateChatContent;
+import com.whzl.mengbi.greendao.PrivateChatUser;
+import com.whzl.mengbi.greendao.User;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.ApiResult;
@@ -749,8 +755,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         compositeDisposable.add(roomOnlineDisposable);
         mLivePresenter.getGuardTotal(mProgramId);
         roomRankTotalDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
-                    mLivePresenter.getRoomRankTotal(mProgramId, "day");
-                });
+            mLivePresenter.getRoomRankTotal(mProgramId, "day");
+        });
         compositeDisposable.add(roomRankTotalDisposable);
         if (mUserId == 0) {
             btnFreeGift.setImageResource(R.drawable.ic_live_free_gift);
@@ -848,9 +854,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .setShowBottom(true)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
-                ((PrivateChatListDialog)privateChatListDialog).setUpWithAnchor(mAnchor);
-                ((PrivateChatListDialog)privateChatListDialog).setIsGuard(isGuard);
-                ((PrivateChatListDialog)privateChatListDialog).setProgramId(mProgramId);
+                ((PrivateChatListDialog) privateChatListDialog).setUpWithAnchor(mAnchor);
+                ((PrivateChatListDialog) privateChatListDialog).setIsGuard(isGuard);
+                ((PrivateChatListDialog) privateChatListDialog).setProgramId(mProgramId);
                 break;
             case R.id.rootView:
                 if (currentSelectedIndex == 1) {
@@ -1078,7 +1084,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mSvgaGiftControl = new SvgaGiftControl(this, svgaGift);
             }
             WeakReference<SvgaGiftControl> weakReference = new WeakReference<>(mSvgaGiftControl);
-            if(weakReference.get() != null){
+            if (weakReference.get() != null) {
                 weakReference.get().load(animEvent);
             }
 //            mSvgaGiftControl.load(animEvent);
@@ -1702,6 +1708,39 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             chatRoomPresenter.sendMessage(message);
         } else {
             chatRoomPresenter.sendPrivateMessage(chatToUser, message);
+            UserDao userDao = BaseApplication.getInstance().getDaoSession().getUserDao();
+            PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
+            User unique = userDao.queryBuilder().where(UserDao.Properties.UserId.eq(mUserId)).unique();
+            if (unique == null) {
+                User user = new User();
+                user.setAvatar(mRoomUserInfo.getAvatar());
+                user.setUserId(mUserId);
+                userDao.insert(user);
+            }
+            PrivateChatUser privateChatUser = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.eq(mUserId),
+                    PrivateChatUserDao.Properties.PrivateUserId.eq(chatToUser.getUserId())).unique();
+            if (privateChatUser == null) {
+                PrivateChatUser chatUser = new PrivateChatUser();
+                chatUser.setAvatar(chatToUser.getAvatar());
+                chatUser.setName(chatToUser.getNickname());
+                chatUser.setPrivateUserId(chatToUser.getUserId());
+                chatUser.setUserId(mUserId);
+                chatUser.setTimestamp(System.currentTimeMillis());
+                privateChatUserDao.insert(chatUser);
+            } else {
+                privateChatUser.setTimestamp(System.currentTimeMillis());
+                privateChatUserDao.update(privateChatUser);
+                if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
+                    ( (PrivateChatListDialog)privateChatListDialog).update();
+                }
+            }
+            PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
+            PrivateChatContent chatContent = new PrivateChatContent();
+            chatContent.setContent(message);
+            chatContent.setTimestamp(System.currentTimeMillis());
+            chatContent.setPrivateUserId(chatToUser.getUserId());
+            chatContent.setFromId(mUserId);
+            privateChatContentDao.insert(chatContent);
         }
 
     }

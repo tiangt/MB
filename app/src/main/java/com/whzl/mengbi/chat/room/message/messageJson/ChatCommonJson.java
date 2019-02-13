@@ -10,6 +10,38 @@ public class ChatCommonJson {
     FromJson from_json;
     FromJson to_json;
 
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
+    }
+
+    public void setFrom_nickname(String from_nickname) {
+        this.from_nickname = from_nickname;
+    }
+
+    public void setFrom_uid(String from_uid) {
+        this.from_uid = from_uid;
+    }
+
+    public void setTo_nickname(String to_nickname) {
+        this.to_nickname = to_nickname;
+    }
+
+    public void setTo_uid(String to_uid) {
+        this.to_uid = to_uid;
+    }
+
+    public void setFrom_json(FromJson from_json) {
+        this.from_json = from_json;
+    }
+
+    public void setTo_json(FromJson to_json) {
+        this.to_json = to_json;
+    }
+
     public String getContent() {
         return content;
     }

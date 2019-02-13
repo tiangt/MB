@@ -1,8 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.animation.Animator;
-import android.app.Dialog;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -25,10 +22,13 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatEvent;
+import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.gen.PrivateChatContentDao;
+import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
@@ -37,7 +37,6 @@ import com.whzl.mengbi.ui.adapter.ChatMsgAnimation;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
-import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -45,6 +44,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -58,10 +58,14 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
  * @date 2019/2/12
  */
 public class PrivateChatDialog extends BaseAwesomeDialog {
+    private static final int RIGHT = 1;
+    private static final int LEFT = 2;
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.tv_content)
     TextView tvContent;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     @BindView(R.id.btn_input_change)
     Button btnInputChange;
     @BindView(R.id.ll_bottom_container)
@@ -106,6 +110,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+        tvTitle.setText(mCurrentChatToUser.getNickname());
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         mProgramId = getArguments().getInt("programId");
         mUserId = (long) SPUtils.get(getActivity(), SpConfig.KEY_USER_ID, 0L);
@@ -118,6 +123,21 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 }
             }
         });
+        initData();
+    }
+
+    private void initData() {
+        PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
+        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(PrivateChatContentDao.Properties.PrivateUserId.eq(mCurrentChatToUser.getUserId())).list();
+        for (int i = 0; i < list.size(); i++) {
+            PrivateChatContent chatContent = list.get(i);
+            ChatCommonJson chatCommonJson = new ChatCommonJson();
+            chatCommonJson.setContent(chatContent.getContent());
+            chatCommonJson.setFrom_uid(chatContent.getFromId().toString());
+            ChatMessage chatMessage = new ChatMessage(chatCommonJson, getActivity(), null, true);
+            chatList.add(chatMessage);
+        }
+        chatAdapter.notifyDataSetChanged();
     }
 
     class SingleTextViewHolder extends RecyclerView.ViewHolder {
@@ -146,7 +166,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                if (viewType == 1) {
+                if (viewType == RIGHT) {
                     View item = LayoutInflater.from(getContext()).inflate(R.layout.item_priavet_chat_right, null);
                     return new SingleTextViewHolder(item);
                 } else {
@@ -170,7 +190,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             @Override
             public int getItemViewType(int position) {
                 ChatMessage chatMessage = (ChatMessage) chatList.get(position);
-                return chatMessage.from_uid == mUserId ? 1 : 2;
+                return chatMessage.from_uid == mUserId ? RIGHT : LEFT;
             }
         };
         recycler.setAdapter(chatAdapter);

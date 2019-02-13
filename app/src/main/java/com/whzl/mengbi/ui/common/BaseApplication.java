@@ -38,6 +38,8 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
+import org.greenrobot.greendao.identityscope.IdentityScopeType;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -125,7 +127,7 @@ public class BaseApplication extends Application {
         MyOpenHelper helper = new MyOpenHelper(this, "common_gift.db", null);
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
-        daoSession = daoMaster.newSession();
+        daoSession = daoMaster.newSession(IdentityScopeType.None);
     }
 
 

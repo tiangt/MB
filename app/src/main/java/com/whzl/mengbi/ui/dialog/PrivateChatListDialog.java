@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,16 +15,21 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.gen.PrivateChatUserDao;
+import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.recyclerview.SlideRecyclerView;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,11 +44,12 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
     @BindView(R.id.view_close)
     View view;
 
-    private ArrayList<RoomUserInfo.DataBean> roomUsers = new ArrayList<>();
+    private ArrayList<PrivateChatUser> roomUsers = new ArrayList<>();
     private BaseListAdapter baseListAdapter;
     private boolean isGuard;
     private int mProgramId;
     private BaseAwesomeDialog awesomeDialog;
+    private PrivateChatUserDao privateChatUserDao;
 
     public static BaseAwesomeDialog newInstance() {
         PrivateChatListDialog privateChatListDialog = new PrivateChatListDialog();
@@ -89,11 +96,56 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
     }
 
     public void setUpWithAnchor(RoomInfoBean.DataBean.AnchorBean anchor) {
-        RoomUserInfo.DataBean roomUser = new RoomUserInfo.DataBean();
-        roomUser.setUserId(anchor.getId());
-        roomUser.setNickname(anchor.getName());
+        PrivateChatUser roomUser = new PrivateChatUser();
+        roomUser.setPrivateUserId((long) anchor.getId());
+        roomUser.setName(anchor.getName());
         roomUser.setAvatar(anchor.getAvatar());
-        roomUsers.add(0, roomUser);
+        roomUser.setTimestamp(System.currentTimeMillis());
+        roomUser.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
+
+        PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
+        List<PrivateChatUser> privateChatUsers = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
+                eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())))
+                .orderDesc(PrivateChatUserDao.Properties.Timestamp).list();
+        if (checkContain(privateChatUsers, roomUser)) {
+            PrivateChatUser user = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
+                            eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
+                    PrivateChatUserDao.Properties.PrivateUserId.eq(roomUser.getPrivateUserId())).unique();
+            user.setTimestamp(System.currentTimeMillis());
+            privateChatUserDao.update(user);
+            roomUsers.clear();
+            List<PrivateChatUser> privateChatUsers2 = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
+                    eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()))).
+                    orderDesc(PrivateChatUserDao.Properties.Timestamp).list();
+            roomUsers.addAll(privateChatUsers2);
+        } else {
+            roomUsers.addAll(privateChatUsers);
+            roomUsers.add(0, roomUser);
+        }
+    }
+
+    public void update() {
+        PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
+        List<PrivateChatUser> privateChatUsers = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
+                eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())))
+                .orderDesc(PrivateChatUserDao.Properties.Timestamp).list();
+        roomUsers.clear();
+        roomUsers.addAll(privateChatUsers);
+        if (roomUsers.size() >= 2) {
+            PrivateChatUser chatUser = roomUsers.get(1);
+            roomUsers.remove(1);
+            roomUsers.add(0, chatUser);
+            baseListAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private boolean checkContain(List<PrivateChatUser> privateChatUsers, PrivateChatUser roomUser) {
+        for (int i = 0; i < privateChatUsers.size(); i++) {
+            if (privateChatUsers.get(i).getPrivateUserId().equals(roomUser.getPrivateUserId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -121,10 +173,15 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
 
         @Override
         public void onBindViewHolder(int position) {
-            RoomUserInfo.DataBean dataBean = roomUsers.get(position);
+            if (position == 0) {
+                itemView.setBackgroundColor(Color.parseColor("#FFF7F1DA"));
+            } else {
+                itemView.setBackgroundColor(Color.parseColor("#ffffff"));
+            }
+            PrivateChatUser dataBean = roomUsers.get(position);
             RequestOptions requestOptions = new RequestOptions().transform(new CircleCrop());
             Glide.with(getActivity()).load(dataBean.getAvatar()).apply(requestOptions).into(ivAvatar);
-            tvNick.setText(dataBean.getNickname());
+            tvNick.setText(dataBean.getName());
 //            if (position == 0) {
 //                tvDelete.setVisibility(View.GONE);
 //            }
@@ -146,7 +203,13 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
                     .setShowBottom(true)
                     .setDimAmount(0)
                     .show(getFragmentManager());
-            ((PrivateChatDialog) awesomeDialog).chatTo(roomUsers.get(position));
+            PrivateChatUser chatUser = roomUsers.get(position);
+            RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
+            dataBean.setAvatar(chatUser.getAvatar());
+            dataBean.setNickname(chatUser.getName());
+            dataBean.setUserId(chatUser.getPrivateUserId());
+            ((PrivateChatDialog) awesomeDialog).chatTo(dataBean);
+            ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
         }
     }
 
