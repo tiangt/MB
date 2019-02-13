@@ -35,6 +35,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -156,6 +157,7 @@ import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
 import com.whzl.mengbi.ui.view.LiveView;
+import com.whzl.mengbi.ui.widget.loading.LoadLayout;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
@@ -338,7 +340,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RecyclerView rvRedPack;
     @BindView(R.id.chatActivityContainer)
     RelativeLayout chatActivityContainer;
-
+    @BindView(R.id.ll_loading)
+    LoadLayout loadLayout;
 
     private LivePresenterImpl mLivePresenter;
     public int mProgramId;
@@ -432,7 +435,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         textureView.setVisibility(View.INVISIBLE);
         textureView2.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
+        loadLayout.setVisibility(View.VISIBLE);
 
         if (currentSelectedIndex == 1) {
             currentSelectedIndex = 0;
@@ -486,7 +490,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             } else {
                 showToast(R.string.net_error);
-                progressBar.setVisibility(View.VISIBLE);
+//                progressBar.setVisibility(View.VISIBLE);
+                loadLayout.setVisibility(View.VISIBLE);
             }
         });
         registerReceiver(mReceiver, intentFilter);
@@ -518,7 +523,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         textureView.setDecodeMode(KSYMediaPlayer.KSYDecodeMode.KSY_DECODE_MODE_AUTO);
         textureView.setOnPreparedListener(iMediaPlayer -> {
             textureView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
+//            progressBar.setVisibility(View.GONE);
+            loadLayout.setVisibility(View.GONE);
             tvStopTip.setVisibility(View.GONE);
             textureView.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
             textureView.start();
@@ -529,10 +535,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
             switch (i) {
                 case KSYMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                    progressBar.setVisibility(View.VISIBLE);
+//                    progressBar.setVisibility(View.VISIBLE);
+                    loadLayout.setVisibility(View.VISIBLE);
                     break;
                 case KSYMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                    progressBar.setVisibility(View.GONE);
+//                    progressBar.setVisibility(View.GONE);
+                    loadLayout.setVisibility(View.GONE);
                     break;
             }
             return false;
@@ -1285,7 +1293,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
             if (!"T".equals(roomInfoBean.getData().getProgramStatus())) {
                 tvStopTip.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
+//                progressBar.setVisibility(View.GONE);
+                loadLayout.setVisibility(View.GONE);
             }
 
             mShareUrl = roomInfoBean.getData().getShareUrl();
