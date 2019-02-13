@@ -351,7 +351,14 @@
                         android:id="@+id/progressbar"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_centerInParent="true" />
+                        android:layout_centerInParent="true"
+                        android:visibility="gone"/>
+
+                    <com.whzl.mengbi.ui.widget.loading.LoadLayout
+                        android:id="@+id/ll_loading"
+                        android:layout_width="60dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"/>
 
                     <TextView
                         android:id="@+id/tv_stop_tip"
