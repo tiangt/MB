@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
@@ -166,7 +168,16 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
         public void bindData(ChatMessage chatMessage) {
             Glide.with(BaseApplication.getInstance()).load(ImageUrl.getAvatarUrl(Long.parseLong(chatMessage.chatJson.getFrom_uid()), "jpg", current))
                     .apply(new RequestOptions().transform(new CircleCrop())).into(ivAvatar);
-            tvContent.setText(chatMessage.chatJson.getContent());
+            tvContent.setText("");
+            SpannableString spanString = new SpannableString(chatMessage.chatJson.getContent());
+            FaceReplace.getInstance().faceReplace(tvContent, spanString, BaseApplication.getInstance());
+            if (isGuard) {
+                FaceReplace.getInstance().guardFaceReplace(tvContent, spanString, BaseApplication.getInstance());
+            }
+            if (isVip) {
+                FaceReplace.getInstance().vipFaceReplace(tvContent, spanString, BaseApplication.getInstance());
+            }
+            tvContent.append(spanString);
         }
     }
 

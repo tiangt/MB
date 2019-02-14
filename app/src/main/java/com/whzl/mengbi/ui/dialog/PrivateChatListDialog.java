@@ -57,6 +57,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
     private int mProgramId;
     private BaseAwesomeDialog awesomeDialog;
     private PrivateChatUser anchor;
+    private boolean isVip;
 
     public static BaseAwesomeDialog newInstance() {
         PrivateChatListDialog privateChatListDialog = new PrivateChatListDialog();
@@ -169,6 +170,10 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
         this.isGuard = isGuard;
     }
 
+    public void setIsVip(boolean isVip) {
+        this.isVip = isVip;
+    }
+
     public void setProgramId(int mProgramId) {
         this.mProgramId = mProgramId;
     }
@@ -231,6 +236,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             dataBean.setUserId(chatUser.getPrivateUserId());
             ((PrivateChatDialog) awesomeDialog).chatTo(dataBean);
             ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
+            ((PrivateChatDialog) awesomeDialog).setIsVip(isVip);
             if (!chatUser.getUncheckTime().equals(0)) {
                 PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
                 chatUser.setUncheckTime(0L);

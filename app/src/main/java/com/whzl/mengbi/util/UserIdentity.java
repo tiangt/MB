@@ -1,8 +1,6 @@
 package com.whzl.mengbi.util;
 
-import com.whzl.mengbi.chat.room.message.messageJson.FromJson;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
-import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 
 import java.util.List;
 

@@ -152,7 +152,6 @@ import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListDialog;
-import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
 import com.whzl.mengbi.ui.dialog.UserListDialog;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
@@ -460,7 +459,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         isVip = false;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(fragments[0]);
-        fragmentTransaction.remove(fragments[1]);
+//        fragmentTransaction.remove(fragments[1]);
         fragmentTransaction.commit();
         initFragment();
         loadData();
@@ -707,10 +706,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private void initFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         ChatListFragment chatListFragment = ChatListFragment.newInstance(mProgramId);
-        fragments = new Fragment[]{chatListFragment, PrivateChatListFragment.newInstance(mProgramId)};
+        fragments = new Fragment[]{chatListFragment};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
-        fragmentTransaction.add(R.id.fragment_container, fragments[1]);
-        fragmentTransaction.hide(fragments[1]);
         fragmentTransaction.commit();
     }
 
@@ -975,6 +972,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .show(getSupportFragmentManager());
         ((PrivateChatListDialog) privateChatListDialog).setUpWithAnchor(user);
         ((PrivateChatListDialog) privateChatListDialog).setIsGuard(isGuard);
+        ((PrivateChatListDialog) privateChatListDialog).setIsVip(isVip);
         ((PrivateChatListDialog) privateChatListDialog).setProgramId(mProgramId);
     }
 
@@ -1323,8 +1321,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             ChatRoomInfo.getInstance().setRoomInfoBean(roomInfoBean);
             if (roomInfoBean.getData().getAnchor() != null) {
                 mAnchor = roomInfoBean.getData().getAnchor();
-                PrivateChatListFragment fragment = (PrivateChatListFragment) fragments[1];
-                fragment.setUpWithAnchor(mAnchor);
+//                PrivateChatListFragment fragment = (PrivateChatListFragment) fragments[1];
+//                fragment.setUpWithAnchor(mAnchor);
                 mAnchorName = mAnchor.getName();
                 mAnchorAvatar = mAnchor.getAvatar();
                 anchorLevel = LevelUtil.getAnchorLevel(mAnchor);
@@ -1420,7 +1418,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 for (int i = 0; i < data.getGoodsList().size(); i++) {
                     if ("GUARD".equals(data.getGoodsList().get(i).getGoodsType())) {
                         isGuard = true;
-                        ((PrivateChatListFragment) fragments[1]).setIsGuard(isGuard);
+//                        ((PrivateChatListFragment) fragments[1]).setIsGuard(isGuard);
                     }
 
                     //是否为VIP用户
