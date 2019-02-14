@@ -33,6 +33,7 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.LoginActivity;
 import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.activity.SearchActivity;
+import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
 import com.whzl.mengbi.ui.adapter.SlideInRightAnimation;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -71,7 +72,10 @@ public class HomeFragment extends BaseFragment implements HomeView {
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.iv_search)
     ImageView ivSearch;
-//    @BindView(R.id.rl_search)
+    @BindView(R.id.iv_history)
+    ImageView ivHistory;
+
+    //    @BindView(R.id.rl_search)
 //    RelativeLayout rlSearch;
     private HomePresenterImpl mHomePresenter;
     private int mCurrentPager = 1;
@@ -198,11 +202,16 @@ public class HomeFragment extends BaseFragment implements HomeView {
     }
 
 
-    @OnClick(R.id.iv_search)
+    @OnClick({R.id.iv_search, R.id.iv_history})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_search:
                 startActivity(new Intent(getMyActivity(), SearchActivity.class));
+                break;
+
+            case R.id.iv_history:
+                Intent intent = new Intent(getContext(), WatchHistoryActivity.class);
+                startActivity(intent);
                 break;
         }
     }
