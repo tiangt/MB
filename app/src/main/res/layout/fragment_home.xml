@@ -22,6 +22,14 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_search_home" />
 
+        <ImageView
+            android:id="@+id/iv_history"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:scaleType="centerInside"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_main_history" />
+
     </RelativeLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

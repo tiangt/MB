@@ -35,6 +35,7 @@ import com.whzl.mengbi.ui.fragment.RankFragment;
 import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 import com.whzl.mengbi.ui.fragment.main.HomeFragment;
 import com.whzl.mengbi.ui.fragment.main.MeFragment;
+import com.whzl.mengbi.ui.fragment.main.MessageFragment;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.AsyncRun;
 import com.whzl.mengbi.util.DateUtils;
@@ -75,7 +76,7 @@ public class MainActivity extends BaseActivity {
     private AwesomeDialog awesomeDialog;
     private static final String TAG_EXIT = "exit";
     private int[] colors = new int[]{Color.parseColor("#f9f9f9"), Color.parseColor("#f9f9f9"),
-            Color.parseColor("#f9f9f9"), Color.parseColor("#21D790")};
+            Color.parseColor("#f9f9f9"), Color.parseColor("#f9f9f9"), Color.parseColor("#21D790")};
 
     @Override
     protected void initEnv() {
@@ -92,32 +93,47 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{new HomeFragment(), RankFragment.newInstance(), FollowFragment.newInstance(), MeFragment.newInstance()};
+        fragments = new Fragment[]{new HomeFragment(), FollowFragment.newInstance(), MessageFragment.newInstance(),
+                RankFragment.newInstance(), MeFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
         rgTab.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
+                //直播
                 case R.id.rb_home:
                     setTabChange(0);
                     break;
-                case R.id.rb_rank:
-//                    if (checkLogin()) {
-                    setTabChange(1);
-//                        return;
-//                    }
-//                    login();
-                    break;
+
+                //订阅
                 case R.id.rb_follow:
                     if (checkLogin()) {
-                        setTabChange(2);
+                        setTabChange(1);
                         EventBus.getDefault().post(new FollowRefreshEvent());
                         return;
                     }
                     login();
                     break;
+
+                case R.id.rb_message:
+                    if (checkLogin()) {
+                        setTabChange(2);
+                        return;
+                    }
+                    login();
+                    break;
+
+                //榜单
+                case R.id.rb_rank:
+//                    if (checkLogin()) {
+                    setTabChange(3);
+//                        return;
+//                    }
+//                    login();
+                    break;
+
                 case R.id.rb_me:
                     if (checkLogin()) {
-                        setTabChange(3);
+                        setTabChange(4);
                         return;
                     }
                     login();
