@@ -8,8 +8,10 @@
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="7dp"
         android:layout_toLeftOf="@id/iv_avatar"
         android:background="@drawable/bg_private_chat_right"
+        android:gravity="top"
         android:padding="8dp"
         android:textColor="#ffffff"
         android:textSize="12sp" />
@@ -19,5 +21,6 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:layout_centerVertical="true" />
 </RelativeLayout>
