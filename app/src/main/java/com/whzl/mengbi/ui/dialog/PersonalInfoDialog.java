@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -38,8 +36,6 @@ import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,7 +144,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private OnClickListener listener;
 
     public interface OnClickListener {
-        void onPrivateChatClick();
+        void onPrivateChatClick(RoomUserInfo.DataBean mViewedUser);
     }
 
     @Override
@@ -210,9 +206,9 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     dismiss();
                     return;
                 }
-                EventBus.getDefault().post(new PrivateChatSelectedEvent(mViewedUser));
+//                EventBus.getDefault().post(new PrivateChatSelectedEvent(mViewedUser));
                 if (listener != null) {
-                    listener.onPrivateChatClick();
+                    listener.onPrivateChatClick(mViewedUser);
                 }
                 dismiss();
                 break;
@@ -233,7 +229,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     return;
                 }
                 if (listener != null) {
-                    listener.onPrivateChatClick();
+                    listener.onPrivateChatClick(mViewedUser);
                 }
                 ((LiveDisplayActivity) getActivity()).showAtChat("@" + mViewedUser.getNickname() + " ");
                 dismiss();

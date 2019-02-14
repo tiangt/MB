@@ -14,7 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/iv_avatar"
-        android:background="#ffffff"
-        android:padding="8dp"/>
+        android:background="@drawable/bg_private_chat_left"
+        android:padding="8dp"
+        android:textColor="@color/text_color_private_chat"
+        android:textSize="12sp" />
 
 </RelativeLayout>

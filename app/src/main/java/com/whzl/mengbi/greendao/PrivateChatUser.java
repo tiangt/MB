@@ -23,6 +23,7 @@ public class PrivateChatUser {
     String name;
     String avatar;
     private Long timestamp;
+    private Long uncheckTime=0L;
 
     @ToMany(referencedJoinProperty = "privateUserId")
     private List<PrivateChatContent> privateChatContents;
@@ -37,13 +38,14 @@ public class PrivateChatUser {
     @Generated(hash = 1072743205)
     private transient PrivateChatUserDao myDao;
 
-    @Generated(hash = 550748497)
+    @Generated(hash = 2103310173)
     public PrivateChatUser(Long privateUserId, String name, String avatar,
-            Long timestamp, Long userId) {
+            Long timestamp, Long uncheckTime, Long userId) {
         this.privateUserId = privateUserId;
         this.name = name;
         this.avatar = avatar;
         this.timestamp = timestamp;
+        this.uncheckTime = uncheckTime;
         this.userId = userId;
     }
 
@@ -81,6 +83,14 @@ public class PrivateChatUser {
 
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Long getUncheckTime() {
+        return this.uncheckTime;
+    }
+
+    public void setUncheckTime(Long uncheckTime) {
+        this.uncheckTime = uncheckTime;
     }
 
     public Long getUserId() {
@@ -162,5 +172,6 @@ public class PrivateChatUser {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getPrivateChatUserDao() : null;
     }
-  
+
+    
 }

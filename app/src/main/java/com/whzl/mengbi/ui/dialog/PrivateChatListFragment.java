@@ -146,9 +146,6 @@ public class PrivateChatListFragment extends BaseFragment {
                 recycler.smoothScrollToPosition(chatList.size() - 1);
             }
         }
-        if (isHidden) {
-            ((LiveDisplayActivity) getActivity()).showMessageNotify();
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

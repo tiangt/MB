@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -31,12 +31,12 @@ import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
 import com.whzl.mengbi.ui.adapter.ChatMsgAnimation;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -72,6 +72,8 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     LinearLayout llBottomContainer;
     @BindView(R.id.view_close)
     View viewClose;
+    @BindView(R.id.ib_close)
+    FrameLayout ibClose;
 
     private RecyclerView.Adapter chatAdapter;
     private static final int TOTAL_CHAT_MSG = 100;
@@ -80,7 +82,6 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     private boolean isGuard;
     private boolean isVip;
     private int mProgramId;
-    private PopupWindow popupWindow;
     private ArrayList<RoomUserInfo.DataBean> roomUsers = new ArrayList<>();
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
     private RoomUserInfo.DataBean mCurrentChatToUser;
@@ -123,6 +124,14 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 }
             }
         });
+        ibClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isAdded()) {
+                    dismiss();
+                }
+            }
+        });
         initData();
     }
 
@@ -138,6 +147,9 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             chatList.add(chatMessage);
         }
         chatAdapter.notifyDataSetChanged();
+        if (chatList != null && !chatList.isEmpty()) {
+            recycler.smoothScrollToPosition(chatList.size() - 1);
+        }
     }
 
     class SingleTextViewHolder extends RecyclerView.ViewHolder {
@@ -193,6 +205,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 return chatMessage.from_uid == mUserId ? RIGHT : LEFT;
             }
         };
+        recycler.addItemDecoration(new SpacesItemDecoration(10));
         recycler.setAdapter(chatAdapter);
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -249,9 +262,9 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 recycler.smoothScrollToPosition(chatList.size() - 1);
             }
         }
-        if (isHidden) {
-            ((LiveDisplayActivity) getActivity()).showMessageNotify();
-        }
+//        if (!isAdded()) {
+//            ((LiveDisplayActivity) getActivity()).showMessageNotify();
+//        }
     }
 
     public void setIsGuard(boolean isGuard) {

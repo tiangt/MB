@@ -11,9 +11,9 @@
         android:layout_weight="1" />
 
     <LinearLayout
-        android:background="@drawable/bg_dialog_private_chat_list"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="357dp"
+        android:background="@drawable/bg_dialog_private_chat_list"
         android:orientation="vertical">
 
         <TextView

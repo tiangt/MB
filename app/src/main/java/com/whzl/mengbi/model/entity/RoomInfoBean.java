@@ -182,7 +182,7 @@ public class RoomInfoBean {
             private String avatar;
             private List<LevelBean> level;
 
-            protected AnchorBean(Parcel in) {
+            public AnchorBean(Parcel in) {
                 id = in.readInt();
                 name = in.readString();
                 city = in.readString();

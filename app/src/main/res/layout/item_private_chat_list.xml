@@ -27,22 +27,24 @@
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5.5dp"
-            android:text="12"
-            android:textColor="#ff2b3f"
+            android:background="@drawable/shape_private_chat_time"
+            android:gravity="center"
+            android:textColor="#ffffff"
             android:textSize="12sp" />
     </LinearLayout>
 
     <TextView
-        android:paddingBottom="8.5dp"
-        android:paddingTop="8dp"
         android:id="@+id/tv_delete"
         android:layout_width="57.5dp"
         android:layout_height="wrap_content"
         android:background="#ff2b3f"
         android:gravity="center"
+        android:paddingBottom="8.5dp"
+        android:paddingTop="8dp"
         android:text="删除"
         android:textColor="#FFFFFFFF"
         android:textSize="12sp" />

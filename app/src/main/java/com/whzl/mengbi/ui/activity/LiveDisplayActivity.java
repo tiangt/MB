@@ -35,7 +35,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -70,6 +69,7 @@ import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.chat.room.message.events.StartPlayEvent;
 import com.whzl.mengbi.chat.room.message.events.StopPlayEvent;
+import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
@@ -79,6 +79,7 @@ import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PlayNotifyJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
+import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
@@ -149,6 +150,7 @@ import com.whzl.mengbi.ui.dialog.HeadlineDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
+import com.whzl.mengbi.ui.dialog.PrivateChatDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListFragment;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
@@ -420,6 +422,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RedPacketControl redPacketControl;
     private CompositeDisposable compositeDisposable;
     private BaseAwesomeDialog privateChatListDialog;
+    private BaseAwesomeDialog awesomeDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -609,10 +612,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mAudienceRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         pollAdapter = new AutoPollAdapter(mAudienceList, this);
         pollAdapter.setListerner(position -> {
-            long userId = mAudienceList.get(position + 1).getUserid();
+            AudienceListBean.AudienceInfoBean audienceInfoBean = mAudienceList.get(position + 1);
+            long userId = audienceInfoBean.getUserid();
             if (ClickUtil.isFastClick()) {
                 PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
-                        .setListener(() -> {
+                        .setListener((RoomUserInfo.DataBean mViewedUser) -> {
                             if (mUserListDialog != null && mUserListDialog.isAdded()) {
                                 mUserListDialog.dismiss();
                             }
@@ -624,6 +628,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                             }
                             if (headlineDialog != null && headlineDialog.isAdded()) {
                                 headlineDialog.dismiss();
+                            }
+                            if (mViewedUser != null) {
+                                PrivateChatUser chatUser = new PrivateChatUser();
+                                chatUser.setPrivateUserId(mViewedUser.getUserId());
+                                chatUser.setAvatar(mViewedUser.getAvatar());
+                                chatUser.setName(mViewedUser.getNickname());
+                                showPrivateChatDialog(chatUser);
                             }
                         })
                         .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
@@ -708,7 +719,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             return;
         }
         if (index == 1) {
-            viewMessageNotify.setVisibility(View.GONE);
+//            viewMessageNotify.setVisibility(View.GONE);
             chatActivityContainer.setVisibility(View.GONE);
         } else {
             chatActivityContainer.setVisibility(View.VISIBLE);
@@ -802,7 +813,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             case R.id.iv_host_avatar:
                 if (ClickUtil.isFastClick()) {
                     PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
-                            .setListener(() -> {
+                            .setListener((RoomUserInfo.DataBean mViewedUser) -> {
                                 if (mUserListDialog != null && mUserListDialog.isAdded()) {
                                     mUserListDialog.dismiss();
                                 }
@@ -814,6 +825,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                 }
                                 if (headlineDialog != null && headlineDialog.isAdded()) {
                                     headlineDialog.dismiss();
+                                }
+                                if (mViewedUser != null) {
+                                    PrivateChatUser chatUser = new PrivateChatUser();
+                                    chatUser.setPrivateUserId(mViewedUser.getUserId());
+                                    chatUser.setAvatar(mViewedUser.getAvatar());
+                                    chatUser.setName(mViewedUser.getNickname());
+                                    showPrivateChatDialog(chatUser);
                                 }
                             })
                             .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
@@ -855,16 +873,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     return;
                 }
 //                setTabChange(1);
-                if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
-                    return;
-                }
-                privateChatListDialog = PrivateChatListDialog.newInstance()
-                        .setShowBottom(true)
-                        .setDimAmount(0)
-                        .show(getSupportFragmentManager());
-                ((PrivateChatListDialog) privateChatListDialog).setUpWithAnchor(mAnchor);
-                ((PrivateChatListDialog) privateChatListDialog).setIsGuard(isGuard);
-                ((PrivateChatListDialog) privateChatListDialog).setProgramId(mProgramId);
+                PrivateChatUser user = new PrivateChatUser();
+                user.setPrivateUserId(Long.valueOf(mAnchor.getId()));
+                user.setName(mAnchor.getName());
+                user.setAvatar(mAnchor.getAvatar());
+                showPrivateChatListDialog(user);
                 break;
             case R.id.rootView:
                 if (currentSelectedIndex == 1) {
@@ -945,6 +958,41 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
         }
 
+    }
+
+    /**
+     * 私聊列表
+     * 对象ID 昵称 头像
+     */
+    private void showPrivateChatListDialog(PrivateChatUser user) {
+        if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
+            return;
+        }
+        viewMessageNotify.setVisibility(View.GONE);
+        privateChatListDialog = PrivateChatListDialog.newInstance()
+                .setShowBottom(true)
+                .setDimAmount(0)
+                .show(getSupportFragmentManager());
+        ((PrivateChatListDialog) privateChatListDialog).setUpWithAnchor(user);
+        ((PrivateChatListDialog) privateChatListDialog).setIsGuard(isGuard);
+        ((PrivateChatListDialog) privateChatListDialog).setProgramId(mProgramId);
+    }
+
+
+    private void showPrivateChatDialog(PrivateChatUser user) {
+        if (awesomeDialog != null && awesomeDialog.isAdded()) {
+            return;
+        }
+        awesomeDialog = PrivateChatDialog.newInstance(mProgramId)
+                .setShowBottom(true)
+                .setDimAmount(0)
+                .show(getSupportFragmentManager());
+        RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
+        dataBean.setAvatar(user.getAvatar());
+        dataBean.setNickname(user.getName());
+        dataBean.setUserId(user.getPrivateUserId());
+        ((PrivateChatDialog) awesomeDialog).chatTo(dataBean);
+        ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
     }
 
     private void showRedbagPopwindow() {
@@ -1740,7 +1788,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 privateChatUser.setTimestamp(System.currentTimeMillis());
                 privateChatUserDao.update(privateChatUser);
                 if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
-                    ( (PrivateChatListDialog)privateChatListDialog).update();
+                    ((PrivateChatListDialog) privateChatListDialog).update();
                 }
             }
             PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
@@ -1843,6 +1891,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         setTabChange(1);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UpdatePrivateChatEvent updatePubChatEvent) {
+        ChatMessage message = (ChatMessage) updatePubChatEvent.getMessage();
+        if (message.from_uid != mUserId) {
+            if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
+                return;
+            }
+            showMessageNotify();
+        }
+    }
+
     /**
      * 开通守护
      *
@@ -1929,7 +1988,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
         PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
-                .setListener(() -> {
+                .setListener((RoomUserInfo.DataBean mViewedUser) -> {
                     if (mUserListDialog != null && mUserListDialog.isAdded()) {
                         mUserListDialog.dismiss();
                     }
@@ -1941,6 +2000,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     }
                     if (headlineDialog != null && headlineDialog.isAdded()) {
                         headlineDialog.dismiss();
+                    }
+                    if (mViewedUser != null) {
+                        PrivateChatUser chatUser = new PrivateChatUser();
+                        chatUser.setPrivateUserId(mViewedUser.getUserId());
+                        chatUser.setAvatar(mViewedUser.getAvatar());
+                        chatUser.setName(mViewedUser.getNickname());
+                        showPrivateChatDialog(chatUser);
                     }
                 })
                 .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)

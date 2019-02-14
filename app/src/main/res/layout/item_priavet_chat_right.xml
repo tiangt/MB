@@ -9,8 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/iv_avatar"
-        android:background="#ff2b3f"
-        android:padding="8dp"/>
+        android:background="@drawable/bg_private_chat_right"
+        android:padding="8dp"
+        android:textColor="#ffffff"
+        android:textSize="12sp" />
 
     <ImageView
         android:id="@+id/iv_avatar"
