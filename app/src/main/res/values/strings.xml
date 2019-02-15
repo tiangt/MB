@@ -436,4 +436,18 @@
     <string name="red_pack_full">本房间红包个数超过5个，不能再发送，请稍后再发</string>
     <string name="red_pack_unplay">直播间未开播</string>
     <string name="red_pack_money_unfull">余额不足</string>
+
+    <!-- 我的 -->
+    <string name="mine_wallet">我的钱包</string>
+    <string name="mine_level">我的等级</string>
+    <string name="mine_shop">购物商城</string>
+    <string name="mine_tool">我的道具</string>
+    <string name="mine_vip">我的VIP</string>
+    <string name="mine_pretty">我的靓号</string>
+    <string name="mine_car">我的座驾</string>
+    <string name="mine_coupon">我的优惠券</string>
+    <string name="mine_composite">碎片合成</string>
+    <string name="mine_guard">我守护/管理的主播</string>
+    <string name="mine_bill">我的账单</string>
+
 </resources>
