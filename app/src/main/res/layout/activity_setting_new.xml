@@ -6,6 +6,44 @@
 
     <include layout="@layout/comm_toolbar" />
 
+    <RelativeLayout
+        android:id="@+id/rl_binding_phone"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="5dp"
+        android:background="#f9f9f9">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="13.5dp"
+            android:text="绑定手机"
+            android:textStyle="bold"
+            android:textColor="#323232"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/arrowright" />
+
+        <TextView
+            android:id="@+id/tv_bind_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iv_arrow"
+            android:gravity="center_vertical"
+            android:text="绑定手机"
+            android:textColor="@color/tran_black5"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_feedback"
         style="@style/setting_option_text_style"

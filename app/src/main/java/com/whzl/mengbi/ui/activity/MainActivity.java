@@ -180,7 +180,14 @@ public class MainActivity extends BaseActivity {
         if (index == currentSelectedIndex) {
             return;
         }
-        StatusBarUtil.setColor(this, colors[index], 0);
+        if(index == 4){
+            StatusBarUtil.setDarkMode(this);
+            StatusBarUtil.setColor(this, colors[index], 0);
+        }else{
+            StatusBarUtil.setLightMode(this);
+            StatusBarUtil.setColor(this, colors[index], 0);
+        }
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
         if (fragments[index].isAdded()) {

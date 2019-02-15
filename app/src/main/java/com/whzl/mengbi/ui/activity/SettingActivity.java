@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
@@ -15,7 +17,10 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
+import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity;
+import com.whzl.mengbi.ui.activity.me.ChangePhoneActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -42,12 +47,17 @@ import io.reactivex.disposables.Disposable;
  * @date 2018/7/24
  */
 public class SettingActivity extends BaseActivity {
+
+    private static final int REQUEST_BINDING = 101;
     @BindView(R.id.tv_version_name)
     TextView tvVersionName;
     @BindView(R.id.btn_login_out)
     Button btnLoginOut;
+    @BindView(R.id.tv_bind_phone)
+    TextView tvBindPhone;
     private ProgressDialog progressDialog;
     private AwesomeDialog awesomeDialog;
+    private String mMobile;
 
     @Override
     protected void setupContentView() {
@@ -63,11 +73,12 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void loadData() {
-
+        getUserInfo();
     }
 
 
-    @OnClick({R.id.rl_version_container, R.id.btn_login_out, R.id.tv_feedback, R.id.tv_custom, R.id.about_us})
+    @OnClick({R.id.rl_version_container, R.id.btn_login_out, R.id.tv_feedback,
+            R.id.tv_custom, R.id.about_us, R.id.rl_binding_phone})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_version_container:
@@ -102,7 +113,25 @@ public class SettingActivity extends BaseActivity {
                 Intent aboutIntent = new Intent(this, AboutUsActivity.class);
                 startActivity(aboutIntent);
                 break;
+            case R.id.rl_binding_phone:
+                if (TextUtils.isEmpty(mMobile)) {
+                    jumpToBindingPhoneActivity();
+                } else {
+                    jumpToChangePhoneActivity();
+                }
+                break;
         }
+    }
+
+    private void jumpToBindingPhoneActivity() {
+        Intent intent = new Intent(this, BindingPhoneActivity.class);
+        startActivityForResult(intent, REQUEST_BINDING);
+    }
+
+    private void jumpToChangePhoneActivity() {
+        Intent intent = new Intent(this, ChangePhoneActivity.class);
+        intent.putExtra("bindMobile", mMobile);
+        startActivity(intent);
     }
 
     private void jumpToFeedbackActivity() {
@@ -237,8 +266,44 @@ public class SettingActivity extends BaseActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_BINDING) {
+            if (resultCode == RESULT_OK) {
+                getUserInfo();
+            }
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         awesomeDialog = null;
+    }
+
+    private void getUserInfo() {
+        HashMap paramsMap = new HashMap<>();
+        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+        paramsMap.put("userId", userId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                UserInfo userInfo = GsonUtils.GsonToBean(result.toString(), UserInfo.class);
+                if (userInfo.getCode() == 200) {
+                    mMobile = userInfo.getData().getBindMobile();
+                    if (!TextUtils.isEmpty(mMobile)) {
+                        String maskNum = mMobile.substring(0, 3) + "xxxx" + mMobile.substring(7, mMobile.length());
+                        tvBindPhone.setText("已绑定 " + maskNum);
+                    } else {
+                        tvBindPhone.setText("未绑定");
+                    }
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+                Toast.makeText(SettingActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

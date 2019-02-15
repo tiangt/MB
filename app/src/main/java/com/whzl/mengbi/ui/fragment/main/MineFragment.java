@@ -18,6 +18,7 @@ import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.presenter.MePresenter;
 import com.whzl.mengbi.presenter.impl.MePresenterImpl;
 import com.whzl.mengbi.ui.activity.MainActivity;
+import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.me.AccountSwitchActivity;
 import com.whzl.mengbi.ui.activity.me.BillActivity;
@@ -161,13 +162,17 @@ public class MineFragment extends BaseFragment implements MeView {
 
     }
 
-    @OnClick({R.id.iv_switch, R.id.rl_info_edit, R.id.btn_recharge, R.id.rl_shop, R.id.tv_mine_tool,
-            R.id.tv_mine_vip, R.id.tv_mine_pretty, R.id.tv_mine_car, R.id.tv_mine_coupon,
-            R.id.rl_composite, R.id.rl_bill})
+    @OnClick({R.id.iv_switch, R.id.iv_setting, R.id.rl_info_edit, R.id.btn_recharge, R.id.rl_shop,
+            R.id.tv_mine_tool, R.id.tv_mine_vip, R.id.tv_mine_pretty, R.id.tv_mine_car,
+            R.id.tv_mine_coupon, R.id.rl_composite, R.id.rl_bill})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_switch:
                 jumpToAccountSwitchActivity();
+                break;
+
+            case R.id.iv_setting:
+                jumpToSettingActivity();
                 break;
 
             case R.id.rl_info_edit:
@@ -229,6 +234,12 @@ public class MineFragment extends BaseFragment implements MeView {
         Intent intent = new Intent(getContext(), AccountSwitchActivity.class);
         startActivity(intent);
     }
+
+    private void jumpToSettingActivity() {
+        Intent intent = new Intent(getContext(), SettingActivity.class);
+        startActivityForResult(intent, REQUEST_SETTING);
+    }
+
 
     private void jumpToPersonalInfoActivity() {
         Intent intent = new Intent(getContext(), UserInfoActivity.class);
