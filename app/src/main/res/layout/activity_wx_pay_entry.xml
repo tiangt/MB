@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/comm_toolbar" />
+    <include layout="@layout/white_toolbar" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/first_top_up"
@@ -26,7 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,15 +37,16 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
-                android:background="#f0f0f0">
+                android:layout_height="wrap_content"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
 
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
                     android:id="@+id/iv_avatar"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="49dp"
+                    android:layout_height="49dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="18dp" />
+                    android:layout_marginLeft="11.5dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -57,16 +60,38 @@
                         android:id="@+id/tv_account"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#323232"
-                        android:textSize="16sp" />
+                        android:textColor="#70000000"
+                        android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/tv_left_amount"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:textColor="#323232"
-                        android:textSize="16sp" />
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="余额："
+                            android:textColor="#40000000"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_left_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFE2B3F"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:text="萌币"
+                            android:textColor="#40000000"
+                            android:textSize="12sp" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -74,60 +99,87 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="12dp"
-                android:background="#f9f9f9"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:paddingLeft="14dp"
-                android:text="@string/recharge_type"
-                android:textColor="#323232"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:paddingLeft="11.5dp"
+                android:text="支付方式"
+                android:textColor="#70000000"
+                android:textSize="15sp" />
 
-            <View style="@style/recharge_divider_style" />
 
             <RadioGroup
                 android:id="@+id/rg_pay_way"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#f9f9f9"
-                android:orientation="vertical">
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp">
 
                 <RadioButton
                     android:id="@+id/rb_ali_pay"
-                    style="@style/recharge_pay_way_rb"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_recharge_pay"
+                    android:button="@null"
                     android:drawableLeft="@drawable/alipay"
-                    android:drawableRight="@drawable/selector_pay_way_rb"
+                    android:drawablePadding="10dp"
+                    android:paddingLeft="17dp"
+                    android:paddingTop="5dp"
                     android:text="@string/recharge_ali_pay"
+                    android:textColor="#60000000"
+                    android:textSize="12sp"
                     android:visibility="gone" />
 
-                <View style="@style/recharge_divider_style" />
 
                 <RadioButton
                     android:id="@+id/rb_we_chat_pay"
-                    style="@style/recharge_pay_way_rb"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_recharge_pay"
+                    android:button="@null"
                     android:drawableLeft="@drawable/wechat"
+                    android:drawablePadding="10dp"
+                    android:paddingLeft="17dp"
+                    android:paddingTop="5dp"
                     android:text="@string/recharge_we_chat_pay"
+                    android:textColor="#60000000"
+                    android:textSize="12sp"
                     android:visibility="gone" />
             </RadioGroup>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="5dp"
-                android:background="#f9f9f9"
-                android:gravity="center_vertical"
-                android:paddingLeft="14dp"
-                android:text="@string/recharge_amount"
-                android:textColor="#323232"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="11.5dp"
+                    android:text="@string/recharge_amount"
+                    android:textColor="#70000000"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="13dp"
+                    android:gravity="center_vertical"
+                    android:text="1元=1000萌币，赠送1点贵族经验"
+                    android:textColor="#40000000"
+                    android:textSize="11sp" />
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#f9f9f9"
                 android:focusableInTouchMode="false"
                 android:nestedScrollingEnabled="false"
                 android:paddingBottom="6dp"
@@ -139,30 +191,30 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/comm_white"
+                android:layout_marginLeft="11.5dp"
+                android:layout_marginRight="11.5dp"
+                android:background="@drawable/bg_shawdow_white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingBottom="11dp">
+                android:padding="12.5dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
-                    android:text="返利充值:"
-                    android:textColor="@color/text_view"
-                    android:textSize="15sp" />
+                    android:text="使用返利券"
+                    android:textColor="#70ff2b3f"
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tv_rebate_ticket"
-                    android:layout_width="160dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_rebate"
-                    android:drawableRight="@drawable/arrow_down"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:textColor="@color/text_hint"
-                    android:textSize="13sp" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5.5dp"
+                    android:drawableRight="@drawable/arrowright"
+                    android:gravity="end"
+                    android:textColor="#70000000"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tv_rebate_money"
@@ -179,30 +231,17 @@
                 android:id="@+id/btn_recharge"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/selector_comm_btn_bg"
+                android:layout_height="42.5dp"
+                android:layout_marginLeft="89dp"
+                android:layout_marginRight="89dp"
+                android:layout_marginTop="19dp"
+                android:background="@drawable/selector_btn_yellow"
                 android:enabled="false"
                 android:gravity="center"
                 android:text="@string/recharge_tip"
-                android:textColor="#f9f9f9"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:textColor="#010101"
+                android:textSize="15sp"
                 android:visibility="gone" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
-                android:layout_marginTop="11dp"
-                android:lineSpacingExtra="3dp"
-                android:paddingBottom="10dp"
-                android:text="@string/recharge_hint"
-                android:textColor="#646464"
-                android:textSize="12sp" />
-
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

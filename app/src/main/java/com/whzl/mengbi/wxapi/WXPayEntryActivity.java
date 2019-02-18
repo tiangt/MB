@@ -1,11 +1,14 @@
 package com.whzl.mengbi.wxapi;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import com.alipay.sdk.app.PayTask;
 import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
+import com.jaeger.library.StatusBarUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -41,6 +45,7 @@ import com.whzl.mengbi.model.pay.WXPayOrder;
 import com.whzl.mengbi.presenter.RechargePresenter;
 import com.whzl.mengbi.presenter.impl.RechargePresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -50,6 +55,7 @@ import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -101,19 +107,20 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     private BaseListAdapter adapter;
     private int mRuleId = -1;
     private long mUserId;
-    private List<RebateBean.ListBean> list = new ArrayList<>();
+    private ArrayList<RebateBean.ListBean> list = new ArrayList<>();
     private String identifyCode = "";
     private int scale = 100;
     private int chengCount;
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_wx_pay_entry, R.string.personal, true);
+        setContentView(R.layout.activity_wx_pay_entry, "充值", "联系客服", true);
     }
 
     @Override
     protected void initEnv() {
         super.initEnv();
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.status_white_toolbar));
         mPresent = new RechargePresenterImpl(this);
         mUserId = Long.parseLong(SPUtils.get(this, "userId", (long) 0).toString());
         //mUserId = (long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
@@ -123,6 +130,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     protected void setupView() {
+        getTitleRightText().setTextColor(ContextCompat.getColor(this, R.color.textcolor_white_toolbar_right));
         boolean hasTopUp = (boolean) SPUtils.get(this, SpConfig.KEY_HAS_RECHARGED, false);
         firstTopUp.setVisibility(hasTopUp ? View.GONE : View.VISIBLE);
         recycler.setLayoutManager(new GridLayoutManager(this, 3));
@@ -141,6 +149,34 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         recycler.setAdapter(adapter);
     }
 
+    @Override
+    protected void onToolbarMenuClick() {
+        super.onToolbarMenuClick();
+        startQQChat(NetConfig.CUSTOM_OFFICIAL_SERVICE_QQ);
+    }
+
+    private void startQQChat(String qq) {
+        if (!isQQClientAvailable()) {
+            showToast("QQ未安装");
+            return;
+        }
+        final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=" + qq + "&version=1";
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
+    }
+
+    public boolean isQQClientAvailable() {
+        final PackageManager packageManager = getPackageManager();
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals("com.tencent.mobileqq")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     class RuleViewHolder extends BaseViewHolder {
         @BindView(R.id.tv_desc)
@@ -190,18 +226,17 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     public void onGetUserInfoSuccess(UserInfo userInfo) {
+        ivAvatar.setBorderColor(Color.parseColor("#FFFEF9F1"));
+        ivAvatar.setBorderWidth(UIUtil.dip2px(this, 2));
         GlideImageLoader.getInstace().displayImage(this, userInfo.getData().getAvatar(), ivAvatar);
-        tvAccount.setText(getString(R.string.recharge_account, userInfo.getData().getNickname()));
-        tvLeftAmount.setText(R.string.mengbi_left);
-        SpannableString spannableString = StringUtils.spannableStringColor(userInfo.getData().getWealth().getCoin() + "", Color.parseColor("#ffa800"));
-        tvLeftAmount.append(spannableString);
+        tvAccount.setText(userInfo.getData().getNickname());
+        tvLeftAmount.setText(AmountConversionUitls.amountConversionFormat(userInfo.getData().getWealth().getCoin()));
     }
 
     @Override
     public void onGetCoupon(RebateBean rebateBean) {
         if (rebateBean.list == null || rebateBean.list.size() == 0) {
-            tvRebateTicket.setText("暂无返利券");
-            tvRebateTicket.setEnabled(false);
+            tvRebateTicket.setText("无可用");
             tvRebateMoney.setVisibility(View.GONE);
             return;
         }
@@ -209,8 +244,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         tvRebateMoney.setVisibility(View.VISIBLE);
         scale = rebateBean.list.get(0).scale;
         identifyCode = rebateBean.list.get(0).identifyCode;
-        tvRebateTicket.setText(rebateBean.list.get(0).goodsName + "(" + rebateBean.list.get(0).identifyCode + ")");
         list.addAll(rebateBean.list);
+        tvRebateTicket.setText(list.size() + "张可用");
     }
 
     @Override
@@ -315,23 +350,23 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     }
 
     private void showSelect() {
-        if (list == null || list.size() == 0) {
-            return;
-        }
-        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
-            @Override
-            public void onOptionsSelect(int options1, int option2, int options3, View v) {
-                tvRebateTicket.setText(list.get(options1).goodsName + "(" + list.get(options1).identifyCode + ")");
-                identifyCode = list.get(options1).identifyCode;
-                scale = list.get(options1).scale;
-                tvRebateMoney.setText("额外返利");
-                tvRebateMoney.append(StringUtils.spannableStringColor(
-                        String.valueOf(chengCount / 100 * scale), Color.parseColor("#ffa800")));
-                tvRebateMoney.append("萌币");
-            }
-        }).setTitleText("选择返利券").setSelectOptions(0).isRestoreItem(false).build();
-        pvOptions.setPicker(list);
-        pvOptions.show();
+//        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
+//            @Override
+//            public void onOptionsSelect(int options1, int option2, int options3, View v) {
+//                tvRebateTicket.setText(list.get(options1).goodsName + "(" + list.get(options1).identifyCode + ")");
+//                identifyCode = list.get(options1).identifyCode;
+//                scale = list.get(options1).scale;
+//                tvRebateMoney.setText("额外返利");
+//                tvRebateMoney.append(StringUtils.spannableStringColor(
+//                        String.valueOf(chengCount / 100 * scale), Color.parseColor("#ffa800")));
+//                tvRebateMoney.append("萌币");
+//            }
+//        }).setTitleText("选择返利券").setSelectOptions(0).isRestoreItem(false).build();
+//        pvOptions.setPicker(list);
+//        pvOptions.show();
+        startActivity(new Intent(this, FrgActivity.class)
+                .putExtra(FrgActivity.FRAGMENT_CLASS, UseRebateFragment.class)
+                .putParcelableArrayListExtra("data", list));
     }
 
     /**
