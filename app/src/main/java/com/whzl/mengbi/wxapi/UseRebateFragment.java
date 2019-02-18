@@ -1,11 +1,14 @@
 package com.whzl.mengbi.wxapi;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
@@ -35,6 +38,27 @@ public class UseRebateFragment extends BasePullListFragment<RebateBean.ListBean,
     }
 
     @Override
+    public void init() {
+        super.init();
+        getPullView().setBackgroundColor(Color.parseColor("#ffffff"));
+        View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_refresh_layout, getPullView(), false);
+        ((TextView) view.findViewById(R.id.tv_content)).setText("你还没有奖励券哦");
+        setEmptyView(view);
+        View view1 = LayoutInflater.from(getMyActivity()).inflate(R.layout.divider_use_rebate, getPullView(), false);
+        addHeadTips(view1);
+        View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_use_rebate, getPullView(), false);
+        TextView tvNoUse = view2.findViewById(R.id.tv_no_use);
+        tvNoUse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMyActivity().setResult(Activity.RESULT_OK, new Intent().putExtra("rebate", (Parcelable) null));
+                getMyActivity().finish();
+            }
+        });
+        getAdapter().addHeaderView(view2);
+    }
+
+    @Override
     protected void loadData(int action, int mPage) {
         ArrayList<RebateBean.ListBean> data = getMyActivity().getIntent().getParcelableArrayListExtra("data");
         loadSuccess(data);
@@ -42,13 +66,15 @@ public class UseRebateFragment extends BasePullListFragment<RebateBean.ListBean,
 
     @Override
     protected BaseViewHolder setViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(getMyActivity()).inflate(R.layout.item_use_rebate, null);
+        View item = LayoutInflater.from(getMyActivity()).inflate(R.layout.item_use_rebate, getPullView(), false);
         return new RebateViewHolder(item);
     }
 
     class RebateViewHolder extends BaseViewHolder {
         @BindView(R.id.tv_name)
         TextView tvName;
+        @BindView(R.id.ll_use_rebate)
+        LinearLayout llUse;
 
         public RebateViewHolder(View itemView) {
             super(itemView);
@@ -58,12 +84,16 @@ public class UseRebateFragment extends BasePullListFragment<RebateBean.ListBean,
         @Override
         public void onBindViewHolder(int position) {
             RebateBean.ListBean listBean = mDatas.get(position);
-            tvName.setText(listBean.goodsName);
+            String[] split = listBean.goodsName.split("%");
+            tvName.setText(split[0]);
+            llUse.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getMyActivity().setResult(Activity.RESULT_OK, new Intent().putExtra("rebate", mDatas.get(position)));
+                    getMyActivity().finish();
+                }
+            });
         }
 
-        @Override
-        public void onItemClick(View view, int position) {
-            super.onItemClick(view, position);
-        }
     }
 }

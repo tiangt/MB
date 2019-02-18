@@ -20,9 +20,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
-import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
-import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
-import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.jaeger.library.StatusBarUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -54,7 +51,6 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -98,6 +94,8 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     TextView tvRebateTicket;
     @BindView(R.id.tv_rebate_money)
     TextView tvRebateMoney;
+    @BindView(R.id.tv_rebate_name)
+    TextView tvRebateName;
     private RechargePresenter mPresent;
     private IWXAPI wxApi;
     private ArrayList<RechargeRuleListBean> aliRechargeRuleList = new ArrayList<>();
@@ -109,8 +107,10 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     private long mUserId;
     private ArrayList<RebateBean.ListBean> list = new ArrayList<>();
     private String identifyCode = "";
-    private int scale = 100;
+    private int scale = 0;
     private int chengCount;
+    public static final int USEREBATE = 100;
+    private int currentPosition = -1;
 
     @Override
     protected void setupContentView() {
@@ -204,15 +204,20 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
+            currentPosition = position;
             RechargeRuleListBean rechargeRuleListBean = currentRuleList.get(position);
             mRuleId = rechargeRuleListBean.getRuleId();
             adapter.notifyDataSetChanged();
             btnRecharge.setEnabled(true);
             btnRecharge.setText(getString(R.string.recharge_confirm, rechargeRuleListBean.getRechargeCount() / 100f));
-            tvRebateMoney.setText("额外返利");
+            if (scale == 0) {
+                tvRebateMoney.setText("");
+                tvRebateName.setText("");
+                return;
+            }
+            tvRebateMoney.setText("+");
             chengCount = currentRuleList.get(position).getChengCount();
-            tvRebateMoney.append(StringUtils.spannableStringColor(
-                    String.valueOf(chengCount / 100 * scale), Color.parseColor("#ffa800")));
+            tvRebateMoney.append(String.valueOf(chengCount / 100 * scale));
             tvRebateMoney.append("萌币");
         }
     }
@@ -237,15 +242,17 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     public void onGetCoupon(RebateBean rebateBean) {
         if (rebateBean.list == null || rebateBean.list.size() == 0) {
             tvRebateTicket.setText("无可用");
+            tvRebateTicket.setTextColor(Color.parseColor("#70000000"));
             tvRebateMoney.setVisibility(View.GONE);
             return;
         }
         list.clear();
         tvRebateMoney.setVisibility(View.VISIBLE);
-        scale = rebateBean.list.get(0).scale;
+//        scale = rebateBean.list.get(0).scale;
         identifyCode = rebateBean.list.get(0).identifyCode;
         list.addAll(rebateBean.list);
         tvRebateTicket.setText(list.size() + "张可用");
+        tvRebateTicket.setTextColor(Color.parseColor("#ff2b3f"));
     }
 
     @Override
@@ -288,11 +295,21 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             tvRebateMoney.setText("");
             switch (checkedId) {
                 case R.id.rb_ali_pay:
+                    scale = 0;
+                    currentPosition = -1;
+                    tvRebateTicket.setVisibility(View.VISIBLE);
+                    tvRebateMoney.setText("");
+                    tvRebateName.setText("");
                     currentRuleList.clear();
                     currentRuleList.addAll(aliRechargeRuleList);
                     adapter.notifyDataSetChanged();
                     break;
                 case R.id.rb_we_chat_pay:
+                    scale = 0;
+                    currentPosition = -1;
+                    tvRebateTicket.setVisibility(View.VISIBLE);
+                    tvRebateMoney.setText("");
+                    tvRebateName.setText("");
                     currentRuleList.clear();
                     currentRuleList.addAll(weChatRechargeRuleList);
                     adapter.notifyDataSetChanged();
@@ -323,10 +340,10 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     }
 
 
-    @OnClick({R.id.tv_rebate_ticket, R.id.btn_recharge})
+    @OnClick({R.id.ll_use_rebate, R.id.btn_recharge})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_rebate_ticket:
+            case R.id.ll_use_rebate:
                 showSelect();
                 break;
             case R.id.btn_recharge:
@@ -364,9 +381,39 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 //        }).setTitleText("选择返利券").setSelectOptions(0).isRestoreItem(false).build();
 //        pvOptions.setPicker(list);
 //        pvOptions.show();
-        startActivity(new Intent(this, FrgActivity.class)
+        startActivityForResult(new Intent(this, FrgActivity.class)
                 .putExtra(FrgActivity.FRAGMENT_CLASS, UseRebateFragment.class)
-                .putParcelableArrayListExtra("data", list));
+                .putParcelableArrayListExtra("data", list), USEREBATE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == USEREBATE) {
+                RebateBean.ListBean rebate = (RebateBean.ListBean) data.getParcelableExtra("rebate");
+                if (rebate == null) {
+                    tvRebateName.setText("");
+                    tvRebateMoney.setText("");
+                    scale = 0;
+                    tvRebateTicket.setVisibility(View.VISIBLE);
+                    return;
+                }
+                tvRebateTicket.setVisibility(View.GONE);
+                scale = rebate.scale;
+                String[] split = rebate.goodsName.split("%");
+                tvRebateName.setText(split[0] + "%");
+                tvRebateMoney.setText("+");
+                if (currentPosition == -1) {
+                    tvRebateMoney.append("0");
+                    tvRebateMoney.append("萌币");
+                    return;
+                }
+                chengCount = currentRuleList.get(currentPosition).getChengCount();
+                tvRebateMoney.append(String.valueOf(chengCount / 100 * scale));
+                tvRebateMoney.append("萌币");
+            }
+        }
     }
 
     /**
