@@ -36,6 +36,7 @@ import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 import com.whzl.mengbi.ui.fragment.main.HomeFragment;
 import com.whzl.mengbi.ui.fragment.main.MeFragment;
 import com.whzl.mengbi.ui.fragment.main.MessageFragment;
+import com.whzl.mengbi.ui.fragment.main.MineFragment;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.AsyncRun;
 import com.whzl.mengbi.util.DateUtils;
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity {
     private AwesomeDialog awesomeDialog;
     private static final String TAG_EXIT = "exit";
     private int[] colors = new int[]{Color.parseColor("#f9f9f9"), Color.parseColor("#f9f9f9"),
-            Color.parseColor("#f9f9f9"), Color.parseColor("#f9f9f9"), Color.parseColor("#21D790")};
+            Color.parseColor("#f9f9f9"), Color.parseColor("#f9f9f9"), Color.parseColor("#181818")};
 
     @Override
     protected void initEnv() {
@@ -94,7 +95,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void setupView() {
         fragments = new Fragment[]{new HomeFragment(), FollowFragment.newInstance(), MessageFragment.newInstance(),
-                RankFragment.newInstance(), MeFragment.newInstance()};
+                RankFragment.newInstance(), MineFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
         rgTab.setOnCheckedChangeListener((group, checkedId) -> {
@@ -179,7 +180,14 @@ public class MainActivity extends BaseActivity {
         if (index == currentSelectedIndex) {
             return;
         }
-        StatusBarUtil.setColor(this, colors[index], 0);
+        if(index == 4){
+            StatusBarUtil.setDarkMode(this);
+            StatusBarUtil.setColor(this, colors[index], 0);
+        }else{
+            StatusBarUtil.setLightMode(this);
+            StatusBarUtil.setColor(this, colors[index], 0);
+        }
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
         if (fragments[index].isAdded()) {

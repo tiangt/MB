@@ -47,6 +47,7 @@ public class PackActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
+        int index = getIntent().getIntExtra("index",0);
         ArrayList<String> titles = new ArrayList<>();
         titles.add("道具");
         titles.add("VIP");
@@ -61,6 +62,7 @@ public class PackActivity extends BaseActivity {
         fragments.add(PackDiscountFragment.newInstance());
         viewpager.setOffscreenPageLimit(5);
         viewpager.setAdapter(new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles));
+        viewpager.setCurrentItem(index);
         setTabWidth(tabLayout, UIUtil.dip2px(this, 18));
         tabLayout.setupWithViewPager(viewpager);
     }
