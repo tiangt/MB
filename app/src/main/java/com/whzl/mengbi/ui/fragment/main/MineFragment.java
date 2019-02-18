@@ -23,6 +23,8 @@ import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.me.AccountSwitchActivity;
 import com.whzl.mengbi.ui.activity.me.BillActivity;
 import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
+import com.whzl.mengbi.ui.activity.me.MyLevelActivity;
+import com.whzl.mengbi.ui.activity.me.MyWalletActivity;
 import com.whzl.mengbi.ui.activity.me.PackActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -81,6 +83,10 @@ public class MineFragment extends BaseFragment implements MeView {
     private UserInfo mUserinfo;
     private String deviceId;
     private String mMobile;
+    private long mMengbi;
+    private long mMengdou;
+    private long mMengdian;
+    private long mUserId;
 
     public static MineFragment newInstance() {
         return new MineFragment();
@@ -127,8 +133,14 @@ public class MineFragment extends BaseFragment implements MeView {
 
         //昵称，头像，ID
         tvUserId.setText("萌号：" + userInfo.getData().getUserId());
-        tvMengbi.setText(StringUtils.formatNumber(userInfo.getData().getWealth().getCoin()) + "萌币");
-        tvMengdou.setText(StringUtils.formatNumber(userInfo.getData().getWealth().getMengDou()) + "萌豆");
+        mUserId = userInfo.getData().getUserId();
+
+        mMengbi = userInfo.getData().getWealth().getCoin();
+        mMengdou = userInfo.getData().getWealth().getMengDou();
+        mMengdian = userInfo.getData().getWealth().getChengPonit();
+
+        tvMengbi.setText(StringUtils.formatNumber(mMengbi) + "萌币");
+        tvMengdou.setText(StringUtils.formatNumber(mMengdou) + "萌豆");
         mMobile = userInfo.getData().getBindMobile();
 
         List<UserInfo.DataBean.LevelListBean> levelList = userInfo.getData().getLevelList();
@@ -164,7 +176,7 @@ public class MineFragment extends BaseFragment implements MeView {
 
     @OnClick({R.id.iv_switch, R.id.iv_setting, R.id.rl_info_edit, R.id.btn_recharge, R.id.rl_shop,
             R.id.tv_mine_tool, R.id.tv_mine_vip, R.id.tv_mine_pretty, R.id.tv_mine_car,
-            R.id.tv_mine_coupon, R.id.rl_composite, R.id.rl_bill})
+            R.id.tv_mine_coupon, R.id.rl_composite, R.id.rl_bill, R.id.rl_my_wallet, R.id.ll_my_level})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_switch:
@@ -225,6 +237,14 @@ public class MineFragment extends BaseFragment implements MeView {
                 startActivity(new Intent(getMyActivity(), BillActivity.class));
                 break;
 
+            case R.id.rl_my_wallet:
+                jumpToMyWalletActivity();
+                break;
+
+            case R.id.ll_my_level:
+                jumpToMyLevelActivity();
+                break;
+
             default:
                 break;
         }
@@ -255,6 +275,20 @@ public class MineFragment extends BaseFragment implements MeView {
 
     private void jumpToChipCompositeActivity() {
         Intent intent = new Intent(getContext(), ChipCompositeActivity.class);
+        startActivity(intent);
+    }
+
+    private void jumpToMyWalletActivity() {
+        Intent intent = new Intent(getContext(), MyWalletActivity.class);
+        intent.putExtra("mengbi", mMengbi);
+        intent.putExtra("mengdou", mMengdou);
+        intent.putExtra("mengdian", mMengdian);
+        startActivity(intent);
+    }
+
+    private void jumpToMyLevelActivity(){
+        Intent intent = new Intent(getContext(), MyLevelActivity.class);
+        intent.putExtra("userId", mUserId);
         startActivity(intent);
     }
 

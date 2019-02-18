@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="290dp"
+        android:background="#f6f6f6"
+        android:paddingBottom="10dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_my_anchor" />
+
+        <RelativeLayout
+            android:id="@+id/rl_user_image"
+            android:layout_width="wrap_content"
+            android:layout_height="65dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="55dp">
+
+            <com.whzl.mengbi.ui.widget.view.CircleImageView
+                android:id="@+id/iv_anchor_level"
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
+
+            <ImageView
+                android:id="@+id/iv_anchor_image"
+                android:layout_width="48.5dp"
+                android:layout_height="18dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_anchor_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_user_image"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="等级"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <com.whzl.mengbi.ui.widget.view.ExpValueLayout
+            android:id="@+id/evl_user_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_anchor_level"
+            android:layout_marginTop="10dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/shape_radius_five">
+
+            <TextView
+                android:id="@+id/tv_how_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="如何升级"
+                android:textColor="@color/tran_black2"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_how_update"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="收礼"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_red"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/tran_black9"
+                        android:text="收的越多升级越快"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="售卖道具物品"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_red"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="13sp"
+                        android:textColor="@color/tran_black9"
+                        android:text="售卖VIP、靓号，开通守护"/>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="等级特权"
+            android:textColor="@color/tran_black2"
+            android:textSize="17sp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="35dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_regal_1"
+                android:text="等级标识"
+                android:textSize="11sp"
+                android:gravity="center_horizontal"
+                android:drawablePadding="5dp"
+                android:textColor="@color/tran_black2"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_regal_2"
+                android:text="敬请期待"
+                android:textSize="11sp"
+                android:gravity="center_horizontal"
+                android:drawablePadding="5dp"
+                android:textColor="@color/tran_black2"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_regal_2"
+                android:text="敬请期待"
+                android:textSize="11sp"
+                android:gravity="center_horizontal"
+                android:drawablePadding="5dp"
+                android:textColor="@color/tran_black2"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_regal_2"
+                android:text="敬请期待"
+                android:textSize="11sp"
+                android:gravity="center_horizontal"
+                android:drawablePadding="5dp"
+                android:textColor="@color/tran_black2"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

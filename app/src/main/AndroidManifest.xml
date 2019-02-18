@@ -333,5 +333,7 @@
         <activity android:name=".ui.activity.me.MyChipActivity" />
         <activity android:name=".ui.activity.me.AccountSwitchActivity" />
         <activity android:name=".ui.activity.RedbagActivity" />
+        <activity android:name=".ui.activity.me.MyWalletActivity"/>
+        <activity android:name=".ui.activity.me.MyLevelActivity"/>
     </application>
 </manifest>
