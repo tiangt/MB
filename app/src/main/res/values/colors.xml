@@ -211,6 +211,8 @@
     <color name="tran_black5">#40000000</color>
     <color name="tran_black6">#10000000</color>
     <color name="tran_black7">#05000000</color>
+    <color name="tran_black8">#60000000</color>
+    <color name="tran_black9">#30000000</color>
     <color name="tran_white1">#90ffffff</color>
     <color name="tran_white2">#30ffffff</color>
     <color name="white2">#f5f9fa</color>

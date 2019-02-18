@@ -74,7 +74,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/tran_black2"
                             android:singleLine="true"
-                            android:maxLength="15"
+                            android:maxLength="20"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -209,6 +209,7 @@
 
                 <!-- 我的钱包 -->
                 <LinearLayout
+                    android:id="@+id/rl_my_wallet"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -279,6 +280,7 @@
 
                 <!-- 我的等级 -->
                 <LinearLayout
+                    android:id="@+id/ll_my_level"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"

@@ -1,5 +1,8 @@
 package com.whzl.mengbi.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -42,7 +45,7 @@ public class PersonalInfoBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Parcelable {
         /**
          * userId : 30000254
          * userType : MANAGER
@@ -205,6 +208,16 @@ public class PersonalInfoBean {
 
         public void setGoodsList(List<GoodsListBean> goodsList) {
             this.goodsList = goodsList;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+
         }
 
         public static class WeathMapBean {
