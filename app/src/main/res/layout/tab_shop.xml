@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="62dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/TextAppearance.Design.Tab"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:text="道具"
+        android:textAllCaps="true"
+        android:textColor="@drawable/shop_tab_text_color"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="31.5dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tv_title"
+        android:layout_toRightOf="@id/tv_title"
+        android:background="@drawable/bg_tab_shop"
+        android:text="送积分"
+        android:textColor="#fffefe"
+        android:textSize="8sp" />
+</RelativeLayout>

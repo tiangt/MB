@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="241.5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_dialog_vip_shop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="215.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_dialog_common"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="11.5dp"
+            android:paddingRight="11.5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="11dp"
+                android:text="购买VIP"
+                android:textColor="#010101"
+                android:textSize="13sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#05000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.whzl.mengbi.ui.widget.view.CircleImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="27.5dp"
+                    android:layout_height="27.5dp" />
+
+                <TextView
+                    android:id="@+id/tv_nick"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#70000000"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="赠送他人"
+                    android:textColor="#c83af0"
+                    android:textSize="13sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="价  格:"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="3000"
+                    android:textColor="#f4545a"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="萌币"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时  长:"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="3000"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="天"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="154dp"
+                android:layout_height="31.5dp"
+                android:layout_marginTop="27dp"
+                android:background="@drawable/shape_yellow_btn"
+                android:text="立即购买"
+                android:textColor="#010101"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

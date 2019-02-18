@@ -8,6 +8,8 @@
 
     <include layout="@layout/white_toolbar" />
 
+    <include layout="@layout/divider_shawdow_white" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/first_top_up"
         android:layout_width="match_parent"

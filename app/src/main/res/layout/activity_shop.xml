@@ -1,49 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/comm_toolbar" />
+    <include layout="@layout/white_toolbar" />
 
-    <RadioGroup
-        android:id="@+id/rg_shop"
+    <include layout="@layout/divider_shawdow_white" />
+
+    <com.whzl.mengbi.ui.widget.tablayout.TabLayout
+        android:id="@+id/tab_shop"
+        style="@style/ShopTab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/comm_white"
-        android:orientation="horizontal">
+        android:layout_height="44dp"
+        app:tabGravity="fill"
+        app:tabMode="scrollable" />
 
-        <RadioButton
-            android:id="@+id/rb_vip_shop"
-            style="@style/shop_tab"
-            android:drawableTop="@drawable/selector_shop_tab_vip_icon"
-            android:text="VIP" />
-
-        <RadioButton
-            android:id="@+id/rv_guard_shop"
-            style="@style/shop_tab"
-            android:drawableTop="@drawable/selector_shop_tab_guard_icon"
-            android:text="守护" />
-
-        <RadioButton
-            android:id="@+id/rb_nobility_shop"
-            style="@style/shop_tab"
-            android:drawableTop="@drawable/selector_shop_tab_nubility_icon"
-            android:text="贵族" />
-
-        <RadioButton
-            android:id="@+id/rb_goodnum_shop"
-            style="@style/shop_tab"
-            android:drawableTop="@drawable/selector_shop_tab_goodnum_icon"
-            android:text="靓号" />
-
-    </RadioGroup>
-
-    <FrameLayout
-        android:id="@+id/fl_shop"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="2dp"
-        android:layout_weight="1"
-        android:background="@color/comm_white" />
+        android:overScrollMode="never" />
+
 </LinearLayout>

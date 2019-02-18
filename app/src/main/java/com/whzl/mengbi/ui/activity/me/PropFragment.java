@@ -7,10 +7,10 @@ import com.whzl.mengbi.ui.fragment.base.BaseFragment;
  * @author niko
  * @date 2018/9/18
  */
-public class GuardFragment extends BaseFragment {
+public class PropFragment extends BaseFragment {
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_guard_shop;
+        return R.layout.fragment_prop_shop;
     }
 
     @Override

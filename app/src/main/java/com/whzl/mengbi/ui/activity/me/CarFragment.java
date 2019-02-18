@@ -1,9 +1,5 @@
 package com.whzl.mengbi.ui.activity.me;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -13,14 +9,12 @@ import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * @author niko
  * @date 2018/9/19
  */
-public class NobilityFragment extends BaseFragment {
+public class CarFragment extends BaseFragment {
     @BindView(R.id.rb_qingtong)
     RadioButton rbQingtong;
     @BindView(R.id.rb_baiyin)
@@ -42,7 +36,7 @@ public class NobilityFragment extends BaseFragment {
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_nobility_shop;
+        return R.layout.fragment_car_shop;
     }
 
     @Override
