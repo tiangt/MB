@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -29,10 +30,13 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SDKConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RechargeChannelListBean;
 import com.whzl.mengbi.model.entity.RechargeInfo;
@@ -46,13 +50,22 @@ import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
+import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.view.RechargeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -96,6 +109,10 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     TextView tvRebateMoney;
     @BindView(R.id.tv_rebate_name)
     TextView tvRebateName;
+    @BindView(R.id.tv_pay_for_other)
+    TextView tvPayForOther;
+    @BindView(R.id.ll_money)
+    LinearLayout llMoney;
     private RechargePresenter mPresent;
     private IWXAPI wxApi;
     private ArrayList<RechargeRuleListBean> aliRechargeRuleList = new ArrayList<>();
@@ -111,6 +128,9 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     private int chengCount;
     public static final int USEREBATE = 100;
     private int currentPosition = -1;
+    private BaseAwesomeDialog payForDialog;
+    private UserInfo.DataBean others;
+    private UserInfo.DataBean myself;
 
     @Override
     protected void setupContentView() {
@@ -231,6 +251,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     public void onGetUserInfoSuccess(UserInfo userInfo) {
+        myself = userInfo.getData();
         ivAvatar.setBorderColor(Color.parseColor("#FFFEF9F1"));
         ivAvatar.setBorderWidth(UIUtil.dip2px(this, 2));
         GlideImageLoader.getInstace().displayImage(this, userInfo.getData().getAvatar(), ivAvatar);
@@ -340,7 +361,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     }
 
 
-    @OnClick({R.id.ll_use_rebate, R.id.btn_recharge})
+    @OnClick({R.id.ll_use_rebate, R.id.btn_recharge, R.id.tv_pay_for_other})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_use_rebate:
@@ -349,7 +370,77 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             case R.id.btn_recharge:
                 getOrderInfo(identifyCode);
                 break;
+            case R.id.tv_pay_for_other:
+                if (tvPayForOther.getText().toString().equals("取消")) {
+                    llMoney.setVisibility(View.VISIBLE);
+                    GlideImageLoader.getInstace().displayImage(WXPayEntryActivity.this, myself.getAvatar(), ivAvatar);
+                    tvAccount.setText(myself.getNickname());
+                    tvPayForOther.setText("为他人充值");
+                } else {
+                    payForOther();
+                }
+                break;
         }
+    }
+
+    private void payForOther() {
+        if (payForDialog != null && payForDialog.isAdded()) {
+            return;
+        }
+        payForDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_pay_for_other).setConvertListener(new ViewConvertListener() {
+            @Override
+            protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                holder.setOnClickListener(R.id.iv_close, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                holder.setOnClickListener(R.id.btn_confirm, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        findOther(holder, dialog);
+                    }
+                });
+            }
+        }).show(getSupportFragmentManager());
+    }
+
+    private void findOther(ViewHolder holder, BaseAwesomeDialog dialog) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("userId", ((EditText) holder.getView(R.id.et_num)).getText().toString());
+        ApiFactory.getInstance().getApi(Api.class)
+                .getUserInfo(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<UserInfo.DataBean>() {
+
+                    @Override
+                    public void onSuccess(UserInfo.DataBean bean) {
+                        dialog.dismiss();
+                        holder.getView(R.id.tv_tips).setVisibility(View.INVISIBLE);
+                        KeyBoardUtil.closeKeybord((EditText) holder.getView(R.id.et_num), WXPayEntryActivity.this);
+                        others = bean;
+                        GlideImageLoader.getInstace().displayImage(WXPayEntryActivity.this, others.getAvatar(), ivAvatar);
+                        tvAccount.setText(others.getNickname() + " ");
+                        for (UserInfo.DataBean.LevelListBean levelListBean : others.getLevelList()) {
+                            if (NetConfig.LEVEL_TYPE_USER.equals(levelListBean.getLevelType())) {
+                                tvAccount.append(LevelUtil.getImageResourceSpan(getApplicationContext(),
+                                        ResourceMap.getResourceMap().getUserLevelIcon(levelListBean.getLevelValue())));
+                                break;
+                            }
+                        }
+                        llMoney.setVisibility(View.GONE);
+                        tvPayForOther.setText("取消");
+                    }
+
+                    @Override
+                    public void onError(ApiResult<UserInfo.DataBean> body) {
+                        if (body.code == -1210) {
+                            holder.getView(R.id.tv_tips).setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
     }
 
     private void getOrderInfo(String identifyCode) {

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="286.5dp"
+        android:layout_height="154dp">
+
+
+        <LinearLayout
+            android:layout_width="282.5dp"
+            android:layout_height="149dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_dialog_buy_succubus"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/et_num"
+                android:layout_width="240dp"
+                android:layout_height="38dp"
+                android:layout_marginTop="31.5dp"
+                android:background="@drawable/edit_dialog_pay_for_other"
+                android:hint="请输入充值者萌号"
+                android:inputType="number"
+                android:paddingLeft="20dp"
+                android:singleLine="true"
+                android:textColor="#010101"
+                android:textColorHint="#30010101"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="该萌号不存在"
+                android:textColor="#ff2b3f"
+                android:textSize="11sp"
+                android:visibility="invisible" />
+
+            <Button
+                android:id="@+id/btn_confirm"
+                style="?android:borderlessButtonStyle"
+                android:layout_width="116.5dp"
+                android:layout_height="42.5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_yellow_btn"
+                android:text="确定"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="54.5dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_close_rebate" />
+    </RelativeLayout>
+</LinearLayout>

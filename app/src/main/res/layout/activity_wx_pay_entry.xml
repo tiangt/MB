@@ -50,7 +50,7 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="60dp"
                     android:layout_marginLeft="15dp"
                     android:layout_toRightOf="@id/iv_avatar"
                     android:gravity="center_vertical"
@@ -61,9 +61,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#70000000"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
+                        android:id="@+id/ll_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -94,6 +96,17 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_pay_for_other"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="11.5dp"
+                    android:text="为他人充值"
+                    android:textColor="#70ff2b3f"
+                    android:textSize="13sp" />
 
             </RelativeLayout>
 

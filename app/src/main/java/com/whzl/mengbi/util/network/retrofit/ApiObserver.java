@@ -161,7 +161,10 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
 
     public abstract void onSuccess(T t);
 
-    public void onError(ApiResult<T> body){
+    /**
+     * 不弹Toast
+     */
+    public void onError(ApiResult<T> body) {
         ToastUtils.showToast(body.msg);
         onError(body.code);
     }
@@ -169,6 +172,7 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
     public void onError(int code) {
 
     }
+
     /**
      * 检查是否继续，比如activiy已经结束
      *
