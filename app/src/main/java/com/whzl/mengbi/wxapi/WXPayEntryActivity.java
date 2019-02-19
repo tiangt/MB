@@ -122,6 +122,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     private BaseListAdapter adapter;
     private int mRuleId = -1;
     private long mUserId;
+    private long otherUserId;
     private ArrayList<RebateBean.ListBean> list = new ArrayList<>();
     private String identifyCode = "";
     private int scale = 0;
@@ -143,7 +144,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.status_white_toolbar));
         mPresent = new RechargePresenterImpl(this);
         mUserId = Long.parseLong(SPUtils.get(this, "userId", (long) 0).toString());
-        //mUserId = (long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0);
+        otherUserId = mUserId;
         wxApi = WXAPIFactory.createWXAPI(this, SDKConfig.KEY_WEIXIN);
         wxApi.handleIntent(getIntent(), this);
     }
@@ -261,16 +262,18 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
 
     @Override
     public void onGetCoupon(RebateBean rebateBean) {
+        identifyCode = "";
+        tvRebateTicket.setVisibility(View.VISIBLE);
+        tvRebateName.setText("");
+        tvRebateMoney.setText("");
         if (rebateBean.list == null || rebateBean.list.size() == 0) {
             tvRebateTicket.setText("无可用");
             tvRebateTicket.setTextColor(Color.parseColor("#70000000"));
-            tvRebateMoney.setVisibility(View.GONE);
             return;
         }
         list.clear();
-        tvRebateMoney.setVisibility(View.VISIBLE);
 //        scale = rebateBean.list.get(0).scale;
-        identifyCode = rebateBean.list.get(0).identifyCode;
+//        identifyCode = rebateBean.list.get(0).identifyCode;
         list.addAll(rebateBean.list);
         tvRebateTicket.setText(list.size() + "张可用");
         tvRebateTicket.setTextColor(Color.parseColor("#ff2b3f"));
@@ -376,6 +379,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                     GlideImageLoader.getInstace().displayImage(WXPayEntryActivity.this, myself.getAvatar(), ivAvatar);
                     tvAccount.setText(myself.getNickname());
                     tvPayForOther.setText("为他人充值");
+                    otherUserId = mUserId;
                 } else {
                     payForOther();
                 }
@@ -432,6 +436,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                         }
                         llMoney.setVisibility(View.GONE);
                         tvPayForOther.setText("取消");
+                        otherUserId = bean.getUserId();
                     }
 
                     @Override
@@ -451,27 +456,13 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         paramsMap.put("channelId", (long) channelId);
         paramsMap.put("ruleId", (long) mRuleId);
         paramsMap.put("userId", mUserId);
-        paramsMap.put("toUserId", mUserId);
+        paramsMap.put("toUserId", otherUserId);
         paramsMap.put("proxyUserId", (long) 0);
         paramsMap.put("identifyCode", identifyCode);
         mPresent.getOrderInfo(paramsMap);
     }
 
     private void showSelect() {
-//        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
-//            @Override
-//            public void onOptionsSelect(int options1, int option2, int options3, View v) {
-//                tvRebateTicket.setText(list.get(options1).goodsName + "(" + list.get(options1).identifyCode + ")");
-//                identifyCode = list.get(options1).identifyCode;
-//                scale = list.get(options1).scale;
-//                tvRebateMoney.setText("额外返利");
-//                tvRebateMoney.append(StringUtils.spannableStringColor(
-//                        String.valueOf(chengCount / 100 * scale), Color.parseColor("#ffa800")));
-//                tvRebateMoney.append("萌币");
-//            }
-//        }).setTitleText("选择返利券").setSelectOptions(0).isRestoreItem(false).build();
-//        pvOptions.setPicker(list);
-//        pvOptions.show();
         startActivityForResult(new Intent(this, FrgActivity.class)
                 .putExtra(FrgActivity.FRAGMENT_CLASS, UseRebateFragment.class)
                 .putParcelableArrayListExtra("data", list), USEREBATE);
@@ -488,8 +479,10 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                     tvRebateMoney.setText("");
                     scale = 0;
                     tvRebateTicket.setVisibility(View.VISIBLE);
+                    identifyCode = "";
                     return;
                 }
+                identifyCode = rebate.identifyCode;
                 tvRebateTicket.setVisibility(View.GONE);
                 scale = rebate.scale;
                 String[] split = rebate.goodsName.split("%");
@@ -529,9 +522,11 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
                             break;
                         case NetConfig.CODE_ALI_PAY_CANCEL:
+                            mPresent.getCoupon(mUserId);
                             showToast(R.string.user_cancel);
                             break;
                         default:
+                            mPresent.getCoupon(mUserId);
                             showToast(R.string.pay_fail);
                             break;
                     }
@@ -557,10 +552,12 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                     SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
                     break;
                 case NetConfig.CODE_WE_CHAT_PAY_CANCEL:
+                    mPresent.getCoupon(mUserId);
                     showToast(R.string.user_cancel);
                     break;
                 case NetConfig.CODE_WE_CHAT_PAY_FAIL:
                 default:
+                    mPresent.getCoupon(mUserId);
                     showToast(R.string.pay_fail);
                     break;
             }

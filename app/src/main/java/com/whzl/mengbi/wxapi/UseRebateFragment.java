@@ -85,7 +85,7 @@ public class UseRebateFragment extends BasePullListFragment<RebateBean.ListBean,
         public void onBindViewHolder(int position) {
             RebateBean.ListBean listBean = mDatas.get(position);
             String[] split = listBean.goodsName.split("%");
-            tvName.setText(split[0]);
+            tvName.setText(split[0]+"%");
             llUse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
