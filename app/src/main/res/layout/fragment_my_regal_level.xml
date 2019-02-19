@@ -46,7 +46,7 @@
             android:textColor="@color/white"
             android:textSize="12sp" />
 
-        <com.whzl.mengbi.ui.widget.view.ExpValueLayout
+        <com.whzl.mengbi.ui.widget.view.MyLevelProgressLayout
             android:id="@+id/evl_user_level"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

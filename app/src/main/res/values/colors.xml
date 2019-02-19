@@ -234,4 +234,7 @@
     <color name="statusbar_black">#181818</color>
     <color name="red_bag">#ff2626</color>
     <color name="text_color_private_chat">#000000</color>
+
+    <color name="dark_voilet">#9400D3</color>
+    <color name="slate_blue">#4169E1</color>
 </resources>

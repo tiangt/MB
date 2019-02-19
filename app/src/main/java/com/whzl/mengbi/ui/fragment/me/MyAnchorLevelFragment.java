@@ -11,6 +11,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.MyLevelProgressLayout;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -34,6 +35,8 @@ public class MyAnchorLevelFragment extends BaseFragment {
     ImageView ivAnchorLevel;
     @BindView(R.id.tv_anchor_level)
     TextView tvAnchorLevel;
+    @BindView(R.id.evl_anchor_level)
+    MyLevelProgressLayout evlAnchorLevel;
 
     private PersonalInfoBean.DataBean dataBean;
     private int levelValue;
@@ -43,7 +46,7 @@ public class MyAnchorLevelFragment extends BaseFragment {
     private long sjExpvalue;
     private long sjNeedExpValue;
 
-    public static MyAnchorLevelFragment newInstance(PersonalInfoBean.DataBean dataBean){
+    public static MyAnchorLevelFragment newInstance(PersonalInfoBean.DataBean dataBean) {
         Bundle args = new Bundle();
         args.putParcelable("userInfo", dataBean);
         MyAnchorLevelFragment fragment = new MyAnchorLevelFragment();
@@ -66,24 +69,31 @@ public class MyAnchorLevelFragment extends BaseFragment {
                 for (int i = 0; i < listBeans.size(); i++) {
                     levelType = listBeans.get(i).getLevelType();
                     levelValue = listBeans.get(i).getLevelValue();
+                    evlAnchorLevel.setLevelValue(levelType, levelValue, listBeans.get(i).getLevelName(), listBeans.get(i).getExpList());
+                    evlAnchorLevel.initView();
+
                     if ("ANCHOR_LEVEL".equals(levelType)) {
-                        Glide.with(this).load(ResourceMap.getResourceMap().getUserLevelIcon(levelValue)).into(ivAnchorLevel);
+                        Glide.with(this).load(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue)).into(ivAnchorLevel);
                         expListBeans = listBeans.get(i).getExpList();
                         for (int j = 0; j < expListBeans.size(); j++) {
                             sjExpvalue = expListBeans.get(j).getSjExpvalue();
                             sjNeedExpValue = expListBeans.get(j).getSjNeedExpValue();
 
-                            SpannableString sj = StringUtils.spannableStringColor("当前主播经验 ", Color.parseColor("#ffffff"));
-                            SpannableString sj2 = StringUtils.spannableStringColor(sjExpvalue + "", Color.parseColor("#F7FF00"));
-                            SpannableString sj3 = StringUtils.spannableStringColor(" 点，离下一级还差 ", Color.parseColor("#ffffff"));
-                            SpannableString sj4 = StringUtils.spannableStringColor(sjNeedExpValue + "", Color.parseColor("#F7FF00"));
-                            SpannableString sj5 = StringUtils.spannableStringColor(" 点", Color.parseColor("#ffffff"));
+                            if (levelValue == 50) {
+                                tvAnchorLevel.setText("您已达到最高主播等级");
+                            } else {
+                                SpannableString sj = StringUtils.spannableStringColor("当前主播经验 ", Color.parseColor("#ffffff"));
+                                SpannableString sj2 = StringUtils.spannableStringColor(sjExpvalue + "", Color.parseColor("#F7FF00"));
+                                SpannableString sj3 = StringUtils.spannableStringColor(" 点，离下一级还差 ", Color.parseColor("#ffffff"));
+                                SpannableString sj4 = StringUtils.spannableStringColor(sjNeedExpValue - sjExpvalue + "", Color.parseColor("#F7FF00"));
+                                SpannableString sj5 = StringUtils.spannableStringColor(" 点", Color.parseColor("#ffffff"));
 
-                            tvAnchorLevel.setText(sj);
-                            tvAnchorLevel.append(sj2);
-                            tvAnchorLevel.append(sj3);
-                            tvAnchorLevel.append(sj4);
-                            tvAnchorLevel.append(sj5);
+                                tvAnchorLevel.setText(sj);
+                                tvAnchorLevel.append(sj2);
+                                tvAnchorLevel.append(sj3);
+                                tvAnchorLevel.append(sj4);
+                                tvAnchorLevel.append(sj5);
+                            }
                             break;
                         }
                         break;
@@ -92,4 +102,6 @@ public class MyAnchorLevelFragment extends BaseFragment {
             }
         }
     }
+
+
 }

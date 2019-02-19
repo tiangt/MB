@@ -78,9 +78,13 @@ public class MineFragment extends BaseFragment implements MeView {
     ImageView ivMineNoble;
     @BindView(R.id.iv_mine_level)
     ImageView ivMineLevel;
+    @BindView(R.id.tv_follow_count)
+    TextView tvFollowCount;
+    @BindView(R.id.tv_fans_count)
+    TextView tvFansCount;
 
     private MePresenter mPresent;
-    private UserInfo mUserinfo;
+    private UserInfo mUserInfo;
     private String deviceId;
     private String mMobile;
     private long mMengbi;
@@ -119,15 +123,15 @@ public class MineFragment extends BaseFragment implements MeView {
         if (userInfo == null || userInfo.getData() == null) {
             return;
         }
-        mUserinfo = userInfo;
+        mUserInfo = userInfo;
         GlideImageLoader.getInstace().displayImage(getContext(), userInfo.getData().getAvatar(), ivAvatar);
-        tvNickName.setText(mUserinfo.getData().getNickname().trim());
-        SPUtils.put(getContext(), SpConfig.KEY_USER_NAME, mUserinfo.getData().getNickname().trim());
+        tvNickName.setText(mUserInfo.getData().getNickname().trim());
+        SPUtils.put(getContext(), SpConfig.KEY_USER_NAME, mUserInfo.getData().getNickname().trim());
 
         //性别
-        if ("M".equals(mUserinfo.getData().getGender())) {
+        if ("M".equals(mUserInfo.getData().getGender())) {
             ivGender.setImageResource(R.drawable.ic_mine_man);
-        } else if ("W".equals(mUserinfo.getData().getGender())) {
+        } else if ("W".equals(mUserInfo.getData().getGender())) {
             ivGender.setImageResource(R.drawable.ic_mine_woman);
         }
 
@@ -260,10 +264,9 @@ public class MineFragment extends BaseFragment implements MeView {
         startActivityForResult(intent, REQUEST_SETTING);
     }
 
-
     private void jumpToPersonalInfoActivity() {
         Intent intent = new Intent(getContext(), UserInfoActivity.class);
-        intent.putExtra("userbean", mUserinfo);
+        intent.putExtra("userbean", mUserInfo);
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getMyActivity(), ivAvatar, "iv_avatar");
         startActivity(intent, optionsCompat.toBundle());
     }

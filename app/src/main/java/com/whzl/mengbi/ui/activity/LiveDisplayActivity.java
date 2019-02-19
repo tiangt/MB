@@ -2375,7 +2375,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (line == null || line.length == 0) {
             return;
         }
-        int images[] = {R.drawable.ic_head_line, R.drawable.live_display_cup};
+        int images[] = {R.drawable.live_display_cup, R.drawable.ic_head_line};
         List<View> views = new ArrayList<>();
         for (int i = 0; i < line.length; i++) {
             View v = View.inflate(this, R.layout.item_head_line, null);
@@ -2387,7 +2387,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         headLineView.setViews(views);
         headLineView.setOnItemClickListener((position, view) -> {
-            if (0 == position) {
+            if (1 == position) {
                 headlineDialog = HeadlineDialog.newInstance(0, mProgramId, mAnchorId, mAnchorName, mAnchorAvatar)
                         .show(getSupportFragmentManager());
             } else {
