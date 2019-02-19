@@ -104,7 +104,8 @@
                                 android:layout_width="8.5dp"
                                 android:layout_height="8.5dp"
                                 android:background="@null"
-                                android:src="@drawable/close_p" />
+                                android:src="@drawable/close_p"
+                                android:visibility="gone" />
                         </LinearLayout>
 
 

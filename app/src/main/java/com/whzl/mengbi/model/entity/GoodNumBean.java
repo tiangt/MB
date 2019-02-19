@@ -15,6 +15,7 @@ public class GoodNumBean {
     public List<DigitsBean> fiveDigits;
     public List<DigitsBean> sixDigits;
     public List<DigitsBean> seveDigits;
+    public List<DigitsBean> fourDigits;
 
     public static class DigitsBean implements Parcelable {
         /**
@@ -26,8 +27,12 @@ public class GoodNumBean {
 
         public int goodsId;
         public String goodsName;
+        public String goodsColor;
         public int priceId;
         public int rent;
+
+        public DigitsBean() {
+        }
 
         @Override
         public int describeContents() {
@@ -38,21 +43,20 @@ public class GoodNumBean {
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeInt(this.goodsId);
             dest.writeString(this.goodsName);
+            dest.writeString(this.goodsColor);
             dest.writeInt(this.priceId);
             dest.writeInt(this.rent);
-        }
-
-        public DigitsBean() {
         }
 
         protected DigitsBean(Parcel in) {
             this.goodsId = in.readInt();
             this.goodsName = in.readString();
+            this.goodsColor = in.readString();
             this.priceId = in.readInt();
             this.rent = in.readInt();
         }
 
-        public static final Parcelable.Creator<DigitsBean> CREATOR = new Parcelable.Creator<DigitsBean>() {
+        public static final Creator<DigitsBean> CREATOR = new Creator<DigitsBean>() {
             @Override
             public DigitsBean createFromParcel(Parcel source) {
                 return new DigitsBean(source);

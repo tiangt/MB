@@ -3,8 +3,6 @@ package com.whzl.mengbi.model.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.contrarywind.interfaces.IPickerViewData;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class RebateBean implements Parcelable {
 
     public List<ListBean> list;
 
-    public static class ListBean implements IPickerViewData, Parcelable {
+    public static class ListBean implements Parcelable {
         /**
          * couponId : 9
          * scale : 3
@@ -32,11 +30,8 @@ public class RebateBean implements Parcelable {
         public String goodsName;
         public String identifyCode;
         public int goodsSum;
+        public String expDate;
 
-        @Override
-        public String getPickerViewText() {
-            return goodsName + "(" + identifyCode + ")";
-        }
 
         @Override
         public int describeContents() {
@@ -51,6 +46,7 @@ public class RebateBean implements Parcelable {
             dest.writeString(this.goodsName);
             dest.writeString(this.identifyCode);
             dest.writeInt(this.goodsSum);
+            dest.writeString(this.expDate);
         }
 
         public ListBean() {
@@ -63,6 +59,7 @@ public class RebateBean implements Parcelable {
             this.goodsName = in.readString();
             this.identifyCode = in.readString();
             this.goodsSum = in.readInt();
+            this.expDate = in.readString();
         }
 
         public static final Creator<ListBean> CREATOR = new Creator<ListBean>() {
@@ -77,6 +74,7 @@ public class RebateBean implements Parcelable {
             }
         };
     }
+
 
     @Override
     public int describeContents() {

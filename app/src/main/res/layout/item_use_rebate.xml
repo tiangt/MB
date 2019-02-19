@@ -58,7 +58,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
-                    android:text="返利券"
                     android:textColor="#70ffffff"
                     android:textSize="9sp"
                     android:textStyle="bold" />

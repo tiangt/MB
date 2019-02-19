@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -67,6 +68,23 @@ public class LightSpanString {
 
         nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return nickSpan;
+    }
+
+    public static SpannableString getPrettyNumSpanByType(Context context, String num, String type) {
+        switch (type) {
+            case "A":
+                return getAPrettyNumSpan(context, num, ContextCompat.getColor(context, R.color.a_level_preety_num));
+            case "B":
+                return getBPrettyNumSpan(context, num, ContextCompat.getColor(context, R.color.b_level_preety_num));
+            case "C":
+                return getPrettyNumSpan(context, num, ContextCompat.getColor(context, R.color.c_level_preety_num));
+            case "D":
+                return getPrettyNumSpan(context, num, ContextCompat.getColor(context, R.color.d_level_preety_num));
+            case "E":
+                return getPrettyNumSpan(context, num, ContextCompat.getColor(context, R.color.e_level_preety_num));
+            default:
+                return getPrettyNumSpan(context, num, ContextCompat.getColor(context, R.color.e_level_preety_num));
+        }
     }
 
     public static SpannableString getPrettyNumSpan(Context context, String num, int textColor) {

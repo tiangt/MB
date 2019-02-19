@@ -1,7 +1,9 @@
 package com.whzl.mengbi.ui.activity.me;
 
 import android.graphics.Paint;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -122,6 +124,22 @@ public class VipFragment extends BaseFragment {
                     }
                 });
                 EditText editText = (EditText) holder.getView(R.id.et_send);
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        holder.setVisible(R.id.ib_clear, TextUtils.isEmpty(s) ? false : true);
+                    }
+                });
                 holder.setOnClickListener(R.id.btn_send, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

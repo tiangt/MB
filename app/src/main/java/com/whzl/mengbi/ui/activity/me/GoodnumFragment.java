@@ -9,23 +9,33 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpaceItemDecoration;
+import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -48,12 +58,16 @@ import static com.whzl.mengbi.util.ToastUtils.showToast;
  * @date 2018/9/19
  */
 public class GoodnumFragment extends BaseFragment {
+    @BindView(R.id.rv_4)
+    RecyclerView rv4;
     @BindView(R.id.rv_5)
     RecyclerView rv5;
     @BindView(R.id.rv_6)
     RecyclerView rv6;
     @BindView(R.id.rv_7)
     RecyclerView rv7;
+    @BindView(R.id.ll_4)
+    LinearLayout ll4;
     @BindView(R.id.ll_5)
     LinearLayout ll5;
     @BindView(R.id.ll_6)
@@ -73,10 +87,14 @@ public class GoodnumFragment extends BaseFragment {
     LinearLayout llEmpty;
     @BindView(R.id.tv_tips)
     TextView tvTips;
+    @BindView(R.id.ib_clear)
+    ImageButton ibClear;
 
-    private List<GoodNumBean.DigitsBean> list6 = new ArrayList();
-    private List<GoodNumBean.DigitsBean> list7 = new ArrayList();
-    private List<GoodNumBean.DigitsBean> list5 = new ArrayList();
+    private ArrayList<GoodNumBean.DigitsBean> list6 = new ArrayList();
+    private ArrayList<GoodNumBean.DigitsBean> list7 = new ArrayList();
+    private ArrayList<GoodNumBean.DigitsBean> list5 = new ArrayList();
+    private ArrayList<GoodNumBean.DigitsBean> list4 = new ArrayList();
+    private BaseListAdapter adapter4;
     private BaseListAdapter adapter5;
     private BaseListAdapter adapter6;
     private BaseListAdapter adapter7;
@@ -104,21 +122,45 @@ public class GoodnumFragment extends BaseFragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().length() >= 2) {
-                    tvTips.setVisibility(View.INVISIBLE);
-                } else {
-                    tvTips.setVisibility(View.VISIBLE);
-                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                ibClear.setVisibility(TextUtils.isEmpty(s) ? View.GONE : View.VISIBLE);
+            }
+        });
+        etSearchNum.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if (TextUtils.isEmpty(etSearchNum.getText())) {
+                        return true;
+                    }
+                    search(etSearchNum.getText().toString());
+                    tvSearch.setVisibility(View.VISIBLE);
+                }
+                return false;
             }
         });
     }
 
     private void initRecycler() {
+        rv4.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        rv4.addItemDecoration(new SpaceItemDecoration(15));
+        adapter4 = new BaseListAdapter() {
+            @Override
+            protected int getDataCount() {
+                return list4 == null ? 0 : list4.size();
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_goodnum_shop, parent, false);
+                return new AnchorViewHolder(itemView, 4);
+            }
+        };
+        rv4.setAdapter(adapter4);
+
         rv5.setLayoutManager(new GridLayoutManager(getContext(), 3));
         rv5.addItemDecoration(new SpaceItemDecoration(15));
         adapter5 = new BaseListAdapter() {
@@ -168,27 +210,28 @@ public class GoodnumFragment extends BaseFragment {
         rv7.setAdapter(adapter7);
     }
 
-    @OnClick({R.id.tv_search, R.id.tv_qq})
+    @OnClick({R.id.tv_search, R.id.tv_qq, R.id.ib_clear})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_search:
-                if ("取消".equals(tvSearch.getText().toString())) {
-                    llEmpty.setVisibility(View.GONE);
-                    llList.setVisibility(View.VISIBLE);
-                    etSearchNum.setEnabled(true);
-                    tvSearch.setText("搜索");
-                } else {
-                    KeyBoardUtil.hideInputMethod(getMyActivity());
-                    search(etSearchNum.getText().toString().trim());
-                }
+                tvTips.setVisibility(View.GONE);
+                tvSearch.setVisibility(View.GONE);
+                llEmpty.setVisibility(View.GONE);
+                llList.setVisibility(View.VISIBLE);
+                search("");
                 break;
             case R.id.tv_qq:
                 startQQChat(NetConfig.CUSTOM_OFFICIAL_SERVICE_QQ);
+                break;
+            case R.id.ib_clear:
+                etSearchNum.setText("");
                 break;
         }
     }
 
     private void search(String keyWord) {
+        KeyBoardUtil.closeKeybord(etSearchNum, getMyActivity());
+        list4.clear();
         list5.clear();
         list6.clear();
         list7.clear();
@@ -205,6 +248,8 @@ public class GoodnumFragment extends BaseFragment {
         TextView tvBuy;
         @BindView(R.id.tv_send_item_goodnum)
         TextView tvSend;
+        @BindView(R.id.iv_num_item_goodnum)
+        ImageView ivNum;
         private int i = 0;
 
 
@@ -217,29 +262,64 @@ public class GoodnumFragment extends BaseFragment {
         @Override
         public void onBindViewHolder(int position) {
             switch (i) {
+                case 4:
+                    digitsBean = list4.get(position);
+                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+                    break;
                 case 5:
                     digitsBean = list5.get(position);
-                    tvNum.setBackground(ContextCompat.getDrawable(getMyActivity(),R.drawable.bg_5_goodnum));
-                    tvNum.setTextColor(Color.parseColor("#9003e1"));
+                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
                     break;
                 case 6:
                     digitsBean = list6.get(position);
-                    tvNum.setBackground(ContextCompat.getDrawable(getMyActivity(),R.drawable.bg_6_goodnum));
-                    tvNum.setTextColor(Color.parseColor("#FFFF6600"));
+                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP,13);
                     break;
                 case 7:
                     digitsBean = list7.get(position);
-                    tvNum.setBackground(ContextCompat.getDrawable(getMyActivity(),R.drawable.bg_7_goodnum));
-                    tvNum.setTextColor(Color.parseColor("#FFFF001E"));
+                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP,13);
                     break;
             }
-
-            tvPrice.setText(getString(R.string.goodnum, digitsBean.rent));
+            switch (digitsBean.goodsColor) {
+                case "A":
+                    tvNum.setTextColor(Color.parseColor("#f42434"));
+                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_a);
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_a, ivNum);
+                    break;
+                case "B":
+                    tvNum.setTextColor(Color.parseColor("#ff9601"));
+                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_b);
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_b, ivNum);
+                    break;
+                case "C":
+                    tvNum.setTextColor(Color.parseColor("#9887f9"));
+                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_c);
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_c, ivNum);
+                    break;
+                case "D":
+                    tvNum.setTextColor(Color.parseColor("#5ecac2"));
+                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_d);
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_d, ivNum);
+                    break;
+                case "E":
+                    tvNum.setTextColor(Color.parseColor("#5dbaf6"));
+                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_e);
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_e, ivNum);
+                    break;
+                default:
+                    tvNum.setTextColor(Color.parseColor("#5dbaf6"));
+                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_e);
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_e, ivNum);
+                    break;
+            }
             tvNum.setText(digitsBean.goodsName);
-
+            tvPrice.setText(getString(R.string.goodnum, digitsBean.rent));
             tvBuy.setOnClickListener(v -> {
                 int listKind = 0;
                 switch (i) {
+                    case 4:
+                        digitsBean = list4.get(position);
+                        listKind = 4;
+                        break;
                     case 5:
                         digitsBean = list5.get(position);
                         listKind = 5;
@@ -261,6 +341,9 @@ public class GoodnumFragment extends BaseFragment {
             });
             tvSend.setOnClickListener(v -> {
                 switch (i) {
+                    case 4:
+                        digitsBean = list4.get(position);
+                        break;
                     case 5:
                         digitsBean = list5.get(position);
                         break;
@@ -285,6 +368,13 @@ public class GoodnumFragment extends BaseFragment {
             if (resultCode == 200) {
                 boolean state = data.getBooleanExtra("state", false);
                 if (state) {
+                    if (list4.contains(digitsBean)) {
+                        list4.remove(digitsBean);
+                        adapter4.notifyDataSetChanged();
+                        if (list4.size() == 0) {
+                            ll4.setVisibility(View.GONE);
+                        }
+                    }
                     if (list5.contains(digitsBean)) {
                         list5.remove(digitsBean);
                         adapter5.notifyDataSetChanged();
@@ -312,6 +402,7 @@ public class GoodnumFragment extends BaseFragment {
     }
 
     private void getGoodNumData(String keyWord) {
+        tvTips.setVisibility(TextUtils.isEmpty(keyWord) ? View.GONE : View.VISIBLE);
         HashMap paramsMap = new HashMap();
         paramsMap.put("keyWord", keyWord);
         ApiFactory.getInstance().getApi(Api.class)
@@ -322,25 +413,34 @@ public class GoodnumFragment extends BaseFragment {
 
                     @Override
                     public void onSuccess(GoodNumBean bean) {
+                        if (bean.fourDigits != null && bean.fourDigits.size() > 0) {
+                            ll4.setVisibility(View.VISIBLE);
+                            list4.addAll(bean.fourDigits);
+                        }
+                        adapter4.notifyDataSetChanged();
+
                         if (bean.fiveDigits != null && bean.fiveDigits.size() > 0) {
                             ll5.setVisibility(View.VISIBLE);
                             list5.addAll(bean.fiveDigits);
-
                         }
                         adapter5.notifyDataSetChanged();
+
                         if (bean.sixDigits != null && bean.sixDigits.size() > 0) {
                             ll6.setVisibility(View.VISIBLE);
                             list6.addAll(bean.sixDigits);
 
                         }
                         adapter6.notifyDataSetChanged();
+
                         if (bean.seveDigits != null && bean.seveDigits.size() > 0) {
                             ll7.setVisibility(View.VISIBLE);
                             list7.addAll(bean.seveDigits);
 
                         }
                         adapter7.notifyDataSetChanged();
-
+                        if (list4.size() == 0) {
+                            ll4.setVisibility(View.GONE);
+                        }
                         if (list5.size() == 0) {
                             ll5.setVisibility(View.GONE);
                         }
@@ -350,11 +450,15 @@ public class GoodnumFragment extends BaseFragment {
                         if (list7.size() == 0) {
                             ll7.setVisibility(View.GONE);
                         }
-                        if (list5.size() == 0 && list6.size() == 0 && list7.size() == 0) {
+                        if (list4.size() == 0 && list5.size() == 0 && list6.size() == 0 && list7.size() == 0) {
                             llList.setVisibility(View.GONE);
                             llEmpty.setVisibility(View.VISIBLE);
                             tvSearch.setText("取消");
-                            etSearchNum.setEnabled(false);
+                            tvTips.setVisibility(View.GONE);
+                        } else {
+                            tvTips.setText("搜索到与 ");
+                            tvTips.append(LightSpanString.getLightString(keyWord, Color.parseColor("#FFFF2D4E")));
+                            tvTips.append(" 匹配的靓号");
                         }
                     }
 

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:overScrollMode="never">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/comm_white"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <ImageView
@@ -21,54 +22,105 @@
             android:layout_marginTop="11dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="23dp"
-            android:paddingRight="23dp">
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
 
-            <EditText
-                android:id="@+id/et_search_num"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_send_vip"
-                android:hint="请输入搜索的靓号"
-                android:inputType="number"
-                android:maxLines="1"
-                android:paddingLeft="5dp"
-                android:maxLength="7"
-                android:textColor="@color/text_view"
-                android:textColorHint="#e5e5e5"
-                android:textSize="11sp" />
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/et_search_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_send_vip"
+                    android:hint="请输入心仪的靓号搜索"
+                    android:imeOptions="actionSearch"
+                    android:inputType="number"
+                    android:maxLength="7"
+                    android:maxLines="1"
+                    android:paddingLeft="11.5dp"
+                    android:textColor="@color/text_view"
+                    android:textColorHint="#30000000"
+                    android:textSize="11sp" />
+
+                <ImageButton
+                    android:id="@+id/ib_clear"
+                    android:layout_width="17.5dp"
+                    android:layout_height="17.5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:src="@drawable/close"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6dp"
-                android:background="@drawable/shape_goodnum_btn_bg"
                 android:paddingBottom="6dp"
-                android:paddingLeft="23dp"
-                android:paddingRight="23dp"
+                android:paddingLeft="12dp"
                 android:paddingTop="6dp"
-                android:text="搜索"
-                android:textColor="@color/comm_white"
-                android:textSize="14sp" />
+                android:text="取消"
+                android:textColor="#40000000"
+                android:textSize="12sp"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_tips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="27dp"
-            android:layout_marginTop="5dp"
-            android:text="请输入最少两位靓号"
-            android:textColor="#fd580d"
-            android:textSize="10sp" />
+            android:layout_marginStart="12dp"
+            android:drawablePadding="6dp"
+            android:drawableStart="@drawable/point_play_notify"
+            android:textColor="@color/text_view"
+            android:textSize="12sp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/ll_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="4"
+                    android:textColor="#ff2d4e"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:text="位靓号"
+                    android:textColor="#70000000"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:nestedScrollingEnabled="false" />
 
             <LinearLayout
                 android:id="@+id/ll_5"
@@ -83,31 +135,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="7dp"
-                    android:text="推荐"
-                    android:textColor="@color/text_view"
-                    android:textSize="@dimen/font_size_24px" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_5" />
+                    android:text="5"
+                    android:textColor="#ff2d4e"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
+                    android:layout_marginLeft="4dp"
                     android:text="位靓号"
-                    android:textColor="@color/text_view"
-                    android:textSize="@dimen/font_size_24px" />
+                    android:textColor="#70000000"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
                 android:focusableInTouchMode="false"
                 android:nestedScrollingEnabled="false" />
 
@@ -124,31 +169,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="7dp"
-                    android:text="推荐"
-                    android:textColor="@color/text_view"
-                    android:textSize="@dimen/font_size_24px" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_6" />
+                    android:text="6"
+                    android:textColor="#ff2d4e"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
+                    android:layout_marginLeft="4dp"
                     android:text="位靓号"
-                    android:textColor="@color/text_view"
-                    android:textSize="@dimen/font_size_24px" />
+                    android:textColor="#70000000"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
                 android:focusableInTouchMode="false"
                 android:nestedScrollingEnabled="false" />
 
@@ -165,31 +203,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="7dp"
-                    android:text="推荐"
-                    android:textColor="@color/text_view"
-                    android:textSize="@dimen/font_size_24px" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_7" />
+                    android:text="7"
+                    android:textColor="#ff2d4e"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="7dp"
+                    android:layout_marginLeft="4dp"
                     android:text="位靓号"
-                    android:textColor="@color/text_view"
-                    android:textSize="@dimen/font_size_24px" />
+                    android:textColor="#70000000"
+                    android:textSize="13sp" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
                 android:focusableInTouchMode="false"
                 android:nestedScrollingEnabled="false" />
         </LinearLayout>
@@ -223,48 +254,5 @@
                 android:textSize="@dimen/font_size_26px" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/bg_color" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
-            android:layout_marginTop="11dp"
-            android:text="温馨提示"
-            android:textColor="@color/text_view"
-            android:textSize="@dimen/font_size_34px" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
-            android:layout_marginRight="17dp"
-            android:layout_marginTop="9dp"
-            android:text="1. 靓号是区别于用户注册id的序列号码，用户可根据自己的喜好进行靓号的定制，如生日靓号、情侣靓号等，定制业务请联系官方客服"
-            android:textColor="@color/text_hint"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
-            android:layout_marginRight="17dp"
-            android:layout_marginTop="9dp"
-            android:text="2. 靓号在直播间的观众列表中显示专属标识"
-            android:textColor="@color/text_hint"
-            android:textSize="13sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
-            android:layout_marginRight="17dp"
-            android:layout_marginTop="9dp"
-            android:text="3. 靓号的有效期默认为30天"
-            android:textColor="@color/text_hint"
-            android:textSize="13sp" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
