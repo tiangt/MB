@@ -29,7 +29,7 @@ public class GoodNumBean {
         public String goodsName;
         public String goodsColor;
         public int priceId;
-        public int rent;
+        public long rent;
 
         public DigitsBean() {
         }
@@ -45,7 +45,7 @@ public class GoodNumBean {
             dest.writeString(this.goodsName);
             dest.writeString(this.goodsColor);
             dest.writeInt(this.priceId);
-            dest.writeInt(this.rent);
+            dest.writeLong(this.rent);
         }
 
         protected DigitsBean(Parcel in) {
@@ -53,7 +53,7 @@ public class GoodNumBean {
             this.goodsName = in.readString();
             this.goodsColor = in.readString();
             this.priceId = in.readInt();
-            this.rent = in.readInt();
+            this.rent = in.readLong();
         }
 
         public static final Creator<DigitsBean> CREATOR = new Creator<DigitsBean>() {

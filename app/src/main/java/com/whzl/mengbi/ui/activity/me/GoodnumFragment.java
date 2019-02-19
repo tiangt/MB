@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -27,18 +27,30 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.NetConfig;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.BuyGoodNumEvent;
 import com.whzl.mengbi.model.entity.GoodNumBean;
+import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
+import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpaceItemDecoration;
-import com.whzl.mengbi.ui.widget.view.PrettyNumText;
+import com.whzl.mengbi.util.AmountConversionUitls;
+import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,6 +102,9 @@ public class GoodnumFragment extends BaseFragment {
     @BindView(R.id.ib_clear)
     ImageButton ibClear;
 
+    private static final int BUY = 1;
+    private static final int SEND = 2;
+
     private ArrayList<GoodNumBean.DigitsBean> list6 = new ArrayList();
     private ArrayList<GoodNumBean.DigitsBean> list7 = new ArrayList();
     private ArrayList<GoodNumBean.DigitsBean> list5 = new ArrayList();
@@ -100,6 +115,9 @@ public class GoodnumFragment extends BaseFragment {
     private BaseListAdapter adapter7;
 
     private GoodNumBean.DigitsBean digitsBean;
+    private boolean idIsOK;
+    private String toUserId;
+    private BaseAwesomeDialog buyDialog;
 
     @Override
     public int getLayoutId() {
@@ -246,8 +264,6 @@ public class GoodnumFragment extends BaseFragment {
         TextView tvNum;
         @BindView(R.id.tv_buy_item_goodnum)
         TextView tvBuy;
-        @BindView(R.id.tv_send_item_goodnum)
-        TextView tvSend;
         @BindView(R.id.iv_num_item_goodnum)
         ImageView ivNum;
         private int i = 0;
@@ -264,19 +280,19 @@ public class GoodnumFragment extends BaseFragment {
             switch (i) {
                 case 4:
                     digitsBean = list4.get(position);
-                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                     break;
                 case 5:
                     digitsBean = list5.get(position);
-                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP,16);
+                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                     break;
                 case 6:
                     digitsBean = list6.get(position);
-                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP,13);
+                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
                     break;
                 case 7:
                     digitsBean = list7.get(position);
-                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP,13);
+                    tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
                     break;
             }
             switch (digitsBean.goodsColor) {
@@ -333,33 +349,130 @@ public class GoodnumFragment extends BaseFragment {
                         listKind = 7;
                         break;
                 }
-                Intent intent = new Intent(getMyActivity(), BuyGoodnumActivity.class);
-                intent.putExtra("type", "buy");
-                intent.putExtra("bean", digitsBean);
-                intent.putExtra("listKind", listKind);
-                startActivityForResult(intent, 100);
-            });
-            tvSend.setOnClickListener(v -> {
-                switch (i) {
-                    case 4:
-                        digitsBean = list4.get(position);
-                        break;
-                    case 5:
-                        digitsBean = list5.get(position);
-                        break;
-                    case 6:
-                        digitsBean = list6.get(position);
-                        break;
-                    case 7:
-                        digitsBean = list7.get(position);
-                        break;
-                }
-                startActivityForResult(new Intent(getMyActivity(), BuyGoodnumActivity.class)
-                        .putExtra("type", "send")
-                        .putExtra("bean", digitsBean), 100);
+                showDialog(BUY);
+//                Intent intent = new Intent(getMyActivity(), BuyGoodnumActivity.class);
+//                intent.putExtra("type", "buy");
+//                intent.putExtra("bean", digitsBean);
+//                intent.putExtra("listKind", listKind);
+//                startActivityForResult(intent, 100);
+
             });
         }
     }
+
+    private void showDialog(int type) {
+        idIsOK = false;
+        toUserId = "";
+        UserInfo.DataBean currentUser = ((ShopActivity) getMyActivity()).currentUser;
+        buyDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_preety_shop).setConvertListener(new ViewConvertListener() {
+            @Override
+            protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                GlideImageLoader.getInstace().displayImage(getMyActivity(), currentUser.getAvatar()
+                        , holder.getView(R.id.iv_avatar));
+                holder.setText(R.id.tv_nick, currentUser.getNickname());
+                holder.setText(R.id.tv_pretty_num, digitsBean.goodsName);
+                holder.setText(R.id.tv_pretty_price, AmountConversionUitls.amountConversionFormat(digitsBean.rent));
+                holder.setVisible(R.id.ll_buy, type == BUY);
+                holder.setVisible(R.id.ll_send, type == SEND);
+                TextView tvSend = holder.getView(R.id.tv_type);
+                tvSend.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+                holder.setText(R.id.tv_type, type == BUY ? "赠送他人" : "自己购买");
+                holder.setOnClickListener(R.id.tv_type, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        showDialog(type == BUY ? SEND : BUY);
+                    }
+                });
+                holder.setOnClickListener(R.id.ib_clear, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        holder.setText(R.id.et_send, "");
+                    }
+                });
+                EditText editText = (EditText) holder.getView(R.id.et_send);
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        holder.setVisible(R.id.ib_clear, TextUtils.isEmpty(s) ? false : true);
+                    }
+                });
+                //搜索
+                holder.setOnClickListener(R.id.btn_send, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (TextUtils.isEmpty(editText.getText())) {
+                            return;
+                        }
+                        BusinessUtils.getUserInfo(getMyActivity(), editText.getText().toString().trim(),
+                                new BusinessUtils.UserInfoListener() {
+                                    @Override
+                                    public void onSuccess(UserInfo.DataBean bean) {
+                                        holder.setVisible(R.id.ll_buy, true);
+                                        holder.setVisible(R.id.ll_send, false);
+                                        GlideImageLoader.getInstace().displayImage(getMyActivity(), bean.getAvatar()
+                                                , holder.getView(R.id.iv_avatar));
+                                        holder.setText(R.id.tv_nick, bean.getNickname());
+                                        toUserId = String.valueOf(bean.getUserId());
+                                        idIsOK = true;
+                                    }
+
+                                    @Override
+                                    public void onError(int code) {
+                                        ToastUtils.showToastUnify(getMyActivity(), "该萌号用户不存在");
+                                        idIsOK = false;
+                                    }
+                                });
+                    }
+                });
+                //购买
+                holder.setOnClickListener(R.id.btn_buy, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (type == BUY) {
+                            buy();
+                        } else {
+                            if (idIsOK) {
+                                buy();
+                            }
+                        }
+                    }
+                });
+            }
+        }).setDimAmount(0).setShowBottom(true).show(getFragmentManager());
+    }
+
+    private void buy() {
+        BusinessUtils.mallBuy(getMyActivity(), String.valueOf(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L))
+                , digitsBean.goodsId + "", digitsBean.priceId + "", "1", toUserId, ""
+                , new BusinessUtils.MallBuyListener() {
+                    @Override
+                    public void onSuccess() {
+                        ToastUtils.toastMessage(getMyActivity(), "购买成功");
+                        EventBus.getDefault().post(new BuyGoodNumEvent());
+                        search("");
+                        if (buyDialog != null) {
+                            buyDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
