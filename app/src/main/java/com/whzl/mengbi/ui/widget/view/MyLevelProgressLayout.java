@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
+import com.whzl.mengbi.util.LevelMap;
 import com.whzl.mengbi.util.ResourceMap;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -23,9 +26,9 @@ public class MyLevelProgressLayout extends LinearLayout {
 
     private Context context;
     private View inflate;
-    private ImageView ivLevelNow;
+    private TextView tvLevelNow;
     private CustomProgressBar tpMyLevel;
-    private ImageView ivLevelNext;
+    private TextView tvLevelNext;
     private String levelType;
     private int levelValue;
     private String levelName;
@@ -37,7 +40,6 @@ public class MyLevelProgressLayout extends LinearLayout {
     private long sjNeedExpValue1;
     private long sjExpvalue2;
     private long sjNeedExpValue2;
-    private TextView tvPb;
 
     public MyLevelProgressLayout(Context context) {
         super(context);
@@ -69,40 +71,88 @@ public class MyLevelProgressLayout extends LinearLayout {
         LayoutInflater from = LayoutInflater.from(context);
         inflate = from.inflate(R.layout.layout_my_level, this, false);
         addView(inflate);
-        ivLevelNow = inflate.findViewById(R.id.iv_level_now);
+        tvLevelNow = inflate.findViewById(R.id.tv_level_now);
         tpMyLevel = inflate.findViewById(R.id.tp_my_level);
-        ivLevelNext = inflate.findViewById(R.id.iv_level_next);
-        tvPb = inflate.findViewById(R.id.tv_pb);
+        tvLevelNext = inflate.findViewById(R.id.tv_level_next);
     }
 
     public void initView() {
         if (listBeans == null) {
             return;
         }
+        getLevel();
         if ("ANCHOR_LEVEL".equals(levelType)) {
-            ivLevelNow.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
+            tvLevelNow.setText(LevelMap.getLevelMap().getAnchorLevel(levelValue));
             if (levelValue == 50) {
-                ivLevelNext.setVisibility(INVISIBLE);
+                tvLevelNext.setVisibility(INVISIBLE);
             } else {
-                ivLevelNext.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue + 1));
+                tvLevelNext.setText(LevelMap.getLevelMap().getAnchorLevel(levelValue + 1));
             }
         } else if ("ROYAL_LEVEL".equals(levelType)) {
             if (levelValue == 0) {
-                ivLevelNow.setVisibility(INVISIBLE);
+                tvLevelNow.setText("无等级");
             } else {
-                ivLevelNow.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
+                tvLevelNow.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue));
             }
             if (levelValue == 7) {
-                ivLevelNext.setVisibility(INVISIBLE);
+                tvLevelNext.setVisibility(INVISIBLE);
             } else {
-                ivLevelNext.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue + 1));
+                tvLevelNext.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue + 1));
             }
         } else if ("USER_LEVEL".equals(levelType)) {
-            ivLevelNow.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
+            tvLevelNow.setText(LevelMap.getLevelMap().getUserLevel(levelValue));
             if (levelValue == 37) {
-                ivLevelNext.setVisibility(INVISIBLE);
+                tvLevelNext.setVisibility(INVISIBLE);
             } else {
-                ivLevelNext.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue + 1));
+                tvLevelNext.setText(LevelMap.getLevelMap().getUserLevel(levelValue + 1));
+            }
+        }
+    }
+
+    private void getLevel() {
+        for (int j = 0; j < listBeans.size(); j++) {
+            expType = listBeans.get(j).getExpType();
+            if ("GIFT_EXP".equals(expType)) {
+                sjExpvalue = listBeans.get(j).getSjExpvalue();
+                sjNeedExpValue = listBeans.get(j).getSjNeedExpValue();
+                tpMyLevel.setProgressDrawable(getResources().getDrawable(R.drawable.pb_my_anchor_level));
+                if (levelValue == 50) {
+                    tpMyLevel.setMax(100);
+                    tpMyLevel.setProgress(100);
+                } else {
+                    tpMyLevel.setMax((int) (sjNeedExpValue));
+                    if (sjExpvalue < sjNeedExpValue) {
+                        tpMyLevel.setProgress((int) sjExpvalue);
+                    }
+                }
+            } else if ("ROYAL_EXP".equals(expType)) {
+                sjExpvalue1 = listBeans.get(j).getSjExpvalue();
+                sjNeedExpValue1 = listBeans.get(j).getSjNeedExpValue();
+                tpMyLevel.setProgressDrawable(getResources().getDrawable(R.drawable.pb_my_royal_level));
+                if (levelValue == 7) {
+                    tpMyLevel.setMax(100);
+                    tpMyLevel.setProgress(100);
+                } else {
+                    tpMyLevel.setMax((int) (sjNeedExpValue1));
+                    if (sjExpvalue1 < sjNeedExpValue1) {
+                        tpMyLevel.setProgress((int) sjExpvalue1);
+                    }
+                }
+                tpMyLevel.setVisibility(VISIBLE);
+            } else if ("USER_EXP".equals(expType)) {
+                sjExpvalue2 = listBeans.get(j).getSjExpvalue();
+                sjNeedExpValue2 = listBeans.get(j).getSjNeedExpValue();
+                tpMyLevel.setProgressDrawable(getResources().getDrawable(R.drawable.pb_my_regal_level));
+                if (levelValue == 37) {
+                    tpMyLevel.setMax(100);
+                    tpMyLevel.setProgress(100);
+                } else {
+                    tpMyLevel.setMax((int) (sjNeedExpValue2));
+                    if (sjExpvalue2 < sjNeedExpValue2) {
+                        tpMyLevel.setProgress((int) sjExpvalue2);
+                    }
+                }
+                tpMyLevel.setVisibility(VISIBLE);
             }
         }
     }

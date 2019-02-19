@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.activity.me;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ public class MyLevelActivity extends BaseActivity {
     private ArrayList<Fragment> fragments;
     private long mUserId;
     private PersonalInfoBean.DataBean dataBean;
+    private String levelType;
 
     @Override
     protected void setupContentView() {
@@ -70,16 +72,20 @@ public class MyLevelActivity extends BaseActivity {
         getMyLevelInfo(mUserId, mUserId);
     }
 
-    private void initView() {
+    private void initView(String levelType) {
         ArrayList<String> titles = new ArrayList<>();
         titles.add("贵族等级");
         titles.add("富豪等级");
-        titles.add("主播等级");
+        if ("ANCHOR_LEVEL".equals(levelType)) {
+            titles.add("主播等级");
+        }
 
         fragments = new ArrayList<>();
         fragments.add(MyRoyalLevelFragment.newInstance(dataBean));
         fragments.add(MyRegalLevelFragment.newInstance(dataBean));
-        fragments.add(MyAnchorLevelFragment.newInstance(dataBean));
+        if ("ANCHOR_LEVEL".equals(levelType)) {
+            fragments.add(MyAnchorLevelFragment.newInstance(dataBean));
+        }
 
         viewPager.setAdapter(new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles));
         viewPager.setPageTransformer(true, new ZoomOutTranformer());
@@ -103,7 +109,13 @@ public class MyLevelActivity extends BaseActivity {
                 if (personalInfoBean.getCode() == 200) {
                     if (personalInfoBean.getData() != null) {
                         dataBean = personalInfoBean.getData();
-                        initView();
+                        for (int i = 0; i < dataBean.getLevelList().size(); i++) {
+                            if ("ANCHOR_LEVEL".equals(dataBean.getLevelList().get(i).getLevelType())) {
+                                levelType = dataBean.getLevelList().get(i).getLevelType();
+                                break;
+                            }
+                        }
+                        initView(levelType);
                     }
                 }
             }

@@ -236,6 +236,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:gravity="right"
+                        android:layout_marginLeft="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -244,6 +245,8 @@
                             android:layout_height="wrap_content"
                             android:text="萌币"
                             android:textColor="@color/tran_black2"
+                            android:ellipsize="end"
+                            android:singleLine="true"
                             android:textSize="11sp" />
 
                         <View
@@ -258,6 +261,8 @@
                             android:id="@+id/tv_mengdou"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:ellipsize="end"
                             android:text="萌豆"
                             android:textColor="@color/tran_black2"
                             android:textSize="11sp" />
@@ -311,14 +316,14 @@
 
                         <ImageView
                             android:id="@+id/iv_mine_noble"
-                            android:layout_width="36dp"
-                            android:layout_height="13dp"
+                            android:layout_width="49dp"
+                            android:layout_height="18dp"
                             android:layout_marginRight="8dp" />
 
                         <ImageView
                             android:id="@+id/iv_mine_level"
-                            android:layout_width="32dp"
-                            android:layout_height="12dp" />
+                            android:layout_width="49dp"
+                            android:layout_height="18dp" />
                     </LinearLayout>
 
                     <ImageView

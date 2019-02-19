@@ -1,8 +1,10 @@
 package com.whzl.mengbi.ui.fragment.me;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,13 +13,16 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
+import com.whzl.mengbi.ui.widget.view.MyLevelProgressLayout;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 我的--贵族等级
@@ -34,7 +39,7 @@ public class MyRoyalLevelFragment extends BaseFragment {
     @BindView(R.id.tv_keep_level)
     TextView tvKeepLevel;
     @BindView(R.id.evl_royal_level)
-    ExpValueLayout evlRoyalLevel;
+    MyLevelProgressLayout evlRoyalLevel;
 
     private PersonalInfoBean.DataBean dataBean;
     private int levelValue;
@@ -80,17 +85,21 @@ public class MyRoyalLevelFragment extends BaseFragment {
                             bjExpValue = expListBeans.get(j).getBjExpValue();
                             bjNeedExpValue = expListBeans.get(j).getBjNeedExpValue();
 
-                            SpannableString sj = StringUtils.spannableStringColor("当前贵族经验 ", Color.parseColor("#ffffff"));
-                            SpannableString sj2 = StringUtils.spannableStringColor(sjExpvalue + "", Color.parseColor("#F7FF00"));
-                            SpannableString sj3 = StringUtils.spannableStringColor(" 点，离升级还差 ", Color.parseColor("#ffffff"));
-                            SpannableString sj4 = StringUtils.spannableStringColor(sjNeedExpValue - sjExpvalue + "", Color.parseColor("#F7FF00"));
-                            SpannableString sj5 = StringUtils.spannableStringColor(" 点", Color.parseColor("#ffffff"));
+                            if (levelValue == 7) {
+                                tvRoyalLevel.setText("您已达到最高贵族等级");
+                            } else {
+                                SpannableString sj = StringUtils.spannableStringColor("当前贵族经验 ", Color.parseColor("#ffffff"));
+                                SpannableString sj2 = StringUtils.spannableStringColor(sjExpvalue + "", Color.parseColor("#F7FF00"));
+                                SpannableString sj3 = StringUtils.spannableStringColor(" 点，离升级还差 ", Color.parseColor("#ffffff"));
+                                SpannableString sj4 = StringUtils.spannableStringColor(sjNeedExpValue - sjExpvalue + "", Color.parseColor("#F7FF00"));
+                                SpannableString sj5 = StringUtils.spannableStringColor(" 点", Color.parseColor("#ffffff"));
 
-                            tvRoyalLevel.setText(sj);
-                            tvRoyalLevel.append(sj2);
-                            tvRoyalLevel.append(sj3);
-                            tvRoyalLevel.append(sj4);
-                            tvRoyalLevel.append(sj5);
+                                tvRoyalLevel.setText(sj);
+                                tvRoyalLevel.append(sj2);
+                                tvRoyalLevel.append(sj3);
+                                tvRoyalLevel.append(sj4);
+                                tvRoyalLevel.append(sj5);
+                            }
 
                             SpannableString bj = StringUtils.spannableStringColor("本月保级经验 ", Color.parseColor("#ffffff"));
                             SpannableString bj2 = StringUtils.spannableStringColor(bjExpValue + "", Color.parseColor("#F7FF00"));
@@ -109,6 +118,16 @@ public class MyRoyalLevelFragment extends BaseFragment {
                     }
                 }
             }
+        }
+    }
+
+    @OnClick(R.id.btn_recharge)
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_recharge:
+                Intent intent = new Intent(getContext(), WXPayEntryActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 

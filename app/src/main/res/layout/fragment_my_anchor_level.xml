@@ -43,12 +43,11 @@
             android:layout_below="@id/rl_user_image"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="等级"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
-        <com.whzl.mengbi.ui.widget.view.ExpValueLayout
-            android:id="@+id/evl_user_level"
+        <com.whzl.mengbi.ui.widget.view.MyLevelProgressLayout
+            android:id="@+id/evl_anchor_level"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_anchor_level"
