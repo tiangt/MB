@@ -34,32 +34,105 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
+                android:layout_height="1dp"
                 android:background="#05000000" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.whzl.mengbi.ui.widget.view.CircleImageView
-                    android:id="@+id/iv_avatar"
-                    android:layout_width="27.5dp"
-                    android:layout_height="27.5dp" />
-
-                <TextView
-                    android:id="@+id/tv_nick"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/ll_buy"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textColor="#70000000"
-                    android:textSize="12sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <com.whzl.mengbi.ui.widget.view.CircleImageView
+                        android:id="@+id/iv_avatar"
+                        android:layout_width="27.5dp"
+                        android:layout_height="27.5dp" />
+
+                    <TextView
+                        android:id="@+id/tv_nick"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="12dp"
+                        android:textColor="#70000000"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_send"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/et_send"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:hint="请输入他人的萌号"
+                                android:inputType="number"
+                                android:singleLine="true"
+                                android:textColor="#70000000"
+                                android:textColorHint="#30000000"
+                                android:textSize="12sp" />
+
+                            <ImageButton
+                                android:id="@+id/ib_clear"
+                                android:layout_width="8.5dp"
+                                android:layout_height="8.5dp"
+                                android:background="@null"
+                                android:src="@drawable/close_p" />
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="130dp"
+                            android:layout_height="0.5dp"
+                            android:layout_marginTop="8dp"
+                            android:background="#30000000" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_send"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="43.5dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="15dp"
+                        android:background="@drawable/shape_purple_btn"
+                        android:text="确定"
+                        android:textColor="#fffefe"
+                        android:textSize="8.3sp" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_send"
+                    android:id="@+id/tv_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="2dp"
                     android:text="赠送他人"
                     android:textColor="#c83af0"
                     android:textSize="13sp"
@@ -85,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="3000"
+                    android:text="30,000 "
                     android:textColor="#f4545a"
                     android:textSize="12sp" />
 
@@ -100,7 +173,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -116,7 +189,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="3000"
+                    android:text="30 "
                     android:textColor="#646464"
                     android:textSize="12sp" />
 
@@ -129,10 +202,11 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/btn_buy"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="154dp"
                 android:layout_height="31.5dp"
-                android:layout_marginTop="27dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/shape_yellow_btn"
                 android:text="立即购买"
                 android:textColor="#010101"

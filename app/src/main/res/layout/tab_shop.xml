@@ -21,6 +21,7 @@
         android:layout_alignTop="@id/tv_title"
         android:layout_toRightOf="@id/tv_title"
         android:background="@drawable/bg_tab_shop"
+        android:gravity="center"
         android:text="送积分"
         android:textColor="#fffefe"
         android:textSize="8sp" />
