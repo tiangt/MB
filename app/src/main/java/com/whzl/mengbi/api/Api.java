@@ -805,4 +805,14 @@ public interface Api {
     @POST("v1/anchor/program-info-by-anchorid")
     @FormUrlEncoded
     Observable<ApiResult<ProgramInfoByAnchorBean>> programInfoByAnchorid(@FieldMap Map<String, String> params);
+
+    /**
+     * 分页获取靓号信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/mall/get-prettys-by-page")
+    @FormUrlEncoded
+    Observable<ApiResult<GoodNumBean>> getPrettysByPage(@FieldMap Map<String, String> params);
 }

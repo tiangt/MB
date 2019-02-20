@@ -13,6 +13,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:scaleType="fitXY"
             android:src="@drawable/img_goodnum" />
 
@@ -107,10 +108,21 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
+                    android:layout_weight="1"
                     android:text="位靓号"
+                    android:textColor="#70000000"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_refresh4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="13.5dp"
+                    android:drawableLeft="@drawable/ic_pretty_a"
+                    android:text="换一批"
                     android:textColor="#70000000"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -141,10 +153,21 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
+                    android:layout_weight="1"
                     android:text="位靓号"
+                    android:textColor="#70000000"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_refresh5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="13.5dp"
+                    android:drawableLeft="@drawable/ic_pretty_a"
+                    android:text="换一批"
                     android:textColor="#70000000"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -175,10 +198,21 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
+                    android:layout_weight="1"
                     android:text="位靓号"
+                    android:textColor="#70000000"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_refresh6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="13.5dp"
+                    android:drawableLeft="@drawable/ic_pretty_a"
+                    android:text="换一批"
                     android:textColor="#70000000"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -209,10 +243,21 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dp"
+                    android:layout_weight="1"
                     android:text="位靓号"
+                    android:textColor="#70000000"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_refresh7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="13.5dp"
+                    android:drawableLeft="@drawable/ic_pretty_a"
+                    android:text="换一批"
                     android:textColor="#70000000"
                     android:textSize="13sp" />
             </LinearLayout>

@@ -1,58 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:overScrollMode="never">
 
-    <ImageView
-        android:layout_width="61.5dp"
-        android:layout_height="61.5dp"
-        android:layout_marginTop="34dp"
-        android:src="@drawable/ic_vip_shop" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="11.5dp"
-        android:text="30,000萌币 / 月"
-        android:textColor="#e51d1d" />
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_buy_shop"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="99dp"
-            android:layout_height="31.5dp"
-            android:layout_marginRight="29.5dp"
-            android:background="@drawable/shape_yellow_btn"
-            android:text="购买"
-            android:textColor="#010101"
-            android:textSize="13sp" />
+        <ImageView
+            android:layout_width="61.5dp"
+            android:layout_height="61.5dp"
+            android:layout_marginTop="34dp"
+            android:src="@drawable/ic_vip_shop" />
 
-        <Button
-            android:id="@+id/btn_send_shop"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="99dp"
-            android:layout_height="31.5dp"
-            android:background="@drawable/shape_btn_send_vip"
-            android:text="赠送"
-            android:textColor="#c83af0"
-            android:textSize="13sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11.5dp"
+            android:text="30,000萌币 / 月"
+            android:textColor="#e51d1d" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_buy_shop"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="99dp"
+                android:layout_height="31.5dp"
+                android:layout_marginRight="29.5dp"
+                android:background="@drawable/shape_yellow_btn"
+                android:text="购买"
+                android:textColor="#010101"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/btn_send_shop"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="99dp"
+                android:layout_height="31.5dp"
+                android:background="@drawable/shape_btn_send_vip"
+                android:text="赠送"
+                android:textColor="#c83af0"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:src="@drawable/img_vip_shop" />
+
+
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:src="@drawable/img_vip_shop" />
-
-
-</LinearLayout>
+</android.support.v4.widget.NestedScrollView>

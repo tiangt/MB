@@ -106,21 +106,32 @@ public class GoodnumFragment extends BaseFragment {
 
     private static final int BUY = 1;
     private static final int SEND = 2;
+    private static final int PAGESIZE = 6;
+    @BindView(R.id.tv_refresh4)
+    TextView tvRefresh4;
+    @BindView(R.id.tv_refresh5)
+    TextView tvRefresh5;
+    @BindView(R.id.tv_refresh6)
+    TextView tvRefresh6;
+    @BindView(R.id.tv_refresh7)
+    TextView tvRefresh7;
 
     private ArrayList<GoodNumBean.DigitsBean> list6 = new ArrayList();
     private ArrayList<GoodNumBean.DigitsBean> list7 = new ArrayList();
     private ArrayList<GoodNumBean.DigitsBean> list5 = new ArrayList();
     private ArrayList<GoodNumBean.DigitsBean> list4 = new ArrayList();
-    private BaseListAdapter adapter4;
-    private BaseListAdapter adapter5;
-    private BaseListAdapter adapter6;
-    private BaseListAdapter adapter7;
+    private BaseListAdapter adapter4, adapter5, adapter6, adapter7;
 
     private GoodNumBean.DigitsBean digitsBean;
     private boolean idIsOK;
     private String toUserId;
     private BaseAwesomeDialog buyDialog;
     private String salerId;
+    private int page4 = 1;
+    private int page5 = 1;
+    private int page6 = 1;
+    private int page7 = 1;
+    private String currentKey = "";
 
     @Override
     public int getLayoutId() {
@@ -131,7 +142,7 @@ public class GoodnumFragment extends BaseFragment {
     public void init() {
         initEdit();
         initRecycler();
-        getGoodNumData("");
+        getGoodNumData("", PAGESIZE, PAGESIZE, PAGESIZE, PAGESIZE, 1);
     }
 
     private void initEdit() {
@@ -171,7 +182,7 @@ public class GoodnumFragment extends BaseFragment {
         adapter4 = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return list4 == null ? 0 : list4.size();
+                return list4.size() > PAGESIZE ? PAGESIZE : list4.size();
             }
 
             @Override
@@ -187,7 +198,7 @@ public class GoodnumFragment extends BaseFragment {
         adapter5 = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return list5 == null ? 0 : list5.size();
+                return list5.size() > PAGESIZE ? PAGESIZE : list5.size();
             }
 
             @Override
@@ -203,7 +214,7 @@ public class GoodnumFragment extends BaseFragment {
         adapter6 = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return list6 == null ? 0 : list6.size();
+                return list6.size() > PAGESIZE ? PAGESIZE : list6.size();
             }
 
             @Override
@@ -219,7 +230,7 @@ public class GoodnumFragment extends BaseFragment {
         adapter7 = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return list7 == null ? 0 : list7.size();
+                return list7.size() > PAGESIZE ? PAGESIZE : list7.size();
             }
 
             @Override
@@ -231,7 +242,7 @@ public class GoodnumFragment extends BaseFragment {
         rv7.setAdapter(adapter7);
     }
 
-    @OnClick({R.id.tv_search, R.id.tv_qq, R.id.ib_clear})
+    @OnClick({R.id.tv_search, R.id.tv_qq, R.id.ib_clear, R.id.tv_refresh4, R.id.tv_refresh5, R.id.tv_refresh6, R.id.tv_refresh7})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_search:
@@ -247,16 +258,93 @@ public class GoodnumFragment extends BaseFragment {
             case R.id.ib_clear:
                 etSearchNum.setText("");
                 break;
+            case R.id.tv_refresh4:
+                freshGoodNumData(currentKey, PAGESIZE, 0, 0, 0, page4);
+                break;
+            case R.id.tv_refresh5:
+                freshGoodNumData(currentKey, 0, PAGESIZE, 0, 0, page5);
+                break;
+            case R.id.tv_refresh6:
+                freshGoodNumData(currentKey, 0, 0, PAGESIZE, 0, page6);
+                break;
+            case R.id.tv_refresh7:
+                freshGoodNumData(currentKey, 0, 0, 0, PAGESIZE, page7);
+                break;
         }
     }
 
+    private void freshGoodNumData(String keyWord, int fourDigits, int fiveDigits, int sixDigits, int seveDigits, int page) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("keyWord", keyWord);
+        paramsMap.put("fourDigits", fourDigits);
+        paramsMap.put("fiveDigits", fiveDigits);
+        paramsMap.put("sixDigits", sixDigits);
+        paramsMap.put("seveDigits", seveDigits);
+        paramsMap.put("page", page);
+        ApiFactory.getInstance().getApi(Api.class)
+                .getPrettysByPage(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<GoodNumBean>(GoodnumFragment.this) {
+
+                    @Override
+                    public void onSuccess(GoodNumBean bean) {
+                        if (fourDigits != 0) {
+                            list4.clear();
+                            list4.addAll(bean.fourDigits);
+                            adapter4.notifyDataSetChanged();
+                            if (bean.fourDigits == null || bean.fourDigits.size() < PAGESIZE) {
+                                page4 = 1;
+                            } else {
+                                page4 += 1;
+                            }
+                        } else if (fiveDigits != 0) {
+                            list5.clear();
+                            list5.addAll(bean.fiveDigits);
+                            adapter5.notifyDataSetChanged();
+                            if (bean.fiveDigits == null || bean.fiveDigits.size() < PAGESIZE) {
+                                page5 = 1;
+                            } else {
+                                page5 += 1;
+                            }
+                        } else if (sixDigits != 0) {
+                            list6.clear();
+                            list6.addAll(bean.sixDigits);
+                            adapter6.notifyDataSetChanged();
+                            if (bean.sixDigits == null || bean.sixDigits.size() < PAGESIZE) {
+                                page6 = 1;
+                            } else {
+                                page6 += 1;
+                            }
+                        } else if (seveDigits != 0) {
+                            list7.clear();
+                            list7.addAll(bean.seveDigits);
+                            adapter7.notifyDataSetChanged();
+                            if (bean.seveDigits == null || bean.seveDigits.size() < PAGESIZE) {
+                                page7 = 1;
+                            } else {
+                                page7 += 1;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+
     private void search(String keyWord) {
+        currentKey = keyWord;
         KeyBoardUtil.closeKeybord(etSearchNum, getMyActivity());
         list4.clear();
         list5.clear();
         list6.clear();
         list7.clear();
-        getGoodNumData(keyWord);
+        page4 = page5 = page6 = page7 = 1;
+        getGoodNumData(keyWord, PAGESIZE, PAGESIZE, PAGESIZE, PAGESIZE, 1);
     }
 
 
@@ -531,7 +619,7 @@ public class GoodnumFragment extends BaseFragment {
                 , new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
-                        ToastUtils.toastMessage(getMyActivity(), "购买成功");
+                        ToastUtils.showToastUnify(getMyActivity(), "购买成功");
                         EventBus.getDefault().post(new BuyGoodNumEvent());
                         search("");
                         if (buyDialog != null) {
@@ -587,10 +675,15 @@ public class GoodnumFragment extends BaseFragment {
         }
     }
 
-    private void getGoodNumData(String keyWord) {
+    private void getGoodNumData(String keyWord, int fourDigits, int fiveDigits, int sixDigits, int seveDigits, int page) {
         tvTips.setVisibility(TextUtils.isEmpty(keyWord) ? View.GONE : View.VISIBLE);
         HashMap paramsMap = new HashMap();
         paramsMap.put("keyWord", keyWord);
+        paramsMap.put("fourDigits", fourDigits);
+        paramsMap.put("fiveDigits", fiveDigits);
+        paramsMap.put("sixDigits", sixDigits);
+        paramsMap.put("seveDigits", seveDigits);
+        paramsMap.put("page", page);
         ApiFactory.getInstance().getApi(Api.class)
                 .getPrettys(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())
@@ -600,18 +693,27 @@ public class GoodnumFragment extends BaseFragment {
                     @Override
                     public void onSuccess(GoodNumBean bean) {
                         if (bean.fourDigits != null && bean.fourDigits.size() > 0) {
+                            if (bean.fourDigits.size() >= PAGESIZE) {
+                                page4 += 1;
+                            }
                             ll4.setVisibility(View.VISIBLE);
                             list4.addAll(bean.fourDigits);
                         }
                         adapter4.notifyDataSetChanged();
 
                         if (bean.fiveDigits != null && bean.fiveDigits.size() > 0) {
+                            if (bean.fiveDigits.size() == PAGESIZE) {
+                                page5 += 1;
+                            }
                             ll5.setVisibility(View.VISIBLE);
                             list5.addAll(bean.fiveDigits);
                         }
                         adapter5.notifyDataSetChanged();
 
                         if (bean.sixDigits != null && bean.sixDigits.size() > 0) {
+                            if (bean.sixDigits.size() == PAGESIZE) {
+                                page6 += 1;
+                            }
                             ll6.setVisibility(View.VISIBLE);
                             list6.addAll(bean.sixDigits);
 
@@ -619,6 +721,9 @@ public class GoodnumFragment extends BaseFragment {
                         adapter6.notifyDataSetChanged();
 
                         if (bean.seveDigits != null && bean.seveDigits.size() > 0) {
+                            if (bean.seveDigits.size() == PAGESIZE) {
+                                page7 += 1;
+                            }
                             ll7.setVisibility(View.VISIBLE);
                             list7.addAll(bean.seveDigits);
 
