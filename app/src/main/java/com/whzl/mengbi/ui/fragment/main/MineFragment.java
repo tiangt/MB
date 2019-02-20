@@ -139,6 +139,10 @@ public class MineFragment extends BaseFragment implements MeView {
         tvUserId.setText("萌号：" + userInfo.getData().getUserId());
         mUserId = userInfo.getData().getUserId();
 
+        //粉丝，关注
+        tvFansCount.setText(userInfo.getData().getFansNum() + "");
+        tvFollowCount.setText(userInfo.getData().getMyFollowNum() + "");
+
         mMengbi = userInfo.getData().getWealth().getCoin();
         mMengdou = userInfo.getData().getWealth().getMengDou();
         mMengdian = userInfo.getData().getWealth().getChengPonit();
@@ -289,7 +293,7 @@ public class MineFragment extends BaseFragment implements MeView {
         startActivity(intent);
     }
 
-    private void jumpToMyLevelActivity(){
+    private void jumpToMyLevelActivity() {
         Intent intent = new Intent(getContext(), MyLevelActivity.class);
         intent.putExtra("userId", mUserId);
         startActivity(intent);

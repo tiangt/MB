@@ -334,5 +334,6 @@
         <activity android:name=".ui.activity.RedbagActivity" />
         <activity android:name=".ui.activity.me.MyWalletActivity"/>
         <activity android:name=".ui.activity.me.MyLevelActivity"/>
+        <activity android:name=".ui.activity.HistoryListActivity"/>
     </application>
 </manifest>
