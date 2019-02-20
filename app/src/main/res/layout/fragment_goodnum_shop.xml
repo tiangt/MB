@@ -72,16 +72,41 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_tips"
+        <LinearLayout
+            android:id="@+id/ll_tips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:drawablePadding="6dp"
-            android:drawableStart="@drawable/point_play_notify"
-            android:textColor="@color/text_view"
-            android:textSize="12sp"
-            android:visibility="gone" />
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:drawablePadding="6dp"
+                android:drawableStart="@drawable/point_play_notify"
+                android:text="搜索到与 "
+                android:textColor="@color/text_view"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:drawablePadding="6dp"
+                android:textColor="#FFFF2D4E"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:drawablePadding="6dp"
+                android:text=" 匹配的靓号"
+                android:textColor="@color/text_view"
+                android:textSize="12sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_list"

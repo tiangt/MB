@@ -212,7 +212,9 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, userInfo.getData().getNickname());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, userInfo.getData().getLastRechargeTime()
                 != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
-        loginSuccessListener.onLoginSuccessListener();
+        if (loginSuccessListener != null) {
+            loginSuccessListener.onLoginSuccessListener();
+        }
         dismiss();
         EventBus.getDefault().post(new LoginSuccussEvent());
     }

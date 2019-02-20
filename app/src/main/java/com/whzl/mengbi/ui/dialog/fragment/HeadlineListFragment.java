@@ -182,7 +182,9 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
                 HeadlineListBean rankBean = GsonUtils.GsonToBean(result.toString(), HeadlineListBean.class);
                 if (rankBean.code == 200) {
                     if (rankBean.data != null && rankBean.data.list != null) {
-                        refreshLayout.finishRefresh();
+                        if (refreshLayout!=null) {
+                            refreshLayout.finishRefresh();
+                        }
                         if (rankBean.data.list.size() == 0) {
                             rlEmpty.setVisibility(View.VISIBLE);
                         } else {
@@ -211,7 +213,9 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
 
             @Override
             public void onReqFailed(String errorMsg) {
-                refreshLayout.finishRefresh();
+                if (refreshLayout != null) {
+                    refreshLayout.finishRefresh();
+                }
             }
         });
     }

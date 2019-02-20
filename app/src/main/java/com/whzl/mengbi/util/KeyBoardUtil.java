@@ -2,14 +2,8 @@ package com.whzl.mengbi.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Rect;
-import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * 打开或关闭软键盘

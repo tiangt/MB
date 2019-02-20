@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.BuyGoodNumEvent;
@@ -99,6 +98,8 @@ public class GoodnumFragment extends BaseFragment {
     TextView tvQq;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
+    @BindView(R.id.ll_tips)
+    LinearLayout llTips;
     @BindView(R.id.tv_tips)
     TextView tvTips;
     @BindView(R.id.ib_clear)
@@ -246,7 +247,7 @@ public class GoodnumFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_search:
-                tvTips.setVisibility(View.GONE);
+                llTips.setVisibility(View.GONE);
                 tvSearch.setVisibility(View.GONE);
                 llEmpty.setVisibility(View.GONE);
                 llList.setVisibility(View.VISIBLE);
@@ -676,7 +677,7 @@ public class GoodnumFragment extends BaseFragment {
     }
 
     private void getGoodNumData(String keyWord, int fourDigits, int fiveDigits, int sixDigits, int seveDigits, int page) {
-        tvTips.setVisibility(TextUtils.isEmpty(keyWord) ? View.GONE : View.VISIBLE);
+        llTips.setVisibility(TextUtils.isEmpty(keyWord) ? View.GONE : View.VISIBLE);
         HashMap paramsMap = new HashMap();
         paramsMap.put("keyWord", keyWord);
         paramsMap.put("fourDigits", fourDigits);
@@ -745,11 +746,9 @@ public class GoodnumFragment extends BaseFragment {
                             llList.setVisibility(View.GONE);
                             llEmpty.setVisibility(View.VISIBLE);
                             tvSearch.setText("取消");
-                            tvTips.setVisibility(View.GONE);
+                            llTips.setVisibility(View.GONE);
                         } else {
-                            tvTips.setText("搜索到与 ");
-                            tvTips.append(LightSpanString.getLightString(keyWord, Color.parseColor("#FFFF2D4E")));
-                            tvTips.append(" 匹配的靓号");
+                            tvTips.setText(keyWord);
                         }
                     }
 

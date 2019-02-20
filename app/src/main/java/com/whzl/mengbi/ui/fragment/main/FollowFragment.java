@@ -49,9 +49,9 @@ public class FollowFragment extends BaseFragment {
         titles.add("看过");
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(com.whzl.mengbi.ui.fragment.FollowFragment.newInstance());
-        fragments.add(FollowSortFragment.newInstance("guard"));
-        fragments.add(FollowSortFragment.newInstance("manage"));
-        fragments.add(FollowSortFragment.newInstance("watch"));
+        fragments.add(FollowSortFragment.newInstance(FollowSortFragment.GUARD));
+        fragments.add(FollowSortFragment.newInstance(FollowSortFragment.MANAGE));
+        fragments.add(FollowSortFragment.newInstance(FollowSortFragment.WATCH));
         fragmentPagerAdaper = new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles);
         vpFollow.setAdapter(fragmentPagerAdaper);
         vpFollow.setOffscreenPageLimit(4);

@@ -40,8 +40,10 @@ import butterknife.ButterKnife;
  * @date 2018/12/18
  */
 public class FollowSortFragment extends BasePullListFragment<FollowSortBean.ListBean, FollowSortPresenter> implements FollowSortContract.View {
-
-    private String type;
+    public static final String GUARD = "guard";
+    public static final String MANAGE = "manage";
+    public static final String WATCH = "watch";
+    private String type = "";
     private boolean needFresh = false;
 
     public static FollowSortFragment newInstance(String type) {
@@ -77,17 +79,14 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
         type = getArguments().getString("type");
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_follow_sort, getPullView(), false);
         TextView tv = view.findViewById(R.id.tv_content);
-        switch (type) {
-            case "guard":
-                tv.setText("您还没有守护的主播");
-                break;
-            case "manage":
-                tv.setText("还没有主播给您设过房管");
-                break;
-            case "watch":
-                tv.setText("最近没有观看记录");
-                break;
+        if (GUARD.equals(type)) {
+            tv.setText("您还没有守护的主播");
+        } else if (MANAGE.equals(type)) {
+            tv.setText("还没有主播给您设过房管");
+        } else if (WATCH.equals(type)) {
+            tv.setText("最近没有观看记录");
         }
+
         setEmptyView(view);
         View foot = LayoutInflater.from(getMyActivity()).inflate(R.layout.item_load_more_end, getPullView(), false);
         TextView tvFoot = foot.findViewById(R.id.tv_foot);
@@ -98,16 +97,12 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
     @Override
     protected void loadData(int action, int mPage) {
         needFresh = false;
-        switch (type) {
-            case "guard":
-                mPresenter.getGuardPrograms(mPage);
-                break;
-            case "manage":
-                mPresenter.getManageProgram(mPage);
-                break;
-            case "watch":
-                mPresenter.getWatchRecord(mPage);
-                break;
+        if (GUARD.equals(type)) {
+            mPresenter.getGuardPrograms(mPage);
+        } else if (MANAGE.equals(type)) {
+            mPresenter.getManageProgram(mPage);
+        } else if (WATCH.equals(type)) {
+            mPresenter.getWatchRecord(mPage);
         }
     }
 

@@ -7,7 +7,7 @@ import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -177,17 +177,17 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
                             save(key);
                             llList.setVisibility(View.VISIBLE);
                             llEmpty.setVisibility(View.GONE);
-                            SpannableString string = StringUtils.spannableStringColor("找到包含", Color.parseColor("#4b4b4b"));
-                            SpannableString string2 = StringUtils.spannableStringColor(" " + etSearch.getText().toString().trim() + " ",
+                            SpannableStringBuilder string = StringUtils.coverStringColor("找到包含", Color.parseColor("#4b4b4b"));
+                            SpannableStringBuilder string2 = StringUtils.coverStringColor(" " + etSearch.getText().toString().trim() + " ",
                                     Color.parseColor("#ff611b"));
-                            SpannableString string3 = StringUtils.spannableStringColor("的主播共 ", Color.parseColor("#4b4b4b"));
-                            SpannableString string4 = StringUtils.spannableStringColor(bean.total + "", Color.parseColor("#ff611b"));
-                            SpannableString string5 = StringUtils.spannableStringColor(" 位", Color.parseColor("#4b4b4b"));
-                            tvName.setText(string);
-                            tvName.append(string2);
-                            tvName.append(string3);
-                            tvName.append(string4);
-                            tvName.append(string5);
+                            SpannableStringBuilder string3 = StringUtils.coverStringColor("的主播共 ", Color.parseColor("#4b4b4b"));
+                            SpannableStringBuilder string4 = StringUtils.coverStringColor(bean.total + "", Color.parseColor("#ff611b"));
+                            SpannableStringBuilder string5 = StringUtils.coverStringColor(" 位", Color.parseColor("#4b4b4b"));
+                            tvName.setText(string.append(string2).append(string3).append(string4).append(string5), TextView.BufferType.SPANNABLE);
+//                            tvName.append(string2);
+//                            tvName.append(string3);
+//                            tvName.append(string4);
+//                            tvName.append(string5);
                         }
                         mAnchorInfoList.addAll(bean.list);
                         anchorAdapter.notifyDataSetChanged();

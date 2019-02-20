@@ -133,7 +133,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         isGuard = getArguments().getBoolean("isGuard");
         isVip = getArguments().getBoolean("isVip");
 
-        initCacheEdit();
+//        initCacheEdit();
         userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
         mProgramId = getArguments().getInt("programId");
         mAnchorBean = getArguments().getParcelable("anchor");
@@ -410,10 +410,10 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     }
 
     public void saveEdit() {
-        SPUtils.put(BaseApplication.getInstance(), SpConfig.CHATCACHE, etContent.getText().toString().trim());
+//        SPUtils.put(BaseApplication.getInstance(), SpConfig.CHATCACHE, etContent.getText().toString().trim());
     }
 
     public void clearSaveEdit() {
-        SPUtils.put(BaseApplication.getInstance(), SpConfig.CHATCACHE, "");
+//        SPUtils.put(BaseApplication.getInstance(), SpConfig.CHATCACHE, "");
     }
 }

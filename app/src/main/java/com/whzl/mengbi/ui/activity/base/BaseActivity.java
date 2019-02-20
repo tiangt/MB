@@ -165,7 +165,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            KeyBoardUtil.hideInputMethod(this);
+//            KeyBoardUtil.hideInputMethod(this);
             finish();
             return true;
         }

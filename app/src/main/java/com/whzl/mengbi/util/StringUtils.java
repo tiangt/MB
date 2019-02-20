@@ -1,6 +1,7 @@
 package com.whzl.mengbi.util;
 
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
@@ -69,6 +70,14 @@ public class StringUtils {
         if (TextUtils.isEmpty(spanStr))
             spanStr = "--";
         SpannableString string = new SpannableString(spanStr);
+        string.setSpan(new ForegroundColorSpan(color), 0, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return string;
+    }
+
+    public static SpannableStringBuilder coverStringColor(String spanStr, int color) {
+        if (TextUtils.isEmpty(spanStr))
+            spanStr = "--";
+        SpannableStringBuilder string = new SpannableStringBuilder(spanStr);
         string.setSpan(new ForegroundColorSpan(color), 0, string.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return string;
     }
