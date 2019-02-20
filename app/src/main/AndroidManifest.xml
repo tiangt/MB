@@ -335,5 +335,6 @@
         <activity android:name=".ui.activity.me.MyWalletActivity"/>
         <activity android:name=".ui.activity.me.MyLevelActivity"/>
         <activity android:name=".ui.activity.HistoryListActivity"/>
+        <activity android:name=".ui.activity.me.MyGuardActivity"/>
     </application>
 </manifest>

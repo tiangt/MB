@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
         super.initEnv();
         mPresenter = new FollowSortPresenter();
         mPresenter.attachView(this);
+        type = getArguments().getString("type");
     }
 
     @Override
@@ -74,7 +76,6 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
     public void init() {
         super.init();
         setAboutAnchor(true);
-        type = getArguments().getString("type");
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_follow_sort, getPullView(), false);
         TextView tv = view.findViewById(R.id.tv_content);
         switch (type) {
@@ -86,6 +87,8 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
                 break;
             case "watch":
                 tv.setText("最近没有观看记录");
+                break;
+            default:
                 break;
         }
         setEmptyView(view);
@@ -107,6 +110,8 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
                 break;
             case "watch":
                 mPresenter.getWatchRecord(mPage);
+                break;
+            default:
                 break;
         }
     }
