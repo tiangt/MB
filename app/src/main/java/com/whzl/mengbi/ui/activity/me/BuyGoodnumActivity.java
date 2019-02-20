@@ -18,6 +18,7 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.BuyGoodNumEvent;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.GoodNumBean;
+import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.widget.view.AlignTextView;
@@ -176,25 +177,25 @@ public class BuyGoodnumActivity extends BaseActivity {
                 } else {
                     tvTips.setVisibility(View.GONE);
                 }
-                BusinessUtils.getAnchorInfo(BuyGoodnumActivity.this, etAnchor.getText().toString().trim(), new BusinessUtils.AnchorInfoListener() {
-                    @Override
-                    public void onSuccess(AnchorInfo bean) {
-                        tvFail.setVisibility(View.GONE);
-                        ivSuccess.setVisibility(View.VISIBLE);
-                        tvAnchorNick.setText(bean.anchor.name);
-                        anchorId = String.valueOf(bean.anchor.id);
-                        programId = String.valueOf(bean.programId);
-                    }
-
-                    @Override
-                    public void onError(int code) {
-                        tvFail.setVisibility(View.VISIBLE);
-                        tvAnchorNick.setText("");
-                        ivSuccess.setVisibility(View.GONE);
-                        anchorId = "";
-                        programId = "";
-                    }
-                });
+//                BusinessUtils.getAnchorInfo(BuyGoodnumActivity.this, etAnchor.getText().toString().trim(), new BusinessUtils.AnchorInfoListener() {
+//                    @Override
+//                    public void onSuccess(ProgramInfoByAnchorBean bean) {
+//                        tvFail.setVisibility(View.GONE);
+//                        ivSuccess.setVisibility(View.VISIBLE);
+//                        tvAnchorNick.setText(bean.anchor.name);
+//                        anchorId = String.valueOf(bean.anchor.id);
+//                        programId = String.valueOf(bean.programId);
+//                    }
+//
+//                    @Override
+//                    public void onError(int code) {
+//                        tvFail.setVisibility(View.VISIBLE);
+//                        tvAnchorNick.setText("");
+//                        ivSuccess.setVisibility(View.GONE);
+//                        anchorId = "";
+//                        programId = "";
+//                    }
+//                });
             }
         });
     }

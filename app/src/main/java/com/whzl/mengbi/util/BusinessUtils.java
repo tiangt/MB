@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -76,25 +76,25 @@ public class BusinessUtils {
     //获取主播信息
     public static void getAnchorInfo(Activity context, String userId, AnchorInfoListener listener) {
         HashMap paramsMap = new HashMap();
-        paramsMap.put("programId", userId);
+        paramsMap.put("anchorId", userId);
         ApiFactory.getInstance().getApi(Api.class)
-                .getRoomInfo(ParamsUtils.getSignPramsMap(paramsMap))
+                .programInfoByAnchorid(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<AnchorInfo>() {
+                .subscribe(new ApiObserver<ProgramInfoByAnchorBean>() {
 
                     @Override
-                    public void onSuccess(AnchorInfo bean) {
+                    public void onSuccess(ProgramInfoByAnchorBean bean) {
                         listener.onSuccess(bean);
                     }
 
+
                     @Override
-                    public void onError(int code) {
-                        listener.onError(code);
+                    public void onError(ApiResult<ProgramInfoByAnchorBean> body) {
+                        listener.onError(body.code);
                     }
                 });
     }
-
 
 
     public interface MallBuyListener {
@@ -110,7 +110,7 @@ public class BusinessUtils {
     }
 
     public interface AnchorInfoListener {
-        void onSuccess(AnchorInfo bean);
+        void onSuccess(ProgramInfoByAnchorBean bean);
 
         void onError(int code);
     }

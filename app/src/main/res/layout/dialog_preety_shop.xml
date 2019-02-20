@@ -6,7 +6,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="296dp">
+        android:layout_height="326dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="270dp"
+            android:layout_height="300dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bg_dialog_common"
             android:gravity="center_horizontal"
@@ -150,7 +150,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="靓  号:"
+                    android:text="靓         号:"
                     android:textColor="#646464"
                     android:textSize="12sp" />
 
@@ -174,7 +174,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="价  格:"
+                    android:text="价         格:"
                     android:textColor="#646464"
                     android:textSize="12sp" />
 
@@ -206,7 +206,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="时  长:"
+                    android:text="时         长:"
                     android:textColor="#646464"
                     android:textSize="12sp" />
 
@@ -234,48 +234,60 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                android:visibility="visible">
 
-                <LinearLayout
-                    android:layout_width="130dp"
+                <TextView
+                    android:layout_width="57dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:text="推荐主播:"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
 
-                    <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/rl_edit_anchor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/et_anchor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableBottom="@drawable/line_edit_shop_dialog"
+                        android:hint="请输入推荐主播萌号"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textColor="#70000000"
+                        android:textColorHint="#30000000"
+                        android:textSize="12sp" />
 
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@null"
-                            android:hint="请输入他人的萌号"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:textColor="#70000000"
-                            android:textColorHint="#30000000"
-                            android:textSize="12sp" />
+                    <ImageButton
+                        android:id="@+id/ib_anchor"
+                        android:layout_width="8.5dp"
+                        android:layout_height="8.5dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:src="@drawable/close_p"
+                        android:visibility="gone" />
+                </RelativeLayout>
 
-                        <ImageButton
-                            android:layout_width="8.5dp"
-                            android:layout_height="8.5dp"
-                            android:background="@null"
-                            android:src="@drawable/close_p"
-                            android:visibility="gone" />
-                    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_anchor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#70000000"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
-
-                    <View
-                        android:layout_width="130dp"
-                        android:layout_height="0.5dp"
-                        android:layout_marginTop="8dp"
-                        android:background="#30000000" />
-                </LinearLayout>
 
                 <Button
+                    android:id="@+id/btn_anchor"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="43.5dp"
                     android:layout_height="20dp"
@@ -287,12 +299,13 @@
 
             </LinearLayout>
 
+
             <Button
                 android:id="@+id/btn_buy"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="154dp"
                 android:layout_height="31.5dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/shape_yellow_btn"
                 android:text="立即购买"
                 android:textColor="#010101"

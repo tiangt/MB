@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.BuyGoodNumEvent;
 import com.whzl.mengbi.model.entity.GoodNumBean;
+import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -118,6 +120,7 @@ public class GoodnumFragment extends BaseFragment {
     private boolean idIsOK;
     private String toUserId;
     private BaseAwesomeDialog buyDialog;
+    private String salerId;
 
     @Override
     public int getLayoutId() {
@@ -363,6 +366,7 @@ public class GoodnumFragment extends BaseFragment {
     private void showDialog(int type) {
         idIsOK = false;
         toUserId = "";
+        salerId = "";
         UserInfo.DataBean currentUser = ((ShopActivity) getMyActivity()).currentUser;
         buyDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_preety_shop).setConvertListener(new ViewConvertListener() {
             @Override
@@ -448,13 +452,82 @@ public class GoodnumFragment extends BaseFragment {
                         }
                     }
                 });
+
+                initAnchorEdit(holder);
             }
         }).setDimAmount(0).setShowBottom(true).show(getFragmentManager());
     }
 
+    private void initAnchorEdit(ViewHolder holder) {
+        EditText etAnchor = holder.getView(R.id.et_anchor);
+        etAnchor.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                holder.setVisible(R.id.ib_anchor, TextUtils.isEmpty(s) ? false : true);
+            }
+        });
+        holder.setOnClickListener(R.id.ib_anchor, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                etAnchor.setText("");
+            }
+        });
+        Button btnAnchor = holder.getView(R.id.btn_anchor);
+        holder.setOnClickListener(R.id.btn_anchor, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(etAnchor.getText())) {
+                    return;
+                }
+                if (btnAnchor.getText().equals("取消")) {
+                    salerId = "";
+                    holder.setVisible(R.id.rl_edit_anchor, true);
+                    holder.setVisible(R.id.tv_anchor, false);
+                    holder.setText(R.id.et_anchor, "");
+                    btnAnchor.setBackgroundResource(R.drawable.shape_purple_btn);
+                    btnAnchor.setText("确定");
+                    return;
+                }
+                BusinessUtils.getAnchorInfo(getMyActivity(), etAnchor.getText().toString().trim(), new BusinessUtils.AnchorInfoListener() {
+                    @Override
+                    public void onSuccess(ProgramInfoByAnchorBean bean) {
+                        if (bean.list == null || bean.list.size() == 0) {
+                            salerId = "";
+                            ToastUtils.showToastUnify(getMyActivity(), "主播萌号错误，请重新输入");
+                            return;
+                        }
+                        KeyBoardUtil.closeKeybord(etAnchor, getMyActivity());
+                        ProgramInfoByAnchorBean.ListBean listBean = bean.list.get(0);
+                        holder.setVisible(R.id.rl_edit_anchor, false);
+                        holder.setVisible(R.id.tv_anchor, true);
+                        holder.setText(R.id.tv_anchor, listBean.anchorNickname);
+
+                        btnAnchor.setBackgroundResource(R.drawable.shape_gray_btn);
+                        btnAnchor.setText("取消");
+                        salerId = String.valueOf(listBean.anchorId);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                    }
+                });
+            }
+        });
+    }
+
     private void buy() {
         BusinessUtils.mallBuy(getMyActivity(), String.valueOf(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L))
-                , digitsBean.goodsId + "", digitsBean.priceId + "", "1", toUserId, ""
+                , digitsBean.goodsId + "", digitsBean.priceId + "", "1", toUserId, salerId
                 , new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
