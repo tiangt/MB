@@ -482,6 +482,7 @@
 
             <!-- 守护 -->
             <RelativeLayout
+                android:id="@+id/rl_my_guard"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="10dp"

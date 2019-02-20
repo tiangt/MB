@@ -2,9 +2,7 @@ package com.whzl.mengbi.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,22 +35,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * @author nobody
- * @date 2018/12/18
+ * @author cliang
+ * @date 2019.2.20
  */
-public class FollowSortFragment extends BasePullListFragment<FollowSortBean.ListBean, FollowSortPresenter> implements FollowSortContract.View {
-    public static final String GUARD = "guard";
-    public static final String MANAGE = "manage";
-    public static final String WATCH = "watch";
-    private String type = "";
+public class WatchHistoryFragment extends BasePullListFragment<FollowSortBean.ListBean, FollowSortPresenter> implements FollowSortContract.View {
+
     private boolean needFresh = false;
 
-    public static FollowSortFragment newInstance(String type) {
-        FollowSortFragment followSortFragment = new FollowSortFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("type", type);
-        followSortFragment.setArguments(bundle);
-        return followSortFragment;
+    public static WatchHistoryFragment newInstance() {
+        WatchHistoryFragment fragment = new WatchHistoryFragment();
+        return fragment;
     }
 
     @Override
@@ -65,7 +57,6 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
         super.initEnv();
         mPresenter = new FollowSortPresenter();
         mPresenter.attachView(this);
-        type = getArguments().getString("type");
     }
 
     @Override
@@ -80,14 +71,7 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
         setAboutAnchor(true);
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_follow_sort, getPullView(), false);
         TextView tv = view.findViewById(R.id.tv_content);
-        if (GUARD.equals(type)) {
-            tv.setText("您还没有守护的主播");
-        } else if (MANAGE.equals(type)) {
-            tv.setText("还没有主播给您设过房管");
-        } else if (WATCH.equals(type)) {
-            tv.setText("最近没有观看记录");
-        }
-
+        tv.setText("最近没有观看记录");
         setEmptyView(view);
         View foot = LayoutInflater.from(getMyActivity()).inflate(R.layout.item_load_more_end, getPullView(), false);
         TextView tvFoot = foot.findViewById(R.id.tv_foot);
@@ -98,13 +82,7 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
     @Override
     protected void loadData(int action, int mPage) {
         needFresh = false;
-        if (GUARD.equals(type)) {
-            mPresenter.getGuardPrograms(mPage);
-        } else if (MANAGE.equals(type)) {
-            mPresenter.getManageProgram(mPage);
-        } else if (WATCH.equals(type)) {
-            mPresenter.getWatchRecord(mPage);
-        }
+        mPresenter.getWatchRecord(mPage);
     }
 
     @Override
@@ -115,12 +93,12 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
 
     @Override
     public void onGetGuardPrograms(FollowSortBean bean) {
-        loadSuccess(bean.list);
+
     }
 
     @Override
     public void onGetManageProgram(FollowSortBean bean) {
-        loadSuccess(bean.list);
+
     }
 
     @Override
@@ -157,7 +135,7 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
             FollowSortBean.ListBean listBean = mDatas.get(position);
             RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(getContext(), 5));
             RequestOptions requestOptions = new RequestOptions().transform(roundedCorners);
-            Glide.with(FollowSortFragment.this).load(listBean.anchorAvatar).apply(requestOptions).into(ivAvatar);
+            Glide.with(getMyActivity()).load(listBean.anchorAvatar).apply(requestOptions).into(ivAvatar);
             if ("T".equals(listBean.status)) {
                 tvStatus.setVisibility(View.VISIBLE);
                 tvLastTime.setVisibility(View.GONE);
@@ -174,12 +152,6 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
             }
             tvAnchorName.setText(listBean.anchorNickname);
             ivLevelIcon.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue));
-            if (type.equals("guard")) {
-                tvFollowState.setVisibility(View.VISIBLE);
-                tvFollowState.setText(getString(R.string.guard_follow_days, listBean.expDate));
-            } else {
-                tvFollowState.setVisibility(View.GONE);
-            }
         }
 
         @Override

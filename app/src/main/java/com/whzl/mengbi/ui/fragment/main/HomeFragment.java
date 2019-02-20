@@ -29,8 +29,10 @@ import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
+import com.whzl.mengbi.ui.activity.HistoryListActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.LoginActivity;
+import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.activity.SearchActivity;
 import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
@@ -210,8 +212,13 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 break;
 
             case R.id.iv_history:
-                Intent intent = new Intent(getContext(), WatchHistoryActivity.class);
-                startActivity(intent);
+                if(checkLogin()){
+                    Intent intent = new Intent(getContext(), HistoryListActivity.class);
+                    intent.putExtra("index",3);
+                    startActivity(intent);
+                    return;
+                }
+                ((MainActivity)getMyActivity()).login();
                 break;
         }
     }
@@ -539,6 +546,15 @@ public class HomeFragment extends BaseFragment implements HomeView {
     public void onDestroy() {
         super.onDestroy();
         mHomePresenter.onDestroy();
+    }
+
+    private boolean checkLogin() {
+        String sessionId = (String) SPUtils.get(getMyActivity(), SpConfig.KEY_SESSION_ID, "");
+        long userId = Long.parseLong(SPUtils.get(getMyActivity(), "userId", (long) 0).toString());
+        if (userId == 0 || TextUtils.isEmpty(sessionId)) {
+            return false;
+        }
+        return true;
     }
 
 }

@@ -62,6 +62,8 @@ public class UserInfo extends ResponseInfo implements Parcelable {
         private WealthBean wealth;
         private String sessionId;
         private String bindMobile;
+        private int fansNum;
+        private int myFollowNum;
 
         protected DataBean(Parcel in) {
             userId = in.readLong();
@@ -80,6 +82,8 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             lastLoginTime = in.readString();
             levelList = in.createTypedArrayList(LevelListBean.CREATOR);
             bindMobile = in.readString();
+            fansNum = in.readInt();
+            myFollowNum = in.readInt();
         }
 
         public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
@@ -211,6 +215,22 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             return bindMobile;
         }
 
+        public int getFansNum() {
+            return fansNum;
+        }
+
+        public void setFansNum(int fansNum) {
+            this.fansNum = fansNum;
+        }
+
+        public int getMyFollowNum() {
+            return myFollowNum;
+        }
+
+        public void setMyFollowNum(int myFollowNum) {
+            this.myFollowNum = myFollowNum;
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -234,6 +254,8 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             dest.writeString(lastLoginTime);
             dest.writeTypedList(levelList);
             dest.writeString(bindMobile);
+            dest.writeInt(fansNum);
+            dest.writeInt(myFollowNum);
         }
 
         public static class WealthBean implements Parcelable {

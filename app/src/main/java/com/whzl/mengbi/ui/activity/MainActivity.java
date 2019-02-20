@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    private void login() {
+    public void login() {
 //        currentSelectedIndex = 0;
 //        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 //        startActivityForResult(intent, REQUEST_LOGIN);

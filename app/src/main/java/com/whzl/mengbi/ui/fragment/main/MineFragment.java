@@ -23,6 +23,7 @@ import com.whzl.mengbi.ui.activity.UserInfoActivity;
 import com.whzl.mengbi.ui.activity.me.AccountSwitchActivity;
 import com.whzl.mengbi.ui.activity.me.BillActivity;
 import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
+import com.whzl.mengbi.ui.activity.me.MyGuardActivity;
 import com.whzl.mengbi.ui.activity.me.MyLevelActivity;
 import com.whzl.mengbi.ui.activity.me.MyWalletActivity;
 import com.whzl.mengbi.ui.activity.me.PackActivity;
@@ -139,6 +140,10 @@ public class MineFragment extends BaseFragment implements MeView {
         tvUserId.setText("萌号：" + userInfo.getData().getUserId());
         mUserId = userInfo.getData().getUserId();
 
+        //粉丝，关注
+        tvFansCount.setText(userInfo.getData().getFansNum() + "");
+        tvFollowCount.setText(userInfo.getData().getMyFollowNum() + "");
+
         mMengbi = userInfo.getData().getWealth().getCoin();
         mMengdou = userInfo.getData().getWealth().getMengDou();
         mMengdian = userInfo.getData().getWealth().getChengPonit();
@@ -180,7 +185,8 @@ public class MineFragment extends BaseFragment implements MeView {
 
     @OnClick({R.id.iv_switch, R.id.iv_setting, R.id.rl_info_edit, R.id.btn_recharge, R.id.rl_shop,
             R.id.tv_mine_tool, R.id.tv_mine_vip, R.id.tv_mine_pretty, R.id.tv_mine_car,
-            R.id.tv_mine_coupon, R.id.rl_composite, R.id.rl_bill, R.id.rl_my_wallet, R.id.ll_my_level})
+            R.id.tv_mine_coupon, R.id.rl_composite, R.id.rl_bill, R.id.rl_my_wallet, R.id.ll_my_level,
+            R.id.rl_my_guard})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_switch:
@@ -249,6 +255,10 @@ public class MineFragment extends BaseFragment implements MeView {
                 jumpToMyLevelActivity();
                 break;
 
+            case R.id.rl_my_guard:
+                jumpToMyGuardActivity();
+                break;
+
             default:
                 break;
         }
@@ -289,9 +299,14 @@ public class MineFragment extends BaseFragment implements MeView {
         startActivity(intent);
     }
 
-    private void jumpToMyLevelActivity(){
+    private void jumpToMyLevelActivity() {
         Intent intent = new Intent(getContext(), MyLevelActivity.class);
         intent.putExtra("userId", mUserId);
+        startActivity(intent);
+    }
+
+    private void jumpToMyGuardActivity(){
+        Intent intent = new Intent(getContext(), MyGuardActivity.class);
         startActivity(intent);
     }
 
