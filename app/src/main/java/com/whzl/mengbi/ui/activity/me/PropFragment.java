@@ -1,15 +1,10 @@
 package com.whzl.mengbi.ui.activity.me;
 
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,23 +14,27 @@ import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
+import com.whzl.mengbi.eventbus.event.BuyGoodNumEvent;
 import com.whzl.mengbi.model.entity.GetProsListBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
-import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.BusinessUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
-import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -51,6 +50,7 @@ import io.reactivex.schedulers.Schedulers;
 public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean, BasePresenter> {
 
     private BaseAwesomeDialog awesomeDialog;
+    private int num;
 
     @Override
     protected boolean setLoadMoreEndShow() {
@@ -131,13 +131,74 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
     }
 
     private void showDialog(GetProsListBean.ListBean listBean) {
+        num = 1;
         UserInfo.DataBean currentUser = ((ShopActivity) getMyActivity()).currentUser;
         awesomeDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_prop_shop).setConvertListener(new ViewConvertListener() {
             @Override
             protected void convertView(com.whzl.mengbi.ui.dialog.base.ViewHolder holder, BaseAwesomeDialog dialog) {
                 holder.setText(R.id.tv_title_dialog_prop_shop, "购买" + listBean.goodsName);
                 holder.setText(R.id.tv_time_dialog_prop_shop, listBean.days + "天");
+                TextView textView = (TextView) holder.getView(R.id.tv_total_dialog_prop_shop);
+                calculate(textView, listBean, num);
+                holder.setOnClickListener(R.id.tv_reduce_diaolog_prop_shop, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        num -= 1;
+                        if (num < 1) {
+                            num = 1;
+                        }
+                        holder.setText(R.id.tv_num_diaolog_prop_shop, String.valueOf(num));
+                        calculate(textView, listBean, num);
+                    }
+                });
+                holder.setOnClickListener(R.id.tv_add_diaolog_prop_shop, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        num += 1;
+                        if (num > 9999) {
+                        }
+                        holder.setText(R.id.tv_num_diaolog_prop_shop, String.valueOf(num));
+                        calculate(textView, listBean, num);
+                    }
+                });
+                holder.setOnClickListener(R.id.btn_buy, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        buy(listBean);
+                    }
+                });
             }
         }).setDimAmount(0).setShowBottom(true).show(getFragmentManager());
+    }
+
+    private void buy(GetProsListBean.ListBean listBean) {
+        BusinessUtils.mallBuy(getMyActivity(), String.valueOf(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L))
+                , listBean.goodsId + "", listBean.priceId + "", num+"", "", ""
+                , new BusinessUtils.MallBuyListener() {
+                    @Override
+                    public void onSuccess() {
+                        ToastUtils.showToastUnify(getMyActivity(), "购买成功");
+                        if (awesomeDialog != null) {
+                            awesomeDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+    }
+
+    private void calculate(TextView view, GetProsListBean.ListBean listBean, int num) {
+        long totalRent = listBean.rent * num;
+        long totalMengdou = listBean.givingMengDou * num;
+        view.setText("");
+        view.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(totalRent),
+                Color.parseColor("#f4545a")));
+        view.append(LightSpanString.getLightString(" 萌币 （赠送 ", Color.parseColor("#646464")));
+        view.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(totalMengdou),
+                Color.parseColor("#f4545a")));
+        view.append(LightSpanString.getLightString(" 萌豆 ）", Color.parseColor("#646464")));
     }
 }
