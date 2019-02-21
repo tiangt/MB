@@ -91,7 +91,6 @@ public class GoodnumFragment extends BaseFragment {
     EditText etSearchNum;
     @BindView(R.id.tv_search)
     TextView tvSearch;
-    Unbinder unbinder;
     @BindView(R.id.ll_list)
     LinearLayout llList;
     @BindView(R.id.tv_qq)
@@ -102,6 +101,8 @@ public class GoodnumFragment extends BaseFragment {
     LinearLayout llTips;
     @BindView(R.id.tv_tips)
     TextView tvTips;
+    @BindView(R.id.tv_search_empty)
+    TextView tvSearchEmpty;
     @BindView(R.id.ib_clear)
     ImageButton ibClear;
 
@@ -166,7 +167,7 @@ public class GoodnumFragment extends BaseFragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (TextUtils.isEmpty(etSearchNum.getText())) {
+                    if (TextUtils.isEmpty(etSearchNum.getText()) || etSearchNum.getText().toString().length() < 2) {
                         return true;
                     }
                     search(etSearchNum.getText().toString());
@@ -745,6 +746,7 @@ public class GoodnumFragment extends BaseFragment {
                         if (list4.size() == 0 && list5.size() == 0 && list6.size() == 0 && list7.size() == 0) {
                             llList.setVisibility(View.GONE);
                             llEmpty.setVisibility(View.VISIBLE);
+                            tvSearchEmpty.setText(currentKey);
                             tvSearch.setText("取消");
                             llTips.setVisibility(View.GONE);
                         } else {

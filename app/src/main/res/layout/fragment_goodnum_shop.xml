@@ -108,10 +108,11 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
+
         <LinearLayout
             android:id="@+id/ll_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -298,29 +299,52 @@
         <LinearLayout
             android:id="@+id/ll_empty"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="23dp"
-            android:paddingRight="70dp"
             android:visibility="gone">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:text="没有找到您想要的靓号，可以选择重新搜索或联系官方客服定制专属靓号"
-                android:textColor="@color/text_hint"
-                android:textSize="13sp" />
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:text="很遗憾，没有搜索到与 "
+                    android:textColor="#70000000"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_search_empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:textColor="#ff2d4e"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:text=" 匹配的靓号"
+                    android:textColor="@color/text_hint"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_qq"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/btn_goodnum_shop"
                 android:drawablePadding="5dp"
-                android:drawableRight="@drawable/ic_qq_shop"
-                android:text="官方客服:"
-                android:textColor="@color/text_view"
+                android:padding="8.5dp"
+                android:text="联系官方客服"
+                android:textColor="#70000000"
                 android:textSize="@dimen/font_size_26px" />
         </LinearLayout>
 

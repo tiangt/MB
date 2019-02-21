@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -193,6 +194,9 @@ public class CommonMotherFragment extends BaseFragment {
 
                     @Override
                     public void onError(ApiResult<GoodsPriceBatchBean> body) {
+                        if (viewPager == null) {
+                            viewPager = ButterKnife.findById(getMyActivity(), R.id.view_pager);
+                        }
                         viewPager.setVisibility(View.GONE);
                         llBackPack.setVisibility(View.VISIBLE);
                     }

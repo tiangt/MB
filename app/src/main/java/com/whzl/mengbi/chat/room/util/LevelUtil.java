@@ -153,7 +153,8 @@ public class LevelUtil {
             drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
         } else {
 //            drawable = new GifDrawable(getFileContent(context, "images/face/royal/royal_" + resourceId + ".gif"));
-            drawable = new GifDrawable(context.getResources(), ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
+//            drawable = new GifDrawable(context.getResources(), ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
+            drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
             drawable.setCallback(new DrawableCallback(textView));
         }
         if (drawable != null) {

@@ -208,6 +208,9 @@ public class FollowActivity extends BaseActivity implements OnRefreshListener, O
 
                     @Override
                     public void onReqFailed(String errorMsg) {
+                        if (refreshLayout == null) {
+                            return;
+                        }
                         refreshLayout.finishRefresh();
                         refreshLayout.finishLoadMore();
                         ToastUtils.showToast(errorMsg);
