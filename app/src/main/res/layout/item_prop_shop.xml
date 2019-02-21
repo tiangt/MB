@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="11.5dp"
+    android:paddingRight="11.5dp">
+
+    <ImageView
+        android:id="@+id/iv_item_prop_shop"
+        android:layout_width="128dp"
+        android:layout_height="80dp"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_name_item_prop_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textColor="#70505050"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_price_item_prop_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#70505050"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_welfare_item_prop_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#f4545a"
+            android:textSize="9sp" />
+
+        <TextView
+            android:id="@+id/tv_use_item_prop_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#40000000"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_buy_item_prop_shop"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="64dp"
+        android:layout_height="31dp"
+        android:background="@drawable/shape_yellow_btn"
+        android:text="购买"
+        android:textColor="#010101"
+        android:textSize="13sp" />
+</LinearLayout>

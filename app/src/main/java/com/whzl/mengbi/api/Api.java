@@ -21,6 +21,7 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
+import com.whzl.mengbi.model.entity.GetProsListBean;
 import com.whzl.mengbi.model.entity.GetUserSetBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
@@ -815,4 +816,14 @@ public interface Api {
     @POST("v1/mall/get-prettys-by-page")
     @FormUrlEncoded
     Observable<ApiResult<GoodNumBean>> getPrettysByPage(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取道具列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/mall/get-pros-list")
+    @FormUrlEncoded
+    Observable<ApiResult<GetProsListBean>> getProsList(@FieldMap Map<String, String> params);
 }

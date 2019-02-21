@@ -12,7 +12,7 @@
 
         <com.whzl.mengbi.ui.widget.recyclerview.PullRefreshHeader
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -41,8 +41,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
                     android:src="@drawable/ic_week_anchor" />
 
                 <RelativeLayout
@@ -86,8 +86,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
                     android:src="@drawable/ic_week_rich" />
 
                 <RelativeLayout
@@ -226,9 +226,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="23dp"
                         android:layout_gravity="right"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="@drawable/shape_red_orange"
                         android:gravity="center"
                         android:paddingLeft="10dp"
@@ -236,7 +236,8 @@
                         android:text="一键赠送"
                         android:textColor="@color/white"
                         android:textSize="12dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone" />
                 </LinearLayout>
             </RelativeLayout>
 

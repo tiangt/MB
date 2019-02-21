@@ -91,7 +91,6 @@ public class GoodnumFragment extends BaseFragment {
     EditText etSearchNum;
     @BindView(R.id.tv_search)
     TextView tvSearch;
-    Unbinder unbinder;
     @BindView(R.id.ll_list)
     LinearLayout llList;
     @BindView(R.id.tv_qq)
@@ -102,6 +101,8 @@ public class GoodnumFragment extends BaseFragment {
     LinearLayout llTips;
     @BindView(R.id.tv_tips)
     TextView tvTips;
+    @BindView(R.id.tv_search_empty)
+    TextView tvSearchEmpty;
     @BindView(R.id.ib_clear)
     ImageButton ibClear;
 
@@ -166,7 +167,7 @@ public class GoodnumFragment extends BaseFragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (TextUtils.isEmpty(etSearchNum.getText())) {
+                    if (TextUtils.isEmpty(etSearchNum.getText()) || etSearchNum.getText().toString().length() < 2) {
                         return true;
                     }
                     search(etSearchNum.getText().toString());
@@ -387,37 +388,30 @@ public class GoodnumFragment extends BaseFragment {
                     tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
                     break;
             }
-            switch (digitsBean.goodsColor) {
-                case "A":
-                    tvNum.setTextColor(Color.parseColor("#f42434"));
-                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_a);
-                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_a, ivNum);
-                    break;
-                case "B":
-                    tvNum.setTextColor(Color.parseColor("#ff9601"));
-                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_b);
-                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_b, ivNum);
-                    break;
-                case "C":
-                    tvNum.setTextColor(Color.parseColor("#9887f9"));
-                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_c);
-                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_c, ivNum);
-                    break;
-                case "D":
-                    tvNum.setTextColor(Color.parseColor("#5ecac2"));
-                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_d);
-                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_d, ivNum);
-                    break;
-                case "E":
-                    tvNum.setTextColor(Color.parseColor("#5dbaf6"));
-                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_e);
-                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_e, ivNum);
-                    break;
-                default:
-                    tvNum.setTextColor(Color.parseColor("#5dbaf6"));
-                    tvNum.setBackgroundResource(R.drawable.bg_pretty_num_e);
-                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_e, ivNum);
-                    break;
+            if ("A".equals(digitsBean.goodsColor)) {
+                tvNum.setTextColor(Color.parseColor("#f42434"));
+                tvNum.setBackgroundResource(R.drawable.bg_pretty_num_a);
+                GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_a, ivNum);
+            } else if ("B".equals(digitsBean.goodsColor)) {
+                tvNum.setTextColor(Color.parseColor("#ff9601"));
+                tvNum.setBackgroundResource(R.drawable.bg_pretty_num_b);
+                GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_b, ivNum);
+            } else if ("C".equals(digitsBean.goodsColor)) {
+                tvNum.setTextColor(Color.parseColor("#9887f9"));
+                tvNum.setBackgroundResource(R.drawable.bg_pretty_num_c);
+                GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_c, ivNum);
+            } else if ("D".equals(digitsBean.goodsColor)) {
+                tvNum.setTextColor(Color.parseColor("#5ecac2"));
+                tvNum.setBackgroundResource(R.drawable.bg_pretty_num_d);
+                GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_d, ivNum);
+            } else if ("E".equals(digitsBean.goodsColor)) {
+                tvNum.setTextColor(Color.parseColor("#5dbaf6"));
+                tvNum.setBackgroundResource(R.drawable.bg_pretty_num_e);
+                GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_e, ivNum);
+            } else {
+                tvNum.setTextColor(Color.parseColor("#5dbaf6"));
+                tvNum.setBackgroundResource(R.drawable.bg_pretty_num_e);
+                GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_e, ivNum);
             }
             tvNum.setText(digitsBean.goodsName);
             tvPrice.setText(getString(R.string.goodnum, digitsBean.rent));
@@ -745,6 +739,7 @@ public class GoodnumFragment extends BaseFragment {
                         if (list4.size() == 0 && list5.size() == 0 && list6.size() == 0 && list7.size() == 0) {
                             llList.setVisibility(View.GONE);
                             llEmpty.setVisibility(View.VISIBLE);
+                            tvSearchEmpty.setText(currentKey);
                             tvSearch.setText("取消");
                             llTips.setVisibility(View.GONE);
                         } else {
