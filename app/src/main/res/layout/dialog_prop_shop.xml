@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="241.5dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_dialog_vip_shop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="215.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_dialog_common"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="11.5dp"
+            android:paddingRight="11.5dp">
+
+            <TextView
+                android:id="@+id/tv_title_dialog_prop_shop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="11dp"
+                android:textColor="#010101"
+                android:textSize="13sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#05000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时     长:"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_time_dialog_prop_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="2dp"
+                    android:gravity="end"
+                    android:textColor="#646464"
+                    android:textSize="13sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="数     量:"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="时     长:"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:text="30 "
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="天"
+                    android:textColor="#646464"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_buy"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="154dp"
+                android:layout_height="31.5dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_yellow_btn"
+                android:text="立即购买"
+                android:textColor="#010101"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

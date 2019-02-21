@@ -30,6 +30,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.OneClickDialog;
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.WeekStarListView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
@@ -109,6 +110,8 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     private int selfScore;
     private int topScore;
     private int[] rankIcons = new int[]{R.drawable.ic_headline_rank1, R.drawable.ic_headline_rank2, R.drawable.ic_headline_rank3};
+    private BaseAwesomeDialog show;
+    private boolean canShow;
 
 
     public static WeekStarListsFragment newInstance(String type, int anchorId, String nickName, String avatar, int programId) {
@@ -198,21 +201,27 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         switch (view.getId()) {
             case R.id.tv_click_gift:
                 userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
-                if (ClickUtil.isFastClick()) {
-                    if (userId == 0) {
-                        ((LiveDisplayActivity) getActivity()).login();
-                        return;
-                    }
-                    OneClickDialog.newInstance(mProgramId, mAnchorId, mGoodsId, needGifts, userId, goodsRent, goodsName)
-                            .setListener(new OneClickDialog.OnClickListener() {
-                                @Override
-                                public void onSendSuccess() {
-                                    setTopInfo();
-                                }
-                            })
-                            .setOutCancel(false)
-                            .show(getChildFragmentManager());
+//                if (ClickUtil.isFastClick()) {
+                if (userId == 0) {
+                    ((LiveDisplayActivity) getActivity()).login();
+                    return;
                 }
+                if (show != null && show.isAdded()) {
+                    return;
+                }
+                if (!canShow) {
+                    return;
+                }
+                show = OneClickDialog.newInstance(mProgramId, mAnchorId, mGoodsId, needGifts, userId, goodsRent, goodsName)
+                        .setListener(new OneClickDialog.OnClickListener() {
+                            @Override
+                            public void onSendSuccess() {
+                                setTopInfo();
+                            }
+                        })
+                        .setOutCancel(false)
+                        .show(getChildFragmentManager());
+//                }
                 break;
             default:
                 break;
@@ -340,7 +349,7 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
 
         @Override
         public void onItemClick(View view, int position) {
-            if(ClickUtil.isFastClick()){
+            if (ClickUtil.isFastClick()) {
                 if (getMyActivity() != null) {
                     ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mUserList.get(position).userId, true);
                 }
@@ -382,7 +391,7 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            if(ClickUtil.isFastClick()){
+            if (ClickUtil.isFastClick()) {
                 if (getMyActivity() != null) {
                     ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mAnchorList.get(position).userId, true);
                 }
@@ -458,7 +467,9 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
                     public void onReqSuccess(Object result) {
-                        refreshLayout.finishRefresh();
+                        if (refreshLayout != null) {
+                            refreshLayout.finishRefresh();
+                        }
                         WeekStarRankInfo weekStarRankInfo = GsonUtils.GsonToBean(result.toString(), WeekStarRankInfo.class);
                         if (weekStarRankInfo.getCode() == 200) {
                             if (weekStarRankInfo != null && weekStarRankInfo.getData() != null) {
@@ -499,7 +510,13 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                     @Override
                     public void onReqFailed(String errorMsg) {
                         LogUtils.d("onReqFailed" + errorMsg.toString());
-                        refreshLayout.finishRefresh();
+                        refreshLayout.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshLayout.finishRefresh();
+                            }
+                        });
+
                     }
                 });
     }
@@ -588,6 +605,7 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                             }
                         }
                     }
+                    canShow = true;
                 }
             }
 

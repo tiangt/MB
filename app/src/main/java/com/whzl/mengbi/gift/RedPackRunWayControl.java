@@ -59,34 +59,30 @@ public class RedPackRunWayControl {
         tvRedPack.setTranslationX(screenWidthPixels);
         tvRedPack.setText("");
         RedPackJson.ContextBean context = redPackTreasureEvent.treasureNum.context;
-        switch (redPackTreasureEvent.treasureNum.context.busiCodeName) {
-            case AppConfig.USER_SEND_REDPACKET:
-                tvRedPack.append(LightSpanString.getLightString(context.sendObjectNickname.length() > 4 ?
-                                context.sendObjectNickname.substring(0, 4) + "..." : context.sendObjectNickname,
-                        Color.parseColor("#FFF8CF2C")));
-                tvRedPack.append(LightSpanString.getLightString("在", Color.parseColor("#ffffff")));
-                tvRedPack.append(LightSpanString.getLightString(context.founderUserNickname.length() > 4 ?
-                                context.founderUserNickname.substring(0, 4) + "..." : context.founderUserNickname,
-                        Color.parseColor("#FFF8CF2C")));
-                tvRedPack.append(LightSpanString.getLightString("的直播间发了一个", Color.parseColor("#ffffff")));
-                tvRedPack.append(LightSpanString.getLightString(context.redPacketType.equals("RANDOM") ? "手气红包," : "普通红包,", Color.parseColor("#FFF8CF2C")));
-                tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒", Color.parseColor("#FFF8CF2C")));
-                tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
-                break;
-            case AppConfig.PROGRAM_TREASURE_SEND_REDPACKET:
-                tvRedPack.append(LightSpanString.getLightString(context.sendObjectNickname, Color.parseColor("#FFFFE68E")));
-                tvRedPack.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
-                tvRedPack.append(LightSpanString.getLightString("红包", Color.parseColor("#FFF8CF2C")));
-                tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFF8CF2C")));
-                tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
-                break;
-            case AppConfig.OFFICIAL_SEND_REDPACKET:
-                tvRedPack.append(LightSpanString.getLightString(" 萌比直播官方", Color.parseColor("#FF81ECFF")));
-                tvRedPack.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
-                tvRedPack.append(LightSpanString.getLightString("红包", Color.parseColor("#FFF8CF2C")));
-                tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFF8CF2C")));
-                tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
-                break;
+        if (AppConfig.USER_SEND_REDPACKET.equals(redPackTreasureEvent.treasureNum.context.busiCodeName)) {
+            tvRedPack.append(LightSpanString.getLightString(context.sendObjectNickname.length() > 4 ?
+                            context.sendObjectNickname.substring(0, 4) + "..." : context.sendObjectNickname,
+                    Color.parseColor("#FFF8CF2C")));
+            tvRedPack.append(LightSpanString.getLightString("在", Color.parseColor("#ffffff")));
+            tvRedPack.append(LightSpanString.getLightString(context.founderUserNickname.length() > 4 ?
+                            context.founderUserNickname.substring(0, 4) + "..." : context.founderUserNickname,
+                    Color.parseColor("#FFF8CF2C")));
+            tvRedPack.append(LightSpanString.getLightString("的直播间发了一个", Color.parseColor("#ffffff")));
+            tvRedPack.append(LightSpanString.getLightString(context.redPacketType.equals("RANDOM") ? "手气红包," : "普通红包,", Color.parseColor("#FFF8CF2C")));
+            tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒", Color.parseColor("#FFF8CF2C")));
+            tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
+        } else if (AppConfig.PROGRAM_TREASURE_SEND_REDPACKET.equals(redPackTreasureEvent.treasureNum.context.busiCodeName)) {
+            tvRedPack.append(LightSpanString.getLightString(context.sendObjectNickname, Color.parseColor("#FFFFE68E")));
+            tvRedPack.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
+            tvRedPack.append(LightSpanString.getLightString("红包", Color.parseColor("#FFF8CF2C")));
+            tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFF8CF2C")));
+            tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
+        } else if (AppConfig.OFFICIAL_SEND_REDPACKET.equals(redPackTreasureEvent.treasureNum.context.busiCodeName)) {
+            tvRedPack.append(LightSpanString.getLightString(" 萌比直播官方", Color.parseColor("#FF81ECFF")));
+            tvRedPack.append(LightSpanString.getLightString(" 发了一个", Color.parseColor("#ffffff")));
+            tvRedPack.append(LightSpanString.getLightString("红包", Color.parseColor("#FFF8CF2C")));
+            tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFF8CF2C")));
+            tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
         }
         showTranslateAnim();
     }

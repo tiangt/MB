@@ -26,6 +26,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.WeakHandler;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -181,6 +182,10 @@ public class RedPacketControl {
 
                     @Override
                     public void onReqFailed(String errorMsg) {
+                        if ("用户未登录".equals(errorMsg)) {
+                            ToastUtils.showToast("您需要重新登录");
+                            return;
+                        }
                         AwesomeDialog.init().setLayoutId(R.layout.dialog_redpack_off)
                                 .setConvertListener(new ViewConvertListener() {
                                     @Override
