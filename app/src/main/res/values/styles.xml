@@ -118,7 +118,7 @@
         <!--<selectedItem name="tabIndicatorColor">@android:color/white</selectedItem>-->
         <!--<item name="tabPaddingStart">15dp</item>-->
         <!--<item name="tabPaddingEnd">15dp</item>-->
-        <item name="tabBackground">@color/appBg</item>
+        <item name="tabBackground">@color/tab_color</item>
         <item name="tabTextAppearance">@style/Rank_Period_TabText</item>
         <item name="tabSelectedTextColor">#f1275b</item>
         <item name="tabGravity">fill</item>

@@ -336,5 +336,6 @@
         <activity android:name=".ui.activity.me.MyLevelActivity"/>
         <activity android:name=".ui.activity.HistoryListActivity"/>
         <activity android:name=".ui.activity.me.MyGuardActivity"/>
+        <activity android:name=".ui.activity.FindRankActivity"/>
     </application>
 </manifest>
