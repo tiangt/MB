@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
@@ -61,28 +62,31 @@ public class ShopActivity extends BaseActivity {
         titles.add("道具");
         titles.add("VIP");
         titles.add("靓号");
-        titles.add("座驾");
+//        titles.add("座驾");
 
         fragments = new ArrayList<>();
         fragments.add(new PropFragment());
         fragments.add(new VipFragment());
         fragments.add(new GoodnumFragment());
-        fragments.add(new CarFragment());
+//        fragments.add(new CarFragment());
 
 
         tabShop.setTabMode(TabLayout.MODE_FIXED);
-        tabShop.setTabGravity(TabLayout.GRAVITY_CENTER);
+        tabShop.setTabGravity(TabLayout.GRAVITY_FILL);
         tabShop.setNeedSwitchAnimation(true);
         tabShop.setSelectedTabIndicatorWidth(UIUtil.dip2px(this, 23));
 
         FragmentPagerAdaper fragmentPagerAdaper = new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles);
         viewpager.setAdapter(fragmentPagerAdaper);
-        viewpager.setOffscreenPageLimit(4);
+        viewpager.setOffscreenPageLimit(3);
         tabShop.setupWithViewPager(viewpager);
         for (int i = 0; i < tabShop.getTabCount(); i++) {
+            View view = LayoutInflater.from(ShopActivity.this).inflate(R.layout.tab_shop, null);
+            TextView tvTitle = view.findViewById(R.id.tv_title);
+            tvTitle.setText(titles.get(i));
+            tabShop.getTabAt(i).setCustomView(view);
             if (i == 0) {
-                View view = LayoutInflater.from(ShopActivity.this).inflate(R.layout.tab_shop, null);
-                tabShop.getTabAt(i).setCustomView(view);
+                view.findViewById(R.id.tv_tips).setVisibility(View.VISIBLE);
             }
         }
         viewpager.setCurrentItem(currentSelectedIndex);
