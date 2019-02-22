@@ -77,6 +77,9 @@ public class ToastUtils {
     }
 
     public static void showToastUnify(Activity activity, String content) {
+        if (activity == null || activity.isFinishing()) {
+            return;
+        }
         LayoutInflater inflater = activity.getLayoutInflater();
         View view = inflater.inflate(R.layout.toast_unify, null);
         TextView tv = view.findViewById(R.id.tv_content);
@@ -107,7 +110,7 @@ public class ToastUtils {
                 snackbar.dismiss();
             }
         });
-        setSnackbarColor(snackbar,Color.parseColor("#fefefe"),Color.parseColor("#181818"),Color.parseColor("#fefefe"));
+        setSnackbarColor(snackbar, Color.parseColor("#fefefe"), Color.parseColor("#181818"), Color.parseColor("#fefefe"));
         snackbar.show();
         return snackbar;
     }
@@ -124,7 +127,7 @@ public class ToastUtils {
                 snackbar.dismiss();
             }
         });
-        setSnackbarColor(snackbar,Color.parseColor("#fefefe"),Color.parseColor("#181818"),Color.parseColor("#fefefe"));
+        setSnackbarColor(snackbar, Color.parseColor("#fefefe"), Color.parseColor("#181818"), Color.parseColor("#fefefe"));
         snackbar.show();
         return snackbar;
     }
@@ -137,7 +140,7 @@ public class ToastUtils {
         snackbar.setActionTextColor(actionColor);
     }
 
-    public static void showCenterToast(String text){
+    public static void showCenterToast(String text) {
         if (toast == null) {
             toast = Toast.makeText(BaseApplication.getInstance(), text, Toast.LENGTH_SHORT);
         } else {

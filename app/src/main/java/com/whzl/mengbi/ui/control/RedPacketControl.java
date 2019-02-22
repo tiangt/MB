@@ -24,6 +24,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.util.AmountConversionUitls;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -52,6 +53,8 @@ public class RedPacketControl {
     public BaseListAdapter redpackAdapter;
     private Long userId;
     private String sessionId;
+    private BaseAwesomeDialog offDialog;
+    private BaseAwesomeDialog okDialog;
 
     public RedPacketControl(Context context, RecyclerView rvRedPack) {
         this.context = context;
@@ -99,7 +102,7 @@ public class RedPacketControl {
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    if (listBean.leftSeconds == 0) {
+                    if (listBean.leftSeconds == -1) {
                         GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_red_pack_on_live, ivState);
                         tvTime.setText("");
                         tvSecond.setText("");
@@ -120,8 +123,8 @@ public class RedPacketControl {
                         handler.post(runnableWait);
                         return;
                     }
+                    tvTime.setText((listBean.leftSeconds) == -1 ? "0" : (listBean.leftSeconds) + "");
                     listBean.leftSeconds = listBean.leftSeconds - 1;
-                    tvTime.setText((listBean.leftSeconds) + "");
                     handler.postDelayed(this, 1000);
                 }
             };
@@ -136,10 +139,10 @@ public class RedPacketControl {
                     if (!TextUtils.isEmpty(tvTime.getText())) {
                         return;
                     }
-                    openRed(listBean);
                     redPackList.remove(position);
                     handler.removeCallbacksAndMessages(null);
                     redpackAdapter.notifyDataSetChanged();
+                    openRed(listBean);
                 }
             });
         }
@@ -157,7 +160,10 @@ public class RedPacketControl {
                     public void onReqSuccess(Object result) {
                         OpenRedBean openRedBean = GsonUtils.GsonToBean(result.toString(), OpenRedBean.class);
                         if (openRedBean.code == 200) {
-                            AwesomeDialog.init().setLayoutId(R.layout.dialog_redpack_ok)
+                            if (okDialog != null && okDialog.isAdded()) {
+                                return;
+                            }
+                            okDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_redpack_ok)
                                     .setConvertListener(new ViewConvertListener() {
                                         @Override
                                         protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
@@ -167,8 +173,11 @@ public class RedPacketControl {
                                     .setOutCancel(true)
                                     .show(((LiveDisplayActivity) context).getSupportFragmentManager());
                             EventBus.getDefault().post(new UserInfoUpdateEvent());
-                        } else {
-                            AwesomeDialog.init().setLayoutId(R.layout.dialog_redpack_off)
+                        } else if (openRedBean.code == 1008) {
+                            if (offDialog != null && offDialog.isAdded()) {
+                                return;
+                            }
+                            offDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_redpack_off)
                                     .setConvertListener(new ViewConvertListener() {
                                         @Override
                                         protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
@@ -182,10 +191,6 @@ public class RedPacketControl {
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        if ("用户未登录".equals(errorMsg)) {
-                            ToastUtils.showToast("您需要重新登录");
-                            return;
-                        }
                         AwesomeDialog.init().setLayoutId(R.layout.dialog_redpack_off)
                                 .setConvertListener(new ViewConvertListener() {
                                     @Override

@@ -178,7 +178,6 @@ import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.ui.widget.view.WeekStarView;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BitmapUtils;
-import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.HttpCallBackListener;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -422,6 +421,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private CompositeDisposable compositeDisposable;
     private BaseAwesomeDialog privateChatListDialog;
     private BaseAwesomeDialog awesomeDialog;
+    private BaseAwesomeDialog personalInfoDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -613,33 +613,36 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pollAdapter.setListerner(position -> {
             AudienceListBean.AudienceInfoBean audienceInfoBean = mAudienceList.get(position + 1);
             long userId = audienceInfoBean.getUserid();
-            if (ClickUtil.isFastClick()) {
-                PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
-                        .setListener((RoomUserInfo.DataBean mViewedUser) -> {
-                            if (mUserListDialog != null && mUserListDialog.isAdded()) {
-                                mUserListDialog.dismiss();
-                            }
-                            if (mRankDialog != null && mRankDialog.isAdded()) {
-                                mRankDialog.dismiss();
-                            }
-                            if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
-                                mGuardianDialog.dismiss();
-                            }
-                            if (headlineDialog != null && headlineDialog.isAdded()) {
-                                headlineDialog.dismiss();
-                            }
-                            if (mViewedUser != null) {
-                                PrivateChatUser chatUser = new PrivateChatUser();
-                                chatUser.setPrivateUserId(mViewedUser.getUserId());
-                                chatUser.setAvatar(mViewedUser.getAvatar());
-                                chatUser.setName(mViewedUser.getNickname());
-                                showPrivateChatDialog(chatUser);
-                            }
-                        })
-                        .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
-                        .setDimAmount(0)
-                        .show(getSupportFragmentManager());
+            if (personalInfoDialog != null && personalInfoDialog.isAdded()) {
+                return;
             }
+            personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
+                    .setListener((RoomUserInfo.DataBean mViewedUser) -> {
+                        if (mUserListDialog != null && mUserListDialog.isAdded()) {
+                            mUserListDialog.dismiss();
+                        }
+                        if (mRankDialog != null && mRankDialog.isAdded()) {
+                            mRankDialog.dismiss();
+                        }
+                        if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
+                            mGuardianDialog.dismiss();
+                        }
+                        if (headlineDialog != null && headlineDialog.isAdded()) {
+                            headlineDialog.dismiss();
+                        }
+                        if (mViewedUser != null) {
+                            PrivateChatUser chatUser = new PrivateChatUser();
+                            chatUser.setPrivateUserId(mViewedUser.getUserId());
+                            chatUser.setAvatar(mViewedUser.getAvatar());
+                            chatUser.setName(mViewedUser.getNickname());
+                            showPrivateChatDialog(chatUser);
+                        }
+                    })
+                    .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+                    .setDimAmount(0)
+                    .setOutCancel(false)
+                    .show(getSupportFragmentManager());
+
         });
         mAudienceRecycler.setAdapter(pollAdapter);
     }
@@ -808,33 +811,35 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
-                if (ClickUtil.isFastClick()) {
-                    PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
-                            .setListener((RoomUserInfo.DataBean mViewedUser) -> {
-                                if (mUserListDialog != null && mUserListDialog.isAdded()) {
-                                    mUserListDialog.dismiss();
-                                }
-                                if (mRankDialog != null && mRankDialog.isAdded()) {
-                                    mRankDialog.dismiss();
-                                }
-                                if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
-                                    mGuardianDialog.dismiss();
-                                }
-                                if (headlineDialog != null && headlineDialog.isAdded()) {
-                                    headlineDialog.dismiss();
-                                }
-                                if (mViewedUser != null) {
-                                    PrivateChatUser chatUser = new PrivateChatUser();
-                                    chatUser.setPrivateUserId(mViewedUser.getUserId());
-                                    chatUser.setAvatar(mViewedUser.getAvatar());
-                                    chatUser.setName(mViewedUser.getNickname());
-                                    showPrivateChatDialog(chatUser);
-                                }
-                            })
-                            .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
-                            .setDimAmount(0)
-                            .show(getSupportFragmentManager());
+                if (personalInfoDialog != null && personalInfoDialog.isAdded()) {
+                    return;
                 }
+                personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
+                        .setListener((RoomUserInfo.DataBean mViewedUser) -> {
+                            if (mUserListDialog != null && mUserListDialog.isAdded()) {
+                                mUserListDialog.dismiss();
+                            }
+                            if (mRankDialog != null && mRankDialog.isAdded()) {
+                                mRankDialog.dismiss();
+                            }
+                            if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
+                                mGuardianDialog.dismiss();
+                            }
+                            if (headlineDialog != null && headlineDialog.isAdded()) {
+                                headlineDialog.dismiss();
+                            }
+                            if (mViewedUser != null) {
+                                PrivateChatUser chatUser = new PrivateChatUser();
+                                chatUser.setPrivateUserId(mViewedUser.getUserId());
+                                chatUser.setAvatar(mViewedUser.getAvatar());
+                                chatUser.setName(mViewedUser.getNickname());
+                                showPrivateChatDialog(chatUser);
+                            }
+                        })
+                        .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+                        .setDimAmount(0)
+                        .setOutCancel(false)
+                        .show(getSupportFragmentManager());
                 //主播信息
                 break;
             case R.id.btn_follow:
@@ -898,20 +903,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (mUserListDialog != null && mUserListDialog.isAdded()) {
                     return;
                 }
-                if (ClickUtil.isFastClick()) {
-                    mUserListDialog = UserListDialog.newInstance(mProgramId)
-                            .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
-                            .show(getSupportFragmentManager());
-                }
+
+                mUserListDialog = UserListDialog.newInstance(mProgramId)
+                        .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
+                        .show(getSupportFragmentManager());
                 break;
             case R.id.rl_guard_number:
-                if (ClickUtil.isFastClick()) {
-                    mGuardianDialog = GuardianListDialog.newInstance(mProgramId, mAnchor)
-                            .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
-                            .show(getSupportFragmentManager());
+                if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
+                    return;
                 }
+                mGuardianDialog = GuardianListDialog.newInstance(mProgramId, mAnchor)
+                        .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
+                        .show(getSupportFragmentManager());
                 break;
             case R.id.btn_share:
+                if (mShareDialog != null && mShareDialog.isAdded()) {
+                    return;
+                }
                 mShareDialog = ShareDialog.newInstance(mProgramId, mAnchor, mAnchorCover, mShareUrl)
                         .setShowBottom(true)
                         .setDimAmount(0)
@@ -922,12 +930,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     login();
                     return;
                 }
-                if (mFreeGiftDialog == null) {
-                    mFreeGiftDialog = FreeGiftDialog.newInstance(mProgramId, mAnchorId)
-                            .setShowBottom(true)
-                            .setDimAmount(0);
-                    ((FreeGiftDialog) mFreeGiftDialog).setListener(() -> mLivePresenter.getDailyTaskState(mUserId));
+                if (mFreeGiftDialog != null && mFreeGiftDialog.isAdded()) {
+                    return;
                 }
+                mFreeGiftDialog = FreeGiftDialog.newInstance(mProgramId, mAnchorId)
+                        .setShowBottom(true)
+                        .setDimAmount(0);
+                ((FreeGiftDialog) mFreeGiftDialog).setListener(() -> mLivePresenter.getDailyTaskState(mUserId));
                 mFreeGiftDialog.show(getSupportFragmentManager());
                 break;
             case R.id.btn_more:
@@ -1287,7 +1296,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RedPackTreasureEvent redPackTreasureEvent) {
         if (!redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OPEN_REDPACKET) &&
-                !redPackTreasureEvent.treasureNum.context.busiCodeName.equals("RP_RETURN_TO_U")&&
+                !redPackTreasureEvent.treasureNum.context.busiCodeName.equals("RP_RETURN_TO_U") &&
                 !redPackTreasureEvent.treasureNum.context.busiCodeName.equals("RP_HAD_FINISHED")) {
             tvRedBag.setText(redPackTreasureEvent.treasureNum.context.programTreasureNum + "");
         }
@@ -1986,7 +1995,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
 
     public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
-        PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
+        if (personalInfoDialog != null && personalInfoDialog.isAdded()) {
+            return;
+        }
+        personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
                 .setListener((RoomUserInfo.DataBean mViewedUser) -> {
                     if (mUserListDialog != null && mUserListDialog.isAdded()) {
                         mUserListDialog.dismiss();
@@ -2011,6 +2023,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                 .setDimAmount(0)
                 .setShowBottom(false)
+                .setOutCancel(false)
                 .show(getSupportFragmentManager());
     }
 
@@ -2388,6 +2401,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         headLineView.setViews(views);
         headLineView.setOnItemClickListener((position, view) -> {
+            if (headlineDialog != null && headlineDialog.isAdded()) {
+                return;
+            }
             if (1 == position) {
                 headlineDialog = HeadlineDialog.newInstance(0, mProgramId, mAnchorId, mAnchorName, mAnchorAvatar)
                         .show(getSupportFragmentManager());
