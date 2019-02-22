@@ -32,6 +32,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.fragment.RankFragment;
+import com.whzl.mengbi.ui.fragment.main.FindFragment;
 import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 import com.whzl.mengbi.ui.fragment.main.HomeFragment;
 import com.whzl.mengbi.ui.fragment.main.MeFragment;
@@ -77,7 +78,7 @@ public class MainActivity extends BaseActivity {
     private AwesomeDialog awesomeDialog;
     private static final String TAG_EXIT = "exit";
     private int[] colors = new int[]{Color.parseColor("#f9f9f9"), Color.parseColor("#f9f9f9"),
-            Color.parseColor("#f9f9f9"), Color.parseColor("#f9f9f9"), Color.parseColor("#181818")};
+            Color.parseColor("#f9f9f9"), Color.parseColor("#181818"), Color.parseColor("#181818")};
 
     @Override
     protected void initEnv() {
@@ -94,8 +95,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        fragments = new Fragment[]{new HomeFragment(), FollowFragment.newInstance(), MessageFragment.newInstance(),
-                RankFragment.newInstance(), MineFragment.newInstance()};
+        fragments = new Fragment[]{new HomeFragment(),
+                FollowFragment.newInstance(),
+                MessageFragment.newInstance(),
+                FindFragment.newInstance(),
+                MineFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
         rgTab.setOnCheckedChangeListener((group, checkedId) -> {
@@ -125,11 +129,11 @@ public class MainActivity extends BaseActivity {
 
                 //榜单
                 case R.id.rb_rank:
-//                    if (checkLogin()) {
-                    setTabChange(3);
-//                        return;
-//                    }
-//                    login();
+                    if (checkLogin()) {
+                        setTabChange(3);
+                        return;
+                    }
+                    login();
                     break;
 
                 case R.id.rb_me:
@@ -180,10 +184,10 @@ public class MainActivity extends BaseActivity {
         if (index == currentSelectedIndex) {
             return;
         }
-        if(index == 4){
+        if (index == 3 || index == 4) {
             StatusBarUtil.setDarkMode(this);
             StatusBarUtil.setColor(this, colors[index], 0);
-        }else{
+        } else {
             StatusBarUtil.setLightMode(this);
             StatusBarUtil.setColor(this, colors[index], 0);
         }

@@ -279,4 +279,9 @@ public class URLContentUtils {
      * 获取热搜主播列表
      */
     public static final String TRENDING_ANCHOR = "v1/anchor/heat-degree-list";
+
+    /**
+     * 榜单
+     */
+    public static final String FIND_RANK = "v1/rank/rank";
 }

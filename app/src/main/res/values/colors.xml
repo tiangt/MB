@@ -215,6 +215,7 @@
     <color name="tran_black9">#30000000</color>
     <color name="tran_white1">#90ffffff</color>
     <color name="tran_white2">#30ffffff</color>
+    <color name="tran_white3">#70ffffff</color>
     <color name="white2">#f5f9fa</color>
 
     <color name="text_content_free_gift">#90fefefe</color>
@@ -237,4 +238,6 @@
 
     <color name="dark_voilet">#9400D3</color>
     <color name="slate_blue">#4169E1</color>
+    <color name="tab_color">#00000000</color>
+
 </resources>
