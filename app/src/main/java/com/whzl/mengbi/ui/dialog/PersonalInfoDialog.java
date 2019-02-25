@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -52,6 +53,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
 
     @BindView(R.id.iv_bg_personal)
     ImageView ivBgPersonal;
+    @BindView(R.id.cl_dialog_personal_info)
+    ConstraintLayout constraintLayout;
     @BindView(R.id.btn_buy_royal)
     ImageButton btnBuyRoyal;
     @BindView(R.id.btn_personal)
@@ -72,7 +75,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     TextView tvFollow;
     @BindView(R.id.tv_ranking)
     TextView tVRank;
-    @BindView(R.id.tv_pretty_num)
+    @BindView(R.id.tv_pretty_num_dialog_personal)
     PrettyNumText tvPrettyNum;
     @BindView(R.id.tv_private_chat)
     TextView tvPrivateChat;
@@ -99,6 +102,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private String liveState;
     private PersonalInfoBean.DataBean userBean;
     private int mAnchorLevel;
+    private BaseAwesomeDialog operateMoreDialog;
 
     public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId) {
         Bundle args = new Bundle();
@@ -218,8 +222,12 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     dismiss();
                     return;
                 }
-                OperateMoreDialog.newInstance(mUserId, mVisitorId, mProgramId, mUser)
+                if (operateMoreDialog != null && operateMoreDialog.isAdded()) {
+                    return;
+                }
+                operateMoreDialog = OperateMoreDialog.newInstance(mUserId, mVisitorId, mProgramId, mUser)
                         .setShowBottom(true)
+                        .setOutCancel(false)
                         .show(getActivity().getSupportFragmentManager());
                 break;
             case R.id.rl_at:
@@ -228,9 +236,9 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     dismiss();
                     return;
                 }
-                if (listener != null) {
-                    listener.onPrivateChatClick(mViewedUser);
-                }
+//                if (listener != null) {
+//                    listener.onPrivateChatClick(mViewedUser);
+//                }
                 ((LiveDisplayActivity) getActivity()).showAtChat("@" + mViewedUser.getNickname() + " ");
                 dismiss();
                 break;
@@ -363,7 +371,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
             if ("PRETTY_NUM".equals(goodsListBean.getGoodsType())) {
                 tvPrettyNum.setVisibility(View.VISIBLE);
                 tvPrettyNum.setPrettyTextSize(10);
-                mTvAnchorId.setVisibility(View.GONE);
                 if ("A".equals(goodsListBean.getGoodsColor())) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                     tvPrettyNum.setPrettyType("A");
@@ -509,31 +516,40 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private void setRoyalBackground(int royalLevel) {
         switch (royalLevel) {
             case 0:
-                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_civilian, ivBgPersonal);
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_civilian, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_civilian);
                 break;
             case 1:
-                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_bronze, ivBgPersonal);
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_bronze, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_bronze);
                 break;
             case 2:
-                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_silver, ivBgPersonal);
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_silver, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_silver);
                 break;
             case 3:
-                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_gold, ivBgPersonal);
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_gold, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_gold);
                 break;
             case 4:
-                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_platinum, ivBgPersonal);
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_platinum, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_platinum);
                 break;
             case 5:
-                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_diamond, ivBgPersonal);
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_diamond, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_diamond);
                 break;
             case 6:
-                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_star, ivBgPersonal);
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_star, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_star);
                 break;
             case 7:
-                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_king, ivBgPersonal);
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_king, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_king);
                 break;
             default:
-                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_civilian, ivBgPersonal);
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_civilian, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_civilian);
                 break;
         }
     }

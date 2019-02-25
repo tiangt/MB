@@ -8,11 +8,12 @@
     android:orientation="vertical">
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/cl_dialog_personal_info"
         android:layout_width="370dp"
         android:layout_height="330dp"
         android:layout_gravity="center"
         android:layout_marginBottom="50dp"
-        android:background="@null">
+        android:background="@drawable/bg_civilian">
 
         <ImageView
             android:id="@+id/iv_bg_personal"
@@ -126,7 +127,7 @@
                     android:textSize="11sp" />
 
                 <com.whzl.mengbi.ui.widget.view.PrettyNumText
-                    android:id="@+id/tv_pretty_num"
+                    android:id="@+id/tv_pretty_num_dialog_personal"
                     android:layout_width="wrap_content"
                     android:layout_height="15dp"
                     android:layout_below="@id/tv_anchor_id"

@@ -17,15 +17,28 @@
         android:textColor="@color/textcolor_white_toolbar"
         android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/tv_toolbar_menu_text"
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="right"
-        android:layout_marginRight="17dp"
-        android:gravity="center"
-        android:textColor="#b9b9b9"
-        android:textSize="13sp" />
+        android:layout_marginRight="17dp">
 
+        <TextView
+            android:id="@+id/tv_toolbar_menu_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="#b9b9b9"
+            android:textSize="13sp" />
+
+        <ImageButton
+            android:id="@+id/iv_toolbar_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@null"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>

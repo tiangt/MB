@@ -20,6 +20,7 @@ import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.ui.activity.RedbagActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.AmountConversionUitls;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -163,11 +164,15 @@ public class RedBagFragment extends BaseFragment {
                 KeyBoardUtil.closeKeybord(etNumber, getContext());
                 if (type.equals(NORMAL)) {
                     if (checkNormal()) {
-                        sendRedPack("NORMAL");
+                        if (ClickUtil.isFastClick()) {
+                            sendRedPack("NORMAL");
+                        }
                     }
                 } else if (type.equals(LUCK)) {
                     if (checkLuck()) {
-                        sendRedPack("RANDOM");
+                        if (ClickUtil.isFastClick()) {
+                            sendRedPack("RANDOM");
+                        }
                     }
                 }
                 break;

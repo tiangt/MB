@@ -419,7 +419,7 @@
     <array name="tips_title_draw_layout">
         <item>充值</item>
         <item>商城</item>
-        <item>背包</item>
+        <!--<item>背包</item>-->
         <item>福利</item>
         <item>战绩</item>
         <item>守护</item>

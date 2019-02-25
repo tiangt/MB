@@ -194,11 +194,11 @@ public class CommonMotherFragment extends BaseFragment {
 
                     @Override
                     public void onError(ApiResult<GoodsPriceBatchBean> body) {
-                        if (viewPager == null) {
-                            viewPager = ButterKnife.findById(getMyActivity(), R.id.view_pager);
-                        }
-                        viewPager.setVisibility(View.GONE);
-                        llBackPack.setVisibility(View.VISIBLE);
+//                        if (viewPager == null) {
+//                            viewPager = ButterKnife.findById(getMyActivity(), R.id.view_pager);
+//                        }
+//                        viewPager.setVisibility(View.GONE);
+//                        llBackPack.setVisibility(View.VISIBLE);
                     }
                 });
     }

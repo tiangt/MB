@@ -2,21 +2,26 @@ package com.whzl.mengbi.ui.fragment.me;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.PropBean;
+import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -34,6 +39,19 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class PropFragment extends BasePullListFragment<PropBean.ListBean, BasePresenter> {
     @Override
+    protected void initEnv() {
+        super.initEnv();
+        StatusBarUtil.setColor(getMyActivity(), ContextCompat.getColor(getMyActivity(), R.color.status_white_toolbar));
+        ((FrgActivity) getMyActivity()).setTitle("我的道具");
+        ((FrgActivity) getMyActivity()).setTitleMenuIcon(R.drawable.ic_jump_shop_mine, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.showToast("sss");
+            }
+        });
+    }
+
+    @Override
     protected boolean setLoadMoreEndShow() {
         return false;
     }
@@ -48,9 +66,15 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean, BasePr
         super.init();
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_prop, getPullView(), false);
         getAdapter().addHeaderView(view);
+        View view1 = LayoutInflater.from(getMyActivity()).inflate(R.layout.divider_shawdow_white, getPullView(), false);
+        addHeadTips(view1);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_prop_pack, getPullView(), false);
         setEmptyView(view2);
         getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
+        View foot = LayoutInflater.from(getMyActivity()).inflate(R.layout.item_load_more_end, getPullView(), false);
+        TextView tvFoot = foot.findViewById(R.id.tv_foot);
+        tvFoot.setText("没有更多了~");
+        setFooterViewHolder(new LoadMoreFootViewHolder(foot));
     }
 
     public static PropFragment newInstance() {

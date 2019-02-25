@@ -16,7 +16,8 @@
             android:id="@+id/iv_num_item_goodnum"
             android:layout_width="21.5dp"
             android:layout_height="21.5dp"
-            android:layout_marginRight="-1dp"
+            android:layout_marginRight="-1.5dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_pretty_a" />
 
         <TextView

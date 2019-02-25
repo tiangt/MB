@@ -91,7 +91,9 @@ public class AutoPollAdapter extends BaseListAdapter {
             super.onItemClick(view, position);
             long userId = mAudienceList.get(position + 1).getUserid();
 //            showAudienceInfoDialog(userId, false);
-            listerner.onClick(position);
+            if (listerner != null) {
+                listerner.onClick(position);
+            }
         }
     }
 

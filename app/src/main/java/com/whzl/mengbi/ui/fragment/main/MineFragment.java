@@ -20,6 +20,7 @@ import com.whzl.mengbi.presenter.impl.MePresenterImpl;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.SettingActivity;
 import com.whzl.mengbi.ui.activity.UserInfoActivity;
+import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.activity.me.AccountSwitchActivity;
 import com.whzl.mengbi.ui.activity.me.BillActivity;
 import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
@@ -30,6 +31,7 @@ import com.whzl.mengbi.ui.activity.me.PackActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.ui.fragment.me.PropFragment;
 import com.whzl.mengbi.ui.view.MeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.DeviceUtils;
@@ -210,9 +212,11 @@ public class MineFragment extends BaseFragment implements MeView {
                 break;
 
             case R.id.tv_mine_tool:
-                Intent intent = new Intent(getMyActivity(), PackActivity.class);
-                intent.putExtra("index", 0);
-                startActivity(intent);
+//                Intent intent = new Intent(getMyActivity(), PackActivity.class);
+//                intent.putExtra("index", 0);
+//                startActivity(intent);
+                startActivity(new Intent(getMyActivity(), FrgActivity.class)
+                        .putExtra(FrgActivity.FRAGMENT_CLASS, PropFragment.class));
                 break;
 
             case R.id.tv_mine_vip:
@@ -305,7 +309,7 @@ public class MineFragment extends BaseFragment implements MeView {
         startActivity(intent);
     }
 
-    private void jumpToMyGuardActivity(){
+    private void jumpToMyGuardActivity() {
         Intent intent = new Intent(getContext(), MyGuardActivity.class);
         startActivity(intent);
     }

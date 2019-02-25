@@ -60,7 +60,7 @@ public class DrawLayoutControl {
     private int[] imgIds = new int[]{
             R.drawable.ic_recharge_draw_layout,
             R.drawable.ic_shop_draw_layout,
-            R.drawable.ic_pack_draw_layout,
+//            R.drawable.ic_pack_draw_layout,
             R.drawable.ic_welfare_draw_layout,
             R.drawable.ic_pk_draw_layout,
             R.drawable.ic_guard_draw_layout,
@@ -320,14 +320,14 @@ public class DrawLayoutControl {
                     }
                     activity.startActivity(new Intent(activity, ShopActivity.class));
                     break;
+//                case 2:
+//                    if (((LiveDisplayActivity) activity).mUserId == 0) {
+//                        ((LiveDisplayActivity) activity).login();
+//                        return;
+//                    }
+//                    activity.startActivity(new Intent(activity, PackActivity.class));
+//                    break;
                 case 2:
-                    if (((LiveDisplayActivity) activity).mUserId == 0) {
-                        ((LiveDisplayActivity) activity).login();
-                        return;
-                    }
-                    activity.startActivity(new Intent(activity, PackActivity.class));
-                    break;
-                case 3:
                     if (((LiveDisplayActivity) activity).mUserId == 0) {
                         ((LiveDisplayActivity) activity).login();
                         return;
@@ -335,7 +335,7 @@ public class DrawLayoutControl {
                     activity.startActivity(new Intent(activity, FrgActivity.class)
                             .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
                     break;
-                case 4:
+                case 3:
                     if (((LiveDisplayActivity) activity).mUserId == 0) {
                         ((LiveDisplayActivity) activity).login();
                         return;
@@ -346,21 +346,21 @@ public class DrawLayoutControl {
                             .putExtra("anchorId", ((LiveDisplayActivity) activity).mAnchorId)
                             .putExtra("anchorAvatar", ((LiveDisplayActivity) activity).mAnchorAvatar));
                     break;
-                case 5:
+                case 4:
                     if (((LiveDisplayActivity) activity).mUserId == 0) {
                         ((LiveDisplayActivity) activity).login();
                         return;
                     }
                     ((LiveDisplayActivity) activity).showGuardDialog();
                     break;
-                case 6:
+                case 5:
                     if (((LiveDisplayActivity) activity).mUserId == 0) {
                         ((LiveDisplayActivity) activity).login();
                         return;
                     }
                     activity.startActivity(new Intent(activity, SettingActivity.class).putExtra("from", "live"));
                     break;
-                case 7:
+                case 6:
                     activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
                     break;
             }

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
@@ -30,11 +31,21 @@ public class FrgActivity extends BaseActivity {
         toolbar.setBackgroundColor(color);
     }
 
+    public void setTitleMenuIcon(int rid, View.OnClickListener clickListener) {
+        ImageButton imageButton = findViewById(R.id.iv_toolbar_menu);
+        imageButton.setVisibility(View.VISIBLE);
+        imageButton.setBackgroundResource(rid);
+        if (clickListener != null) {
+            imageButton.setOnClickListener(clickListener);
+        }
+    }
+
+
     public void setTitleBlack() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_return_gray);
         TextView tvTool = findViewById(R.id.tv_toolbar_title);
-        tvTool.setTextColor(ContextCompat.getColor(this,R.color.text_view));
+        tvTool.setTextColor(ContextCompat.getColor(this, R.color.text_view));
     }
 
     @Override
