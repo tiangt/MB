@@ -1,90 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="52dp"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:paddingLeft="5dp"
-            android:textColor="#FFD50AEA"
-            android:textSize="15sp" />
-
+        <ImageView
+            android:id="@+id/iv_num_item_pretty_pack"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="-1.5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_pretty_a" />
 
         <TextView
-            android:id="@+id/tv_day"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:id="@+id/tv_num_item_pretty_pack"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@drawable/bg_pretty_num_a"
             android:gravity="center"
-            android:paddingLeft="5dp"
-            android:textColor="@color/text_hint"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_state"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="14sp" />
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_control"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:gravity="center"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:textColor="@color/white"
-                android:textSize="14sp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/tv_add"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/bg_button_pack_blue_border"
-                android:gravity="center"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:text="续费"
-                android:textColor="#2198dc"
-                android:textSize="14sp" />
-        </FrameLayout>
-
+            android:textSize="14.9sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/divider_color_pack" />
+    <!--<TextView-->
+    <!--android:id="@+id/tv_name"-->
+    <!--android:layout_width="78dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:gravity="center"-->
+    <!--android:paddingLeft="5dp"-->
+    <!--android:textColor="#FFD50AEA"-->
+    <!--android:textSize="15sp" />-->
+
+
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:paddingLeft="5dp"
+        android:textColor="@color/text_hint"
+        android:textSize="14sp" />
+
+
+    <LinearLayout
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <Switch
+            android:id="@+id/tv_control"
+            style="@style/switch_play_notify"
+            android:layout_width="45dp"
+            android:layout_height="25dp"
+            android:checked="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="78dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/tv_add"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_button_pack_blue_border"
+            android:gravity="center"
+            android:text="续费"
+            android:textColor="#70000000"
+            android:textSize="15sp" />
+    </LinearLayout>
+
 </LinearLayout>

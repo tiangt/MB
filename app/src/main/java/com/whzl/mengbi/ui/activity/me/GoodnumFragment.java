@@ -28,7 +28,6 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.eventbus.event.BuyGoodNumEvent;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
@@ -51,8 +50,6 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +57,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -615,7 +611,6 @@ public class GoodnumFragment extends BaseFragment {
                     @Override
                     public void onSuccess() {
                         ToastUtils.showToastUnify(getMyActivity(), "购买成功");
-                        EventBus.getDefault().post(new BuyGoodNumEvent());
                         search("");
                         if (buyDialog != null) {
                             buyDialog.dismiss();

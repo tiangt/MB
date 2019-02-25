@@ -4,20 +4,26 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
+import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
-import com.whzl.mengbi.eventbus.event.BuyGoodNumEvent;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
+import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
@@ -28,13 +34,10 @@ import com.whzl.mengbi.ui.widget.view.PullRecycler;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
@@ -63,7 +66,20 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
     @Override
     protected void initEnv() {
         super.initEnv();
-        EventBus.getDefault().register(this);
+        StatusBarUtil.setColor(getMyActivity(), ContextCompat.getColor(getMyActivity(), R.color.status_white_toolbar));
+        ((FrgActivity) getMyActivity()).setTitle("我的靓号");
+        ((FrgActivity) getMyActivity()).setTitleMenuIcon(R.drawable.ic_jump_shop_mine, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getMyActivity(), ShopActivity.class).putExtra(ShopActivity.SELECT, 2));
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData(PullRecycler.ACTION_PULL_TO_REFRESH, 1);
     }
 
     @Override
@@ -72,11 +88,6 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_pretty_pack, getPullView(), false);
         getAdapter().addHeaderView(view);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_pretty_pack, getPullView(), false);
-        TextView tvOpen = view2.findViewById(R.id.tv_open);
-        tvOpen.setOnClickListener(v -> {
-            Intent intent = new Intent(getMyActivity(), ShopActivity.class).putExtra("select", 3);
-            startActivity(intent);
-        });
         setEmptyView(view2);
         getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
@@ -122,16 +133,16 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
 
 
     class ViewHolder extends BaseViewHolder {
-        @BindView(R.id.tv_name)
-        TextView tvName;
         @BindView(R.id.tv_day)
         TextView tvDay;
-        @BindView(R.id.tv_state)
-        TextView tvState;
         @BindView(R.id.tv_control)
-        TextView tvControl;
+        Switch tvControl;
         @BindView(R.id.tv_add)
         TextView tvAdd;
+        @BindView(R.id.iv_num_item_pretty_pack)
+        ImageView ivnum;
+        @BindView(R.id.tv_num_item_pretty_pack)
+        TextView tvnum;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -141,63 +152,120 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
         @Override
         public void onBindViewHolder(int position) {
             PackPrettyBean.ListBean bean = mDatas.get(position);
-            tvName.setText(bean.goodsName);
-            tvDay.setText("剩余" + bean.surplusDay + "天");
-            tvState.setText("T".equals(bean.isEquip) ? "使用中" : "闲置");
-            tvState.setTextColor("T".equals(bean.isEquip) ? ContextCompat.getColor(getMyActivity(), R.color.text_color_use_pack) :
-                    ContextCompat.getColor(getMyActivity(), R.color.text_color_wait_pack));
-            tvControl.setText("T".equals(bean.isEquip) ? "暂停" : "使用");
-            tvControl.setBackgroundResource("T".equals(bean.isEquip) ? R.drawable.bg_button_pack_orange : R.drawable.bg_button_pack_blue);
-            tvControl.setOnClickListener(new View.OnClickListener() {
+            initTv(tvnum, ivnum, bean);
+            tvDay.setText("剩余");
+            tvDay.append(LightSpanString.getLightString(String.valueOf(bean.surplusDay), Color.parseColor("#ff2d4e")));
+            tvDay.append("天");
+            tvControl.setChecked("T".equals(bean.isEquip));
+            tvControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
-                public void onClick(View v) {
-                    dialog = AwesomeDialog.init();
-                    dialog.setLayoutId(R.layout.dialog_car_pack)
-                            .setConvertListener(new ViewConvertListener() {
-                                @Override
-                                protected void convertView(com.whzl.mengbi.ui.dialog.base.ViewHolder holder, BaseAwesomeDialog dialog) {
-                                    if ("T".equals(bean.isEquip)) {
-                                        //暂停
-                                        holder.setText(R.id.tv_content, "确定暂停该靓号吗？");
-                                    } else {
-                                        //使用
-                                        holder.setText(R.id.tv_content, "确定使用该靓号吗？");
-                                    }
-                                    holder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    holder.setOnClickListener(R.id.tv_confirm, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if ("T".equals(bean.isEquip)) {
-                                                //暂停
-                                                control("F", bean, tvState, tvControl);
-                                            } else {
-                                                //使用
-                                                control("T", bean, tvState, tvControl);
-                                            }
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                    holder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                                }
-                            }).show(getFragmentManager());
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        control("T", bean, tvControl);
+                    } else {
+                        control("F", bean, tvControl);
+                    }
                 }
             });
+//            tvControl.setText("T".equals(bean.isEquip) ? "暂停" : "使用");
+//            tvControl.setBackgroundResource("T".equals(bean.isEquip) ? R.drawable.bg_button_pack_orange : R.drawable.bg_button_pack_blue);
+//            tvControl.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    dialog = AwesomeDialog.init();
+//                    dialog.setLayoutId(R.layout.dialog_car_pack)
+//                            .setConvertListener(new ViewConvertListener() {
+//                                @Override
+//                                protected void convertView(com.whzl.mengbi.ui.dialog.base.ViewHolder holder, BaseAwesomeDialog dialog) {
+//                                    if ("T".equals(bean.isEquip)) {
+//                                        //暂停
+//                                        holder.setText(R.id.tv_content, "确定暂停该靓号吗？");
+//                                    } else {
+//                                        //使用
+//                                        holder.setText(R.id.tv_content, "确定使用该靓号吗？");
+//                                    }
+//                                    holder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            dialog.dismiss();
+//                                        }
+//                                    });
+//                                    holder.setOnClickListener(R.id.tv_confirm, new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            if ("T".equals(bean.isEquip)) {
+//                                                //暂停
+//                                                control("F", bean, tvControl);
+//                                            } else {
+//                                                //使用
+//                                                control("T", bean, tvControl);
+//                                            }
+//                                            dialog.dismiss();
+//                                        }
+//                                    });
+//                                    holder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            dialog.dismiss();
+//                                        }
+//                                    });
+//                                }
+//                            }).show(getFragmentManager());
+//                }
+//            });
             tvAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getPretty(bean.goodsId);
                 }
             });
+        }
+    }
+
+    private void initTv(TextView tvNum, ImageView ivNum, PackPrettyBean.ListBean digitsBean) {
+        int i = digitsBean.goodsName.length();
+        switch (i) {
+            case 4:
+                tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.9f);
+                break;
+            case 5:
+                tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.9f);
+                break;
+            case 6:
+                tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12.1f);
+                break;
+            case 7:
+                tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12.1f);
+                break;
+            default:
+                tvNum.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12.1f);
+                break;
+        }
+        tvNum.setText(digitsBean.goodsName);
+        if ("A".equals(digitsBean.goodsColor)) {
+            tvNum.setTextColor(Color.parseColor("#f42434"));
+            tvNum.setBackgroundResource(R.drawable.bg_pretty_num_a);
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_a, ivNum);
+        } else if ("B".equals(digitsBean.goodsColor)) {
+            tvNum.setTextColor(Color.parseColor("#ff9601"));
+            tvNum.setBackgroundResource(R.drawable.bg_pretty_num_b);
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_b, ivNum);
+        } else if ("C".equals(digitsBean.goodsColor)) {
+            tvNum.setTextColor(Color.parseColor("#9887f9"));
+            tvNum.setBackgroundResource(R.drawable.bg_pretty_num_c);
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_c, ivNum);
+        } else if ("D".equals(digitsBean.goodsColor)) {
+            tvNum.setTextColor(Color.parseColor("#5ecac2"));
+            tvNum.setBackgroundResource(R.drawable.bg_pretty_num_d);
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_d, ivNum);
+        } else if ("E".equals(digitsBean.goodsColor)) {
+            tvNum.setTextColor(Color.parseColor("#5dbaf6"));
+            tvNum.setBackgroundResource(R.drawable.bg_pretty_num_e);
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_e, ivNum);
+        } else {
+            tvNum.setTextColor(Color.parseColor("#5dbaf6"));
+            tvNum.setBackgroundResource(R.drawable.bg_pretty_num_e);
+            GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_pretty_e, ivNum);
         }
     }
 
@@ -257,7 +325,7 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                 });
     }
 
-    private void control(String t, PackPrettyBean.ListBean listBean, TextView tvState, TextView tvControl) {
+    private void control(String t, PackPrettyBean.ListBean listBean, Switch tvControl) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L));
         paramsMap.put("goodsSn", listBean.goodsSn);
@@ -273,17 +341,15 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                         if ("T".equals(t)) {
                             listBean.isEquip = "T";
                             ToastUtils.showCustomToast(getMyActivity(), "靓号启用成功！");
-                            tvState.setText("使用中");
-                            tvState.setTextColor(Color.parseColor("#2cd996"));
-                            tvControl.setText("暂停");
-                            tvControl.setBackgroundResource(R.drawable.bg_button_pack_orange);
+//                            tvControl.setText("暂停");
+//                            tvControl.setBackgroundResource(R.drawable.bg_button_pack_orange);
+                            tvControl.setChecked(true);
                         } else {
                             listBean.isEquip = "F";
                             ToastUtils.showCustomToast(getMyActivity(), "靓号暂停成功");
-                            tvState.setText("闲置");
-                            tvState.setTextColor(Color.parseColor("#ff611b"));
-                            tvControl.setText("使用");
-                            tvControl.setBackgroundResource(R.drawable.bg_button_pack_blue);
+//                            tvControl.setText("使用");
+//                            tvControl.setBackgroundResource(R.drawable.bg_button_pack_blue);
+                            tvControl.setChecked(false);
                         }
                     }
 
@@ -291,20 +357,10 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                     public void onError(int code) {
                         if (code == 503) {
                             ToastUtils.showCustomToast(getMyActivity(), "启用失败，请先暂停正在使用的靓号");
+                            tvControl.setChecked(false);
                         }
                     }
                 });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEvent(BuyGoodNumEvent event) {
-        mPage = 1;
-        loadData(PullRecycler.ACTION_PULL_TO_REFRESH, mPage);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
-    }
 }

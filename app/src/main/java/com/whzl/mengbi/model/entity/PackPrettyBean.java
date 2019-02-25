@@ -27,5 +27,6 @@ public class PackPrettyBean {
         public String goodsName;
         public String isEquip;
         public int surplusDay;
+        public String goodsColor;
     }
 }

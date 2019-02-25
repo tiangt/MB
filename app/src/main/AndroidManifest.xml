@@ -310,7 +310,6 @@
         <activity android:name=".ui.activity.me.ShopActivity" />
         <activity android:name=".ui.activity.me.BuyVipActivity" />
         <activity android:name=".ui.activity.JsBridgeActivity" />
-        <activity android:name=".ui.activity.me.BuyGoodnumActivity" />
         <activity android:name=".ui.activity.SearchActivity" />
         <activity android:name=".ui.activity.me.PackActivity" />
         <activity android:name=".ui.activity.base.FrgActivity" />
