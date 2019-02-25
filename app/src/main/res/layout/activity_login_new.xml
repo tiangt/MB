@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <LinearLayout
@@ -12,16 +12,13 @@
 
         <include layout="@layout/layout_title" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="6.5dp"
-            android:background="@drawable/view_space" />
+        <include layout="@layout/divider_shawdow_white" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
             android:src="@drawable/login_logo" />
 
         <RelativeLayout
@@ -41,8 +38,8 @@
                 <LinearLayout
                     android:layout_width="300dp"
                     android:layout_height="145dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/bg_login_round">
+                    android:background="@drawable/bg_login_round"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -53,9 +50,9 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_login_phone"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="33dp"/>
+                            android:layout_marginLeft="33dp"
+                            android:src="@drawable/ic_login_phone" />
 
                         <LinearLayout
                             android:layout_width="207dp"
@@ -68,16 +65,16 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="13dp"
                                 android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="13dp"
                                 android:src="@drawable/ic_login_red" />
 
                             <EditText
                                 android:id="@+id/et_phone"
                                 android:layout_width="0dp"
-                                android:layout_weight="1"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
                                 android:background="@null"
                                 android:gravity="center_vertical"
                                 android:hint="@string/phone_number_hint"
@@ -92,7 +89,7 @@
                                 android:layout_height="15dp"
                                 android:layout_marginRight="7dp"
                                 android:background="@drawable/ic_search_close"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -105,9 +102,9 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_login_psw"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="33dp"/>
+                            android:layout_marginLeft="33dp"
+                            android:src="@drawable/ic_login_psw" />
 
                         <LinearLayout
                             android:layout_width="207dp"
@@ -127,10 +124,10 @@
                             <EditText
                                 android:id="@+id/et_password"
                                 android:layout_width="0dp"
-                                android:layout_weight="1"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="10dp"
+                                android:layout_weight="1"
                                 android:background="@null"
                                 android:hint="@string/password_hint"
                                 android:inputType="textPassword"
@@ -144,7 +141,7 @@
                                 android:layout_height="15dp"
                                 android:layout_marginRight="7dp"
                                 android:background="@drawable/ic_search_close"
-                                android:visibility="gone"/>
+                                android:visibility="gone" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -207,15 +204,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/white"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="30dp"
+        android:background="@color/white">
 
         <ImageButton
             android:id="@+id/btn_qq_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:src="@drawable/ic_login_qq"/>
+            android:src="@drawable/ic_login_qq" />
 
         <ImageButton
             android:id="@+id/btn_wechat_login"
@@ -224,7 +221,7 @@
             android:layout_marginLeft="67dp"
             android:layout_toRightOf="@id/btn_qq_login"
             android:background="@null"
-            android:src="@drawable/ic_login_weixin"/>
+            android:src="@drawable/ic_login_weixin" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -245,18 +242,18 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/tv_other_login"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@drawable/ic_login_other_left"/>
+            android:layout_toLeftOf="@id/tv_other_login"
+            android:src="@drawable/ic_login_other_left" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_other_login"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_login_other_right"/>
+            android:layout_toRightOf="@id/tv_other_login"
+            android:src="@drawable/ic_login_other_right" />
 
     </RelativeLayout>
 

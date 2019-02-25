@@ -6,9 +6,9 @@ import java.util.HashMap;
 public class AmountConversionUitls {
     /**
      * 货币转换 1000000 return 1百万萌币 10000 return 1万萌币 1000 return 1千萌币
-	 *
+     *
      * @param amount
-	 * @return
+     * @return
      */
     public static HashMap<String, String> amountConversionMap(long amount) {
         HashMap<String, String> map = new HashMap<String, String>();
@@ -43,11 +43,11 @@ public class AmountConversionUitls {
      * @return
      */
     public static String coinConversion(long amount) {
-        if(amount >= 10000000){
-            return amount / 10000000 + "千万萌币";
+        if (amount >= 10000000) {
+            return amount / 10000 + "万萌币";
         }
         if (amount >= 1000000) {
-            return amount / 1000000 + "百万萌币";
+            return amount / 10000 + "万萌币";
         }
 
         if (amount >= 10000) {
@@ -61,7 +61,7 @@ public class AmountConversionUitls {
         return amount + "萌币";
     }
 
-    public static String amountConversion(long amount){
+    public static String amountConversion(long amount) {
         return "" + amount / 100.0;
 //        if(amount >= 10000000){
 //            return ""+amount/100;
