@@ -27,7 +27,6 @@ import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
 import com.whzl.mengbi.ui.activity.me.MyGuardActivity;
 import com.whzl.mengbi.ui.activity.me.MyLevelActivity;
 import com.whzl.mengbi.ui.activity.me.MyWalletActivity;
-import com.whzl.mengbi.ui.activity.me.PackActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
