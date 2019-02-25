@@ -47,8 +47,8 @@ public class MyGuardActivity extends BaseActivity {
         titles.add("我守护的");
         titles.add("我管理的");
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(FollowSortFragment.newInstance("guard"));
-        fragments.add(FollowSortFragment.newInstance("manage"));
+        fragments.add(FollowSortFragment.newInstance(FollowSortFragment.GUARD));
+        fragments.add(FollowSortFragment.newInstance(FollowSortFragment.MANAGE));
         fragmentPagerAdaper = new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles);
         vpFollow.setAdapter(fragmentPagerAdaper);
         vpFollow.setOffscreenPageLimit(2);

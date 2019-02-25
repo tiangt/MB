@@ -227,9 +227,9 @@
         <activity android:name=".ui.activity.camera.Camera2Activity"></activity>
         <activity
             android:name=".ui.activity.LiveDisplayActivity"
+            android:hardwareAccelerated="true"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustNothing"
-            android:hardwareAccelerated="true">
+            android:windowSoftInputMode="adjustNothing">
 
         </activity>
 
@@ -296,7 +296,6 @@
                 <!--<data android:scheme="wxbaa94b521372015c" />-->
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.FollowActivity" />
         <activity android:name=".ui.activity.SettingActivity" />
         <activity android:name=".ui.activity.AboutUsActivity" />
         <activity android:name=".ui.activity.WatchHistoryActivity" />
@@ -307,7 +306,9 @@
         <activity
             android:name=".ui.activity.CommWebActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".ui.activity.me.ShopActivity" />
+        <activity
+            android:name=".ui.activity.me.ShopActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.activity.me.BuyVipActivity" />
         <activity android:name=".ui.activity.JsBridgeActivity" />
         <activity android:name=".ui.activity.SearchActivity" />
@@ -331,10 +332,10 @@
         <activity android:name=".ui.activity.me.MyChipActivity" />
         <activity android:name=".ui.activity.me.AccountSwitchActivity" />
         <activity android:name=".ui.activity.RedbagActivity" />
-        <activity android:name=".ui.activity.me.MyWalletActivity"/>
-        <activity android:name=".ui.activity.me.MyLevelActivity"/>
-        <activity android:name=".ui.activity.HistoryListActivity"/>
-        <activity android:name=".ui.activity.me.MyGuardActivity"/>
-        <activity android:name=".ui.activity.FindRankActivity"/>
+        <activity android:name=".ui.activity.me.MyWalletActivity" />
+        <activity android:name=".ui.activity.me.MyLevelActivity" />
+        <activity android:name=".ui.activity.HistoryListActivity" />
+        <activity android:name=".ui.activity.me.MyGuardActivity" />
+        <activity android:name=".ui.activity.FindRankActivity" />
     </application>
 </manifest>

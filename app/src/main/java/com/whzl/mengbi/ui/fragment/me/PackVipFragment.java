@@ -18,7 +18,6 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
-import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
@@ -147,8 +146,7 @@ public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean, 
             tvDay.append(LightSpanString.getLightString(String.valueOf(bean.surplusDay), Color.parseColor("#ff2d4e")));
             tvDay.append("天");
             tvAdd.setOnClickListener(v -> {
-                Intent intent = new Intent(getMyActivity(), BuyVipActivity.class);
-                startActivityForResult(intent, REQUESTCODE);
+                startActivity(new Intent(getMyActivity(), ShopActivity.class).putExtra(ShopActivity.SELECT, 1));
             });
 
             if (bean.surplusDay == 0) {
