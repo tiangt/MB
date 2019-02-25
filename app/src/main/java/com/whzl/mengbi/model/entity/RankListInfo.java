@@ -2,10 +2,7 @@ package com.whzl.mengbi.model.entity;
 
 import java.util.List;
 
-/**
- * @author cliang
- * @date 2019.2.21
- */
+
 public class RankListInfo {
 
     public int code;

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_last"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="11.5dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/iv_nothing"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_toRightOf="@id/tv_last"
+        android:src="@drawable/ic_rank_nothing" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/iv_nothing"
+        android:text="虚位以待"
+        android:textColor="#404040"
+        android:textSize="15sp" />
+
+</RelativeLayout>
