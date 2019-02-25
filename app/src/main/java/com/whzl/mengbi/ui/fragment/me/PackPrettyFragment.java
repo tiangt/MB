@@ -89,6 +89,8 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
         getAdapter().addHeaderView(view);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_pretty_pack, getPullView(), false);
         setEmptyView(view2);
+        View view1 = LayoutInflater.from(getMyActivity()).inflate(R.layout.divider_shawdow_white, getPullView(), false);
+        addHeadTips(view1);
         getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
 
@@ -157,13 +159,23 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
             tvDay.append(LightSpanString.getLightString(String.valueOf(bean.surplusDay), Color.parseColor("#ff2d4e")));
             tvDay.append("天");
             tvControl.setChecked("T".equals(bean.isEquip));
-            tvControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            tvControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if (isChecked) {
+//                        control("T", bean, tvControl);
+//                    } else {
+//                        control("F", bean, tvControl);
+//                    }
+//                }
+//            });
+            tvControl.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        control("T", bean, tvControl);
-                    } else {
+                public void onClick(View v) {
+                    if (!tvControl.isChecked()) {
                         control("F", bean, tvControl);
+                    } else {
+                        control("T", bean, tvControl);
                     }
                 }
             });
@@ -356,7 +368,7 @@ public class PackPrettyFragment extends BasePullListFragment<PackPrettyBean.List
                     @Override
                     public void onError(int code) {
                         if (code == 503) {
-                            ToastUtils.showCustomToast(getMyActivity(), "启用失败，请先暂停正在使用的靓号");
+//                            ToastUtils.showCustomToast(getMyActivity(), "启用失败，请先暂停正在使用的靓号");
                             tvControl.setChecked(false);
                         }
                     }

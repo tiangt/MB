@@ -84,6 +84,8 @@ public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean, 
 //            startActivityForResult(intent, REQUESTCODE);
 //        });
         setEmptyView(view2);
+        View view1 = LayoutInflater.from(getMyActivity()).inflate(R.layout.divider_shawdow_white, getPullView(), false);
+        addHeadTips(view1);
         getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
 
