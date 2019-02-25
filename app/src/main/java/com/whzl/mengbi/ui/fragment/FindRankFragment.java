@@ -20,6 +20,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.model.entity.HeadlineListBean;
 import com.whzl.mengbi.model.entity.RankListBean;
 import com.whzl.mengbi.model.entity.RankListInfo;
@@ -319,11 +320,18 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
 
             if (detailBean.rank != null) {
                 if ("CELEBRITY".equals(rankName)) {
-                    tvGap.setText(StringUtils.formatNumber(detailBean.rank.gap) + "萌点");
+//                    tvGap.setText(StringUtils.formatNumber(detailBean.rank.gap) + "经验");
+                    tvGap.setText(LightSpanString.getLightString(StringUtils.formatNumber(detailBean.rank.gap), Color.parseColor("#ff611c")));
+                    tvGap.append(LightSpanString.getLightString("经验", Color.parseColor("#757575")));
                 } else if ("RICH".equals(rankName)) {
-                    tvGap.setText(StringUtils.formatNumber(detailBean.rank.gap) + "萌币");
+//                    tvGap.setText(StringUtils.formatNumber(detailBean.rank.gap) + "萌币");
+                    tvGap.setText(LightSpanString.getLightString(StringUtils.formatNumber(detailBean.rank.gap), Color.parseColor("#ff611c")));
+                    tvGap.append(LightSpanString.getLightString("萌币", Color.parseColor("#757575")));
                 } else if ("POPULAR".equals(rankName)) {
-                    tvGap.setText(StringUtils.formatNumber(detailBean.rank.gap) + "个");
+//                    tvGap.setText(StringUtils.formatNumber(detailBean.rank.gap) + "个");
+                    tvGap.setText(LightSpanString.getLightString(StringUtils.formatNumber(detailBean.rank.gap), Color.parseColor("#ff611c")));
+                    tvGap.append(LightSpanString.getLightString("个", Color.parseColor("#757575")));
+
                 }
 
             }
