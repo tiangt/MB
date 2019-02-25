@@ -27,6 +27,7 @@ import butterknife.BindView;
  * @date 2018/9/18
  */
 public class ShopActivity extends BaseActivity {
+    public static String SELECT = "select";
     @BindView(R.id.tab_shop)
     TabLayout tabShop;
     @BindView(R.id.viewpager)
@@ -42,7 +43,7 @@ public class ShopActivity extends BaseActivity {
     @Override
     protected void initEnv() {
         super.initEnv();
-        int select = getIntent().getIntExtra("select", 0);
+        int select = getIntent().getIntExtra(SELECT, 0);
         currentSelectedIndex = select;
         StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.status_white_toolbar));
     }

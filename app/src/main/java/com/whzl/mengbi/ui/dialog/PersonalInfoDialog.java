@@ -37,6 +37,7 @@ import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -189,7 +190,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 dismiss();
                 break;
             case R.id.btn_buy_royal:
-                Intent intentShop = new Intent(getActivity(), ShopActivity.class);
+                Intent intentShop = new Intent(getActivity(), WXPayEntryActivity.class);
                 intentShop.putExtra("select", 2);
                 startActivity(intentShop);
                 dismiss();

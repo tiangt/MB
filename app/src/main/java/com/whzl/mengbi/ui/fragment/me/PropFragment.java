@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment.me;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -11,13 +12,14 @@ import android.widget.TextView;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
+import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
 import com.whzl.mengbi.util.SPUtils;
@@ -46,14 +48,9 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean, BasePr
         ((FrgActivity) getMyActivity()).setTitleMenuIcon(R.drawable.ic_jump_shop_mine, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastUtils.showToast("sss");
+                startActivity(new Intent(getMyActivity(), ShopActivity.class));
             }
         });
-    }
-
-    @Override
-    protected boolean setLoadMoreEndShow() {
-        return false;
     }
 
     @Override
@@ -70,11 +67,7 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean, BasePr
         addHeadTips(view1);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_prop_pack, getPullView(), false);
         setEmptyView(view2);
-        getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
-        View foot = LayoutInflater.from(getMyActivity()).inflate(R.layout.item_load_more_end, getPullView(), false);
-        TextView tvFoot = foot.findViewById(R.id.tv_foot);
-        tvFoot.setText("没有更多了~");
-        setFooterViewHolder(new LoadMoreFootViewHolder(foot));
+        getPullView().setBackgroundColor(Color.parseColor("#ffffff"));
     }
 
     public static PropFragment newInstance() {
@@ -82,6 +75,12 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean, BasePr
         PropFragment propFragment = new PropFragment();
         propFragment.setArguments(args);
         return propFragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData(PullRecycler.ACTION_PULL_TO_REFRESH, 1);
     }
 
     @Override
@@ -135,7 +134,9 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean, BasePr
             PropBean.ListBean bean = mDatas.get(position);
             tvName.setText(bean.goodsName);
             tvNum.setText(String.valueOf(bean.goodsSum));
-            tvTime.setText("剩余" + String.valueOf(bean.surplusDay) + "天");
+            tvTime.setText("剩余");
+            tvTime.append(LightSpanString.getLightString(String.valueOf(bean.surplusDay), Color.parseColor("#ff2d4e")));
+            tvTime.append("天");
         }
 
     }

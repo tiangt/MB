@@ -31,6 +31,10 @@ import com.whzl.mengbi.ui.activity.me.PackActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.ui.fragment.me.PackCarFragment;
+import com.whzl.mengbi.ui.fragment.me.PackDiscountFragment;
+import com.whzl.mengbi.ui.fragment.me.PackPrettyFragment;
+import com.whzl.mengbi.ui.fragment.me.PackVipFragment;
 import com.whzl.mengbi.ui.fragment.me.PropFragment;
 import com.whzl.mengbi.ui.view.MeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
@@ -220,27 +224,35 @@ public class MineFragment extends BaseFragment implements MeView {
                 break;
 
             case R.id.tv_mine_vip:
-                Intent intentVip = new Intent(getMyActivity(), PackActivity.class);
-                intentVip.putExtra("index", 1);
-                startActivity(intentVip);
+//                Intent intentVip = new Intent(getMyActivity(), PackActivity.class);
+//                intentVip.putExtra("index", 1);
+//                startActivity(intentVip);
+                startActivity(new Intent(getMyActivity(), FrgActivity.class)
+                        .putExtra(FrgActivity.FRAGMENT_CLASS, PackVipFragment.class));
                 break;
 
             case R.id.tv_mine_pretty:
-                Intent intentPretty = new Intent(getMyActivity(), PackActivity.class);
-                intentPretty.putExtra("index", 2);
-                startActivity(intentPretty);
+//                Intent intentPretty = new Intent(getMyActivity(), PackActivity.class);
+//                intentPretty.putExtra("index", 2);
+//                startActivity(intentPretty);
+                startActivity(new Intent(getMyActivity(), FrgActivity.class)
+                        .putExtra(FrgActivity.FRAGMENT_CLASS, PackPrettyFragment.class));
                 break;
 
             case R.id.tv_mine_car:
-                Intent intentCar = new Intent(getMyActivity(), PackActivity.class);
-                intentCar.putExtra("index", 3);
-                startActivity(intentCar);
+//                Intent intentCar = new Intent(getMyActivity(), PackActivity.class);
+//                intentCar.putExtra("index", 3);
+//                startActivity(intentCar);
+                startActivity(new Intent(getMyActivity(), FrgActivity.class)
+                        .putExtra(FrgActivity.FRAGMENT_CLASS, PackCarFragment.class));
                 break;
 
             case R.id.tv_mine_coupon:
-                Intent intentCoupon = new Intent(getMyActivity(), PackActivity.class);
-                intentCoupon.putExtra("index", 4);
-                startActivity(intentCoupon);
+//                Intent intentCoupon = new Intent(getMyActivity(), PackActivity.class);
+//                intentCoupon.putExtra("index", 4);
+//                startActivity(intentCoupon);
+                startActivity(new Intent(getMyActivity(), FrgActivity.class)
+                        .putExtra(FrgActivity.FRAGMENT_CLASS, PackDiscountFragment.class));
                 break;
 
             case R.id.rl_composite:

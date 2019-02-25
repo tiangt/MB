@@ -3,18 +3,23 @@ package com.whzl.mengbi.ui.fragment.me;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
+import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.PackvipBean;
+import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
+import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
@@ -35,8 +40,27 @@ import io.reactivex.schedulers.Schedulers;
  * @author nobody
  * @date 2018/10/16
  */
-public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean,BasePresenter> {
+public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean, BasePresenter> {
     private int REQUESTCODE = 200;
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        StatusBarUtil.setColor(getMyActivity(), ContextCompat.getColor(getMyActivity(), R.color.status_white_toolbar));
+        ((FrgActivity) getMyActivity()).setTitle("我的VIP");
+        ((FrgActivity) getMyActivity()).setTitleMenuIcon(R.drawable.ic_jump_shop_mine, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getMyActivity(), ShopActivity.class).putExtra(ShopActivity.SELECT, 1));
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadData(PullRecycler.ACTION_PULL_TO_REFRESH, 1);
+    }
 
     @Override
     protected boolean setLoadMoreEndShow() {
@@ -54,11 +78,11 @@ public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean,B
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_packvip, getPullView(), false);
         getAdapter().addHeaderView(view);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_vip_pack, getPullView(), false);
-        TextView tvOpen = view2.findViewById(R.id.tv_open);
-        tvOpen.setOnClickListener(v -> {
-            Intent intent = new Intent(getMyActivity(), BuyVipActivity.class);
-            startActivityForResult(intent, REQUESTCODE);
-        });
+//        TextView tvOpen = view2.findViewById(R.id.tv_open);
+//        tvOpen.setOnClickListener(v -> {
+//            Intent intent = new Intent(getMyActivity(), BuyVipActivity.class);
+//            startActivityForResult(intent, REQUESTCODE);
+//        });
         setEmptyView(view2);
         getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
@@ -102,8 +126,6 @@ public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean,B
 
 
     class ViewHolder extends BaseViewHolder {
-        @BindView(R.id.tv_name)
-        TextView tvName;
         @BindView(R.id.tv_day)
         TextView tvDay;
         @BindView(R.id.tv_add)
@@ -119,8 +141,9 @@ public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean,B
         @Override
         public void onBindViewHolder(int position) {
             PackvipBean.ListBean bean = mDatas.get(position);
-            tvName.setText(bean.goodsName);
-            tvDay.setText("剩余" + bean.surplusDay + "天");
+            tvDay.setText("剩余");
+            tvDay.append(LightSpanString.getLightString(String.valueOf(bean.surplusDay), Color.parseColor("#ff2d4e")));
+            tvDay.append("天");
             tvAdd.setOnClickListener(v -> {
                 Intent intent = new Intent(getMyActivity(), BuyVipActivity.class);
                 startActivityForResult(intent, REQUESTCODE);
