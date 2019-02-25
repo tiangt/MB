@@ -57,11 +57,12 @@
 
         <ImageView
             android:id="@+id/iv_live_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="13dp"
+            android:layout_height="16dp"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/tv_nick_name"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <TextView

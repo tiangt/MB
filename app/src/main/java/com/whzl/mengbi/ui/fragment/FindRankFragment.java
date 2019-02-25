@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
@@ -22,6 +24,8 @@ import com.whzl.mengbi.model.entity.HeadlineListBean;
 import com.whzl.mengbi.model.entity.RankListBean;
 import com.whzl.mengbi.model.entity.RankListInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
+import com.whzl.mengbi.ui.activity.me.MyChipActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -30,6 +34,7 @@ import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
+import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -109,7 +114,12 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
         mAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return mListData == null ? 0 : mListData.size();
+                if (mListData == null) {
+                    return  0;
+                } else {
+                    return mListData.size();
+                }
+//                return mListData == null ? 0 : mListData.size();
             }
 
             @Override
@@ -133,6 +143,25 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
             }
         };
         recycler.setAdapter(mAdapter);
+    }
+
+    private class LoadMoreFooterViewHolder extends BaseViewHolder {
+
+        public LoadMoreFooterViewHolder(View view) {
+            super(view);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            // 强制关闭复用，刷新动画
+            this.setIsRecyclable(false);
+            // 设置自定义加载中和到底了效果
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            // 设置点击效果，比如加载失败，点击重试
+        }
     }
 
     private void getData() {
@@ -164,7 +193,6 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
                 }
             }
 
-
             @Override
             public void onReqFailed(String errorMsg) {
                 if (refreshLayout != null) {
@@ -173,7 +201,6 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
             }
         });
     }
-
 
     class TopViewHolder extends BaseViewHolder {
 
@@ -218,6 +245,24 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
                     ivLevelIcon.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(mListData.get(0).user.level));
                 }
             }
+
+            if (mListData.get(0).program != null && "T".equals(mListData.get(0).program.status)) {
+                ivLiveState.setVisibility(View.VISIBLE);
+                Glide.with(getMyActivity()).asGif().load(R.drawable.gif_live).into(ivLiveState);
+            } else {
+                ivLiveState.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            RankListInfo.DataBean.ListBean detailBean = mListData.get(position);
+            if (detailBean.program != null && detailBean.program.programId > 0) {
+                Intent intent = new Intent(getContext(), LiveDisplayActivity.class);
+                intent.putExtra("programId", detailBean.program.programId);
+                startActivity(intent);
+            }
         }
     }
 
@@ -246,10 +291,13 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
             GlideImageLoader.getInstace().displayImage(getMyActivity(), mListData.get(position).user.avatar, ivUserImage);
             tvRank.setText(position + 1 + "");
             RankListInfo.DataBean.ListBean detailBean = mListData.get(position);
-            ivStatus.setVisibility(detailBean.program != null && "T".equals(detailBean.program.status) ? View.VISIBLE : View.GONE);
-            tvNickName.setTextColor(detailBean.program != null && "T".equals(detailBean.program.status)
-                    ? Color.parseColor("#1edd8e")
-                    : Color.parseColor("#404040"));
+            if (detailBean.program != null && "T".equals(detailBean.program.status)) {
+                ivStatus.setVisibility(View.VISIBLE);
+                Glide.with(getMyActivity()).asGif().load(R.drawable.gif_live).into(ivStatus);
+            } else {
+                ivStatus.setVisibility(View.GONE);
+            }
+
             if (detailBean.user != null) {
                 tvNickName.setText(detailBean.user.nickname);
                 if ("ANCHOR_LEVEL".equals(detailBean.user.levelType)) {
@@ -258,8 +306,16 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
                     ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(detailBean.user.level));
                 }
             }
+
             if (detailBean.rank != null) {
-                tvGap.setText(detailBean.rank.gap + "");
+                if ("CELEBRITY".equals(rankName)) {
+                    tvGap.setText(StringUtils.formatNumber(detailBean.rank.gap) + "萌点");
+                } else if ("RICH".equals(rankName)) {
+                    tvGap.setText(StringUtils.formatNumber(detailBean.rank.gap) + "萌币");
+                } else if ("POPULAR".equals(rankName)) {
+                    tvGap.setText(StringUtils.formatNumber(detailBean.rank.gap) + "个");
+                }
+
             }
         }
 
