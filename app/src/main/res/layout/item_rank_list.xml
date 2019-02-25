@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/iv_user_image" />
 
     <TextView
@@ -38,7 +38,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="12.5dp"
         android:layout_toRightOf="@id/iv_user_level"
-        android:textColor="@drawable/selector_rank_list_anchor_nick_name_text_color"
+        android:textColor="#404040"
         android:textSize="15sp"
         android:maxEms="7"
         android:singleLine="true"
@@ -46,20 +46,19 @@
 
     <ImageView
         android:id="@+id/iv_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="13dp"
+        android:layout_height="16dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="14dp"
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@id/tv_nick_name"
-        android:src="@drawable/ic_home_live_middle"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <RelativeLayout
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="25.5dp">
+        android:layout_marginRight="12.5dp">
 
         <TextView
             android:id="@+id/tv_gap_desc"
@@ -76,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/tv_gap_desc"
+            android:singleLine="true"
             android:textColor="#ff611c"
             android:textSize="12sp" />
 
