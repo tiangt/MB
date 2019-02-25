@@ -5,22 +5,18 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="wrap_content" />
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
-        android:src="@drawable/ic_empty_prop" />
+        android:layout_marginTop="108dp"
+        android:src="@drawable/img_empty_follow" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="27.5dp"
         android:gravity="center"
-        android:text="您还没有充值优惠券！"
-        android:textColor="@color/colorCommNotActive"
-        android:textSize="20sp" />
+        android:text="你还没有返利券"
+        android:textColor="#60000000"
+        android:textSize="12sp" />
 </LinearLayout>

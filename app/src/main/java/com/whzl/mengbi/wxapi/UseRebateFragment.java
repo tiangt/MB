@@ -87,7 +87,9 @@ public class UseRebateFragment extends BasePullListFragment<RebateBean.ListBean,
         public void onBindViewHolder(int position) {
             RebateBean.ListBean listBean = mDatas.get(position);
             String[] split = listBean.goodsName.split("%");
-            tvName.setText(split[0] + "%");
+            if (split[0]!=null) {
+                tvName.setText(split[0] + "%");
+            }
             tvTime.setText("有效期截止："+listBean.expDate);
             llUse.setOnClickListener(new View.OnClickListener() {
                 @Override

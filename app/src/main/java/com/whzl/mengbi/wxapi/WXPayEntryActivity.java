@@ -486,7 +486,9 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                 tvRebateTicket.setVisibility(View.GONE);
                 scale = rebate.scale;
                 String[] split = rebate.goodsName.split("%");
-                tvRebateName.setText(split[0] + "%");
+                if (split[0]!=null) {
+                    tvRebateName.setText(split[0] + "%");
+                }
                 tvRebateMoney.setText("+");
                 if (currentPosition == -1) {
                     tvRebateMoney.append("0");

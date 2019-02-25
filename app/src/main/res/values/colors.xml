@@ -240,4 +240,6 @@
     <color name="slate_blue">#4169E1</color>
     <color name="tab_color">#00000000</color>
 
+    <color name="text_color_mine_pack">#70000000</color>
+
 </resources>

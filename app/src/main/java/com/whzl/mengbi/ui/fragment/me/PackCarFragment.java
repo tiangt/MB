@@ -14,6 +14,7 @@ import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
@@ -139,7 +140,9 @@ public class PackCarFragment extends BasePullListFragment<PackcarBean.ListBean, 
             PackcarBean.ListBean bean = mDatas.get(position);
             tvName.setText(bean.goodsName);
             GlideImageLoader.getInstace().displayImage(getMyActivity(), bean.goodsPic, iv);
-            tvDay.setText("剩余" + bean.surplusDay + "天");
+            tvDay.setText("剩余");
+            tvDay.append(LightSpanString.getLightString(String.valueOf(bean.surplusDay), Color.parseColor("#ff2d4e")));
+            tvDay.append("天");
             tvControl.setChecked("T".equals(bean.isEquip));
 //            tvControl.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //                @Override

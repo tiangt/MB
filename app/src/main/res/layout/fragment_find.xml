@@ -20,60 +20,57 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="6.5dp"
-        android:background="@drawable/view_space" />
+    <include layout="@layout/divider_shawdow_white" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:orientation="horizontal">
+        android:paddingTop="20dp">
 
         <TextView
             android:id="@+id/tv_rank_star"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="明星榜"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_rank_star"
             android:gravity="center_horizontal"
+            android:text="明星榜"
             android:textColor="#fc34a1"
-            android:textSize="13sp"
-            android:drawableTop="@drawable/ic_rank_star"/>
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_rank_regal"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="富豪榜"
-            android:gravity="center_horizontal"
-            android:textColor="#4884ff"
+            android:layout_weight="1"
             android:drawableTop="@drawable/ic_rank_regal"
-            android:textSize="13sp"/>
+            android:gravity="center_horizontal"
+            android:text="富豪榜"
+            android:textColor="#4884ff"
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_rank_pop"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="人气榜"
-            android:gravity="center_horizontal"
-            android:textColor="#ffc547"
+            android:layout_weight="1"
             android:drawableTop="@drawable/ic_rank_pop"
-            android:textSize="13sp"/>
+            android:gravity="center_horizontal"
+            android:text="人气榜"
+            android:textColor="#ffc547"
+            android:textSize="13sp" />
     </LinearLayout>
 
     <com.whzl.mengbi.ui.widget.view.ShadowContainer
         android:layout_width="wrap_content"
         android:layout_height="25dp"
+        android:layout_gravity="center_horizontal"
         app:containerCornerRadius="5dp"
         app:containerDeltaLength="5dp"
         app:containerShadowColor="@color/tran_black6"
-        app:containerShadowRadius="5dp"
-        android:layout_gravity="center_horizontal">
+        app:containerShadowRadius="5dp">
 
         <RelativeLayout
             android:id="@+id/rl_find_task"
@@ -91,26 +88,26 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="19dp"
                 android:layout_marginRight="19dp"
-                android:src="@drawable/ic_find_task"/>
+                android:src="@drawable/ic_find_task" />
 
             <TextView
                 android:id="@+id/tv_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/iv_task"
                 android:text="任务中心"
                 android:textColor="@color/tran_black2"
-                android:layout_toRightOf="@id/iv_task"
-                android:layout_marginTop="10dp"
                 android:textSize="13sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="做任务赚萌币"
-                android:textColor="@color/tran_black5"
                 android:layout_below="@id/tv_task"
                 android:layout_toRightOf="@id/iv_task"
-                android:textSize="9sp"/>
+                android:text="做任务赚萌币"
+                android:textColor="@color/tran_black5"
+                android:textSize="9sp" />
         </RelativeLayout>
 
     </com.whzl.mengbi.ui.widget.view.ShadowContainer>
@@ -118,11 +115,11 @@
     <com.whzl.mengbi.ui.widget.view.ShadowContainer
         android:layout_width="wrap_content"
         android:layout_height="25dp"
+        android:layout_gravity="center_horizontal"
         app:containerCornerRadius="5dp"
         app:containerDeltaLength="5dp"
         app:containerShadowColor="@color/tran_black6"
-        app:containerShadowRadius="5dp"
-        android:layout_gravity="center_horizontal">
+        app:containerShadowRadius="5dp">
 
         <RelativeLayout
             android:id="@+id/rl_find_prop"
@@ -140,26 +137,26 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="19dp"
                 android:layout_marginRight="19dp"
-                android:src="@drawable/ic_find_prop"/>
+                android:src="@drawable/ic_find_prop" />
 
             <TextView
                 android:id="@+id/tv_prop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/iv_prop"
                 android:text="道具商城"
                 android:textColor="@color/tran_black2"
-                android:layout_toRightOf="@id/iv_prop"
-                android:layout_marginTop="10dp"
                 android:textSize="13sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="做任务赚萌币"
-                android:textColor="@color/tran_black5"
                 android:layout_below="@id/tv_prop"
                 android:layout_toRightOf="@id/iv_prop"
-                android:textSize="9sp"/>
+                android:text="做任务赚萌币"
+                android:textColor="@color/tran_black5"
+                android:textSize="9sp" />
         </RelativeLayout>
 
     </com.whzl.mengbi.ui.widget.view.ShadowContainer>
@@ -167,11 +164,11 @@
     <com.whzl.mengbi.ui.widget.view.ShadowContainer
         android:layout_width="wrap_content"
         android:layout_height="25dp"
+        android:layout_gravity="center_horizontal"
         app:containerCornerRadius="5dp"
         app:containerDeltaLength="5dp"
         app:containerShadowColor="@color/tran_black6"
-        app:containerShadowRadius="5dp"
-        android:layout_gravity="center_horizontal">
+        app:containerShadowRadius="5dp">
 
         <RelativeLayout
             android:id="@+id/rl_find_recharge"
@@ -189,26 +186,26 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="19dp"
                 android:layout_marginRight="19dp"
-                android:src="@drawable/ic_find_recharge"/>
+                android:src="@drawable/ic_find_recharge" />
 
             <TextView
                 android:id="@+id/tv_recharge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/iv_recharge"
                 android:text="充值中心"
                 android:textColor="@color/tran_black2"
-                android:layout_toRightOf="@id/iv_recharge"
-                android:layout_marginTop="10dp"
                 android:textSize="13sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="萌币充值"
-                android:textColor="@color/tran_black5"
                 android:layout_below="@id/tv_recharge"
                 android:layout_toRightOf="@id/iv_recharge"
-                android:textSize="9sp"/>
+                android:text="萌币充值"
+                android:textColor="@color/tran_black5"
+                android:textSize="9sp" />
         </RelativeLayout>
 
     </com.whzl.mengbi.ui.widget.view.ShadowContainer>

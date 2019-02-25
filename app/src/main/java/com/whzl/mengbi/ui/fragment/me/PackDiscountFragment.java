@@ -2,17 +2,21 @@ package com.whzl.mengbi.ui.fragment.me;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.MyCouponBean;
+import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
@@ -32,7 +36,20 @@ import io.reactivex.schedulers.Schedulers;
  * @author nobody
  * @date 2018/10/16
  */
-public class PackDiscountFragment extends BasePullListFragment<MyCouponBean.ListBean,BasePresenter> {
+public class PackDiscountFragment extends BasePullListFragment<MyCouponBean.ListBean, BasePresenter> {
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        StatusBarUtil.setColor(getMyActivity(), ContextCompat.getColor(getMyActivity(), R.color.status_white_toolbar));
+        ((FrgActivity) getMyActivity()).setTitle("我的返利券");
+//        ((FrgActivity) getMyActivity()).setTitleMenuIcon(R.drawable.ic_jump_shop_mine, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getMyActivity(), ShopActivity.class).putExtra(ShopActivity.SELECT, 2));
+//            }
+//        });
+    }
+
     @Override
     protected boolean setLoadMoreEndShow() {
         return false;
@@ -113,10 +130,15 @@ public class PackDiscountFragment extends BasePullListFragment<MyCouponBean.List
         @Override
         public void onBindViewHolder(int position) {
             MyCouponBean.ListBean bean = mDatas.get(position);
-            tvName.setText(bean.goodsName);
+            String[] split = bean.goodsName.split("%");
+            if (split[0] != null) {
+                tvName.setText(split[0] + "%");
+            }
             tvNum.setText(String.valueOf(bean.goodsSum));
             tvId.setText(bean.identifyCode);
-            tvDay.setText("剩余" + bean.surplusDay + "天");
+            tvDay.setText("剩余");
+            tvDay.append(LightSpanString.getLightString(String.valueOf(bean.surplusDay), Color.parseColor("#ff2d4e")));
+            tvDay.append("天");
         }
 
     }
