@@ -28,6 +28,7 @@ import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
 import com.whzl.mengbi.ui.activity.me.MyChipActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.fragment.HeadlineListFragment;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -114,12 +115,7 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
         mAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                if (mListData == null) {
-                    return  0;
-                } else {
-                    return mListData.size();
-                }
-//                return mListData == null ? 0 : mListData.size();
+                return mListData == null ? 0 : mListData.size();
             }
 
             @Override
@@ -134,6 +130,19 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
             }
 
             @Override
+            protected BaseViewHolder onCreateLoadMoreFooterViewHolder(ViewGroup parent) {
+                if (mListData.size() > 1 && mListData.size() < 20) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rank_last, parent, false);
+                    TextView tvFoot = view.findViewById(R.id.tv_last);
+                    tvFoot.setText(mListData.size() + 1 + "");
+                    return new LoadMoreFooterViewHolder(view);
+                }else{
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty, parent, false);
+                    return new LoadMoreFooterViewHolder(view);
+                }
+            }
+
+            @Override
             protected int getDataViewType(int position) {
                 if (position < 1) {
                     return TOP_RANK;
@@ -143,6 +152,7 @@ public class FindRankFragment extends BaseFragment implements OnRefreshListener 
             }
         };
         recycler.setAdapter(mAdapter);
+        mAdapter.onLoadMoreStateChanged(BaseListAdapter.LOAD_MORE_STATE_END_SHOW);
     }
 
     private class LoadMoreFooterViewHolder extends BaseViewHolder {
