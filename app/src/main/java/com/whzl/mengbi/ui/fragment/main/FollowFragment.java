@@ -57,6 +57,7 @@ import butterknife.Unbinder;
 /**
  * @author nobody
  * @date 2018/12/18
+ * 主页订阅
  */
 public class FollowFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
     @BindView(R.id.recycler)
@@ -438,7 +439,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
     private void setUnFollowState(TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean) {
         tvFollowState.setBackgroundResource(R.drawable.bg_state_no_follow_follow);
-        tvFollowState.setTextColor(Color.parseColor("#70000000"));
+        tvFollowState.setTextColor(Color.parseColor("#000000"));
         tvFollowState.setText("订阅");
         tvFollowState.setOnClickListener(v -> follow(tvFollowState, anchorInfoBean));
     }

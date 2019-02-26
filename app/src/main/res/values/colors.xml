@@ -147,7 +147,7 @@
     <color name="header">#58567D</color>
     <color name="appBg">#EBEAEA</color>
     <color name="btn_not_enable">#ffcccccc</color>
-    <color name="comm_white">#f9f9f9</color>
+    <color name="comm_white">#ffffff</color>
     <color name="white">#FFFFFF</color>
     <color name="emoji_bg">#f4f4f4</color>
     <color name="rank_1_status_text_color">#ffdc3c</color>

@@ -90,7 +90,7 @@ public class ShopActivity extends BaseActivity {
                 view.findViewById(R.id.tv_tips).setVisibility(View.VISIBLE);
             }
         }
-        viewpager.setCurrentItem(currentSelectedIndex);
+        viewpager.postDelayed(() -> viewpager.setCurrentItem(currentSelectedIndex), 300);
     }
 
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -189,6 +190,8 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
         TextView tvDelete;
         @BindView(R.id.tv_time)
         TextView tvTime;
+        @BindView(R.id.ll_item_private_chat)
+        LinearLayout linearLayout;
 
         public PrivateChatListHolder(View itemView) {
             super(itemView);
@@ -198,9 +201,9 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
         @Override
         public void onBindViewHolder(int position) {
             if (position == 0) {
-                itemView.setBackgroundColor(Color.parseColor("#FFF7F1DA"));
+                linearLayout.setBackgroundColor(Color.parseColor("#FFF7F1DA"));
             } else {
-                itemView.setBackgroundColor(Color.parseColor("#ffffff"));
+                linearLayout.setBackgroundColor(Color.parseColor("#ffffff"));
             }
             PrivateChatUser dataBean = roomUsers.get(position);
             RequestOptions requestOptions = new RequestOptions().transform(new CircleCrop());

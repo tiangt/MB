@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.http.HttpResponseCache;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.baidu.mobstat.StatService;
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
@@ -15,7 +14,6 @@ import com.lht.paintview.util.LogUtil;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
-import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.commonsdk.UMConfigure;
@@ -30,7 +28,7 @@ import com.whzl.mengbi.gen.DaoMaster;
 import com.whzl.mengbi.gen.DaoSession;
 import com.whzl.mengbi.greendao.MyOpenHelper;
 import com.whzl.mengbi.model.entity.AppDataBean;
-import com.whzl.mengbi.ui.activity.MainActivity;
+import com.whzl.mengbi.ui.widget.recyclerview.PullRefreshHeader;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -113,7 +111,7 @@ public class BaseApplication extends Application {
         }
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         int memClass = activityManager.getMemoryClass();//64，以m为单位
-        LogUtils.e("ssssssssssssss  "+memClass);
+        LogUtils.e("ssssssssssssss  " + memClass);
     }
 
     private DaoSession daoSession;
@@ -166,7 +164,7 @@ public class BaseApplication extends Application {
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator((context, layout) -> {
             layout.setPrimaryColorsId(R.color.appBg);
-            return new ClassicsHeader(context);
+            return new PullRefreshHeader(context);
         });
         //设置全局的Footer构建器
         SmartRefreshLayout.setDefaultRefreshFooterCreator((context, layout) -> {
