@@ -457,4 +457,9 @@
     <string name="rank_star">根据主播收到礼物的萌点进行排名</string>
     <string name="rank_pop">根据主播收到蓝色妖姬的数量进行排名</string>
 
+    <string name="rank_tip_star">上周榜奖励：第1~10名，奖励明星勋章7天</string>
+    <string name="rank_tip_regal">上周榜奖励：第1~10名，奖励富豪勋章7天</string>
+    <string name="rank_tip_anchor1">昨日榜奖励：第1名，奖励开播全局提醒\n上周榜奖励：第1~10名，奖励人气勋章7天\n上月榜奖励：第1~3名，分别奖励萌币30万、15万、5万</string>
+    <string name="rank_tip_anchor2">蓝色妖姬通过每日在线任务和转盘抽奖获得</string>
+
 </resources>
