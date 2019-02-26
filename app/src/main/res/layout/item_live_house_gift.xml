@@ -37,13 +37,14 @@
 
     <TextView
         android:id="@+id/tv_tag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="13dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="3dp"
         android:layout_marginTop="3dp"
         android:background="@drawable/bg_tag_gift_sort"
         android:gravity="center"
+        android:singleLine="true"
         android:textColor="@color/comm_white"
         android:textSize="8sp"
         android:visibility="gone" />

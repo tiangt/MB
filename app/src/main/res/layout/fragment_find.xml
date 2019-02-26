@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="发现"
-            android:textColor="@color/tran_black2"
+            android:textColor="@color/black"
             android:textSize="17sp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -76,9 +76,9 @@
             android:id="@+id/rl_find_task"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_margin="20dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView
@@ -125,9 +125,9 @@
             android:id="@+id/rl_find_prop"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_margin="20dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView
@@ -174,9 +174,9 @@
             android:id="@+id/rl_find_recharge"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_margin="20dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView

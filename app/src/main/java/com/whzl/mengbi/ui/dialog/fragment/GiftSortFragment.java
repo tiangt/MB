@@ -12,6 +12,7 @@ import android.view.animation.LinearInterpolator;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.AppConfig;
+import com.whzl.mengbi.eventbus.event.ClearAllAnim;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.ui.adapter.LiveHouseGiftAdapter;
@@ -66,10 +67,7 @@ public class GiftSortFragment extends BaseFragment {
                 if (currentPosition == position) {
                     return;
                 }
-                if (animatorSetsuofang != null) {
-                    animatorSetsuofang.end();
-                    animatorSetsuofang = null;
-                }
+                EventBus.getDefault().post(new ClearAllAnim());
                 try {
 //                    giftAdapter.setSelectedPosition(position);
                     currentPosition = position;
@@ -138,6 +136,15 @@ public class GiftSortFragment extends BaseFragment {
             return;
         }
         flagOnMessageEvent = false;
+        currentPosition = -1;
         giftAdapter.setSelectedPosition(-1);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ClearAllAnim event) {
+        if (animatorSetsuofang != null) {
+            animatorSetsuofang.end();
+            animatorSetsuofang = null;
+        }
     }
 }

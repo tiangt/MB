@@ -19,6 +19,7 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.ClearAllAnim;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.ApiResult;
@@ -101,6 +102,10 @@ public class BackpackFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+        if (animatorSetsuofang != null) {
+            animatorSetsuofang.end();
+            animatorSetsuofang = null;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -165,10 +170,7 @@ public class BackpackFragment extends BaseFragment {
             if (selectedPosition == position) {
                 return;
             }
-            if (animatorSetsuofang != null) {
-                animatorSetsuofang.end();
-                animatorSetsuofang = null;
-            }
+            EventBus.getDefault().post(new ClearAllAnim());
             selectedPosition = position;
             if (recycler.getChildCount() > 0) {
                 for (int i = 0; i < recycler.getChildCount(); i++) {
@@ -280,6 +282,14 @@ public class BackpackFragment extends BaseFragment {
             }
         }
         return -1;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ClearAllAnim event) {
+        if (animatorSetsuofang != null) {
+            animatorSetsuofang.end();
+            animatorSetsuofang = null;
+        }
     }
 
 }
