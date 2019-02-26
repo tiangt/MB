@@ -107,7 +107,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:text="为他人充值"
-                    android:textColor="#70ff2b3f"
+                    android:textColor="#ff2b3f"
                     android:textSize="13sp" />
 
             </RelativeLayout>
@@ -145,7 +145,7 @@
                     android:text="@string/recharge_ali_pay"
                     android:textColor="#60000000"
                     android:textSize="12sp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
 
                 <RadioButton
@@ -162,7 +162,7 @@
                     android:text="@string/recharge_we_chat_pay"
                     android:textColor="#60000000"
                     android:textSize="12sp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
             </RadioGroup>
 
             <LinearLayout
@@ -219,7 +219,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
                     android:text="使用返利券"
-                    android:textColor="#70ff2b3f"
+                    android:textColor="#ff2b3f"
                     android:textSize="13sp" />
 
                 <LinearLayout
@@ -271,6 +271,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="42.5dp"
+                android:layout_marginBottom="30dp"
                 android:layout_marginLeft="89dp"
                 android:layout_marginRight="89dp"
                 android:layout_marginTop="19dp"

@@ -42,7 +42,7 @@ public class UseRebateFragment extends BasePullListFragment<RebateBean.ListBean,
         super.init();
         getPullView().setBackgroundColor(Color.parseColor("#ffffff"));
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_refresh_layout, getPullView(), false);
-        ((TextView) view.findViewById(R.id.tv_content)).setText("你还没有奖励券哦");
+        ((TextView) view.findViewById(R.id.tv_content)).setText("你还没有返利券哦");
         setEmptyView(view);
         View view1 = LayoutInflater.from(getMyActivity()).inflate(R.layout.divider_shawdow_white, getPullView(), false);
         addHeadTips(view1);

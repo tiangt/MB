@@ -168,6 +168,48 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             }
         };
         recycler.setAdapter(adapter);
+
+        rgPayWay.setOnCheckedChangeListener((group, checkedId) -> {
+            mRuleId = -1;
+            btnRecharge.setEnabled(true);
+            btnRecharge.setText(R.string.recharge_tip);
+            tvRebateMoney.setText("");
+            switch (checkedId) {
+                case R.id.rb_ali_pay:
+                    scale = 0;
+                    currentPosition = -1;
+                    tvRebateTicket.setVisibility(View.VISIBLE);
+                    tvRebateMoney.setText("");
+                    tvRebateName.setText("");
+                    currentRuleList.clear();
+                    currentRuleList.addAll(aliRechargeRuleList);
+                    adapter.notifyDataSetChanged();
+                    break;
+                case R.id.rb_we_chat_pay:
+                    scale = 0;
+                    currentPosition = -1;
+                    tvRebateTicket.setVisibility(View.VISIBLE);
+                    tvRebateMoney.setText("");
+                    tvRebateName.setText("");
+                    currentRuleList.clear();
+                    currentRuleList.addAll(weChatRechargeRuleList);
+                    adapter.notifyDataSetChanged();
+                    break;
+                default:
+                    break;
+            }
+            recycler.post(new Runnable() {
+                @Override
+                public void run() {
+                    View childAt = recycler.getChildAt(0);
+                    if (childAt != null) {
+                        RuleViewHolder childViewHolder = (RuleViewHolder) recycler.getChildViewHolder(childAt);
+                        childViewHolder.onItemClick(childViewHolder.itemView, 0);
+                    }
+                }
+            });
+
+        });
     }
 
     @Override
@@ -291,57 +333,28 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                 if (NetConfig.FLAG_ALI_PAY.equals(rechargeChannelListBean.getChannelFlag())) {
                     rbAliPay.setVisibility(View.VISIBLE);
                     channelIdMap.put(R.id.rb_ali_pay, rechargeChannelListBean.getChannelId());
-                    rbAliPay.setChecked(true);
                     aliRechargeRuleList.addAll(rechargeChannelListBean.getList().get(0).getRuleList());
                     currentRuleList.clear();
                     currentRuleList.addAll(aliRechargeRuleList);
                     adapter.notifyDataSetChanged();
+//                    rbAliPay.setChecked(true);
+                    rbAliPay.performClick();
                 }
                 if (NetConfig.FLAG_WECHAT_PAY.equals(rechargeChannelListBean.getChannelFlag())) {
                     rbWeChatPay.setVisibility(View.VISIBLE);
                     channelIdMap.put(R.id.rb_we_chat_pay, rechargeChannelListBean.getChannelId());
                     weChatRechargeRuleList.addAll(rechargeChannelListBean.getList().get(0).getRuleList());
                     if (!rbAliPay.isChecked()) {
-                        rbWeChatPay.setChecked(true);
                         currentRuleList.clear();
                         currentRuleList.addAll(aliRechargeRuleList);
                         adapter.notifyDataSetChanged();
+//                        rbWeChatPay.setChecked(true);
+                        rbWeChatPay.performClick();
                     }
                 }
             }
             btnRecharge.setVisibility(View.VISIBLE);
         }
-
-        rgPayWay.setOnCheckedChangeListener((group, checkedId) -> {
-            mRuleId = -1;
-            btnRecharge.setEnabled(false);
-            btnRecharge.setText(R.string.recharge_tip);
-            tvRebateMoney.setText("");
-            switch (checkedId) {
-                case R.id.rb_ali_pay:
-                    scale = 0;
-                    currentPosition = -1;
-                    tvRebateTicket.setVisibility(View.VISIBLE);
-                    tvRebateMoney.setText("");
-                    tvRebateName.setText("");
-                    currentRuleList.clear();
-                    currentRuleList.addAll(aliRechargeRuleList);
-                    adapter.notifyDataSetChanged();
-                    break;
-                case R.id.rb_we_chat_pay:
-                    scale = 0;
-                    currentPosition = -1;
-                    tvRebateTicket.setVisibility(View.VISIBLE);
-                    tvRebateMoney.setText("");
-                    tvRebateName.setText("");
-                    currentRuleList.clear();
-                    currentRuleList.addAll(weChatRechargeRuleList);
-                    adapter.notifyDataSetChanged();
-                    break;
-                default:
-                    break;
-            }
-        });
     }
 
     @Override
@@ -486,7 +499,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
                 tvRebateTicket.setVisibility(View.GONE);
                 scale = rebate.scale;
                 String[] split = rebate.goodsName.split("%");
-                if (split[0]!=null) {
+                if (split[0] != null) {
                     tvRebateName.setText(split[0] + "%");
                 }
                 tvRebateMoney.setText("+");

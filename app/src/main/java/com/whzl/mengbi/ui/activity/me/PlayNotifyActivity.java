@@ -87,17 +87,29 @@ public class PlayNotifyActivity extends BaseActivity implements OnLoadMoreListen
         userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
         initSmart();
         initRecycler();
-        recycler.setVisibility(switchPlay.isChecked() ? View.VISIBLE : View.GONE);
+        smartRefresh.setVisibility(switchPlay.isChecked() ? View.VISIBLE : View.GONE);
         tvTips.setText(switchPlay.isChecked() ? getString(R.string.play_notify_on) : getString(R.string.play_notify_off));
         switchPlay.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 tvTips.setText(switchPlay.isChecked() ? getString(R.string.play_notify_on) : getString(R.string.play_notify_off));
                 if (isChecked) {
-                    recycler.setVisibility(View.VISIBLE);
+                    smartRefresh.setVisibility(View.VISIBLE);
+                    smartRefresh.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            smartRefresh.setEnableLoadMore(true);
+                        }
+                    });
                     addUserSet("1");
                 } else {
-                    recycler.setVisibility(View.GONE);
+                    smartRefresh.setVisibility(View.GONE);
+                    smartRefresh.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            smartRefresh.setEnableLoadMore(false);
+                        }
+                    });
                     addUserSet("0");
                 }
             }

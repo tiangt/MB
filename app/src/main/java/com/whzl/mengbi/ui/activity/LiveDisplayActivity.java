@@ -1304,10 +1304,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             redPackRunWayControl = new RedPackRunWayControl(this, tvRedBagRunWay);
         }
         redPackRunWayControl.load(redPackTreasureEvent);
-        if ((redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.USER_SEND_REDPACKET) &&
-                redPackTreasureEvent.treasureNum.context.programId == mProgramId) ||
-                redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.PROGRAM_TREASURE_SEND_REDPACKET) ||
-                redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OFFICIAL_SEND_REDPACKET)) {
+        if ((redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.USER_SEND_REDPACKET)
+                || redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.PROGRAM_TREASURE_SEND_REDPACKET) ||
+                redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OFFICIAL_SEND_REDPACKET))) {
+            if (redPackTreasureEvent.treasureNum.context.programId != mProgramId) {
+                return;
+            }
             if (redPacketControl == null) {
                 redPacketControl = new RedPacketControl(this, rvRedPack);
                 redPacketControl.init();

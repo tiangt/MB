@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
@@ -13,7 +14,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/comm_white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="12dp">
@@ -31,7 +31,7 @@
             style="@style/switch_play_notify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true" />
+            android:checked="false" />
     </LinearLayout>
 
 
@@ -39,6 +39,7 @@
         android:id="@+id/tv_tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/bg_color"
         android:drawableLeft="@drawable/point_play_notify"
         android:drawablePadding="4dp"
         android:paddingBottom="6dp"
@@ -52,8 +53,8 @@
         android:id="@+id/smart_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/comm_white"
-        app:srlEnableLoadMore="true"
+        android:visibility="gone"
+        app:srlEnableLoadMore="false"
         app:srlEnableRefresh="false">
 
         <android.support.v7.widget.RecyclerView

@@ -102,7 +102,8 @@ public class BackpackFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-        if (animatorSetsuofang != null) {
+        if (animatorSetsuofang != null && animatorSetsuofang.isRunning()) {
+            animatorSetsuofang.cancel();
             animatorSetsuofang.end();
             animatorSetsuofang = null;
         }

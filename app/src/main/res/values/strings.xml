@@ -250,7 +250,7 @@
     <string name="personal">个人中心</string>
     <string name="recharge_type">充值方式</string>
     <string name="recharge_amount">请选择充值金额</string>
-    <string name="recharge_tip">请先选择充值金额</string>
+    <string name="recharge_tip"></string>
     <string name="recharge_confirm">确认支付 %1$.0f元</string>
     <string name="recharge_account">充值账号：%1$s</string>
     <string name="mengbi_left">萌币余额：</string>
