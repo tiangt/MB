@@ -101,17 +101,22 @@ public class MyRoyalLevelFragment extends BaseFragment {
                                 tvRoyalLevel.append(sj5);
                             }
 
-                            SpannableString bj = StringUtils.spannableStringColor("本月保级经验 ", Color.parseColor("#ffffff"));
-                            SpannableString bj2 = StringUtils.spannableStringColor(bjExpValue + "", Color.parseColor("#F7FF00"));
-                            SpannableString bj3 = StringUtils.spannableStringColor(" 点，离保级还差 ", Color.parseColor("#ffffff"));
-                            SpannableString bj4 = StringUtils.spannableStringColor(bjNeedExpValue - bjExpValue + "", Color.parseColor("#F7FF00"));
-                            SpannableString bj5 = StringUtils.spannableStringColor(" 点", Color.parseColor("#ffffff"));
+                            if (bjNeedExpValue - bjExpValue > 0) {
+                                SpannableString bj = StringUtils.spannableStringColor("本月保级经验 ", Color.parseColor("#ffffff"));
+                                SpannableString bj2 = StringUtils.spannableStringColor(bjExpValue + "", Color.parseColor("#F7FF00"));
+                                SpannableString bj3 = StringUtils.spannableStringColor(" 点，离保级还差 ", Color.parseColor("#ffffff"));
+                                SpannableString bj4 = StringUtils.spannableStringColor(bjNeedExpValue - bjExpValue + "", Color.parseColor("#F7FF00"));
+                                SpannableString bj5 = StringUtils.spannableStringColor(" 点", Color.parseColor("#ffffff"));
 
-                            tvKeepLevel.setText(bj);
-                            tvKeepLevel.append(bj2);
-                            tvKeepLevel.append(bj3);
-                            tvKeepLevel.append(bj4);
-                            tvKeepLevel.append(bj5);
+                                tvKeepLevel.setText(bj);
+                                tvKeepLevel.append(bj2);
+                                tvKeepLevel.append(bj3);
+                                tvKeepLevel.append(bj4);
+                                tvKeepLevel.append(bj5);
+                            } else {
+                                tvKeepLevel.setText("本月无需保级");
+                            }
+
                             break;
                         }
                         break;

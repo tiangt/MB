@@ -86,17 +86,20 @@ public class MyLevelProgressLayout extends LinearLayout {
             if (levelValue == 50) {
                 tvLevelNext.setVisibility(INVISIBLE);
             } else {
+                tvLevelNext.setVisibility(VISIBLE);
                 tvLevelNext.setText(LevelMap.getLevelMap().getAnchorLevel(levelValue + 1));
             }
         } else if ("ROYAL_LEVEL".equals(levelType)) {
             if (levelValue == 0) {
                 tvLevelNow.setText("无等级");
             } else {
+                tvLevelNext.setVisibility(VISIBLE);
                 tvLevelNow.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue));
             }
             if (levelValue == 7) {
                 tvLevelNext.setVisibility(INVISIBLE);
             } else {
+                tvLevelNext.setVisibility(VISIBLE);
                 tvLevelNext.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue + 1));
             }
         } else if ("USER_LEVEL".equals(levelType)) {
@@ -104,6 +107,7 @@ public class MyLevelProgressLayout extends LinearLayout {
             if (levelValue == 37) {
                 tvLevelNext.setVisibility(INVISIBLE);
             } else {
+                tvLevelNext.setVisibility(VISIBLE);
                 tvLevelNext.setText(LevelMap.getLevelMap().getUserLevel(levelValue + 1));
             }
         }

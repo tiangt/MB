@@ -73,7 +73,7 @@ public class HeadlineDialog extends BaseAwesomeDialog {
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setNeedSwitchAnimation(true);
-        tabLayout.setSelectedTabIndicatorWidth(20);
+        tabLayout.setSelectedTabIndicatorWidth(com.whzl.mengbi.util.UIUtil.dip2px(getActivity(), 25));
         tabLayout.setupWithViewPager(viewPager);
     }
 }
