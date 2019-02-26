@@ -105,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="11.5dp"
+                    android:layout_marginRight="14dp"
                     android:text="为他人充值"
                     android:textColor="#70ff2b3f"
                     android:textSize="13sp" />
@@ -116,7 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:paddingLeft="11.5dp"
+                android:paddingLeft="14dp"
                 android:text="支付方式"
                 android:textColor="#70000000"
                 android:textSize="15sp" />
@@ -128,8 +128,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:orientation="horizontal"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp">
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
 
                 <RadioButton
                     android:id="@+id/rb_ali_pay"
@@ -145,7 +145,7 @@
                     android:text="@string/recharge_ali_pay"
                     android:textColor="#60000000"
                     android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
 
 
                 <RadioButton
@@ -162,7 +162,7 @@
                     android:text="@string/recharge_we_chat_pay"
                     android:textColor="#60000000"
                     android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </RadioGroup>
 
             <LinearLayout
@@ -176,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:paddingLeft="11.5dp"
+                    android:paddingLeft="14dp"
                     android:text="@string/recharge_amount"
                     android:textColor="#70000000"
                     android:textSize="15sp" />
@@ -184,7 +184,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="13dp"
+                    android:layout_marginRight="14dp"
                     android:gravity="center_vertical"
                     android:text="1元=1000萌币，赠送1点贵族经验"
                     android:textColor="#40000000"

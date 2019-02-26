@@ -12,7 +12,7 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <include layout="@layout/comm_white_toolbar" />
+        <include layout="@layout/white_toolbar" />
 
         <com.whzl.mengbi.ui.widget.view.CircleImageView
             android:id="@+id/iv_avatar"

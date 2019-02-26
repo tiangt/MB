@@ -74,7 +74,7 @@ public class PlayNotifyActivity extends BaseActivity implements OnLoadMoreListen
     protected void initEnv() {
         super.initEnv();
         StatusBarUtil.setLightMode(this);
-        StatusBarUtil.setColor(this, Color.parseColor("#f9f9f9"), 0);
+        StatusBarUtil.setColor(this, Color.parseColor("#ffffff"), 0);
     }
 
     @Override

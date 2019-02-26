@@ -35,10 +35,6 @@ import butterknife.BindView;
  */
 public class MyLevelActivity extends BaseActivity {
 
-    @BindView(R.id.rl_back)
-    RelativeLayout rlBack;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
     @BindView(R.id.tab_layout_head)
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
@@ -51,7 +47,7 @@ public class MyLevelActivity extends BaseActivity {
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_my_level);
+        setContentView(R.layout.activity_my_level, "我的等级", true);
     }
 
     @Override
@@ -62,8 +58,6 @@ public class MyLevelActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        tvTitle.setText("我的等级");
-        rlBack.setOnClickListener((v -> finish()));
     }
 
     @Override

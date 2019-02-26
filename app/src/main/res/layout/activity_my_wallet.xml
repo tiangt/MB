@@ -5,12 +5,7 @@
     android:background="#f6f6f6"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_title" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="6.5dp"
-        android:background="@drawable/view_space" />
+    <include layout="@layout/white_toolbar" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,39 +32,39 @@
                 android:id="@+id/iv_mengbi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_wallet_mengbi"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="17dp"
-                android:layout_centerVertical="true"/>
+                android:src="@drawable/ic_wallet_mengbi" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="萌币"
-                android:textSize="15sp"
-                android:textColor="@color/tran_black2"
-                android:layout_toRightOf="@id/iv_mengbi"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/iv_mengbi"
+                android:text="萌币"
+                android:textColor="@color/tran_black2"
+                android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/iv_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_mine_item_arrow"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_mine_item_arrow" />
 
             <TextView
                 android:id="@+id/tv_mengbi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/tran_black2"
-                android:textSize="13sp"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="6dp"
                 android:layout_toLeftOf="@id/iv_arrow"
-                android:layout_centerVertical="true"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:textColor="@color/tran_black2"
+                android:textSize="13sp" />
         </RelativeLayout>
 
         <View
@@ -88,30 +83,30 @@
                 android:id="@+id/iv_mengdou"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_wallet_mengdou"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="17dp"
-                android:layout_centerVertical="true"/>
+                android:src="@drawable/ic_wallet_mengdou" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="萌豆"
-                android:textSize="15sp"
-                android:textColor="@color/tran_black2"
-                android:layout_toRightOf="@id/iv_mengdou"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/iv_mengdou"
+                android:text="萌豆"
+                android:textColor="@color/tran_black2"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_mengdou"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/tran_black2"
-                android:textSize="13sp"
-                android:layout_marginRight="23dp"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:singleLine="true"/>
+                android:layout_centerVertical="true"
+                android:layout_marginRight="23dp"
+                android:singleLine="true"
+                android:textColor="@color/tran_black2"
+                android:textSize="13sp" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -127,37 +122,37 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/shape_radius_five"
-        android:layout_margin="12dp">
+        android:layout_margin="12dp"
+        android:background="@drawable/shape_radius_five">
 
         <ImageView
             android:id="@+id/iv_mengdian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_wallet_mengdian"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="17dp"
-            android:layout_centerVertical="true"/>
+            android:src="@drawable/ic_wallet_mengdian" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="萌点"
-            android:textSize="15sp"
-            android:textColor="@color/tran_black2"
-            android:layout_toRightOf="@id/iv_mengdian"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="13dp"/>
+            android:layout_marginLeft="13dp"
+            android:layout_toRightOf="@id/iv_mengdian"
+            android:text="萌点"
+            android:textColor="@color/tran_black2"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_mengdian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/tran_black2"
-            android:textSize="13sp"
-            android:layout_marginRight="23dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:singleLine="true"/>
+            android:layout_centerVertical="true"
+            android:layout_marginRight="23dp"
+            android:singleLine="true"
+            android:textColor="@color/tran_black2"
+            android:textSize="13sp" />
     </RelativeLayout>
 
 </LinearLayout>

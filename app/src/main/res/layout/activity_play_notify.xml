@@ -6,12 +6,9 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <include layout="@layout/comm_white_toolbar" />
+    <include layout="@layout/white_toolbar" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_space"
-        android:background="@drawable/view_space" />
+    <include layout="@layout/divider_shawdow_white" />
 
     <LinearLayout
         android:layout_width="match_parent"

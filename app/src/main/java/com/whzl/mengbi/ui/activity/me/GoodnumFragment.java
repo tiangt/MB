@@ -163,7 +163,11 @@ public class GoodnumFragment extends BaseFragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (TextUtils.isEmpty(etSearchNum.getText()) || etSearchNum.getText().toString().length() < 2) {
+                    if (TextUtils.isEmpty(etSearchNum.getText())) {
+                        return true;
+                    }
+                    if (etSearchNum.getText().toString().length() < 2) {
+                        ToastUtils.showToastUnify(getMyActivity(), "至少输入两位数字");
                         return true;
                     }
                     search(etSearchNum.getText().toString());

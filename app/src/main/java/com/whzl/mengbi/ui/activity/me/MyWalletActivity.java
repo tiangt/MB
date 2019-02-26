@@ -17,10 +17,6 @@ import butterknife.BindView;
  */
 public class MyWalletActivity extends BaseActivity {
 
-    @BindView(R.id.rl_back)
-    RelativeLayout rlBack;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
     @BindView(R.id.tv_mengbi)
     TextView tvMengbi;
     @BindView(R.id.tv_mengdou)
@@ -30,7 +26,7 @@ public class MyWalletActivity extends BaseActivity {
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_my_wallet);
+        setContentView(R.layout.activity_my_wallet,"我的钱包",true);
     }
 
     @Override
@@ -41,8 +37,6 @@ public class MyWalletActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        tvTitle.setText("我的钱包");
-        rlBack.setOnClickListener((v -> finish()));
 
         long mengbi = getIntent().getLongExtra("mengbi",0);
         long mengdou = getIntent().getLongExtra("mengdou",0);

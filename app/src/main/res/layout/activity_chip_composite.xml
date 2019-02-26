@@ -7,10 +7,7 @@
 
     <include layout="@layout/layout_title" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="6.5dp"
-        android:background="@drawable/view_space" />
+    <include layout="@layout/divider_shawdow_white"/>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh_layout"
@@ -19,8 +16,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/comm_white">
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/rl_empty"

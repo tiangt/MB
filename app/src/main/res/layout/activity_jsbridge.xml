@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".ui.activity.JsBridgeActivity">
 
-    <include layout="@layout/comm_web_toolbar" />
+    <include layout="@layout/white_toolbar" />
 
     <ProgressBar
         android:id="@+id/progressbar"
