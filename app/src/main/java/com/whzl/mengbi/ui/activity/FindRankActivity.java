@@ -54,6 +54,7 @@ public class FindRankActivity extends BaseActivity {
     private PopupWindow popupWindow;
     private String[] tipDescs;
     private String[] tipTitles;
+    private int index;
 
     @Override
     protected void setupContentView() {
@@ -65,7 +66,7 @@ public class FindRankActivity extends BaseActivity {
         tipTitles = getResources().getStringArray(R.array.rank_tip_title);
         tipDescs = getResources().getStringArray(R.array.rank_tip_desc);
 
-        int index = getIntent().getIntExtra("rank", 0);
+        index = getIntent().getIntExtra("rank", 0);
         if (0 == index) {
             tvTitle.setText("明星榜");
             rankName = "CELEBRITY";
@@ -144,43 +145,23 @@ public class FindRankActivity extends BaseActivity {
     }
 
     private void showPopWindow() {
-        View popView = getLayoutInflater().inflate(R.layout.popwindow_rank_tip, null);
-        RecyclerView recyclerView = popView.findViewById(R.id.recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(FindRankActivity.this));
-        recyclerView.setAdapter(new BaseListAdapter() {
-            @Override
-            protected int getDataCount() {
-                return tipDescs == null ? 0 : tipDescs.length;
-            }
+        View popView = getLayoutInflater().inflate(R.layout.pop_rank_tip, null);
+        TextView tvTip = popView.findViewById(R.id.tv_tip);
+        TextView tvTip2 = popView.findViewById(R.id.tv_tip_2);
+        if(0 == index){
+            tvTip.setText(getString(R.string.rank_tip_star));
+        }else if(1 == index){
+            tvTip.setText(getString(R.string.rank_tip_regal));
+        }else{
+            tvTip.setText(getString(R.string.rank_tip_anchor1));
+            tvTip2.setVisibility(View.VISIBLE);
+            tvTip2.setText(getString(R.string.rank_tip_anchor2));
+        }
 
-            @Override
-            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                TextView textView = new TextView(FindRankActivity.this);
-                textView.setTextColor(Color.parseColor("#979797"));
-                textView.setTextSize(15);
-                textView.setPadding(0, 0, UIUtil.dip2px(FindRankActivity.this, 2), UIUtil.dip2px(FindRankActivity.this, 2));
-                return new TipViewHolder(textView);
-            }
-        });
         popupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.showAsDropDown(ivQuestion, 0, -UIUtil.dip2px(FindRankActivity.this, 8));
-    }
-
-    class TipViewHolder extends BaseViewHolder {
-        public TipViewHolder(View itemView) {
-            super(itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(int position) {
-            TextView itemView = (TextView) this.itemView;
-            SpannableString title = StringUtils.spannableStringColor(tipTitles[position], Color.parseColor("#6e6e6e"));
-            itemView.append(title);
-            SpannableString desc = StringUtils.spannableStringAbsSize(tipDescs[position], 14);
-            itemView.append(desc);
-        }
     }
 }

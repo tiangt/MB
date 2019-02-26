@@ -6,10 +6,10 @@
 
     <TextView
         android:id="@+id/tv_last"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="11.5dp"
+        android:layout_marginLeft="5dp"
         android:gravity="center"
         android:textColor="#000000"
         android:textSize="15sp"
@@ -20,7 +20,6 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="12dp"
         android:layout_toRightOf="@id/tv_last"
         android:src="@drawable/ic_rank_nothing" />
 
@@ -28,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="12dp"
         android:layout_toRightOf="@id/iv_nothing"
         android:text="虚位以待"
         android:textColor="#404040"
