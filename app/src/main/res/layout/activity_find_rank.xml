@@ -30,6 +30,15 @@
             android:gravity="center"
             android:text="富豪榜"
             android:textColor="#ffffff" />
+
+        <ImageView
+            android:id="@+id/iv_question"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_rank_question"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
     <android.support.design.widget.TabLayout

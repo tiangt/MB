@@ -31,14 +31,14 @@
 
                 <ImageView
                     android:id="@+id/iv_level_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="38.4dp"
+                    android:layout_height="14.4dp" />
 
                 <TextView
                     android:id="@+id/tv_anchor_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
+                    android:layout_marginLeft="6dp"
                     android:textColor="#323232"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -46,7 +46,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView

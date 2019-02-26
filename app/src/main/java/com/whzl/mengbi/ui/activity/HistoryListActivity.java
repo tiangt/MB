@@ -38,7 +38,7 @@ public class HistoryListActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        tvTitle.setText("观看纪录");
+        tvTitle.setText("观看记录");
         rlBack.setOnClickListener((v -> finish()));
 
         fragment = WatchHistoryFragment.newInstance();
