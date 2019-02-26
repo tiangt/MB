@@ -1796,6 +1796,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 privateChatUserDao.insert(chatUser);
             } else {
                 privateChatUser.setTimestamp(System.currentTimeMillis());
+                privateChatUser.setId(privateChatUser.getId());
                 privateChatUserDao.update(privateChatUser);
                 if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
                     ((PrivateChatListDialog) privateChatListDialog).update();
@@ -1807,6 +1808,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             chatContent.setTimestamp(System.currentTimeMillis());
             chatContent.setPrivateUserId(chatToUser.getUserId());
             chatContent.setFromId(mUserId);
+            chatContent.setUserId(mUserId);
             privateChatContentDao.insert(chatContent);
         }
 

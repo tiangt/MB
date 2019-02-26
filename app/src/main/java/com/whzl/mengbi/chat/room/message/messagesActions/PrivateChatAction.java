@@ -35,6 +35,7 @@ public class PrivateChatAction implements Actions {
         chatContent.setTimestamp(System.currentTimeMillis());
         chatContent.setFromId(Long.parseLong(json.getFrom_uid()));
         chatContent.setPrivateUserId(Long.parseLong(json.getFrom_uid()));
+        chatContent.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
         privateChatContentDao.insert(chatContent);
 
         if (Long.parseLong(json.getFrom_uid()) == Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())) {
@@ -60,6 +61,7 @@ public class PrivateChatAction implements Actions {
                 chatUser.setUncheckTime(++uncheckTime);
             }
             chatUser.setTimestamp(System.currentTimeMillis());
+            chatUser.setId(chatUser.getId());
             privateChatUserDao.update(chatUser);
         }
         EventBus.getDefault().post(new UpdatePrivateChatUIEvent());

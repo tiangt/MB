@@ -6,7 +6,9 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
+
 import org.greenrobot.greendao.DaoException;
+
 import com.whzl.mengbi.gen.DaoSession;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
@@ -17,30 +19,30 @@ import com.whzl.mengbi.gen.PrivateChatUserDao;
  */
 @Entity
 public class PrivateChatUser {
-    @Id
+    @Id(autoincrement = true)
+    private Long id;
     private Long privateUserId;
 
     String name;
     String avatar;
     private Long timestamp;
-    private Long uncheckTime=0L;
+    private Long uncheckTime = 0L;
 
     @ToMany(referencedJoinProperty = "privateUserId")
     private List<PrivateChatContent> privateChatContents;
 
     private Long userId;
-
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-
     /** Used for active entity operations. */
     @Generated(hash = 1072743205)
     private transient PrivateChatUserDao myDao;
 
-    @Generated(hash = 2103310173)
-    public PrivateChatUser(Long privateUserId, String name, String avatar,
+    @Generated(hash = 1122182842)
+    public PrivateChatUser(Long id, Long privateUserId, String name, String avatar,
             Long timestamp, Long uncheckTime, Long userId) {
+        this.id = id;
         this.privateUserId = privateUserId;
         this.name = name;
         this.avatar = avatar;
@@ -51,6 +53,14 @@ public class PrivateChatUser {
 
     @Generated(hash = 747997055)
     public PrivateChatUser() {
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getPrivateUserId() {
@@ -105,7 +115,7 @@ public class PrivateChatUser {
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
      */
-    @Generated(hash = 1102106147)
+    @Generated(hash = 1713562867)
     public List<PrivateChatContent> getPrivateChatContents() {
         if (privateChatContents == null) {
             final DaoSession daoSession = this.daoSession;
@@ -114,7 +124,7 @@ public class PrivateChatUser {
             }
             PrivateChatContentDao targetDao = daoSession.getPrivateChatContentDao();
             List<PrivateChatContent> privateChatContentsNew = targetDao
-                    ._queryPrivateChatUser_PrivateChatContents(privateUserId);
+                    ._queryPrivateChatUser_PrivateChatContents(id);
             synchronized (this) {
                 if (privateChatContents == null) {
                     privateChatContents = privateChatContentsNew;
@@ -173,5 +183,4 @@ public class PrivateChatUser {
         myDao = daoSession != null ? daoSession.getPrivateChatUserDao() : null;
     }
 
-    
 }

@@ -138,6 +138,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
                             eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
                     PrivateChatUserDao.Properties.PrivateUserId.eq(roomUser.getPrivateUserId())).unique();
             user.setTimestamp(System.currentTimeMillis());
+            user.setId(user.getId());
             privateChatUserDao.update(user);
             roomUsers.clear();
             List<PrivateChatUser> privateChatUsers2 = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
@@ -237,10 +238,11 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             ((PrivateChatDialog) awesomeDialog).chatTo(dataBean);
             ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
             ((PrivateChatDialog) awesomeDialog).setIsVip(isVip);
-            if (!chatUser.getUncheckTime().equals(0)) {
+            if (!chatUser.getUncheckTime().equals(0) && chatUser.getId() != null) {
                 PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
                 chatUser.setUncheckTime(0L);
                 chatUser.setTimestamp(System.currentTimeMillis());
+                chatUser.setId(chatUser.getId());
                 privateChatUserDao.update(chatUser);
                 update();
             }
@@ -249,9 +251,11 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
 
     private void delete(PrivateChatUser dataBean) {
         PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
-        privateChatUserDao.deleteByKey(dataBean.getPrivateUserId());
+        privateChatUserDao.deleteByKey(dataBean.getId());
         PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
-        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(PrivateChatContentDao.Properties.PrivateUserId.eq(dataBean.getPrivateUserId())).list();
+        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(
+                PrivateChatContentDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
+                PrivateChatContentDao.Properties.PrivateUserId.eq(dataBean.getPrivateUserId())).list();
         for (int i = 0; i < list.size(); i++) {
             privateChatContentDao.deleteByKey(list.get(i).getId());
         }

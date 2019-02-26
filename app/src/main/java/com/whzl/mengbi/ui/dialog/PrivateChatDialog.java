@@ -30,6 +30,7 @@ import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
+import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -139,7 +140,9 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
 
     private void initData() {
         PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
-        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(PrivateChatContentDao.Properties.PrivateUserId.eq(mCurrentChatToUser.getUserId())).list();
+        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(
+                PrivateChatContentDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
+                PrivateChatContentDao.Properties.PrivateUserId.eq(mCurrentChatToUser.getUserId())).list();
         for (int i = 0; i < list.size(); i++) {
             PrivateChatContent chatContent = list.get(i);
             ChatCommonJson chatCommonJson = new ChatCommonJson();

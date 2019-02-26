@@ -27,12 +27,13 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property PrivateUserId = new Property(0, Long.class, "privateUserId", true, "_id");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property Avatar = new Property(2, String.class, "avatar", false, "AVATAR");
-        public final static Property Timestamp = new Property(3, Long.class, "timestamp", false, "TIMESTAMP");
-        public final static Property UncheckTime = new Property(4, Long.class, "uncheckTime", false, "UNCHECK_TIME");
-        public final static Property UserId = new Property(5, Long.class, "userId", false, "USER_ID");
+        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property PrivateUserId = new Property(1, Long.class, "privateUserId", false, "PRIVATE_USER_ID");
+        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
+        public final static Property Avatar = new Property(3, String.class, "avatar", false, "AVATAR");
+        public final static Property Timestamp = new Property(4, Long.class, "timestamp", false, "TIMESTAMP");
+        public final static Property UncheckTime = new Property(5, Long.class, "uncheckTime", false, "UNCHECK_TIME");
+        public final static Property UserId = new Property(6, Long.class, "userId", false, "USER_ID");
     }
 
     private DaoSession daoSession;
@@ -52,12 +53,13 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"PRIVATE_CHAT_USER\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: privateUserId
-                "\"NAME\" TEXT," + // 1: name
-                "\"AVATAR\" TEXT," + // 2: avatar
-                "\"TIMESTAMP\" INTEGER," + // 3: timestamp
-                "\"UNCHECK_TIME\" INTEGER," + // 4: uncheckTime
-                "\"USER_ID\" INTEGER);"); // 5: userId
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
+                "\"PRIVATE_USER_ID\" INTEGER," + // 1: privateUserId
+                "\"NAME\" TEXT," + // 2: name
+                "\"AVATAR\" TEXT," + // 3: avatar
+                "\"TIMESTAMP\" INTEGER," + // 4: timestamp
+                "\"UNCHECK_TIME\" INTEGER," + // 5: uncheckTime
+                "\"USER_ID\" INTEGER);"); // 6: userId
     }
 
     /** Drops the underlying database table. */
@@ -70,34 +72,39 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
     protected final void bindValues(DatabaseStatement stmt, PrivateChatUser entity) {
         stmt.clearBindings();
  
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+ 
         Long privateUserId = entity.getPrivateUserId();
         if (privateUserId != null) {
-            stmt.bindLong(1, privateUserId);
+            stmt.bindLong(2, privateUserId);
         }
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(2, name);
+            stmt.bindString(3, name);
         }
  
         String avatar = entity.getAvatar();
         if (avatar != null) {
-            stmt.bindString(3, avatar);
+            stmt.bindString(4, avatar);
         }
  
         Long timestamp = entity.getTimestamp();
         if (timestamp != null) {
-            stmt.bindLong(4, timestamp);
+            stmt.bindLong(5, timestamp);
         }
  
         Long uncheckTime = entity.getUncheckTime();
         if (uncheckTime != null) {
-            stmt.bindLong(5, uncheckTime);
+            stmt.bindLong(6, uncheckTime);
         }
  
         Long userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindLong(6, userId);
+            stmt.bindLong(7, userId);
         }
     }
 
@@ -105,34 +112,39 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
     protected final void bindValues(SQLiteStatement stmt, PrivateChatUser entity) {
         stmt.clearBindings();
  
+        Long id = entity.getId();
+        if (id != null) {
+            stmt.bindLong(1, id);
+        }
+ 
         Long privateUserId = entity.getPrivateUserId();
         if (privateUserId != null) {
-            stmt.bindLong(1, privateUserId);
+            stmt.bindLong(2, privateUserId);
         }
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(2, name);
+            stmt.bindString(3, name);
         }
  
         String avatar = entity.getAvatar();
         if (avatar != null) {
-            stmt.bindString(3, avatar);
+            stmt.bindString(4, avatar);
         }
  
         Long timestamp = entity.getTimestamp();
         if (timestamp != null) {
-            stmt.bindLong(4, timestamp);
+            stmt.bindLong(5, timestamp);
         }
  
         Long uncheckTime = entity.getUncheckTime();
         if (uncheckTime != null) {
-            stmt.bindLong(5, uncheckTime);
+            stmt.bindLong(6, uncheckTime);
         }
  
         Long userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindLong(6, userId);
+            stmt.bindLong(7, userId);
         }
     }
 
@@ -150,36 +162,38 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
     @Override
     public PrivateChatUser readEntity(Cursor cursor, int offset) {
         PrivateChatUser entity = new PrivateChatUser( //
-            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // privateUserId
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // avatar
-            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // timestamp
-            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // uncheckTime
-            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5) // userId
+            cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // privateUserId
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // avatar
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // timestamp
+            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // uncheckTime
+            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6) // userId
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, PrivateChatUser entity, int offset) {
-        entity.setPrivateUserId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setAvatar(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setTimestamp(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
-        entity.setUncheckTime(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
-        entity.setUserId(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setPrivateUserId(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setAvatar(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setTimestamp(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setUncheckTime(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setUserId(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
      }
     
     @Override
     protected final Long updateKeyAfterInsert(PrivateChatUser entity, long rowId) {
-        entity.setPrivateUserId(rowId);
+        entity.setId(rowId);
         return rowId;
     }
     
     @Override
     public Long getKey(PrivateChatUser entity) {
         if(entity != null) {
-            return entity.getPrivateUserId();
+            return entity.getId();
         } else {
             return null;
         }
@@ -187,7 +201,7 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
 
     @Override
     public boolean hasKey(PrivateChatUser entity) {
-        return entity.getPrivateUserId() != null;
+        return entity.getId() != null;
     }
 
     @Override
