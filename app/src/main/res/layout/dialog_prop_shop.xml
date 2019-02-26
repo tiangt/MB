@@ -82,7 +82,8 @@
                     android:gravity="end"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <com.whzl.mengbi.ui.widget.view.LongClickButton
+                        android:background="@null"
                         android:id="@+id/tv_reduce_diaolog_prop_shop"
                         android:layout_width="44dp"
                         android:layout_height="24dp"
@@ -101,7 +102,8 @@
                         android:textColor="#696969"
                         android:textSize="12sp" />
 
-                    <TextView
+                    <com.whzl.mengbi.ui.widget.view.LongClickButton
+                        android:background="@null"
                         android:id="@+id/tv_add_diaolog_prop_shop"
                         android:layout_width="44dp"
                         android:layout_height="24dp"

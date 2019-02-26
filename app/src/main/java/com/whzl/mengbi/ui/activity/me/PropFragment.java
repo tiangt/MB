@@ -24,6 +24,7 @@ import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
+import com.whzl.mengbi.ui.widget.view.LongClickButton;
 import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -136,41 +137,72 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
                 holder.setText(R.id.tv_title_dialog_prop_shop, "购买" + listBean.goodsName);
                 holder.setText(R.id.tv_time_dialog_prop_shop, listBean.days + "天");
                 TextView textView = (TextView) holder.getView(R.id.tv_total_dialog_prop_shop);
+                TextView tvNum = (TextView) holder.getView(R.id.tv_num_diaolog_prop_shop);
                 calculate(textView, listBean, num);
                 holder.setOnClickListener(R.id.tv_reduce_diaolog_prop_shop, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        num -= 1;
-                        if (num < 1) {
-                            num = 1;
+//                        num -= 1;
+//                        if (num < 1) {
+//                            num = 1;
+//                        }
+//                        holder.setText(R.id.tv_num_diaolog_prop_shop, String.valueOf(num));
+                        if (Integer.parseInt(tvNum.getText().toString()) <= 1) {
+                            return;
                         }
-                        holder.setText(R.id.tv_num_diaolog_prop_shop, String.valueOf(num));
-                        calculate(textView, listBean, num);
+                        tvNum.setText(String.valueOf(Integer.parseInt(tvNum.getText().toString()) - 1));
+                        calculate(textView, listBean, Integer.parseInt(tvNum.getText().toString()));
                     }
                 });
                 holder.setOnClickListener(R.id.tv_add_diaolog_prop_shop, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        num += 1;
-                        if (num > 9999) {
+//                        num += 1;
+//                        if (num > 9999) {
+//                        }
+//                        holder.setText(R.id.tv_num_diaolog_prop_shop, String.valueOf(num));
+                        if (Integer.parseInt(tvNum.getText().toString()) >= 9999) {
+                            return;
                         }
-                        holder.setText(R.id.tv_num_diaolog_prop_shop, String.valueOf(num));
-                        calculate(textView, listBean, num);
+                        tvNum.setText(String.valueOf(Integer.parseInt(tvNum.getText().toString()) + 1));
+                        calculate(textView, listBean, Integer.parseInt(tvNum.getText().toString()));
+                    }
+                });
+                LongClickButton tvReduce = holder.getView(R.id.tv_reduce_diaolog_prop_shop);
+                LongClickButton tvAdd = holder.getView(R.id.tv_add_diaolog_prop_shop);
+                tvReduce.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
+                    @Override
+                    public void repeatAction() {
+                        if (Integer.parseInt(tvNum.getText().toString()) <= 1) {
+                            return;
+                        }
+                        tvNum.setText(String.valueOf(Integer.parseInt(tvNum.getText().toString()) - 1));
+                        calculate(textView, listBean, Integer.parseInt(tvNum.getText().toString()));
+                    }
+                });
+                tvAdd.setLongClickRepeatListener(new LongClickButton.LongClickRepeatListener() {
+                    @Override
+                    public void repeatAction() {
+                        if (Integer.parseInt(tvNum.getText().toString()) >= 9999) {
+                            return;
+                        }
+                        tvNum.setText(String.valueOf(Integer.parseInt(tvNum.getText().toString()) + 1));
+                        calculate(textView, listBean, Integer.parseInt(tvNum.getText().toString()));
                     }
                 });
                 holder.setOnClickListener(R.id.btn_buy, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        buy(listBean);
+                        buy(listBean, Integer.parseInt(tvNum.getText().toString()));
                     }
                 });
             }
         }).setDimAmount(0).setShowBottom(true).show(getFragmentManager());
     }
 
-    private void buy(GetProsListBean.ListBean listBean) {
+    private void buy(GetProsListBean.ListBean listBean, int i) {
         BusinessUtils.mallBuy(getMyActivity(), String.valueOf(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L))
-                , listBean.goodsId + "", listBean.priceId + "", num+"", "", ""
+                , listBean.goodsId + "", listBean.priceId + "", i + "", "", ""
                 , new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {
