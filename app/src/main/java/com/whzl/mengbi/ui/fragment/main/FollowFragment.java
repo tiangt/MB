@@ -94,7 +94,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     private void initTitle() {
-        tvToolbarTitle.setText("我的订阅");
+        tvToolbarTitle.setText("订阅");
         tvToolbarMenuText.setText("开播提醒");
         tvToolbarMenuText.setOnClickListener(new View.OnClickListener() {
             @Override
