@@ -193,7 +193,7 @@ public class AccountSwitchActivity extends BaseActivity {
             if (edit) {
                 return;
             }
-            if (accountList.get(position).equals(currentUserId)) {
+            if (accountList.get(position).getUserId().equals(currentUserId)) {
                 return;
             }
             checkLogin(accountList.get(position));

@@ -7,6 +7,8 @@
 
     <include layout="@layout/white_toolbar" />
 
+    <include layout="@layout/divider_shawdow_white" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
