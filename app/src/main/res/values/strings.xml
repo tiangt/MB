@@ -454,7 +454,7 @@
     <string name="my_income">我的收益</string>
 
     <string name="rank_regal">根据用户送出礼物的萌币进行排名</string>
-    <string name="rank_star">根据主播收到礼物的萌点进行排名</string>
+    <string name="rank_star">根据主播收到礼物的经验进行排名</string>
     <string name="rank_pop">根据主播收到蓝色妖姬的数量进行排名</string>
 
     <string name="rank_tip_star">上周榜奖励：第1~10名，奖励明星勋章7天</string>
