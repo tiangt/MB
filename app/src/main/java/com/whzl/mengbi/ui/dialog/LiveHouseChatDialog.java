@@ -26,11 +26,12 @@ import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.chat.room.util.ChatCacheFaceReplace;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.ui.activity.me.BuyVipActivity;
+import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
@@ -38,6 +39,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.CommonEmojiMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GuardEmojiFragment;
 import com.whzl.mengbi.ui.dialog.fragment.VipEmojiFragment;
+import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -245,12 +247,15 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         guardEmojiFragment.setListener(() -> {
             GuardDetailDialog.newInstance(mProgramId, mAnchorBean).setShowBottom(true).setDimAmount(0).show(getFragmentManager());
             dismiss();
+            EventBus.getDefault().post(new CLickGuardOrVipEvent());
         });
 
         vipEmojiFragment.setVipListener(() -> {
-            Intent intent = new Intent(getContext(), BuyVipActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(getContext(), ShopActivity.class);
+            intent.putExtra(ShopActivity.SELECT, 1);
+            ((LiveDisplayActivity) getActivity()).startActivityForResult(intent, AppUtils.OPEN_VIP);
             dismiss();
+            EventBus.getDefault().post(new CLickGuardOrVipEvent());
         });
 
         fragments = new Fragment[]{commonEmojiMotherFragment, guardEmojiFragment, vipEmojiFragment};
@@ -258,6 +263,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.commit();
     }
+
 
     private void setTabChange(int index) {
         if (index == currentSelectedIndex) {

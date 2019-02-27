@@ -25,6 +25,7 @@ public class AppUtils {
             "CN=Android Debug,O=Android,C=US");
     public static int REQUEST_INSTALL = 100;
     public static final int REQUEST_LOGIN = 250;
+    public static final int OPEN_VIP = 260;
 
     /**
      * Get version name

@@ -29,6 +29,7 @@ import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.greendao.PrivateChatContent;
@@ -276,10 +277,15 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 recycler.smoothScrollToPosition(chatList.size() - 1);
             }
         }
-//        if (!isAdded()) {
-//            ((LiveDisplayActivity) getActivity()).showMessageNotify();
-//        }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(CLickGuardOrVipEvent event) {
+        if (isAdded()) {
+            dismiss();
+        }
+    }
+
 
     public void setIsGuard(boolean isGuard) {
         this.isGuard = isGuard;

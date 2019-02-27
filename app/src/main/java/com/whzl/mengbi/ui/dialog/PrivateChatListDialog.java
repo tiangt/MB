@@ -19,6 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatUIEvent;
+import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.greendao.PrivateChatContent;
@@ -267,4 +268,10 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
         baseListAdapter.notifyDataSetChanged();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(CLickGuardOrVipEvent event) {
+        if (isAdded()) {
+            dismiss();
+        }
+    }
 }

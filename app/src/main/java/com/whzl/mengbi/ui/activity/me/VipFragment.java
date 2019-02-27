@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity.me;
 
+import android.app.Activity;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -192,6 +193,7 @@ public class VipFragment extends BaseFragment {
                     @Override
                     public void onSuccess() {
                         ToastUtils.showToastUnify(getMyActivity(), "购买成功");
+                        getMyActivity().setResult(Activity.RESULT_OK);
                         buyDialog.dismiss();
                     }
 

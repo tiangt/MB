@@ -2180,6 +2180,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 LogUtils.e("sssssssss   onActivityResult");
             }
         }
+        if (requestCode == AppUtils.OPEN_VIP) {
+            if (resultCode==RESULT_OK) {
+                isVip = true;
+            }
+        }
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 

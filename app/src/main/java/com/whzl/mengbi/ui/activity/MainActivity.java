@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity {
     private AwesomeDialog awesomeDialog;
     private static final String TAG_EXIT = "exit";
     private int[] colors = new int[]{Color.parseColor("#ffffff"), Color.parseColor("#ffffff"),
-            Color.parseColor("#ffffff"), Color.parseColor("#181818"), Color.parseColor("#181818")};
+            Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), Color.parseColor("#181818")};
 
     @Override
     protected void initEnv() {
@@ -182,9 +182,9 @@ public class MainActivity extends BaseActivity {
         if (index == currentSelectedIndex) {
             return;
         }
-        if (index == 3 || index == 4) {
+        if ( index == 4) {
             StatusBarUtil.setDarkMode(this);
-            StatusBarUtil.setColor(this, colors[index], 0);
+            StatusBarUtil.setColor(this, colors[index], 122);
         } else {
             StatusBarUtil.setLightMode(this);
             StatusBarUtil.setColor(this, colors[index], 0);
