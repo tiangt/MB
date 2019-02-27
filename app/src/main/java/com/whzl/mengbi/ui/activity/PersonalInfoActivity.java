@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.squareup.picasso.Picasso;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
@@ -116,6 +117,12 @@ public class PersonalInfoActivity extends BaseActivity {
     @Override
     protected void setupContentView() {
         setContentView(R.layout.activity_personal_info);
+    }
+
+    @Override
+    protected void setStatusBar() {
+        View mViewNeedOffset = findViewById(R.id.view_need_offset);
+        StatusBarUtil.setTransparentForImageView(this, mViewNeedOffset);
     }
 
     @Override
@@ -339,13 +346,13 @@ public class PersonalInfoActivity extends BaseActivity {
                     } else if ("C".equals(goodsListBean.getGoodsColor())) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setPrettyType("C");
-                    }else if ("D".equals(goodsListBean.getGoodsColor())) {
+                    } else if ("D".equals(goodsListBean.getGoodsColor())) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setPrettyType("D");
-                    }else if ("E".equals(goodsListBean.getGoodsColor())) {
+                    } else if ("E".equals(goodsListBean.getGoodsColor())) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setPrettyType("E");
-                    }else{
+                    } else {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setPrettyType("");
                     }

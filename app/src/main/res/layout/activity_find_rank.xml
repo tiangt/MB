@@ -8,58 +8,63 @@
     <ImageView
         android:id="@+id/iv_find_bg"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="270dp"
         android:scaleType="fitXY" />
 
     <RelativeLayout
-        android:id="@+id/rl_rank_title"
+        android:id="@+id/view_need_offset"
         android:layout_width="match_parent"
-        android:layout_height="44dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_return"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_find_return"/>
+        <RelativeLayout
+            android:id="@+id/rl_rank_title"
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
 
-        <TextView
-            android:id="@+id/tv_title"
+            <ImageView
+                android:id="@+id/iv_return"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_find_return" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="富豪榜"
+                android:textColor="#ffffff" />
+
+            <ImageView
+                android:id="@+id/iv_question"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_rank_question" />
+        </RelativeLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/period_tab"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_below="@id/rl_rank_title"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/shape_find_bg"
+            app:tabBackground="@drawable/selector_tab_background"
+            app:tabIndicatorHeight="0dp"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/white" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="富豪榜"
-            android:textColor="#ffffff" />
-
-        <ImageView
-            android:id="@+id/iv_question"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_rank_question"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true" />
+            android:layout_below="@id/period_tab" />
     </RelativeLayout>
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/period_tab"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:layout_below="@id/rl_rank_title"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/shape_find_bg"
-        app:tabBackground="@drawable/selector_tab_background"
-        app:tabIndicatorHeight="0dp"
-        app:tabSelectedTextColor="@color/black"
-        app:tabTextColor="@color/white" />
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/period_tab" />
-
 </RelativeLayout>

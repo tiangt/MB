@@ -56,7 +56,8 @@ public class FindRankActivity extends BaseActivity {
 
     @Override
     protected void setStatusBar() {
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this,R.color.status_white_toolbar));
+        View mViewNeedOffset = findViewById(R.id.view_need_offset);
+        StatusBarUtil.setTransparentForImageView(this, mViewNeedOffset);
     }
 
     @Override
