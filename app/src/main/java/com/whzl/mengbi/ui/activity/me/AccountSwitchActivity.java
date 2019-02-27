@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
@@ -61,10 +60,8 @@ public class AccountSwitchActivity extends BaseActivity {
 
     @Override
     protected void setupContentView() {
-        StatusBarUtil.setColor(this, Color.parseColor("#181818"));
         setContentView(R.layout.activity_account_switch, "切换账号", "编辑", true);
         getTitleRightText().setTextColor(Color.parseColor("#ff2b3f"));
-
     }
 
     @Override

@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Parcelable;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.model.entity.RebateBean;
@@ -34,7 +32,6 @@ public class UseRebateFragment extends BasePullListFragment<RebateBean.ListBean,
         super.initEnv();
         FrgActivity myActivity = (FrgActivity) getMyActivity();
         myActivity.setTitle("使用返利券");
-        StatusBarUtil.setColor(myActivity, ContextCompat.getColor(myActivity, R.color.status_white_toolbar));
     }
 
     @Override

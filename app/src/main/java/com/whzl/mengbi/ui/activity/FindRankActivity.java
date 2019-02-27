@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.activity;
 import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,11 @@ public class FindRankActivity extends BaseActivity {
     @Override
     protected void setupContentView() {
         setContentView(R.layout.activity_find_rank);
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this,R.color.status_white_toolbar));
     }
 
     @Override

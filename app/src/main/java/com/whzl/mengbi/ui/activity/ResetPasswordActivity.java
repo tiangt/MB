@@ -58,9 +58,13 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
         EventBus.getDefault().register(this);
         phone = getIntent().getStringExtra("mobile");
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 
     @Override
@@ -104,7 +108,7 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_get_verify_code:
-                if(ClickUtil.isFastClick()){
+                if (ClickUtil.isFastClick()) {
                     getVerifyCode(phone);
                 }
                 break;
@@ -131,7 +135,7 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
                     tvPswMsg.setText("两次输入的密码不一致，请重新输入");
                     return;
                 }
-                if (ClickUtil.isFastClick()){
+                if (ClickUtil.isFastClick()) {
                     resetPsw(phone, mPassword, verifyCode);
                 }
                 break;

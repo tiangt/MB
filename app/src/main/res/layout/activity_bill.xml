@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/comm_black_toolbar" />
+    <include layout="@layout/white_toolbar" />
+
+    <include layout="@layout/divider_shawdow_white" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"

@@ -21,7 +21,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
-import com.jaeger.library.StatusBarUtil;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -141,7 +140,6 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.status_white_toolbar));
         mPresent = new RechargePresenterImpl(this);
         mUserId = Long.parseLong(SPUtils.get(this, "userId", (long) 0).toString());
         otherUserId = mUserId;

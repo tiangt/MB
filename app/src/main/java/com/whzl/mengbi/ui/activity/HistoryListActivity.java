@@ -1,18 +1,14 @@
 package com.whzl.mengbi.ui.activity;
 
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
-import com.whzl.mengbi.ui.fragment.FollowSortFragment;
 import com.whzl.mengbi.ui.fragment.WatchHistoryFragment;
-import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,12 +41,6 @@ public class HistoryListActivity extends BaseActivity {
         fragments = new Fragment[]{fragment};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
-    }
-
-    @Override
-    protected void initEnv() {
-        super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 
     @Override

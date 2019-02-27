@@ -24,7 +24,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
@@ -120,7 +119,6 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
         mPref = getSharedPreferences("input", Activity.MODE_PRIVATE);
         layoutInflater = LayoutInflater.from(this);
     }

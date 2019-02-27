@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.activity.me;
 
-import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
@@ -31,12 +29,6 @@ public class BillActivity extends BaseActivity {
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
-
-    @Override
-    protected void initEnv() {
-        super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
-    }
 
     @Override
     protected void setupContentView() {

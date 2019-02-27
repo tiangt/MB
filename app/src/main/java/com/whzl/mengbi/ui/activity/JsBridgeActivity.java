@@ -2,7 +2,6 @@ package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -21,13 +20,9 @@ import com.github.lzyzsd.jsbridge.BridgeWebViewClient;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.github.lzyzsd.jsbridge.DefaultHandler;
 import com.google.gson.Gson;
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.model.entity.ApiResult;
-import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.js.JumpRoomBean;
@@ -69,8 +64,6 @@ public class JsBridgeActivity extends BaseActivity {
 
     @Override
     protected void initEnv() {
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
-
         anchorId = getIntent().getStringExtra("anchorId");
         programId = getIntent().getStringExtra("programId");
         url = getIntent().getStringExtra("url");

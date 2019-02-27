@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.activity.me;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,14 +14,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
-import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.BundleConfig;
-import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.AnchorFollowedDataBean;
 import com.whzl.mengbi.model.entity.ApiResult;
@@ -73,8 +70,6 @@ public class PlayNotifyActivity extends BaseActivity implements OnLoadMoreListen
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setLightMode(this);
-        StatusBarUtil.setColor(this, Color.parseColor("#ffffff"), 0);
     }
 
     @Override

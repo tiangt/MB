@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.squareup.picasso.Picasso;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
@@ -24,10 +23,10 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
-import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
-import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
+import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BlurTransformation;
 import com.whzl.mengbi.util.ClipboardUtils;
@@ -134,7 +133,6 @@ public class PersonalInfoActivity extends BaseActivity {
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 
     @Override

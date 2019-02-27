@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.activity.me;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -23,8 +21,6 @@ import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
-
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -62,11 +58,6 @@ public class ChangePhoneActivity extends BaseActivity implements TextWatcher {
         setContentView(R.layout.activity_change_phone);
     }
 
-    @Override
-    protected void initEnv() {
-        super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
-    }
 
     @Override
     protected void setupView() {

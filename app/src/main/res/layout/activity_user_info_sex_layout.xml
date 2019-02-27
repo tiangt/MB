@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/comm_toolbar" />
+    <include layout="@layout/white_toolbar" />
+
+    <include layout="@layout/divider_shawdow_white"/>
 
     <RadioGroup
         android:id="@+id/rg_gender"

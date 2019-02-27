@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.activity.me;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.jaeger.library.StatusBarUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -71,12 +69,6 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
     @Override
     protected void setupContentView() {
         setContentView(R.layout.activity_chip_composite);
-    }
-
-    @Override
-    protected void initEnv() {
-        super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 
     @Override

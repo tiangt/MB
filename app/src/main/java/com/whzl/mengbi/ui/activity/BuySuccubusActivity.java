@@ -53,9 +53,13 @@ public class BuySuccubusActivity extends BaseActivity {
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColor(this, Color.parseColor("#000000"));
         mProgramId = getIntent().getIntExtra("mProgramId", 0);
         mAnchorId = getIntent().getIntExtra("mAnchorId", 0);
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, Color.parseColor("#000000"));
     }
 
     @Override
