@@ -587,7 +587,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 头条榜单
      */
     private void initHeadline() {
-        String[] lines = {mHeadlineRank, mRanking};
+        String[] lines = {mRanking,mHeadlineRank};
         setHeadLine(lines);
     }
 
