@@ -34,6 +34,7 @@ public class PkJson {
         public LaunchPkUserInfoBean pkUserInfo;
         public int pkUserProgramId;
         public int pkUserScore;
+        public int pkSingleVideo;
         public int launchPkUserScore;
         public int pkTieSurplusSecond;
         public int pkPunishSurplusSecond;

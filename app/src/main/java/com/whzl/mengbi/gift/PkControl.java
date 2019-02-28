@@ -200,10 +200,12 @@ public class PkControl {
         switch (bean.busiCode) {
             case "PK_ACCEPT_REQUEST": //接收PK请求
                 pkLayout.setVisibility(View.VISIBLE);
-                layout.setVisibility(View.VISIBLE);
                 startPKAnim();
                 startCountDown(5);
-                otherSideLive();
+                if (bean.pkSingleVideo == 0) {
+                    layout.setVisibility(View.VISIBLE);
+                    otherSideLive();
+                }
                 pkLayout.timer("PK倒计时 ", bean.pkSurPlusSecond);
                 if (bean.launchUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -212,7 +214,7 @@ public class PkControl {
                     tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
                     jumpNick = bean.pkUserInfo.nickname;
-                    if (bean.pkUserLiveAndStreamAddress.showStreams != null) {
+                    if (bean.pkUserLiveAndStreamAddress.showStreams != null && bean.pkSingleVideo == 0) {
                         for (int i = 0; i < bean.pkUserLiveAndStreamAddress.showStreams.size(); i++) {
                             streamType = bean.pkUserLiveAndStreamAddress.showStreams.get(i).streamType;
                             if (streamType.equals("flv")) {
@@ -230,7 +232,7 @@ public class PkControl {
                     tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
                     jumpNick = bean.launchPkUserInfo.nickname;
-                    if (bean.launchPkUserLiveAndStreamAddress.showStreams != null) {
+                    if (bean.launchPkUserLiveAndStreamAddress.showStreams != null && bean.pkSingleVideo == 0) {
                         for (int i = 0; i < bean.launchPkUserLiveAndStreamAddress.showStreams.size(); i++) {
                             streamType = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamType;
                             if (streamType.equals("flv")) {
@@ -323,8 +325,10 @@ public class PkControl {
                 }
                 break;
             case "PK_TIE_FINISH"://平局时间结束
-                shutDown();
-                layout.setVisibility(View.GONE);
+                if (bean.pkSingleVideo==0) {
+                    shutDown();
+                    layout.setVisibility(View.GONE);
+                }
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);
@@ -334,8 +338,10 @@ public class PkControl {
                 needShow = false;
                 break;
             case "PK_PUNISH_FINISH"://惩罚时间结束
-                shutDown();
-                layout.setVisibility(View.GONE);
+                if (bean.pkSingleVideo==0) {
+                    shutDown();
+                    layout.setVisibility(View.GONE);
+                }
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);

@@ -53,7 +53,8 @@ public class RoyalEnterView extends AppCompatTextView {
         String text = getText().toString();
         step = 0f;
         textLength = paint.measureText(text);
-        viewWidth = UIUtil.dip2px(getContext(), 235);
+        viewWidth = UIUtil.dip2px(getContext(), 275);
+        LogUtils.e("ssssssssss  "+textLength+"    "+viewWidth);
     }
 
 
@@ -151,9 +152,9 @@ public class RoyalEnterView extends AppCompatTextView {
         }
         canvas.translate(-step, 0);
         super.onDraw(canvas);
-        if (viewWidth > textLength + 30) {
-            return;
-        }
+//        if (viewWidth > textLength + 30) {
+//            return;
+//        }
         Observable.just(1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(integer -> {

@@ -1544,7 +1544,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setOtherLive(textureView2);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
 
-        if (bean.otherStream != null) {
+        if (bean.otherStream != null && bean.pkSingleVideo == 0) {
             rlOtherSide.setVisibility(View.VISIBLE);
             rlOtherSideInfo.setVisibility(View.VISIBLE);
             List<String> rtmpList = bean.otherStream.getRtmp();
@@ -1564,7 +1564,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             }
         }
-        otherSideLive();
+        if (bean.pkSingleVideo == 0) {
+            otherSideLive();
+        }
 
         pkControl.initNet(bean);
 
@@ -1808,6 +1810,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             }
             PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
+            List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(
+                    PrivateChatContentDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
+                    PrivateChatContentDao.Properties.PrivateUserId.eq(chatToUser.getUserId())).list();
+            if (list != null && list.size() > AppUtils.PRIVATE_MAX_NUM) {
+                privateChatContentDao.deleteByKey(list.get(0).getId());
+            }
             PrivateChatContent chatContent = new PrivateChatContent();
             chatContent.setContent(message);
             chatContent.setTimestamp(System.currentTimeMillis());
@@ -2186,7 +2194,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
         }
         if (requestCode == AppUtils.OPEN_VIP) {
-            if (resultCode==RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 isVip = true;
             }
         }

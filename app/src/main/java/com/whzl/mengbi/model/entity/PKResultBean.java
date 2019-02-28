@@ -34,6 +34,7 @@ public class PKResultBean {
     public UserInfoBean pkUserInfo;
     public int pkUserProgramId;
     public int pkUserScore;
+    public int pkSingleVideo;
     public String pkStatus;
     public String punishStatus;
     public String tieStatus;

@@ -27,6 +27,8 @@ public class AppUtils {
     public static final int REQUEST_LOGIN = 250;
     public static final int OPEN_VIP = 260;
 
+    public static int PRIVATE_MAX_NUM = 200;
+
     /**
      * Get version name
      *

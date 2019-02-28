@@ -12,10 +12,13 @@ import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 
 
 public class PrivateChatAction implements Actions {
@@ -30,6 +33,13 @@ public class PrivateChatAction implements Actions {
         EventBus.getDefault().post(new UpdatePrivateChatEvent(message));
 
         PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
+
+        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(
+                PrivateChatContentDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
+                PrivateChatContentDao.Properties.PrivateUserId.eq(json.getFrom_uid())).list();
+        if (list != null && list.size() > AppUtils.PRIVATE_MAX_NUM) {
+            privateChatContentDao.deleteByKey(list.get(0).getId());
+        }
         PrivateChatContent chatContent = new PrivateChatContent();
         chatContent.setContent(json.getContent());
         chatContent.setTimestamp(System.currentTimeMillis());
