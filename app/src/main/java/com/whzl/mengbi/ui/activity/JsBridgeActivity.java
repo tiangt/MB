@@ -31,6 +31,7 @@ import com.whzl.mengbi.model.entity.js.LoginStateBean;
 import com.whzl.mengbi.model.entity.js.RoomInfoBean;
 import com.whzl.mengbi.model.entity.js.UserInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.LogUtils;
@@ -178,6 +179,14 @@ public class JsBridgeActivity extends BaseActivity {
                 jumpToLiveHouseByAnchorId(Integer.parseInt(jumpRoomBean.pId));
             }
         });
+
+        bridgeWebView.registerHandler("jumpToShopActivity", (data, function) ->
+                jumpToShopActivity());
+    }
+
+    private void jumpToShopActivity() {
+        Intent intent = new Intent(this, ShopActivity.class);
+        startActivity(intent);
     }
 
     private void jumpToLiveHouseByAnchorId(int i) {
