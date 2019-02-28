@@ -1253,6 +1253,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         textureView.reset();
         textureView.setVisibility(View.INVISIBLE);
         tvStopTip.setVisibility(View.VISIBLE);
+        loadLayout.setVisibility(View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
