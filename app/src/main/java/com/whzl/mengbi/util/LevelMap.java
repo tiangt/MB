@@ -129,6 +129,7 @@ public class LevelMap {
         royalLevelMap.put(5, "钻石");
         royalLevelMap.put(6, "星耀");
         royalLevelMap.put(7, "王者");
+        royalLevelMap.put(8, "传说");
     }
 
     public String getUserLevel(int level) {
@@ -164,8 +165,8 @@ public class LevelMap {
         if (royalLevelMap.containsKey(level)) {
             levelName = royalLevelMap.get(level);
         } else {
-            if(level > 6){
-                levelName = "王者";
+            if(level > 7){
+                levelName = "传说";
             }else{
                 levelName = "无等级";
             }

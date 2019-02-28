@@ -96,7 +96,7 @@ public class MyLevelProgressLayout extends LinearLayout {
                 tvLevelNext.setVisibility(VISIBLE);
                 tvLevelNow.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue));
             }
-            if (levelValue == 7) {
+            if (levelValue == 8) {
                 tvLevelNext.setVisibility(INVISIBLE);
             } else {
                 tvLevelNext.setVisibility(VISIBLE);
@@ -133,7 +133,7 @@ public class MyLevelProgressLayout extends LinearLayout {
                 sjExpvalue1 = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue1 = listBeans.get(j).getSjNeedExpValue();
                 tpMyLevel.setProgressDrawable(getResources().getDrawable(R.drawable.pb_my_royal_level));
-                if (levelValue == 7) {
+                if (levelValue == 8) {
                     tpMyLevel.setMax(100);
                     tpMyLevel.setProgress(100);
                 } else {

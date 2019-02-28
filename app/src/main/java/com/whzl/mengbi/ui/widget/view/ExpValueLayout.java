@@ -98,7 +98,7 @@ public class ExpValueLayout extends LinearLayout {
             } else {
                 ivLevelNow.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
             }
-            if (levelValue == 7) {
+            if (levelValue == 8) {
                 ivLevelNext.setVisibility(INVISIBLE);
             } else {
                 ivLevelNext.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue + 1));
@@ -133,7 +133,7 @@ public class ExpValueLayout extends LinearLayout {
             } else if ("ROYAL_EXP".equals(expType)) {
                 sjExpvalue1 = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue1 = listBeans.get(j).getSjNeedExpValue();
-                if (levelValue == 7) {
+                if (levelValue == 8) {
                     tpAnchorLevel.setMax(100);
                     tpAnchorLevel.setProgress(100);
                     tvPb.setText("您已达到最高贵族等级");
