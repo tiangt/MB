@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
@@ -75,7 +73,6 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
         registerPresenter = new RegisterPresenterImpl(this);
     }
 

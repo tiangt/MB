@@ -1,12 +1,9 @@
 package com.whzl.mengbi.ui.activity.me;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,11 +12,8 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.presenter.impl.BindingPresenterImpl;
-import com.whzl.mengbi.ui.activity.ResetPasswordActivity;
-import com.whzl.mengbi.ui.activity.RetrievePasswordActivity;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.BindingPhoneView;
@@ -69,11 +63,6 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
         bindingPresenter = new BindingPresenterImpl(this);
     }
 
-    @Override
-    protected void initEnv() {
-        super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
-    }
 
     @Override
     protected void setupView() {

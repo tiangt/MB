@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.fragment.me;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
@@ -60,7 +58,6 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(getMyActivity(), Color.parseColor("#252525"));
         ((FrgActivity) getMyActivity()).setTitle("新手任务");
         ((FrgActivity) getMyActivity()).setTitleColor(ContextCompat.getColor(getMyActivity(), R.color.comm_white));
         ((FrgActivity) getMyActivity()).setTitleBlack();

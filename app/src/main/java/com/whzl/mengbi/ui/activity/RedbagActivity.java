@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.jaeger.library.StatusBarUtil;
@@ -45,8 +44,12 @@ public class RedbagActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.statusbar_black));
         programId = getIntent().getIntExtra("programId", 0);
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.statusbar_black));
     }
 
     @Override

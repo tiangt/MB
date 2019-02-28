@@ -467,7 +467,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     protected void initEnv() {
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mLivePresenter = new LivePresenterImpl(this);
         if (getIntent() != null) {
@@ -479,6 +478,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getLiveGift();
         initReceiver();
         initPkNetwork();
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
     }
 
     private void initReceiver() {

@@ -24,10 +24,10 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
-import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
-import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
+import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BlurTransformation;
 import com.whzl.mengbi.util.ClipboardUtils;
@@ -120,6 +120,12 @@ public class PersonalInfoActivity extends BaseActivity {
     }
 
     @Override
+    protected void setStatusBar() {
+        View mViewNeedOffset = findViewById(R.id.view_need_offset);
+        StatusBarUtil.setTranslucentForImageView(this, mViewNeedOffset);
+    }
+
+    @Override
     protected void setupView() {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -134,7 +140,6 @@ public class PersonalInfoActivity extends BaseActivity {
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 
     @Override
@@ -341,13 +346,13 @@ public class PersonalInfoActivity extends BaseActivity {
                     } else if ("C".equals(goodsListBean.getGoodsColor())) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setPrettyType("C");
-                    }else if ("D".equals(goodsListBean.getGoodsColor())) {
+                    } else if ("D".equals(goodsListBean.getGoodsColor())) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setPrettyType("D");
-                    }else if ("E".equals(goodsListBean.getGoodsColor())) {
+                    } else if ("E".equals(goodsListBean.getGoodsColor())) {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setPrettyType("E");
-                    }else{
+                    } else {
                         tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
                         tvPrettyNum.setPrettyType("");
                     }

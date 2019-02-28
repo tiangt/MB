@@ -26,9 +26,9 @@ public class RetrievePasswordActivity extends BaseActivity {
     @BindView(R.id.btn_back_login)
     Button btnBackLogin;
 
+
     @Override
-    protected void initEnv() {
-        super.initEnv();
+    protected void setStatusBar() {
         StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 

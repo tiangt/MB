@@ -2,9 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/comm_toolbar" />
+    <include layout="@layout/white_toolbar" />
+
+    <include layout="@layout/divider_shawdow_white" />
 
     <RelativeLayout
         android:id="@+id/rl_avatar_container"
@@ -13,12 +16,12 @@
         android:background="@color/comm_white">
 
         <com.whzl.mengbi.ui.widget.view.CircleImageView
-            android:transitionName="iv_avatar"
             android:id="@+id/iv_avatar"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp" />
+            android:layout_marginLeft="18dp"
+            android:transitionName="iv_avatar" />
 
         <TextView
             android:id="@+id/user_info_head_text"

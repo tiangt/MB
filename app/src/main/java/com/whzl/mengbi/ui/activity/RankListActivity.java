@@ -19,7 +19,6 @@ import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.RankMotherFragment;
-import com.whzl.mengbi.ui.fragment.WeekStarFragment;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.UIUtil;
 
@@ -43,9 +42,13 @@ public class RankListActivity extends BaseActivity {
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
         tipTitles = getResources().getStringArray(R.array.rank_tip_title);
         tipDescs = getResources().getStringArray(R.array.rank_tip_desc);
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jaeger.library.StatusBarUtil;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -149,7 +147,6 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
         activityFrom = getIntent().getStringExtra("from");
         umShareAPI = UMShareAPI.get(this);
         mLoginPresent = new LoginPresenterImpl(this);

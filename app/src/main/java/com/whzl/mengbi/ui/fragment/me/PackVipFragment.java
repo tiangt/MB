@@ -3,14 +3,12 @@ package com.whzl.mengbi.ui.fragment.me;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
@@ -45,7 +43,6 @@ public class PackVipFragment extends BasePullListFragment<PackvipBean.ListBean, 
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColor(getMyActivity(), ContextCompat.getColor(getMyActivity(), R.color.status_white_toolbar));
         ((FrgActivity) getMyActivity()).setTitle("我的VIP");
         ((FrgActivity) getMyActivity()).setTitleMenuIcon(R.drawable.ic_jump_shop_mine, new View.OnClickListener() {
             @Override

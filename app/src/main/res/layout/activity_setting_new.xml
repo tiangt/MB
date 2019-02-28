@@ -2,16 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/comm_toolbar" />
+    <include layout="@layout/white_toolbar" />
+
+    <include layout="@layout/divider_shawdow_white" />
 
     <RelativeLayout
         android:id="@+id/rl_binding_phone"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginBottom="5dp"
-        android:background="#f9f9f9">
+        android:layout_marginBottom="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -19,9 +21,9 @@
             android:gravity="center_vertical"
             android:paddingLeft="13.5dp"
             android:text="绑定手机"
-            android:textStyle="bold"
             android:textColor="#323232"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_arrow"
@@ -43,6 +45,11 @@
             android:textColor="@color/tran_black5"
             android:textSize="12sp" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5" />
 
     <TextView
         android:id="@+id/tv_feedback"
@@ -70,12 +77,17 @@
         style="@style/setting_option_text_style"
         android:text="@string/user_settings_about" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#e5e5e5" />
+
     <RelativeLayout
         android:id="@+id/rl_version_container"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/comm_white"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:background="@color/comm_white">
 
         <TextView
             android:layout_width="wrap_content"

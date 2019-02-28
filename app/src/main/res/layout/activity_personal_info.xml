@@ -1,222 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
 
-    <ScrollView
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/iv_personal_cover"
+            android:layout_width="match_parent"
+            android:layout_height="255dp"
+            android:scaleType="centerCrop" />
+
         <LinearLayout
+            android:id="@+id/view_need_offset"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="230dp">
+                android:layout_height="230dp"
+                android:background="@color/tran_black2">
 
-                <ImageView
-                    android:id="@+id/iv_personal_cover"
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_login_return" />
+
+                <com.whzl.mengbi.ui.widget.view.CircleImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp" />
+
+                <TextView
+                    android:id="@+id/tv_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_avatar"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:singleLine="true"
+                    android:text="昵称"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_sign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_nick_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp"
+                    android:singleLine="true"
+                    android:text="@string/no_motto_hint"
+                    android:textColor="@color/text_sign"
+                    android:textSize="10sp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_level_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/tv_sign"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" />
+
+                <TextView
+                    android:id="@+id/tv_live_state"
+                    android:layout_width="63dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="80dp"
+                    android:background="@drawable/shape_left_half_round"
+                    android:gravity="center"
+                    android:text="休息中"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_follow_state"
+                    android:layout_width="63dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="80dp"
+                    android:background="@drawable/shape_right_half_round"
+                    android:drawableLeft="@drawable/ic_attention"
+                    android:gravity="center"
+                    android:paddingLeft="12dp"
+                    android:text="关注"
+                    android:textColor="@color/text_yellow"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
+                    android:layout_height="49dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/tran_black2">
-
-                    <ImageButton
-                        android:id="@+id/btn_back"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@null"
-                        android:src="@drawable/ic_login_return" />
-
-                    <com.whzl.mengbi.ui.widget.view.CircleImageView
-                        android:id="@+id/iv_avatar"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="40dp" />
-
-                    <TextView
-                        android:id="@+id/tv_nick_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/iv_avatar"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp"
-                        android:singleLine="true"
-                        android:text="昵称"
-                        android:textColor="@color/white"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_sign"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_nick_name"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp"
-                        android:singleLine="true"
-                        android:text="@string/no_motto_hint"
-                        android:textColor="@color/text_sign"
-                        android:textSize="10sp" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_level_container"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_below="@id/tv_sign"
-                        android:layout_centerHorizontal="true"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal" />
-
-                    <TextView
-                        android:id="@+id/tv_live_state"
-                        android:layout_width="63dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginTop="80dp"
-                        android:background="@drawable/shape_left_half_round"
-                        android:gravity="center"
-                        android:text="休息中"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/tv_follow_state"
-                        android:layout_width="63dp"
-                        android:layout_height="25dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="80dp"
-                        android:background="@drawable/shape_right_half_round"
-                        android:drawableLeft="@drawable/ic_attention"
-                        android:gravity="center"
-                        android:paddingLeft="12dp"
-                        android:text="关注"
-                        android:textColor="@color/text_yellow"
-                        android:textSize="12sp"
-                        android:visibility="gone" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/tran_grey" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="49dp"
-                        android:layout_alignParentBottom="true"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_ranking"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_rank_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center"
+                                android:textColor="@color/tran_white1"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
 
                         <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
+                            android:layout_width="1dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_vertical"
                             android:background="@color/tran_grey" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="49dp"
-                            android:orientation="horizontal">
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/tv_fans_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
 
-                                <TextView
-                                    android:id="@+id/tv_ranking"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:gravity="center"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:id="@+id/tv_rank_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:gravity="center"
-                                    android:textColor="@color/tran_white1"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="20dp"
-                                android:layout_gravity="center_vertical"
-                                android:background="@color/tran_grey" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/tv_fans_count"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:gravity="center"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:gravity="center"
-                                    android:text="粉丝"
-                                    android:textColor="@color/tran_white1"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="1dp"
-                                android:layout_height="20dp"
-                                android:layout_gravity="center_vertical"
-                                android:background="@color/tran_grey" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/tv_follow"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:gravity="center"
-                                    android:textColor="@color/white"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:gravity="center"
-                                    android:text="关注"
-                                    android:textColor="@color/tran_white1"
-                                    android:textSize="10sp" />
-                            </LinearLayout>
-
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center"
+                                android:text="粉丝"
+                                android:textColor="@color/tran_white1"
+                                android:textSize="10sp" />
                         </LinearLayout>
-                    </LinearLayout>
 
-                </RelativeLayout>
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@color/tran_grey" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_follow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:gravity="center"
+                                android:text="关注"
+                                android:textColor="@color/tran_white1"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
             </RelativeLayout>
 
             <TextView
@@ -324,12 +320,12 @@
                     android:layout_marginLeft="15dp"
                     android:background="@drawable/shape_round_rect_blue"
                     android:gravity="center"
-                    android:textColor="@color/text_blue"
-                    android:textSize="12sp"
                     android:maxLength="5"
-                    android:singleLine="true"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/text_blue"
+                    android:textSize="12sp"
                     android:visibility="gone" />
 
                 <TextView
@@ -339,10 +335,10 @@
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/shape_round_rect_green"
                     android:gravity="center"
-                    android:textColor="@color/text_green"
-                    android:textSize="12sp"
                     android:maxLength="4"
                     android:singleLine="true"
+                    android:textColor="@color/text_green"
+                    android:textSize="12sp"
                     android:visibility="gone" />
 
                 <TextView
@@ -352,9 +348,9 @@
                     android:layout_marginLeft="10dp"
                     android:background="@drawable/shape_round_rect_purple"
                     android:gravity="center"
+                    android:singleLine="true"
                     android:textColor="@color/text_purple"
                     android:textSize="12sp"
-                    android:singleLine="true"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -432,9 +428,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="19dp"
-                android:layout_marginBottom="20dp"
                 android:drawableLeft="@drawable/ic_red_line"
                 android:drawablePadding="10dp"
                 android:text="@string/medal_wall"
@@ -457,6 +453,5 @@
             </RelativeLayout>
 
         </LinearLayout>
-
-    </ScrollView>
-</LinearLayout>
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>

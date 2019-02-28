@@ -12,9 +12,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jaeger.library.StatusBarUtil;
 import com.uber.autodispose.AutoDispose;
 import com.uber.autodispose.AutoDisposeConverter;
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
@@ -61,10 +64,30 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initEnv();
         setupContentView();
+        setStatusBar();
         mBinder = ButterKnife.bind(this);
         setupView();
         loadData();
         ActivityStackManager.getInstance().pushActivity(this);
+    }
+
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.white),0);
+        setLightStatusBarForM(this,true);
+    }
+
+    private void setLightStatusBarForM(Activity activity, boolean dark) {
+        Window window = activity.getWindow();
+        if (window != null) {
+            View decor = window.getDecorView();
+            int ui = decor.getSystemUiVisibility();
+            if (dark) {
+                ui |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            } else {
+                ui &= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
+            decor.setSystemUiVisibility(ui);
+        }
     }
 
     protected void initEnv() {

@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.SpConfig;
@@ -95,7 +94,6 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColor(this, Color.parseColor("#000000"));
         anchorLever = getIntent().getIntExtra("anchorLever", 0);
         anchorId = getIntent().getIntExtra("anchorId", 0);
         anchorName = getIntent().getStringExtra("anchorName");

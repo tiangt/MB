@@ -2,9 +2,7 @@ package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.CountDownTimer;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +19,6 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.OnMultiClickListener;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -53,8 +50,12 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     @Override
     protected void initEnv() {
         super.initEnv();
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 
     @Override
@@ -83,7 +84,7 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
         KeyBoardUtil.hideInputMethod(this);
         switch (view.getId()) {
             case R.id.btn_next:
-                if(ClickUtil.isFastClick()){
+                if (ClickUtil.isFastClick()) {
                     getVerifyCode(phone);
                 }
                 break;

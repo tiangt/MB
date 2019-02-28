@@ -37,6 +37,7 @@ import com.whzl.mengbi.ui.fragment.me.PackVipFragment;
 import com.whzl.mengbi.ui.fragment.me.PropFragment;
 import com.whzl.mengbi.ui.view.MeView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
@@ -203,7 +204,9 @@ public class MineFragment extends BaseFragment implements MeView {
                 break;
 
             case R.id.rl_info_edit:
-                jumpToPersonalInfoActivity();
+                if (ClickUtil.isFastClick()) {
+                    jumpToPersonalInfoActivity();
+                }
                 break;
 
             case R.id.btn_recharge:

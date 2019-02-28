@@ -384,7 +384,7 @@
 
     <style name="HomeFollowTab" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">2.5dp</item>
-        <item name="tabBackground">@color/main_tab_color</item>
+        <item name="tabBackground">@color/white</item>
         <item name="tabIndicatorColor">#ffd634</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">#40000000</item>
