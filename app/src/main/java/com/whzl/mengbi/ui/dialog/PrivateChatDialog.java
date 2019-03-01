@@ -23,6 +23,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatEvent;
+import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatUIEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
@@ -33,6 +34,7 @@ import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.greendao.PrivateChatContent;
+import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
@@ -300,6 +302,15 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
+        PrivateChatUser unique = privateChatUserDao.queryBuilder().where(
+                PrivateChatUserDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
+                PrivateChatUserDao.Properties.PrivateUserId.eq(mCurrentChatToUser.getUserId())).unique();
+        if (unique != null) {
+            unique.setUncheckTime(0L);
+            privateChatUserDao.update(unique);
+            EventBus.getDefault().post(new UpdatePrivateChatUIEvent());
+        }
         EventBus.getDefault().unregister(this);
     }
 
