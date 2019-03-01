@@ -587,7 +587,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 头条榜单
      */
     private void initHeadline() {
-        String[] lines = {mRanking,mHeadlineRank};
+        String[] lines = {mRanking, mHeadlineRank};
         setHeadLine(lines);
     }
 
@@ -1544,9 +1544,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setOtherLive(textureView2);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
 
-        if (bean.otherStream != null && bean.pkSingleVideo == 0) {
+        rlOtherSideInfo.setVisibility(View.VISIBLE);
+
+        if (bean.pkSingleVideo == 0 && bean.otherStream != null) {
             rlOtherSide.setVisibility(View.VISIBLE);
-            rlOtherSideInfo.setVisibility(View.VISIBLE);
             List<String> rtmpList = bean.otherStream.getRtmp();
             List<String> flvList = bean.otherStream.getFlv();
             List<String> hlsList = bean.otherStream.getHls();

@@ -222,7 +222,7 @@
                     android:background="@color/colorblack"
                     app:ratio="1.33">
 
-                    <LinearLayout
+                    <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -231,52 +231,60 @@
                             android:id="@+id/texture_view"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1" />
+                            android:layout_weight="1"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toLeftOf="@id/rl_other_side" />
 
                         <RelativeLayout
                             android:id="@+id/rl_other_side"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:visibility="gone">
+                            android:visibility="gone"
+                            app:layout_constraintLeft_toRightOf="@id/texture_view"
+                            app:layout_constraintRight_toRightOf="parent">
 
                             <com.ksyun.media.player.KSYTextureView
                                 android:id="@+id/texture_view2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent" />
 
-                            <RelativeLayout
-                                android:id="@+id/rl_other_side_info"
-                                android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_marginLeft="6dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/shape_other_side">
-
-                                <com.whzl.mengbi.ui.widget.view.CircleImageView
-                                    android:id="@+id/circle_other_side"
-                                    android:layout_width="20dp"
-                                    android:layout_height="20dp"
-                                    android:layout_centerVertical="true"
-                                    android:src="@color/white" />
-
-                                <TextView
-                                    android:id="@+id/tv_other_side"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerInParent="true"
-                                    android:layout_marginLeft="8dp"
-                                    android:layout_marginRight="8dp"
-                                    android:layout_toRightOf="@id/circle_other_side"
-                                    android:ellipsize="end"
-                                    android:maxEms="5"
-                                    android:singleLine="true"
-                                    android:textColor="@color/white"
-                                    android:textSize="10sp" />
-                            </RelativeLayout>
                         </RelativeLayout>
 
-                    </LinearLayout>
+                        <RelativeLayout
+                            android:id="@+id/rl_other_side_info"
+                            android:layout_width="100dp"
+                            android:layout_height="20dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/shape_other_side"
+                            android:visibility="gone"
+                            app:layout_constraintHorizontal_bias="0.723"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.whzl.mengbi.ui.widget.view.CircleImageView
+                                android:id="@+id/circle_other_side"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_centerVertical="true"
+                                android:src="@color/white" />
+
+                            <TextView
+                                android:id="@+id/tv_other_side"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_toRightOf="@id/circle_other_side"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:textColor="@color/white"
+                                android:textSize="10sp" />
+                        </RelativeLayout>
+
+                    </android.support.constraint.ConstraintLayout>
 
                     <LinearLayout
                         android:id="@+id/ll_red_bag"
@@ -352,13 +360,13 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <com.whzl.mengbi.ui.widget.loading.LoadLayout
                         android:id="@+id/ll_loading"
                         android:layout_width="60dp"
                         android:layout_height="50dp"
-                        android:layout_centerInParent="true"/>
+                        android:layout_centerInParent="true" />
 
                     <TextView
                         android:id="@+id/tv_stop_tip"
