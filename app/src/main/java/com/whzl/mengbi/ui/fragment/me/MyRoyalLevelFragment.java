@@ -85,7 +85,7 @@ public class MyRoyalLevelFragment extends BaseFragment {
                             bjExpValue = expListBeans.get(j).getBjExpValue();
                             bjNeedExpValue = expListBeans.get(j).getBjNeedExpValue();
 
-                            if (levelValue == 7) {
+                            if (levelValue == 8) {
                                 tvRoyalLevel.setText("您已达到最高贵族等级");
                             } else {
                                 SpannableString sj = StringUtils.spannableStringColor("当前贵族经验 ", Color.parseColor("#ffffff"));

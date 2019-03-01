@@ -127,6 +127,7 @@ public class ResourceMap {
         royalLevelMap.put(5, R.drawable.royal_5);
         royalLevelMap.put(6, R.drawable.royal_6);
         royalLevelMap.put(7, R.drawable.royal_7);
+        royalLevelMap.put(8, R.drawable.royal_8);
     }
 
     public int getUserLevelIcon(int level) {
@@ -162,8 +163,8 @@ public class ResourceMap {
         if (royalLevelMap.containsKey(level)) {
             levelIcon = royalLevelMap.get(level);
         } else {
-            if(level > 6){
-                levelIcon = R.drawable.royal_7;
+            if(level > 7){
+                levelIcon = R.drawable.royal_8;
             }else{
                 levelIcon = R.drawable.ic_qingtong;
             }
