@@ -77,7 +77,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     @BindView(R.id.view_close)
     View viewClose;
     @BindView(R.id.ib_close)
-    FrameLayout ibClose;
+    LinearLayout ibClose;
 
     private RecyclerView.Adapter chatAdapter;
     private static final int TOTAL_CHAT_MSG = 100;
@@ -267,14 +267,16 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePrivateChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
-        if (chatList.size() >= TOTAL_CHAT_MSG) {
-            chatList.remove(0);
-        }
-        chatList.add(message);
-        if (!isRecyclerScrolling) {
-            if (chatAdapter != null && recycler != null) {
-                chatAdapter.notifyDataSetChanged();
-                recycler.smoothScrollToPosition(chatList.size() - 1);
+        if (mCurrentChatToUser.getUserId() == ((ChatMessage) message).from_uid || mCurrentChatToUser.getUserId() == ((ChatMessage) message).to_uid) {
+            if (chatList.size() >= TOTAL_CHAT_MSG) {
+                chatList.remove(0);
+            }
+            chatList.add(message);
+            if (!isRecyclerScrolling) {
+                if (chatAdapter != null && recycler != null) {
+                    chatAdapter.notifyDataSetChanged();
+                    recycler.smoothScrollToPosition(chatList.size() - 1);
+                }
             }
         }
     }

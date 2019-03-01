@@ -330,6 +330,7 @@ public class PkControl {
                     shutDown();
                     layout.setVisibility(View.GONE);
                 }
+                rlOtherSideInfo.setVisibility(View.GONE);
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);
@@ -343,6 +344,7 @@ public class PkControl {
                     shutDown();
                     layout.setVisibility(View.GONE);
                 }
+                rlOtherSideInfo.setVisibility(View.GONE);
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
                 pkLayout.setVisibility(View.GONE);

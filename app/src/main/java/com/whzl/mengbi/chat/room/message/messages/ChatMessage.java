@@ -37,7 +37,7 @@ public class ChatMessage implements FillHolderMessage {
 
     private String to_nickName;
     private int to_level;
-    private int to_uid;
+    public int to_uid;
 
     private boolean isAnchor = false;
     private boolean hasGuard = false;

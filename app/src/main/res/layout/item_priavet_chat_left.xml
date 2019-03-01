@@ -7,7 +7,8 @@
         android:id="@+id/iv_avatar"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_centerVertical="true" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="9dp" />
 
     <TextView
         android:id="@+id/tv_content"
@@ -15,10 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="7dp"
         android:layout_toRightOf="@id/iv_avatar"
-        android:background="@drawable/bg_private_chat_left"
-        android:gravity="top"
-        android:padding="8dp"
+        android:background="@drawable/item_priavet_chat_left"
         android:textColor="@color/text_color_private_chat"
-        android:textSize="12sp" />
+        android:textSize="13sp" />
 
 </RelativeLayout>

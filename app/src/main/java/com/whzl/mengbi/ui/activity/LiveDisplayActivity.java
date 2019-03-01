@@ -887,7 +887,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
             case R.id.rootView:
                 if (currentSelectedIndex == 1) {
-                    setTabChange(0);
+//                    setTabChange(0);
                 }
                 break;
             case R.id.btn_send_gift:
@@ -1914,7 +1914,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(PrivateChatSelectedEvent event) {
-        setTabChange(1);
+//        setTabChange(1);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

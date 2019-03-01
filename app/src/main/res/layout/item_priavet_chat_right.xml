@@ -10,11 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="7dp"
         android:layout_toLeftOf="@id/iv_avatar"
-        android:background="@drawable/bg_private_chat_right"
-        android:gravity="top"
-        android:padding="8dp"
+        android:background="@drawable/item_priavet_chat_right"
         android:textColor="#ffffff"
-        android:textSize="12sp" />
+        android:textSize="13sp" />
 
     <ImageView
         android:id="@+id/iv_avatar"
@@ -22,5 +20,5 @@
         android:layout_height="25dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_centerVertical="true" />
+        android:layout_marginTop="9dp" />
 </RelativeLayout>
