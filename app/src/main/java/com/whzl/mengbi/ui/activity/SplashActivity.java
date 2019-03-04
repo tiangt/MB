@@ -36,6 +36,22 @@ public class SplashActivity extends BaseActivity {
     private String deviceId;
 
     @Override
+    protected void initEnv() {
+        super.initEnv();
+        // 避免从桌面启动程序后，会重新实例化入口类的activity
+        if (!this.isTaskRoot()) {
+            Intent intent = getIntent();
+            if (intent != null) {
+                String action = intent.getAction();
+                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
+                    finish();
+                    return;
+                }
+            }
+        }
+    }
+
+    @Override
     protected void setupContentView() {
         setContentView(R.layout.activity_splash);
     }

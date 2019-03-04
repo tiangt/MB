@@ -22,7 +22,7 @@
         android:layout_toRightOf="@id/tv_title"
         android:background="@drawable/bg_tab_shop"
         android:gravity="center"
-        android:text="送积分"
+        android:text="送萌豆"
         android:textColor="#fffefe"
         android:textSize="8sp"
         android:visibility="gone" />

@@ -124,6 +124,9 @@ public class RoyalEnterControl {
                 case 7:
                     clEnter.setBackgroundResource(R.drawable.bg_royal_enter_7);
                     break;
+                case 8:
+                    clEnter.setBackgroundResource(R.drawable.bg_royal_enter_8);
+                    break;
                 default:
                     break;
             }

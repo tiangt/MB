@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <include
-        layout="@layout/comm_toolbar" />
+        layout="@layout/white_toolbar" />
 
     <RelativeLayout
         android:id="@+id/user_custom_official_service_rela"
