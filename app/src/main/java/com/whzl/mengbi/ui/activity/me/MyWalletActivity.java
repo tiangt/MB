@@ -1,12 +1,29 @@
 package com.whzl.mengbi.ui.activity.me;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.wxapi.WXPayEntryActivity;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * @author cliang
@@ -20,10 +37,15 @@ public class MyWalletActivity extends BaseActivity {
     TextView tvMengdou;
     @BindView(R.id.tv_mengdian)
     TextView tvMengdian;
+    @BindView(R.id.rl_mengbi)
+    RelativeLayout rlMengbi;
+    private long mengbi;
+    private long mengdou;
+    private long mengdian;
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_my_wallet,"我的钱包",true);
+        setContentView(R.layout.activity_my_wallet, "我的钱包", true);
     }
 
     @Override
@@ -33,18 +55,46 @@ public class MyWalletActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-
-        long mengbi = getIntent().getLongExtra("mengbi",0);
-        long mengdou = getIntent().getLongExtra("mengdou",0);
-        long mengdian = getIntent().getLongExtra("mengdian",0);
-
-        tvMengbi.setText(StringUtils.formatNumber(mengbi));
-        tvMengdou.setText(StringUtils.formatNumber(mengdou));
-        tvMengdian.setText(StringUtils.formatNumber(mengdian));
     }
 
     @Override
     protected void loadData() {
+        HashMap paramsMap = new HashMap();
+        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+        paramsMap.put("userId", userId);
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap,
+                new RequestManager.ReqCallBack() {
+                    @Override
+                    public void onReqSuccess(Object result) {
+                        UserInfo userInfo = GsonUtils.GsonToBean(result.toString(), UserInfo.class);
+                        if (userInfo.getCode() == 200) {
+                            if (userInfo == null || userInfo.getData() == null) {
+                                return;
+                            }
+                            mengbi = userInfo.getData().getWealth().getCoin();
+                            mengdou = userInfo.getData().getWealth().getMengDou();
+                            mengdian = userInfo.getData().getWealth().getChengPonit();
+                            tvMengbi.setText(StringUtils.formatNumber(mengbi));
+                            tvMengdou.setText(StringUtils.formatNumber(mengdou));
+                            tvMengdian.setText(StringUtils.formatNumber(mengdian));
+                        }
+                    }
 
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                        LogUtils.d("onReqFailed" + errorMsg);
+                    }
+                });
+    }
+
+
+    @OnClick({R.id.rl_mengbi})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_mengbi:
+                startActivity(new Intent(this, WXPayEntryActivity.class));
+                break;
+
+        }
     }
 }

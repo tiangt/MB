@@ -311,9 +311,6 @@ public class MineFragment extends BaseFragment implements MeView {
 
     private void jumpToMyWalletActivity() {
         Intent intent = new Intent(getContext(), MyWalletActivity.class);
-        intent.putExtra("mengbi", mMengbi);
-        intent.putExtra("mengdou", mMengdou);
-        intent.putExtra("mengdian", mMengdian);
         startActivity(intent);
     }
 
