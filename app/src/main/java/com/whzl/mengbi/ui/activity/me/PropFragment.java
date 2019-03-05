@@ -201,8 +201,8 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
     }
 
     private void buy(GetProsListBean.ListBean listBean, int i) {
-        BusinessUtils.mallBuy(getMyActivity(), String.valueOf(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L))
-                , listBean.goodsId + "", listBean.priceId + "", i + "", "", ""
+        BusinessUtils.mallBuyDay(getMyActivity(), String.valueOf(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L))
+                , listBean.goodsId + "", listBean.priceId + "", i + "", "", "", String.valueOf(listBean.days)
                 , new BusinessUtils.MallBuyListener() {
                     @Override
                     public void onSuccess() {

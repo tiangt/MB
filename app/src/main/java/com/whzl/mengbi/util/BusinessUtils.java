@@ -24,6 +24,34 @@ public class BusinessUtils {
 
     public static void mallBuy(Activity context, String userId, String goodsId, String priceId,
                                String count, String toUserId, String salerId, MallBuyListener listener) {
+        mallBuyDay(context,userId,goodsId,priceId,count,toUserId,salerId,"",listener);
+//        HashMap paramsMap = new HashMap();
+//        paramsMap.put("userId", userId);
+//        paramsMap.put("goodsId", goodsId);
+//        paramsMap.put("priceId", priceId);
+//        paramsMap.put("count", count);
+//        paramsMap.put("toUserId", toUserId);
+//        paramsMap.put("salerId", salerId);
+//        ApiFactory.getInstance().getApi(Api.class)
+//                .mallBuy(ParamsUtils.getSignPramsMap(paramsMap))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new ApiObserver<JsonElement>() {
+//
+//                    @Override
+//                    public void onSuccess(JsonElement bean) {
+//                        listener.onSuccess();
+//                    }
+//
+//                    @Override
+//                    public void onError(int code) {
+//                        listener.onError();
+//                    }
+//                });
+    }
+
+    public static void mallBuyDay(Activity context, String userId, String goodsId, String priceId,
+                               String count, String toUserId, String salerId,String days, MallBuyListener listener) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", userId);
         paramsMap.put("goodsId", goodsId);
@@ -31,6 +59,7 @@ public class BusinessUtils {
         paramsMap.put("count", count);
         paramsMap.put("toUserId", toUserId);
         paramsMap.put("salerId", salerId);
+        paramsMap.put("days", days);
         ApiFactory.getInstance().getApi(Api.class)
                 .mallBuy(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())

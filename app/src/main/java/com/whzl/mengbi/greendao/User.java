@@ -10,6 +10,7 @@ import org.greenrobot.greendao.DaoException;
 import com.whzl.mengbi.gen.DaoSession;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.gen.UserDao;
+import com.whzl.mengbi.gen.UsualGiftDao;
 
 /**
  * @author nobody
@@ -21,9 +22,15 @@ public class User {
     Long userId;
 
     String avatar;
+    String nickname;
+    String seesionId;
+    Boolean recharged;
 
     @ToMany(referencedJoinProperty = "userId")
     private List<PrivateChatUser> privateChatUserList;
+
+    @ToMany(referencedJoinProperty = "userId")
+    private List<UsualGift> usualGiftList;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
@@ -33,10 +40,14 @@ public class User {
     @Generated(hash = 1507654846)
     private transient UserDao myDao;
 
-    @Generated(hash = 800884288)
-    public User(Long userId, String avatar) {
+    @Generated(hash = 1426594685)
+    public User(Long userId, String avatar, String nickname, String seesionId,
+            Boolean recharged) {
         this.userId = userId;
         this.avatar = avatar;
+        this.nickname = nickname;
+        this.seesionId = seesionId;
+        this.recharged = recharged;
     }
 
     @Generated(hash = 586692638)
@@ -57,6 +68,30 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getSeesionId() {
+        return this.seesionId;
+    }
+
+    public void setSeesionId(String seesionId) {
+        this.seesionId = seesionId;
+    }
+
+    public Boolean getRecharged() {
+        return this.recharged;
+    }
+
+    public void setRecharged(Boolean recharged) {
+        this.recharged = recharged;
     }
 
     /**
@@ -86,6 +121,35 @@ public class User {
     @Generated(hash = 1275855340)
     public synchronized void resetPrivateChatUserList() {
         privateChatUserList = null;
+    }
+
+    /**
+     * To-many relationship, resolved on first access (and after reset).
+     * Changes to to-many relations are not persisted, make changes to the target entity.
+     */
+    @Generated(hash = 264349507)
+    public List<UsualGift> getUsualGiftList() {
+        if (usualGiftList == null) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            UsualGiftDao targetDao = daoSession.getUsualGiftDao();
+            List<UsualGift> usualGiftListNew = targetDao
+                    ._queryUser_UsualGiftList(userId);
+            synchronized (this) {
+                if (usualGiftList == null) {
+                    usualGiftList = usualGiftListNew;
+                }
+            }
+        }
+        return usualGiftList;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    @Generated(hash = 1612399897)
+    public synchronized void resetUsualGiftList() {
+        usualGiftList = null;
     }
 
     /**
@@ -130,4 +194,6 @@ public class User {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getUserDao() : null;
     }
+
+
 }

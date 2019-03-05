@@ -10,9 +10,8 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.gen.CommonGiftDao;
-import com.whzl.mengbi.greendao.CommonGift;
-import com.whzl.mengbi.greendao.CommonGiftBean;
+import com.whzl.mengbi.gen.UsualGiftDao;
+import com.whzl.mengbi.greendao.UsualGift;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
@@ -26,14 +25,11 @@ import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -54,7 +50,6 @@ public class CommonMotherFragment extends BaseFragment {
     private int pagers;
     private FragmentPagerAdaper adapter;
     private ArrayList<Fragment> fragments = new ArrayList<>();
-    private CommonGiftDao commonGiftDao;
 
     public static CommonMotherFragment newInstance() {
         return new CommonMotherFragment();
@@ -112,43 +107,32 @@ public class CommonMotherFragment extends BaseFragment {
     }
 
     private void getCommonGIft() {
-        commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
-        CommonGift unique = commonGiftDao.queryBuilder().where(CommonGiftDao.Properties.UserId.eq(
-                Long.parseLong(SPUtils.get(getContext(), "userId", 0L).toString()))).unique();
-        if (unique == null) {
+        UsualGiftDao usualGiftDao = BaseApplication.getInstance().getDaoSession().getUsualGiftDao();
+        List<UsualGift> usualGiftList = usualGiftDao.queryBuilder().where(UsualGiftDao.Properties.UserId.eq(
+                Long.parseLong(SPUtils.get(getContext(), "userId", 0L).toString())))
+                .orderDesc(UsualGiftDao.Properties.Times)
+                .list();
+        if (usualGiftList == null || usualGiftList.isEmpty()) {
             viewPager.setVisibility(View.GONE);
             llBackPack.setVisibility(View.VISIBLE);
         } else {
-            List<CommonGiftBean> hobbyList = unique.getHobbyList();
-            if (hobbyList.isEmpty()) {
-                viewPager.setVisibility(View.GONE);
-                llBackPack.setVisibility(View.VISIBLE);
+            if (usualGiftList.size() > AppConfig.NUM_TOTAL_GIFT_DIALOG * 2) {
+                List<UsualGift> usualGifts = usualGiftList.subList(0, AppConfig.NUM_TOTAL_GIFT_DIALOG * 2);
+                getGoodIds(usualGifts);
             } else {
-
-                Collections.sort(hobbyList, new Comparator<CommonGiftBean>() {
-                    @Override
-                    public int compare(CommonGiftBean o1, CommonGiftBean o2) {
-                        int i = o2.times - o1.times;
-                        return i;
-                    }
-                });
-                if (hobbyList.size() > AppConfig.NUM_TOTAL_GIFT_DIALOG * 2) {
-                    List<CommonGiftBean> list = hobbyList.subList(0, AppConfig.NUM_TOTAL_GIFT_DIALOG * 2);
-                    getGoodIds(list);
-                } else {
-                    getGoodIds(hobbyList);
-                }
+                getGoodIds(usualGiftList);
             }
+
         }
     }
 
-    private void getGoodIds(List<CommonGiftBean> hobbyList) {
+    private void getGoodIds(List<UsualGift> usualGifts) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < hobbyList.size(); i++) {
-            if (i != hobbyList.size() - 1) {
-                sb.append(hobbyList.get(i).giftId.intValue() + ",");
+        for (int i = 0; i < usualGifts.size(); i++) {
+            if (i != usualGifts.size() - 1) {
+                sb.append(usualGifts.get(i).giftId.intValue() + ",");
             } else {
-                sb.append(hobbyList.get(i).giftId.intValue() + "");
+                sb.append(usualGifts.get(i).giftId.intValue() + "");
             }
         }
         getDatasByGoodIds(sb.toString());

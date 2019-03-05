@@ -15,6 +15,9 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.gen.UserDao;
+import com.whzl.mengbi.gen.UsualGiftDao;
+import com.whzl.mengbi.greendao.UsualGift;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.model.entity.UserInfo;
@@ -36,6 +39,7 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -220,6 +224,7 @@ public class SettingActivity extends BaseActivity {
                     showToast("已退出登录");
                     setResult(RESULT_OK);
                     finish();
+                    delete();
                 }
 
             }
@@ -229,6 +234,20 @@ public class SettingActivity extends BaseActivity {
                 LogUtils.d(errorMsg);
             }
         });
+    }
+
+    private void delete() {
+        UserDao userDao = BaseApplication.getInstance().getDaoSession().getUserDao();
+        userDao.deleteByKey(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString()));
+        UsualGiftDao usualGiftDao = BaseApplication.getInstance().getDaoSession().getUsualGiftDao();
+        List<UsualGift> list = usualGiftDao.queryBuilder().where(UsualGiftDao.Properties.UserId.
+                eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString()))).list();
+        if (list != null && !list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                usualGiftDao.deleteByKey(list.get(i).getId());
+            }
+        }
+        loadData();
     }
 
     private void downLoad(String appUrl) {

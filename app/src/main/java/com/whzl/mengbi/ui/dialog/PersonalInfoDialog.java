@@ -548,6 +548,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
 //                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_king, ivBgPersonal);
                 constraintLayout.setBackgroundResource(R.drawable.bg_king);
                 break;
+            case 8:
+//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_king, ivBgPersonal);
+                constraintLayout.setBackgroundResource(R.drawable.bg_legend);
+                break;
             default:
 //                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_civilian, ivBgPersonal);
                 constraintLayout.setBackgroundResource(R.drawable.bg_civilian);

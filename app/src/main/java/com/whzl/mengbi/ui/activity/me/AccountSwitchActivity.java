@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
-import com.whzl.mengbi.gen.CommonGiftDao;
-import com.whzl.mengbi.greendao.CommonGift;
+import com.whzl.mengbi.gen.UserDao;
+import com.whzl.mengbi.gen.UsualGiftDao;
+import com.whzl.mengbi.greendao.User;
+import com.whzl.mengbi.greendao.UsualGift;
 import com.whzl.mengbi.model.entity.CheckLoginResultBean;
 import com.whzl.mengbi.ui.activity.LoginActivity;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -52,11 +54,11 @@ public class AccountSwitchActivity extends BaseActivity {
     @BindView(R.id.recycler)
     RecyclerView recycler;
     private BaseListAdapter baseListAdapter;
-    private List<CommonGift> accountList = new ArrayList();
+    private List<User> accountList = new ArrayList();
     private boolean edit;
     private Long currentUserId;
     private int REQUEST_LOGIN = 120;
-    private CommonGiftDao commonGiftDao;
+    private UserDao userDao;
 
     @Override
     protected void setupContentView() {
@@ -66,7 +68,7 @@ public class AccountSwitchActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
+        userDao = BaseApplication.getInstance().getDaoSession().getUserDao();
         toolbar.setBackgroundColor(Color.parseColor("#ffffff"));
         initRecycler();
         currentUserId = (Long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
@@ -138,13 +140,13 @@ public class AccountSwitchActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(int position) {
-            CommonGift commonGift = accountList.get(position);
-            GlideImageLoader.getInstace().circleCropImage(AccountSwitchActivity.this, commonGift.getAvatar(), ivAvatar);
-            tvName.setText(commonGift.getNickname());
-            tvNum.setText("萌号：" + commonGift.getUserId());
+            User user = accountList.get(position);
+            GlideImageLoader.getInstace().circleCropImage(AccountSwitchActivity.this, user.getAvatar(), ivAvatar);
+            tvName.setText(user.getNickname());
+            tvNum.setText("萌号：" + user.getUserId());
             GlideImageLoader.getInstace().displayImage(
                     AccountSwitchActivity.this, edit ? R.drawable.ic_delete_switch : null, ivState);
-            if (commonGift.getUserId().equals(currentUserId)) {
+            if (user.getUserId().equals(currentUserId)) {
                 GlideImageLoader.getInstace().displayImage(
                         AccountSwitchActivity.this, edit ? R.drawable.ic_delete_switch : R.drawable.ic_right_switch, ivState);
             }
@@ -166,13 +168,13 @@ public class AccountSwitchActivity extends BaseActivity {
                                         holder.setOnClickListener(R.id.tv_confirm, new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                if (currentUserId.equals(commonGift.getUserId())) {
+                                                if (currentUserId.equals(user.getUserId())) {
                                                     ToastUtils.showToastUnify(AccountSwitchActivity.this, "您不能删除正在使用账号");
                                                     dialog.dismiss();
                                                     return;
                                                 }
                                                 dialog.dismiss();
-                                                removeGreenDao(commonGift);
+                                                removeGreenDao(user);
                                             }
                                         });
                                     }
@@ -197,16 +199,23 @@ public class AccountSwitchActivity extends BaseActivity {
         }
     }
 
-    private void removeGreenDao(CommonGift commonGift) {
-        commonGiftDao.deleteByKey(commonGift.getUserId());
+    private void removeGreenDao(User commonGift) {
+        userDao.deleteByKey(commonGift.getUserId());
+        UsualGiftDao usualGiftDao = BaseApplication.getInstance().getDaoSession().getUsualGiftDao();
+        List<UsualGift> list = usualGiftDao.queryBuilder().where(UsualGiftDao.Properties.UserId.eq(commonGift.getUserId())).list();
+        if (list!=null&&!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                usualGiftDao.deleteByKey(list.get(i).getId());
+            }
+        }
         loadData();
     }
 
-    private void checkLogin(CommonGift commonGift) {
+    private void checkLogin(User user) {
         showLoading("切换中");
-        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, commonGift.getSeesionId());
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, user.getSeesionId());
         HashMap paramsMap = new HashMap();
-        paramsMap.put("userId", commonGift.getUserId());
+        paramsMap.put("userId", user.getUserId());
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
@@ -215,11 +224,11 @@ public class AccountSwitchActivity extends BaseActivity {
                         CheckLoginResultBean resultBean = GsonUtils.GsonToBean(object.toString(), CheckLoginResultBean.class);
                         if (resultBean.code == RequestManager.RESPONSE_CODE) {
                             if (resultBean.data.isLogin) {
-                                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, commonGift.getUserId());
-                                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, commonGift.getSeesionId());
-                                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, commonGift.getNickname());
-                                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, commonGift.getRecharged());
-                                currentUserId = commonGift.getUserId();
+                                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, user.getUserId());
+                                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, user.getSeesionId());
+                                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, user.getNickname());
+                                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, user.getRecharged());
+                                currentUserId = user.getUserId();
                                 EventBus.getDefault().post(new LoginSuccussEvent());
                                 baseListAdapter.notifyDataSetChanged();
                             } else {
@@ -241,7 +250,7 @@ public class AccountSwitchActivity extends BaseActivity {
     @Override
     protected void loadData() {
         accountList.clear();
-        List<CommonGift> list = commonGiftDao.queryBuilder().list();
+        List<User> list = userDao.queryBuilder().list();
         if (list != null && !list.isEmpty()) {
             accountList.addAll(list);
             baseListAdapter.notifyDataSetChanged();

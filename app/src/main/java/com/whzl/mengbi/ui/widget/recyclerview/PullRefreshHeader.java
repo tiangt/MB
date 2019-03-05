@@ -17,6 +17,7 @@ import com.scwang.smartrefresh.layout.constant.RefreshState;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.util.DensityUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.ui.common.BaseApplication;
 
 /**
  * @author cliang
@@ -76,15 +77,15 @@ public class PullRefreshHeader extends LinearLayout implements RefreshHeader {
         switch (newState) {
             case None:
             case PullDownToRefresh:
-                Glide.with(context).asBitmap().load(R.drawable.load_three_ball).into(mProgressView);
+                Glide.with(BaseApplication.getInstance()).asBitmap().load(R.drawable.load_three_ball).into(mProgressView);
 //                mProgressView.setVisibility(GONE);//隐藏动画
                 break;
             case Refreshing:
 //                mProgressView.setVisibility(VISIBLE);//显示加载动画
-                Glide.with(context).asGif().load(R.drawable.load_three_ball).into(mProgressView);
+                Glide.with(BaseApplication.getInstance()).asGif().load(R.drawable.load_three_ball).into(mProgressView);
                 break;
             case ReleaseToRefresh:
-                Glide.with(context).asGif().load(R.drawable.load_three_ball).into(mProgressView);
+                Glide.with(BaseApplication.getInstance()).asGif().load(R.drawable.load_three_ball).into(mProgressView);
                 break;
         }
     }

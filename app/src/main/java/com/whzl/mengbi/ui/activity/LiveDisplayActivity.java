@@ -95,10 +95,10 @@ import com.whzl.mengbi.eventbus.event.LivePkEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
-import com.whzl.mengbi.gen.CommonGiftDao;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.gen.UserDao;
+import com.whzl.mengbi.gen.UsualGiftDao;
 import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.HeadLineControl;
@@ -110,11 +110,10 @@ import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.gift.SvgaGiftControl;
 import com.whzl.mengbi.gift.WeekStarControl;
-import com.whzl.mengbi.greendao.CommonGift;
-import com.whzl.mengbi.greendao.CommonGiftBean;
 import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.greendao.User;
+import com.whzl.mengbi.greendao.UsualGift;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.ApiResult;
@@ -1844,59 +1843,61 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             paramsMap.put("runwayAppend", runwayAppend);
         }
         mLivePresenter.sendGift(paramsMap);
-        CommonGiftBean commonGift = new CommonGiftBean();
-        commonGift.giftId = goodId;
-        addCommonGift(commonGift, goodId + "");
+//        CommonGiftBean commonGift = new CommonGiftBean();
+//        commonGift.giftId = goodId;
+        UsualGift usualGift = new UsualGift();
+        usualGift.setUserId(mUserId);
+        usualGift.setGiftId(Long.valueOf(goodId));
+        addCommonGift(usualGift, goodId + "");
     }
 
     /**
      * 常送礼物
      */
-    private void addCommonGift(CommonGiftBean commonGift, String goodId) {
+    private void addCommonGift(UsualGift usualGift, String goodId) {
         if (SPUtils.get(this, SpConfig.FREE_GOODS_IDS, "").toString().contains(goodId)) {
             return;
         }
-        CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
-        CommonGift unique = commonGiftDao.queryBuilder().
-                where(CommonGiftDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(this, "userId", 0L).toString())))
-                .unique();
+//        CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
+//        CommonGift unique = commonGiftDao.queryBuilder().
+//                where(CommonGiftDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(this, "userId", 0L).toString())))
+//                .unique();
+        UsualGiftDao usualGiftDao = BaseApplication.getInstance().getDaoSession().getUsualGiftDao();
+        UsualGift unique = usualGiftDao.queryBuilder().where(UsualGiftDao.Properties.UserId.eq(mUserId),
+                UsualGiftDao.Properties.GiftId.eq(usualGift.getGiftId())).unique();
         if (unique == null) {
-            CommonGift commonGift1 = new CommonGift();
-            commonGift1.setUserId(Long.parseLong(SPUtils.get(this, "userId", 0L).toString()));
-            commonGift.times = 1;
-            List<CommonGiftBean> list = new ArrayList<>();
-            list.add(commonGift);
-            commonGift1.setHobbyList(list);
-            commonGiftDao.insert(commonGift1);
+//            CommonGift commonGift1 = new CommonGift();
+//            commonGift1.setUserId(Long.parseLong(SPUtils.get(this, "userId", 0L).toString()));
+//            commonGift.times = 1;
+//            List<CommonGiftBean> list = new ArrayList<>();
+//            list.add(commonGift);
+//            commonGift1.setHobbyList(list);
+//            commonGiftDao.insert(commonGift1);
+            UsualGift gift = new UsualGift();
+            gift.setUserId(mUserId);
+            gift.setGiftId(usualGift.getGiftId());
+            gift.setTimes(1L);
+            usualGiftDao.insert(gift);
         } else {
-            if (checkGift(unique.getHobbyList(), commonGift) != null) {
-                CommonGiftBean commonGiftBean = checkGift(unique.getHobbyList(), commonGift);
-                for (int i = 0; i < unique.getHobbyList().size(); i++) {
-                    if (unique.getHobbyList().get(i).giftId.intValue() == commonGiftBean.giftId.intValue()) {
-                        unique.getHobbyList().get(i).times = unique.getHobbyList().get(i).times + 1;
-                        break;
-                    }
-                }
-                commonGiftDao.update(unique);
-            } else {
-                commonGift.times = 1;
-                unique.getHobbyList().add(commonGift);
-                commonGiftDao.update(unique);
-            }
+            unique.setTimes(unique.getTimes()+1);
+            usualGiftDao.update(unique);
+//            if (checkGift(unique.getHobbyList(), commonGift) != null) {
+//                CommonGiftBean commonGiftBean = checkGift(unique.getHobbyList(), commonGift);
+//                for (int i = 0; i < unique.getHobbyList().size(); i++) {
+//                    if (unique.getHobbyList().get(i).giftId.intValue() == commonGiftBean.giftId.intValue()) {
+//                        unique.getHobbyList().get(i).times = unique.getHobbyList().get(i).times + 1;
+//                        break;
+//                    }
+//                }
+//                commonGiftDao.update(unique);
+//            } else {
+//                commonGift.times = 1;
+//                unique.getHobbyList().add(commonGift);
+//                commonGiftDao.update(unique);
+//            }
         }
     }
 
-    private CommonGiftBean checkGift(List<CommonGiftBean> hobbyList, CommonGiftBean commonGift) {
-        if (hobbyList.isEmpty()) {
-            return null;
-        }
-        for (int i = 0; i < hobbyList.size(); i++) {
-            if (hobbyList.get(i).giftId.intValue() == commonGift.giftId.intValue()) {
-                return hobbyList.get(i);
-            }
-        }
-        return null;
-    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserInfoUpdateEvent event) {

@@ -23,8 +23,8 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
-import com.whzl.mengbi.gen.CommonGiftDao;
-import com.whzl.mengbi.greendao.CommonGift;
+import com.whzl.mengbi.gen.UserDao;
+import com.whzl.mengbi.greendao.User;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.LoginPresent;
 import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
@@ -302,23 +302,23 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
     }
 
     private void saveGreenDao(UserInfo userInfo) {
-        CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
-        CommonGift unique = commonGiftDao.queryBuilder().where(CommonGiftDao.Properties.UserId.eq(userInfo.getData().getUserId())).unique();
+        UserDao userDao = BaseApplication.getInstance().getDaoSession().getUserDao();
+        User unique = userDao.queryBuilder().where(UserDao.Properties.UserId.eq(userInfo.getData().getUserId())).unique();
         if (unique == null) {
-            CommonGift commonGift = new CommonGift();
-            commonGift.setUserId(userInfo.getData().getUserId());
-            commonGift.setAvatar(userInfo.getData().getAvatar());
-            commonGift.setNickname(userInfo.getData().getNickname());
-            commonGift.setSeesionId(userInfo.getData().getSessionId());
-            commonGift.setRecharged(userInfo.getData().getLastRechargeTime() != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
-            commonGiftDao.insert(commonGift);
+            User user = new User();
+            user.setUserId(userInfo.getData().getUserId());
+            user.setAvatar(userInfo.getData().getAvatar());
+            user.setNickname(userInfo.getData().getNickname());
+            user.setSeesionId(userInfo.getData().getSessionId());
+            user.setRecharged(userInfo.getData().getLastRechargeTime() != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
+            userDao.insert(user);
         } else {
             unique.setUserId(userInfo.getData().getUserId());
             unique.setAvatar(userInfo.getData().getAvatar());
             unique.setNickname(userInfo.getData().getNickname());
             unique.setSeesionId(userInfo.getData().getSessionId());
             unique.setRecharged(userInfo.getData().getLastRechargeTime() != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
-            commonGiftDao.update(unique);
+            userDao.update(unique);
         }
     }
 

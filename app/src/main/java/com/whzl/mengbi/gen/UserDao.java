@@ -26,6 +26,9 @@ public class UserDao extends AbstractDao<User, Long> {
     public static class Properties {
         public final static Property UserId = new Property(0, Long.class, "userId", true, "_id");
         public final static Property Avatar = new Property(1, String.class, "avatar", false, "AVATAR");
+        public final static Property Nickname = new Property(2, String.class, "nickname", false, "NICKNAME");
+        public final static Property SeesionId = new Property(3, String.class, "seesionId", false, "SEESION_ID");
+        public final static Property Recharged = new Property(4, Boolean.class, "recharged", false, "RECHARGED");
     }
 
     private DaoSession daoSession;
@@ -45,7 +48,10 @@ public class UserDao extends AbstractDao<User, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: userId
-                "\"AVATAR\" TEXT);"); // 1: avatar
+                "\"AVATAR\" TEXT," + // 1: avatar
+                "\"NICKNAME\" TEXT," + // 2: nickname
+                "\"SEESION_ID\" TEXT," + // 3: seesionId
+                "\"RECHARGED\" INTEGER);"); // 4: recharged
     }
 
     /** Drops the underlying database table. */
@@ -67,6 +73,21 @@ public class UserDao extends AbstractDao<User, Long> {
         if (avatar != null) {
             stmt.bindString(2, avatar);
         }
+ 
+        String nickname = entity.getNickname();
+        if (nickname != null) {
+            stmt.bindString(3, nickname);
+        }
+ 
+        String seesionId = entity.getSeesionId();
+        if (seesionId != null) {
+            stmt.bindString(4, seesionId);
+        }
+ 
+        Boolean recharged = entity.getRecharged();
+        if (recharged != null) {
+            stmt.bindLong(5, recharged ? 1L: 0L);
+        }
     }
 
     @Override
@@ -81,6 +102,21 @@ public class UserDao extends AbstractDao<User, Long> {
         String avatar = entity.getAvatar();
         if (avatar != null) {
             stmt.bindString(2, avatar);
+        }
+ 
+        String nickname = entity.getNickname();
+        if (nickname != null) {
+            stmt.bindString(3, nickname);
+        }
+ 
+        String seesionId = entity.getSeesionId();
+        if (seesionId != null) {
+            stmt.bindString(4, seesionId);
+        }
+ 
+        Boolean recharged = entity.getRecharged();
+        if (recharged != null) {
+            stmt.bindLong(5, recharged ? 1L: 0L);
         }
     }
 
@@ -99,7 +135,10 @@ public class UserDao extends AbstractDao<User, Long> {
     public User readEntity(Cursor cursor, int offset) {
         User entity = new User( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // userId
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1) // avatar
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // avatar
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // nickname
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // seesionId
+            cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0 // recharged
         );
         return entity;
     }
@@ -108,6 +147,9 @@ public class UserDao extends AbstractDao<User, Long> {
     public void readEntity(Cursor cursor, User entity, int offset) {
         entity.setUserId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setAvatar(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setNickname(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setSeesionId(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setRecharged(cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0);
      }
     
     @Override

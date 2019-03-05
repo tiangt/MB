@@ -9,6 +9,7 @@ import com.whzl.mengbi.gen.DaoMaster;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.gen.UserDao;
+import com.whzl.mengbi.gen.UsualGiftDao;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -36,7 +37,7 @@ public class MyOpenHelper extends DaoMaster.OpenHelper {
             public void onDropAllTables(Database db, boolean ifExists) {
                 DaoMaster.dropAllTables(db, ifExists);
             }
-        }, CommonGiftDao.class, UserDao.class, PrivateChatUserDao.class, PrivateChatContentDao.class);
+        }, UsualGiftDao.class, UserDao.class, PrivateChatUserDao.class, PrivateChatContentDao.class);
     }
 }
 

@@ -133,8 +133,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
 
         PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
         List<PrivateChatUser> privateChatUsers = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
-                eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())))
-                .orderDesc(PrivateChatUserDao.Properties.Timestamp).list();
+                eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()))).list();
         if (checkContain(privateChatUsers, roomUser)) {
             PrivateChatUser user = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
                             eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
@@ -160,6 +159,10 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
     }
 
     private boolean checkContain(List<PrivateChatUser> privateChatUsers, PrivateChatUser roomUser) {
+        if (privateChatUsers == null||privateChatUsers.isEmpty()) {
+            return false;
+        }
+
         for (int i = 0; i < privateChatUsers.size(); i++) {
             if (privateChatUsers.get(i).getPrivateUserId().equals(roomUser.getPrivateUserId())) {
                 return true;
