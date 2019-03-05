@@ -53,6 +53,7 @@
     <string name="live_display_gift_recharge">充值></string>
     <string name="live_display_gift_give">赠送</string>
     <string name="live_display_talk_send">发送</string>
+    <string name="live_display_gift_error">系统出错,请求异常</string>
 
     <!--账户中心-->
     <string name="account_center_recharge">充值</string>

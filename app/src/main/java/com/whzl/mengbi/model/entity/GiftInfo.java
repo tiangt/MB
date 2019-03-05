@@ -153,7 +153,7 @@ public class GiftInfo extends ResponseInfo implements Parcelable {
         public GiftDetailInfoBean() {
         }
 
-        public final Creator<GiftDetailInfoBean> CREATOR = new Creator<GiftDetailInfoBean>() {
+        public static final Creator<GiftDetailInfoBean> CREATOR = new Creator<GiftDetailInfoBean>() {
             @Override
             public GiftDetailInfoBean createFromParcel(Parcel in) {
                 return new GiftDetailInfoBean(in);

@@ -314,7 +314,9 @@ public class SettingActivity extends BaseActivity {
                         String maskNum = mMobile.substring(0, 3) + "xxxx" + mMobile.substring(7, mMobile.length());
                         tvBindPhone.setText("已绑定 " + maskNum);
                     } else {
-                        tvBindPhone.setText("未绑定");
+                        if (tvBindPhone != null) {
+                            tvBindPhone.setText("未绑定");
+                        }
                     }
                 }
             }

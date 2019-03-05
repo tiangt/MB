@@ -1464,7 +1464,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onError(String msg) {
-        showToast(msg);
+        if (!getString(R.string.live_display_gift_error).equals(msg)) {
+            showToast(msg);
+        }
     }
 
     @Override
@@ -1879,7 +1881,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             gift.setTimes(1L);
             usualGiftDao.insert(gift);
         } else {
-            unique.setTimes(unique.getTimes()+1);
+            unique.setTimes(unique.getTimes() + 1);
             usualGiftDao.update(unique);
 //            if (checkGift(unique.getHobbyList(), commonGift) != null) {
 //                CommonGiftBean commonGiftBean = checkGift(unique.getHobbyList(), commonGift);
