@@ -122,7 +122,7 @@ public class PersonalInfoActivity extends BaseActivity {
     @Override
     protected void setStatusBar() {
         View mViewNeedOffset = findViewById(R.id.view_need_offset);
-        StatusBarUtil.setTransparentForImageView(this, mViewNeedOffset);
+        StatusBarUtil.setTransparentForImageView(this,null);
     }
 
     @Override

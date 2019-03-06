@@ -11,7 +11,7 @@
         <ImageView
             android:id="@+id/iv_personal_cover"
             android:layout_width="match_parent"
-            android:layout_height="255dp"
+            android:layout_height="250dp"
             android:scaleType="centerCrop" />
 
         <LinearLayout
@@ -23,14 +23,14 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="250dp"
                 android:background="@color/transparent">
 
                 <ImageButton
                     android:id="@+id/btn_back"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:background="@null"
                     android:src="@drawable/ic_login_return" />
 
@@ -39,7 +39,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="40dp" />
+                    android:layout_marginTop="60dp" />
 
                 <TextView
                     android:id="@+id/tv_nick_name"
@@ -80,7 +80,7 @@
                     android:layout_width="63dp"
                     android:layout_height="25dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="80dp"
+                    android:layout_marginTop="100dp"
                     android:background="@drawable/shape_left_half_round"
                     android:gravity="center"
                     android:text="休息中"
@@ -93,7 +93,7 @@
                     android:layout_width="63dp"
                     android:layout_height="25dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginTop="80dp"
+                    android:layout_marginTop="100dp"
                     android:background="@drawable/shape_right_half_round"
                     android:drawableLeft="@drawable/ic_attention"
                     android:gravity="center"
