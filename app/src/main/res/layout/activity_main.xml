@@ -25,35 +25,35 @@
         android:background="@color/white"
         android:orientation="horizontal"
         android:paddingBottom="4dp"
-        android:paddingTop="8dp">
+        android:paddingTop="6dp">
 
-        <RadioButton
+        <com.whzl.mengbi.ui.widget.view.TipRadioButton
             android:id="@+id/rb_home"
             style="@style/main_tab"
             android:checked="true"
             android:drawableTop="@drawable/selector_main_tab_home_icon"
             android:text="@string/live_title" />
 
-        <RadioButton
+        <com.whzl.mengbi.ui.widget.view.TipRadioButton
             android:id="@+id/rb_follow"
             style="@style/main_tab"
             android:drawableTop="@drawable/selector_main_tab_follow_icon"
             android:text="@string/follow_title" />
 
-        <RadioButton
+        <com.whzl.mengbi.ui.widget.view.TipRadioButton
             android:visibility="gone"
             android:id="@+id/rb_message"
             style="@style/main_tab"
             android:drawableTop="@drawable/selector_main_tab_message_icon"
             android:text="@string/message_title" />
 
-        <RadioButton
+        <com.whzl.mengbi.ui.widget.view.TipRadioButton
             android:id="@+id/rb_rank"
             style="@style/main_tab"
             android:drawableTop="@drawable/selector_main_tab_rank_icon"
             android:text="@string/find_title" />
 
-        <RadioButton
+        <com.whzl.mengbi.ui.widget.view.TipRadioButton
             android:id="@+id/rb_me"
             style="@style/main_tab"
             android:drawableTop="@drawable/selector_main_tab_me_icon"

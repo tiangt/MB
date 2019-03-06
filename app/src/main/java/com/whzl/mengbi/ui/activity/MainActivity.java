@@ -182,7 +182,7 @@ public class MainActivity extends BaseActivity {
         if (index == currentSelectedIndex) {
             return;
         }
-        if ( index == 4) {
+        if (index == 4) {
             StatusBarUtil.setDarkMode(this);
             StatusBarUtil.setColor(this, colors[index], 122);
         } else {
