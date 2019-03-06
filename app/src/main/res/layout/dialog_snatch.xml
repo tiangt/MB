@@ -81,12 +81,12 @@
                         android:src="@drawable/ic_wallet_mengdou" />
 
                     <TextView
+                        android:id="@+id/tv_mengdou"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="5dp"
                         android:gravity="center_vertical"
                         android:singleLine="true"
-                        android:text="sssss"
                         android:textColor="@color/white"
                         android:textSize="@dimen/textsize_12" />
                 </LinearLayout>

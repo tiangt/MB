@@ -23,18 +23,18 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void createAllTables(Database db, boolean ifNotExists) {
         PrivateChatContentDao.createTable(db, ifNotExists);
         UserDao.createTable(db, ifNotExists);
+        UsualGiftDao.createTable(db, ifNotExists);
         PrivateChatUserDao.createTable(db, ifNotExists);
         CommonGiftDao.createTable(db, ifNotExists);
-        UsualGiftDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
         PrivateChatContentDao.dropTable(db, ifExists);
         UserDao.dropTable(db, ifExists);
+        UsualGiftDao.dropTable(db, ifExists);
         PrivateChatUserDao.dropTable(db, ifExists);
         CommonGiftDao.dropTable(db, ifExists);
-        UsualGiftDao.dropTable(db, ifExists);
     }
 
     /**
@@ -55,9 +55,9 @@ public class DaoMaster extends AbstractDaoMaster {
         super(db, SCHEMA_VERSION);
         registerDaoClass(PrivateChatContentDao.class);
         registerDaoClass(UserDao.class);
+        registerDaoClass(UsualGiftDao.class);
         registerDaoClass(PrivateChatUserDao.class);
         registerDaoClass(CommonGiftDao.class);
-        registerDaoClass(UsualGiftDao.class);
     }
 
     public DaoSession newSession() {
