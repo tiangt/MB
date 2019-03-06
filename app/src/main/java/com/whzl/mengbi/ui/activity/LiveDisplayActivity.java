@@ -157,6 +157,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseFullScreenDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
+import com.whzl.mengbi.ui.dialog.fragment.SnatchDialog;
 import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
@@ -2326,6 +2327,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
             }
         });
+    }
+
+    public void showSnatchDialog() {
+        new SnatchDialog().setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
     }
 
     public void jumpToWeekRank() {

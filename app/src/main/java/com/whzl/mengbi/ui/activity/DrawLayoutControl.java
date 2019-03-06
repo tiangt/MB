@@ -240,6 +240,13 @@ public class DrawLayoutControl {
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             if (position == bannerInfoList.size() + 1) {
+                if (((LiveDisplayActivity) activity).mUserId == 0) {
+                    ((LiveDisplayActivity) activity).login();
+                    ((LiveDisplayActivity) activity).closeDrawLayout();
+                    return;
+                }
+                ((LiveDisplayActivity) activity).showSnatchDialog();
+                ((LiveDisplayActivity) activity).closeDrawLayout();
                 return;
             }
             if (position == bannerInfoList.size()) {
