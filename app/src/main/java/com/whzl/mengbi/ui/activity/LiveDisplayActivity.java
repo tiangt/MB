@@ -2330,7 +2330,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void showSnatchDialog() {
-        SnatchDialog.newInstance(mUserId).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
+        SnatchDialog.Companion.newInstance(mUserId).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
     }
 
     public void jumpToWeekRank() {
