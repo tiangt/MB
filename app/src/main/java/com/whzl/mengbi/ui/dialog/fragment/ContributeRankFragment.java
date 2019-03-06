@@ -132,7 +132,12 @@ public class ContributeRankFragment extends BaseFragment implements OnRefreshLis
 
             @Override
             public void onReqFailed(String errorMsg) {
-                refreshLayout.finishRefresh();
+                refreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.finishRefresh();
+                    }
+                });
             }
         });
     }

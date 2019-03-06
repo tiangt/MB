@@ -22,7 +22,6 @@ import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.PersonalInfoActivity;
-import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -235,6 +234,9 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 if (mVisitorId == 0) {
                     ((LiveDisplayActivity) getActivity()).login();
                     dismiss();
+                    return;
+                }
+                if (mViewedUser == null) {
                     return;
                 }
 //                if (listener != null) {

@@ -203,7 +203,7 @@ public class AccountSwitchActivity extends BaseActivity {
         userDao.deleteByKey(commonGift.getUserId());
         UsualGiftDao usualGiftDao = BaseApplication.getInstance().getDaoSession().getUsualGiftDao();
         List<UsualGift> list = usualGiftDao.queryBuilder().where(UsualGiftDao.Properties.UserId.eq(commonGift.getUserId())).list();
-        if (list!=null&&!list.isEmpty()) {
+        if (list != null && !list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
                 usualGiftDao.deleteByKey(list.get(i).getId());
             }
@@ -213,7 +213,9 @@ public class AccountSwitchActivity extends BaseActivity {
 
     private void checkLogin(User user) {
         showLoading("切换中");
-        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, user.getSeesionId());
+        if (user.getSeesionId() != null) {
+            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, user.getSeesionId());
+        }
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", user.getUserId());
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
