@@ -10,11 +10,13 @@ import com.whzl.mengbi.R
 import com.whzl.mengbi.eventbus.event.MengdouChangeEvent
 import com.whzl.mengbi.model.entity.UserInfo
 import com.whzl.mengbi.ui.activity.me.ShopActivity
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.util.AmountConversionUitls
 import com.whzl.mengbi.util.BusinessUtils
 import com.whzl.mengbi.util.ClickUtil
+import kotlinx.android.synthetic.main.dialog_snatch.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -51,7 +53,7 @@ class SnatchDialog : BaseAwesomeDialog() {
 
         tvHisPrize = holder.getView(R.id.tv_his_prize)
         tvHisPrize!!.paint.flags = Paint.UNDERLINE_TEXT_FLAG
-//        tvWant = holder.getView(R.id.tv_want_join)
+        tvWant = holder.getView(R.id.tv_want_join)
         tvMengdou = holder.getView(R.id.tv_mengdou)
         ibReduce = holder.getView(R.id.ib_reduce_want)
         ibAdd = holder.getView(R.id.ib_add_want)
@@ -74,8 +76,13 @@ class SnatchDialog : BaseAwesomeDialog() {
                 startActivity(Intent(activity, ShopActivity::class.java))
             }
         }
-
+        tvHisPrize.setOnClickListener { showHisDialog(mUserId) }
         loadData()
+    }
+
+    private fun showHisDialog(mUserId: Long) {
+        dismiss()
+        AwesomeDialog.init().setLayoutId(R.layout.dialog_snatch_his).show(fragmentManager)
     }
 
     private fun loadData() {
