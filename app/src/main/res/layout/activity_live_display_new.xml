@@ -229,31 +229,14 @@
 
                         <com.ksyun.media.player.KSYTextureView
                             android:id="@+id/texture_view"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
                             app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toLeftOf="@id/rl_other_side" />
-
-                        <RelativeLayout
-                            android:id="@+id/rl_other_side"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:visibility="gone"
-                            app:layout_constraintLeft_toRightOf="@id/texture_view"
-                            app:layout_constraintRight_toRightOf="parent">
-
-                            <com.ksyun.media.player.KSYTextureView
-                                android:id="@+id/texture_view2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-
-                        </RelativeLayout>
+                            app:layout_constraintRight_toLeftOf="parent" />
 
                         <RelativeLayout
                             android:id="@+id/rl_other_side_info"
-                            android:layout_width="100dp"
+                            android:layout_width="70dp"
                             android:layout_height="20dp"
                             android:layout_marginTop="10dp"
                             android:background="@drawable/shape_other_side"

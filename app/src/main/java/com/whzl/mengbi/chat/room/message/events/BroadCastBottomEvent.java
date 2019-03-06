@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.text.SpannableString;
-import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,7 +25,6 @@ public class BroadCastBottomEvent implements BroadEvent {
     private BroadCastBottomJson broadCastBottomJson;
     private Context mContext;
     private int programId;
-    private RelativeLayout rlOtherSide;
     private RelativeLayout rlOtherSideInfo;
     private KSYTextureView textureView;
     private PkLayout pkLayout;
@@ -42,9 +40,8 @@ public class BroadCastBottomEvent implements BroadEvent {
         this.mContext = mContext;
     }
 
-    public void setPkLayoutVisibility(RelativeLayout rlOtherSide, RelativeLayout rlOtherSideInfo,
+    public void setPkLayoutVisibility(RelativeLayout rlOtherSideInfo,
                                       KSYTextureView textureView, PkLayout pkLayout, ImageView ivCountDown) {
-        this.rlOtherSide = rlOtherSide;
         this.rlOtherSideInfo = rlOtherSideInfo;
         this.textureView = textureView;
         this.pkLayout = pkLayout;
@@ -97,9 +94,8 @@ public class BroadCastBottomEvent implements BroadEvent {
                 intent.putExtra(BundleConfig.PROGRAM_ID, broadCastBottomJson.context.programId);
                 mContext.startActivity(intent);
                 programId = broadCastBottomJson.context.programId;
-                if (rlOtherSide != null && rlOtherSideInfo != null
+                if (rlOtherSideInfo != null
                         && textureView != null && pkLayout != null && ivCountDown != null) {
-                    rlOtherSide.setVisibility(View.GONE);
                     rlOtherSideInfo.setVisibility(View.GONE);
                     textureView.setVisibility(View.INVISIBLE);
                     pkLayout.setVisibility(View.GONE);

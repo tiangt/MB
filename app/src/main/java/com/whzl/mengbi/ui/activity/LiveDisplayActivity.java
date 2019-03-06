@@ -91,7 +91,6 @@ import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
-import com.whzl.mengbi.eventbus.event.LivePkEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -291,10 +290,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ConstraintLayout clEnter;
     @BindView(R.id.iv_count_down)
     ImageView ivCountDown;
-    @BindView(R.id.rl_other_side)
-    RelativeLayout rlOtherSide;
-    @BindView(R.id.texture_view2)
-    KSYTextureView textureView2;
     @BindView(R.id.circle_other_side)
     CircleImageView ivOtherSide;
     @BindView(R.id.tv_other_side)
@@ -390,8 +385,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RoyalEnterControl royalEnterControl;
     private Disposable roomRankTotalDisposable;
     private Disposable roomOnlineDisposable;
-    private NetStateChangeReceiver mPkReceiver;
-    private String pkStream;
     private BaseAwesomeDialog mFreeGiftDialog;
     private String mAnchorCover;
     private String mShareUrl;
@@ -437,11 +430,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkLayout.setVisibility(View.GONE);
         textureView.stop();
         textureView.reset();
-        textureView2.stop();
-        textureView2.reset();
 
         textureView.setVisibility(View.INVISIBLE);
-        textureView2.setVisibility(View.INVISIBLE);
 //        progressBar.setVisibility(View.VISIBLE);
         loadLayout.setVisibility(View.VISIBLE);
 
@@ -476,7 +466,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
         mLivePresenter.getLiveGift();
         initReceiver();
-        initPkNetwork();
     }
 
     @Override
@@ -506,28 +495,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
         });
         registerReceiver(mReceiver, intentFilter);
-    }
-
-    private void initPkNetwork() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-        mPkReceiver = new NetStateChangeReceiver();
-        mPkReceiver.setEvevt(netMobile -> {
-            if (netMobile != NetUtils.NETWORK_NONE) {
-                if (textureView2 != null && pkStream != null) {
-                    textureView2.softReset();
-                    try {
-                        textureView2.setDataSource(pkStream);
-                        textureView2.prepareAsync();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                showToast(R.string.net_error);
-            }
-        });
-        registerReceiver(mPkReceiver, intentFilter);
     }
 
     private void initPlayer() {
@@ -1192,7 +1159,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(BroadCastBottomEvent broadCastBottomEvent) {
         initRunWayBroad();
         broadCastBottomEvent.setProgramId(mProgramId);
-        broadCastBottomEvent.setPkLayoutVisibility(rlOtherSide, rlOtherSideInfo, textureView, pkLayout, ivCountDown);
+        broadCastBottomEvent.setPkLayoutVisibility(rlOtherSideInfo, textureView, pkLayout, ivCountDown);
         mRunWayBroadControl.load(broadCastBottomEvent);
     }
 
@@ -1215,8 +1182,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
-        pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
-        pkControl.setOtherLive(textureView2);
+        pkControl.setRightInfo(ivOtherSide, tvOtherSide);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
         pkControl.setBean(bean);
         pkControl.init();
@@ -1541,34 +1507,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
-        pkControl.setRightInfo(rlOtherSide, ivOtherSide, tvOtherSide);
-        pkControl.setOtherLive(textureView2);
+        pkControl.setRightInfo(ivOtherSide, tvOtherSide);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
 
         rlOtherSideInfo.setVisibility(View.VISIBLE);
-
-        if (bean.pkSingleVideo == 0 && bean.otherStream != null) {
-            rlOtherSide.setVisibility(View.VISIBLE);
-            List<String> rtmpList = bean.otherStream.getRtmp();
-            List<String> flvList = bean.otherStream.getFlv();
-            List<String> hlsList = bean.otherStream.getHls();
-            if (rtmpList != null) {
-                for (int i = 0; i < rtmpList.size(); i++) {
-                    setDateSourceForPlayer2(rtmpList.get(i));
-                }
-            } else if (flvList != null) {
-                for (int i = 0; i < flvList.size(); i++) {
-                    setDateSourceForPlayer2(flvList.get(i));
-                }
-            } else if (hlsList != null) {
-                for (int i = 0; i < hlsList.size(); i++) {
-                    setDateSourceForPlayer2(hlsList.get(i));
-                }
-            }
-        }
-        if (bean.pkSingleVideo == 0) {
-            otherSideLive();
-        }
 
         pkControl.initNet(bean);
 
@@ -2071,9 +2013,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (textureView != null) {
             textureView.runInBackground(true);
         }
-        if (textureView2 != null) {
-            textureView2.runInBackground(true);
-        }
     }
 
     @Override
@@ -2081,9 +2020,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         super.onResume();
         if (textureView != null) {
             textureView.runInForeground();
-        }
-        if (textureView2 != null) {
-            textureView2.runInForeground();
         }
         if (mUserId == 0) {
             mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
@@ -2099,11 +2035,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView.release();
             textureView = null;
         }
-        if (textureView2 != null) {
-            textureView2.stop();
-            textureView2.release();
-            textureView2 = null;
-        }
         if (compositeDisposable != null) {
             compositeDisposable.clear();
             compositeDisposable = null;
@@ -2111,7 +2042,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.onDestory();
         super.onDestroy();
         unregisterReceiver(mReceiver);
-        unregisterReceiver(mPkReceiver);
     }
 
     private void destroy() {
@@ -2223,7 +2153,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
         intent.putExtra(BundleConfig.PROGRAM_ID, programId);
         startActivity(intent);
-        rlOtherSide.setVisibility(View.GONE);
         rlOtherSideInfo.setVisibility(View.GONE);
         textureView.setVisibility(View.INVISIBLE);
         pkLayout.setVisibility(View.GONE);
@@ -2354,47 +2283,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getDailyTaskState(mUserId);
     }
 
-    private void otherSideLive() {
-        textureView2.setDecodeMode(KSYMediaPlayer.KSYDecodeMode.KSY_DECODE_MODE_AUTO);
-        textureView2.setOnPreparedListener(iMediaPlayer -> {
-            textureView2.setVisibility(View.VISIBLE);
-            textureView2.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
-            textureView2.start();
-        });
-
-        textureView2.setOnCompletionListener(iMediaPlayer -> {
-            textureView2.stop();
-            textureView2.release();
-        });
-    }
-
-    private void setDateSourceForPlayer2(String stream) {
-        pkStream = stream;
-        try {
-            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, true);
-            if (pkVoice) {
-                textureView2.setVolume(1, 1);
-            } else {
-                textureView2.setVolume(0, 0);
-            }
-            textureView2.setDataSource(stream);
-            textureView2.prepareAsync();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LivePkEvent event) {
-        if (textureView2 != null && textureView2.isPlaying()) {
-            boolean pkVoice = (boolean) SPUtils.get(this, SpConfig.PK_VIOCE_LIVE, true);
-            if (pkVoice) {
-                textureView2.setVolume(1, 1);
-            } else {
-                textureView2.setVolume(0, 0);
-            }
-        }
-    }
 
     public void showAtChat(String at) {
         if (mChatDialog != null && mChatDialog.isAdded()) {

@@ -25,8 +25,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ksyun.media.player.KSYMediaPlayer;
-import com.ksyun.media.player.KSYTextureView;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -36,8 +34,6 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
-import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.eventbus.event.LivePkEvent;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
@@ -52,7 +48,6 @@ import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.WeakHandler;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -61,12 +56,8 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,10 +91,8 @@ public class PkControl {
 
     private Activity context;
 
-    private RelativeLayout layout;
     private CircleImageView ivRightHead;
     private TextView tvRightName;
-    private KSYTextureView ksyTextureView;
     private PopupWindow pkResultPop;
     private SVGAImageView svgaImageView;
     private PopupWindow mvpWindow;
@@ -157,8 +146,7 @@ public class PkControl {
         this.ivCountDown = ivCountDown;
     }
 
-    public void setRightInfo(RelativeLayout layout, CircleImageView ivRightHead, TextView tvRightName) {
-        this.layout = layout;
+    public void setRightInfo(CircleImageView ivRightHead, TextView tvRightName) {
         this.ivRightHead = ivRightHead;
         this.tvRightName = tvRightName;
     }
@@ -167,7 +155,6 @@ public class PkControl {
         this.pkLayout = pkLayout;
         this.context = context;
         initEvent();
-        EventBus.getDefault().register(this);
     }
 
     private void initEvent() {
@@ -187,10 +174,6 @@ public class PkControl {
         this.svgaImageView = svgaImageView;
     }
 
-    public void setOtherLive(KSYTextureView ksyTextureView) {
-        this.ksyTextureView = ksyTextureView;
-    }
-
     public void setOtherSideInfo(RelativeLayout otherPkInfo) {
         this.rlOtherSideInfo = otherPkInfo;
     }
@@ -203,10 +186,6 @@ public class PkControl {
                 startPKAnim();
                 startCountDown(5);
                 rlOtherSideInfo.setVisibility(View.VISIBLE);
-                if (bean.pkSingleVideo == 0) {
-                    layout.setVisibility(View.VISIBLE);
-                    otherSideLive();
-                }
                 pkLayout.timer("PK倒计时 ", bean.pkSurPlusSecond);
                 if (bean.launchUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -215,17 +194,6 @@ public class PkControl {
                     tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
                     jumpNick = bean.pkUserInfo.nickname;
-                    if (bean.pkSingleVideo == 0 && bean.pkUserLiveAndStreamAddress.showStreams != null) {
-                        for (int i = 0; i < bean.pkUserLiveAndStreamAddress.showStreams.size(); i++) {
-                            streamType = bean.pkUserLiveAndStreamAddress.showStreams.get(i).streamType;
-                            if (streamType.equals("flv")) {
-                                streamAddress = bean.pkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
-                                setDateSourceForPlayer2(streamAddress);
-                                break;
-                            }
-                        }
-//                        otherSideLive();
-                    }
                 } else if (bean.pkUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", System.currentTimeMillis());
                     rightAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -233,17 +201,6 @@ public class PkControl {
                     tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
                     jumpNick = bean.launchPkUserInfo.nickname;
-                    if (bean.pkSingleVideo == 0 && bean.launchPkUserLiveAndStreamAddress.showStreams != null) {
-                        for (int i = 0; i < bean.launchPkUserLiveAndStreamAddress.showStreams.size(); i++) {
-                            streamType = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamType;
-                            if (streamType.equals("flv")) {
-                                streamAddress = bean.launchPkUserLiveAndStreamAddress.showStreams.get(i).streamAddress;
-                                setDateSourceForPlayer2(streamAddress);
-                                break;
-                            }
-                        }
-//                        otherSideLive();
-                    }
                 }
                 break;
             case "PK_SCORE"://PK分数
@@ -256,10 +213,10 @@ public class PkControl {
                     double a = bean.launchPkUserScore;
                     double b = bean.launchPkUserScore + bean.pkUserScore;
                     double v = (a / b) * 100;
-                    if ((int) v >= 90) {
-                        pkLayout.setAnimation(90);
-                    } else if ((int) v <= 10) {
-                        pkLayout.setAnimation((10));
+                    if ((int) v >= 80) {
+                        pkLayout.setAnimation(80);
+                    } else if ((int) v <= 20) {
+                        pkLayout.setAnimation((20));
                     } else {
                         pkLayout.setAnimation((int) v);
                     }
@@ -269,10 +226,10 @@ public class PkControl {
                     double a = bean.pkUserScore;
                     double b = bean.launchPkUserScore + bean.pkUserScore;
                     double v = (a / b) * 100;
-                    if ((int) v >= 90) {
-                        pkLayout.setAnimation(90);
-                    } else if ((int) v <= 10) {
-                        pkLayout.setAnimation((10));
+                    if ((int) v >= 80) {
+                        pkLayout.setAnimation(80);
+                    } else if ((int) v <= 20) {
+                        pkLayout.setAnimation((20));
                     } else {
                         pkLayout.setAnimation((int) v);
                     }
@@ -326,10 +283,6 @@ public class PkControl {
                 }
                 break;
             case "PK_TIE_FINISH"://平局时间结束
-                if (bean.pkSingleVideo == 0) {
-                    shutDown();
-                    layout.setVisibility(View.GONE);
-                }
                 rlOtherSideInfo.setVisibility(View.GONE);
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
@@ -340,10 +293,6 @@ public class PkControl {
                 needShow = false;
                 break;
             case "PK_PUNISH_FINISH"://惩罚时间结束
-                if (bean.pkSingleVideo == 0) {
-                    shutDown();
-                    layout.setVisibility(View.GONE);
-                }
                 rlOtherSideInfo.setVisibility(View.GONE);
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
@@ -410,10 +359,10 @@ public class PkControl {
                     double b = bean.launchPkUserScore + bean.pkUserScore;
                     double v = (a / b) * 100;
                     pkLayout.setProgress((int) v);
-                    if ((int) v <= 10) {
-                        pkLayout.initializeProgress = 10;
-                    } else if ((int) v >= 90) {
-                        pkLayout.initializeProgress = 90;
+                    if ((int) v <= 20) {
+                        pkLayout.initializeProgress = 20;
+                    } else if ((int) v >= 80) {
+                        pkLayout.initializeProgress = 80;
                     } else {
                         pkLayout.initializeProgress = (int) v;
                     }
@@ -437,10 +386,10 @@ public class PkControl {
                     double b = bean.launchPkUserScore + bean.pkUserScore;
                     double v = (a / b) * 100;
                     pkLayout.setProgress((int) v);
-                    if ((int) v <= 10) {
-                        pkLayout.initializeProgress = 10;
-                    } else if ((int) v >= 90) {
-                        pkLayout.initializeProgress = 90;
+                    if ((int) v <= 20) {
+                        pkLayout.initializeProgress = 20;
+                    } else if ((int) v >= 80) {
+                        pkLayout.initializeProgress = 80;
                     } else {
                         pkLayout.initializeProgress = (int) v;
                     }
@@ -591,7 +540,6 @@ public class PkControl {
         }
         isMvp = false;
         needShow = false;
-        EventBus.getDefault().unregister(this);
         if (svgaImageView != null) {
             svgaImageView.stopAnimation();
         }
@@ -620,52 +568,6 @@ public class PkControl {
         });
         dialog.setCancelable(false);
         dialog.show();
-    }
-
-    private void otherSideLive() {
-        ksyTextureView.setDecodeMode(KSYMediaPlayer.KSYDecodeMode.KSY_DECODE_MODE_AUTO);
-        ksyTextureView.setOnPreparedListener(iMediaPlayer -> {
-            ksyTextureView.setVisibility(View.VISIBLE);
-            ksyTextureView.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
-            ksyTextureView.start();
-        });
-
-        ksyTextureView.setOnCompletionListener(iMediaPlayer -> {
-            ksyTextureView.stop();
-            ksyTextureView.release();
-        });
-
-    }
-
-    private void setDateSourceForPlayer2(String stream) {
-
-        try {
-            ksyTextureView.stop();
-            ksyTextureView.reset();
-            boolean pkVoice = (boolean) SPUtils.get(context, SpConfig.PK_VIOCE_LIVE, true);
-            if (pkVoice) {
-                ksyTextureView.setVolume(1, 1);
-            } else {
-                ksyTextureView.setVolume(0, 0);
-            }
-            ksyTextureView.setVolume(0, 0);
-            ksyTextureView.setDataSource(stream);
-            ksyTextureView.prepareAsync();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LivePkEvent event) {
-        if (ksyTextureView != null && ksyTextureView.isPlaying()) {
-            boolean pkVoice = (boolean) SPUtils.get(context, SpConfig.PK_VIOCE_LIVE, true);
-            if (pkVoice) {
-                ksyTextureView.setVolume(1, 1);
-            } else {
-                ksyTextureView.setVolume(0, 0);
-            }
-        }
     }
 
 
@@ -931,10 +833,4 @@ public class PkControl {
                 });
     }
 
-    private void shutDown() {
-        if (ksyTextureView != null) {
-            ksyTextureView.stop();
-            ksyTextureView.reset();
-        }
-    }
 }

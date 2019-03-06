@@ -8,15 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.eventbus.event.LivePkEvent;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
@@ -27,14 +23,11 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.me.WelfareFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
-import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +46,6 @@ public class DrawLayoutControl {
     private List<GetActivityBean.ListBean> bannerInfoList;
     private RecyclerView rvActivity;
     private BaseListAdapter baseListAdapter;
-    private Switch switchVoice;
     private RecyclerView rvTips;
     private String[] titles;
     private int[] imgIds = new int[]{
@@ -76,13 +68,11 @@ public class DrawLayoutControl {
 
     public void init() {
         bannerInfoList = new ArrayList<>();
-        switchVoice = drawLayout.findViewById(R.id.switch_voice_draw_layout_live);
         rvActivity = drawLayout.findViewById(R.id.rv_activity_draw_layout);
         rvTips = drawLayout.findViewById(R.id.rv_tips_draw_layout);
         recommendRecycler = drawLayout.findViewById(R.id.rv_anchor_draw_layout);
 
         initActivityRV();
-        initSwitch();
         initTipsRV();
         initAnchorRV();
         loadAnchorData();
@@ -189,20 +179,6 @@ public class DrawLayoutControl {
         });
     }
 
-    private void initSwitch() {
-        switchVoice.setChecked((boolean) SPUtils.get(activity, SpConfig.PK_VIOCE_LIVE, true));
-        switchVoice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    SPUtils.put(activity, SpConfig.PK_VIOCE_LIVE, true);
-                } else {
-                    SPUtils.put(activity, SpConfig.PK_VIOCE_LIVE, false);
-                }
-                EventBus.getDefault().post(new LivePkEvent());
-            }
-        });
-    }
 
     private void initActivityRV() {
         rvActivity.setLayoutManager(new GridLayoutManager(activity, 3));
