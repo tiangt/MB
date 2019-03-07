@@ -3,20 +3,29 @@ package com.whzl.mengbi.ui.dialog.fragment
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import butterknife.BindView
+import butterknife.ButterKnife
 import com.whzl.mengbi.R
 import com.whzl.mengbi.eventbus.event.MengdouChangeEvent
 import com.whzl.mengbi.model.entity.UserInfo
 import com.whzl.mengbi.ui.activity.me.ShopActivity
+import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
+import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.util.AmountConversionUitls
 import com.whzl.mengbi.util.BusinessUtils
 import com.whzl.mengbi.util.ClickUtil
-import kotlinx.android.synthetic.main.dialog_snatch.*
+import kotlinx.android.synthetic.main.item_snatch_his.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -32,6 +41,8 @@ class SnatchDialog : BaseAwesomeDialog() {
     private var tvWant: TextView? = null
     private var mUserId: Long = 0
     private var tvMengdou: TextView? = null
+    private lateinit var hisAdapter: BaseListAdapter
+    private var hisDatas = ArrayList<Any>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +93,52 @@ class SnatchDialog : BaseAwesomeDialog() {
 
     private fun showHisDialog(mUserId: Long) {
         dismiss()
-        AwesomeDialog.init().setLayoutId(R.layout.dialog_snatch_his).show(fragmentManager)
+        AwesomeDialog.init().setLayoutId(R.layout.dialog_snatch_his).setConvertListener(object : ViewConvertListener() {
+            override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                val recyclerView = holder?.getView<RecyclerView>(R.id.rv_snatch_his)
+                initRV(recyclerView)
+                getHisData()
+            }
+
+        }).show(fragmentManager)
+    }
+
+    private fun getHisData() {
+        hisDatas.add("a")
+        hisDatas.add("a")
+        hisDatas.add("a")
+        hisDatas.add("a")
+        hisDatas.add("a")
+        hisDatas.add("a")
+        hisDatas.add("a")
+        hisDatas.add("a")
+        hisDatas.add("a")
+        hisDatas.add("a")
+        hisAdapter.notifyDataSetChanged()
+    }
+
+    private fun initRV(recyclerView: RecyclerView?) {
+        recyclerView!!.layoutManager = LinearLayoutManager(activity)
+        hisAdapter = object : BaseListAdapter() {
+            override fun getDataCount(): Int {
+                return hisDatas.size
+            }
+
+            override fun onCreateNormalViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
+                val view: View = LayoutInflater.from(parent!!.context).inflate(R.layout.item_snatch_his, parent, false)
+                return HisViewHolder(view)
+            }
+
+        }
+        recyclerView.adapter = hisAdapter
+    }
+
+    internal inner class HisViewHolder(itemView: View) : BaseViewHolder(itemView) {
+
+        override fun onBindViewHolder(position: Int) {
+           itemView.tv_nick_item_snatch.text="woaoni"
+        }
+
     }
 
     private fun loadData() {

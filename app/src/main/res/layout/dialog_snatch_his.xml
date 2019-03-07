@@ -10,8 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:background="@drawable/bg_snatch"
-        android:orientation="vertical">
+        android:background="@drawable/bg_snatch_his"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -21,5 +23,54 @@
             android:text="幸运夺宝往期中奖"
             android:textColor="@color/white"
             android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="73dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="期号"
+                android:textColor="#70ffffff"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="88dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="中奖人"
+                android:textColor="#70ffffff"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="夺宝次数"
+                android:textColor="#70ffffff"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="78dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="中奖物品"
+                android:textColor="#70ffffff"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_snatch_his"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
     </LinearLayout>
 </LinearLayout>

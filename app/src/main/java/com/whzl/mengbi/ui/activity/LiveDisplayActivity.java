@@ -415,6 +415,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog privateChatListDialog;
     private BaseAwesomeDialog awesomeDialog;
     private BaseAwesomeDialog personalInfoDialog;
+    private BaseAwesomeDialog snatchDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -2330,7 +2331,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void showSnatchDialog() {
-        SnatchDialog.Companion.newInstance(mUserId).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
+        if (snatchDialog != null && snatchDialog.isAdded()) {
+            return;
+        }
+        snatchDialog = SnatchDialog.Companion.newInstance(mUserId).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
     }
 
     public void jumpToWeekRank() {
