@@ -19,6 +19,7 @@ import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.eventbus.event.MengdouChangeEvent
 import com.whzl.mengbi.model.entity.GiftBetPeriodInfo
+import com.whzl.mengbi.model.entity.GiftBetRecordsBean
 import com.whzl.mengbi.model.entity.UserInfo
 import com.whzl.mengbi.ui.activity.me.ShopActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
@@ -36,6 +37,7 @@ import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_anchor_task.*
 import kotlinx.android.synthetic.main.item_snatch_his.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -63,7 +65,7 @@ class SnatchDialog : BaseAwesomeDialog() {
     private var mUserId: Long = 0
     private var tvMengdou: TextView? = null
     private lateinit var hisAdapter: BaseListAdapter
-    private var hisDatas = ArrayList<Any>()
+    private var hisDatas = ArrayList<GiftBetRecordsBean.ListBean>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,17 +135,25 @@ class SnatchDialog : BaseAwesomeDialog() {
     }
 
     private fun getHisData() {
-        hisDatas.add("a")
-        hisDatas.add("a")
-        hisDatas.add("a")
-        hisDatas.add("a")
-        hisDatas.add("a")
-        hisDatas.add("a")
-        hisDatas.add("a")
-        hisDatas.add("a")
-        hisDatas.add("a")
-        hisDatas.add("a")
-        hisAdapter.notifyDataSetChanged()
+        val paramsMap = HashMap<String, String>()
+        val signPramsMap = ParamsUtils.getSignPramsMap(paramsMap)
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .giftBetRecords(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<GiftBetRecordsBean>(this) {
+                    override fun onSuccess(bean: GiftBetRecordsBean?) {
+                        if (bean?.list == null) {
+                            return
+                        }
+                        hisDatas.clear()
+                        hisDatas.addAll(bean.list!!)
+                        hisAdapter.notifyDataSetChanged()
+                    }
+
+                    override fun onError(code: Int) {
+                    }
+                })
     }
 
     private fun initRV(recyclerView: RecyclerView?) {
@@ -163,9 +173,17 @@ class SnatchDialog : BaseAwesomeDialog() {
     }
 
     internal inner class HisViewHolder(itemView: View) : BaseViewHolder(itemView) {
+        private lateinit var tvGood: TextView
 
         override fun onBindViewHolder(position: Int) {
-            itemView.tv_nick_item_snatch.text = "woaoni"
+            tvGood = itemView.findViewById<TextView>(R.id.tv_good_item_snatch)
+            val bean = hisDatas[position]
+            itemView.tv_nick_item_snatch.text = bean.nickName
+            itemView.tv_date_item_snatch.text = bean.periodNumber
+            itemView.tv_count_item_snatch.text = bean.robNumber.toString()
+
+            tvGood.text = bean.goodsName
+            tvGood.append(LightSpanString.getLightString(" ×${bean.prizeNumber}", Color.parseColor("#FFFF2323")))
         }
 
     }

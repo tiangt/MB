@@ -25,6 +25,7 @@ import com.whzl.mengbi.model.entity.GetProsListBean;
 import com.whzl.mengbi.model.entity.GetUserSetBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GiftBetPeriodInfo;
+import com.whzl.mengbi.model.entity.GiftBetRecordsBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
@@ -837,4 +838,14 @@ public interface Api {
     @POST("v1/game/gift-bet-period-info")
     @FormUrlEncoded
     Observable<ApiResult<GiftBetPeriodInfo>> giftBetPeriodInfo(@FieldMap Map<String, String> params);
+
+    /**
+     * 夺宝获奖记录
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/game/gift-bet-records")
+    @FormUrlEncoded
+    Observable<ApiResult<GiftBetRecordsBean>> giftBetRecords(@FieldMap Map<String, String> params);
 }
