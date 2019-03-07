@@ -186,6 +186,8 @@ dependencies {
     implementation 'com.github.yyued:SVGAPlayer-Android:2.1.9'
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.1.0'
+
+    implementation 'com.github.sahasbhop:apng-view:1.3'
 }
 
 protobuf {

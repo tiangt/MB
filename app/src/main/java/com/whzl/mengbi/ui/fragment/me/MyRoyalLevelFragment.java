@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.sahasbhop.apngview.ApngImageLoader;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
@@ -77,7 +79,9 @@ public class MyRoyalLevelFragment extends BaseFragment {
                     evlRoyalLevel.initView();
 
                     if ("ROYAL_LEVEL".equals(levelType)) {
-                        Glide.with(this).asGif().load(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue)).into(ivRoyalLevel);
+//                        Glide.with(this).asGif().load(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue)).into(ivRoyalLevel);
+                        ApngImageLoader.getInstance()
+                                .displayApng(LevelUtil.getRoyalBigApng(levelValue), ivRoyalLevel, new ApngImageLoader.ApngConfig(0, true));
                         expListBeans = listBeans.get(i).getExpList();
                         for (int j = 0; j < expListBeans.size(); j++) {
                             sjExpvalue = expListBeans.get(j).getSjExpvalue();

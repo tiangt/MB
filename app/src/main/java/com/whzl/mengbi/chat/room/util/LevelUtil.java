@@ -219,4 +219,9 @@ public class LevelUtil {
         }
         return -1;
     }
+
+    public static String getRoyalBigApng(int levelValue) {
+        return "assets://images/face/royalbigapng/ic_royal_big_apn" + levelValue + ".png";
+
+    }
 }

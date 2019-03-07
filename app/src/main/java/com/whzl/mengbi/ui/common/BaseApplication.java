@@ -9,6 +9,7 @@ import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.baidu.mobstat.StatService;
+import com.github.sahasbhop.apngview.ApngImageLoader;
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
 import com.lht.paintview.util.LogUtil;
 import com.meituan.android.walle.WalleChannelReader;
@@ -84,6 +85,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        ApngImageLoader.getInstance().init(getApplicationContext());
         channel = WalleChannelReader.getChannel(getApplicationContext());
         if (channel == null) {
             channel = "";
