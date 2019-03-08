@@ -10,10 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.github.sahasbhop.apngview.ApngDrawable
 import com.github.sahasbhop.apngview.ApngImageLoader
 import com.google.gson.JsonElement
@@ -43,6 +40,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.dialog_snatch.*
 import kotlinx.android.synthetic.main.item_snatch_his.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -66,9 +64,10 @@ class SnatchDialog : BaseAwesomeDialog() {
     private lateinit var tvSecond: TextView
     private lateinit var tvDate: TextView
     private lateinit var ivGift: ImageView
+    private lateinit var ivFangpao: ImageView
     private lateinit var llStateNormal: LinearLayout
     private lateinit var llStateProcess: LinearLayout
-    private lateinit var llStateEnd: LinearLayout
+    private lateinit var llStateEnd: RelativeLayout
     private var ibReduce: ImageButton? = null
     private lateinit var ibAdd: ImageButton
     private var tvWant: TextView? = null
@@ -99,6 +98,10 @@ class SnatchDialog : BaseAwesomeDialog() {
         ivDaojishi = holder.getView(R.id.iv_daojishi)
         val uri = "assets://apng/daojishi.png"
         ApngImageLoader.getInstance().displayImage(uri, ivDaojishi)
+
+        ivFangpao = holder.getView(R.id.iv_fangpao)
+        val uri2 = "assets://apng/fangpao.png"
+        ApngImageLoader.getInstance().displayImage(uri2, ivFangpao)
 
         tvDaojishi = holder.getView(R.id.tv_daojishi)
         tvPrizeName = holder.getView(R.id.tv_prize_name)
@@ -205,7 +208,7 @@ class SnatchDialog : BaseAwesomeDialog() {
         recyclerView!!.layoutManager = LinearLayoutManager(activity)
         hisAdapter = object : BaseListAdapter() {
             override fun getDataCount(): Int {
-                return hisDatas.size
+                return 10
             }
 
             override fun onCreateNormalViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
@@ -221,6 +224,9 @@ class SnatchDialog : BaseAwesomeDialog() {
         private lateinit var tvGood: TextView
 
         override fun onBindViewHolder(position: Int) {
+            if (position >= hisDatas.size) {
+                return
+            }
             tvGood = itemView.findViewById<TextView>(R.id.tv_good_item_snatch)
             val bean = hisDatas[position]
             itemView.tv_nick_item_snatch.text = bean.nickName
@@ -367,9 +373,17 @@ class SnatchDialog : BaseAwesomeDialog() {
             if (t == 4.toLong()) {
                 getData()
                 disposable!!.dispose()
+                ApngDrawable.getFromView(ivFangpao).stop()
                 return@subscribe
             }
             tvDaojishi.text = DateUtils.translateLastSecond(3 - t!!.toInt())
+        }
+        val fromView = ApngDrawable.getFromView(ivFangpao)
+        if (fromView == null) {
+            return
+        } else {
+            fromView.numPlays = 0
+            fromView.start()
         }
     }
 
@@ -380,5 +394,6 @@ class SnatchDialog : BaseAwesomeDialog() {
             disposable!!.dispose()
         }
         ApngDrawable.getFromView(ivDaojishi).stop()
+        ApngDrawable.getFromView(ivFangpao).stop()
     }
 }

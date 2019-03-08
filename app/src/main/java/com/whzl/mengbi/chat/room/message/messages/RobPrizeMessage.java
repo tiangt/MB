@@ -35,7 +35,7 @@ public class RobPrizeMessage implements FillHolderMessage {
         SingleTextViewHolder mholder = (SingleTextViewHolder) holder;
         mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         mholder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
-        mholder.textView.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_rob_chat));
+        mholder.textView.setText(LevelUtil.getImageResourceSpan(context, R.drawable.ic_rob_chat));
         mholder.textView.append(LightSpanString.getLightString(" 恭喜 ",
                 ContextCompat.getColor(context, R.color.text_color_chat)));
         mholder.textView.append(LightSpanString.getLightString(json.context.userNickName,
