@@ -20,11 +20,11 @@ import com.whzl.mengbi.ui.widget.view.WeekStarView;
  * @author nobody
  * @date 2019/3/8
  */
-public class RobPrizeEvent implements WeekHeadEvent {
+public class RobRemindEvent implements WeekHeadEvent {
     private Context context;
     public RobLuckJson robLuckJson;
 
-    public RobPrizeEvent(Context context, RobLuckJson json) {
+    public RobRemindEvent(Context context, RobLuckJson json) {
         this.robLuckJson = json;
         this.context = context;
     }
@@ -35,17 +35,16 @@ public class RobPrizeEvent implements WeekHeadEvent {
             RobLuckJson.ContextBean bean = robLuckJson.context;
             tvEnter.setMovementMethod(LinkMovementMethod.getInstance());
             tvEnter.setText(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_rob_live, 12));
-            tvEnter.append(" 恭喜 ");
-            tvEnter.append(LightSpanString.getLightString(bean.userNickName,
-                    ContextCompat.getColor(context, R.color.text_color_chat_yellow)));
-            tvEnter.append(" 喜中 ");
-            tvEnter.append(LightSpanString.getLightString(bean.giftNumber + "",
-                    ContextCompat.getColor(context, R.color.text_color_chat_yellow)));
-            tvEnter.append(" 个");
             tvEnter.append(LightSpanString.getLightString(bean.giftName,
                     ContextCompat.getColor(context, R.color.text_color_chat_yellow)));
-            tvEnter.append("，");
-            tvEnter.append(getRobSpan(context, "我也要夺宝",
+            tvEnter.append(" 已累计到 ");
+            tvEnter.append(LightSpanString.getLightString(bean.giftNumber + "",
+                    ContextCompat.getColor(context, R.color.text_color_chat_yellow)));
+            tvEnter.append(" 个，距开奖还有 ");
+            tvEnter.append(LightSpanString.getLightString(bean.openPrizeSecond / 60 + "",
+                    ContextCompat.getColor(context, R.color.text_color_chat_yellow)));
+            tvEnter.append(" 分钟，");
+            tvEnter.append(getRobSpan(context, "现在去夺宝",
                     Color.parseColor("#FFFFFF26")));
         }
     }

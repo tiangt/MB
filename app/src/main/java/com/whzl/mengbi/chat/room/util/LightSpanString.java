@@ -53,6 +53,7 @@ public class LightSpanString {
         return nickSpan;
     }
 
+
     public static SpannableString getSaveBlackRoomSpan(Context context, final String content, int color) {
         SpannableString nickSpan = new SpannableString(content);
         BlackRoomSpan clickSpan = new BlackRoomSpan(context, color) {

@@ -64,6 +64,8 @@ import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.PlayNotifyEvent;
 import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
 import com.whzl.mengbi.chat.room.message.events.RedPackTreasureEvent;
+import com.whzl.mengbi.chat.room.message.events.RobPrizeEvent;
+import com.whzl.mengbi.chat.room.message.events.RobRemindEvent;
 import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.RunWayEvent;
 import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
@@ -2216,6 +2218,34 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (weekRankFragment != null) {
             weekRankFragment.loaddata();
         }
+    }
+
+    /**
+     * 幸运夺宝用户
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RobPrizeEvent robPrizeEvent) {
+        if (weekStarControl == null) {
+            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+            weekStarControl.setTvEnter(wsvWeekstar);
+            weekStarControl.setIvEnter(ivWeekstar);
+            weekStarControl.setRlEnter(rlWeekstar);
+        }
+        weekStarControl.showEnter(robPrizeEvent);
+    }
+
+    /**
+     * 幸运夺宝用户
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RobRemindEvent robRemindEvent) {
+        if (weekStarControl == null) {
+            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+            weekStarControl.setTvEnter(wsvWeekstar);
+            weekStarControl.setIvEnter(ivWeekstar);
+            weekStarControl.setRlEnter(rlWeekstar);
+        }
+        weekStarControl.showEnter(robRemindEvent);
     }
 
     /**

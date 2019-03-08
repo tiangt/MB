@@ -5,7 +5,11 @@ import android.content.Context;
 import com.whzl.mengbi.chat.room.message.events.RobLuckChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.RobNoPrizeEvent;
 import com.whzl.mengbi.chat.room.message.events.RobPrizeEvent;
+import com.whzl.mengbi.chat.room.message.events.RobRemindEvent;
+import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.RobLuckJson;
+import com.whzl.mengbi.chat.room.message.messages.RobPrizeMessage;
+import com.whzl.mengbi.chat.room.message.messages.RobRemindMessage;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 
@@ -31,7 +35,12 @@ public class RobLuckAction implements Actions {
             EventBus.getDefault().post(new RobNoPrizeEvent(context, json));
         }
         if (json.context.busiCode.equals("ROB_PRIZE")) {
+            EventBus.getDefault().post(new UpdatePubChatEvent(new RobPrizeMessage(context, json)));
             EventBus.getDefault().post(new RobPrizeEvent(context, json));
+        }
+        if (json.context.busiCode.equals("OPEN_PRIZE_REMIND")) {
+            EventBus.getDefault().post(new UpdatePubChatEvent(new RobRemindMessage(context, json)));
+            EventBus.getDefault().post(new RobRemindEvent(context, json));
         }
     }
 }

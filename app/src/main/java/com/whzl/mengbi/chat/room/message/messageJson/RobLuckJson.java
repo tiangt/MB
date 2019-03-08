@@ -23,6 +23,7 @@ public class RobLuckJson {
          */
 
         public String busiCode;
+        public long openPrizeSecond;
         public String userNickName;
         public String giftName;
         public int giftNumber;
