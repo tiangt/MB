@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="340dp"
     android:background="@drawable/bg_snatch"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:background="@drawable/bg_snatch_top"
-        android:gravity="center"
+        android:gravity="center_horizontal|bottom"
         android:orientation="vertical">
 
         <ImageView
@@ -27,13 +27,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingBottom="20dp"
             android:visibility="visible">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="23dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="12dp"
@@ -177,7 +176,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="00:30:00"
+                        android:text="00:00:00"
                         android:textColor="#ffb800"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -254,6 +253,7 @@
                     android:textSize="@dimen/textsize_12" />
 
                 <TextView
+                    android:id="@+id/tv_snatch"
                     android:layout_width="71dp"
                     android:layout_height="26dp"
                     android:layout_alignParentRight="true"
@@ -312,10 +312,11 @@
             android:visibility="gone">
 
             <ImageView
-                android:layout_width="51dp"
-                android:layout_height="51dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_wallet_mengdou" />
+                android:id="@+id/iv_daojishi"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -326,9 +327,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_daojishi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00:00:10"
+                android:text="00:00:00"
                 android:textColor="#ffb800"
                 android:textSize="42sp"
                 android:textStyle="bold" />
@@ -352,10 +354,10 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_prize_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                android:text="用户昵称用户昵称"
                 android:textColor="#ff416e"
                 android:textSize="28sp"
                 android:textStyle="bold" />

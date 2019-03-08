@@ -194,9 +194,19 @@ public class PlayNotifyActivity extends BaseActivity implements OnLoadMoreListen
         if (anchorFollowedDataBean != null && anchorFollowedDataBean.data != null && anchorFollowedDataBean.data.list != null) {
             if (mCurrentPager == 2) {
                 mAnchorList.clear();
-                smartRefresh.finishRefresh();
+                smartRefresh.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        smartRefresh.finishRefresh();
+                    }
+                });
             } else {
-                smartRefresh.finishLoadMore();
+                smartRefresh.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        smartRefresh.finishLoadMore();
+                    }
+                });
             }
             mAnchorList.addAll(anchorFollowedDataBean.data.list);
             if (anchorFollowedDataBean.data.list == null || anchorFollowedDataBean.data.list.size() == 0/*< NetConfig.DEFAULT_PAGER_SIZE*/) {

@@ -242,6 +242,9 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
 //                if (listener != null) {
 //                    listener.onPrivateChatClick(mViewedUser);
 //                }
+                if (mViewedUser == null || mViewedUser.getNickname() == null) {
+                    return;
+                }
                 ((LiveDisplayActivity) getActivity()).showAtChat("@" + mViewedUser.getNickname() + " ");
                 dismiss();
                 break;

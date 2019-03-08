@@ -14,8 +14,14 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.github.sahasbhop.apngview.ApngDrawable
+import com.github.sahasbhop.apngview.ApngImageLoader
+import com.google.gson.JsonElement
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.chat.room.message.events.RobLuckChangeEvent
+import com.whzl.mengbi.chat.room.message.events.RobNoPrizeEvent
+import com.whzl.mengbi.chat.room.message.events.RobPrizeEvent
 import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.eventbus.event.MengdouChangeEvent
 import com.whzl.mengbi.model.entity.GiftBetPeriodInfo
@@ -36,7 +42,6 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_snatch_his.view.*
 import org.greenrobot.eventbus.EventBus
@@ -51,10 +56,13 @@ import kotlin.collections.ArrayList
  * @date 2019/3/6
  */
 class SnatchDialog : BaseAwesomeDialog() {
-    private lateinit var disposable: Disposable
+    private var disposable: Disposable? = null
     private lateinit var tvHisPrize: TextView
+    private lateinit var tvDaojishi: TextView
+    private lateinit var tvPrizeName: TextView
     private lateinit var tvPrizePoolNum: TextView
     private lateinit var tvLimit: TextView
+    private lateinit var ivDaojishi: ImageView
     private lateinit var tvSecond: TextView
     private lateinit var tvDate: TextView
     private lateinit var ivGift: ImageView
@@ -68,6 +76,7 @@ class SnatchDialog : BaseAwesomeDialog() {
     private var tvMengdou: TextView? = null
     private lateinit var hisAdapter: BaseListAdapter
     private var hisDatas = ArrayList<GiftBetRecordsBean.ListBean>()
+    private var gameId: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,11 +84,6 @@ class SnatchDialog : BaseAwesomeDialog() {
         EventBus.getDefault().register(this)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        EventBus.getDefault().unregister(this)
-        disposable.dispose()
-    }
 
     override fun intLayoutId(): Int {
         return R.layout.dialog_snatch
@@ -87,7 +91,17 @@ class SnatchDialog : BaseAwesomeDialog() {
 
     override fun convertView(holder: ViewHolder, dialog: BaseAwesomeDialog) {
         mUserId = arguments!!.getLong("mUserId")
+        initId(holder)
+        loadData()
+    }
 
+    private fun initId(holder: ViewHolder) {
+        ivDaojishi = holder.getView(R.id.iv_daojishi)
+        val uri = "assets://apng/daojishi.png"
+        ApngImageLoader.getInstance().displayImage(uri, ivDaojishi)
+
+        tvDaojishi = holder.getView(R.id.tv_daojishi)
+        tvPrizeName = holder.getView(R.id.tv_prize_name)
         tvHisPrize = holder.getView(R.id.tv_his_prize)
         tvPrizePoolNum = holder.getView(R.id.tv_prize_pool_num)
         tvSecond = holder.getView(R.id.tv_second)
@@ -122,7 +136,35 @@ class SnatchDialog : BaseAwesomeDialog() {
             }
         }
         tvHisPrize.setOnClickListener { showHisDialog(mUserId) }
-        loadData()
+        holder.setOnClickListener(R.id.tv_snatch) {
+            snatch(mUserId.toString(), gameId.toString(), tvWant!!.text.toString())
+        }
+    }
+
+    private fun snatch(userid: String, gameid: String, tvwant: String) {
+        val paramsMap = HashMap<String, String>()
+        paramsMap.put("userId", userid)
+        paramsMap.put("gameId", gameid)
+        paramsMap.put("robCount", tvwant)
+        val signPramsMap = ParamsUtils.getSignPramsMap(paramsMap)
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .giftBet(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<JsonElement>(this) {
+                    override fun onSuccess(bean: JsonElement?) {
+                        ToastUtils.showToastUnify(activity, "夺宝成功")
+                        if (!disposable!!.isDisposed) {
+                            disposable?.dispose()
+                        }
+                        tvWant!!.text = "1"
+                        loadData()
+                    }
+
+                    override fun onError(code: Int) {
+
+                    }
+                })
     }
 
     private fun showHisDialog(mUserId: Long) {
@@ -208,34 +250,60 @@ class SnatchDialog : BaseAwesomeDialog() {
                     @SuppressLint("SetTextI18n")
                     override fun onSuccess(bean: GiftBetPeriodInfo?) {
                         if ("PRIZEING" == bean?.robStatus) {
-                            llStateProcess.visibility = View.VISIBLE
-                            llStateNormal.visibility = View.GONE
-                            llStateEnd.visibility = View.GONE
+                            prizing(bean)
                             return
                         }
-                        tvDate.text = "${bean?.periodNumber}期"
-                        GlideImageLoader.getInstace().displayImage(activity, bean?.goodsPic, ivGift)
-                        tvPrizePoolNum.text = bean?.prizePoolNumber?.toString()
-                        tvLimit.text = "每次${bean?.uRobGame?.amount}萌豆，已参与 "
-                        tvLimit.append(LightSpanString.getLightString(bean?.userBetCount?.toString(),
-                                Color.parseColor("#FFFF416E")))
-                        tvLimit.append(" / ${bean?.uRobGame?.limit}次")
-
-                        tvSecond.text = DateUtils.translateLastSecond(bean!!.surplusSecond)
-                        disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
-                            LogUtils.e("sssssssssss  "+t)
-                            if (t == bean.surplusSecond.toLong() + 1) {
-                                disposable.dispose()
-                                return@subscribe
-                            }
-                            tvSecond.text = DateUtils.translateLastSecond(bean.surplusSecond - t!!.toInt())
-                        }
+                        betting(bean)
                     }
 
                     override fun onError(code: Int) {
                     }
                 })
+    }
+
+    private fun betting(bean: GiftBetPeriodInfo?) {
+        llStateProcess.visibility = View.GONE
+        llStateNormal.visibility = View.VISIBLE
+        llStateEnd.visibility = View.GONE
+        gameId = bean?.uRobGame?.id!!
+        tvDate.text = "${bean.periodNumber}期"
+        GlideImageLoader.getInstace().displayImage(activity, bean.goodsPic, ivGift)
+        tvPrizePoolNum.text = bean.prizePoolNumber.toString()
+        tvLimit.text = "每次${bean?.uRobGame?.amount}萌豆，已参与 "
+        tvLimit.append(LightSpanString.getLightString(bean?.userBetCount?.toString(),
+                Color.parseColor("#FFFF416E")))
+        tvLimit.append(" / ${bean?.uRobGame?.limit}次")
+        disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
+            LogUtils.e("sssssssssss  " + t)
+            if (t == bean.surplusSecond.toLong() + 1) {
+                disposable!!.dispose()
+                prizing(bean)
+                return@subscribe
+            }
+            tvSecond.text = DateUtils.translateLastSecond(bean.surplusSecond - t!!.toInt())
+        }
+    }
+
+    private fun prizing(bean: GiftBetPeriodInfo?) {
+        llStateProcess.visibility = View.VISIBLE
+        llStateNormal.visibility = View.GONE
+        llStateEnd.visibility = View.GONE
+        val fromView = ApngDrawable.getFromView(ivDaojishi)
+        fromView.numPlays = 0
+        fromView.start()
+        if (bean!!.surplusSecond == 0) {
+            return
+        }
+        disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
+            LogUtils.e("sssssssssss  " + t)
+            if (t == 11.toLong()) {
+                disposable!!.dispose()
+                return@subscribe
+            }
+            tvDaojishi.text = DateUtils.translateLastSecond(10 - t!!.toInt())
+        }
     }
 
     private fun getMengdou() {
@@ -267,5 +335,50 @@ class SnatchDialog : BaseAwesomeDialog() {
             dialog.arguments = bundle
             return dialog
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: RobLuckChangeEvent) {
+        tvPrizePoolNum.text = event.robLuckJson.context.prizePoolNumber.toString()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: RobNoPrizeEvent) {
+        if (disposable != null) {
+            disposable!!.dispose()
+        }
+        ApngDrawable.getFromView(ivDaojishi).stop()
+        getData()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: RobPrizeEvent) {
+        if (disposable != null) {
+            disposable!!.dispose()
+        }
+        ApngDrawable.getFromView(ivDaojishi).stop()
+        llStateNormal.visibility = View.GONE
+        llStateProcess.visibility = View.GONE
+        llStateEnd.visibility = View.VISIBLE
+        tvPrizeName.text = event.robLuckJson.context.userNickName
+        disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
+            LogUtils.e("sssssssssss  " + t)
+            if (t == 4.toLong()) {
+                getData()
+                disposable!!.dispose()
+                return@subscribe
+            }
+            tvDaojishi.text = DateUtils.translateLastSecond(3 - t!!.toInt())
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+        if (disposable != null) {
+            disposable!!.dispose()
+        }
+        ApngDrawable.getFromView(ivDaojishi).stop()
     }
 }

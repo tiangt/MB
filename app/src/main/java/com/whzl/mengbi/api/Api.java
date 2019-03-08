@@ -848,4 +848,14 @@ public interface Api {
     @POST("v1/game/gift-bet-records")
     @FormUrlEncoded
     Observable<ApiResult<GiftBetRecordsBean>> giftBetRecords(@FieldMap Map<String, String> params);
+
+    /**
+     * 夺宝下注
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/game/gift-bet")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> giftBet(@FieldMap Map<String, String> params);
 }
