@@ -19,7 +19,7 @@ public class GiftBetPeriodInfo {
      * userBetCount : 0
      */
 
-    public long surplusSecond;
+    public int surplusSecond;
     public long prizePoolNumber;
     public String periodNumber;
     public int goodsId;

@@ -28,21 +28,22 @@ import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
-import com.whzl.mengbi.util.AmountConversionUitls
-import com.whzl.mengbi.util.BusinessUtils
-import com.whzl.mengbi.util.ClickUtil
+import com.whzl.mengbi.util.*
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_anchor_task.*
 import kotlinx.android.synthetic.main.item_snatch_his.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.HashMap
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 /**
@@ -50,6 +51,7 @@ import kotlin.collections.ArrayList
  * @date 2019/3/6
  */
 class SnatchDialog : BaseAwesomeDialog() {
+    private lateinit var disposable: Disposable
     private lateinit var tvHisPrize: TextView
     private lateinit var tvPrizePoolNum: TextView
     private lateinit var tvLimit: TextView
@@ -76,6 +78,7 @@ class SnatchDialog : BaseAwesomeDialog() {
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().unregister(this)
+        disposable.dispose()
     }
 
     override fun intLayoutId(): Int {
@@ -213,11 +216,21 @@ class SnatchDialog : BaseAwesomeDialog() {
                         tvDate.text = "${bean?.periodNumber}期"
                         GlideImageLoader.getInstace().displayImage(activity, bean?.goodsPic, ivGift)
                         tvPrizePoolNum.text = bean?.prizePoolNumber?.toString()
-                        tvSecond.text = bean?.surplusSecond?.toString()
                         tvLimit.text = "每次${bean?.uRobGame?.amount}萌豆，已参与 "
                         tvLimit.append(LightSpanString.getLightString(bean?.userBetCount?.toString(),
                                 Color.parseColor("#FFFF416E")))
                         tvLimit.append(" / ${bean?.uRobGame?.limit}次")
+
+                        tvSecond.text = DateUtils.translateLastSecond(bean!!.surplusSecond)
+                        disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
+                            LogUtils.e("sssssssssss  "+t)
+                            if (t == bean.surplusSecond.toLong() + 1) {
+                                disposable.dispose()
+                                return@subscribe
+                            }
+                            tvSecond.text = DateUtils.translateLastSecond(bean.surplusSecond - t!!.toInt())
+                        }
                     }
 
                     override fun onError(code: Int) {
