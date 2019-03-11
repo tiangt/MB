@@ -65,4 +65,7 @@ public interface OnLiveFinishedListener {
     void onGetRoomRedTreasure(RoomRedPackTreasure dataBean);
 
     void onGetRoomRedList(RoomRedpackList dataBean);
+
+    void onActivityNativeSuccess(GetActivityBean bean);
+
 }

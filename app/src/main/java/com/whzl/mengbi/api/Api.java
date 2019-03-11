@@ -858,4 +858,14 @@ public interface Api {
     @POST("v1/game/gift-bet")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> giftBet(@FieldMap Map<String, String> params);
+
+    /**
+     * 直播间的活动（原生活动）
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/activity-native")
+    @FormUrlEncoded
+    Observable<ApiResult<GetActivityBean>> activityNative(@FieldMap Map<String, String> params);
 }

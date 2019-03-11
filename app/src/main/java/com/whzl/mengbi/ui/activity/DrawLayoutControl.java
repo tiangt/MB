@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
@@ -240,13 +241,6 @@ public class DrawLayoutControl {
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             if (position == bannerInfoList.size() + 1) {
-                if (((LiveDisplayActivity) activity).mUserId == 0) {
-                    ((LiveDisplayActivity) activity).login();
-                    ((LiveDisplayActivity) activity).closeDrawLayout();
-                    return;
-                }
-                ((LiveDisplayActivity) activity).showSnatchDialog();
-                ((LiveDisplayActivity) activity).closeDrawLayout();
                 return;
             }
             if (position == bannerInfoList.size()) {
@@ -260,8 +254,18 @@ public class DrawLayoutControl {
                 ((LiveDisplayActivity) activity).closeDrawLayout();
                 return;
             }
-            ((LiveDisplayActivity) activity).jumpToBannerActivity(bannerInfoList.get(position));
-            ((LiveDisplayActivity) activity).closeDrawLayout();
+            if (bannerInfoList.get(position).flag != null && bannerInfoList.get(position).flag.equals(AppConfig.LUCK_ROB)) {
+                if (((LiveDisplayActivity) activity).mUserId == 0) {
+                    ((LiveDisplayActivity) activity).login();
+                    ((LiveDisplayActivity) activity).closeDrawLayout();
+                    return;
+                }
+                ((LiveDisplayActivity) activity).showSnatchDialog();
+                ((LiveDisplayActivity) activity).closeDrawLayout();
+            } else {
+                ((LiveDisplayActivity) activity).jumpToBannerActivity(bannerInfoList.get(position));
+                ((LiveDisplayActivity) activity).closeDrawLayout();
+            }
         }
     }
 

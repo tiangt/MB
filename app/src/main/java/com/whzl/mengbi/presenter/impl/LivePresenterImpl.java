@@ -228,6 +228,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
+    @Override
+    public void onActivityNativeSuccess(GetActivityBean bean) {
+        if(liveView != null){
+            liveView.onActivityNativeSuccess(bean);
+        }
+    }
+
 
     @Override
     public void followHost(long userId, int mProgramId) {
@@ -344,6 +351,15 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("programId", mProgramId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getRedPackTreasure(signPramsMap, this);
+    }
+
+    @Override
+    public void getActivityNative(int mProgramId, int mAnchorId) {
+        HashMap map = new HashMap();
+        map.put("programId", mProgramId);
+        map.put("anchorId", mAnchorId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.activityNative(signPramsMap, this);
     }
 
     public void getRedPackList(int mProgramId, long mUserId) {

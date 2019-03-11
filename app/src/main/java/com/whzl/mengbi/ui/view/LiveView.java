@@ -67,4 +67,7 @@ public interface LiveView {
     void onGetRoomRedpackTreasureSuccess(RoomRedPackTreasure dataBean);
 
     void onGetRoomRedListSuccess(RoomRedpackList dataBean);
+
+    void onActivityNativeSuccess(GetActivityBean bean);
+
 }

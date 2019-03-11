@@ -484,7 +484,9 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
                         if (anchorInfo.getCode() == 200) {
                             if (anchorInfo != null && anchorInfo.data != null && anchorInfo.data.list != null) {
                                 if (anchorInfo.data.list.size() > 0) {
-                                    llHotAnchor.setVisibility(View.VISIBLE);
+                                    if (llHotAnchor != null) {
+                                        llHotAnchor.setVisibility(View.VISIBLE);
+                                    }
                                     mTrendingInfo.addAll(anchorInfo.data.list);
                                     hotAdapter.notifyDataSetChanged();
                                 }

@@ -493,4 +493,24 @@ public class LiveModelImpl implements LiveModel {
                 });
     }
 
+    @Override
+    public void activityNative(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .activityNative(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<GetActivityBean>() {
+
+
+                    @Override
+                    public void onSuccess(GetActivityBean jsonElement) {
+                        listener.onActivityNativeSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                    }
+                });
+    }
+
 }

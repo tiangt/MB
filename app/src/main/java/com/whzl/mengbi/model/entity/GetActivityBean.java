@@ -22,5 +22,6 @@ public class GetActivityBean {
         public String name;
         public String linkUrl;
         public String imageUrl;
+        public String flag;
     }
 }

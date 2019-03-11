@@ -141,7 +141,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getData().getAvatar(), ivAvatar);
         }
         tvAccount.setText(mUserInfo.getData().getUserId() + "");
-        tvNickName.setText(mUserInfo.getData().getNickname());
+        tvNickName.setText(mUserInfo.getData().getNickname() == null ? "" : mUserInfo.getData().getNickname());
         mSex = mUserInfo.getData().getGender();
         setupSex(mSex);
         StringBuilder stringBuilder = new StringBuilder();
@@ -179,7 +179,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 int royalLevel = levelList.getLevelValue();
                 if (sjNeedValue == 0 || royalLevel == SpConfig.MAX_LEVEL) {
                     tvUpdate.setText("您已达到最高贵族等级");
-                }else {
+                } else {
                     tvUpdate.setText("离升级还需充值");
                     tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
                     tvUpdate.append("元");

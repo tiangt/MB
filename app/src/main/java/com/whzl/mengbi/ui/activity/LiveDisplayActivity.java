@@ -667,7 +667,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         banner.setOnBannerListener(position -> {
             if (mBannerInfoList != null && mBannerInfoList.size() > 0) {
                 GetActivityBean.ListBean listBean = mBannerInfoList.get(position);
-                jumpToBannerActivity(listBean);
+                if (listBean.flag != null && listBean.flag.equals(AppConfig.LUCK_ROB)) {
+                    showSnatchDialog();
+                } else {
+                    jumpToBannerActivity(listBean);
+                }
             }
         });
     }
@@ -1342,6 +1346,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
 
         initAboutAnchor(mProgramId, mAnchorId);
+        mLivePresenter.getActivityNative(mProgramId, mAnchorId);
         initIgnore(roomInfoBean);
     }
 
@@ -1684,6 +1689,22 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         redPacketControl.redpackAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 直播间的活动（原生活动）
+     */
+    @Override
+    public void onActivityNativeSuccess(GetActivityBean bean) {
+        if (bean != null && bean.list != null) {
+            mBannerInfoList.addAll(bean.list);
+            ArrayList<String> banners = new ArrayList<>();
+            for (int i = 0; i < mBannerInfoList.size(); i++) {
+                banners.add(mBannerInfoList.get(i).imageUrl);
+            }
+            banner.setImages(banners);
+            banner.start();
+            drawLayoutControl.notifyData(mBannerInfoList);
+        }
+    }
 
     /**
      * 活动下标黄点
