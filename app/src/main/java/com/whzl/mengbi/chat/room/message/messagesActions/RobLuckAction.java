@@ -39,6 +39,9 @@ public class RobLuckAction implements Actions {
             EventBus.getDefault().post(new RobPrizeEvent(context, json));
         }
         if (json.context.busiCode.equals("OPEN_PRIZE_REMIND")) {
+            if (json.context.giftNumber == 0) {
+                return;
+            }
             EventBus.getDefault().post(new UpdatePubChatEvent(new RobRemindMessage(context, json)));
             EventBus.getDefault().post(new RobRemindEvent(context, json));
         }

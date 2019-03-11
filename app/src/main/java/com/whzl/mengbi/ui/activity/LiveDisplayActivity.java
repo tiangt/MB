@@ -668,6 +668,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (mBannerInfoList != null && mBannerInfoList.size() > 0) {
                 GetActivityBean.ListBean listBean = mBannerInfoList.get(position);
                 if (listBean.flag != null && listBean.flag.equals(AppConfig.LUCK_ROB)) {
+                    if (mUserId == 0) {
+                        login();
+                        return;
+                    }
                     showSnatchDialog();
                 } else {
                     jumpToBannerActivity(listBean);
