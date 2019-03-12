@@ -5,7 +5,7 @@
     android:background="@color/font_color_49"
     android:orientation="vertical">
 
-    <include layout="@layout/comm_toolbar" />
+    <include layout="@layout/white_toolbar" />
 
     <EditText
         android:id="@+id/et_feedback"
