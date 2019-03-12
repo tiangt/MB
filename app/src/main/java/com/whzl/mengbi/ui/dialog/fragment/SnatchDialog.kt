@@ -76,7 +76,7 @@ class SnatchDialog : BaseAwesomeDialog() {
     private lateinit var hisAdapter: BaseListAdapter
     private var hisDatas = ArrayList<GiftBetRecordsBean.ListBean>()
     private var gameId: Int = 0
-
+    private var limitTimes: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,6 +140,9 @@ class SnatchDialog : BaseAwesomeDialog() {
         }
         tvHisPrize.setOnClickListener { showHisDialog(mUserId) }
         holder.setOnClickListener(R.id.tv_snatch) {
+            if (limitTimes == 10) {
+                return@setOnClickListener
+            }
             snatch(mUserId.toString(), gameId.toString(), tvWant!!.text.toString())
         }
     }
@@ -157,9 +160,9 @@ class SnatchDialog : BaseAwesomeDialog() {
                 .subscribe(object : ApiObserver<JsonElement>(this) {
                     override fun onSuccess(bean: JsonElement?) {
                         ToastUtils.showToastUnify(activity, "夺宝成功")
-                        if (!disposable!!.isDisposed) {
-                            disposable?.dispose()
-                        }
+//                        if (disposable != null) {
+//                            disposable?.dispose()
+//                        }
                         tvWant!!.text = "1"
                         loadData()
                     }
@@ -245,6 +248,7 @@ class SnatchDialog : BaseAwesomeDialog() {
     }
 
     private fun getData() {
+        limitTimes=0
         val paramsMap = HashMap<String, String>()
         paramsMap.put("userId", mUserId.toString())
         val signPramsMap = ParamsUtils.getSignPramsMap(paramsMap)
@@ -268,6 +272,9 @@ class SnatchDialog : BaseAwesomeDialog() {
     }
 
     private fun betting(bean: GiftBetPeriodInfo?) {
+        if (disposable != null) {
+            disposable!!.dispose()
+        }
         llStateProcess.visibility = View.GONE
         llStateNormal.visibility = View.VISIBLE
         llStateEnd.visibility = View.GONE
@@ -278,6 +285,7 @@ class SnatchDialog : BaseAwesomeDialog() {
         tvLimit.text = "每次${bean?.uRobGame?.amount}萌豆，已参与 "
         tvLimit.append(LightSpanString.getLightString(bean?.userBetCount?.toString(),
                 Color.parseColor("#FFFF416E")))
+        limitTimes = bean?.userBetCount
         tvLimit.append(" / ${bean?.uRobGame?.limit}次")
         disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
@@ -292,6 +300,9 @@ class SnatchDialog : BaseAwesomeDialog() {
     }
 
     private fun prizing(bean: GiftBetPeriodInfo?) {
+        if (disposable != null) {
+            disposable!!.dispose()
+        }
         llStateProcess.visibility = View.VISIBLE
         llStateNormal.visibility = View.GONE
         llStateEnd.visibility = View.GONE
@@ -371,9 +382,9 @@ class SnatchDialog : BaseAwesomeDialog() {
                 .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
             LogUtils.e("sssssssssss  " + t)
             if (t == 4.toLong()) {
-                getData()
                 disposable!!.dispose()
                 ApngDrawable.getFromView(ivFangpao).stop()
+                getData()
                 return@subscribe
             }
             tvDaojishi.text = DateUtils.translateLastSecond(3 - t!!.toInt())
