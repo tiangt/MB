@@ -255,13 +255,7 @@ public class DrawLayoutControl {
                 return;
             }
             if (bannerInfoList.get(position).flag != null && bannerInfoList.get(position).flag.equals(AppConfig.LUCK_ROB)) {
-                if (((LiveDisplayActivity) activity).mUserId == 0) {
-                    ((LiveDisplayActivity) activity).login();
-                    ((LiveDisplayActivity) activity).closeDrawLayout();
-                    return;
-                }
                 ((LiveDisplayActivity) activity).showSnatchDialog();
-                ((LiveDisplayActivity) activity).closeDrawLayout();
             } else {
                 ((LiveDisplayActivity) activity).jumpToBannerActivity(bannerInfoList.get(position));
                 ((LiveDisplayActivity) activity).closeDrawLayout();

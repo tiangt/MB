@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -252,6 +253,7 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
         View popView = getLayoutInflater().inflate(R.layout.popwindow_pk_record, null);
         PopupWindow popupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.showAsDropDown(toolbar, 0, -UIUtil.dip2px(PkRecordActivity.this, 8));

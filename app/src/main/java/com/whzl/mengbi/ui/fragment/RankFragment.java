@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.fragment;
 
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -115,6 +116,7 @@ public class RankFragment extends BaseViewFragment implements View.OnClickListen
         });
         popupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.showAsDropDown(rlRankTitle, 0, -UIUtil.dip2px(getMyActivity(), 8));

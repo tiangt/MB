@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -503,6 +504,7 @@ public class GiftDialog extends BaseAwesomeDialog {
             recyclerView.setAdapter(adapter);
             popupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
+            popupWindow.setBackgroundDrawable(new BitmapDrawable());
             popupWindow.setOutsideTouchable(true);
             popupWindow.setFocusable(true);
         }

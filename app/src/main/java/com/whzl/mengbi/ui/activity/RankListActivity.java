@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -116,6 +117,7 @@ public class RankListActivity extends BaseActivity {
         });
         popupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.showAsDropDown(toolbar, 0, -UIUtil.dip2px(this, 8));

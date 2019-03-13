@@ -2386,6 +2386,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void showSnatchDialog() {
+        closeDrawLayout();
+        if (mUserId == 0) {
+            login();
+            return;
+        }
         if (snatchDialog != null && snatchDialog.isAdded()) {
             return;
         }

@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -578,6 +579,7 @@ public class PkControl {
         ((LiveDisplayActivity) context).closeDrawLayout();
         View popView = LayoutInflater.from(context).inflate(R.layout.pop_pk_end, null);
         pkResultPop = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        pkResultPop.setBackgroundDrawable(new BitmapDrawable());
         pkResultPop.setOutsideTouchable(true);
         pkResultPop.setFocusable(true);
         pkResultPop.setTouchInterceptor(new View.OnTouchListener() {
@@ -643,6 +645,7 @@ public class PkControl {
         ((LiveDisplayActivity) context).closeDrawLayout();
         View popView = LayoutInflater.from(context).inflate(R.layout.pop_mvp, null);
         mvpWindow = new PopupWindow(popView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        mvpWindow.setBackgroundDrawable(new BitmapDrawable());
         mvpWindow.setOutsideTouchable(true);
 //        mvpWindow.setFocusable(false);
 //        mvpWindow.setTouchInterceptor(new View.OnTouchListener() {

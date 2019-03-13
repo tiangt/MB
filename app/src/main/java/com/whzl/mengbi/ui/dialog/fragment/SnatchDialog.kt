@@ -11,8 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.github.sahasbhop.apngview.ApngDrawable
-import com.github.sahasbhop.apngview.ApngImageLoader
+import com.bumptech.glide.Glide
 import com.google.gson.JsonElement
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
@@ -40,7 +39,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.dialog_snatch.*
 import kotlinx.android.synthetic.main.item_snatch_his.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -59,6 +57,8 @@ class SnatchDialog : BaseAwesomeDialog() {
     private lateinit var tvDaojishi: TextView
     private lateinit var tvPrizeName: TextView
     private lateinit var tvPrizePoolNum: TextView
+    private lateinit var tvTips1: TextView
+    private lateinit var tvTips2: TextView
     private lateinit var tvLimit: TextView
     private lateinit var ivDaojishi: ImageView
     private lateinit var tvSecond: TextView
@@ -96,14 +96,12 @@ class SnatchDialog : BaseAwesomeDialog() {
 
     private fun initId(holder: ViewHolder) {
         ivDaojishi = holder.getView(R.id.iv_daojishi)
-        val uri = "assets://apng/daojishi.png"
-        ApngImageLoader.getInstance().displayImage(uri, ivDaojishi)
 
         ivFangpao = holder.getView(R.id.iv_fangpao)
-        val uri2 = "assets://apng/fangpao.png"
-        ApngImageLoader.getInstance().displayImage(uri2, ivFangpao)
 
         tvDaojishi = holder.getView(R.id.tv_daojishi)
+        tvTips1 = holder.getView(R.id.tv_tips_1)
+        tvTips2 = holder.getView(R.id.tv_tips_2)
         tvPrizeName = holder.getView(R.id.tv_prize_name)
         tvHisPrize = holder.getView(R.id.tv_his_prize)
         tvPrizePoolNum = holder.getView(R.id.tv_prize_pool_num)
@@ -160,9 +158,6 @@ class SnatchDialog : BaseAwesomeDialog() {
                 .subscribe(object : ApiObserver<JsonElement>(this) {
                     override fun onSuccess(bean: JsonElement?) {
                         ToastUtils.showToastUnify(activity, "夺宝成功")
-//                        if (disposable != null) {
-//                            disposable?.dispose()
-//                        }
                         tvWant!!.text = "1"
                         loadData()
                     }
@@ -248,7 +243,7 @@ class SnatchDialog : BaseAwesomeDialog() {
     }
 
     private fun getData() {
-        limitTimes=0
+        limitTimes = 0
         val paramsMap = HashMap<String, String>()
         paramsMap.put("userId", mUserId.toString())
         val signPramsMap = ParamsUtils.getSignPramsMap(paramsMap)
@@ -271,6 +266,7 @@ class SnatchDialog : BaseAwesomeDialog() {
                 })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun betting(bean: GiftBetPeriodInfo?) {
         if (disposable != null) {
             disposable!!.dispose()
@@ -280,6 +276,8 @@ class SnatchDialog : BaseAwesomeDialog() {
         llStateEnd.visibility = View.GONE
         gameId = bean?.uRobGame?.id!!
         tvDate.text = "${bean.periodNumber}期"
+        tvTips1.text = "每人每期最多参与${bean.uRobGame.limit}次，每参与1次增加${bean.uRobGame.multiple}个礼物，参与次数越多中奖概率越高。"
+        tvTips2.text = "到点后系统会抽取一名萌友独得所有已累计的礼物"
         GlideImageLoader.getInstace().displayImage(activity, bean.goodsPic, ivGift)
         tvPrizePoolNum.text = bean.prizePoolNumber.toString()
         tvLimit.text = "每次${bean?.uRobGame?.amount}萌豆，已参与 "
@@ -306,9 +304,7 @@ class SnatchDialog : BaseAwesomeDialog() {
         llStateProcess.visibility = View.VISIBLE
         llStateNormal.visibility = View.GONE
         llStateEnd.visibility = View.GONE
-        val fromView = ApngDrawable.getFromView(ivDaojishi)
-        fromView.numPlays = 0
-        fromView.start()
+        Glide.with(this).asGif().load(R.drawable.daojishi).into(ivDaojishi)
         if (bean!!.surplusSecond == 0) {
             return
         }
@@ -364,7 +360,7 @@ class SnatchDialog : BaseAwesomeDialog() {
         if (disposable != null) {
             disposable!!.dispose()
         }
-        ApngDrawable.getFromView(ivDaojishi).stop()
+//        ApngDrawable.getFromView(ivDaojishi).stop()
         getData()
     }
 
@@ -373,7 +369,6 @@ class SnatchDialog : BaseAwesomeDialog() {
         if (disposable != null) {
             disposable!!.dispose()
         }
-        ApngDrawable.getFromView(ivDaojishi).stop()
         llStateNormal.visibility = View.GONE
         llStateProcess.visibility = View.GONE
         llStateEnd.visibility = View.VISIBLE
@@ -383,19 +378,12 @@ class SnatchDialog : BaseAwesomeDialog() {
             LogUtils.e("sssssssssss  " + t)
             if (t == 4.toLong()) {
                 disposable!!.dispose()
-                ApngDrawable.getFromView(ivFangpao).stop()
                 getData()
                 return@subscribe
             }
             tvDaojishi.text = DateUtils.translateLastSecond(3 - t!!.toInt())
         }
-        val fromView = ApngDrawable.getFromView(ivFangpao)
-        if (fromView == null) {
-            return
-        } else {
-            fromView.numPlays = 0
-            fromView.start()
-        }
+        Glide.with(this).asGif().load(R.drawable.fangpao).into(ivFangpao)
     }
 
     override fun onDestroy() {
@@ -404,7 +392,5 @@ class SnatchDialog : BaseAwesomeDialog() {
         if (disposable != null) {
             disposable!!.dispose()
         }
-        ApngDrawable.getFromView(ivDaojishi).stop()
-        ApngDrawable.getFromView(ivFangpao).stop()
     }
 }

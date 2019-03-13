@@ -16,6 +16,7 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 
 public class ToastUtils {
     private static Toast toast;
+    private static Toast toastUnif;
 
     /**
      * 强大的吐司，能够连续弹的吐司
@@ -84,11 +85,15 @@ public class ToastUtils {
         View view = inflater.inflate(R.layout.toast_unify, null);
         TextView tv = view.findViewById(R.id.tv_content);
         tv.setText(content);
-        Toast toast = new Toast(activity);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(view);
-        toast.show();
+        if (toastUnif == null) {
+            toastUnif = new Toast(activity);
+            toastUnif.setGravity(Gravity.CENTER, 0, 0);
+            toastUnif.setDuration(Toast.LENGTH_SHORT);
+            toastUnif.setView(view);
+        } else {
+            toastUnif.setView(view);
+        }
+        toastUnif.show();
     }
 
     public static Snackbar snack(View view, String text) {

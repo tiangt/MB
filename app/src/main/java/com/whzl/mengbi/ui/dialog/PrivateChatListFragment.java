@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -223,6 +224,7 @@ public class PrivateChatListFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
         popupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.showAsDropDown(tvChatTo, -UIUtil.dip2px(getContext(), 48), UIUtil.dip2px(getContext(), 6));

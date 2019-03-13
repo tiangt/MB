@@ -40,6 +40,7 @@ public class GiftBetPeriodInfo {
 
         public int id;
         public String wealthType;
+        public int multiple;
         public int amount;
         public int limit;
         public String createTime;
