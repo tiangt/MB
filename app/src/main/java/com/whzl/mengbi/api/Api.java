@@ -22,6 +22,7 @@ import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.GetProsListBean;
+import com.whzl.mengbi.model.entity.GetUnreadMsgBean;
 import com.whzl.mengbi.model.entity.GetUserSetBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GiftBetPeriodInfo;
@@ -868,4 +869,14 @@ public interface Api {
     @POST("v1/room/activity-native")
     @FormUrlEncoded
     Observable<ApiResult<GetActivityBean>> activityNative(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取所有大消息类型的未读消息数
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/msgcenter/get-unread-msg-num")
+    @FormUrlEncoded
+    Observable<ApiResult<GetUnreadMsgBean>> getUnreadMsg(@FieldMap Map<String, String> params);
 }
