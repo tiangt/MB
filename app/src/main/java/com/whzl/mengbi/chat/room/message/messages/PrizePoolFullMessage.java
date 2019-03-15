@@ -40,7 +40,7 @@ public class PrizePoolFullMessage implements FillHolderMessage {
         mholder.textView.append(LightSpanString.getLightString("萌豆，", Color.parseColor("#ffffff")));
         int ceil = (int) Math.ceil(prizePoolFullJson.context.countDownSecond / 60);
         mholder.textView.append(LightSpanString.getLightString((String.valueOf(ceil)), Color.parseColor("#FFFFCB00")));
-        mholder.textView.append(LightSpanString.getLightString(" 分钟投注正式开始", Color.parseColor("#ffffff")));
+        mholder.textView.append(LightSpanString.getLightString(" 分钟后开奖，百万大奖花落谁家，尽请期待！", Color.parseColor("#ffffff")));
     }
 
     @Override
