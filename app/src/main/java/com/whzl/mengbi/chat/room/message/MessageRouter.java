@@ -113,6 +113,8 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("REDPACKET", new RedPacketAction());
         actionsMap.put("RANK_RISE_MSG", new RankRiseAction());
         actionsMap.put("ROB_LUCKY", new RobLuckAction());
+
+
     }
 
     private void initChatAction() {
