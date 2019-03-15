@@ -41,11 +41,11 @@
             android:text="@string/follow_title" />
 
         <com.whzl.mengbi.ui.widget.view.TipRadioButton
-            android:visibility="gone"
             android:id="@+id/rb_message"
             style="@style/main_tab"
             android:drawableTop="@drawable/selector_main_tab_message_icon"
-            android:text="@string/message_title" />
+            android:text="@string/message_title"
+            android:visibility="visible" />
 
         <com.whzl.mengbi.ui.widget.view.TipRadioButton
             android:id="@+id/rb_rank"

@@ -95,7 +95,7 @@ public class MainActivity extends BaseActivity {
     protected void setupView() {
         fragments = new Fragment[]{new HomeFragment(),
                 FollowFragment.newInstance(),
-                MessageFragment.newInstance(),
+                MessageFragment.Companion.newInstance(),
                 FindFragment.newInstance(),
                 MineFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
