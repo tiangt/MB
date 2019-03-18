@@ -19,6 +19,7 @@ import com.whzl.mengbi.model.entity.FollowSortBean;
 import com.whzl.mengbi.model.entity.FreeGiftBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
+import com.whzl.mengbi.model.entity.GetGoodMsgBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
 import com.whzl.mengbi.model.entity.GetProsListBean;
@@ -879,4 +880,14 @@ public interface Api {
     @POST("v1/msgcenter/get-unread-msg-num")
     @FormUrlEncoded
     Observable<ApiResult<GetUnReadMsgBean>> getUnreadMsg(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取所有大消息类型的未读消息数
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/msgcenter/get-goods-msg")
+    @FormUrlEncoded
+    Observable<ApiResult<GetGoodMsgBean>> getGoodMsg(@FieldMap Map<String, String> params);
 }

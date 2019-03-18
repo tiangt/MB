@@ -41,8 +41,6 @@ public class UseRebateFragment extends BasePullListFragment<RebateBean.ListBean,
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_refresh_layout, getPullView(), false);
         ((TextView) view.findViewById(R.id.tv_content)).setText("你还没有返利券哦");
         setEmptyView(view);
-        View view1 = LayoutInflater.from(getMyActivity()).inflate(R.layout.divider_shawdow_white, getPullView(), false);
-        addHeadTips(view1);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_use_rebate, getPullView(), false);
         TextView tvNoUse = view2.findViewById(R.id.tv_no_use);
         tvNoUse.setOnClickListener(new View.OnClickListener() {

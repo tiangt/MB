@@ -59,8 +59,6 @@ public class PropFragment extends BasePullListFragment<PropBean.ListBean, BasePr
         super.init();
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_prop, getPullView(), false);
         getAdapter().addHeaderView(view);
-        View view1 = LayoutInflater.from(getMyActivity()).inflate(R.layout.divider_shawdow_white, getPullView(), false);
-        addHeadTips(view1);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_prop_pack, getPullView(), false);
         setEmptyView(view2);
         getPullView().setBackgroundColor(Color.parseColor("#ffffff"));

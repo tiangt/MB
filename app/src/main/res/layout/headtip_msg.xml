@@ -14,5 +14,4 @@
         android:textSize="19sp"
         android:textStyle="bold" />
 
-    <include layout="@layout/divider_shawdow_white" />
 </LinearLayout>

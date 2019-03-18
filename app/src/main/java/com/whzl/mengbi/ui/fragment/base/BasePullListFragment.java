@@ -26,6 +26,8 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
     PullRecycler pullRecycler;
     @BindView(R.id.fl_contain)
     FrameLayout flContain;
+    @BindView(R.id.divider)
+    View divider;
     protected ArrayList<K> mDatas = new ArrayList<>();
     private BaseListAdapter mAdapter;
     private boolean mIsViewCreate;
@@ -152,7 +154,7 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
             mAdapter.onLoadMoreStateChanged(setLoadMoreEndShow() ? BaseListAdapter.LOAD_MORE_STATE_END_SHOW : BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
             pullRecycler.OnActionComplete(PullRecycler.LOAD_RESULT_LOAD_MORE_END);
         } else {
-            if (aboutAnchor?/*data.size() < NetConfig.DEFAULT_PAGER_SIZE*/data.size()==0:data.size() < NetConfig.DEFAULT_PAGER_SIZE) {
+            if (aboutAnchor ?/*data.size() < NetConfig.DEFAULT_PAGER_SIZE*/data.size() == 0 : data.size() < NetConfig.DEFAULT_PAGER_SIZE) {
                 mAdapter.onLoadMoreStateChanged(setLoadMoreEndShow() ? BaseListAdapter.LOAD_MORE_STATE_END_SHOW : BaseListAdapter.LOAD_MORE_STATE_END_HIDE);
                 pullRecycler.OnActionComplete(PullRecycler.LOAD_RESULT_LOAD_MORE_END);
             } else {
@@ -195,5 +197,14 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
 
     public SmartRefreshLayout getRefreshLayout() {
         return getPullView().getSmartRefreshLayout();
+    }
+
+    protected void hideDividerShawdow(View view) {
+        divider.setVisibility(View.GONE);
+        if (view == null) {
+            return;
+        }
+        flContain.setVisibility(View.VISIBLE);
+        flContain.addView(view);
     }
 }

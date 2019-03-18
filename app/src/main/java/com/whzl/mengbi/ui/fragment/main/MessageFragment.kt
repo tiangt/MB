@@ -1,22 +1,22 @@
 package com.whzl.mengbi.ui.fragment.main
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import butterknife.BindView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.GetUnReadMsgBean
-import com.whzl.mengbi.ui.activity.MainActivity
 import com.whzl.mengbi.ui.activity.base.FrgActivity
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
+import com.whzl.mengbi.ui.fragment.MsgListFrgment
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
 import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.glide.GlideImageLoader
@@ -25,7 +25,6 @@ import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.item_msg_main.*
 import java.util.*
 
 /**
@@ -40,8 +39,6 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
         super.init()
         val titleView = LayoutInflater.from(activity).inflate(R.layout.headtip_msg, pullView, false)
         addHeadTips(titleView)
-        val empty = LayoutInflater.from(activity).inflate(R.layout.empty_msg_main, pullView, false)
-        setEmptyView(empty)
     }
 
     override fun setLoadMoreEndShow(): Boolean {
@@ -100,7 +97,9 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
 
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
-            startActivity(Intent(activity, FrgActivity::class.java))
+            startActivity(Intent(activity, FrgActivity::class.java)
+                    .putExtra(FrgActivity.FRAGMENT_CLASS, MsgListFrgment::class.java)
+                    .putExtra("title",mDatas[position].messageType))
         }
     }
 

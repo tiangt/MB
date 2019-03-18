@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#20D790</color>
     <color name="colorCommNotActive">#B9B9B9</color>
     <color name="colorLine">#F0F0F0</color>
+    <color name="bgGray">#FFF5F5F5</color>
 
     <color name="tab_checked">#21D996</color>
     <color name="tab_unchecked">#B9B9B9</color>

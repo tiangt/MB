@@ -72,8 +72,6 @@ public class PackCarFragment extends BasePullListFragment<PackcarBean.ListBean, 
         getAdapter().addHeaderView(view);
         View view2 = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_car_pack, getPullView(), false);
         setEmptyView(view2);
-        View view1 = LayoutInflater.from(getMyActivity()).inflate(R.layout.divider_shawdow_white, getPullView(), false);
-        addHeadTips(view1);
         getPullView().setRefBackgroud(Color.parseColor("#ffffff"));
     }
 
