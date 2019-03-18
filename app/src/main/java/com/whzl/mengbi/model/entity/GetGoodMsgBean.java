@@ -27,6 +27,7 @@ public class GetGoodMsgBean {
         public int messageId;
         public int userId;
         public String messageType;
+        public int bindProgramId;
         public int goodsId;
         public String goodsName;
         public String goodsType;

@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
@@ -11,10 +12,18 @@ import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.contract.MainMsgContract
 import com.whzl.mengbi.model.entity.GetGoodMsgBean
 import com.whzl.mengbi.presenter.MainMsgPresenter
+import com.whzl.mengbi.ui.activity.BuySuccubusActivity
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity
 import com.whzl.mengbi.ui.activity.base.FrgActivity
+import com.whzl.mengbi.ui.activity.me.GoodnumFragment
+import com.whzl.mengbi.ui.activity.me.MyChipActivity
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
+import com.whzl.mengbi.ui.fragment.me.PackPrettyFragment
+import com.whzl.mengbi.ui.fragment.me.PackVipFragment
+import com.whzl.mengbi.ui.fragment.me.PropFragment
 import com.whzl.mengbi.util.clickDelay
+import com.whzl.mengbi.wxapi.WXPayEntryActivity
 
 /**
  * @author nobody
@@ -98,7 +107,25 @@ class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPres
             tvMove?.clickDelay {
                 tvGood?.setTextColor(Color.parseColor("#50000000"))
                 mPresenter.updateMsgRead(listBean.messageId, listBean.messageType)
-
+                when (listBean.goodsType) {
+                    "COUPON", "NOBILITY_EXP" ->
+                        startActivity(Intent(activity, WXPayEntryActivity::class.java))
+                    "DEMON_CARD" ->
+                        startActivity(Intent(activity, BuySuccubusActivity::class.java))
+                    "GUARD" ->
+                        startActivity(Intent(activity, LiveDisplayActivity::class.java).putExtra(LiveDisplayActivity.PROGRAMID, listBean.bindProgramId))
+                    "NORMAL_DEBRIS", "UNIVERSAL_DEBRIS" ->
+                        startActivity(Intent(activity, MyChipActivity::class.java))
+                    "PRETTY_NUM" ->
+                        startActivity(Intent(activity, FrgActivity::class.java)
+                                .putExtra(FrgActivity.FRAGMENT_CLASS, PackPrettyFragment::class.java))
+                    "SERVICE" ->
+                        startActivity(Intent(myActivity, FrgActivity::class.java)
+                                .putExtra(FrgActivity.FRAGMENT_CLASS, PropFragment::class.java))
+                    "VIP" ->
+                        startActivity(Intent(myActivity, FrgActivity::class.java)
+                                .putExtra(FrgActivity.FRAGMENT_CLASS, PackVipFragment::class.java))
+                }
             }
         }
 

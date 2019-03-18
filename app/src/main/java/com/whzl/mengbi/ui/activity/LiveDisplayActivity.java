@@ -221,6 +221,7 @@ import pl.droidsonroids.gif.GifImageView;
  * @date 2018/7/6
  */
 public class LiveDisplayActivity extends BaseActivity implements LiveView {
+    public static final String PROGRAMID = "programId";
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
     @BindView(R.id.tv_host_name)
