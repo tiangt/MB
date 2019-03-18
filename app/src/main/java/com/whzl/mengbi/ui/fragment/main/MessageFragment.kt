@@ -1,23 +1,31 @@
 package com.whzl.mengbi.ui.fragment.main
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.ButterKnife
+import android.widget.ImageView
+import android.widget.TextView
+import butterknife.BindView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
-import com.whzl.mengbi.model.entity.GetUnreadMsgBean
+import com.whzl.mengbi.model.entity.GetUnReadMsgBean
+import com.whzl.mengbi.ui.activity.MainActivity
+import com.whzl.mengbi.ui.activity.base.FrgActivity
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
 import com.whzl.mengbi.util.SPUtils
+import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.item_msg_main.*
 import java.util.*
 
 /**
@@ -26,12 +34,18 @@ import java.util.*
  * @author cliang
  * @date 2019.2.14
  */
-class MessageFragment : BasePullListFragment<String, BasePresenter<BaseView>>() {
+class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePresenter<BaseView>>() {
 
     override fun init() {
         super.init()
         val titleView = LayoutInflater.from(activity).inflate(R.layout.headtip_msg, pullView, false)
         addHeadTips(titleView)
+        val empty = LayoutInflater.from(activity).inflate(R.layout.empty_msg_main, pullView, false)
+        setEmptyView(empty)
+    }
+
+    override fun setLoadMoreEndShow(): Boolean {
+        return false
     }
 
     override fun loadData(action: Int, mPage: Int) {
@@ -42,9 +56,10 @@ class MessageFragment : BasePullListFragment<String, BasePresenter<BaseView>>() 
                 .getUnreadMsg(ParamsUtils.getSignPramsMap(param))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : ApiObserver<GetUnreadMsgBean>(this) {
+                .subscribe(object : ApiObserver<GetUnReadMsgBean>(this) {
 
-                    override fun onSuccess(watchHistoryListBean: GetUnreadMsgBean?) {
+                    override fun onSuccess(watchHistoryListBean: GetUnReadMsgBean?) {
+                        loadSuccess(watchHistoryListBean?.list)
                     }
 
                     override fun onError(code: Int) {
@@ -61,13 +76,31 @@ class MessageFragment : BasePullListFragment<String, BasePresenter<BaseView>>() 
 
     internal inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
 
-        init {
-            ButterKnife.bind(this, itemView)
-        }
+        var tvName: TextView? = null
+        var tvNum: TextView? = null
+        var imageView: ImageView? = null
 
         override fun onBindViewHolder(position: Int) {
+            tvName = itemView?.findViewById(R.id.tv_name_item_msg_main)
+            tvNum = itemView?.findViewById(R.id.tv_num_item_msg_main)
+            imageView = itemView?.findViewById(R.id.iv_item_mag_main)
             val bean = mDatas[position]
+            when (bean.messageType) {
+                "GOODS_TYPE" -> {
+                    tvName?.text = "系统消息"
+                    GlideImageLoader.getInstace().circleCropImage(activity, R.drawable.ic_system_msg, imageView)
+                }
+            }
 
+            when (bean.messageNum) {
+                0 -> tvNum?.text = "暂无消息"
+                else -> tvNum?.text = "${bean.messageNum}条未读消息"
+            }
+        }
+
+        override fun onItemClick(view: View?, position: Int) {
+            super.onItemClick(view, position)
+            startActivity(Intent(activity, FrgActivity::class.java))
         }
     }
 
@@ -75,6 +108,8 @@ class MessageFragment : BasePullListFragment<String, BasePresenter<BaseView>>() 
     companion object {
         fun newInstance(): MessageFragment {
             val messageFragment = MessageFragment()
+            val bundle = Bundle()
+            messageFragment.arguments = bundle
             return messageFragment
         }
     }

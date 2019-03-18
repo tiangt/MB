@@ -9,9 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:gravity="center"
-        android:text="消息"
-        android:textColor="#70010101"
-        android:textSize="15sp" />
+        android:text="消息中心"
+        android:textColor="@color/text_view"
+        android:textSize="19sp"
+        android:textStyle="bold" />
 
     <include layout="@layout/divider_shawdow_white" />
 </LinearLayout>
