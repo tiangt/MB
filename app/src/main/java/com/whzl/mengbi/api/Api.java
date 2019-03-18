@@ -890,4 +890,14 @@ public interface Api {
     @POST("v1/msgcenter/get-goods-msg")
     @FormUrlEncoded
     Observable<ApiResult<GetGoodMsgBean>> getGoodMsg(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取所有大消息类型的未读消息数
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/msgcenter/update-msg-read")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> updateMsgRead(@FieldMap Map<String, String> params);
 }

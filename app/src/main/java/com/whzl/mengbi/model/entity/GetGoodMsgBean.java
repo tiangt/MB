@@ -29,6 +29,7 @@ public class GetGoodMsgBean {
         public String messageType;
         public int goodsId;
         public String goodsName;
+        public String goodsType;
         public int surplusDay;
         public String createTime;
         public String isRead;

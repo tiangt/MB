@@ -28,7 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="29dp"
-            android:textColor="#70000000"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             android:textSize="13sp" />
 
         <View
@@ -43,7 +44,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="17dp"
             android:layout_marginTop="17dp"
-            android:text="现在去续费"
             android:textColor="#ffcf2d"
             android:textSize="15sp" />
     </LinearLayout>

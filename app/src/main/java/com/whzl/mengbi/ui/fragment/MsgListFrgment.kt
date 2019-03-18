@@ -7,32 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.whzl.mengbi.R
-import com.whzl.mengbi.api.Api
-import com.whzl.mengbi.config.NetConfig
-import com.whzl.mengbi.config.SpConfig
-import com.whzl.mengbi.contract.BasePresenter
-import com.whzl.mengbi.contract.BaseView
+import com.whzl.mengbi.chat.room.util.LightSpanString
+import com.whzl.mengbi.contract.MainMsgContract
 import com.whzl.mengbi.model.entity.GetGoodMsgBean
+import com.whzl.mengbi.presenter.MainMsgPresenter
 import com.whzl.mengbi.ui.activity.base.FrgActivity
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
-import com.whzl.mengbi.util.SPUtils
-import com.whzl.mengbi.util.network.retrofit.ApiFactory
-import com.whzl.mengbi.util.network.retrofit.ApiObserver
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_anchor_task.*
-import kotlinx.android.synthetic.main.item_msg_list.*
-import java.util.*
+import com.whzl.mengbi.util.clickDelay
 
 /**
  * @author nobody
  * @date 2019/3/18
  */
-class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, BasePresenter<BaseView>>() {
+class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPresenter>(), MainMsgContract.View {
     override fun initEnv() {
         super.initEnv()
+        mPresenter = MainMsgPresenter()
+        mPresenter.attachView(this)
         val title = activity?.intent?.getStringExtra("title")
         val frgActivity = activity as FrgActivity
         when (title) {
@@ -54,21 +46,7 @@ class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, BasePresent
     }
 
     override fun loadData(action: Int, mPage: Int) {
-        val userid = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L)
-        val params = mutableMapOf<String, String>()
-        params.put("userId", userid.toString())
-        params.put("page", mPage.toString())
-        params.put("pageSize", NetConfig.DEFAULT_PAGER_SIZE.toString())
-        ApiFactory.getInstance().getApi(Api::class.java)
-                .getGoodMsg(ParamsUtils.getSignPramsMap(params as HashMap<String, String>?))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : ApiObserver<GetGoodMsgBean>(this) {
-                    override fun onSuccess(t: GetGoodMsgBean?) {
-                        loadSuccess(t?.list)
-                    }
-
-                })
+        mPresenter.getMsgList(mPage)
     }
 
     override fun setViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder? {
@@ -77,15 +55,61 @@ class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, BasePresent
     }
 
     internal inner class ViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        var tvDate: TextView? = null
-        var tvGood: TextView? = null
+        private var tvDate: TextView? = null
+        private var tvGood: TextView? = null
+        private var tvMove: TextView? = null
         override fun onBindViewHolder(position: Int) {
             val listBean = mDatas[position]
             tvDate = itemView.findViewById(R.id.tv_date_item_msg)
             tvGood = itemView.findViewById(R.id.tv_good_item_msg)
-            tvDate?.text=listBean.createTime
-            tvGood?.text="您的${listBean.goodsName}将于${listBean.surplusDay}"
+            tvMove = itemView.findViewById(R.id.tv_move_item_msg)
+            tvDate?.text = listBean.createTime
+
+            if (listBean.isRead == "F")
+                tvGood?.setTextColor(Color.parseColor("#323232"))
+            else tvGood?.setTextColor(Color.parseColor("#50000000"))
+            when (listBean.goodsType) {
+                "NORMAL_DEBRIS", "SERVICE", "UNIVERSAL_DEBRIS" -> {
+                    tvGood?.text = "您的${listBean.goodsName}将于${listBean.surplusDay}天后到期，请及时使用！"
+                    tvMove?.text = "现在去使用"
+                }
+                "DEMON_CARD", "GUARD", "VIP" -> {
+                    tvGood?.text = "您的${listBean.goodsName}将于${listBean.surplusDay}天后到期，请及时续费！"
+                    tvMove?.text = "现在去续费"
+                }
+                "COUPON" -> {
+                    tvGood?.text = "您的${listBean.goodsName}将于${listBean.surplusDay}天后到期，请及时充值！"
+                    tvMove?.text = "现在去充值"
+                }
+                "NOBILITY_EXP" -> {
+                    tvGood?.text = "您的贵族："
+                    //${}将于${listBean.surplusDay}天后到期，请及时充值！"
+                    tvGood?.append(LightSpanString.getLightString(listBean.goodsName, Color.parseColor("#FFFFBFB3")))
+                    tvGood?.append(" 将于")
+                    tvGood?.append(listBean.surplusDay.toString() + "天后降级，请及时充值！")
+                    tvMove?.text = "现在去充值"
+                }
+                "PRETTY_NUM" -> {
+                    tvGood?.text = "您的靓号：${listBean.goodsName}将于${listBean.surplusDay}天后到期，请及时续费！"
+                    tvMove?.text = "现在去续费"
+                }
+            }
+
+            tvMove?.clickDelay {
+                tvGood?.setTextColor(Color.parseColor("#50000000"))
+                mPresenter.updateMsgRead(listBean.messageId, listBean.messageType)
+
+            }
         }
 
     }
+
+    override fun onUpdateMsgReadSuccess() {
+
+    }
+
+    override fun onGetMsgListSuccess(getGoodMsgBean: GetGoodMsgBean) {
+        loadSuccess(getGoodMsgBean?.list)
+    }
+
 }
