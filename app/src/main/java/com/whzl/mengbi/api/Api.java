@@ -322,7 +322,7 @@ public interface Api {
      * @param params
      * @return
      */
-    @POST("v1/pk/info")
+    @POST("v1/pk/pk-info")
     @FormUrlEncoded
     Observable<ApiResult<PKResultBean>> pkInfo(@FieldMap Map<String, String> params);
 

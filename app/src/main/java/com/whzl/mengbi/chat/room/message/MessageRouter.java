@@ -97,7 +97,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("ANCHOR_LEVEL_CHANGE_BROADCAST", new AnchorLevelChangeAction());
         actionsMap.put("LUCK_GIFT_BIG", new LuckGiftBigAction());
         actionsMap.put("BROADCAST", new BroadCastAction());
-        actionsMap.put("PK", new PkAction());
+        actionsMap.put("PKV2", new PkAction());
         actionsMap.put("AWARD_LOTTERY", new LotteryAction());
         actionsMap.put("WeekStarFirstNotify", new WeekStarAction());
         actionsMap.put("EVERY_DAY_TASK", new EverydayTaskAction());
