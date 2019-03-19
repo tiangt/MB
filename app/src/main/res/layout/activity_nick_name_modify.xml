@@ -2,21 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/white_toolbar" />
 
+    <include layout="@layout/divider_shawdow_white" />
+
     <RelativeLayout
+        android:background="@drawable/bg_shawdow_deep"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="50dp"
         android:layout_below="@id/toolbar"
-        android:layout_marginTop="6dp">
+        android:layout_marginTop="18dp">
 
         <EditText
             android:id="@+id/et_nick_name"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/comm_white"
+            android:layout_height="50dp"
+            android:background="@null"
             android:gravity="center_vertical"
             android:hint="@string/user_info_nickname_hint"
             android:maxLength="20"
@@ -31,10 +35,10 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@id/et_nick_name"
             android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
             android:layout_marginTop="12dp"
             android:background="@null"
-            android:src="@drawable/close"
-            android:layout_marginRight="15dp"/>
+            android:src="@drawable/close" />
 
     </RelativeLayout>
 

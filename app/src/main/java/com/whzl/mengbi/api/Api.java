@@ -13,6 +13,7 @@ import com.whzl.mengbi.model.entity.BillGiftBean;
 import com.whzl.mengbi.model.entity.BillPayBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
+import com.whzl.mengbi.model.entity.CheckMsgRemindBean;
 import com.whzl.mengbi.model.entity.DailyTaskBean;
 import com.whzl.mengbi.model.entity.DemonCarBean;
 import com.whzl.mengbi.model.entity.FollowSortBean;
@@ -900,4 +901,14 @@ public interface Api {
     @POST("v1/msgcenter/update-msg-read")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> updateMsgRead(@FieldMap Map<String, String> params);
+
+    /**
+     * 消息小红点
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/tMessageReminder/checkMessageReminder")
+    @FormUrlEncoded
+    Observable<ApiResult<CheckMsgRemindBean>> checkMsgRemind(@FieldMap Map<String, String> params);
 }

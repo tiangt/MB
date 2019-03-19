@@ -68,12 +68,13 @@
     <string name="user_info_nickname">昵称</string>
     <string name="user_info_sex">性别</string>
     <string name="user_info_address">地区</string>
+    <string name="user_info_sign">签名</string>
     <string name="user_info_birthday">生日</string>
     <string name="user_info_anchorlevel">主播等级</string>
     <string name="user_info_userlevel">用户等级</string>
     <string name="user_info_exitlogin">退出登录</string>
     <string name="user_info_photo">拍照</string>
-    <string name="user_info_album">从手机相册选择</string>
+    <string name="user_info_album">从相册选择</string>
     <string name="user_info_cancel">取消</string>
 
     <string name="user_info_nickname_hint">请输入您的昵称</string>
@@ -260,7 +261,7 @@
     <string name="pay_fail">支付失败</string>
     <string name="rmb">¥ %1$.2f</string>
     <string name="room_num">房间号：%1$d</string>
-    <string name="personal_info">个人信息</string>
+    <string name="personal_info">编辑资料</string>
     <string name="permission_storage_denid">存储权限被禁止,部分功能可能无法正常工作.</string>
     <string name="permission_camera_denid">相机权限被禁止,部分功能可能无法正常工作.</string>
     <string name="permission_denid">存储或相机权限被禁止,部分功能可能无法正常工作.</string>
@@ -271,7 +272,7 @@
     <string name="login_out">退出登录</string>
     <string name="about_us">关于我们</string>
     <string name="custom">官方客服</string>
-    <string name="nick_name">昵称</string>
+    <string name="nick_name">编辑昵称</string>
     <string name="save">保存</string>
     <string name="gender">性别</string>
     <string name="empty_backpack">你的背包空空如也！</string>

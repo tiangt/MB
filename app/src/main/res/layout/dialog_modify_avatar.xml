@@ -1,37 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@drawable/bg_dialog_common"
+    android:orientation="horizontal"
+    android:paddingTop="33dp">
 
     <Button
         android:id="@+id/btn_capture"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/img_binding_phone"
         android:text="@string/user_info_photo"
-        android:textColor="@color/font_color_1"
-        android:background="@color/font_color_white"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#e5e5e5"/>
+        android:textColor="#70010101" />
+
     <Button
         android:id="@+id/btn_album"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableTop="@drawable/img_binding_phone"
         android:text="@string/user_info_album"
-        android:textColor="#323232"
-        android:background="@color/font_color_white"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="#e5e5e5"/>
-    <Button
-        android:id="@+id/btn_cancel"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="@string/user_info_cancel"
-        android:textColor="#323232"
-        android:background="@color/font_color_white"/>
+        android:textColor="#70010101" />
+
 </LinearLayout>

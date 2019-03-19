@@ -294,9 +294,9 @@ public class MineFragment extends BaseFragment implements MeView {
 
     private void jumpToPersonalInfoActivity() {
         Intent intent = new Intent(getContext(), UserInfoActivity.class);
-        intent.putExtra("userbean", mUserInfo);
-        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getMyActivity(), ivAvatar, "iv_avatar");
-        startActivity(intent, optionsCompat.toBundle());
+//        intent.putExtra("userbean", mUserInfo);
+//        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getMyActivity(), ivAvatar, "iv_avatar");
+        startActivity(intent);
     }
 
     private void jumpToRechargeActivity() {

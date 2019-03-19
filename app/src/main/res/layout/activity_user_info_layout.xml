@@ -12,251 +12,160 @@
     <RelativeLayout
         android:id="@+id/rl_avatar_container"
         android:layout_width="match_parent"
-        android:layout_height="57dp"
-        android:background="@color/comm_white">
-
-        <com.whzl.mengbi.ui.widget.view.CircleImageView
-            android:id="@+id/iv_avatar"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
-            android:transitionName="iv_avatar" />
+        android:layout_height="75dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_shawdow_deep">
 
         <TextView
             android:id="@+id/user_info_head_text"
+            style="@style/user_info_option_left_text"
+            android:text="头像" />
+
+        <com.whzl.mengbi.ui.widget.view.CircleImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="36dp"
+            android:transitionName="iv_avatar" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:drawablePadding="9dp"
-            android:drawableRight="@drawable/arrowright"
-            android:text="@string/user_info_profile_photo"
-            android:textColor="@color/font_color_47"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:layout_marginRight="12dp"
+            android:src="@drawable/arrowright" />
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_account_container"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/comm_white">
-
-        <TextView
-            android:id="@+id/user_info_sprount_text"
-            style="@style/user_info_option_left_text"
-            android:text="@string/user_info_sprout" />
-
-        <TextView
-            android:id="@+id/tv_account"
-            style="@style/user_info_option_right_text"
-            android:drawableRight="@null" />
-    </RelativeLayout>
-
-    <View style="@style/user_info_option_divider" />
-
-    <RelativeLayout
-        android:id="@+id/rl_nick_name_container"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:background="@color/comm_white">
-
-        <TextView
-            android:id="@+id/user_info_nickname_text"
-            style="@style/user_info_option_left_text"
-            android:text="@string/user_info_nickname" />
-
-        <TextView
-            android:id="@+id/tv_nick_name"
-            style="@style/user_info_option_right_text" />
-    </RelativeLayout>
-
-    <View style="@style/user_info_option_divider" />
-
-    <RelativeLayout
-        android:id="@+id/rl_gender_container"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:background="@color/comm_white">
-
-        <TextView
-            android:id="@+id/user_info_sex_text"
-            style="@style/user_info_option_left_text"
-            android:text="@string/user_info_sex" />
-
-        <TextView
-            android:id="@+id/tv_gender"
-            style="@style/user_info_option_right_text" />
-    </RelativeLayout>
-
-    <View style="@style/user_info_option_divider" />
-
-    <RelativeLayout
-        android:id="@+id/rl_address_container"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:background="@color/comm_white">
-
-        <TextView
-            android:id="@+id/user_info_address_text"
-            style="@style/user_info_option_left_text"
-            android:text="@string/user_info_address" />
-
-        <TextView
-            android:id="@+id/tv_address"
-            style="@style/user_info_option_right_text" />
-    </RelativeLayout>
-
-    <View style="@style/user_info_option_divider" />
-
-    <RelativeLayout
-        android:id="@+id/rl_birthday_container"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:background="@color/comm_white">
-
-        <TextView
-            android:id="@+id/user_info_birthday_text"
-            style="@style/user_info_option_left_text"
-            android:text="@string/user_info_birthday" />
-
-        <TextView
-            android:id="@+id/tv_birthday"
-            style="@style/user_info_option_right_text" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_anchor_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/comm_white">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_shawdow_deep"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/user_info_anchorlevel_text"
+        <RelativeLayout
+            android:id="@+id/rl_account_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="19dp"
-            android:layout_marginTop="3dp"
-            android:text="@string/user_info_anchorlevel"
-            android:textColor="@color/font_color_47"
-            android:textStyle="bold" />
+            android:layout_height="49.5dp">
 
-        <TextView
-            android:id="@+id/tv_anchor_level"
+            <TextView
+                android:id="@+id/user_info_sprount_text"
+                style="@style/user_info_option_left_text"
+                android:text="@string/user_info_sprout" />
+
+            <TextView
+                android:id="@+id/tv_account"
+                style="@style/user_info_option_right_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="6dp"
+                android:layout_toLeftOf="@id/tv_account"
+                android:text="长按复制"
+                android:textColor="#ff2b3f"
+                android:textSize="11sp" />
+        </RelativeLayout>
+
+        <View style="@style/user_info_option_divider" />
+
+        <RelativeLayout
+            android:id="@+id/rl_nick_name_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/user_info_anchorlevel_text"
-            android:layout_marginLeft="19dp"
-            android:textColor="#646464"
-            android:textSize="12sp" />
+            android:layout_height="49.5dp"
+            android:background="@color/comm_white">
 
-        <ImageView
-            android:id="@+id/iv_anchor_level"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/user_info_nickname_text"
+                style="@style/user_info_option_left_text"
+                android:text="@string/user_info_nickname" />
 
+            <TextView
+                android:id="@+id/tv_nick_name"
+                style="@style/user_info_option_right_text" />
+        </RelativeLayout>
 
-    <View style="@style/user_info_option_divider" />
+        <View style="@style/user_info_option_divider" />
 
-    <RelativeLayout
-        android:id="@+id/user_info_userlevel_layout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/comm_white">
-
-        <TextView
-            android:id="@+id/user_info_userlevel_text"
+        <RelativeLayout
+            android:id="@+id/rl_sign_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="19dp"
-            android:layout_marginTop="3dp"
-            android:text="@string/user_info_userlevel"
-            android:textColor="@color/font_color_47"
-            android:textStyle="bold" />
+            android:layout_height="49.5dp"
+            android:background="@color/comm_white">
 
-        <TextView
-            android:id="@+id/tv_user_level"
+            <TextView
+                android:id="@+id/tv_sign_tip"
+                style="@style/user_info_option_left_text"
+                android:text="@string/user_info_sign" />
+
+            <TextView
+                android:id="@+id/tv_sign"
+                style="@style/user_info_option_right_text"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/tv_sign_tip"
+                android:ellipsize="end"
+                android:singleLine="true" />
+        </RelativeLayout>
+
+        <View style="@style/user_info_option_divider" />
+
+        <RelativeLayout
+            android:id="@+id/rl_gender_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/user_info_userlevel_text"
-            android:layout_marginLeft="19dp"
-            android:textColor="#646464"
-            android:textSize="12sp" />
+            android:layout_height="49.5dp"
+            android:background="@color/comm_white">
 
-        <ImageView
-            android:id="@+id/iv_user_level"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="15dp" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/user_info_sex_text"
+                style="@style/user_info_option_left_text"
+                android:text="@string/user_info_sex" />
 
-    <View style="@style/user_info_option_divider" />
+            <TextView
+                android:id="@+id/tv_gender"
+                style="@style/user_info_option_right_text" />
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:background="@color/comm_white">
+        <View style="@style/user_info_option_divider" />
 
-        <TextView
-            android:id="@+id/tv_loyal"
+        <RelativeLayout
+            android:id="@+id/rl_birthday_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="19dp"
-            android:layout_marginTop="3dp"
-            android:text="贵族等级"
-            android:textColor="@color/font_color_47"
-            android:textStyle="bold" />
+            android:layout_height="49.5dp"
+            android:background="@color/comm_white">
 
-        <TextView
-            android:id="@+id/tv_update"
+            <TextView
+                android:id="@+id/user_info_birthday_text"
+                style="@style/user_info_option_left_text"
+                android:text="@string/user_info_birthday" />
+
+            <TextView
+                android:id="@+id/tv_birthday"
+                style="@style/user_info_option_right_text" />
+        </RelativeLayout>
+
+
+        <View style="@style/user_info_option_divider" />
+
+        <RelativeLayout
+            android:id="@+id/rl_address_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_loyal"
-            android:layout_marginLeft="19dp"
-            android:textColor="#646464"
-            android:textSize="12sp" />
+            android:layout_height="49.5dp"
+            android:background="@color/comm_white">
 
-        <TextView
-            android:id="@+id/tv_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_update"
-            android:layout_marginLeft="19dp"
-            android:textColor="#646464"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/user_info_address_text"
+                style="@style/user_info_option_left_text"
+                android:text="@string/user_info_address" />
 
-        <ImageView
-            android:id="@+id/iv_royal"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="12dp" />
+            <TextView
+                android:id="@+id/tv_address"
+                style="@style/user_info_option_right_text" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_chongzhi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="12dp"
-            android:layout_marginLeft="19dp"
-            android:layout_marginRight="15dp"
-            android:drawablePadding="4dp"
-            android:drawableRight="@drawable/ic_arrow_right"
-            android:text="去充值"
-            android:textColor="#316aeb"
-            android:textSize="15sp" />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.widget.EditText;
 
@@ -40,6 +41,7 @@ public class NickNameModifyActivity extends BaseActivity {
     @Override
     protected void setupContentView() {
         setContentView(R.layout.activity_nick_name_modify, R.string.nick_name, R.string.save, true);
+        getTitleRightText().setTextColor(Color.parseColor("#ff2b3f"));
     }
 
     @Override

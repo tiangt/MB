@@ -19,7 +19,9 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
+import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AppDataBean;
+import com.whzl.mengbi.model.entity.CheckMsgRemindBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -36,6 +38,7 @@ import com.whzl.mengbi.ui.fragment.main.FollowFragment;
 import com.whzl.mengbi.ui.fragment.main.HomeFragment;
 import com.whzl.mengbi.ui.fragment.main.MessageFragment;
 import com.whzl.mengbi.ui.fragment.main.MineFragment;
+import com.whzl.mengbi.ui.widget.view.TipRadioButton;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.AsyncRun;
 import com.whzl.mengbi.util.DateUtils;
@@ -208,6 +211,25 @@ public class MainActivity extends BaseActivity {
         } else {
             getUpdate();
         }
+        if (checkLogin()) {
+            getMsgRemind();
+        }
+    }
+
+    private void getMsgRemind() {
+        HashMap param = new HashMap();
+        param.put("userId", SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, (long) 0).toString());
+        param.put("messageType", "EXPIRATION_MESSAGE");
+        ApiFactory.getInstance().getApi(Api.class)
+                .checkMsgRemind(ParamsUtils.getSignPramsMap(param))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<CheckMsgRemindBean>() {
+                    @Override
+                    public void onSuccess(CheckMsgRemindBean checkMsgRemindBean) {
+
+                    }
+                });
     }
 
     private void getUpdate() {

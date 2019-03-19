@@ -83,7 +83,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
             imageView = itemView?.findViewById(R.id.iv_item_mag_main)
             val bean = mDatas[position]
             when (bean.messageType) {
-                "GOODS_TYPE" -> {
+                "EXPIRATION_MESSAGE" -> {
                     tvName?.text = "系统消息"
                     GlideImageLoader.getInstace().circleCropImage(activity, R.drawable.ic_system_msg, imageView)
                 }

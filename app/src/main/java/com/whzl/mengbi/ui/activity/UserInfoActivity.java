@@ -1,10 +1,12 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,10 +16,8 @@ import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.JsonBean;
@@ -25,31 +25,23 @@ import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.UserInfoPresenter;
 import com.whzl.mengbi.presenter.impl.UserInfoPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
-import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.view.UserInfoView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.DateUtils;
-import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.JsonUtils;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.PhotoUtil;
-import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StorageUtil;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.util.network.RequestManager;
-import com.whzl.mengbi.util.network.URLContentUtils;
-import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 
 import java.io.File;
@@ -83,30 +75,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     TextView tvAddress;
     @BindView(R.id.tv_birthday)
     TextView tvBirthday;
-    @BindView(R.id.tv_anchor_level)
-    TextView tvAnchorLevel;
-    @BindView(R.id.iv_anchor_level)
-    ImageView ivAnchorLevel;
-    @BindView(R.id.tv_user_level)
-    TextView tvUserLevel;
-    @BindView(R.id.iv_user_level)
-    ImageView ivUserLevel;
-    @BindView(R.id.rl_anchor_container)
-    RelativeLayout rlAnchorContainer;
-    @BindView(R.id.tv_loyal)
-    TextView tvLoyal;
-    @BindView(R.id.tv_update)
-    TextView tvUpdate;
-    @BindView(R.id.tv_total)
-    TextView tvTotal;
-    @BindView(R.id.iv_royal)
-    ImageView ivRoyal;
-    @BindView(R.id.tv_chongzhi)
-    TextView tvChongzhi;
+    @BindView(R.id.rl_account_container)
+    RelativeLayout rlAccount;
     private UserInfoPresenter userInfoPresenter;
     private String tempCapturePath;
     private String tempCropPath;
-    private UserInfo mUserInfo;
+    private UserInfo.DataBean mUserInfo;
     private String mSex;
     private TimePickerView pvTime;
     private ArrayList<JsonBean> options1Items = new ArrayList<>();
@@ -123,11 +97,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     @Override
     protected void initEnv() {
         super.initEnv();
-        EventBus.getDefault().register(this);
-        Intent intent = getIntent();
-        mUserInfo = intent.getParcelableExtra("userbean");
         userInfoPresenter = new UserInfoPresenterImpl(this);
-        initJsonData();
+
     }
 
     @Override
@@ -137,74 +108,48 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     @Override
     protected void setupView() {
-        if (mUserInfo != null && mUserInfo.getData() != null) {
-            GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getData().getAvatar(), ivAvatar);
-        }
-        tvAccount.setText(mUserInfo.getData().getUserId() + "");
-        tvNickName.setText(mUserInfo.getData().getNickname() == null ? "" : mUserInfo.getData().getNickname());
-        mSex = mUserInfo.getData().getGender();
-        setupSex(mSex);
-        StringBuilder stringBuilder = new StringBuilder();
-        if (mUserInfo.getData().getProvince() != null) {
-            stringBuilder.append(mUserInfo.getData().getProvince());
-        }
-        if (mUserInfo.getData().getCity() != null) {
-            stringBuilder.append("-" + mUserInfo.getData().getCity());
-        }
-        tvAddress.setText(stringBuilder);
-        tvBirthday.setText(DateUtils.getTime(mUserInfo.getData().getBirthday()));
-        for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
-            String levelType = levelList.getLevelType();
-            long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
-            if ("ANCHOR_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                if (sjNeedValue >= 0) {
-                    tvAnchorLevel.setText("离升级还差");
-                    tvAnchorLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#f1275b")));
-                    tvAnchorLevel.append("主播经验");
-                } else {
-                    tvAnchorLevel.setText("您已达到最高主播等级");
-                }
-                ivAnchorLevel.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelList.getLevelValue()));
-            } else if ("USER_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                if (sjNeedValue >= 0) {
-                    tvUserLevel.setText("离升级还差");
-                    tvUserLevel.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#4facf3")));
-                    tvUserLevel.append("富豪经验");
-                } else {
-                    tvUserLevel.setText("您已达到最高用户等级");
-                }
-                int userLevel = levelList.getLevelValue();
-                ivUserLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(userLevel));
-            } else if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                int royalLevel = levelList.getLevelValue();
-                if (sjNeedValue == 0 || royalLevel == SpConfig.MAX_LEVEL) {
-                    tvUpdate.setText("您已达到最高贵族等级");
-                } else {
-                    tvUpdate.setText("离升级还需充值");
-                    tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
-                    tvUpdate.append("元");
-                }
-                int userLevel = levelList.getLevelValue();
-                if (userLevel != 0) {
-//                    ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
-                    Glide.with(this).asGif().load(ResourceMap.getResourceMap().
-                            getRoyalLevelIcon(userLevel)).into(ivRoyal);
-                }
-                tvTotal.setText("本月已累计充值");
-                tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));
-                tvTotal.append("元");
-            }
-        }
-        if (mUserInfo.getData().getUserType().equals("VIEWER")) {
-            rlAnchorContainer.setVisibility(View.GONE);
-        }
-
-        tvChongzhi.setOnClickListener(new View.OnClickListener() {
+        BusinessUtils.getUserInfo(this, SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString(), new BusinessUtils.UserInfoListener() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(UserInfoActivity.this, WXPayEntryActivity.class));
+            public void onSuccess(UserInfo.DataBean bean) {
+                mUserInfo = bean;
+                initView();
+                initJsonData();
+            }
+
+            @Override
+            public void onError(int code) {
+
             }
         });
+        rlAccount.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData mClipData = ClipData.newPlainText("Label", tvAccount.getText().toString());
+                cm.setPrimaryClip(mClipData);
+                ToastUtils.showToastUnify(UserInfoActivity.this, "复制成功");
+                return false;
+            }
+        });
+    }
+
+    private void initView() {
+        if (mUserInfo != null) {
+            GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getAvatar(), ivAvatar);
+        }
+        tvAccount.setText(mUserInfo.getUserId() + "");
+        tvNickName.setText(mUserInfo.getNickname() == null ? "" : mUserInfo.getNickname());
+        mSex = mUserInfo.getGender();
+        setupSex(mSex);
+        StringBuilder stringBuilder = new StringBuilder();
+        if (mUserInfo.getProvince() != null) {
+            stringBuilder.append(mUserInfo.getProvince());
+        }
+        if (mUserInfo.getCity() != null) {
+            stringBuilder.append(mUserInfo.getCity());
+        }
+        tvAddress.setText(stringBuilder);
+        tvBirthday.setText(DateUtils.getTime(mUserInfo.getBirthday()));
     }
 
     private void setupSex(String sex) {
@@ -227,7 +172,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
      *
      * @param v
      */
-    @OnClick({R.id.rl_avatar_container, R.id.rl_nick_name_container, R.id.rl_gender_container, R.id.rl_address_container, R.id.rl_birthday_container})
+    @OnClick({R.id.rl_avatar_container, R.id.rl_nick_name_container, R.id.rl_gender_container,
+            R.id.rl_address_container, R.id.rl_birthday_container,R.id.rl_sign_container})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_avatar_container:
@@ -235,7 +181,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 break;
             case R.id.rl_nick_name_container:
                 Intent nicknameIntent = new Intent(UserInfoActivity.this, NickNameModifyActivity.class);
-                nicknameIntent.putExtra("nickname", mUserInfo.getData().getNickname());
+                nicknameIntent.putExtra("nickname", mUserInfo.getNickname());
                 startActivityForResult(nicknameIntent, NICKNAME_CODE);
                 break;
             case R.id.rl_gender_container:
@@ -247,6 +193,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 showAddressPick();
                 break;
             case R.id.rl_birthday_container:
+                showDatePick();
+                break;
+            case R.id.rl_sign_container:
                 showDatePick();
                 break;
             default:
@@ -277,7 +226,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                             RxPermisssionsUitls.getPicFromAlbm(UserInfoActivity.this);
                             dialog.dismiss();
                         });
-                        holder.setOnClickListener(R.id.btn_cancel, v13 -> dialog.dismiss());
                     }
                 })
                 .setShowBottom(true)
@@ -286,13 +234,13 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     private void showDatePick() {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(DateUtils.dateStrToMillis(mUserInfo.getData().getBirthday()));
+        calendar.setTimeInMillis(DateUtils.dateStrToMillis(mUserInfo.getBirthday()));
         pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
                 tvBirthday.setText(DateUtils.getTime(date));
                 HashMap hashMap = new HashMap();
-                hashMap.put("userId", mUserInfo.getData().getUserId());
+                hashMap.put("userId", mUserInfo.getUserId());
                 hashMap.put("birthday", DateUtils.getTime2(date));
                 userInfoPresenter.onUpdataUserInfo(hashMap);
             }
@@ -301,16 +249,18 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 .setDate(calendar)
                 .setType(new boolean[]{true, true, true, false, false, false})// 默认全部显示
                 .setCancelText("取消")//取消按钮文字
-                .setSubCalSize(15)
+                .setSubCalSize(13)
                 .setSubmitText("确定")//确认按钮文字
-                .setTitleSize(17)//标题文字大小
-                .setTitleText("生日选择")//标题文字
+                .setTitleSize(15)//标题文字大小
+                .setTitleText("出生日期")//标题文字
                 .isCyclic(true)//是否循环滚动
-                .setTitleColor(Color.BLACK)//标题文字颜色
-                .setSubmitColor(Color.parseColor("#007aff"))//确定按钮文字颜色
-                .setCancelColor(Color.parseColor("#007aff"))//取消按钮文字颜色
+                .setLineSpacingMultiplier(2)
+                .setTitleBgColor(Color.WHITE)
+                .setTitleColor(Color.parseColor("#70000000"))//标题文字颜色
+                .setSubmitColor(Color.parseColor("#ff2b3f"))//确定按钮文字颜色
+                .setCancelColor(Color.parseColor("#70000000"))//取消按钮文字颜色
                 .setDividerColor(Color.parseColor("#cdcdcd"))
-                .setContentTextSize(19)
+                .setContentTextSize(15)
                 .setTextColorCenter(Color.BLACK)
                 .setBgColor(Color.WHITE)//滚轮背景颜色 Night mode
                 .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
@@ -328,9 +278,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 //返回的分别是三个级别的选中位置
-                tvAddress.setText(options1Items.get(options1).getPickerViewText() + "-" + options2Items.get(options1).get(options2));
+                tvAddress.setText(options1Items.get(options1).getPickerViewText() + options2Items.get(options1).get(options2));
                 HashMap hashMap = new HashMap();
-                hashMap.put("userId", mUserInfo.getData().getUserId());
+                hashMap.put("userId", mUserInfo.getUserId());
                 hashMap.put("province", options1Items.get(options1).getPickerViewText());
                 hashMap.put("city", options2Items.get(options1).get(options2));
                 userInfoPresenter.onUpdataUserInfo(hashMap);
@@ -338,16 +288,17 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 mSelectedPosition2 = options2;
             }
         })
-
+                .setTitleText("城市")
                 .setSelectOptions(mSelectedPosition1, mSelectedPosition2)
-                .setSubCalSize(15)
-                .setTitleSize(17)
-                .setSubmitColor(Color.parseColor("#007aff"))
-                .setCancelColor(Color.parseColor("#007aff"))
-                .setTitleText("城市选择")
+                .setSubCalSize(13)
+                .setTitleSize(15)
+                .setLineSpacingMultiplier(2)
+                .setTitleBgColor(Color.WHITE)
+                .setTitleColor(Color.parseColor("#70000000"))//标题文字颜色
+                .setSubmitColor(Color.parseColor("#ff2b3f"))//确定按钮文字颜色
+                .setCancelColor(Color.parseColor("#70000000"))//取消按钮文字颜色
                 .setDividerColor(Color.parseColor("#cdcdcd"))
-                .setTextColorCenter(Color.BLACK)
-                .setContentTextSize(19)
+                .setContentTextSize(15)
                 .build();
 
         /*pvOptions.setPicker(options1Items);//一级选择器
@@ -386,20 +337,20 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         super.onActivityResult(requestCode, resultCode, data);
         PhotoUtil.onActivityResult(this, tempCapturePath, tempCropPath, requestCode, resultCode, data,
                 () -> {
-                    userInfoPresenter.onUpdataPortrait(mUserInfo.getData().getUserId() + "", tempCropPath);
+                    userInfoPresenter.onUpdataPortrait(mUserInfo.getUserId() + "", tempCropPath);
                 });
         switch (requestCode) {
             case NICKNAME_CODE:
                 if (resultCode == RESULT_OK) {
                     String nickname = data.getStringExtra("nickname");
-                    userInfoPresenter.onUpdataNickName(mUserInfo.getData().getUserId() + "", nickname);
+                    userInfoPresenter.onUpdataNickName(mUserInfo.getUserId() + "", nickname);
                 }
                 break;
             case GENDER_CODE:
                 if (resultCode == RESULT_OK) {
                     mSex = data.getStringExtra("gender");
                     HashMap hashMap = new HashMap();
-                    hashMap.put("userId", mUserInfo.getData().getUserId());
+                    hashMap.put("userId", mUserInfo.getUserId());
                     hashMap.put("sex", mSex);
                     userInfoPresenter.onUpdataUserInfo(hashMap);
                 }
@@ -457,12 +408,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                             //添加该省所有地区数据
                             Province_AreaList.add(City_AreaList);
 
-                            if (jsonBean.get(i).getCityList().get(c).getName().equals(mUserInfo.getData().getCity())) {
+                            if (jsonBean.get(i).getCityList().get(c).getName().equals(mUserInfo.getCity())) {
                                 mSelectedPosition2 = c;
                             }
                         }
 
-                        if (jsonBean.get(i).getName().equals(mUserInfo.getData().getProvince())) {
+                        if (jsonBean.get(i).getName().equals(mUserInfo.getProvince())) {
                             mSelectedPosition1 = i;
                         }
                         /**
@@ -503,49 +454,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     protected void onDestroy() {
         super.onDestroy();
         userInfoPresenter.onDestory();
-        EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(UserInfoUpdateEvent userInfoUpdateEvent) {
-        HashMap paramsMap = new HashMap();
-        long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
-        paramsMap.put("userId", userId);
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap,
-                new RequestManager.ReqCallBack() {
-                    @Override
-                    public void onReqSuccess(Object result) {
-                        UserInfo userInfo = GsonUtils.GsonToBean(result.toString(), UserInfo.class);
-                        if (userInfo.getCode() == 200) {
-                            for (UserInfo.DataBean.LevelListBean levelList : mUserInfo.getData().getLevelList()) {
-                                String levelType = levelList.getLevelType();
-                                long sjNeedValue = levelList.getExpList().get(0).getSjNeedExpValue() - levelList.getExpList().get(0).getSjExpvalue();
-                                if ("ROYAL_LEVEL".equals(levelType) && !levelList.getExpList().isEmpty()) {
-                                    if (sjNeedValue >= 0) {
-                                        tvUpdate.setText("离升级还需充值");
-                                        tvUpdate.append(LightSpanString.getLightString(sjNeedValue + "", Color.parseColor("#FF7901")));
-                                        tvUpdate.append("元");
-                                    } else {
-                                        tvUpdate.setText("您已达到最高贵族等级");
-                                    }
-                                    int userLevel = levelList.getLevelValue();
-                                    if (userLevel != 0) {
-//                                        ivRoyal.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(userLevel));
-                                        Glide.with(UserInfoActivity.this).asGif().load(ResourceMap.getResourceMap().
-                                                getRoyalLevelIcon(userLevel)).into(ivRoyal);
-                                    }
-                                    tvTotal.setText("本月已累计充值");
-                                    tvTotal.append(LightSpanString.getLightString(levelList.getExpList().get(0).getSjExpvalue() + "", Color.parseColor("#FF7901")));
-                                    tvTotal.append("元");
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onReqFailed(String errorMsg) {
-                        LogUtils.d("onReqFailed" + errorMsg);
-                    }
-                });
-    }
 }
