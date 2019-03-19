@@ -97,6 +97,8 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         args.putBoolean("isVip", isVip);
         args.putInt("programId", programId);
         args.putParcelable("anchor", anchorBean);
+
+
         liveHouseChatDialog.setArguments(args);
         return liveHouseChatDialog;
     }
