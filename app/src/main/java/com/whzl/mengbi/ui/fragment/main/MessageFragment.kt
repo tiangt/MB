@@ -39,6 +39,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
         super.init()
         val titleView = LayoutInflater.from(activity).inflate(R.layout.headtip_msg, pullView, false)
         addHeadTips(titleView)
+        pullView.setBackgroundColor(Color.WHITE)
     }
 
     override fun setLoadMoreEndShow(): Boolean {

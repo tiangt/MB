@@ -202,7 +202,7 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
 
     @Override
     public void onNewTask(NewTaskBean bean) {
-        loadSuccess(bean.list);
+        loadSuccess(bean.list.subList(0, 10));
     }
 
     @Override

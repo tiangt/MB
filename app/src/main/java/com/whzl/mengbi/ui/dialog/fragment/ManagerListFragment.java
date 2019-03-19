@@ -70,6 +70,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
     @Override
     public void init() {
         super.init();
+        hideDividerShawdow(null);
         getPullView().setShouldRefresh(false);
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_follow_sort, getPullView(), false);
         TextView content = view.findViewById(R.id.tv_content);

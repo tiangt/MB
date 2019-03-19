@@ -54,6 +54,12 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
     private int num;
 
     @Override
+    public void init() {
+        super.init();
+        hideDividerShawdow(null);
+    }
+
+    @Override
     protected boolean setLoadMoreEndShow() {
         return false;
     }
