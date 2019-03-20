@@ -73,7 +73,7 @@ public class ChatListFragment extends BaseFragment {
     private RecyclerView.Adapter chatAdapter;
     private static final int TOTAL_CHAT_MSG = 100;
     private boolean isRecyclerScrolling;
-    private ArrayList<FillHolderMessage> chatList = new ArrayList<>();
+    public ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     //    private RoyalEnterControl royalEnterControl;
     private int mProgramId;
     private boolean openAnimal = true;

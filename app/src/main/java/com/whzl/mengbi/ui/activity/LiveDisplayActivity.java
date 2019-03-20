@@ -842,7 +842,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, mAnchor)
                         .setDimAmount(0)
                         .setShowBottom(true)
-                        .setOutCancel(false)
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_chat_private:
@@ -2414,4 +2413,5 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //            ObjectAnimator.ofFloat(fragmentContainer, "translationY", 0, -(chatInputEvent.height - i)).start();
             fragmentContainer.setTranslationY(-(chatInputEvent.height - i));
     }
+
 }

@@ -172,8 +172,8 @@
     <color name="text_color_use_pack">#2cd996</color>
     <color name="text_color_wait_pack">#ff611b</color>
 
-    <color name="bg_welcome_hasguard">#903a4f69</color>
-    <color name="bg_welcome_noguard">#242b35</color>
+    <color name="bg_welcome_hasguard">#603a4f69</color>
+    <color name="bg_welcome_noguard">#60242b35</color>
     <color name="text_color_nochat_bei">#f9f9f9</color>
     <color name="text_color_nochat_people">#f9f9f9</color>
     <color name="text_color_nochat">#ff709f</color>
