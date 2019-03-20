@@ -355,16 +355,38 @@
                         android:layout_height="50dp"
                         android:layout_centerInParent="true" />
 
-                    <TextView
-                        android:id="@+id/tv_stop_tip"
+                    <LinearLayout
+                        android:id="@+id/ll_stop_tip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="主播正在休息中"
-                        android:textColor="@color/player_rest"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:layout_marginBottom="20dp"
+                            android:src="@drawable/ic_main_history" />
+
+                        <TextView
+                            android:id="@+id/tv_stop_tip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="主播暂未开播！"
+                            android:textColor="@color/player_rest"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="上次开播：10小时前"
+                            android:textColor="#80ffffff"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
 
                     <ImageView
                         android:id="@+id/iv_gift_gif"
@@ -545,10 +567,10 @@
 
 
                 <FrameLayout
-                    android:background="@color/transparent"
                     android:id="@+id/fragment_container"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:background="@color/transparent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ratio_layout" />
 

@@ -126,6 +126,9 @@ public class GlideImageLoader extends ImageLoader {
         void onFail();
     }
 
+    /**
+     * 圆角
+     */
     public void loadRoundImage(Context context, Object object, ImageView imageView, int radius) {
         if (isValidContextForGlide(context)) {
             RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(context, radius));

@@ -26,6 +26,8 @@ public class AnchorInfo {
     public String programType;
     public String pubNotice;
     public String status;
+    public String cover;
+    public String avatar;
     public String programStatus;
     public int subscriptionNum;
     public AnchorBean anchor;

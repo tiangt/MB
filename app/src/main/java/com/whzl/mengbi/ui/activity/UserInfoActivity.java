@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -154,7 +155,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         }
         tvAddress.setText(stringBuilder);
         tvBirthday.setText(DateUtils.getTime(mUserInfo.getBirthday()));
-        tvSign.setText(mUserInfo.getIntroduce());
+        if (TextUtils.isEmpty(mUserInfo.getIntroduce())) {
+            tvSign.setText("未设置");
+        } else {
+            tvSign.setText(mUserInfo.getIntroduce());
+        }
     }
 
     private void setupSex(String sex) {
@@ -403,6 +408,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             case SIGN_CODE:
                 if (resultCode == RESULT_OK) {
                     String sign = data.getStringExtra("sign");
+                    ToastUtils.showToast(sign);
                     userInfoPresenter.onUpdateSign(mUserInfo.getUserId() + "", sign);
                 }
                 break;

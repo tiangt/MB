@@ -149,6 +149,7 @@ import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardianListDialog;
 import com.whzl.mengbi.ui.dialog.HeadlineDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
+import com.whzl.mengbi.ui.dialog.LiveStopDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatDialog;
@@ -251,6 +252,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageView ivGiftGif;
     @BindView(R.id.tv_stop_tip)
     TextView tvStopTip;
+    @BindView(R.id.ll_stop_tip)
+    LinearLayout llStopTip;
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
     @BindView(R.id.tv_run_way_gift)
@@ -418,6 +421,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog awesomeDialog;
     private BaseAwesomeDialog personalInfoDialog;
     private BaseAwesomeDialog snatchDialog;
+    private BaseAwesomeDialog liveStopDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -506,7 +510,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             textureView.setVisibility(View.VISIBLE);
 //            progressBar.setVisibility(View.GONE);
             loadLayout.setVisibility(View.GONE);
-            tvStopTip.setVisibility(View.GONE);
+            llStopTip.setVisibility(View.GONE);
             textureView.setVideoScalingMode(KSYMediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
             textureView.start();
         });
@@ -1221,7 +1225,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        tvStopTip.setVisibility(View.GONE);
+        llStopTip.setVisibility(View.GONE);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1230,8 +1234,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         textureView.stop();
         textureView.reset();
         textureView.setVisibility(View.INVISIBLE);
-        tvStopTip.setVisibility(View.VISIBLE);
+        llStopTip.setVisibility(View.VISIBLE);
         loadLayout.setVisibility(View.GONE);
+        showLiveStopDialog();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1335,9 +1340,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             }
             if (!"T".equals(roomInfoBean.getData().getProgramStatus())) {
-                tvStopTip.setVisibility(View.VISIBLE);
-//                progressBar.setVisibility(View.GONE);
+                llStopTip.setVisibility(View.VISIBLE);
+                // TODO: 2019/3/20 上次开播时间
                 loadLayout.setVisibility(View.GONE);
+                showLiveStopDialog();
             }
 
             mShareUrl = roomInfoBean.getData().getShareUrl();
@@ -1349,6 +1355,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initAboutAnchor(mProgramId, mAnchorId);
         mLivePresenter.getActivityNative(mProgramId, mAnchorId);
         initIgnore(roomInfoBean);
+    }
+
+    private void showLiveStopDialog() {
+        if (liveStopDialog != null && liveStopDialog.isAdded()) {
+            return;
+        }
+        liveStopDialog = LiveStopDialog.Companion.newInstance(mAnchorName, mAnchorAvatar)
+                .setOutCancel(false).show(getSupportFragmentManager());
     }
 
     /**

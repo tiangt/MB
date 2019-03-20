@@ -34,6 +34,7 @@ import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
+import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.MyCouponBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
@@ -457,7 +458,7 @@ public interface Api {
      */
     @POST("v1/anchor/random")
     @FormUrlEncoded
-    Observable<ApiResult<JsonElement>> random(@FieldMap Map<String, String> params);
+    Observable<ApiResult<JumpRandomRoomBean>> random(@FieldMap Map<String, String> params);
 
     /**
      * 我的消费记录
