@@ -53,6 +53,7 @@ import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.BetsEndEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
+import com.whzl.mengbi.chat.room.message.events.ChatInputEvent;
 import com.whzl.mengbi.chat.room.message.events.EverydayEvent;
 import com.whzl.mengbi.chat.room.message.events.FirstPrizeUserEvent;
 import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
@@ -342,8 +343,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvRedBagRunWay;
     @BindView(R.id.rv_redpack)
     RecyclerView rvRedPack;
-    @BindView(R.id.chatActivityContainer)
-    RelativeLayout chatActivityContainer;
     @BindView(R.id.ll_loading)
     LoadLayout loadLayout;
 
@@ -443,7 +442,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (currentSelectedIndex == 1) {
             currentSelectedIndex = 0;
             setBottomContainerHeight(50);
-            chatActivityContainer.setVisibility(View.VISIBLE);
         }
 
         mProgramId = intent.getIntExtra(BundleConfig.PROGRAM_ID, -1);
@@ -703,9 +701,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (index == 1) {
 //            viewMessageNotify.setVisibility(View.GONE);
-            chatActivityContainer.setVisibility(View.GONE);
         } else {
-            chatActivityContainer.setVisibility(View.VISIBLE);
         }
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -846,6 +842,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, mAnchor)
                         .setDimAmount(0)
                         .setShowBottom(true)
+                        .setOutCancel(false)
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_chat_private:
@@ -2036,6 +2033,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void onPause() {
         super.onPause();
+        fragmentContainer.setTranslationY(0);
         if (isFinishing()) {
             destroy();
             return;
@@ -2404,5 +2402,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         headlineDialog = HeadlineDialog.newInstance(2, mProgramId, mAnchorId, mAnchorName, mAnchorAvatar)
                 .show(getSupportFragmentManager());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(ChatInputEvent chatInputEvent) {
+        int i = getResources().getDisplayMetrics().heightPixels - fragmentContainer.getBottom();
+        if (chatInputEvent.height < 0) {
+            fragmentContainer.setTranslationY(0);
+//            ObjectAnimator.ofFloat(fragmentContainer, "translationY",  0).setDuration(0).start();
+        } else
+//            ObjectAnimator.ofFloat(fragmentContainer, "translationY", 0, -(chatInputEvent.height - i)).start();
+            fragmentContainer.setTranslationY(-(chatInputEvent.height - i));
     }
 }

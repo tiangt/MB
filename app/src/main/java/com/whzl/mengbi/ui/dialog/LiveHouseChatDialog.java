@@ -22,6 +22,7 @@ import android.widget.RadioGroup;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.message.events.ChatInputEvent;
 import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.chat.room.util.ChatCacheFaceReplace;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
@@ -156,6 +157,10 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 KeyBoardUtil.closeKeybord(etContent, getContext());
                 saveEdit();
                 dismiss();
+                if (mChatToUser == null) {
+                    EventBus.getDefault().post(new ChatInputEvent(-1));
+                }
+
             }
             return false;
         });
@@ -168,14 +173,14 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 if (btnInputBroad.isSelected()) {
                     sendBroadCast(message);
                     etContent.getText().clear();
-                    KeyBoardUtil.closeKeybord(etContent, getContext());
+//                    KeyBoardUtil.closeKeybord(etContent, getContext());
                 } else {
                     ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
                     etContent.getText().clear();
-                    KeyBoardUtil.closeKeybord(etContent, getContext());
+//                    KeyBoardUtil.closeKeybord(etContent, getContext());
                 }
                 clearSaveEdit();
-                dismiss();
+//                dismiss();
                 return true;
             }
             return false;
@@ -298,9 +303,15 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         if (dialogOut.getHeight() - height > 100 && !btnInputChange.isSelected() && isShowSoftInput) {
             dismiss();
             saveEdit();
+            if (mChatToUser == null) {
+                EventBus.getDefault().post(new ChatInputEvent(-1));
+            }
         }
         if (dialogOut.getHeight() - height < -100 && !btnInputChange.isSelected()) {
             isShowSoftInput = true;
+            if (mChatToUser == null) {
+                EventBus.getDefault().post(new ChatInputEvent(getResources().getDisplayMetrics().heightPixels - dialogOut.getBottom()));
+            }
         }
         height = dialogOut.getHeight();
     }
@@ -328,14 +339,14 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 if (btnInputBroad.isSelected()) {
                     sendBroadCast(message);
                     etContent.getText().clear();
-                    KeyBoardUtil.closeKeybord(etContent, getContext());
+//                    KeyBoardUtil.closeKeybord(etContent, getContext());
                 } else {
                     ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
                     etContent.getText().clear();
-                    KeyBoardUtil.closeKeybord(etContent, getContext());
+//                    KeyBoardUtil.closeKeybord(etContent, getContext());
                 }
                 clearSaveEdit();
-                dismiss();
+//                dismiss();
                 break;
             case R.id.btn_input_change:
                 btnInputChange.setSelected(!btnInputChange.isSelected());
@@ -364,6 +375,9 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 KeyBoardUtil.closeKeybord(etContent, getContext());
                 saveEdit();
                 dismiss();
+                if (mChatToUser == null) {
+                    EventBus.getDefault().post(new ChatInputEvent(-1));
+                }
                 break;
             case R.id.btn_input_broad:
                 long userId = (long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0);

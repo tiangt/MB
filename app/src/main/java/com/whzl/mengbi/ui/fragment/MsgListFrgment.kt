@@ -37,7 +37,7 @@ class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPres
         val title = activity?.intent?.getStringExtra("title")
         val frgActivity = activity as FrgActivity
         when (title) {
-            "GOODS_TYPE" -> frgActivity.setTitle("系统通知")
+            "EXPIRATION_MESSAGE" -> frgActivity.setTitle("系统通知")
         }
     }
 
