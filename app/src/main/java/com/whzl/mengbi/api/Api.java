@@ -911,4 +911,14 @@ public interface Api {
     @POST("v1/tMessageReminder/checkMessageReminder")
     @FormUrlEncoded
     Observable<ApiResult<CheckMsgRemindBean>> checkMsgRemind(@FieldMap Map<String, String> params);
+
+    /**
+     * 修改用户基本信息接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/modify-user-info")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> modifyUserInfo(@FieldMap Map<String, String> params);
 }

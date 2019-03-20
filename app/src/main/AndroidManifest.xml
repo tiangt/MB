@@ -337,5 +337,6 @@
         <activity android:name=".ui.activity.HistoryListActivity" />
         <activity android:name=".ui.activity.me.MyGuardActivity" />
         <activity android:name=".ui.activity.FindRankActivity" />
+        <activity android:name=".ui.activity.SignActivity" />
     </application>
 </manifest>

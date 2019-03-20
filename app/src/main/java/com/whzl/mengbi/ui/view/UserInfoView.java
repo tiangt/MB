@@ -8,4 +8,6 @@ public interface UserInfoView {
     void showError(String msg);
 
     void onModifyNickname(String nickname);
+
+    void onSignSuccess(String sign);
 }

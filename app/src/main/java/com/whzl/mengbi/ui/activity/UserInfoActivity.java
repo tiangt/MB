@@ -63,6 +63,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     public static final int NICKNAME_CODE = 3;
     //修改性别
     private static final int GENDER_CODE = 2;
+    //修改个签
+    private static final int SIGN_CODE = 4;
     @BindView(R.id.iv_avatar)
     CircleImageView ivAvatar;
     @BindView(R.id.tv_account)
@@ -75,6 +77,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     TextView tvAddress;
     @BindView(R.id.tv_birthday)
     TextView tvBirthday;
+    @BindView(R.id.tv_sign)
+    TextView tvSign;
     @BindView(R.id.rl_account_container)
     RelativeLayout rlAccount;
     private UserInfoPresenter userInfoPresenter;
@@ -150,6 +154,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
         }
         tvAddress.setText(stringBuilder);
         tvBirthday.setText(DateUtils.getTime(mUserInfo.getBirthday()));
+        tvSign.setText(mUserInfo.getIntroduce());
     }
 
     private void setupSex(String sex) {
@@ -173,7 +178,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
      * @param v
      */
     @OnClick({R.id.rl_avatar_container, R.id.rl_nick_name_container, R.id.rl_gender_container,
-            R.id.rl_address_container, R.id.rl_birthday_container,R.id.rl_sign_container})
+            R.id.rl_address_container, R.id.rl_birthday_container, R.id.rl_sign_container})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_avatar_container:
@@ -185,9 +190,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 startActivityForResult(nicknameIntent, NICKNAME_CODE);
                 break;
             case R.id.rl_gender_container:
-                Intent genderIntent = new Intent(this, GenderModifyActivity.class);
-                genderIntent.putExtra("gender", mSex);
-                startActivityForResult(genderIntent, GENDER_CODE);
+                showMaleDialog();
+//                Intent genderIntent = new Intent(this, GenderModifyActivity.class);
+//                genderIntent.putExtra("gender", mSex);
+//                startActivityForResult(genderIntent, GENDER_CODE);
                 break;
             case R.id.rl_address_container:
                 showAddressPick();
@@ -196,11 +202,45 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 showDatePick();
                 break;
             case R.id.rl_sign_container:
-                showDatePick();
+                startActivityForResult(new Intent(this, SignActivity.class).putExtra("sign", tvSign.getText().toString()), SIGN_CODE);
                 break;
             default:
                 break;
         }
+    }
+
+    private void showMaleDialog() {
+        AwesomeDialog.init()
+                .setLayoutId(R.layout.dialog_modify_sex)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                        holder.setOnClickListener(R.id.btn_male, v1 -> {
+                            if (mSex.equals("M")) {
+                                return;
+                            }
+                            mSex = "M";
+                            HashMap hashMap = new HashMap();
+                            hashMap.put("userId", mUserInfo.getUserId());
+                            hashMap.put("sex", mSex);
+                            userInfoPresenter.onUpdataUserInfo(hashMap);
+                            dialog.dismiss();
+                        });
+                        holder.setOnClickListener(R.id.btn_female, v12 -> {
+                            if (mSex.equals("W")) {
+                                return;
+                            }
+                            mSex = "W";
+                            HashMap hashMap = new HashMap();
+                            hashMap.put("userId", mUserInfo.getUserId());
+                            hashMap.put("sex", mSex);
+                            userInfoPresenter.onUpdataUserInfo(hashMap);
+                            dialog.dismiss();
+                        });
+                    }
+                })
+                .setShowBottom(true)
+                .show(getSupportFragmentManager());
     }
 
     private void showOptionDialog() {
@@ -333,6 +373,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     }
 
     @Override
+    public void onSignSuccess(String sign) {
+        tvSign.setText(sign);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         PhotoUtil.onActivityResult(this, tempCapturePath, tempCropPath, requestCode, resultCode, data,
@@ -353,6 +398,12 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                     hashMap.put("userId", mUserInfo.getUserId());
                     hashMap.put("sex", mSex);
                     userInfoPresenter.onUpdataUserInfo(hashMap);
+                }
+                break;
+            case SIGN_CODE:
+                if (resultCode == RESULT_OK) {
+                    String sign = data.getStringExtra("sign");
+                    userInfoPresenter.onUpdateSign(mUserInfo.getUserId() + "", sign);
                 }
                 break;
             default:

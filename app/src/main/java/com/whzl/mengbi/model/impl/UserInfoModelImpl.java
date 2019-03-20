@@ -129,4 +129,27 @@ public class UserInfoModelImpl implements UserInfoModel {
             }
         });
     }
+
+    @Override
+    public void doUpdateSign(String userId, String sign, OnUserInfoFInishedListener listener) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("userId", userId);
+        paramsMap.put("introduce", sign);
+        ApiFactory.getInstance().getApi(Api.class)
+                .modifyUserInfo(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+
+                    @Override
+                    public void onSuccess(JsonElement jsonElement) {
+                        listener.onSignSuccess(sign);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
 }

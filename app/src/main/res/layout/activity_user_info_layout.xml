@@ -61,15 +61,13 @@
                 android:id="@+id/tv_account"
                 style="@style/user_info_option_right_text" />
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="6dp"
                 android:layout_toLeftOf="@id/tv_account"
-                android:text="长按复制"
-                android:textColor="#ff2b3f"
-                android:textSize="11sp" />
+                android:src="@drawable/ic_userinfo_copy" />
         </RelativeLayout>
 
         <View style="@style/user_info_option_divider" />
@@ -109,6 +107,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@id/tv_sign_tip"
                 android:ellipsize="end"
+                android:gravity="end|center_vertical"
                 android:singleLine="true" />
         </RelativeLayout>
 

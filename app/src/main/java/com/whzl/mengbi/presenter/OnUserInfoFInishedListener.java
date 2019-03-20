@@ -8,4 +8,6 @@ public interface OnUserInfoFInishedListener {
     void onError(String msg);
 
     void onModifyNicknameSuc(String nickname);
+
+    void onSignSuccess(String sign);
 }

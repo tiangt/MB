@@ -8,26 +8,26 @@
     android:paddingTop="33dp">
 
     <Button
-        android:id="@+id/btn_capture"
+        android:id="@+id/btn_male"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@null"
         android:drawablePadding="11dp"
-        android:drawableTop="@drawable/ic_userinfo_camera"
-        android:text="@string/user_info_photo"
+        android:drawableTop="@drawable/ic_userinfo_male"
+        android:text="男"
         android:textColor="#70010101"
         android:textSize="12sp" />
 
     <Button
-        android:id="@+id/btn_album"
+        android:id="@+id/btn_female"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@null"
         android:drawablePadding="11dp"
-        android:drawableTop="@drawable/ic_userinfo_photo"
-        android:text="@string/user_info_album"
+        android:drawableTop="@drawable/ic_userinfo_female"
+        android:text="女"
         android:textColor="#70010101"
         android:textSize="12sp" />
 

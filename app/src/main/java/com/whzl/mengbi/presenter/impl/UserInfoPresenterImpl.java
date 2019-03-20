@@ -32,6 +32,11 @@ public class UserInfoPresenterImpl implements UserInfoPresenter,OnUserInfoFInish
         userInfoModel.doUpdataUserInfo(hashMap,this);
     }
 
+    @Override
+    public void onUpdateSign(String userId, String sign) {
+        userInfoModel.doUpdateSign(userId,sign,this);
+    }
+
 
     @Override
     public void onPortraitSuccess(String filename) {
@@ -58,6 +63,13 @@ public class UserInfoPresenterImpl implements UserInfoPresenter,OnUserInfoFInish
     public void onModifyNicknameSuc(String nickname) {
         if (userInfoView != null) {
             userInfoView.onModifyNickname(nickname);
+        }
+    }
+
+    @Override
+    public void onSignSuccess(String sign) {
+        if (userInfoView != null) {
+            userInfoView.onSignSuccess(sign);
         }
     }
 
