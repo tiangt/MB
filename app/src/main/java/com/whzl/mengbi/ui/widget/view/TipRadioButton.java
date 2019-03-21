@@ -2,11 +2,10 @@ package com.whzl.mengbi.ui.widget.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-
-import com.whzl.mengbi.R;
 
 /**
  * @author nobody
@@ -34,7 +33,7 @@ public class TipRadioButton extends android.support.v7.widget.AppCompatRadioButt
             marginTop = 0;
             marginRight = 0;
 
-            color = getContext().getResources().getColor(R.color.red_bag);
+            color = Color.parseColor("#ff2d4e");
         }
 
     }

@@ -60,13 +60,13 @@ public class ShopActivity extends BaseActivity {
         titles.add("道具");
         titles.add("VIP");
         titles.add("靓号");
-//        titles.add("座驾");
+        titles.add("贵族");
 
         fragments = new ArrayList<>();
         fragments.add(new PropFragment());
         fragments.add(new VipFragment());
         fragments.add(new GoodnumFragment());
-//        fragments.add(new CarFragment());
+        fragments.add(new NobilityFragment());
 
 
         tabShop.setTabMode(TabLayout.MODE_FIXED);
@@ -76,7 +76,7 @@ public class ShopActivity extends BaseActivity {
 
         FragmentPagerAdaper fragmentPagerAdaper = new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles);
         viewpager.setAdapter(fragmentPagerAdaper);
-        viewpager.setOffscreenPageLimit(3);
+        viewpager.setOffscreenPageLimit(4);
         tabShop.setupWithViewPager(viewpager);
         for (int i = 0; i < tabShop.getTabCount(); i++) {
             View view = LayoutInflater.from(ShopActivity.this).inflate(R.layout.tab_shop, null);
