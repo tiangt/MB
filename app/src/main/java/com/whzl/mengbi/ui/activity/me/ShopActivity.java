@@ -78,15 +78,15 @@ public class ShopActivity extends BaseActivity {
         viewpager.setAdapter(fragmentPagerAdaper);
         viewpager.setOffscreenPageLimit(4);
         tabShop.setupWithViewPager(viewpager);
-        for (int i = 0; i < tabShop.getTabCount(); i++) {
-            View view = LayoutInflater.from(ShopActivity.this).inflate(R.layout.tab_shop, null);
-            TextView tvTitle = view.findViewById(R.id.tv_title);
-            tvTitle.setText(titles.get(i));
-            tabShop.getTabAt(i).setCustomView(view);
-            if (i == 0) {
-                view.findViewById(R.id.tv_tips).setVisibility(View.VISIBLE);
-            }
-        }
+//        for (int i = 0; i < tabShop.getTabCount(); i++) {
+//            View view = LayoutInflater.from(ShopActivity.this).inflate(R.layout.tab_shop, null);
+//            TextView tvTitle = view.findViewById(R.id.tv_title);
+//            tvTitle.setText(titles.get(i));
+//            tabShop.getTabAt(i).setCustomView(view);
+//            if (i == 0) {
+//                view.findViewById(R.id.tv_tips).setVisibility(View.VISIBLE);
+//            }
+//        }
         viewpager.postDelayed(() -> viewpager.setCurrentItem(currentSelectedIndex), 300);
     }
 

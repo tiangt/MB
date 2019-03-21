@@ -1,9 +1,12 @@
 package com.whzl.mengbi.ui.activity.me
 
+import android.os.Bundle
 import com.whzl.mengbi.R
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.ui.fragment.base.BaseFragment
+import com.whzl.mengbi.util.glide.GlideImageLoader
+import kotlinx.android.synthetic.main.fragment_nobility_sort.*
 
 /**
  *
@@ -12,8 +15,11 @@ import com.whzl.mengbi.ui.fragment.base.BaseFragment
  */
 class NobilitySortFragment : BaseFragment<BasePresenter<BaseView>>() {
     companion object {
-        fun newInstance(): NobilitySortFragment {
+        fun newInstance(img: Int): NobilitySortFragment {
             val fragment = NobilitySortFragment()
+            val bundle = Bundle()
+            bundle.putInt("img", img)
+            fragment.arguments = bundle
             return fragment
         }
 
@@ -25,5 +31,7 @@ class NobilitySortFragment : BaseFragment<BasePresenter<BaseView>>() {
     }
 
     override fun init() {
+        val img = arguments?.get("img")
+        GlideImageLoader.getInstace().displayImage(activity, img, iv_nobility_sort)
     }
 }

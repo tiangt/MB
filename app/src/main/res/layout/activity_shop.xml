@@ -17,13 +17,62 @@
         <include layout="@layout/divider_shawdow_white" />
     </LinearLayout>
 
-    <com.whzl.mengbi.ui.widget.tablayout.TabLayout
-        android:id="@+id/tab_shop"
-        style="@style/ShopTab"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        app:tabGravity="fill"
-        app:tabMode="fixed" />
+        android:layout_height="44dp">
+
+        <com.whzl.mengbi.ui.widget.tablayout.TabLayout
+            android:id="@+id/tab_shop"
+            style="@style/ShopTab"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            app:tabGravity="fill"
+            app:tabMode="fixed" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="11dp"
+                    android:background="@drawable/bg_tab_shop"
+                    android:gravity="center"
+                    android:text="送萌豆"
+                    android:textColor="#fffefe"
+                    android:textSize="8sp" />
+            </RelativeLayout>
+
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

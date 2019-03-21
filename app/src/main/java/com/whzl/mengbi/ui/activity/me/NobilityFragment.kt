@@ -2,7 +2,6 @@ package com.whzl.mengbi.ui.activity.me
 
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import butterknife.BindView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
@@ -34,18 +33,19 @@ class NobilityFragment : BaseFragment<BasePresenter<BaseView>>() {
     private fun initVp() {
         val titles = arrayListOf("青铜", "白银", "黄金", "铂金", "钻石", "星耀", "王者", "传说")
         val fragments = arrayListOf<Fragment>(
-                NobilitySortFragment.newInstance(),
-                NobilitySortFragment.newInstance(),
-                NobilitySortFragment.newInstance(),
-                NobilitySortFragment.newInstance(),
-                NobilitySortFragment.newInstance(),
-                NobilitySortFragment.newInstance(),
-                NobilitySortFragment.newInstance(),
-                NobilitySortFragment.newInstance()
+                NobilitySortFragment.newInstance(R.drawable.img_nobility_1),
+                NobilitySortFragment.newInstance(R.drawable.img_nobility_2),
+                NobilitySortFragment.newInstance(R.drawable.img_nobility_3),
+                NobilitySortFragment.newInstance(R.drawable.img_nobility_4),
+                NobilitySortFragment.newInstance(R.drawable.img_nobility_5),
+                NobilitySortFragment.newInstance(R.drawable.img_nobility_6),
+                NobilitySortFragment.newInstance(R.drawable.img_nobility_7),
+                NobilitySortFragment.newInstance(R.drawable.img_nobility_8)
         )
         tabLayout?.selectedTabIndicatorWidth = UIUtil.dip2px(activity, 23f)
         tabLayout?.isNeedSwitchAnimation = true
         val adapter = FragmentPagerAdaper(childFragmentManager, fragments, titles)
+        viewPager?.offscreenPageLimit = titles.size
         viewPager?.adapter = adapter
         tabLayout?.setupWithViewPager(viewPager)
     }
