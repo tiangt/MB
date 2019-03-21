@@ -1,11 +1,11 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -47,6 +47,7 @@ import com.whzl.mengbi.ui.dialog.fragment.CommonMotherFragment;
 import com.whzl.mengbi.ui.dialog.fragment.GiftSortMotherFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.CommonAdapter;
 import com.whzl.mengbi.ui.widget.recyclerview.MultiItemTypeAdapter;
+import com.whzl.mengbi.ui.widget.tablayout.TabLayout;
 import com.whzl.mengbi.util.AmountConversionUitls;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
@@ -113,6 +114,8 @@ public class GiftDialog extends BaseAwesomeDialog {
     View viewSuper;
     @BindView(R.id.ll_super)
     LinearLayout llSuper;
+    @BindView(R.id.tv_bag)
+    TextView tvBag;
 
     private ArrayList<GiftCountInfoBean> giftCountInfoList;
     private CommonAdapter<GiftCountInfoBean> adapter;
@@ -229,6 +232,7 @@ public class GiftDialog extends BaseAwesomeDialog {
             public void onPageSelected(int position) {
                 viewSuper.setVisibility(position == fragments.size() - 1 ? View.INVISIBLE : View.VISIBLE);
                 llSuper.setVisibility(position == fragments.size() - 1 ? View.INVISIBLE : View.VISIBLE);
+
             }
 
             @Override
@@ -241,11 +245,16 @@ public class GiftDialog extends BaseAwesomeDialog {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 setTabChange(tab.getPosition());
+                if (tab.getPosition() == fragments.size() - 1) {
+                    tvBag.setTextColor(Color.parseColor("#fff800"));
+                }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                if (tab.getPosition() == fragments.size() - 1) {
+                    tvBag.setTextColor(Color.parseColor("#ffffff"));
+                }
             }
 
             @Override
@@ -254,6 +263,12 @@ public class GiftDialog extends BaseAwesomeDialog {
             }
         });
 
+        tvBag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewpager.setCurrentItem(fragments.size() - 1, true);
+            }
+        });
         getRunWayGiftDetail();
     }
 
@@ -627,7 +642,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
-                LogUtils.e("Thread.currentThread().getId() "+Thread.currentThread().getId());
+                LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
                 try {
                     //拿到tabLayout的mTabStrip属性
                     LinearLayout mTabStrip = (LinearLayout) tabLayout.getChildAt(0);

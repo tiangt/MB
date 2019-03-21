@@ -21,11 +21,28 @@
             app:layout_constraintLeft_toRightOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
-        style="@style/LiveHouseDialogTab"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.whzl.mengbi.ui.widget.tablayout.TabLayout
+            android:id="@+id/tab_layout"
+            style="@style/LiveHouseDialogTab"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/tv_bag"
+            android:layout_width="49dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:background="#212121"
+            android:drawableLeft="@drawable/ic_packsack"
+            android:gravity="center"
+            android:text="背包"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
