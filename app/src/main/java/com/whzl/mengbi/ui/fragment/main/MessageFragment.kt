@@ -57,7 +57,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
                 .subscribe(object : ApiObserver<GetUnReadMsgBean>(this) {
 
                     override fun onSuccess(watchHistoryListBean: GetUnReadMsgBean?) {
-                        loadSuccess(watchHistoryListBean?.list)
+                        loadSuccess(watchHistoryListBean?.list?.subList(0, 1))
                     }
 
                     override fun onError(code: Int) {
@@ -100,7 +100,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
             super.onItemClick(view, position)
             startActivity(Intent(activity, FrgActivity::class.java)
                     .putExtra(FrgActivity.FRAGMENT_CLASS, MsgListFrgment::class.java)
-                    .putExtra("title",mDatas[position].messageType))
+                    .putExtra("title", mDatas[position].messageType))
         }
     }
 
