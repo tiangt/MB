@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
@@ -19,7 +20,8 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
-import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
+import com.whzl.mengbi.eventbus.event.MainMsgClickEvent;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.CheckMsgRemindBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
@@ -55,6 +57,7 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
@@ -76,6 +79,7 @@ public class MainActivity extends BaseActivity {
     private int currentSelectedIndex = 0;
     private ProgressDialog progressDialog;
     public boolean isExit;
+    public boolean isFirst = true;
     private AwesomeDialog awesomeDialog;
     private static final String TAG_EXIT = "exit";
     private int[] colors = new int[]{Color.parseColor("#ffffff"), Color.parseColor("#ffffff"),
@@ -123,6 +127,7 @@ public class MainActivity extends BaseActivity {
                 case R.id.rb_message:
                     if (checkLogin()) {
                         setTabChange(2);
+                        EventBus.getDefault().post(new MainMsgClickEvent());
                         return;
                     }
                     login();
@@ -192,6 +197,9 @@ public class MainActivity extends BaseActivity {
             StatusBarUtil.setLightMode(this);
             StatusBarUtil.setColor(this, colors[index], 0);
         }
+        if (index == 2) {
+            resetMessage();
+        }
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
@@ -202,6 +210,22 @@ public class MainActivity extends BaseActivity {
         }
         fragmentTransaction.commitAllowingStateLoss();
         currentSelectedIndex = index;
+    }
+
+    private void resetMessage() {
+        HashMap param = new HashMap();
+        param.put("userId", SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, (long) 0).toString());
+        ApiFactory.getInstance().getApi(Api.class)
+                .resetMsgNotify(ParamsUtils.getSignPramsMap(param))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+                    @Override
+                    public void onSuccess(JsonElement jsonElement) {
+                        ((TipRadioButton) rgTab.getChildAt(2)).setTipOn(false);
+                        isFirst = false;
+                    }
+                });
     }
 
     @Override
@@ -216,6 +240,12 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LoginSuccussEvent event) {
+        getMsgRemind();
+        isFirst = true;
+    }
+
     private void getMsgRemind() {
         HashMap param = new HashMap();
         param.put("userId", SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, (long) 0).toString());
@@ -227,7 +257,9 @@ public class MainActivity extends BaseActivity {
                 .subscribe(new ApiObserver<CheckMsgRemindBean>() {
                     @Override
                     public void onSuccess(CheckMsgRemindBean checkMsgRemindBean) {
-
+                        if (checkMsgRemindBean.num != 0) {
+                            ((TipRadioButton) rgTab.getChildAt(2)).setTipOn(true);
+                        }
                     }
                 });
     }

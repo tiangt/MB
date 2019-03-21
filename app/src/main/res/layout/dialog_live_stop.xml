@@ -63,7 +63,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6.5dp"
-            android:text="上次开播：10小时前"
             android:textColor="#40000000"
             android:textSize="9sp"
             app:layout_constraintLeft_toLeftOf="parent"

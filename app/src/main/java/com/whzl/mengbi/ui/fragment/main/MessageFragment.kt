@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment.main
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -13,6 +14,8 @@ import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
+import com.whzl.mengbi.eventbus.event.LoginSuccussEvent
+import com.whzl.mengbi.eventbus.event.MainMsgClickEvent
 import com.whzl.mengbi.model.entity.GetUnReadMsgBean
 import com.whzl.mengbi.ui.activity.base.FrgActivity
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
@@ -25,6 +28,9 @@ import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 /**
@@ -34,12 +40,21 @@ import java.util.*
  * @date 2019.2.14
  */
 class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePresenter<BaseView>>() {
+    val CLICK = 300
+    var needFresh = false
+
 
     override fun init() {
         super.init()
+        EventBus.getDefault().register(this)
         val titleView = LayoutInflater.from(activity).inflate(R.layout.headtip_msg, pullView, false)
         addHeadTips(titleView)
         pullView.setBackgroundColor(Color.WHITE)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun setLoadMoreEndShow(): Boolean {
@@ -47,6 +62,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
     }
 
     override fun loadData(action: Int, mPage: Int) {
+        needFresh = false
         val userid = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L)
         val param = HashMap<String, String>()
         param.put("userId", userid.toString())
@@ -64,7 +80,18 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
                         loadFail()
                     }
                 })
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: LoginSuccussEvent) {
+        needFresh = true
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: MainMsgClickEvent) {
+        if (needFresh && hasLoadData) {
+            refreshLayout.autoRefresh()
+        }
     }
 
     override fun setViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
@@ -98,9 +125,18 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
 
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
-            startActivity(Intent(activity, FrgActivity::class.java)
+            startActivityForResult(Intent(activity, FrgActivity::class.java)
                     .putExtra(FrgActivity.FRAGMENT_CLASS, MsgListFrgment::class.java)
-                    .putExtra("title", mDatas[position].messageType))
+                    .putExtra("title", mDatas[position].messageType), CLICK)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == CLICK) {
+                refreshLayout.autoRefresh()
+            }
         }
     }
 

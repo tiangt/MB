@@ -207,7 +207,10 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 showDatePick();
                 break;
             case R.id.rl_sign_container:
-                startActivityForResult(new Intent(this, SignActivity.class).putExtra("sign", tvSign.getText().toString()), SIGN_CODE);
+                if (tvSign.getText().toString().equals("未设置") || TextUtils.isEmpty(tvSign.getText())) {
+                    startActivityForResult(new Intent(this, SignActivity.class).putExtra("sign", ""), SIGN_CODE);
+                } else
+                    startActivityForResult(new Intent(this, SignActivity.class).putExtra("sign", tvSign.getText().toString()), SIGN_CODE);
                 break;
             default:
                 break;
@@ -408,7 +411,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             case SIGN_CODE:
                 if (resultCode == RESULT_OK) {
                     String sign = data.getStringExtra("sign");
-                    ToastUtils.showToast(sign);
                     userInfoPresenter.onUpdateSign(mUserInfo.getUserId() + "", sign);
                 }
                 break;

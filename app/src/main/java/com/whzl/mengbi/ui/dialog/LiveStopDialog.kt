@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.dialog
 
 import android.os.Bundle
+import android.text.TextUtils
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.model.entity.AnchorInfo
@@ -8,6 +9,7 @@ import com.whzl.mengbi.model.entity.JumpRandomRoomBean
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
+import com.whzl.mengbi.util.DateUtils
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -25,11 +27,12 @@ class LiveStopDialog : BaseAwesomeDialog() {
     private var mprogramId = 0
 
     companion object {
-        fun newInstance(mAnchorName: String, mAnchorAvatar: String): LiveStopDialog {
+        fun newInstance(mAnchorName: String, mAnchorAvatar: String, lastUpdateTime: String): LiveStopDialog {
             val dialog = LiveStopDialog()
             val bundle = Bundle()
             bundle.putString("anchorName", mAnchorName)
             bundle.putString("anchorAvatar", mAnchorAvatar)
+            bundle.putString("lastTime", lastUpdateTime)
             dialog.arguments = bundle
             return dialog
         }
@@ -42,7 +45,11 @@ class LiveStopDialog : BaseAwesomeDialog() {
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
         val fromAvatar = arguments?.get("anchorAvatar")
         val fromName = arguments?.get("anchorName")
+        val lastTime = arguments?.getString("lastTime")
         holder?.setOnClickListener(R.id.ib_close_live_stop) { dismiss() }
+        if (TextUtils.isEmpty(lastTime)) holder?.setText(R.id.tv_last_live, "上次开播：刚刚")
+        else holder?.setText(R.id.tv_last_live, "上次开播：" + DateUtils.getTimeRange(lastTime))
+
         GlideImageLoader.getInstace().circleCropImage(activity, fromAvatar, holder?.getView(R.id.iv_avatar_from))
         holder?.setText(R.id.tv_nick_from, fromName.toString())
         holder?.setOnClickListener(R.id.tv_change_live_stop) {

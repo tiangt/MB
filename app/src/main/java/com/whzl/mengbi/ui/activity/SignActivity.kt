@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.text.TextUtils
 import android.widget.EditText
 import android.widget.TextView
 import com.whzl.mengbi.R
@@ -10,6 +11,7 @@ import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.ui.activity.base.BaseActivity
+import com.whzl.mengbi.util.ToastUtils
 
 /**
  *
@@ -40,12 +42,21 @@ class SignActivity : BaseActivity<BasePresenter<BaseView>>() {
     }
 
     override fun onToolbarMenuClick() {
+        if (TextUtils.isEmpty(etSign.text.toString().trim())) {
+            ToastUtils.showToastUnify(this, "请编辑签名")
+            return
+        }
         if (sign == etSign.text.toString().trim()) {
             finish()
             return
         }
         val intent = Intent()
-        intent.putExtra("sign", etSign.text.toString().trim())
+        if (TextUtils.isEmpty(etSign.text)) {
+            intent.putExtra("sign", " ")
+        } else {
+            intent.putExtra("sign", etSign.text.toString().trim())
+        }
+
         setResult(Activity.RESULT_OK, intent)
         finish()
     }

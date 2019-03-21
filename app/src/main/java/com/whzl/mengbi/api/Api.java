@@ -909,7 +909,7 @@ public interface Api {
      * @param params
      * @return
      */
-    @POST("v1/tMessageReminder/checkMessageReminder")
+    @POST("v1/msgcenter/check-msg-num")
     @FormUrlEncoded
     Observable<ApiResult<CheckMsgRemindBean>> checkMsgRemind(@FieldMap Map<String, String> params);
 
@@ -922,4 +922,15 @@ public interface Api {
     @POST("v1/user/modify-user-info")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> modifyUserInfo(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取消息小红点一键已读
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/msgcenter/reset-msg-notify")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> resetMsgNotify(@FieldMap Map<String, String> params);
+
 }

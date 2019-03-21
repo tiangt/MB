@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
@@ -106,7 +107,9 @@ class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPres
 
             tvMove?.clickDelay {
                 tvGood?.setTextColor(Color.parseColor("#50000000"))
-                mPresenter.updateMsgRead(listBean.messageId, listBean.messageType)
+                if (listBean.isRead == "F") {
+                    mPresenter.updateMsgRead(listBean.messageId, listBean.messageType)
+                }
                 when (listBean.goodsType) {
                     "COUPON", "NOBILITY_EXP" ->
                         startActivity(Intent(activity, WXPayEntryActivity::class.java))
@@ -132,11 +135,11 @@ class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPres
     }
 
     override fun onUpdateMsgReadSuccess() {
-
+        activity?.setResult(Activity.RESULT_OK)
     }
 
     override fun onGetMsgListSuccess(getGoodMsgBean: GetGoodMsgBean) {
-        loadSuccess(getGoodMsgBean?.list)
+        loadSuccess(getGoodMsgBean.list)
     }
 
 }

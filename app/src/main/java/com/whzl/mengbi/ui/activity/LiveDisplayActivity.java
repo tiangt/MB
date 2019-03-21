@@ -181,6 +181,7 @@ import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.ui.widget.view.WeekStarView;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BitmapUtils;
+import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -348,6 +349,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RecyclerView rvRedPack;
     @BindView(R.id.ll_loading)
     LoadLayout loadLayout;
+    @BindView(R.id.tv_stop_time)
+    TextView tvStopTime;
 
     private LivePresenterImpl mLivePresenter;
     public int mProgramId;
@@ -439,6 +442,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         textureView.stop();
         textureView.reset();
 
+        llStopTip.setVisibility(View.GONE);
         textureView.setVisibility(View.INVISIBLE);
 //        progressBar.setVisibility(View.VISIBLE);
         loadLayout.setVisibility(View.VISIBLE);
@@ -1236,7 +1240,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         textureView.setVisibility(View.INVISIBLE);
         llStopTip.setVisibility(View.VISIBLE);
         loadLayout.setVisibility(View.GONE);
-        showLiveStopDialog();
+        showLiveStopDialog("");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1341,9 +1345,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
             if (!"T".equals(roomInfoBean.getData().getProgramStatus())) {
                 llStopTip.setVisibility(View.VISIBLE);
-                // TODO: 2019/3/20 上次开播时间
+                tvStopTime.setText("上次开播：" + DateUtils.getTimeRange(roomInfoBean.getData().getAnchor().getLastUpdateTime()));
                 loadLayout.setVisibility(View.GONE);
-                showLiveStopDialog();
+                showLiveStopDialog(roomInfoBean.getData().getAnchor().getLastUpdateTime());
             }
 
             mShareUrl = roomInfoBean.getData().getShareUrl();
@@ -1357,11 +1361,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initIgnore(roomInfoBean);
     }
 
-    private void showLiveStopDialog() {
+    private void showLiveStopDialog(String lastUpdateTime) {
         if (liveStopDialog != null && liveStopDialog.isAdded()) {
             return;
         }
-        liveStopDialog = LiveStopDialog.Companion.newInstance(mAnchorName, mAnchorAvatar)
+        liveStopDialog = LiveStopDialog.Companion.newInstance(mAnchorName, mAnchorAvatar, lastUpdateTime)
                 .setOutCancel(false).show(getSupportFragmentManager());
     }
 
@@ -2194,6 +2198,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
         intent.putExtra(BundleConfig.PROGRAM_ID, programId);
         startActivity(intent);
+
         rlOtherSideInfo.setVisibility(View.GONE);
         textureView.setVisibility(View.INVISIBLE);
         pkLayout.setVisibility(View.GONE);
