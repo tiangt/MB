@@ -1,7 +1,10 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -42,6 +45,7 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -182,6 +186,15 @@ public class JsBridgeActivity extends BaseActivity {
 
         bridgeWebView.registerHandler("jumpToShopActivity", (data, function) ->
                 jumpToShopActivity());
+
+        bridgeWebView.registerHandler("startQQChat", (data, function) -> {
+            JumpRoomBean jumpRoomBean = GsonUtils.GsonToBean(data, JumpRoomBean.class);
+            if (jumpRoomBean == null) {
+                return;
+            }
+            startQQChat(jumpRoomBean.pId);
+        });
+
     }
 
     private void jumpToShopActivity() {
@@ -253,6 +266,29 @@ public class JsBridgeActivity extends BaseActivity {
 //
 //                    }
 //                });
+    }
+
+    private void startQQChat(String qq) {
+        if (!isQQClientAvailable()) {
+            showToast("QQ未安装");
+            return;
+        }
+        final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=" + qq + "&version=1";
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
+    }
+
+    public boolean isQQClientAvailable() {
+        final PackageManager packageManager = getPackageManager();
+        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);
+        if (pinfo != null) {
+            for (int i = 0; i < pinfo.size(); i++) {
+                String pn = pinfo.get(i).packageName;
+                if (pn.equals("com.tencent.mobileqq")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void getUserInfo(CallBackFunction function) {

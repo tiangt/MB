@@ -247,6 +247,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                 setTabChange(tab.getPosition());
                 if (tab.getPosition() == fragments.size() - 1) {
                     tvBag.setTextColor(Color.parseColor("#fff800"));
+                    tvBag.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_gift_pack_select), null, null, null);
                 }
             }
 
@@ -254,6 +255,7 @@ public class GiftDialog extends BaseAwesomeDialog {
             public void onTabUnselected(TabLayout.Tab tab) {
                 if (tab.getPosition() == fragments.size() - 1) {
                     tvBag.setTextColor(Color.parseColor("#ffffff"));
+                    tvBag.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_gift_pack_normal), null, null, null);
                 }
             }
 

@@ -36,9 +36,10 @@
             android:layout_width="49dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:background="#212121"
-            android:drawableLeft="@drawable/ic_packsack"
+            android:background="@drawable/bg_gift_pack"
+            android:drawableLeft="@drawable/ic_gift_pack_normal"
             android:gravity="center"
+            android:paddingLeft="5dp"
             android:text="背包"
             android:textColor="@color/white"
             android:textSize="12sp" />

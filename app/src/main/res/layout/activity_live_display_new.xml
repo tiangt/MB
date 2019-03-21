@@ -368,7 +368,7 @@
                             android:layout_width="45dp"
                             android:layout_height="45dp"
                             android:layout_marginBottom="20dp"
-                            android:src="@drawable/ic_main_history" />
+                            android:src="@drawable/ic_play_stop_icon" />
 
                         <TextView
                             android:id="@+id/tv_stop_tip"
