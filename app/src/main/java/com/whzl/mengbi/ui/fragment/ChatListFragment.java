@@ -25,12 +25,14 @@ import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
 import com.whzl.mengbi.ui.adapter.ChatMsgAnimation;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,6 +54,8 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 public class ChatListFragment extends BaseFragment {
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.view_click)
+    View viewClick;
     //    @BindView(R.id.ll_enter)
     LinearLayout llEnter;
 //    @BindView(R.id.tv_enter)
@@ -97,6 +101,12 @@ public class ChatListFragment extends BaseFragment {
         initChatRecycler();
         EventBus.getDefault().register(this);
         mProgramId = getArguments().getInt("programId");
+        viewClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((LiveDisplayActivity) getMyActivity()).hideChatDialog();
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

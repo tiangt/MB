@@ -23,199 +23,206 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/rl_top"
+                <LinearLayout
+                    android:id="@+id/ll_top_live"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="6.5dp"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <RelativeLayout
-                        android:id="@+id/rl_anchor_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="34dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="6dp"
-                        android:background="@drawable/shape_host_info_bg">
-
-                        <com.whzl.mengbi.ui.widget.view.CircleImageView
-                            android:id="@+id/iv_host_avatar"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="1dp" />
+                        android:id="@+id/rl_top"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="6.5dp"
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <RelativeLayout
-                            android:id="@+id/rl_host_info"
+                            android:id="@+id/rl_anchor_info"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_toRightOf="@id/iv_host_avatar">
+                            android:layout_height="34dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="6dp"
+                            android:background="@drawable/shape_host_info_bg">
 
-                            <com.whzl.mengbi.ui.widget.view.AutoScrollTextView3
-                                android:id="@+id/tv_host_name"
-                                android:layout_width="50dp"
-                                android:layout_height="13dp"
-                                android:layout_marginLeft="6dp"
-                                android:layout_marginRight="6dp"
-                                android:layout_marginTop="3dp"
-                                android:textSize="11sp" />
+                            <com.whzl.mengbi.ui.widget.view.CircleImageView
+                                android:id="@+id/iv_host_avatar"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="1dp" />
 
+                            <RelativeLayout
+                                android:id="@+id/rl_host_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_toRightOf="@id/iv_host_avatar">
+
+                                <com.whzl.mengbi.ui.widget.view.AutoScrollTextView3
+                                    android:id="@+id/tv_host_name"
+                                    android:layout_width="50dp"
+                                    android:layout_height="13dp"
+                                    android:layout_marginLeft="6dp"
+                                    android:layout_marginRight="6dp"
+                                    android:layout_marginTop="3dp"
+                                    android:textSize="11sp" />
+
+
+                                <TextView
+                                    android:id="@+id/tv_fans_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginBottom="2dp"
+                                    android:layout_marginLeft="6dp"
+                                    android:layout_marginRight="6dp"
+                                    android:layout_marginTop="6.5dp"
+                                    android:singleLine="true"
+                                    android:textColor="@color/white"
+                                    android:textSize="10sp" />
+                            </RelativeLayout>
 
                             <TextView
-                                android:id="@+id/tv_fans_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginBottom="2dp"
-                                android:layout_marginLeft="6dp"
-                                android:layout_marginRight="6dp"
-                                android:layout_marginTop="6.5dp"
-                                android:singleLine="true"
-                                android:textColor="@color/white"
-                                android:textSize="10sp" />
+                                android:id="@+id/btn_follow"
+                                android:layout_width="45dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="4dp"
+                                android:layout_marginRight="1dp"
+                                android:layout_toRightOf="@id/rl_host_info"
+                                android:background="@drawable/shape_live_follow_button"
+                                android:gravity="center"
+                                android:text="订阅"
+                                android:textColor="#323232"
+                                android:textSize="13sp" />
+
                         </RelativeLayout>
 
                         <TextView
-                            android:id="@+id/btn_follow"
-                            android:layout_width="45dp"
-                            android:layout_height="match_parent"
-                            android:layout_centerVertical="true"
-                            android:layout_margin="4dp"
-                            android:layout_marginRight="1dp"
-                            android:layout_toRightOf="@id/rl_host_info"
-                            android:background="@drawable/shape_live_follow_button"
-                            android:gravity="center"
-                            android:text="订阅"
-                            android:textColor="#323232"
-                            android:textSize="13sp" />
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tv_popularity"
-                        android:layout_width="31dp"
-                        android:layout_height="31dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
-                        android:background="@drawable/shape_live_display_populartity_bg"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="9sp" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="11dp"
-                        android:layout_toLeftOf="@id/tv_popularity"
-                        android:layout_toRightOf="@id/rl_anchor_info">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/audience_recycler"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
+                            android:id="@+id/tv_popularity"
+                            android:layout_width="31dp"
+                            android:layout_height="31dp"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginEnd="-1dp"
-                            android:layout_marginRight="-1dp"
-                            android:overScrollMode="never" />
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="4dp"
+                            android:background="@drawable/shape_live_display_populartity_bg"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:textSize="9sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="11dp"
+                            android:layout_toLeftOf="@id/tv_popularity"
+                            android:layout_toRightOf="@id/rl_anchor_info">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/audience_recycler"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="-1dp"
+                                android:layout_marginRight="-1dp"
+                                android:overScrollMode="never" />
+                        </RelativeLayout>
+
                     </RelativeLayout>
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/rl_contribution_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="28dp"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginTop="6.5dp"
-                    app:layout_constraintTop_toBottomOf="@id/rl_top">
-
                     <RelativeLayout
-                        android:id="@+id/rl_head"
-                        android:layout_width="wrap_content"
-                        android:layout_height="25dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/shape_live_display_contribution_btn_bg">
+                        android:id="@+id/rl_contribution_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="6.5dp"
+                        app:layout_constraintTop_toBottomOf="@id/rl_top">
 
-                        <com.whzl.mengbi.ui.widget.view.HeadLineView
-                            android:id="@+id/head_line"
+                        <RelativeLayout
+                            android:id="@+id/rl_head"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent" />
+                            android:layout_height="25dp"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/shape_live_display_contribution_btn_bg">
+
+                            <com.whzl.mengbi.ui.widget.view.HeadLineView
+                                android:id="@+id/head_line"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_toRightOf="@id/head_line"
+                                android:src="@drawable/live_display_arrow" />
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:id="@+id/rl_guard_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_toRightOf="@id/rl_head">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/live_display_guard_num" />
+
+                            <TextView
+                                android:id="@+id/tv_guard_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:paddingBottom="4dp"
+                                android:textColor="@color/white"
+                                android:textSize="6sp" />
+                        </RelativeLayout>
+
+                        <FrameLayout
+                            android:id="@+id/frame_supercar_track"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_toRightOf="@id/rl_guard_number"
+                            android:visibility="gone" />
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_toRightOf="@id/rl_guard_number">
+
+                            <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
+                                android:id="@+id/tv_run_way_gift"
+                                android:layout_width="1000dp"
+                                android:layout_height="20dp"
+                                android:layout_marginBottom="2dp"
+                                android:layout_marginLeft="5dp"
+                                android:gravity="center_vertical"
+                                android:singleLine="true"
+                                android:textSize="12sp" />
+                        </android.support.constraint.ConstraintLayout>
 
                         <ImageView
+                            android:id="@+id/iv_live_rocket"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_toRightOf="@id/head_line"
-                            android:src="@drawable/live_display_arrow" />
+                            android:layout_toLeftOf="@id/frame_supercar_track"
+                            android:src="@drawable/live_display_rocket"
+                            android:visibility="gone" />
                     </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:id="@+id/rl_guard_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp"
-                        android:layout_toRightOf="@id/rl_head">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/live_display_guard_num" />
-
-                        <TextView
-                            android:id="@+id/tv_guard_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:paddingBottom="4dp"
-                            android:textColor="@color/white"
-                            android:textSize="6sp" />
-                    </RelativeLayout>
-
-                    <FrameLayout
-                        android:id="@+id/frame_supercar_track"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/rl_guard_number"
-                        android:visibility="gone" />
-
-                    <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="5dp"
-                        android:layout_toRightOf="@id/rl_guard_number">
-
-                        <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
-                            android:id="@+id/tv_run_way_gift"
-                            android:layout_width="1000dp"
-                            android:layout_height="20dp"
-                            android:layout_marginBottom="2dp"
-                            android:layout_marginLeft="5dp"
-                            android:gravity="center_vertical"
-                            android:singleLine="true"
-                            android:textSize="12sp" />
-                    </android.support.constraint.ConstraintLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_live_rocket"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_toLeftOf="@id/frame_supercar_track"
-                        android:src="@drawable/live_display_rocket"
-                        android:visibility="gone" />
-                </RelativeLayout>
+                </LinearLayout>
 
                 <com.whzl.mengbi.ui.widget.view.RatioRelativeLayout
                     android:id="@+id/ratio_layout"
@@ -223,7 +230,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="7dp"
                     android:background="@color/colorblack"
-                    app:layout_constraintTop_toBottomOf="@id/rl_contribution_container"
+                    app:layout_constraintTop_toBottomOf="@id/ll_top_live"
                     app:ratio="1.33">
 
                     <android.support.constraint.ConstraintLayout

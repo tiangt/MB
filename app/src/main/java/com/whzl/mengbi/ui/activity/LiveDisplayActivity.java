@@ -351,6 +351,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LoadLayout loadLayout;
     @BindView(R.id.tv_stop_time)
     TextView tvStopTime;
+    @BindView(R.id.ll_top_live)
+    LinearLayout llTopContainer;
 
     private LivePresenterImpl mLivePresenter;
     public int mProgramId;
@@ -425,6 +427,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog personalInfoDialog;
     private BaseAwesomeDialog snatchDialog;
     private BaseAwesomeDialog liveStopDialog;
+    private ObjectAnimator llTopUpAnima;
+    private ObjectAnimator llTopDownAnima;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -581,6 +585,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (pkLayout.popupWindow != null && pkLayout.popupWindow.isShowing()) {
                     pkLayout.popupWindow.dismiss();
                     pkLayout.tvFansRank.setText("点击打开助力粉丝榜");
+                }
+                if (mChatDialog != null && mChatDialog.isAdded()) {
+                    ((LiveHouseChatDialog) mChatDialog).hide();
                 }
             }
         });
@@ -2063,6 +2070,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void onResume() {
         super.onResume();
+        int[] location = new int[2];
+        llTopContainer.getLocationOnScreen(location);
+        if (location[1] < 0) {
+            showTopContain();
+        }
         if (textureView != null) {
             textureView.runInForeground();
         }
@@ -2148,6 +2160,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (compositeDisposable != null) {
             compositeDisposable.clear();
+        }
+        if (llTopUpAnima != null) {
+            llTopUpAnima.end();
+            llTopUpAnima = null;
+        }
+        if (llTopDownAnima != null) {
+            llTopDownAnima.end();
+            llTopDownAnima = null;
         }
     }
 
@@ -2402,6 +2422,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         });
     }
 
+    /**
+     * 幸运夺宝
+     */
     public void showSnatchDialog() {
         closeDrawLayout();
         if (mUserId == 0) {
@@ -2424,13 +2447,56 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(ChatInputEvent chatInputEvent) {
+        int[] location = new int[2];
+        llTopContainer.getLocationOnScreen(location);
         int i = getResources().getDisplayMetrics().heightPixels - fragmentContainer.getBottom();
         if (chatInputEvent.height < 0) {
             fragmentContainer.setTranslationY(0);
-//            ObjectAnimator.ofFloat(fragmentContainer, "translationY",  0).setDuration(0).start();
-        } else
-//            ObjectAnimator.ofFloat(fragmentContainer, "translationY", 0, -(chatInputEvent.height - i)).start();
+            if (location[1] < 0) {
+                showTopContain();
+            }
+        } else {
             fragmentContainer.setTranslationY(-(chatInputEvent.height - i));
+            if (location[1] > 0) {
+                hideTopContain();
+            }
+        }
     }
 
+    private void showTopContain() {
+        if (llTopContainer == null) {
+            return;
+        }
+        if (llTopDownAnima == null) {
+            llTopDownAnima = ObjectAnimator.ofFloat(llTopContainer, "translationY", -llTopContainer.getMeasuredHeight(), 0);
+            llTopDownAnima.setDuration(200);
+        }
+        if (llTopDownAnima.isRunning()) {
+            llTopDownAnima.end();
+        }
+        llTopDownAnima.start();
+    }
+
+    private void hideTopContain() {
+        if (llTopContainer == null) {
+            return;
+        }
+        if (llTopUpAnima == null) {
+            llTopUpAnima = ObjectAnimator
+                    .ofFloat(llTopContainer, "translationY", 0, -llTopContainer.getMeasuredHeight());
+            llTopUpAnima.setDuration(200);
+        }
+        if (llTopUpAnima.isRunning()) {
+            llTopUpAnima.end();
+        }
+        llTopUpAnima.start();
+    }
+
+    public boolean hideChatDialog() {
+        if (mChatDialog != null && mChatDialog.isAdded()) {
+            ((LiveHouseChatDialog) mChatDialog).hide();
+            return true;
+        }
+        return false;
+    }
 }

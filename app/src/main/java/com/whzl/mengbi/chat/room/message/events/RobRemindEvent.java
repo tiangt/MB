@@ -3,17 +3,12 @@ package com.whzl.mengbi.chat.room.message.events;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.RobLuckJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
-import com.whzl.mengbi.chat.room.util.RobSpan;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.widget.view.WeekStarView;
 
 /**
@@ -44,21 +39,9 @@ public class RobRemindEvent implements WeekHeadEvent {
             tvEnter.append(LightSpanString.getLightString(bean.openPrizeSecond / 60 + "",
                     ContextCompat.getColor(context, R.color.text_color_chat_yellow)));
             tvEnter.append(" 分钟，");
-            tvEnter.append(getRobSpan(context, "现在去夺宝",
+            tvEnter.append(LightSpanString.getRobSpan(context, "现在去夺宝",
                     Color.parseColor("#FFFFFF26")));
         }
     }
 
-    public SpannableString getRobSpan(Context context, String content, int color) {
-        SpannableString nickSpan = new SpannableString(content);
-        RobSpan clickSpan = new RobSpan(context, color) {
-            @Override
-            public void onClick(View widget) {
-                ((LiveDisplayActivity) context).showSnatchDialog();
-            }
-        };
-
-        nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return nickSpan;
-    }
 }

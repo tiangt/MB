@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,6 +52,7 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -126,6 +128,14 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         args.putParcelable("anchor", anchorBean);
         liveHouseChatDialog.setArguments(args);
         return liveHouseChatDialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mChatToUser == null) {
+            getDialog().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        }
     }
 
     @Override
@@ -296,24 +306,56 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
 
     @Override
     public void onGlobalLayout() {
+        int[] location = new int[2];
+        etContent.getLocationOnScreen(location);
         if (height == 0) {
-            height = dialogOut.getHeight();
+            height = location[1];
             return;
         }
-        if (dialogOut.getHeight() - height > 100 && !btnInputChange.isSelected() && isShowSoftInput) {
+        if (location[1] - height > 100 && !btnInputChange.isSelected() && isShowSoftInput) {
             dismiss();
             saveEdit();
             if (mChatToUser == null) {
                 EventBus.getDefault().post(new ChatInputEvent(-1));
             }
         }
-        if (dialogOut.getHeight() - height < -100 && !btnInputChange.isSelected()) {
+        if (location[1] - height < -100 && !btnInputChange.isSelected()) {
             isShowSoftInput = true;
             if (mChatToUser == null) {
-                EventBus.getDefault().post(new ChatInputEvent(getResources().getDisplayMetrics().heightPixels - dialogOut.getBottom()));
+                EventBus.getDefault().post(new ChatInputEvent(getResources().getDisplayMetrics().heightPixels - location[1] + getStatusBarHeight()));
             }
         }
-        height = dialogOut.getHeight();
+        height = location[1];
+    }
+
+    private int getStatusBarHeight() {
+        Class<?> c = null;
+
+        Object obj = null;
+
+        Field field = null;
+
+        int x = 0, sbar = 0;
+
+        try {
+
+            c = Class.forName("com.android.internal.R$dimen");
+
+            obj = c.newInstance();
+
+            field = c.getField("status_bar_height");
+
+            x = Integer.parseInt(field.get(obj).toString());
+
+            sbar = getContext().getResources().getDimensionPixelSize(x);
+
+        } catch (Exception e1) {
+
+            e1.printStackTrace();
+
+        }
+
+        return sbar;
     }
 
     @Override
@@ -372,12 +414,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 KeyBoardUtil.openKeybord(etContent, getContext());
                 break;
             case R.id.dialog_out:
-                KeyBoardUtil.closeKeybord(etContent, getContext());
-                saveEdit();
-                dismiss();
-                if (mChatToUser == null) {
-                    EventBus.getDefault().post(new ChatInputEvent(-1));
-                }
+                hide();
                 break;
             case R.id.btn_input_broad:
                 long userId = (long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0);
@@ -396,6 +433,15 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 break;
             default:
                 break;
+        }
+    }
+
+    public void hide() {
+        KeyBoardUtil.closeKeybord(etContent, getContext());
+        saveEdit();
+        dismiss();
+        if (mChatToUser == null) {
+            EventBus.getDefault().post(new ChatInputEvent(-1));
         }
     }
 

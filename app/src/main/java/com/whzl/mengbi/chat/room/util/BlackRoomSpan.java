@@ -20,6 +20,7 @@ public abstract class BlackRoomSpan extends ClickableSpan {
         this.context = context;
         this.color = color;
     }
+
     @Override
     public void updateDrawState(TextPaint ds) {
         //ds.setColor(context.getResources().getColor(0));

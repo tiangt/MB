@@ -50,7 +50,7 @@ public class RobPrizeMessage implements FillHolderMessage {
                 ContextCompat.getColor(context, R.color.text_color_chat_orange)));
         mholder.textView.append(LightSpanString.getLightString("，",
                 ContextCompat.getColor(context, R.color.text_color_chat)));
-        mholder.textView.append(getRobSpan(context, "我也要夺宝",
+        mholder.textView.append(LightSpanString.getRobSpan(context, "我也要夺宝",
                 Color.parseColor("#FFFFFF26")));
     }
 
@@ -59,16 +59,4 @@ public class RobPrizeMessage implements FillHolderMessage {
         return SINGLE_TEXTVIEW;
     }
 
-    public SpannableString getRobSpan(Context context, String content, int color) {
-        SpannableString nickSpan = new SpannableString(content);
-        RobSpan clickSpan = new RobSpan(context, color) {
-            @Override
-            public void onClick(View widget) {
-                ((LiveDisplayActivity) context).showSnatchDialog();
-            }
-        };
-
-        nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return nickSpan;
-    }
 }
