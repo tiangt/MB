@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.view;
 
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
+import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
@@ -70,4 +71,5 @@ public interface LiveView {
 
     void onActivityNativeSuccess(GetActivityBean bean);
 
+    void onAnchorWishSuccess(AnchorWishBean bean);
 }

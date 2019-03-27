@@ -54,7 +54,8 @@ public class ApiFactory {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
 
-        okHttpBuilder.addInterceptor(interceptor)
+        okHttpBuilder
+//                .addInterceptor(interceptor)
                 .addInterceptor(httpLoggingInterceptor)
                 .addNetworkInterceptor(new StethoInterceptor())
                 .retryOnConnectionFailure(true)

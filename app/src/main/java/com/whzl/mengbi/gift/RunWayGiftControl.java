@@ -110,6 +110,7 @@ public class RunWayGiftControl {
             autoScrollView.dispose();
             trackAnim.stopAnim();
         }
+        rxTimerUtil.cancel();
         runwayQueue.clear();
     }
 

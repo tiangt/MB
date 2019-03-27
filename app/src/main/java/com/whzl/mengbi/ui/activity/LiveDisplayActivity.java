@@ -118,6 +118,7 @@ import com.whzl.mengbi.greendao.User;
 import com.whzl.mengbi.greendao.UsualGift;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
+import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
@@ -143,6 +144,7 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.control.RedPacketControl;
+import com.whzl.mengbi.ui.dialog.AnchorWishDialog;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
@@ -163,6 +165,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.SnatchDialog;
 import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
+import com.whzl.mengbi.ui.fragment.AnchorWishFragment;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
@@ -1394,6 +1397,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 周星 主播任务 活动页面
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
+        mLivePresenter.getAnchorWish(mAnchorId);
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
         //头条榜单
         mLivePresenter.getHeadlineRank(mAnchorId, "F");
@@ -1552,6 +1556,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     /**
+     * 主播心愿
+     */
+    @Override
+    public void onAnchorWishSuccess(AnchorWishBean bean) {
+        AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean);
+        anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
+        mActivityGrands.add(0,anchorWishFragment);
+        mGrandAdaper.notifyDataSetChanged();
+        initActivityPoints();
+    }
+
+
+    /**
      * 直播间的活动（常规活动）
      */
     @Override
@@ -1585,6 +1602,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getAnchorTask(mAnchorId);
     }
 
+    /**
+     * 主播任务成功
+     */
+    @Override
+    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
+        if (dataBean != null) {
+            AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
+            mActivityGrands.add(anchorTaskFragment);
+            mGrandAdaper.notifyDataSetChanged();
+            vpActivity.setOffscreenPageLimit(mActivityGrands.size());
+            initActivityPoints();
+        }
+    }
+
     @Override
     public void onGetAudienceListSuccess(AudienceListBean.DataBean bean) {
         mAudienceCount = bean.total;
@@ -1607,20 +1638,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetPunishWaysSuccess(PunishWaysBean bean) {
         pkControl = new PkControl(pkLayout, this);
-    }
-
-    /**
-     * 主播任务成功
-     */
-    @Override
-    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
-        if (dataBean != null) {
-            AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
-            mActivityGrands.add(anchorTaskFragment);
-            mGrandAdaper.notifyDataSetChanged();
-            vpActivity.setOffscreenPageLimit(mActivityGrands.size());
-            initActivityPoints();
-        }
     }
 
     @Override
@@ -1731,6 +1748,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             drawLayoutControl.notifyData(mBannerInfoList);
         }
     }
+
 
     /**
      * 活动下标黄点
@@ -2437,6 +2455,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         snatchDialog = SnatchDialog.Companion.newInstance(mUserId).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
     }
 
+    /**
+     * 主播心愿
+     *
+     * @param bean
+     */
+    public void showAnchorWishDialog(AnchorWishBean bean) {
+        AnchorWishDialog.Companion.newInstance(bean).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
+    }
+
+    /**
+     * 显示周星榜弹窗
+     */
     public void jumpToWeekRank() {
         if (headlineDialog != null && headlineDialog.isAdded()) {
             return;

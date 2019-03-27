@@ -337,6 +337,9 @@ public class DateUtils {
         return m + ":" + s;
     }
 
+    /**
+     * 倒计时样式
+     */
     public static String translateLastSecond(int second) {
         if (second < 10) {
             return "00:00:0" + second;

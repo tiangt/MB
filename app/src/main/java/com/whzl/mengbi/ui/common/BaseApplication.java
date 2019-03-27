@@ -185,7 +185,7 @@ public class BaseApplication extends Application {
             String bodyString = "";
             if (response.isSuccessful()) {
                 bodyString = response.body().string();
-                LogUtil.d("okhttp = " + bodyString);
+                LogUtils.e(response.request().url().url().toString() + bodyString);
             }
             okhttp3.Response r = response.newBuilder()
                     .body(ResponseBody.create(response.body().contentType(), bodyString))

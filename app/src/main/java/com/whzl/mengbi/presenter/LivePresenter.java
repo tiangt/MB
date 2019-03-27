@@ -45,4 +45,6 @@ public interface LivePresenter {
     void getRedPackTreasure(int mProgramId);
 
     void getActivityNative(int mProgramId, int mAnchorId);
+
+    void getAnchorWish(int mAnchorId);
 }

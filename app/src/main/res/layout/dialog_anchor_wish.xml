@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-4dp"
+        android:background="@drawable/bg_anchor_wish_dialog"
+        android:orientation="vertical"
+        android:paddingEnd="14dp"
+        android:paddingStart="14dp">
+
+        <ImageButton
+            android:id="@+id/ib_note_anchor_wish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@null"
+            android:src="@drawable/ic_note_anchor_wish"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8.5dp"
+            android:layout_marginTop="10dp"
+            android:background="@null"
+            android:src="@drawable/ic_rank_anchor_wish"
+            app:layout_constraintRight_toLeftOf="@id/ib_note_anchor_wish"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/text_anchor_wish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1.5dp"
+            android:src="@drawable/text_anchor_wish"
+            app:layout_constraintTop_toBottomOf="@id/ib_note_anchor_wish" />
+
+        <TextView
+            android:id="@+id/tv_name_anchor_wish"
+            android:layout_width="310dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_name_anchor_wish"
+            android:gravity="center"
+            android:textColor="#ffea3f"
+            android:textSize="26sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_anchor_wish" />
+
+        <TextView
+            android:id="@+id/tv_price_anchor_wish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:textColor="#f9f9f9"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_name_anchor_wish" />
+
+        <TextView
+            android:id="@+id/tv_need_anchor_wish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#f9f9f9"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_price_anchor_wish" />
+
+        <View
+            android:id="@+id/view_anchor_wish"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginTop="15dp"
+            android:background="#302f3538"
+            app:layout_constraintTop_toBottomOf="@id/tv_need_anchor_wish" />
+
+        <TextView
+            android:id="@+id/tv_join_tip_anchor_wish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="参与支持的玩家奖励"
+            android:textColor="#f9f9f9"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_anchor_wish" />
+
+        <LinearLayout
+            android:id="@+id/ll_contain1_anchor_wish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tv_join_tip_anchor_wish">
+
+            <TextView
+                android:id="@+id/tv_wealth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="#f9f9f9"
+                android:textSize="11.5sp" />
+
+            <TextView
+                android:id="@+id/tv_people_num"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="#f9f9f9"
+                android:textSize="11.5sp" />
+
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="#f9f9f9"
+                android:textSize="11.5sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_contain2_anchor_wish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10.5dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_contain1_anchor_wish">
+
+            <TextView
+                android:id="@+id/tv_wealth_offical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="#f9f9f9"
+                android:textSize="11.5sp" />
+
+            <TextView
+                android:id="@+id/tv_people_num_offical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="#f9f9f9"
+                android:textSize="11.5sp" />
+
+            <TextView
+                android:id="@+id/tv_type_offical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textColor="#f9f9f9"
+                android:textSize="11.5sp" />
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.whzl.mengbi.model;
 
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
+import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 
 import java.util.HashMap;
 
@@ -48,4 +49,6 @@ public interface LiveModel {
     void getRedPackList(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void activityNative(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void anchorWish(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

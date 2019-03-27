@@ -5,6 +5,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
+import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
@@ -509,6 +510,27 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(int code) {
+                    }
+                });
+    }
+
+    @Override
+    public void anchorWish(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .anchorWishGift(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<AnchorWishBean>() {
+
+
+                    @Override
+                    public void onSuccess(AnchorWishBean jsonElement) {
+                        listener.onAnchorWishSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
                     }
                 });
     }

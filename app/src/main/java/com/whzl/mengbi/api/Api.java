@@ -5,6 +5,7 @@ import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
+import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
@@ -932,5 +933,15 @@ public interface Api {
     @POST("v1/msgcenter/reset-msg-notify")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> resetMsgNotify(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取主播的心愿
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/anchor-wish-gift")
+    @FormUrlEncoded
+    Observable<ApiResult<AnchorWishBean>> anchorWishGift(@FieldMap Map<String, String> params);
 
 }

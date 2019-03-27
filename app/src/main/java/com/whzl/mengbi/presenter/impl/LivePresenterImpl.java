@@ -3,6 +3,7 @@ package com.whzl.mengbi.presenter.impl;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
+import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
@@ -235,6 +236,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
+    @Override
+    public void onAnchorWishSuccess(AnchorWishBean jsonElement) {
+        if(liveView != null){
+            liveView.onAnchorWishSuccess(jsonElement);
+        }
+    }
+
 
     @Override
     public void followHost(long userId, int mProgramId) {
@@ -360,6 +368,14 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("anchorId", mAnchorId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.activityNative(signPramsMap, this);
+    }
+
+    @Override
+    public void getAnchorWish(int mAnchorId) {
+        HashMap map = new HashMap();
+        map.put("userId", "30000012");
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.anchorWish(signPramsMap, this);
     }
 
     public void getRedPackList(int mProgramId, long mUserId) {

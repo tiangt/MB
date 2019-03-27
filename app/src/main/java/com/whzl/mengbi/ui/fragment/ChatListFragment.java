@@ -2,6 +2,15 @@ package com.whzl.mengbi.ui.fragment;
 
 import android.animation.Animator;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.Shader;
+import android.graphics.Xfermode;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +41,6 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -81,6 +89,7 @@ public class ChatListFragment extends BaseFragment {
     //    private RoyalEnterControl royalEnterControl;
     private int mProgramId;
     private boolean openAnimal = true;
+    private int layerId;
 
 
     public static ChatListFragment newInstance(int programId) {
@@ -256,6 +265,7 @@ public class ChatListFragment extends BaseFragment {
             }
         };
         recycler.setAdapter(chatAdapter);
+        doTopGradualEffect();
         recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -277,6 +287,42 @@ public class ChatListFragment extends BaseFragment {
             }
         });
     }
+
+    private void doTopGradualEffect() {
+        if (recycler == null) {
+            return;
+        }
+
+        Paint mPaint = new Paint();
+        final Xfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_IN);
+        mPaint.setXfermode(xfermode);
+        LinearGradient linearGradient = new LinearGradient(0.0f, 0.0f, 0.0f, 100.0f, new int[]{0, Color.BLACK}, null, Shader.TileMode.CLAMP);
+
+        recycler.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
+                super.onDrawOver(canvas, parent, state);
+
+                mPaint.setXfermode(xfermode);
+                mPaint.setShader(linearGradient);
+                canvas.drawRect(0.0f, 0.0f, parent.getRight(), 200.0f, mPaint);
+                mPaint.setXfermode(null);
+                canvas.restoreToCount(layerId);
+            }
+
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                super.onDraw(c, parent, state);
+                layerId = c.saveLayer(0.0f, 0.0f, (float) parent.getWidth(), (float) parent.getHeight(), null, Canvas.ALL_SAVE_FLAG);
+            }
+
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+            }
+        });
+    }
+
 
     private int mLastPositionB = -1;
 

@@ -310,7 +310,6 @@ class SnatchDialog : BaseAwesomeDialog() {
         }
         disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
-            LogUtils.e("sssssssssss  " + t)
             if (t == 11.toLong()) {
                 disposable!!.dispose()
                 return@subscribe

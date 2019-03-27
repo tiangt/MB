@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.dialog.base;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
@@ -74,8 +75,13 @@ public abstract class BaseAwesomeDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(layoutId, container, false);
         unbinder = ButterKnife.bind(this, view);
-        convertView(ViewHolder.create(view), this);
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        convertView(ViewHolder.create(view), this);
     }
 
     @Override
