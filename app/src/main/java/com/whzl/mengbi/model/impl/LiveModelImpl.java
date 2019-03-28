@@ -529,7 +529,7 @@ public class LiveModelImpl implements LiveModel {
                     }
 
                     @Override
-                    public void onError(int code) {
+                    public void onError(ApiResult<AnchorWishBean> body) {
 
                     }
                 });

@@ -158,6 +158,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+        tvPrettyNum = holder.getView(R.id.tv_pretty_num_dialog_personal);
         mUserId = getArguments().getLong("userId");
         mProgramId = getArguments().getInt("programId");
         mIsFollowed = getArguments().getString("isFollowed");

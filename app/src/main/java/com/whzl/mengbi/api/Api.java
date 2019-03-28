@@ -6,6 +6,7 @@ import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AnchorWishBean;
+import com.whzl.mengbi.model.entity.AnchorWishRank;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
@@ -943,5 +944,15 @@ public interface Api {
     @POST("v1/room/anchor-wish-gift")
     @FormUrlEncoded
     Observable<ApiResult<AnchorWishBean>> anchorWishGift(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取主播心愿榜单
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/rank/anchor-wish-rank")
+    @FormUrlEncoded
+    Observable<ApiResult<AnchorWishRank>> anchorWishRank(@FieldMap Map<String, String> params);
 
 }

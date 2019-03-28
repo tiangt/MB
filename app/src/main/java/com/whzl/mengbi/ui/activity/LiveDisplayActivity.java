@@ -2461,7 +2461,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * @param bean
      */
     public void showAnchorWishDialog(AnchorWishBean bean) {
-        AnchorWishDialog.Companion.newInstance(bean).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
+        AnchorWishDialog.Companion.newInstance(mAnchorId,bean).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
     }
 
     /**

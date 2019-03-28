@@ -201,7 +201,11 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         }
         if (paint != null && scrollTimes == 3) {
             if (paint.measureText(text) > viewWidth) {
-                canvas.drawText(text.substring(0, 4) + "...", viewWidth - step, y, paint);
+                if (text.length() >= 4) {
+                    canvas.drawText(text.substring(0, 4) + "...", viewWidth - step, y, paint);
+                } else {
+                    canvas.drawText(text + "...", viewWidth - step, y, paint);
+                }
             } else {
                 canvas.drawText(text, viewWidth - step, y, paint);
             }

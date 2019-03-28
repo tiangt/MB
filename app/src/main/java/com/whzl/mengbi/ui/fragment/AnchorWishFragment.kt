@@ -10,6 +10,7 @@ import com.whzl.mengbi.model.entity.AnchorWishBean
 import com.whzl.mengbi.ui.fragment.base.BaseFragment
 import com.whzl.mengbi.util.DateUtils
 import com.whzl.mengbi.util.LogUtils
+import com.whzl.mengbi.util.clickDelay
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -45,7 +46,7 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
 
     override fun init() {
         val bean: AnchorWishBean = arguments?.get("bean") as AnchorWishBean
-        ll_anchor_wish.setOnClickListener {
+        ll_anchor_wish.clickDelay {
             mOnclick.onCLick()
         }
         GlideImageLoader.getInstace().loadRoundImage(activity, bean.giftPicUrl, iv_gift, 2)
@@ -58,15 +59,19 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
         tv_support.text = "共有 "
         tv_support.append(LightSpanString.getLightString(bean.supportPeopleNum.toString(), Color.parseColor("#FF732EFF")))
         tv_support.append(" 人支持")
-        disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
-                    tv_time.text = DateUtils.translateLastSecond(bean.remainTime - t!!.toInt())
-                    LogUtils.e("ssssssssss  $t")
-                    if (t == bean.remainTime.toLong()) {
-                        disposable!!.dispose()
-                        return@subscribe
+        if (bean.remainTime <= 0) {
+            tv_time.text = DateUtils.translateLastSecond(0)
+        } else {
+            disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
+                        tv_time.text = DateUtils.translateLastSecond(bean.remainTime - t!!.toInt())
+                        LogUtils.e("ssssssssss  $t")
+                        if (t == bean.remainTime.toLong()) {
+                            disposable!!.dispose()
+                            return@subscribe
+                        }
                     }
-                }
+        }
     }
 
     override fun onDestroy() {

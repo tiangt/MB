@@ -25,6 +25,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
+            android:id="@+id/ib_list_anchor_wish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8.5dp"
@@ -105,7 +106,7 @@
                 android:id="@+id/tv_wealth"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1.8"
                 android:ellipsize="middle"
                 android:singleLine="true"
                 android:textColor="#f9f9f9"
@@ -147,7 +148,7 @@
                 android:id="@+id/tv_wealth_offical"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1.8"
                 android:ellipsize="middle"
                 android:singleLine="true"
                 android:textColor="#f9f9f9"

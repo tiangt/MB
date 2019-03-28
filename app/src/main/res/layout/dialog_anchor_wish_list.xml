@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_anchor_wish_dialog"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:drawableLeft="@drawable/point_anchor_wish"
+        android:drawablePadding="17dp"
+        android:drawableRight="@drawable/point_anchor_wish"
+        android:text="玩家支持榜单"
+        android:textColor="#fff8c7"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_anchor_wish_list"
+        android:minHeight="230dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp" />
+
+    <ImageView
+        android:id="@+id/iv_close_anchor_wish_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="6dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_close_anchor_wish_list" />
+</RelativeLayout>

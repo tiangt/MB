@@ -88,6 +88,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
     @Override
     public void init() {
+        recommendRecycler = getMyActivity().findViewById(R.id.recommend_recycler);
         EventBus.getDefault().register(this);
         initTitle();
         initRecycler();

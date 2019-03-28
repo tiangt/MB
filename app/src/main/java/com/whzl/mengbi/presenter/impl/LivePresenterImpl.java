@@ -373,7 +373,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     @Override
     public void getAnchorWish(int mAnchorId) {
         HashMap map = new HashMap();
-        map.put("userId", "30000012");
+        map.put("userId", mAnchorId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.anchorWish(signPramsMap, this);
     }

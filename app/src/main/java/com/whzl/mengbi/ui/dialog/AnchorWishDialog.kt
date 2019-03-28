@@ -2,10 +2,13 @@ package com.whzl.mengbi.ui.dialog
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import com.whzl.mengbi.R
 import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.model.entity.AnchorWishBean
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.util.clickDelay
 import kotlinx.android.synthetic.main.dialog_anchor_wish.*
@@ -16,11 +19,15 @@ import kotlinx.android.synthetic.main.dialog_anchor_wish.*
  * @date 2019/3/26
  */
 class AnchorWishDialog : BaseAwesomeDialog() {
+    private var noteDialog: BaseAwesomeDialog? = null
+    private var listDialog: BaseAwesomeDialog? = null
+
     companion object {
-        fun newInstance(bean: AnchorWishBean): AnchorWishDialog {
+        fun newInstance(mAnchorId: Int, bean: AnchorWishBean): AnchorWishDialog {
             val anchorWishDialog = AnchorWishDialog()
             val bundle = Bundle()
             bundle.putParcelable("bean", bean)
+            bundle.putInt("anchorId", mAnchorId)
             anchorWishDialog.arguments = bundle
             return anchorWishDialog
         }
@@ -60,8 +67,32 @@ class AnchorWishDialog : BaseAwesomeDialog() {
         if (anchorWishBean.awardInfo.officalAwardType == "ORDINARY") tv_type_offical.text = "中奖规则：普通"
         else tv_type_offical.text = "中奖规则：随机"
 
-        ib_note_anchor_wish.clickDelay {
+        ib_note_anchor_wish.setOnClickListener {
+            if (noteDialog != null && noteDialog!!.isAdded) {
+                return@setOnClickListener
+            }
+            noteDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_anchor_wish_note)
+                    .setConvertListener(object : ViewConvertListener() {
+                        override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                            holder?.setOnClickListener(R.id.iv_close_anchor_wish_note) {
+                                dialog?.dismissDialog()
+                            }
+                        }
 
+                    })
+                    .setShowBottom(true)
+                    .setDimAmount(0f)
+                    .show(fragmentManager)
+        }
+
+        ib_list_anchor_wish.setOnClickListener {
+            if (listDialog != null && listDialog!!.isAdded) {
+                return@setOnClickListener
+            }
+            listDialog = AnchorWishListDialog.newInstance(arguments?.get("anchorId") as Int)
+                    .setShowBottom(true)
+                    .setDimAmount(0f)
+                    .show(fragmentManager)
         }
     }
 

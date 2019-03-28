@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -36,7 +35,6 @@ import com.whzl.mengbi.ui.view.WeekStarListView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
@@ -509,14 +507,6 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        LogUtils.d("onReqFailed" + errorMsg.toString());
-                        refreshLayout.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                refreshLayout.finishRefresh();
-                            }
-                        });
-
                     }
                 });
     }

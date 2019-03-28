@@ -55,6 +55,9 @@ public class MyWalletActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
+        tvMengbi = findViewById(R.id.tv_mengbi);
+        tvMengdou = findViewById(R.id.tv_mengdou);
+        tvMengdian = findViewById(R.id.tv_mengdian);
     }
 
     @Override
