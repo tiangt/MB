@@ -26,7 +26,11 @@ public class AnchorWishBean implements Parcelable {
     public int supportPeopleNum;
     public int finishedWishCard;
     public int giftPrice;
+    public int sendGiftPrice;
+    public int wishGiftNum;
     public String giftName;
+    public String sendGiftName;
+    public String distributeRule;
     public int remainTime;
 
     public static class AwardInfoBean implements Parcelable {
@@ -86,6 +90,9 @@ public class AnchorWishBean implements Parcelable {
         };
     }
 
+    public AnchorWishBean() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -99,11 +106,12 @@ public class AnchorWishBean implements Parcelable {
         dest.writeInt(this.supportPeopleNum);
         dest.writeInt(this.finishedWishCard);
         dest.writeInt(this.giftPrice);
+        dest.writeInt(this.sendGiftPrice);
+        dest.writeInt(this.wishGiftNum);
         dest.writeString(this.giftName);
+        dest.writeString(this.sendGiftName);
+        dest.writeString(this.distributeRule);
         dest.writeInt(this.remainTime);
-    }
-
-    public AnchorWishBean() {
     }
 
     protected AnchorWishBean(Parcel in) {
@@ -113,11 +121,15 @@ public class AnchorWishBean implements Parcelable {
         this.supportPeopleNum = in.readInt();
         this.finishedWishCard = in.readInt();
         this.giftPrice = in.readInt();
+        this.sendGiftPrice = in.readInt();
+        this.wishGiftNum = in.readInt();
         this.giftName = in.readString();
+        this.sendGiftName = in.readString();
+        this.distributeRule = in.readString();
         this.remainTime = in.readInt();
     }
 
-    public static final Parcelable.Creator<AnchorWishBean> CREATOR = new Parcelable.Creator<AnchorWishBean>() {
+    public static final Creator<AnchorWishBean> CREATOR = new Creator<AnchorWishBean>() {
         @Override
         public AnchorWishBean createFromParcel(Parcel source) {
             return new AnchorWishBean(source);

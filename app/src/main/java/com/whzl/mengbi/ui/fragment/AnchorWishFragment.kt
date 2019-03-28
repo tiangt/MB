@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
  */
 class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
     lateinit var mOnclick: OnclickListner
-    private var giftPrice: Int = 0
+    private var sendGiftPrice: Int = 0
     private var totalWishCard: Int = 0
 
     companion object {
@@ -59,7 +59,7 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
 
     override fun init() {
         val bean: AnchorWishBean = arguments?.get("bean") as AnchorWishBean
-        giftPrice = bean.giftPrice
+        sendGiftPrice = bean.sendGiftPrice
         totalWishCard = bean.totalWishCard
         ll_anchor_wish.clickDelay {
             mOnclick.onCLick()
@@ -67,7 +67,7 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
         GlideImageLoader.getInstace().loadRoundImage(activity, bean.giftPicUrl, iv_gift, 2)
         tv_total.text = "需 "
         tv_total.append(LightSpanString.getLightString(bean.totalWishCard.toString(), Color.parseColor("#FFFE4D87")))
-        tv_total.append(" 张心愿卡")
+        tv_total.append(" 个${bean.sendGiftName}")
         tv_unfinish.text = "还差 "
         tv_unfinish.append(LightSpanString.getLightString((bean.totalWishCard - bean.finishedWishCard).toString(), Color.parseColor("#FFFE4D87")))
         tv_unfinish.append(" 张")
@@ -98,7 +98,7 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
         tv_support.text = "共有 "
         tv_support.append(LightSpanString.getLightString(anchorWishEndEvent.anchorWishJson.context.rankPeopleNum.toString(), Color.parseColor("#FF732EFF")))
         tv_support.append(" 人支持")
-        val i = (totalWishCard * giftPrice - anchorWishEndEvent.anchorWishJson.context.totalScore) / giftPrice
+        val i = (totalWishCard * sendGiftPrice - anchorWishEndEvent.anchorWishJson.context.totalScore) / sendGiftPrice
         tv_unfinish.text = "还差 "
         tv_unfinish.append(LightSpanString.getLightString(i.toString(), Color.parseColor("#FFFE4D87")))
         tv_unfinish.append(" 张")

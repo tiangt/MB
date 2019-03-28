@@ -273,7 +273,9 @@ public class MainActivity extends BaseActivity {
                 if (updateInfoBean.code == 200) {
                     showUpgradeDialog(updateInfoBean.data.phone);
                 }
-
+                if ((boolean) SPUtils.get(BaseApplication.getInstance(), SpConfig.PRIVACY, true)) {
+                    showPrivateDialog();
+                }
             }
 
             @Override
@@ -281,6 +283,25 @@ public class MainActivity extends BaseActivity {
                 LogUtils.d(errorMsg);
             }
         });
+    }
+
+    private void showPrivateDialog() {
+        AwesomeDialog.init().setLayoutId(R.layout.dialog_privacy)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                        holder.setOnClickListener(R.id.btn_agree, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismissDialog();
+                                SPUtils.put(BaseApplication.getInstance(), SpConfig.PRIVACY, false);
+                            }
+                        });
+                    }
+                })
+                .setAnimStyle(-1)
+                .setOutCancel(false)
+                .show(getSupportFragmentManager());
     }
 
     private boolean checkAwardHasShowed() {

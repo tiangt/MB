@@ -31,12 +31,14 @@ import java.util.*
  */
 class AnchorWishListDialog : BaseAwesomeDialog() {
     private var mDatas = mutableListOf<AnchorWishRank.ListBean>()
+    private var sendGiftPrice: Int? = 0
 
     companion object {
-        fun newInstance(anchorId: Int): AnchorWishListDialog {
+        fun newInstance(anchorId: Int, sendGiftPrice: Int): AnchorWishListDialog {
             val anchorWishListDialog = AnchorWishListDialog()
             val bundle = Bundle()
             bundle.putInt("anchorId", anchorId)
+            bundle.putInt("sendGiftPrice", sendGiftPrice)
             anchorWishListDialog.arguments = bundle
             return anchorWishListDialog
         }
@@ -47,6 +49,7 @@ class AnchorWishListDialog : BaseAwesomeDialog() {
     }
 
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+        sendGiftPrice = arguments?.getInt("sendGiftPrice")
         holder?.setOnClickListener(R.id.iv_close_anchor_wish_list) {
             dialog?.dismissDialog()
         }
@@ -107,9 +110,10 @@ class AnchorWishListDialog : BaseAwesomeDialog() {
             }
 
             tvName?.text = listBean.nickName
-            tvNum?.text = "支持了 "
-            tvNum?.append(LightSpanString.getLightString(listBean.score.toString(), Color.rgb(126, 105, 180)))
-            tvNum?.append(" 张心愿卡")
+            tvNum?.text = "帮主播完成了 "
+            val i: Int = listBean.score * 100 / sendGiftPrice!!
+            tvNum?.append(LightSpanString.getLightString("$i%", Color.rgb(126, 105, 180)))
+            tvNum?.append(" 的心愿")
         }
     }
 

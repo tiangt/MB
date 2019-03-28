@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/bg_dialog_white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="17dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="隐私政策"
+            android:textColor="#1b1b1b"
+            android:textSize="20.5sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/privacy"
+            android:textColor="#909090"
+            android:textSize="14.5sp" />
+
+        <Button
+            android:id="@+id/btn_agree"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="26dp"
+            android:background="@drawable/shape_yellow_btn"
+            android:text="同意"
+            android:textColor="#353434"
+            android:textSize="19sp" />
+    </LinearLayout>
+</LinearLayout>
