@@ -134,7 +134,10 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     public void onStart() {
         super.onStart();
         if (mChatToUser == null) {
+            dialogOut.setVisibility(View.GONE);
             getDialog().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL, WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL);
+        } else {
+            dialogOut.setVisibility(View.VISIBLE);
         }
     }
 
