@@ -37,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -518,6 +519,7 @@ public class LiveModelImpl implements LiveModel {
     public void anchorWish(HashMap signPramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .anchorWishGift(signPramsMap)
+                .debounce(1500, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ApiObserver<AnchorWishBean>() {

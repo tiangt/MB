@@ -6,6 +6,7 @@ import android.util.Log;
 import com.whzl.mengbi.chat.ProtoStringAvg;
 import com.whzl.mengbi.chat.client.MessageCallback;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatRoomEventJson;
+import com.whzl.mengbi.chat.room.message.messagesActions.AnchorWishAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.DoubleColorBallAction;
 import com.whzl.mengbi.chat.room.message.messages.NoChatMsg;
 import com.whzl.mengbi.chat.room.message.messagesActions.Actions;
@@ -103,15 +104,13 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("EVERY_DAY_TASK", new EverydayTaskAction());
         actionsMap.put("ANCHOR_WEEK_TASK", new AnchorWeekTaskAction());
         actionsMap.put("HEADLINES_MSG", new HeadlineAction());
-//        actionsMap.put("PRIZE_POOL_FULL", new PrizePoolFullAction());
-//        actionsMap.put("BETS_END", new BetsEndAction());
-//        actionsMap.put("FIRST_PRIZE_USER", new FirstPrizeUserAction());
         actionsMap.put("DOUBLE_COLOR_BALL", new DoubleColorBallAction());
         actionsMap.put("StartLiving", new PlayNotifyAction());
         actionsMap.put("COMPOSITION2", new CompositeAction());
         actionsMap.put("REDPACKET", new RedPacketAction());
         actionsMap.put("RANK_RISE_MSG", new RankRiseAction());
         actionsMap.put("ROB_LUCKY", new RobLuckAction());
+        actionsMap.put("GAME_WISH", new AnchorWishAction());
     }
 
     private void initChatAction() {

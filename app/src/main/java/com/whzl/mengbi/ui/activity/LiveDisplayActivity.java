@@ -50,6 +50,8 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
+import com.whzl.mengbi.chat.room.message.events.AnchorWishBeginEvent;
+import com.whzl.mengbi.chat.room.message.events.AnchorWishEndEvent;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.events.BetsEndEvent;
 import com.whzl.mengbi.chat.room.message.events.BroadCastBottomEvent;
@@ -1394,7 +1396,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     /**
-     * 周星 主播任务 活动页面
+     * 主播心愿 周星 主播任务 活动页面
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
         mLivePresenter.getAnchorWish(mAnchorId);
@@ -1562,7 +1564,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onAnchorWishSuccess(AnchorWishBean bean) {
         AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean);
         anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
-        mActivityGrands.add(0,anchorWishFragment);
+        mActivityGrands.add(0, anchorWishFragment);
         mGrandAdaper.notifyDataSetChanged();
         initActivityPoints();
     }
@@ -1856,8 +1858,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             paramsMap.put("runwayAppend", runwayAppend);
         }
         mLivePresenter.sendGift(paramsMap);
-//        CommonGiftBean commonGift = new CommonGiftBean();
-//        commonGift.giftId = goodId;
         UsualGift usualGift = new UsualGift();
         usualGift.setUserId(mUserId);
         usualGift.setGiftId(Long.valueOf(goodId));
@@ -1871,21 +1871,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (SPUtils.get(this, SpConfig.FREE_GOODS_IDS, "").toString().contains(goodId)) {
             return;
         }
-//        CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
-//        CommonGift unique = commonGiftDao.queryBuilder().
-//                where(CommonGiftDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(this, "userId", 0L).toString())))
-//                .unique();
         UsualGiftDao usualGiftDao = BaseApplication.getInstance().getDaoSession().getUsualGiftDao();
         UsualGift unique = usualGiftDao.queryBuilder().where(UsualGiftDao.Properties.UserId.eq(mUserId),
                 UsualGiftDao.Properties.GiftId.eq(usualGift.getGiftId())).unique();
         if (unique == null) {
-//            CommonGift commonGift1 = new CommonGift();
-//            commonGift1.setUserId(Long.parseLong(SPUtils.get(this, "userId", 0L).toString()));
-//            commonGift.times = 1;
-//            List<CommonGiftBean> list = new ArrayList<>();
-//            list.add(commonGift);
-//            commonGift1.setHobbyList(list);
-//            commonGiftDao.insert(commonGift1);
             UsualGift gift = new UsualGift();
             gift.setUserId(mUserId);
             gift.setGiftId(usualGift.getGiftId());
@@ -1894,20 +1883,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } else {
             unique.setTimes(unique.getTimes() + 1);
             usualGiftDao.update(unique);
-//            if (checkGift(unique.getHobbyList(), commonGift) != null) {
-//                CommonGiftBean commonGiftBean = checkGift(unique.getHobbyList(), commonGift);
-//                for (int i = 0; i < unique.getHobbyList().size(); i++) {
-//                    if (unique.getHobbyList().get(i).giftId.intValue() == commonGiftBean.giftId.intValue()) {
-//                        unique.getHobbyList().get(i).times = unique.getHobbyList().get(i).times + 1;
-//                        break;
-//                    }
-//                }
-//                commonGiftDao.update(unique);
-//            } else {
-//                commonGift.times = 1;
-//                unique.getHobbyList().add(commonGift);
-//                commonGiftDao.update(unique);
-//            }
         }
     }
 
@@ -2461,7 +2436,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * @param bean
      */
     public void showAnchorWishDialog(AnchorWishBean bean) {
-        AnchorWishDialog.Companion.newInstance(mAnchorId,bean).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
+        AnchorWishDialog.Companion.newInstance(mAnchorId, bean).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
     }
 
     /**
@@ -2492,6 +2467,32 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
         }
     }
+
+    /**
+     * 主播心愿发起
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(AnchorWishBeginEvent anchorWishBeginEvent) {
+        removeAnchorWish();
+        mLivePresenter.getAnchorWish(mAnchorId);
+    }
+
+    /**
+     * 主播心愿完成
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(AnchorWishEndEvent anchorWishEndEvent) {
+        removeAnchorWish();
+    }
+
+    public void removeAnchorWish() {
+        if (mActivityGrands.get(0) != null && mActivityGrands.get(0) instanceof AnchorWishFragment) {
+            mActivityGrands.remove(0);
+            mGrandAdaper.notifyDataSetChanged();
+            initActivityPoints();
+        }
+    }
+
 
     private void showTopContain() {
         if (llTopContainer == null) {

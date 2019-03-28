@@ -3,10 +3,13 @@ package com.whzl.mengbi.ui.fragment
 import android.graphics.Color
 import android.os.Bundle
 import com.whzl.mengbi.R
+import com.whzl.mengbi.chat.room.message.events.AnchorWishChangeEvent
+import com.whzl.mengbi.chat.room.message.events.AnchorWishEndEvent
 import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.AnchorWishBean
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity
 import com.whzl.mengbi.ui.fragment.base.BaseFragment
 import com.whzl.mengbi.util.DateUtils
 import com.whzl.mengbi.util.LogUtils
@@ -17,6 +20,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_anchor_wish.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.concurrent.TimeUnit
 
 
@@ -27,6 +33,8 @@ import java.util.concurrent.TimeUnit
  */
 class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
     lateinit var mOnclick: OnclickListner
+    private var giftPrice: Int = 0
+    private var totalWishCard: Int = 0
 
     companion object {
         fun newInstance(bean: AnchorWishBean): AnchorWishFragment {
@@ -38,6 +46,11 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
         }
     }
 
+    override fun initEnv() {
+        super.initEnv()
+        EventBus.getDefault().register(this)
+    }
+
     override fun getLayoutId(): Int {
         return R.layout.fragment_anchor_wish
     }
@@ -46,6 +59,8 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
 
     override fun init() {
         val bean: AnchorWishBean = arguments?.get("bean") as AnchorWishBean
+        giftPrice = bean.giftPrice
+        totalWishCard = bean.totalWishCard
         ll_anchor_wish.clickDelay {
             mOnclick.onCLick()
         }
@@ -68,14 +83,30 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
                         LogUtils.e("ssssssssss  $t")
                         if (t == bean.remainTime.toLong()) {
                             disposable!!.dispose()
+                            (activity as LiveDisplayActivity).removeAnchorWish()
                             return@subscribe
                         }
                     }
         }
     }
 
+    /**
+     * 主播心愿改变
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(anchorWishEndEvent: AnchorWishChangeEvent) {
+        tv_support.text = "共有 "
+        tv_support.append(LightSpanString.getLightString(anchorWishEndEvent.anchorWishJson.context.rankPeopleNum.toString(), Color.parseColor("#FF732EFF")))
+        tv_support.append(" 人支持")
+        val i = (totalWishCard * giftPrice - anchorWishEndEvent.anchorWishJson.context.totalScore) / giftPrice
+        tv_unfinish.text = "还差 "
+        tv_unfinish.append(LightSpanString.getLightString(i.toString(), Color.parseColor("#FFFE4D87")))
+        tv_unfinish.append(" 张")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        EventBus.getDefault().unregister(this)
         disposable?.dispose()
     }
 
