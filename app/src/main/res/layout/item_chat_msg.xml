@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:lineSpacingExtra="2dp"
         android:maxLines="100"
+        android:textColor="@color/text_color_chat"
         android:textSize="@dimen/text_chat_size">
 
     </TextView>
