@@ -640,7 +640,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     })
                     .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                     .setDimAmount(0)
-                    .setOutCancel(false)
                     .show(getSupportFragmentManager());
 
         });
@@ -844,7 +843,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         })
                         .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                         .setDimAmount(0)
-                        .setOutCancel(false)
                         .show(getSupportFragmentManager());
                 //主播信息
                 break;
@@ -2037,7 +2035,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                 .setDimAmount(0)
                 .setShowBottom(false)
-                .setOutCancel(false)
                 .show(getSupportFragmentManager());
     }
 

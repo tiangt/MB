@@ -115,18 +115,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         return dialog;
     }
 
-//    public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId, int level) {
-//        Bundle args = new Bundle();
-//        args.putLong("userId", userId);
-//        args.putInt("programId", programId);
-//        args.putLong("visitorId", visitorId); //当前用户ID
-//        args.putInt("anchorLevel", level);
-//        args.putParcelable("user", user);
-//        PersonalInfoDialog dialog = new PersonalInfoDialog();
-//        dialog.setArguments(args);
-//        return dialog;
-//    }
-
     public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId, String isFollowed, String liveState) {
         Bundle args = new Bundle();
         args.putLong("userId", userId); //被访者ID
