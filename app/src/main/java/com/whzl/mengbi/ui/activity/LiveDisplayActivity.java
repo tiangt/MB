@@ -3,11 +3,13 @@ package com.whzl.mengbi.ui.activity;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -486,6 +488,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
         mLivePresenter.getLiveGift();
         initReceiver();
+    }
+
+    private void initAudioManager() {
+        AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioManager.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
     }
 
     @Override
@@ -2221,6 +2228,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     protected void onStart() {
         super.onStart();
+        initAudioManager();
         //开始轮播
         if (banner != null) {
             banner.startAutoPlay();
