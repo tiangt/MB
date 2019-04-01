@@ -38,6 +38,7 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.MyCouponBean;
+import com.whzl.mengbi.model.entity.NewTaskBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.model.entity.PackcarBean;
@@ -418,9 +419,9 @@ public interface Api {
      * @param params
      * @return
      */
-    @POST("v1/activity/new-task")
+    @POST("v1/activity/user-task")
     @FormUrlEncoded
-    Observable<ApiResult<GetPrettyBean>> newTask(@FieldMap Map<String, String> params);
+    Observable<ApiResult<NewTaskBean>> newTask(@FieldMap Map<String, String> params);
 
     /**
      * 通过奖励序列号领奖
