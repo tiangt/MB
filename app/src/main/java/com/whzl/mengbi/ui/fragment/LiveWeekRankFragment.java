@@ -48,6 +48,13 @@ public class LiveWeekRankFragment extends BaseFragment {
     TextView tvName3;
     @BindView(R.id.tv_rank_3)
     TextView tvRank3;
+    @BindView(R.id.iv_4)
+    ImageView iv4;
+    @BindView(R.id.tv_name_4)
+    TextView tvName4;
+    @BindView(R.id.tv_rank_4)
+    TextView tvRank4;
+
     @BindView(R.id.ll_week_rank)
     LinearLayout llWeekRank;
     private int mAnchorId;
@@ -93,18 +100,22 @@ public class LiveWeekRankFragment extends BaseFragment {
                             tvName1.setText(bean.list.get(0).goodsName);
                             tvName2.setText(bean.list.get(1).goodsName);
                             tvName3.setText(bean.list.get(2).goodsName);
+                            tvName4.setText(bean.list.get(3).goodsName);
 
                             tvRank1.setText(bean.list.get(0).rankValue < 0 ? "未上榜" : "第" + bean.list.get(0).rankValue + "名");
                             tvRank2.setText(bean.list.get(1).rankValue < 0 ? "未上榜" : "第" + bean.list.get(1).rankValue + "名");
                             tvRank3.setText(bean.list.get(2).rankValue < 0 ? "未上榜" : "第" + bean.list.get(2).rankValue + "名");
+                            tvRank4.setText(bean.list.get(3).rankValue < 0 ? "未上榜" : "第" + bean.list.get(3).rankValue + "名");
 
                             tvRank1.setTextColor(bean.list.get(0).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
                             tvRank2.setTextColor(bean.list.get(1).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
                             tvRank3.setTextColor(bean.list.get(2).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
+                            tvRank4.setTextColor(bean.list.get(3).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
 
                             Glide.with(LiveWeekRankFragment.this).load(bean.list.get(0).goodsPic).into(iv1);
                             Glide.with(LiveWeekRankFragment.this).load(bean.list.get(1).goodsPic).into(iv2);
                             Glide.with(LiveWeekRankFragment.this).load(bean.list.get(2).goodsPic).into(iv3);
+                            Glide.with(LiveWeekRankFragment.this).load(bean.list.get(3).goodsPic).into(iv4);
                         }
                     }
 

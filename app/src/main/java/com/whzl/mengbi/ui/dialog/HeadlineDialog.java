@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
@@ -75,5 +76,12 @@ public class HeadlineDialog extends BaseAwesomeDialog {
         tabLayout.setNeedSwitchAnimation(true);
         tabLayout.setSelectedTabIndicatorWidth(com.whzl.mengbi.util.UIUtil.dip2px(getActivity(), 25));
         tabLayout.setupWithViewPager(viewPager);
+
+        holder.setOnClickListener(R.id.iv_colse_head_line, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismissDialog();
+            }
+        });
     }
 }

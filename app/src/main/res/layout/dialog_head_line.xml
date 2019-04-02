@@ -30,4 +30,12 @@
             android:layout_weight="1" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/iv_colse_head_line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8.5dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_close_head_line" />
+
 </LinearLayout>

@@ -206,6 +206,7 @@ public class BaseApplication extends Application {
                             return;
                         }
                         SPUtils.put(instance, SpConfig.REDPACKETURL, appDataBean.redpacketUrl);
+                        SPUtils.put(instance, SpConfig.WEEKSTARHELPURL, appDataBean.weekStarHelpUrl);
                         if (appDataBean != null && appDataBean.newUserAward != null) {
                             if (!TextUtils.isEmpty(appDataBean.newUserAward.guestUserAward)) {
                                 SPUtils.put(instance, SpConfig.AWARD_SHOW_TIME, System.currentTimeMillis());

@@ -18,4 +18,5 @@ public interface SpConfig {
     String REDPACKETURL = "redpacketUrl";
     String CHATCACHE = "chat_cache";
     String PRIVACY = "privacy";
+    String WEEKSTARHELPURL = "weekStarHelpUrl";
 }

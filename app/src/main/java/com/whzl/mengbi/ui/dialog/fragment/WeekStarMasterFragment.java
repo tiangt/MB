@@ -1,14 +1,22 @@
 package com.whzl.mengbi.ui.dialog.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.NetConfig;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.ui.activity.JsBridgeActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.WeekStarListsFragment;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.util.ClickUtil;
+import com.whzl.mengbi.util.SPUtils;
 
 import java.util.ArrayList;
 
@@ -26,6 +34,8 @@ public class WeekStarMasterFragment extends BaseFragment {
     TabLayout tabLayout;
     @BindView(R.id.viewpager_week_star)
     ViewPager viewPager;
+    @BindView(R.id.iv_rule_week_star)
+    ImageView imageView;
 
     public static WeekStarMasterFragment newInstance(int anchorId, String nickName, String avatar, int programId) {
         Bundle args = new Bundle();
@@ -52,11 +62,11 @@ public class WeekStarMasterFragment extends BaseFragment {
         ArrayList<String> titles = new ArrayList<>();
         titles.add("本周");
         titles.add("上周");
-        titles.add("规则");
+//        titles.add("规则");
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(WeekStarListsFragment.newInstance("F", anchorId, nickName, avatar, programId));
         fragments.add(WeekStarListsFragment.newInstance("T", anchorId, nickName, avatar, programId));
-        fragments.add(WeekStarRuleFragment.newInstance());
+//        fragments.add(WeekStarRuleFragment.newInstance());
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         tabLayout.setupWithViewPager(viewPager);
@@ -75,6 +85,17 @@ public class WeekStarMasterFragment extends BaseFragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ClickUtil.isFastClick()) {
+                    startActivity(new Intent(getMyActivity(), JsBridgeActivity.class)
+                            .putExtra("url", SPUtils.get(getMyActivity(), SpConfig.WEEKSTARHELPURL, "").toString())
+                            .putExtra("title", "周星规则说明"));
+                }
             }
         });
     }

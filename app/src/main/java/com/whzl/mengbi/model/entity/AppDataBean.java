@@ -8,6 +8,7 @@ public class AppDataBean {
     public String imgHost;
     public String userProtocolUrl;
     public String redpacketUrl;
+    public String weekStarHelpUrl;
     public UserAwardBean newUserAward;
 
     public class UserAwardBean {

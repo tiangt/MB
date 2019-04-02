@@ -5,20 +5,28 @@
     android:gravity="bottom"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_week_rank_top" />
 
     <LinearLayout
         android:id="@+id/ll_week_rank"
-        android:layout_width="99dp"
-        android:layout_height="62dp"
-        android:background="@drawable/bg_week_rank"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_week_rank_bottom"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="3dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="9dp"
-            android:layout_marginTop="11dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -46,9 +54,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="9dp"
-            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -75,9 +82,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="9dp"
-            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -100,6 +106,36 @@
                 android:textColor="#505050"
                 android:textSize="9sp" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_4"
+                android:layout_width="15dp"
+                android:layout_height="13dp" />
+
+            <TextView
+                android:id="@+id/tv_name_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#eb0f05"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/tv_rank_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="end"
+                android:textColor="#505050"
+                android:textSize="9sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
