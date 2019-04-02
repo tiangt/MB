@@ -2,6 +2,8 @@ package com.whzl.mengbi.ui.dialog
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AnimationUtils
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.model.entity.AnchorInfo
@@ -16,7 +18,8 @@ import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.HashMap
+import kotlinx.android.synthetic.main.dialog_live_stop.*
+import java.util.*
 
 /**
  *
@@ -42,10 +45,20 @@ class LiveStopDialog : BaseAwesomeDialog() {
         return R.layout.dialog_live_stop
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        iv_change_live_stop.clearAnimation()
+    }
+
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
         val fromAvatar = arguments?.get("anchorAvatar")
         val fromName = arguments?.get("anchorName")
         val lastTime = arguments?.getString("lastTime")
+        val loadAnimation = AnimationUtils.loadAnimation(activity, R.anim.rotate_live_stop)
+        loadAnimation.interpolator = AccelerateDecelerateInterpolator()
+        loadAnimation.fillAfter = true
+
         holder?.setOnClickListener(R.id.ib_close_live_stop) { dismiss() }
         if (TextUtils.isEmpty(lastTime)) holder?.setText(R.id.tv_last_live, "上次开播：刚刚")
         else holder?.setText(R.id.tv_last_live, "上次开播：" + DateUtils.getTimeRange(lastTime))
@@ -53,6 +66,10 @@ class LiveStopDialog : BaseAwesomeDialog() {
         GlideImageLoader.getInstace().circleCropImage(activity, fromAvatar, holder?.getView(R.id.iv_avatar_from))
         holder?.setText(R.id.tv_nick_from, fromName.toString())
         holder?.setOnClickListener(R.id.tv_change_live_stop) {
+            iv_change_live_stop.clearAnimation()
+            if (loadAnimation != null) {
+                iv_change_live_stop.startAnimation(loadAnimation)
+            }
             getOther(holder, dialog)
         }
         holder?.setOnClickListener(R.id.iv_cover_to) {

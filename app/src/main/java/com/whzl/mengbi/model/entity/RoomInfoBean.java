@@ -65,6 +65,7 @@ public class RoomInfoBean {
         private String programName;
         private String programType;
         private String pubNotice;
+        public String lastShowBeginTime;
         private String status;
         private String programStatus;
         private int subscriptionNum;

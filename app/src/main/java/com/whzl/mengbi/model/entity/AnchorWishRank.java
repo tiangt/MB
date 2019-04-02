@@ -19,6 +19,6 @@ public class AnchorWishRank {
 
         public int userId;
         public String nickName;
-        public int score;
+        public double score;
     }
 }

@@ -1362,9 +1362,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
             if (!"T".equals(roomInfoBean.getData().getProgramStatus())) {
                 llStopTip.setVisibility(View.VISIBLE);
-                tvStopTime.setText("上次开播：" + DateUtils.getTimeRange(roomInfoBean.getData().getAnchor().getLastUpdateTime()));
+                tvStopTime.setText("上次开播：" + DateUtils.getTimeRange(roomInfoBean.getData().lastShowBeginTime));
                 loadLayout.setVisibility(View.GONE);
-                showLiveStopDialog(roomInfoBean.getData().getAnchor().getLastUpdateTime());
+                showLiveStopDialog(roomInfoBean.getData().lastShowBeginTime);
             }
 
             mShareUrl = roomInfoBean.getData().getShareUrl();

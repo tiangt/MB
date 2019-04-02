@@ -111,7 +111,7 @@ class AnchorWishListDialog : BaseAwesomeDialog() {
 
             tvName?.text = listBean.nickName
             tvNum?.text = "帮主播完成了 "
-            val i: Int = listBean.score * 100 / sendGiftPrice!!
+            val i: Int = Math.ceil(listBean.score * 100 / sendGiftPrice!!).toInt()
             tvNum?.append(LightSpanString.getLightString("$i%", Color.rgb(126, 105, 180)))
             tvNum?.append(" 的心愿")
         }
