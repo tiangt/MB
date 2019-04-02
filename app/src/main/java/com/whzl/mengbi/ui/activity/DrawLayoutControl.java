@@ -316,15 +316,7 @@ public class DrawLayoutControl {
                             .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
                     break;
                 case 3:
-                    if (((LiveDisplayActivity) activity).mUserId == 0) {
-                        ((LiveDisplayActivity) activity).login();
-                        return;
-                    }
-                    activity.startActivity(new Intent(activity, PkRecordActivity.class)
-                            .putExtra("anchorLever", ((LiveDisplayActivity) activity).anchorLevel)
-                            .putExtra("anchorName", ((LiveDisplayActivity) activity).mAnchorName)
-                            .putExtra("anchorId", ((LiveDisplayActivity) activity).mAnchorId)
-                            .putExtra("anchorAvatar", ((LiveDisplayActivity) activity).mAnchorAvatar));
+                    ((LiveDisplayActivity) activity).jumpToBlackRoomActivity();
                     break;
                 case 4:
                     if (((LiveDisplayActivity) activity).mUserId == 0) {

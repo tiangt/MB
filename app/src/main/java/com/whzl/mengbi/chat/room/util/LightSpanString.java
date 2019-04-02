@@ -1,7 +1,6 @@
 package com.whzl.mengbi.chat.room.util;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
@@ -14,7 +13,6 @@ import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.ui.activity.PkRecordActivity;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.UIUtil;
 
@@ -66,12 +64,7 @@ public class LightSpanString {
                 if (((LiveDisplayActivity) context).hideChatDialog()) {
                     return;
                 }
-
-                context.startActivity(new Intent(context, PkRecordActivity.class)
-                        .putExtra("anchorLever", ((LiveDisplayActivity) context).anchorLevel)
-                        .putExtra("anchorName", ((LiveDisplayActivity) context).mAnchorName)
-                        .putExtra("anchorId", ((LiveDisplayActivity) context).mAnchorId)
-                        .putExtra("anchorAvatar", ((LiveDisplayActivity) context).mAnchorAvatar));
+                ((LiveDisplayActivity) context).jumpToBlackRoomActivity();
             }
         };
 

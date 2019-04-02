@@ -951,15 +951,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
                 break;
             case R.id.ll_black_room:
-                if (mUserId == 0) {
-                    login();
-                    return;
-                }
-                startActivity(new Intent(LiveDisplayActivity.this, PkRecordActivity.class)
-                        .putExtra("anchorLever", anchorLevel)
-                        .putExtra("anchorName", mAnchorName)
-                        .putExtra("anchorId", mAnchorId)
-                        .putExtra("anchorAvatar", mAnchorAvatar));
+                jumpToBlackRoomActivity();
                 break;
             case R.id.ll_red_bag:
                 showRedbagPopwindow();
@@ -968,6 +960,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
         }
 
+    }
+
+    public void jumpToBlackRoomActivity() {
+        if (mUserId == 0) {
+            login();
+            return;
+        }
+        startActivity(new Intent(LiveDisplayActivity.this, PkRecordActivity.class)
+                .putExtra("anchorLever", anchorLevel)
+                .putExtra("anchorName", mAnchorName)
+                .putExtra("anchorId", mAnchorId)
+                .putExtra("anchorAvatar", mAnchorAvatar));
     }
 
     /**
