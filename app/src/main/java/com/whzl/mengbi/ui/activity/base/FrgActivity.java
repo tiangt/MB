@@ -41,13 +41,6 @@ public class FrgActivity extends BaseActivity {
     }
 
 
-    public void setTitleBlack() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_return_gray);
-        TextView tvTool = findViewById(R.id.tv_toolbar_title);
-        tvTool.setTextColor(ContextCompat.getColor(this, R.color.text_view));
-    }
-
     @Override
     protected void setupView() {
         if (getIntent().getSerializableExtra(FRAGMENT_CLASS) == null

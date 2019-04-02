@@ -400,6 +400,7 @@
         <item>去发布</item>
         <item>去送礼</item>
         <item>去抽奖</item>
+        <item>去绑定</item>
     </array>
 
     <array name="new_task_names">
@@ -413,6 +414,7 @@
         <item>发布3条世界广播</item>
         <item>送给主播66个幸运黄瓜</item>
         <item>幸运转盘抽奖1次</item>
+        <item>绑定手机</item>
     </array>
 
     <string name="gift_dialog_super_run">可以登上超跑一次，还差%1$d萌币才能攻占当前超跑</string>

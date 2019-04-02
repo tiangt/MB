@@ -22,6 +22,7 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.NickNameModifyActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
+import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.util.SPUtils;
@@ -59,8 +60,6 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
     protected void initEnv() {
         super.initEnv();
         ((FrgActivity) getMyActivity()).setTitle("新手任务");
-        ((FrgActivity) getMyActivity()).setTitleColor(ContextCompat.getColor(getMyActivity(), R.color.comm_white));
-        ((FrgActivity) getMyActivity()).setTitleBlack();
         mPresenter = new WelfarePresenter();
         mPresenter.attachView(this);
     }
@@ -85,9 +84,9 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
         map.put(5, R.drawable.ic_walfare_5);
         map.put(6, R.drawable.ic_walfare_6);
         map.put(7, R.drawable.ic_walfare_7);
-        map.put(8, R.drawable.ic_walfare_8);
+        map.put(8, R.drawable.ic_walfare_4);
         map.put(9, R.drawable.ic_walfare_9);
-
+        map.put(10, R.drawable.ic_walfare_10);
     }
 
     @Override
@@ -124,9 +123,9 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
             GlideImageLoader.getInstace().displayImage(getMyActivity(), map.get(position), ivIcon);
             tvName.setText(names[position]);
             if (position < 6) {
-                tvNum.setText("+8 萌币");
+                tvNum.setText("奖励 8 萌豆");
             } else {
-                tvNum.setText("+500 萌币");
+                tvNum.setText("奖励 500 萌豆");
             }
             tvState.setText(strings[position]);
             tvProgress.setText("");
@@ -191,6 +190,9 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
             case 9:
                 jumpRandomLiveRoom();
                 break;
+            case 10:
+                startActivity(new Intent(getMyActivity(), BindingPhoneActivity.class));
+                break;
             default:
                 break;
         }
@@ -202,8 +204,8 @@ public class WelfareFragment extends BasePullListFragment<NewTaskBean.ListBean, 
 
     @Override
     public void onNewTask(NewTaskBean bean) {
-        if (bean.list.size() > 10) {
-            loadSuccess(bean.list.subList(0, 10));
+        if (bean.list.size() > 11) {
+            loadSuccess(bean.list.subList(0, 11));
         } else {
             loadSuccess(bean.list);
         }
