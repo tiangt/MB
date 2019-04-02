@@ -106,7 +106,7 @@ class AnchorWishListDialog : BaseAwesomeDialog() {
                 0 -> tvPosition?.setBackgroundResource(R.drawable.ic_anchor_wish_1)
                 1 -> tvPosition?.setBackgroundResource(R.drawable.ic_anchor_wish_2)
                 2 -> tvPosition?.setBackgroundResource(R.drawable.ic_anchor_wish_3)
-                else -> tvPosition?.text = position.toString()
+                else -> tvPosition?.text = (position + 1).toString()
             }
 
             tvName?.text = listBean.nickName

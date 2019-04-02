@@ -878,7 +878,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     showToast(R.string.private_chat_permission_deny);
                     return;
                 }
-//                setTabChange(1);
                 PrivateChatUser user = new PrivateChatUser();
                 user.setPrivateUserId(Long.valueOf(mAnchor.getId()));
                 user.setName(mAnchor.getName());
@@ -886,9 +885,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 showPrivateChatListDialog(user);
                 break;
             case R.id.rootView:
-                if (currentSelectedIndex == 1) {
-//                    setTabChange(0);
-                }
+
                 break;
             case R.id.btn_send_gift:
                 if (mGiftData == null || mGiftData.getData() == null) {

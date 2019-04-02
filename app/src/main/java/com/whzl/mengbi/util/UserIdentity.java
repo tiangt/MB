@@ -28,7 +28,7 @@ public class UserIdentity {
         for (int i = 0; i < levelMap.size(); i++) {
             if ("USER_LEVEL".equals(levelMap.get(i).getLevelType())) {
                 int levelValue = levelMap.get(i).getLevelValue();
-                if (levelValue > 5) {
+                if (levelValue > 6) {
                     canChatPrivate = true;
                 }
             }

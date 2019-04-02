@@ -284,7 +284,7 @@
     <string name="alert">提示</string>
     <string name="cancel">取消</string>
     <string name="net_error">网络连接断开，请检测网络设置</string>
-    <string name="private_chat_permission_deny">当前用户没有私聊权限</string>
+    <string name="private_chat_permission_deny">VIP、守护、贵族或富豪6及以上玩家才能私聊哦！</string>
     <string name="kick_out_message">你已经被踢出踢出直播间</string>
     <string name="force_kick_out_message">用多个手机打开同一个直播间，强制退出之前的直播间</string>
     <string name="jump_live_house">是否离开当前直播间\n跳转到%1$s直播间</string>
