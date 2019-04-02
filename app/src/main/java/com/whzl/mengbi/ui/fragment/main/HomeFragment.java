@@ -11,16 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.HomeRefreshEvent;
 import com.whzl.mengbi.model.entity.BannerInfo;
 import com.whzl.mengbi.model.entity.HeadlineTopInfo;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
@@ -35,7 +34,6 @@ import com.whzl.mengbi.ui.activity.LoginActivity;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.activity.SearchActivity;
-import com.whzl.mengbi.ui.activity.WatchHistoryActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
 import com.whzl.mengbi.ui.adapter.SlideInRightAnimation;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -52,10 +50,13 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -99,7 +100,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     protected void initEnv() {
         super.initEnv();
         mHomePresenter = new HomePresenterImpl(this);
-
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -212,13 +213,13 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 break;
 
             case R.id.iv_history:
-                if(checkLogin()){
+                if (checkLogin()) {
                     Intent intent = new Intent(getContext(), HistoryListActivity.class);
-                    intent.putExtra("index",3);
+                    intent.putExtra("index", 3);
                     startActivity(intent);
                     return;
                 }
-                ((MainActivity)getMyActivity()).login();
+                ((MainActivity) getMyActivity()).login();
                 break;
         }
     }
@@ -535,6 +536,14 @@ public class HomeFragment extends BaseFragment implements HomeView {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(HomeRefreshEvent event) {
+        if (!anchorRecycler.canScrollVertically(-1)) {
+            return;
+        }
+        anchorRecycler.smoothScrollToPosition(0);
+    }
+
     @Override
     public void onError(String msg) {
         refreshLayout.finishLoadMore();
@@ -546,6 +555,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
     public void onDestroy() {
         super.onDestroy();
         mHomePresenter.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private boolean checkLogin() {
