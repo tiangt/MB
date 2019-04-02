@@ -1,9 +1,13 @@
 package com.whzl.mengbi.ui.fragment.main;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.view.View;
+import android.widget.EdgeEffect;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -53,6 +57,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 
@@ -89,6 +94,8 @@ public class MineFragment extends BaseFragment implements MeView {
     TextView tvFollowCount;
     @BindView(R.id.tv_fans_count)
     TextView tvFansCount;
+    @BindView(R.id.scroll_view_mine)
+    ScrollView scrollView;
 
     private MePresenter mPresent;
     private UserInfo mUserInfo;
@@ -117,6 +124,27 @@ public class MineFragment extends BaseFragment implements MeView {
 
     @Override
     public void init() {
+        try {
+            Field topMethod = null;
+            topMethod = ScrollView.class.getDeclaredField("mEdgeGlowTop");
+            topMethod.setAccessible(true);
+            EdgeEffect top = (EdgeEffect) topMethod.get(scrollView);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                top.setColor(Color.TRANSPARENT);
+            }
+
+            Field topMethod2 = null;
+            topMethod2 = ScrollView.class.getDeclaredField("mEdgeGlowBottom");
+            topMethod2.setAccessible(true);
+            EdgeEffect bottom = (EdgeEffect) topMethod2.get(scrollView);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                bottom.setColor(Color.TRANSPARENT);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         mPresent.getUserInfo();
     }
 
