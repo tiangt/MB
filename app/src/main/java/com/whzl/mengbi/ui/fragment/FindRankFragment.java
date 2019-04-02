@@ -16,22 +16,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
-import com.whzl.mengbi.model.entity.HeadlineListBean;
-import com.whzl.mengbi.model.entity.RankListBean;
 import com.whzl.mengbi.model.entity.RankListInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
-import com.whzl.mengbi.ui.activity.me.MyChipActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.ui.dialog.fragment.HeadlineListFragment;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.GsonUtils;
@@ -40,9 +32,6 @@ import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
-import com.whzl.mengbi.util.network.retrofit.ApiFactory;
-import com.whzl.mengbi.util.network.retrofit.ApiObserver;
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,8 +39,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 发现--榜单

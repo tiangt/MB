@@ -447,7 +447,18 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                 getBeyondFirst(mAnchorId, mListBean.get(position).goodsId, mListBean.get(position).anchorRankId, mListBean.get(position).goodsName);
             }
             giftAdapter.notifyDataSetChanged();
+            smoothToPosition(itemView);
         }
+    }
+
+    private void smoothToPosition(View itemView) {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) rvWeekGift.getLayoutManager();
+        int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+        if (lastVisibleItemPosition == mListBean.size() - 1) {
+            return;
+        }
+        int left = itemView.getLeft();
+        rvWeekGift.smoothScrollBy(left, 0);
     }
 
     /**

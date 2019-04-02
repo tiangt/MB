@@ -10,6 +10,7 @@ import com.whzl.mengbi.chat.room.util.DownloadEvent;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -19,7 +20,8 @@ import java.util.List;
 
 public class GiftAction implements Actions {
     @Override
-    public void performAction(String msgStr,  final Context context) {
+    public void performAction(String msgStr, final Context context) {
+        LogUtils.e("GiftAction  " + msgStr);
         GiftJson giftJson = GsonUtils.GsonToBean(msgStr, GiftJson.class);
         if (giftJson == null) {
             return;
