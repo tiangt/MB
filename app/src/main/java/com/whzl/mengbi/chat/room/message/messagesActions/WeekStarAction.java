@@ -18,7 +18,7 @@ import org.greenrobot.eventbus.EventBus;
 public class WeekStarAction implements Actions {
     @Override
     public void performAction(String msgStr, Context context) {
-        LogUtils.e("sssssssss   "+msgStr);
+        LogUtils.e("WeekStarAction   "+msgStr);
         WeekStarJson weekStarJson = GsonUtils.GsonToBean(msgStr, WeekStarJson.class);
         if (null == weekStarJson || weekStarJson.context == null) {
             return;

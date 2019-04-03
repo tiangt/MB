@@ -520,6 +520,7 @@ public class MainActivity extends BaseActivity {
 
     public void setCheck(int index) {
         rgTab.check(rgTab.getChildAt(index).getId());
+        setTabChange(index);
     }
 
     private void showBindingDialog() {
@@ -555,7 +556,6 @@ public class MainActivity extends BaseActivity {
     @Subscribe
     public void onMessageEvent(JumpMainActivityEvent event) {
         setTabChange(event.check);
-        setCheck(event.check);
     }
 
     /**

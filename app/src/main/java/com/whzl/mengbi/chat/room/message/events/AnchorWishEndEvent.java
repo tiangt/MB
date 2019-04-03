@@ -9,7 +9,12 @@ import com.whzl.mengbi.chat.room.message.messageJson.AnchorWishJson;
  * @date 2019/3/28
  */
 public class AnchorWishEndEvent {
-    public AnchorWishEndEvent(Context context, AnchorWishJson anchorWishJson) {
+    private Context context;
+    public AnchorWishJson anchorWishJson;
 
+    public AnchorWishEndEvent(Context context, AnchorWishJson anchorWishJson) {
+        this.context = context;
+        this.anchorWishJson = anchorWishJson;
     }
+
 }

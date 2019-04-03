@@ -105,6 +105,7 @@ import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.gen.UserDao;
 import com.whzl.mengbi.gen.UsualGiftDao;
+import com.whzl.mengbi.gift.AnchorWishControl;
 import com.whzl.mengbi.gift.GifGiftControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.HeadLineControl;
@@ -360,6 +361,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvStopTime;
     @BindView(R.id.ll_top_live)
     LinearLayout llTopContainer;
+    @BindView(R.id.tv_anchor_wish_live)
+    TextView tvAnchorWishLive;
 
     private LivePresenterImpl mLivePresenter;
     public int mProgramId;
@@ -436,6 +439,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog liveStopDialog;
     private ObjectAnimator llTopUpAnima;
     private ObjectAnimator llTopDownAnima;
+    private AnchorWishControl anchorWishControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -2489,6 +2493,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnchorWishEndEvent anchorWishEndEvent) {
         removeAnchorWish();
+        if (anchorWishControl == null) {
+            anchorWishControl = new AnchorWishControl(tvAnchorWishLive);
+        }
+        anchorWishControl.load(anchorWishEndEvent);
     }
 
     public void removeAnchorWish() {

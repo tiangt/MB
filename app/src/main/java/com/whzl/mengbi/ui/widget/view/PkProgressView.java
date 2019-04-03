@@ -162,12 +162,10 @@ public class PkProgressView extends ProgressBar {
         height = MeasureSpec.getSize(heightMeasureSpec);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onDraw(Canvas canvas) {
         // 绘制背景
         RectF rectF = new RectF(0, 0, width, height);
-//        backPaint.setColor(Color.parseColor("#2DA8EE"));
         canvas.drawRoundRect(rectF, 18, 18, backPaint);
         // 测量字体
         mBound = new Rect();
@@ -175,9 +173,9 @@ public class PkProgressView extends ProgressBar {
         // 绘制已完成的进度
         Path path = new Path();
         path.moveTo(18, 0);
-//        RectF mRectF = new RectF(0, 0, 30, 30);
-//        path.arcTo(mRectF,180,0);
-        path.addArc(0, 0, 36, 36, 180, 90);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            path.addArc(0, 0, 36, 36, 180, 90);
+        }
         if (mDefaultPercent < 0) {
             mDefaultPercent = 8;
         }
