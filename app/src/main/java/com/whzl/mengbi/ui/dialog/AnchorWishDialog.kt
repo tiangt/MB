@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.dialog
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import com.whzl.mengbi.R
 import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.model.entity.AnchorWishBean
@@ -54,7 +55,6 @@ class AnchorWishDialog : BaseAwesomeDialog() {
         tv_wealth_offical.append(LightSpanString.getLightString(anchorWishBean.awardInfo.officalAwardWealth.toString(), Color.rgb(255, 236, 113)))
         tv_wealth_offical.append(" 经验礼包")
 
-
         if (anchorWishBean.distributeRule == "RANK") {
             tv_people_num.text = "榜单前${anchorWishBean.awardInfo.awardPeopleNumber}名用户奖励"
         } else {
@@ -69,7 +69,7 @@ class AnchorWishDialog : BaseAwesomeDialog() {
 
         if (anchorWishBean.distributeRule == "RANK") {
             if (anchorWishBean.awardInfo.officalAwardPeopleNumber == -1) {
-                tv_people_num_offical.text = "榜单所有支持者用户奖励"
+                tv_people_num_offical.text = "所有支持者奖励"
             } else {
                 tv_people_num_offical.text = "榜单前${anchorWishBean.awardInfo.officalAwardPeopleNumber}名支持者用户奖励"
             }
@@ -87,6 +87,17 @@ class AnchorWishDialog : BaseAwesomeDialog() {
             tv_people_num_offical.append("随机获得")
         }
 
+        if (anchorWishBean.awardInfo.awardWealth == 0L) {
+            ll_contain1_anchor_wish.visibility = View.GONE
+        }
+
+        if (anchorWishBean.awardInfo.officalAwardWealth == 0L) {
+            ll_contain2_anchor_wish.visibility = View.GONE
+        }
+
+        if (anchorWishBean.awardInfo.awardWealth == 0L && anchorWishBean.awardInfo.officalAwardWealth == 0L) {
+            tv_join_tip_anchor_wish.visibility = View.GONE
+        }
 
         ib_note_anchor_wish.setOnClickListener {
             if (noteDialog != null && noteDialog!!.isAdded) {
@@ -110,7 +121,7 @@ class AnchorWishDialog : BaseAwesomeDialog() {
             if (listDialog != null && listDialog!!.isAdded) {
                 return@setOnClickListener
             }
-            listDialog = AnchorWishListDialog.newInstance(arguments?.get("anchorId") as Int, anchorWishBean.totalWishCard*anchorWishBean.sendGiftPrice)
+            listDialog = AnchorWishListDialog.newInstance(arguments?.get("anchorId") as Int, anchorWishBean.totalWishCard * anchorWishBean.sendGiftPrice)
                     .setShowBottom(true)
                     .setDimAmount(0f)
                     .show(fragmentManager)

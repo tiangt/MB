@@ -1252,6 +1252,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             e.printStackTrace();
         }
         llStopTip.setVisibility(View.GONE);
+
+        if (liveStopDialog != null && liveStopDialog.isAdded()) {
+            liveStopDialog.dismissDialog();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -1383,6 +1387,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initIgnore(roomInfoBean);
     }
 
+    /**
+     * 直播结束弹窗
+     */
     private void showLiveStopDialog(String lastUpdateTime) {
         if (liveStopDialog != null && liveStopDialog.isAdded()) {
             return;
