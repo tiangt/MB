@@ -1,7 +1,11 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
@@ -29,6 +33,7 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.PictureUtil;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -38,6 +43,7 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -511,47 +517,43 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private void setRoyalBackground(int royalLevel) {
         switch (royalLevel) {
             case 0:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_civilian, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_civilian);
+                setRoyalImg(R.drawable.bg_civilian);
                 break;
             case 1:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_bronze, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_bronze);
+                setRoyalImg(R.drawable.bg_bronze);
                 break;
             case 2:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_silver, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_silver);
+                setRoyalImg(R.drawable.bg_silver);
                 break;
             case 3:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_gold, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_gold);
+                setRoyalImg(R.drawable.bg_gold);
                 break;
             case 4:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_platinum, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_platinum);
+                setRoyalImg(R.drawable.bg_platinum);
                 break;
             case 5:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_diamond, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_diamond);
+                setRoyalImg(R.drawable.bg_diamond);
                 break;
             case 6:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_star, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_star);
+                setRoyalImg(R.drawable.bg_star);
                 break;
             case 7:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_king, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_king);
+                setRoyalImg(R.drawable.bg_king);
                 break;
             case 8:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_king, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_legend);
+                setRoyalImg(R.drawable.bg_legend);
                 break;
             default:
-//                GlideImageLoader.getInstace().displayImage(getActivity(), R.drawable.bg_civilian, ivBgPersonal);
-                constraintLayout.setBackgroundResource(R.drawable.bg_civilian);
+                setRoyalImg(R.drawable.bg_civilian);
                 break;
         }
     }
+
+    private void setRoyalImg(int bg_civilian) {
+        constraintLayout.setBackground(PictureUtil.getSmallBitmap(getResources(), bg_civilian,
+                UIUtil.dip2px(getActivity(), 370), UIUtil.dip2px(getActivity(), 330)));
+    }
+
 
     private void follow(long userId, long followingUserId) {
         HashMap map = new HashMap();

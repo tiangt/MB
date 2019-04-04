@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.widget.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -36,6 +37,7 @@ public class PkProgressView extends ProgressBar {
     private Paint barPaint;
     private int width;
     private int height;
+    private RectF rectF;
 
     public PkProgressView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -146,13 +148,13 @@ public class PkProgressView extends ProgressBar {
         a.recycle();
         backPaint = new Paint();
         backPaint.setColor(mBackColorDefault);
-        backPaint.setStyle(Paint.Style.FILL);//充满
-        backPaint.setAntiAlias(true);// 设置画笔的锯齿效果
+        backPaint.setStyle(Paint.Style.FILL);
+        backPaint.setAntiAlias(true);
 
         barPaint = new Paint();
         barPaint.setColor(mBackColor);
-        barPaint.setStyle(Paint.Style.FILL);//充满
-        barPaint.setAntiAlias(true);// 设置画笔的锯齿效果
+        barPaint.setStyle(Paint.Style.FILL);
+        barPaint.setAntiAlias(true);
     }
 
     @Override
@@ -162,10 +164,11 @@ public class PkProgressView extends ProgressBar {
         height = MeasureSpec.getSize(heightMeasureSpec);
     }
 
+    @SuppressLint({"NewApi", "DrawAllocation"})
     @Override
     protected void onDraw(Canvas canvas) {
         // 绘制背景
-        RectF rectF = new RectF(0, 0, width, height);
+        rectF = new RectF(0, 0, width, height);
         canvas.drawRoundRect(rectF, 18, 18, backPaint);
         // 测量字体
         mBound = new Rect();
@@ -205,21 +208,11 @@ public class PkProgressView extends ProgressBar {
             path.lineTo(p3_width, getHeight());
         }
         // point4
-//        path.addArc(0,getHeight()-60,60,getHeight(),90,90);
         path.lineTo(18, getHeight());
-        path.addArc(0, getHeight() - 36, 36, getHeight(), 90, 90);
-//        path.close();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            path.addArc(0, getHeight() - 36, 36, getHeight(), 90, 90);
+        }
         path.lineTo(0, 18);
-//        barPaint.setColor(mBackColor);
         canvas.drawPath(path, barPaint);
-        // 绘制文字
-//        backPaint.setColor(mTextColor);
-//        backPaint.setTextSize(mTextSize);
-//        backPaint.setStrokeWidth(3);
-//        Paint.FontMetricsInt fontMetrics = backPaint.getFontMetricsInt();
-//        // paint2.setTextSize(20);
-//        int baseline = (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
-//        canvas.drawText(mText, mTextAlignLeft, baseline, backPaint);
-//        invalidate();
     }
 }
