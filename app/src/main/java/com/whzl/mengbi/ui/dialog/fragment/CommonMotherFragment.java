@@ -9,11 +9,9 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.AppConfig;
-import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.gen.UsualGiftDao;
 import com.whzl.mengbi.greendao.UsualGift;
 import com.whzl.mengbi.model.entity.ApiResult;
-import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -178,68 +176,10 @@ public class CommonMotherFragment extends BaseFragment {
 
                     @Override
                     public void onError(ApiResult<GoodsPriceBatchBean> body) {
-//                        if (viewPager == null) {
-//                            viewPager = ButterKnife.findById(getMyActivity(), R.id.view_pager);
-//                        }
-//                        viewPager.setVisibility(View.GONE);
-//                        llBackPack.setVisibility(View.VISIBLE);
                     }
                 });
     }
 
-    private void getBackPack() {
-        HashMap params = new HashMap();
-        Long userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
-        params.put("userId", userId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(params);
-        ApiFactory.getInstance().getApi(Api.class)
-                .getBackpack(signPramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<BackpackListBean>() {
-
-                    @Override
-                    public void onSuccess(BackpackListBean backpackListBean) {
-                        if (getContext() == null) {
-                            return;
-                        }
-                        fragments.clear();
-                        if (backpackListBean != null && backpackListBean.list != null && backpackListBean.list.size() > 0) {
-                            viewPager.setVisibility(View.VISIBLE);
-                            llBackPack.setVisibility(View.GONE);
-                            pagers = (int) Math.ceil(backpackListBean.list.size() / (float) AppConfig.NUM_TOTAL_GIFT_DIALOG);
-                            setupPagerIndex(pagers);
-                            for (int i = 0; i < pagers; i++) {
-                                BackpackFragment fragment;
-                                if (i == pagers - 1) {
-                                    ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
-                                    pagerGiftList.addAll(backpackListBean.list.subList(i * AppConfig.NUM_TOTAL_GIFT_DIALOG, backpackListBean.list.size()));
-                                    fragment = BackpackFragment.newInstance(pagerGiftList);
-                                } else {
-                                    ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
-                                    pagerGiftList.addAll(backpackListBean.list.subList(i * AppConfig.NUM_TOTAL_GIFT_DIALOG, (i + 1) * AppConfig.NUM_TOTAL_GIFT_DIALOG));
-                                    fragment = BackpackFragment.newInstance(pagerGiftList);
-                                }
-                                fragments.add(fragment);
-                            }
-                        } else {
-                            viewPager.setVisibility(View.GONE);
-                            llBackPack.setVisibility(View.VISIBLE);
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onError(ApiResult<BackpackListBean> body) {
-                        if (getContext() == null) {
-                            return;
-                        }
-                        viewPager.setVisibility(View.GONE);
-                        llBackPack.setVisibility(View.VISIBLE);
-                    }
-
-                });
-    }
 
     @Override
     public void onDestroy() {

@@ -25,6 +25,7 @@ import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
+import com.whzl.mengbi.model.entity.GoodsDetailBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
@@ -57,14 +58,14 @@ public class BackpackFragment extends BaseFragment {
     RecyclerView recycler;
     private BaseListAdapter giftAdapter;
     private boolean flagOnMessageEvent = true;
-    private ArrayList<BackpackListBean.GoodsDetailBean> mDatas = new ArrayList<>();
+    private ArrayList<GoodsDetailBean> mDatas = new ArrayList<>();
     private int selectedPosition = -1;
 
     private int selectId = -1;
     private AnimatorSet animatorSetsuofang;
 
 
-    public static BackpackFragment newInstance(ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList) {
+    public static BackpackFragment newInstance(ArrayList<GoodsDetailBean> pagerGiftList) {
         BackpackFragment fragment = new BackpackFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList("data", pagerGiftList);
@@ -144,7 +145,7 @@ public class BackpackFragment extends BaseFragment {
 
         @Override
         public void onBindViewHolder(int position) {
-            BackpackListBean.GoodsDetailBean goodsDetailBean = mDatas.get(position);
+            GoodsDetailBean goodsDetailBean = mDatas.get(position);
             GlideImageLoader.getInstace().displayImage(getContext(), goodsDetailBean.goodsPic, ivGift);
             tvGiftName.setText(goodsDetailBean.goodsName);
 //            tvCost.setText("数量 ");
@@ -186,7 +187,7 @@ public class BackpackFragment extends BaseFragment {
 //                e.printStackTrace();
 //            }
             startAnimal(ivGift, position);
-            BackpackListBean.GoodsDetailBean goodsDetailBean = mDatas.get(position);
+            GoodsDetailBean goodsDetailBean = mDatas.get(position);
             GiftInfo.GiftDetailInfoBean giftDetailInfoBean = new GiftInfo.GiftDetailInfoBean();
             giftDetailInfoBean.setGoodsId(goodsDetailBean.goodsId);
             selectId = goodsDetailBean.goodsId;
@@ -276,7 +277,7 @@ public class BackpackFragment extends BaseFragment {
                 });
     }
 
-    private int check(List<BackpackListBean.GoodsDetailBean> list, int selectId) {
+    private int check(List<GoodsDetailBean> list, int selectId) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).goodsId == selectId) {
                 return list.get(i).count;

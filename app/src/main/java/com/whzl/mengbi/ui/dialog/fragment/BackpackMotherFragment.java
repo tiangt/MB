@@ -12,6 +12,7 @@ import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.GoodsDetailBean;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.SPUtils;
@@ -40,7 +41,7 @@ public class BackpackMotherFragment extends BaseFragment {
     @BindView(R.id.tv_backpack_empty)
     TextView tvBackpackEmpty;
     @BindView(R.id.ll_backpack_empty)
-   public LinearLayout llBackPack;
+    public LinearLayout llBackPack;
     private int pagers;
     private FragmentPagerAdaper adapter;
     private ArrayList<Fragment> fragments = new ArrayList<>();
@@ -118,23 +119,23 @@ public class BackpackMotherFragment extends BaseFragment {
 
                     @Override
                     public void onSuccess(BackpackListBean backpackListBean) {
-                        if(getContext() == null){
+                        if (getContext() == null) {
                             return;
                         }
                         fragments.clear();
                         if (backpackListBean != null && backpackListBean.list != null && backpackListBean.list.size() > 0) {
                             viewPager.setVisibility(View.VISIBLE);
                             llBackPack.setVisibility(View.GONE);
-                            pagers = (int) Math.ceil(backpackListBean.list.size() / (float)AppConfig.NUM_TOTAL_GIFT_DIALOG);
+                            pagers = (int) Math.ceil(backpackListBean.list.size() / (float) AppConfig.NUM_TOTAL_GIFT_DIALOG);
                             setupPagerIndex(pagers);
                             for (int i = 0; i < pagers; i++) {
                                 BackpackFragment fragment;
                                 if (i == pagers - 1) {
-                                    ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
+                                    ArrayList<GoodsDetailBean> pagerGiftList = new ArrayList<>();
                                     pagerGiftList.addAll(backpackListBean.list.subList(i * AppConfig.NUM_TOTAL_GIFT_DIALOG, backpackListBean.list.size()));
                                     fragment = BackpackFragment.newInstance(pagerGiftList);
                                 } else {
-                                    ArrayList<BackpackListBean.GoodsDetailBean> pagerGiftList = new ArrayList<>();
+                                    ArrayList<GoodsDetailBean> pagerGiftList = new ArrayList<>();
                                     pagerGiftList.addAll(backpackListBean.list.subList(i * AppConfig.NUM_TOTAL_GIFT_DIALOG, (i + 1) * AppConfig.NUM_TOTAL_GIFT_DIALOG));
                                     fragment = BackpackFragment.newInstance(pagerGiftList);
                                 }
@@ -149,7 +150,7 @@ public class BackpackMotherFragment extends BaseFragment {
 
                     @Override
                     public void onError(ApiResult<BackpackListBean> body) {
-                        if(getContext() == null){
+                        if (getContext() == null) {
                             return;
                         }
                         viewPager.setVisibility(View.GONE);
