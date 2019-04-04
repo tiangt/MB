@@ -26,6 +26,7 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -2070,8 +2071,13 @@ public class TabLayout extends HorizontalScrollView {
                             getHeight(), dpToPx(2), dpToPx(2), mSelectedIndicatorPaint);
                     mIsDefaultIndicatorWidth = false;
                 } else {
-                    canvas.drawRoundRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
-                            mIndicatorRight, getHeight(), dpToPx(2), dpToPx(2), mSelectedIndicatorPaint);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                        canvas.drawRoundRect(new RectF(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight, mIndicatorRight, getHeight())
+                                , dpToPx(2), dpToPx(2), mSelectedIndicatorPaint);
+                    } else {
+                        canvas.drawRoundRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
+                                mIndicatorRight, getHeight(), dpToPx(2), dpToPx(2), mSelectedIndicatorPaint);
+                    }
                     mIsDefaultIndicatorWidth = true;
                 }
             }

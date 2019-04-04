@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifDrawable;
-
 
 public class LevelUtil {
     public static int getUserLevel(FromJson fromJson) {

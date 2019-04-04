@@ -1001,14 +1001,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         awesomeDialog = PrivateChatDialog.newInstance(mProgramId)
                 .setShowBottom(true)
-                .setDimAmount(0)
-                .show(getSupportFragmentManager());
+                .setDimAmount(0);
         RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
         dataBean.setAvatar(user.getAvatar());
         dataBean.setNickname(user.getName());
         dataBean.setUserId(user.getPrivateUserId());
         ((PrivateChatDialog) awesomeDialog).chatTo(dataBean);
         ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
+        awesomeDialog.show(getSupportFragmentManager());
     }
 
     private void showRedbagPopwindow() {

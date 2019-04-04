@@ -479,6 +479,9 @@ public class PkControl {
     }
 
     private void endPkCountDown() {
+        if (ivCountDown == null) {
+            return;
+        }
         ivCountDown.setImageResource(R.drawable.anim_pk_countdown);
         animationDrawable = (AnimationDrawable) ivCountDown.getDrawable();
         ivCountDown.setVisibility(View.VISIBLE);
@@ -489,13 +492,10 @@ public class PkControl {
             duration += animationDrawable.getDuration(i);
         }
 
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
-                ivCountDown.setVisibility(View.GONE);
-                animationDrawable.stop();
-            }
-
+        handler.postDelayed(() -> {
+            LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
+            ivCountDown.setVisibility(View.GONE);
+            animationDrawable.stop();
         }, duration);
     }
 

@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <include layout="@layout/white_toolbar"/>
+
+    <include layout="@layout/white_toolbar" />
+
     <FrameLayout
         android:id="@+id/fl_contain"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>

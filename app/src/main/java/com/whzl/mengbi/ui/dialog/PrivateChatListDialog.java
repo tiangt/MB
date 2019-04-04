@@ -159,7 +159,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
     }
 
     private boolean checkContain(List<PrivateChatUser> privateChatUsers, PrivateChatUser roomUser) {
-        if (privateChatUsers == null||privateChatUsers.isEmpty()) {
+        if (privateChatUsers == null || privateChatUsers.isEmpty()) {
             return false;
         }
 
@@ -235,8 +235,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             }
             awesomeDialog = PrivateChatDialog.newInstance(mProgramId)
                     .setShowBottom(true)
-                    .setDimAmount(0)
-                    .show(getFragmentManager());
+                    .setDimAmount(0);
             PrivateChatUser chatUser = roomUsers.get(position);
             RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
             dataBean.setAvatar(chatUser.getAvatar());
@@ -245,6 +244,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             ((PrivateChatDialog) awesomeDialog).chatTo(dataBean);
             ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
             ((PrivateChatDialog) awesomeDialog).setIsVip(isVip);
+            awesomeDialog.show(getFragmentManager());
             if (!chatUser.getUncheckTime().equals(0) && chatUser.getId() != null) {
                 PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
                 chatUser.setUncheckTime(0L);

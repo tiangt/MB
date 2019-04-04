@@ -23,7 +23,9 @@ public class FrgActivity extends BaseActivity {
 
     public void setTitle(String title) {
         TextView tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
-        tvToolbarTitle.setText(title);
+        if (tvToolbarTitle != null) {
+            tvToolbarTitle.setText(title);
+        }
     }
 
     public void setTitleColor(int color) {
