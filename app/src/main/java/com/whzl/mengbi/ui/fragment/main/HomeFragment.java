@@ -69,9 +69,9 @@ import butterknife.OnClick;
 public class HomeFragment extends BaseFragment implements HomeView {
     private static final int TYPE_RECOMMEND = 250;
     private static final int TYPE_ANCHOR = 520;
-    @BindView(R.id.anchor_recycler)
+    @BindView(R.id.anchor_recycler_home)
     RecyclerView anchorRecycler;
-    @BindView(R.id.refresh_layout)
+    @BindView(R.id.refresh_layout_home)
     SmartRefreshLayout refreshLayout;
     @BindView(R.id.iv_search)
     ImageView ivSearch;
