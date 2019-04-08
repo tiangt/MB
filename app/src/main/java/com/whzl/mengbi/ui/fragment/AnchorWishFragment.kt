@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.os.Bundle
 import com.whzl.mengbi.R
 import com.whzl.mengbi.chat.room.message.events.AnchorWishChangeEvent
-import com.whzl.mengbi.chat.room.message.events.AnchorWishEndEvent
 import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView

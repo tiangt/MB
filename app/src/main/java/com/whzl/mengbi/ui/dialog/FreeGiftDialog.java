@@ -102,7 +102,7 @@ public class FreeGiftDialog extends BaseAwesomeDialog {
         initRecycler();
         initEvent();
         initData();
-        initBuyVisible();
+//        initBuyVisible();
     }
 
     private void initBuyVisible() {

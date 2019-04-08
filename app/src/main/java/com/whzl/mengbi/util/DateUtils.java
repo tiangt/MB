@@ -372,9 +372,9 @@ public class DateUtils {
                 return "0" + hour + ":0" + minute + ":" + second;
             }
             if (second < 10) {
-                return "0" + hour + minute + ":0" + second;
+                return "0" + hour + ":" + minute + ":0" + second;
             }
-            return "0" + hour + minute + ":" + second;
+            return "0" + hour + ":" + minute + ":" + second;
         }
         if (minute < 10) {
             if (second < 10) {
@@ -383,8 +383,8 @@ public class DateUtils {
             return hour + ":0" + minute + ":" + second;
         }
         if (second < 10) {
-            return hour + "" + minute + ":0" + second;
+            return hour + ":" + minute + ":0" + second;
         }
-        return hour + "" + minute + ":" + second;
+        return hour + ":" + minute + ":" + second;
     }
 }

@@ -2499,7 +2499,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnchorWishEndEvent anchorWishEndEvent) {
-        removeAnchorWish();
+        if (mProgramId == anchorWishEndEvent.anchorWishJson.context.programId) {
+            removeAnchorWish();
+        }
         if (anchorWishControl == null) {
             anchorWishControl = new AnchorWishControl(tvAnchorWishLive);
         }
