@@ -9,10 +9,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="123dp"
         android:gravity="center"
         android:text="您查询的时间段无数据哦！"
-        android:textColor="@color/colorCommNotActive"
-        android:textSize="22sp" />
+        android:textColor="#60000000"
+        android:textSize="12sp" />
 
 </LinearLayout>

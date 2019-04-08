@@ -5,7 +5,7 @@
     android:layout_marginLeft="13dp"
     android:layout_marginRight="13dp"
     android:layout_marginTop="6dp"
-    android:background="@drawable/bg_bill_pay"
+    android:background="@drawable/bg_bill_head"
     android:orientation="vertical"
     android:paddingBottom="11dp"
     android:paddingLeft="17dp"
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="end"
-            android:textColor="@color/text_hint"
+            android:textColor="#000000"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -53,7 +53,7 @@
             android:layout_marginRight="2dp"
             android:layout_weight="1"
             android:gravity="end"
-            android:textColor="#ff6000"
+            android:textColor="#ff2b3f"
             android:textSize="12sp" />
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="萌币"
-            android:textColor="@color/text_view"
+            android:textColor="#70000000"
             android:textSize="11sp" />
     </LinearLayout>
 </LinearLayout>

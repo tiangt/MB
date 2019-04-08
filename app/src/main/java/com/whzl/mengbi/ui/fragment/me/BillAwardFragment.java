@@ -43,7 +43,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author nobody
  * @date 2018/10/19
  */
-public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBean,BasePresenter> {
+public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBean, BasePresenter> {
 
     private TextView tvStart;
     private TextView tvEnd;
@@ -71,6 +71,8 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
     @Override
     public void init() {
         super.init();
+        hideDividerShawdow(null);
+        getPullView().setRefBackgroud(Color.WHITE);
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.head_bill_pay, getPullView(), false);
         tvStart = view.findViewById(R.id.tv_start_time);
         tvEnd = view.findViewById(R.id.tv_end_time);
@@ -178,7 +180,7 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
             tvBusName.setText(bean.awardName);
             tvGoodName.setText("奖励");
             tvTime.setText(bean.statusDate);
-            tvCoin.setText(String.valueOf(bean.contentDetailName));
+            tvCoin.setText((bean.contentDetailName));
         }
     }
 
@@ -193,7 +195,7 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
         end.setTimeInMillis(System.currentTimeMillis());
-        start.setTimeInMillis(System.currentTimeMillis()-30 * 24 * 60 * 60 * 1000L);
+        start.setTimeInMillis(System.currentTimeMillis() - 30 * 24 * 60 * 60 * 1000L);
         pvTime = new TimePickerBuilder(getMyActivity(), new OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {//选中事件回调
@@ -210,22 +212,24 @@ public class BillAwardFragment extends BasePullListFragment<BillAwardBean.ListBe
                 .setDate(calendar)
                 .setType(new boolean[]{true, true, true, false, false, false})// 默认全部显示
                 .setCancelText("取消")//取消按钮文字
-                .setSubCalSize(15)
+                .setSubCalSize(13)
                 .setSubmitText("完成")//确认按钮文字
-                .setTitleSize(17)//标题文字大小
+                .setTitleSize(15)//标题文字大小
                 .setTitleText("日期选择")//标题文字
                 .isCyclic(false)//是否循环滚动
                 .setTitleColor(Color.BLACK)//标题文字颜色
-                .setSubmitColor(Color.parseColor("#007aff"))//确定按钮文字颜色
-                .setCancelColor(Color.parseColor("#007aff"))//取消按钮文字颜色
+                .setTitleBgColor(Color.WHITE)
+                .setLineSpacingMultiplier(2)
+                .setTitleColor(Color.parseColor("#70000000"))//标题文字颜色
+                .setSubmitColor(Color.parseColor("#ff2b3f"))//确定按钮文字颜色
+                .setCancelColor(Color.parseColor("#70000000"))//取消按钮文字颜色
                 .setDividerColor(Color.parseColor("#cdcdcd"))
-                .setContentTextSize(19)
+                .setContentTextSize(15)
                 .setTextColorCenter(Color.BLACK)
                 .setBgColor(Color.WHITE)//滚轮背景颜色 Night mode
                 .setLabel("", "", "", "时", "分", "秒")//默认设置为年月日时分秒
                 .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                 .isDialog(false)//是否显示为对话框样式
-//                .setRangDate(start,end)
                 .build();
 
         pvTime.show();

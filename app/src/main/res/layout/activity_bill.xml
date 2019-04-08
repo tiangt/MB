@@ -9,23 +9,23 @@
 
     <include layout="@layout/divider_shawdow_white" />
 
-    <android.support.design.widget.TabLayout
+    <com.whzl.mengbi.ui.widget.tablayout.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="40dp"
         android:background="@color/white"
         app:tabBackground="@android:color/transparent"
         app:tabGravity="fill"
-        app:tabIndicatorColor="#20c78a"
+        app:tabIndicatorColor="#ffd634"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="#20c78a"
-        app:tabTextAppearance="@style/PackTab"
-        app:tabTextColor="#646464" />
+        app:tabSelectedTextColor="#000000"
+        app:tabTextColor="#70000000" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white" />
+        android:background="@color/white"
+        android:overScrollMode="never" />
 </LinearLayout>
