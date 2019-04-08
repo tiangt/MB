@@ -15,7 +15,7 @@
         android:layout_height="40dp"
         android:background="@color/white"
         app:tabBackground="@android:color/transparent"
-        app:tabGravity="fill"
+        app:tabGravity="center"
         app:tabIndicatorColor="#ffd634"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
