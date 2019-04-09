@@ -196,9 +196,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 break;
             case R.id.rl_gender_container:
                 showMaleDialog();
-//                Intent genderIntent = new Intent(this, GenderModifyActivity.class);
-//                genderIntent.putExtra("gender", mSex);
-//                startActivityForResult(genderIntent, GENDER_CODE);
                 break;
             case R.id.rl_address_container:
                 showAddressPick();

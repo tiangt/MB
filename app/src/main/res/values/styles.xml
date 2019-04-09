@@ -9,8 +9,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowBackground">@color/appBg</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#70000000</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
 
@@ -475,5 +475,27 @@
         <item name="tabSelectedTextColor">@color/white</item>
         <item name="android:textColor">#40ffffff</item>
         <item name="android:textSize">@dimen/view_space</item>
+    </style>
+
+    <style name="about_us_option_left_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_marginLeft">19dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#70000000</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="about_us_option_right_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:drawablePadding">15.5dp</item>
+        <item name="android:drawableRight">@drawable/arrowright</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">13sp</item>
     </style>
 </resources>

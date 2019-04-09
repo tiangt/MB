@@ -2,81 +2,96 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#f9f9f9"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:paddingRight="15dp"
+    android:paddingTop="18dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_bill_head"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="7dp"
-        android:paddingTop="7dp">
+        android:paddingBottom="14dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="14dp">
 
         <TextView
             android:id="@+id/tv_start_time"
-            android:layout_width="110dp"
-            android:layout_height="34dp"
-            android:background="@drawable/bg_text_bill"
+            android:layout_width="87dp"
+            android:layout_height="26dp"
+            android:drawableBottom="@drawable/bg_text_head_bill"
             android:gravity="center"
-            android:textColor="#757575"
+            android:textColor="#000000"
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/tv_zhi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="11dp"
             android:layout_marginRight="11dp"
+            android:layout_toRightOf="@id/tv_start_time"
             android:text="至"
-            android:textColor="#505050"
+            android:textColor="#70000000"
             android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tv_end_time"
-            android:layout_width="110dp"
-            android:layout_height="34dp"
-            android:background="@drawable/bg_text_bill"
+            android:layout_width="87dp"
+            android:layout_height="26dp"
+            android:layout_toRightOf="@id/tv_zhi"
+            android:drawableBottom="@drawable/bg_text_head_bill"
             android:gravity="center"
-            android:textColor="#757575"
+            android:textColor="#000000"
             android:textSize="13sp" />
 
         <Button
             android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="34dp"
-            android:layout_marginLeft="12dp"
-            android:background="@drawable/bg_button_bill_green"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/shape_yellow_btn"
             android:gravity="center"
             android:text="查询"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:textColor="#70000000"
+            android:textSize="15sp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="18dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="消费总萌币:"
-            android:textColor="@color/text_hint"
-            android:textSize="14sp" />
+            android:textColor="#70000000"
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
-            android:textColor="#ff6000"
-            android:textSize="14sp" />
+            android:textColor="#ff2b3f"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="元"
+            android:textColor="#70000000"
+            android:textSize="13sp" />
 
     </LinearLayout>
 </LinearLayout>
