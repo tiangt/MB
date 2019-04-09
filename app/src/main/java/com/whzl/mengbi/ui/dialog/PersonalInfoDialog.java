@@ -26,6 +26,7 @@ import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.PersonalInfoActivity;
+import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -184,8 +185,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 dismiss();
                 break;
             case R.id.btn_buy_royal:
-                Intent intentShop = new Intent(getActivity(), WXPayEntryActivity.class);
-                intentShop.putExtra("select", 2);
+                Intent intentShop = new Intent(getActivity(), ShopActivity.class);
+                intentShop.putExtra(ShopActivity.SELECT, 3);
                 startActivity(intentShop);
                 dismiss();
                 break;
