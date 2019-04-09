@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.util.SPUtils;
@@ -30,6 +32,8 @@ public class NickNameModifyActivity extends BaseActivity {
 
     @BindView(R.id.et_nick_name)
     EditText etNickName;
+    @BindView(R.id.tv_limit_nick_name_modify)
+    TextView tvLimit;
     private String nickname;
 
     @Override
@@ -80,6 +84,10 @@ public class NickNameModifyActivity extends BaseActivity {
     @Override
     protected void setupView() {
         etNickName.setText(nickname);
+        tvLimit.setText(LightSpanString.getLightString("10000",Color.parseColor("#70ff2b3f")));
+        tvLimit.append("萌币 / 次，首次免费。昵称长度限制");
+        tvLimit.append(LightSpanString.getLightString("10",Color.parseColor("#70ff2b3f")));
+        tvLimit.append("个汉字。");
     }
 
     @Override
