@@ -49,7 +49,12 @@ public class RatioRelativeLayout extends RelativeLayout {
     }
 
     public void setPicRatio(float picRatio) {
-        mPicRatio = picRatio;
+        float v = 16 / 9f;
+        if (picRatio == v) {
+            mPicRatio = 4 / 3f;
+        } else {
+            mPicRatio = picRatio;
+        }
         post(() -> requestLayout());
     }
 
