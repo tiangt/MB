@@ -104,6 +104,7 @@ public class BaseApplication extends Application {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         int heapSize = manager.getMemoryClass();
         int maxHeapSize = manager.getLargeMemoryClass();
+        LogUtils.e("ssssssssss  "+heapSize+"  "+maxHeapSize);
         initUrl();
         try {
             File cacheDir = new File(getApplicationContext().getCacheDir(), "http");
@@ -111,9 +112,6 @@ public class BaseApplication extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        int memClass = activityManager.getMemoryClass();//64，以m为单位
-        LogUtils.e("ssssssssssssss  " + memClass);
     }
 
     private DaoSession daoSession;
