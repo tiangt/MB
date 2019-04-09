@@ -34,7 +34,7 @@
     </RelativeLayout>
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refresh_layout"
+        android:id="@+id/refresh_layout_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true">
@@ -45,7 +45,7 @@
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/anchor_recycler"
+            android:id="@+id/anchor_recycler_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"

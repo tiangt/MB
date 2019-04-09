@@ -64,11 +64,11 @@ import butterknife.ButterKnife;
  * 主页订阅
  */
 public class FollowFragment extends BaseFragment implements OnRefreshListener, OnLoadMoreListener {
-    @BindView(R.id.recycler)
+    @BindView(R.id.recycler_follow)
     RecyclerView recycler;
-    @BindView(R.id.refresh_layout)
+    @BindView(R.id.refresh_layout_follow)
     SmartRefreshLayout refreshLayout;
-    @BindView(R.id.recommend_recycler)
+    @BindView(R.id.recommend_recycler_follow)
     RecyclerView recommendRecycler;
     @BindView(R.id.tv_toolbar_title)
     TextView tvToolbarTitle;
@@ -88,7 +88,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
 
     @Override
     public void init() {
-        recommendRecycler = getMyActivity().findViewById(R.id.recommend_recycler);
+        recommendRecycler = getMyActivity().findViewById(R.id.recommend_recycler_follow);
         EventBus.getDefault().register(this);
         initTitle();
         initRecycler();

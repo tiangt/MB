@@ -186,14 +186,11 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 if (btnInputBroad.isSelected()) {
                     sendBroadCast(message);
                     etContent.getText().clear();
-//                    KeyBoardUtil.closeKeybord(etContent, getContext());
                 } else {
                     ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
                     etContent.getText().clear();
-//                    KeyBoardUtil.closeKeybord(etContent, getContext());
                 }
                 clearSaveEdit();
-//                dismiss();
                 return true;
             }
             return false;
@@ -364,7 +361,9 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     @Override
     public void onResume() {
         super.onResume();
-        etContent.performClick();
+        if (etContent != null) {
+            etContent.postDelayed(() -> etContent.performClick(), 100);
+        }
     }
 
     @Override
@@ -384,27 +383,21 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 if (btnInputBroad.isSelected()) {
                     sendBroadCast(message);
                     etContent.getText().clear();
-//                    KeyBoardUtil.closeKeybord(etContent, getContext());
                 } else {
                     ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
                     etContent.getText().clear();
-//                    KeyBoardUtil.closeKeybord(etContent, getContext());
                 }
                 clearSaveEdit();
-//                dismiss();
                 break;
             case R.id.btn_input_change:
                 btnInputChange.setSelected(!btnInputChange.isSelected());
                 if (btnInputChange.isSelected()) {
                     KeyBoardUtil.closeKeybord(etContent, getContext());
                     llEmojiContiner
-                            .postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
-                                    llEmojiContiner.setVisibility(View.VISIBLE);
-                                    isShowSoftInput = false;
-                                }
+                            .postDelayed(() -> {
+                                LogUtils.e("Thread.currentThread().getId() " + Thread.currentThread().getId());
+                                llEmojiContiner.setVisibility(View.VISIBLE);
+                                isShowSoftInput = false;
                             }, 200);
                 } else {
                     llEmojiContiner.setVisibility(View.GONE);
