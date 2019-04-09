@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.util.LogUtils;
 
 
 /**
@@ -49,7 +50,12 @@ public class RatioRelativeLayout extends RelativeLayout {
     }
 
     public void setPicRatio(float picRatio) {
-        mPicRatio = picRatio;
+        float i = 16 / 9f;
+        if (picRatio == i) {
+            mPicRatio = 4 / 3f;
+        } else {
+            mPicRatio = picRatio;
+        }
         post(() -> requestLayout());
     }
 
