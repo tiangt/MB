@@ -70,4 +70,6 @@ public interface OnLiveFinishedListener {
     void onActivityNativeSuccess(GetActivityBean bean);
 
     void onAnchorWishSuccess(AnchorWishBean jsonElement);
+
+    void onSendGiftNoMoney();
 }

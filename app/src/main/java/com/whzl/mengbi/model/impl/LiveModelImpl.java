@@ -169,6 +169,8 @@ public class LiveModelImpl implements LiveModel {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
                     listener.onSendGiftSuccess();
+                } else if (responseInfo.getCode() == -1211) {
+                    listener.onSendGiftNoMoney();
                 } else {
                     listener.onError(responseInfo.getMsg());
                 }
