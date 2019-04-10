@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RechargeInfo extends ResponseInfo{
 
-    private RechargeDataBean data;
+    public RechargeDataBean data;
 
     public RechargeDataBean getData() {
         return data;

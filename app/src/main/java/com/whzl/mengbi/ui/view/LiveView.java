@@ -72,4 +72,6 @@ public interface LiveView {
     void onActivityNativeSuccess(GetActivityBean bean);
 
     void onAnchorWishSuccess(AnchorWishBean bean);
+
+    void onSendGiftNoMoney();
 }

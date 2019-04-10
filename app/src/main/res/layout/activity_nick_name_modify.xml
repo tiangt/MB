@@ -10,11 +10,11 @@
     <include layout="@layout/divider_shawdow_white" />
 
     <RelativeLayout
-        android:background="@drawable/bg_shawdow_deep"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@id/toolbar"
-        android:layout_marginTop="18dp">
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_shawdow_deep">
 
         <EditText
             android:id="@+id/et_nick_name"
@@ -23,7 +23,7 @@
             android:background="@null"
             android:gravity="center_vertical"
             android:hint="@string/user_info_nickname_hint"
-            android:maxLength="20"
+            android:maxLength="10"
             android:paddingLeft="14dp"
             android:textColor="@color/font_color_52"
             android:textSize="15sp" />
@@ -43,11 +43,11 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_limit_nick_name_modify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="13dp"
         android:layout_marginTop="6dp"
-        android:text="@string/user_info_nickname_length"
-        android:textColor="@color/font_color_53"
+        android:textColor="#70000000"
         android:textSize="12sp" />
 </LinearLayout>

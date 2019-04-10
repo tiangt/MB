@@ -123,6 +123,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
+    public void onSendGiftNoMoney() {
+        if (liveView != null) {
+            liveView.onSendGiftNoMoney();
+        }
+    }
+
+    @Override
     public void onGetRunWayListSuccess(RunWayListBean runWayListBean) {
         if (liveView != null) {
             liveView.onGetRunWayListSuccess(runWayListBean);
