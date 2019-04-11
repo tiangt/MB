@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="#343a42">
 
-        <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.whzl.mengbi.ui.widget.view.UnclickLinearLayout
             android:id="@+id/rootView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -743,7 +743,7 @@
 
             </RelativeLayout>
 
-        </LinearLayout>
+        </com.whzl.mengbi.ui.widget.view.UnclickLinearLayout>
 
         <com.opensource.svgaplayer.SVGAImageView
             android:id="@+id/svga_guard_success"

@@ -25,6 +25,7 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -2564,5 +2565,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                ToastUtils.showToast("ACTION_DOWN Test");
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                ToastUtils.showToast("ACTION_UP Test");
+//                break;
+//        }
+        return super.onTouchEvent(event);
     }
 }
