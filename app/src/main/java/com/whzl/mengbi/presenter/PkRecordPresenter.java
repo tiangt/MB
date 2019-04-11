@@ -9,6 +9,7 @@ import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.PkRecordListBean;
 import com.whzl.mengbi.model.entity.PkTimeBean;
+import com.whzl.mengbi.model.entity.QueryBagByGoodsTypeBean;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 
@@ -79,11 +80,11 @@ public class PkRecordPresenter extends BasePresenter<PkRecordContract.View> impl
     }
 
     @Override
-    public void rescure(long userId, int anchorId, int hourTime) {
+    public void rescure(long userId, int anchorId, int hourTime, int goodsId) {
         if (!isViewAttached()) {
             return;
         }
-        pkRecordModel.rescure(userId, anchorId, hourTime)
+        pkRecordModel.rescure(userId, anchorId, hourTime, goodsId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .as(mView.<ApiResult<JsonElement>>bindAutoDispose())
@@ -98,6 +99,27 @@ public class PkRecordPresenter extends BasePresenter<PkRecordContract.View> impl
                         if (body.code == AppConfig.ANCHOR_NOT_IN_BLACK_ROOM) {
                             ToastUtils.showToast("主播已被解救成功，无需重复解救。");
                         }
+                    }
+                });
+    }
+
+    @Override
+    public void getCardList(long userId,String black_card) {
+        if (!isViewAttached()) {
+            return;
+        }
+        pkRecordModel.getCardList(userId,black_card)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(mView.<ApiResult<QueryBagByGoodsTypeBean>>bindAutoDispose())
+                .subscribe(new ApiObserver<QueryBagByGoodsTypeBean>() {
+                    @Override
+                    public void onSuccess(QueryBagByGoodsTypeBean bean) {
+                        mView.onGetCardList(bean);
+                    }
+
+                    @Override
+                    public void onError(ApiResult<QueryBagByGoodsTypeBean> body) {
                     }
                 });
     }

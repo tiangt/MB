@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,15 +8,20 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
+import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.SpConfig;
@@ -23,6 +29,7 @@ import com.whzl.mengbi.contract.PkRecordContract;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.PkRecordListBean;
 import com.whzl.mengbi.model.entity.PkTimeBean;
+import com.whzl.mengbi.model.entity.QueryBagByGoodsTypeBean;
 import com.whzl.mengbi.presenter.PkRecordPresenter;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -74,6 +81,8 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
     TextView tvTimeBlack;
     @BindView(R.id.tv_save_black_room)
     TextView tvSaveBlack;
+    @BindView(R.id.tv_card_black_room)
+    TextView tvCardBlack;
     @BindView(R.id.tv_state_black)
     TextView tvStateBlack;
     @BindView(R.id.ll_state_black)
@@ -91,6 +100,9 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
     private int totalHours = 0;
     private boolean isAll = false;
     private int editHours = 0;
+    private Long userId;
+    private List<QueryBagByGoodsTypeBean.ListBean> mDatas = new ArrayList<>();
+    private QueryBagByGoodsTypeBean.ListBean selectCard;
 
     @Override
     protected void initEnv() {
@@ -101,6 +113,7 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
         anchorAvatar = getIntent().getStringExtra("anchorAvatar");
         mPresenter = new PkRecordPresenter();
         mPresenter.attachView(this);
+        userId = (Long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
     }
 
     @Override
@@ -120,6 +133,107 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
     }
 
     private void initEvent() {
+        showSaveDialog();
+        showCardDialog();
+    }
+
+    private void showCardDialog() {
+        tvCardBlack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AwesomeDialog.init().setLayoutId(R.layout.dialog_card_black_room)
+                        .setConvertListener(new ViewConvertListener() {
+                            @Override
+                            protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                                if (mDatas.isEmpty()) {
+                                    holder.setText(R.id.tv_card_black_room, "无");
+                                } else {
+                                    holder.setText(R.id.tv_card_black_room, "请选择解救卡");
+                                }
+                                holder.setOnClickListener(R.id.tv_cancel_card_black_room, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismissDialog();
+                                    }
+                                });
+
+                                holder.setOnClickListener(R.id.tv_card_black_room, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (mDatas.isEmpty()) {
+                                            return;
+                                        }
+                                        showCardList(holder.getView(R.id.tv_card_black_room));
+                                    }
+                                });
+
+                                holder.setOnClickListener(R.id.tv_save_card_black_room, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (mDatas.isEmpty() || selectCard == null) {
+                                            return;
+                                        }
+                                        mPresenter.rescure(userId, anchorId, -1, selectCard.goodsId);
+                                        dialog.dismissDialog();
+                                    }
+                                });
+                            }
+                        })
+                        .setAnimStyle(R.style.Theme_AppCompat_Dialog)
+                        .show(getSupportFragmentManager());
+            }
+        });
+    }
+
+    private void showCardList(TextView view) {
+        OptionsPickerView pvOptions = new OptionsPickerBuilder(this, (options1, option2, options3, v) -> {
+            //返回的分别是三个级别的选中位置
+            String tx = mDatas.get(options1).goodsName;
+            view.setText(tx);
+            selectCard = mDatas.get(options1);
+        })
+                .setCancelText("取消")//取消按钮文字
+                .setSubCalSize(13)
+                .setSubmitText("完成")//确认按钮文字
+                .setTitleSize(15)//标题文字大小
+                .setTitleText("解救卡")//标题文字
+                .setTitleColor(Color.BLACK)//标题文字颜色
+                .setTitleBgColor(Color.WHITE)
+                .setLineSpacingMultiplier(2)
+                .setTitleColor(Color.parseColor("#70000000"))//标题文字颜色
+                .setSubmitColor(Color.parseColor("#ff2b3f"))//确定按钮文字颜色
+                .setCancelColor(Color.parseColor("#70000000"))//取消按钮文字颜色
+                .setDividerColor(Color.parseColor("#cdcdcd"))
+                .setContentTextSize(15)
+                .setTextColorCenter(Color.BLACK)
+                .setBgColor(Color.WHITE)//滚轮背景颜色 Night mode
+                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+                .isDialog(true)//是否显示为对话框样式
+                .build();
+        pvOptions.setPicker(mDatas);
+        Dialog mDialog = pvOptions.getDialog();
+        if (mDialog != null) {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    UIUtil.getScreenWidthPixels(this),
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    Gravity.BOTTOM);
+
+            params.leftMargin = 0;
+            params.rightMargin = 0;
+            pvOptions.getDialogContainerLayout().setLayoutParams(params);
+
+            Window dialogWindow = mDialog.getWindow();
+            if (dialogWindow != null) {
+                dialogWindow.setWindowAnimations(com.bigkoo.pickerview.R.style.picker_view_slide_anim);//修改动画样式
+                dialogWindow.setGravity(Gravity.BOTTOM);//改成Bottom,底部显示
+                dialogWindow.setDimAmount(0.5f);
+            }
+        }
+        pvOptions.show();
+
+    }
+
+    private void showSaveDialog() {
         tvSaveBlack.setOnClickListener(v -> AwesomeDialog.init().setLayoutId(R.layout.dialog_black_room)
                 .setConvertListener(new ViewConvertListener() {
                     @Override
@@ -159,14 +273,14 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
                                 if (tvAll.isSelected()) {
                                     isAll = true;
                                     mPresenter.rescure((long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L),
-                                            anchorId, totalHours);
+                                            anchorId, totalHours, -1);
                                     KeyBoardUtil.closeKeybord(etHours, PkRecordActivity.this);
                                     dialog.dismiss();
                                     return;
                                 }
                                 isAll = false;
                                 mPresenter.rescure((long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L),
-                                        anchorId, editHours);
+                                        anchorId, editHours, -1);
                                 KeyBoardUtil.closeKeybord(etHours, PkRecordActivity.this);
                                 dialog.dismiss();
                             }
@@ -240,6 +354,7 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
         mPresenter.getPkTime(anchorId);
         mPresenter.getPkRecordList(anchorId);
         mPresenter.getRoomTime(anchorId);
+        mPresenter.getCardList(userId,"BLACK_CARD");
     }
 
     @Override
@@ -305,8 +420,21 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
 
     @Override
     public void onRescure() {
-        ToastUtils.showRedToast(this, isAll ? "恭喜您成功解救出主播" : "成功解救" + editHours + "小时");
-        mPresenter.getRoomTime(anchorId);
+        if (selectCard == null) {
+            ToastUtils.showRedToast(this, isAll ? "恭喜您成功解救出主播" : "成功解救" + editHours + "小时");
+            mPresenter.getRoomTime(anchorId);
+        } else {
+            ToastUtils.showRedToast(this, "成功解救" + selectCard.effSecond / 3600 + "小时");
+            mPresenter.getCardList(userId,"BLACK_CARD");
+            mPresenter.getRoomTime(anchorId);
+            selectCard = null;
+        }
+    }
+
+    @Override
+    public void onGetCardList(QueryBagByGoodsTypeBean bean) {
+        mDatas.clear();
+        mDatas.addAll(bean.list);
     }
 
 }

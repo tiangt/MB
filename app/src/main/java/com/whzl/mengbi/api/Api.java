@@ -48,6 +48,7 @@ import com.whzl.mengbi.model.entity.PkTimeBean;
 import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
+import com.whzl.mengbi.model.entity.QueryBagByGoodsTypeBean;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
@@ -955,5 +956,15 @@ public interface Api {
     @POST("v1/rank/anchor-wish-rank")
     @FormUrlEncoded
     Observable<ApiResult<AnchorWishRank>> anchorWishRank(@FieldMap Map<String, String> params);
+
+    /**
+     * 根据goodsType查询用户相关物品
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/query-bag-by-goods-type")
+    @FormUrlEncoded
+    Observable<ApiResult<QueryBagByGoodsTypeBean>> queryBagByGoodsType(@FieldMap Map<String, String> params);
 
 }

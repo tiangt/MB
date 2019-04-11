@@ -136,7 +136,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar'
     //滚动选择
-    implementation 'com.contrarywind:Android-PickerView:4.1.2'
+    implementation 'com.contrarywind:Android-PickerView:4.1.7'
     //友盟基础组件
     implementation 'com.umeng.sdk:common:1.5.3'
     implementation 'com.umeng.sdk:utdid:1.1.5.3'
