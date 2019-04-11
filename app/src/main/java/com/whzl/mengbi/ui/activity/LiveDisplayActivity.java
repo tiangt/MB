@@ -1629,7 +1629,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
         mActivityGrands.add(weekRankFragment);
         mGrandAdaper.notifyDataSetChanged();
-        initActivityPoints();
+//        initActivityPoints();
         //主播任务
         mLivePresenter.getAnchorTask(mAnchorId);
     }
@@ -1644,6 +1644,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mActivityGrands.add(anchorTaskFragment);
             mGrandAdaper.notifyDataSetChanged();
             vpActivity.setOffscreenPageLimit(mActivityGrands.size());
+            vpActivity.setCurrentItem(0);
             initActivityPoints();
         }
     }

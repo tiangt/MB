@@ -27,14 +27,6 @@ public class UnclickLinearLayout extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                ToastUtils.showToast("ACTION_DOWN Test");
-                break;
-            case MotionEvent.ACTION_UP:
-                ToastUtils.showToast("ACTION_UP Test");
-                break;
-        }
         return false;
     }
 }

@@ -6,17 +6,29 @@
 
     <ImageView
         android:id="@+id/iv"
-        android:layout_width="match_parent"
+        android:layout_width="84dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/tv_detail"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="5dp"
-        android:textColor="#453d0f"
+        android:textColor="#fffeff"
         android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_detail"
+        android:layout_width="match_parent"
+        android:layout_height="19dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="查看任务详情"
+        android:textColor="#c1a3ff"
+        android:textSize="10sp" />
 </RelativeLayout>

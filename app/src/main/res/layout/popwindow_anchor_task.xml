@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="242dp"
+    android:layout_height="124dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_cover_anchor_task"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:id="@+id/ll_condition_pop_anchor_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_time_pop_anchor_task"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点亮条件："
+            android:textColor="#FF5B5B5B"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_name_pop_anchor_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#323232"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_time_pop_anchor_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/ll_award_pop_anchor_task"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="参与时间："
+            android:textColor="#FF5B5B5B"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_time_pop_anchor_task"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#323232"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_award_pop_anchor_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="主播奖励："
+            android:textColor="#FF5B5B5B"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_1_pop_anchor_task"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_1_pop_anchor_task"
+                    android:layout_width="45dp"
+                    android:layout_height="27dp" />
+
+                <TextView
+                    android:id="@+id/tv_1_pop_anchor_task"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:textColor="#323232"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_2_pop_anchor_task"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_2_pop_anchor_task"
+                    android:layout_width="45dp"
+                    android:layout_height="27dp" />
+
+                <TextView
+                    android:id="@+id/tv_2_pop_anchor_task"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:textColor="#323232"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_close_pop_anchor_wish"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/close_icon" />
+</RelativeLayout>
