@@ -393,7 +393,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             case NICKNAME_CODE:
                 if (resultCode == RESULT_OK) {
                     String nickname = data.getStringExtra("nickname");
-                    userInfoPresenter.onUpdataNickName(mUserInfo.getUserId() + "", nickname);
+                    tvNickName.setText(nickname);
                 }
                 break;
             case GENDER_CODE:

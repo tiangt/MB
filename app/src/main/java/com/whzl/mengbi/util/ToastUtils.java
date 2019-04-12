@@ -115,7 +115,7 @@ public class ToastUtils {
                 snackbar.dismiss();
             }
         });
-        setSnackbarColor(snackbar, Color.parseColor("#fefefe"), Color.parseColor("#181818"), Color.parseColor("#fefefe"));
+        setSnackbarColor(snackbar, Color.parseColor("#fefefe"), Color.parseColor("#181818"), Color.parseColor("#21D996"));
         snackbar.show();
         return snackbar;
     }

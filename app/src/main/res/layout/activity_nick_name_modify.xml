@@ -24,6 +24,7 @@
             android:gravity="center_vertical"
             android:hint="@string/user_info_nickname_hint"
             android:maxLength="10"
+            android:maxLines="1"
             android:paddingLeft="14dp"
             android:textColor="@color/font_color_52"
             android:textSize="15sp" />
@@ -38,7 +39,8 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="12dp"
             android:background="@null"
-            android:src="@drawable/close" />
+            android:src="@drawable/close"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
