@@ -104,7 +104,7 @@ public class BaseApplication extends Application {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         int heapSize = manager.getMemoryClass();
         int maxHeapSize = manager.getLargeMemoryClass();
-        LogUtils.e("ssssssssss  "+heapSize+"  "+maxHeapSize);
+        LogUtils.e("ssssssssss  " + heapSize + "  " + maxHeapSize);
         initUrl();
         try {
             File cacheDir = new File(getApplicationContext().getCacheDir(), "http");
@@ -205,6 +205,8 @@ public class BaseApplication extends Application {
                         }
                         SPUtils.put(instance, SpConfig.REDPACKETURL, appDataBean.redpacketUrl);
                         SPUtils.put(instance, SpConfig.WEEKSTARHELPURL, appDataBean.weekStarHelpUrl);
+                        SPUtils.put(instance, SpConfig.ANCHORAGREEURL, appDataBean.anchorAgreeUrl);
+                        SPUtils.put(instance, SpConfig.USERAGREEURL, appDataBean.userAgreeUrl);
                         if (appDataBean != null && appDataBean.newUserAward != null) {
                             if (!TextUtils.isEmpty(appDataBean.newUserAward.guestUserAward)) {
                                 SPUtils.put(instance, SpConfig.AWARD_SHOW_TIME, System.currentTimeMillis());

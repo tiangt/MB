@@ -9,6 +9,8 @@ public class AppDataBean {
     public String userProtocolUrl;
     public String redpacketUrl;
     public String weekStarHelpUrl;
+    public String anchorAgreeUrl;
+    public String userAgreeUrl;
     public UserAwardBean newUserAward;
 
     public class UserAwardBean {

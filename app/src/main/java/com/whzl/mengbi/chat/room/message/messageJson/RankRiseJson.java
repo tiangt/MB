@@ -24,6 +24,8 @@ public class RankRiseJson {
          */
 
         public String nickName;
+        public String startColor;
+        public String endColor;
         public String rankingsName;
         public int rank;
         public OldUserObjectBean oldUserObject;

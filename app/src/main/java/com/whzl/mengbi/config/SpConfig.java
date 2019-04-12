@@ -19,4 +19,6 @@ public interface SpConfig {
     String CHATCACHE = "chat_cache";
     String PRIVACY = "privacy";
     String WEEKSTARHELPURL = "weekStarHelpUrl";
+    String ANCHORAGREEURL = "anchorAgreeUrl";
+    String USERAGREEURL = "userAgreeUrl";
 }
