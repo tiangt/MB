@@ -6,10 +6,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.RankRiseJson;
-import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.chat.room.util.RoundSpan;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
@@ -31,8 +31,13 @@ public class RankRiseMessage implements FillHolderMessage {
     public void fillHolder(RecyclerView.ViewHolder holder) {
         SingleTextViewHolder viewHolder = (SingleTextViewHolder) holder;
         SpannableString spannableString = new SpannableString(json.context.rankingsName);
-        spannableString.setSpan(new RoundSpan(context, Color.parseColor("#" + json.context.startColor)
-                , Color.parseColor("#" + json.context.endColor), ContextCompat.getColor(context, R.color.text_color_chat)), 0, json.context.rankingsName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (TextUtils.isEmpty(json.context.startColor) || TextUtils.isEmpty(json.context.endColor)) {
+            spannableString.setSpan(new RoundSpan(context, Color.RED
+                    , Color.BLUE, ContextCompat.getColor(context, R.color.text_color_chat)), 0, json.context.rankingsName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            spannableString.setSpan(new RoundSpan(context, Color.parseColor("#" + json.context.startColor)
+                    , Color.parseColor("#" + json.context.endColor), ContextCompat.getColor(context, R.color.text_color_chat)), 0, json.context.rankingsName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         viewHolder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
         viewHolder.textView.setText(spannableString);
 //        viewHolder.textView.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_rank_rise));

@@ -91,7 +91,7 @@ public class NickNameModifyActivity extends BaseActivity {
                         if (body.code == -1209) {
                             ToastUtils.snack(etNickName, "昵称已存在");
                         } else if (body.code == -1211) {
-                            ToastUtils.snack(etNickName, "余额不足", "去充值", new View.OnClickListener() {
+                            ToastUtils.snackLong(etNickName, "余额不足", "去充值", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     startActivity(new Intent(NickNameModifyActivity.this, WXPayEntryActivity.class));

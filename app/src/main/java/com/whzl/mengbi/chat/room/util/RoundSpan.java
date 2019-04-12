@@ -23,10 +23,10 @@ public class RoundSpan extends ReplacementSpan {
 
     public RoundSpan(Context context, int bgColor, int endcolor, int textColor) {
         super();
-        this.bgColor = bgColor;
-        this.endColor = endcolor;
         this.textColor = textColor;
         this.context = context;
+        this.bgColor = bgColor;
+        this.endColor = endcolor;
         tvPaint = new Paint();
     }
 
