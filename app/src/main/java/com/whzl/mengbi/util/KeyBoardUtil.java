@@ -62,4 +62,18 @@ public class KeyBoardUtil {
         }
     }
 
+    /**
+     * 关闭软键盘
+     *
+     * @param activity 当前Activity
+     */
+    public static void hide(Activity activity) {
+        if (activity == null) return;
+        View view = activity.getWindow().peekDecorView();
+        if (view != null) {
+            InputMethodManager inputmanger = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputmanger.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
 }

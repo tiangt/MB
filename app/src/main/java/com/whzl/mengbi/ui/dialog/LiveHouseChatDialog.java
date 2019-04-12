@@ -1,13 +1,11 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,8 +23,6 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.events.ChatInputEvent;
 import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
-import com.whzl.mengbi.chat.room.util.ChatCacheFaceReplace;
-import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
@@ -45,6 +41,7 @@ import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.SoftKeyboardStateHelper;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -52,7 +49,6 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,7 +76,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     RadioGroup rgEmojiSwitch;
     @BindView(R.id.btn_input_broad)
     Button btnInputBroad;
-    private boolean isShowSoftInput;
+    private boolean isShowSoftInput = true;
     private int height;
     private int currentSelectedIndex;
     private Fragment[] fragments;
@@ -92,6 +88,8 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     private int total;
     private Long userId;
     private String mAt;
+    private SoftKeyboardStateHelper softKeyboardStateHelper;
+    private SoftKeyboardStateHelper.SoftKeyboardStateListener softKeyboardStateListener;
 
     public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
@@ -148,10 +146,26 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+
+        softKeyboardStateHelper = new SoftKeyboardStateHelper(getActivity().findViewById(R.id.rootView));
+        softKeyboardStateListener = new SoftKeyboardStateHelper.SoftKeyboardStateListener() {
+            @Override
+            public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+
+            }
+
+            @Override
+            public void onSoftKeyboardClosed() {
+                if (!btnInputChange.isSelected()) {
+                    hide();
+                }
+            }
+        };
+        softKeyboardStateHelper.addSoftKeyboardStateListener(softKeyboardStateListener);
+
         isGuard = getArguments().getBoolean("isGuard");
         isVip = getArguments().getBoolean("isVip");
 
-//        initCacheEdit();
         userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
         mProgramId = getArguments().getInt("programId");
         mAnchorBean = getArguments().getParcelable("anchor");
@@ -167,9 +181,8 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         }
         etContent.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == 1) {
-                KeyBoardUtil.closeKeybord(etContent, getContext());
-                saveEdit();
-                dismiss();
+                hide();
+                isShowSoftInput = false;
                 if (mChatToUser == null) {
                     EventBus.getDefault().post(new ChatInputEvent(-1));
                 }
@@ -190,7 +203,6 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
                     etContent.getText().clear();
                 }
-                clearSaveEdit();
                 return true;
             }
             return false;
@@ -215,20 +227,6 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         getBroadNum();
     }
 
-    private void initCacheEdit() {
-        String cache = SPUtils.get(BaseApplication.getInstance(), SpConfig.CHATCACHE, "").toString();
-        etContent.setText("");
-        etContent.setSelection(etContent.getText().toString().length());
-        SpannableString spanString = LightSpanString.getLightString(cache, Color.parseColor("#323232"));
-        ChatCacheFaceReplace.getInstance().faceReplace(etContent, spanString, BaseApplication.getInstance());
-        if (isVip) {
-            ChatCacheFaceReplace.getInstance().vipFaceReplace(etContent, spanString, BaseApplication.getInstance());
-        }
-        if (isGuard) {
-            ChatCacheFaceReplace.getInstance().guardFaceReplace(etContent, spanString, BaseApplication.getInstance());
-        }
-        etContent.append(spanString);
-    }
 
     private void getBroadNum() {
         HashMap params = new HashMap();
@@ -313,56 +311,26 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
             return;
         }
         if (location[1] - height > 100 && !btnInputChange.isSelected() && isShowSoftInput) {
-            dismiss();
-            saveEdit();
-            if (mChatToUser == null) {
-                EventBus.getDefault().post(new ChatInputEvent(-1));
-            }
+            hide();
         }
-        if (location[1] - height < -100 && !btnInputChange.isSelected()) {
-            isShowSoftInput = true;
-            if (mChatToUser == null) {
-                EventBus.getDefault().post(new ChatInputEvent(getResources().getDisplayMetrics().heightPixels - location[1] + getStatusBarHeight()));
-            }
-        }
+//        if (location[1] - height < -100 && !btnInputChange.isSelected()) {
+//            isShowSoftInput = true;
+//            if (mChatToUser == null) {
+//                EventBus.getDefault().post(new ChatInputEvent(getResources().getDisplayMetrics().heightPixels - location[1]));
+//            }
+//        }
         height = location[1];
     }
 
-    private int getStatusBarHeight() {
-        Class<?> c = null;
-
-        Object obj = null;
-
-        Field field = null;
-
-        int x = 0, sbar = 0;
-
-        try {
-
-            c = Class.forName("com.android.internal.R$dimen");
-
-            obj = c.newInstance();
-
-            field = c.getField("status_bar_height");
-
-            x = Integer.parseInt(field.get(obj).toString());
-
-            sbar = getContext().getResources().getDimensionPixelSize(x);
-
-        } catch (Exception e1) {
-
-            e1.printStackTrace();
-
-        }
-
-        return sbar;
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         if (etContent != null) {
-            etContent.postDelayed(() -> etContent.performClick(), 100);
+            etContent.performClick();
+            if (mChatToUser == null) {
+                EventBus.getDefault().post(new ChatInputEvent(1));
+            }
         }
     }
 
@@ -387,7 +355,6 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
                     etContent.getText().clear();
                 }
-                clearSaveEdit();
                 break;
             case R.id.btn_input_change:
                 btnInputChange.setSelected(!btnInputChange.isSelected());
@@ -416,8 +383,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                 long userId = (long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0);
                 if (userId == 0) {
                     ((LiveDisplayActivity) getActivity()).login();
-                    KeyBoardUtil.closeKeybord(etContent, getContext());
-                    dismiss();
+                    hide();
                     return;
                 }
                 btnInputBroad.setSelected(!btnInputBroad.isSelected());
@@ -433,8 +399,11 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     }
 
     public void hide() {
+        if (etContent == null) {
+            return;
+        }
+        isShowSoftInput = false;
         KeyBoardUtil.closeKeybord(etContent, getContext());
-        saveEdit();
         dismiss();
         if (mChatToUser == null) {
             EventBus.getDefault().post(new ChatInputEvent(-1));
@@ -470,14 +439,9 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     @Override
     public void onDestroyView() {
         getView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        if (softKeyboardStateHelper != null && softKeyboardStateListener != null) {
+            softKeyboardStateHelper.removeSoftKeyboardStateListener(softKeyboardStateListener);
+        }
         super.onDestroyView();
-    }
-
-    public void saveEdit() {
-//        SPUtils.put(BaseApplication.getInstance(), SpConfig.CHATCACHE, etContent.getText().toString().trim());
-    }
-
-    public void clearSaveEdit() {
-//        SPUtils.put(BaseApplication.getInstance(), SpConfig.CHATCACHE, "");
     }
 }

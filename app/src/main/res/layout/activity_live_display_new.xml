@@ -33,7 +33,7 @@
                         android:id="@+id/rl_top"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
-                        android:layout_marginTop="6.5dp"
+                        android:layout_marginTop="6dp"
                         app:layout_constraintTop_toTopOf="parent">
 
                         <RelativeLayout
@@ -136,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="28dp"
                         android:layout_marginLeft="6dp"
-                        android:layout_marginTop="6.5dp"
+                        android:layout_marginTop="6dp"
                         app:layout_constraintTop_toBottomOf="@id/rl_top">
 
                         <RelativeLayout
@@ -228,7 +228,7 @@
                     android:id="@+id/ratio_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7dp"
+                    android:layout_marginTop="6dp"
                     android:background="@color/colorblack"
                     app:layout_constraintTop_toBottomOf="@id/ll_top_live"
                     app:ratio="1.33">

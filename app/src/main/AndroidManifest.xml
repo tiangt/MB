@@ -229,7 +229,7 @@
             android:name=".ui.activity.LiveDisplayActivity"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustPan">
 
         </activity>
 
