@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,12 +44,6 @@ import butterknife.OnClick;
  */
 public class RegisterActivity extends BaseActivity implements RegisterView, TextWatcher {
 
-    @BindView(R.id.rl_back)
-    RelativeLayout rlBack;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.tv_menu_text)
-    TextView tvMenu;
     @BindView(R.id.et_phone)
     EditText etPhone;
     @BindView(R.id.et_verify_code)
@@ -58,14 +54,12 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
     EditText etPassword;
     @BindView(R.id.btn_register)
     Button btnRegister;
-    @BindView(R.id.cb_agree)
-    CheckBox cbAgree;
     @BindView(R.id.tv_agreement)
     TextView tvAgreement;
     @BindView(R.id.ib_clean_phone)
     ImageButton ibCleanPhone;
     @BindView(R.id.ib_clean_psw)
-    ImageButton ibCleanPsw;
+    ImageView ibCleanPsw;
     private CountDownTimer cdt;
     private RegisterPresenterImpl registerPresenter;
     private boolean isBindPhone = true;
@@ -78,23 +72,30 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register, "注册", "登录", true);
     }
 
     @Override
     protected void setupView() {
-        tvTitle.setText("注册");
-        tvMenu.setText("登录");
-        rlBack.setOnClickListener((v -> finish()));
-        tvMenu.setOnClickListener(v -> {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        getTitleRightText().setTextColor(Color.parseColor("#ff2b3f"));
 
         etPhone.addTextChangedListener(this);
         etPassword.addTextChangedListener(this);
         etVerifyCode.addTextChangedListener(this);
+
+        ibCleanPsw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etPassword.getInputType() == 128) {//如果现在是显示密码模式
+                    etPassword.setInputType(129);//设置为隐藏密码
+                    ibCleanPsw.setSelected(true);
+                } else {
+                    etPassword.setInputType(128);//设置为显示密码
+                    ibCleanPsw.setSelected(false);
+                }
+                etPassword.setSelection(etPassword.getText().length());
+            }
+        });
     }
 
     @Override
@@ -122,29 +123,31 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         showToast(msg);
     }
 
-//    @Override
-//    protected void onToolbarMenuClick() {
-//        super.onToolbarMenuClick();
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
-//        finish();
-//    }
+    @Override
+    protected void onToolbarMenuClick() {
+        super.onToolbarMenuClick();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     /**
      * 获取验证码时间定时器
      */
     public void startTimer() {
         btnGetVerifyCode.setEnabled(false);
+        btnGetVerifyCode.setTextColor(Color.parseColor("#fefefe"));
         cdt = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                btnGetVerifyCode.setText(millisUntilFinished / 1000 + "秒");
+                btnGetVerifyCode.setText("重新获取 " + millisUntilFinished / 1000 + "s");
             }
 
             @Override
             public void onFinish() {
                 btnGetVerifyCode.setEnabled(true);
                 btnGetVerifyCode.setText("获取验证码");
+                btnGetVerifyCode.setTextColor(Color.parseColor("#38ebeb"));
             }
         };
         cdt.start();
@@ -158,15 +161,43 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+        String text = etPhone.getText().toString();
+        if (text == null || text.length() == 0) return;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            if (i != 3 && i != 8 && text.charAt(i) == ' ') {
+                continue;
+            } else {
+                sb.append(text.charAt(i));
+                if ((sb.length() == 4 || sb.length() == 9) && sb.charAt(sb.length() - 1) != ' ') {
+                    sb.insert(sb.length() - 1, ' ');
+                }
+            }
+        }
+        if (!sb.toString().equals(text.toString())) {
+            int index = start + 1;
+            if (sb.charAt(start) == ' ') {
+                if (before == 0) {
+                    index++;
+                } else {
+                    index--;
+                }
+            } else {
+                if (before == 1) {
+                    index--;
+                }
+            }
+            etPhone.setText(sb.toString());
+            etPhone.setSelection(index);
+        }
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        boolean isPhone = StringUtils.isPhone(etPhone.getText().toString().trim());
+        String phone = etPhone.getText().toString().trim().replaceAll(" ", "");
+        boolean isPhone = StringUtils.isPhone(phone);
         String password = etPassword.getText().toString().trim();
         String verifyCode = etVerifyCode.getText().toString().trim();
-        String phone = etPhone.getText().toString().trim();
         if (!isPhone && !TextUtils.isEmpty(phone) && phone.length() == 11) {
             showToast("请输入正确的手机号");
             return;
@@ -222,18 +253,12 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
                 String password = etPassword.getText().toString().trim();
                 String md5Psd = EncryptUtils.md5Hex(password);
                 String verifyCode = etVerifyCode.getText().toString().trim();
-                if (cbAgree.isChecked()) {
-                    registerPresenter.getRegister(phoneStr, md5Psd, verifyCode);
-                } else {
-                    showToast("请先阅读用户服务协议");
-                }
                 break;
 
             case R.id.tv_agreement:
-                Intent intent = new Intent(this, JsBridgeActivity.class);
-                intent.putExtra("url", NetConfig.USER_DEAL);
-                intent.putExtra("title", "用户协议");
-                startActivity(intent);
+                startActivity(new Intent(this, JsBridgeActivity.class)
+                        .putExtra("url", SPUtils.get(this, SpConfig.USERAGREEURL, "").toString())
+                        .putExtra("title", "用户协议"));
                 break;
 
             case R.id.ib_clean_phone:

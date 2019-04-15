@@ -1,11 +1,7 @@
 package com.whzl.mengbi.ui.dialog;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
@@ -34,7 +30,6 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.PictureUtil;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -42,9 +37,7 @@ import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
-import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -551,8 +544,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     }
 
     private void setRoyalImg(int bg_civilian) {
-        constraintLayout.setBackground(PictureUtil.getSmallBitmap(getResources(), bg_civilian,
-                UIUtil.dip2px(getActivity(), 370), UIUtil.dip2px(getActivity(), 330)));
+        GlideImageLoader.getInstace().displayImage(getActivity(), bg_civilian, ivBgPersonal);
     }
 
 

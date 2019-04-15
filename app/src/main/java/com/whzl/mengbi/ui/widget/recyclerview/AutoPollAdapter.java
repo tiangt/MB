@@ -7,11 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.RoyalLevel;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
@@ -78,7 +80,11 @@ public class AutoPollAdapter extends BaseListAdapter {
             int mUserRoyalLevel = mAudienceList.get(position + 1).getLevelMap().getROYAL_LEVEL();
             if (mUserRoyalLevel > 0) {
                 rl.setBackgroundResource(R.drawable.shape_online_head_royal);
-                setRoyalTag(mUserRoyalLevel, ivRoyal);
+                if (BaseApplication.heapSize >= 256) {
+                    setRoyalTag(mUserRoyalLevel, ivRoyal);
+                } else {
+                    setRoyalTagNoGif(mUserRoyalLevel, ivRoyal);
+                }
             } else {
                 rl.setBackgroundResource(R.drawable.shape_online_head_civilian);
                 GlideImageLoader.getInstace().displayImage(context, null, ivRoyal);
@@ -130,6 +136,39 @@ public class AutoPollAdapter extends BaseListAdapter {
                 break;
             case RoyalLevel.ROYAL_KING:
                 GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_7, mRoyalLevel);
+                break;
+
+        }
+    }
+
+    /**
+     * 用户贵族等级
+     *
+     * @param level
+     * @param mRoyalLevel
+     */
+    private void setRoyalTagNoGif(int level, ImageView mRoyalLevel) {
+        switch (level) {
+            case RoyalLevel.ROYAL_BRONZE:
+                Glide.with(context).asBitmap().load(R.drawable.royal_1).into(mRoyalLevel);
+                break;
+            case RoyalLevel.ROYAL_SILVER:
+                Glide.with(context).asBitmap().load(R.drawable.royal_2).into(mRoyalLevel);
+                break;
+            case RoyalLevel.ROYAL_GOLD:
+                Glide.with(context).asBitmap().load(R.drawable.royal_3).into(mRoyalLevel);
+                break;
+            case RoyalLevel.ROYAL_PLATINUM:
+                Glide.with(context).asBitmap().load(R.drawable.royal_4).into(mRoyalLevel);
+                break;
+            case RoyalLevel.ROYAL_DIAMOND:
+                Glide.with(context).asBitmap().load(R.drawable.royal_5).into(mRoyalLevel);
+                break;
+            case RoyalLevel.ROYAL_STAR:
+                Glide.with(context).asBitmap().load(R.drawable.royal_6).into(mRoyalLevel);
+                break;
+            case RoyalLevel.ROYAL_KING:
+                Glide.with(context).asBitmap().load(R.drawable.royal_7).into(mRoyalLevel);
                 break;
 
         }

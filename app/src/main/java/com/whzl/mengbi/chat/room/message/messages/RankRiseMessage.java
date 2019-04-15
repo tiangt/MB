@@ -40,7 +40,6 @@ public class RankRiseMessage implements FillHolderMessage {
         }
         viewHolder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
         viewHolder.textView.setText(spannableString);
-//        viewHolder.textView.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_rank_rise));
         viewHolder.textView.append(LightSpanString.getLightString(" 恭喜 ", Color.parseColor("#f9f9f9")));
         viewHolder.textView.append(LightSpanString.getLightString(json.context.nickName, Color.parseColor("#FFD6B510")));
         viewHolder.textView.append(LightSpanString.getLightString(" 总榜名次上升到 ", Color.parseColor("#f9f9f9")));

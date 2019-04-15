@@ -92,132 +92,134 @@
                 android:id="@+id/btn_recharge"
                 android:layout_width="104dp"
                 android:layout_height="35dp"
-                android:background="@drawable/shape_yellow_btn"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/tv_how_update"
-                android:layout_marginTop="10dp"
                 android:layout_marginRight="14dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_yellow_btn"
                 android:text="现在去充值"
-                android:textSize="13sp"
-                android:textColor="#010101"/>
+                android:textColor="#010101"
+                android:textSize="13sp" />
         </RelativeLayout>
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:gravity="center_horizontal"
             android:text="等级特权"
             android:textColor="@color/tran_black2"
-            android:textSize="15sp"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="35dp"/>
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="18dp">
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="5dp"
                 android:drawableTop="@drawable/ic_my_royal_1"
+                android:gravity="center_horizontal"
                 android:text="专属勋章"
-                android:textSize="11sp"
-                android:gravity="center_horizontal"
-                android:drawablePadding="5dp"
-                android:textColor="@color/tran_black2"/>
+                android:textColor="@color/tran_black2"
+                android:textSize="11sp" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="5dp"
                 android:drawableTop="@drawable/ic_my_royal_2"
+                android:gravity="center_horizontal"
                 android:text="升级全站广播播报"
-                android:textSize="11sp"
-                android:gravity="center_horizontal"
-                android:drawablePadding="5dp"
-                android:textColor="@color/tran_black2"/>
+                android:textColor="@color/tran_black2"
+                android:textSize="11sp" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="5dp"
                 android:drawableTop="@drawable/ic_my_royal_3"
-                android:text="排位靠前"
-                android:textSize="11sp"
                 android:gravity="center_horizontal"
-                android:drawablePadding="5dp"
-                android:textColor="@color/tran_black2"/>
+                android:text="排位靠前"
+                android:textColor="@color/tran_black2"
+                android:textSize="11sp" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/ic_my_royal_4"
-                android:text="专属座驾"
-                android:textSize="11sp"
-                android:gravity="center_horizontal"
+                android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:textColor="@color/tran_black2"/>
+                android:drawableTop="@drawable/ic_my_royal_4"
+                android:gravity="center_horizontal"
+                android:text="专属座驾"
+                android:textColor="@color/tran_black2"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="18dp">
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal">
+
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/ic_my_royal_5"
-                android:text="返利券奖励"
-                android:textSize="11sp"
-                android:gravity="center_horizontal"
+                android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:textColor="@color/tran_black2"/>
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:drawableTop="@drawable/ic_my_royal_6"
+                android:gravity="center_horizontal"
                 android:text="防禁踢"
-                android:textSize="11sp"
-                android:gravity="center_horizontal"
-                android:drawablePadding="5dp"
-                android:textColor="@color/tran_black2"/>
+                android:textColor="@color/tran_black2"
+                android:textSize="11sp" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="5dp"
                 android:drawableTop="@drawable/ic_my_royal_7"
-                android:text="发言字数+200"
-                android:textSize="11sp"
                 android:gravity="center_horizontal"
-                android:drawablePadding="5dp"
-                android:textColor="@color/tran_black2"/>
+                android:text="发言字数+200"
+                android:textColor="@color/tran_black2"
+                android:textSize="11sp" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/ic_my_royal_8"
-                android:text="与主播私聊"
-                android:textSize="11sp"
-                android:gravity="center_horizontal"
+                android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:textColor="@color/tran_black2"/>
+                android:drawableTop="@drawable/ic_my_royal_8"
+                android:gravity="center_horizontal"
+                android:text="与主播私聊"
+                android:textColor="@color/tran_black2"
+                android:textSize="11sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="5dp"
+                android:drawableTop="@drawable/ic_my_royal_5"
+                android:gravity="center_horizontal"
+                android:text="返利券奖励"
+                android:textColor="@color/tran_black2"
+                android:textSize="11sp"
+                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 

@@ -23,6 +23,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SDKConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.gen.DaoMaster;
@@ -54,6 +55,7 @@ import okhttp3.ResponseBody;
  * @function 1.他是整个程序的入口，2初始化工作，3为整个应用的其他模块提供上下文
  */
 public class BaseApplication extends Application {
+    public static int heapSize = 0;
 
     private static BaseApplication instance = null;
     public RefWatcher _refWatcher;
@@ -102,9 +104,7 @@ public class BaseApplication extends Application {
         initBaiduStatistic();
         initGreenDao();
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        int heapSize = manager.getMemoryClass();
-        int maxHeapSize = manager.getLargeMemoryClass();
-        LogUtils.e("ssssssssss  " + heapSize + "  " + maxHeapSize);
+        heapSize = manager.getMemoryClass();
         initUrl();
         try {
             File cacheDir = new File(getApplicationContext().getCacheDir(), "http");
