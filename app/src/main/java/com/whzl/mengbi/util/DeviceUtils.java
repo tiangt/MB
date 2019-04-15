@@ -11,9 +11,12 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.lang.reflect.Field;
 import java.util.UUID;
 
 public class DeviceUtils {
@@ -373,5 +376,34 @@ public class DeviceUtils {
         }
         ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE)).setStreamVolume(AudioManager.STREAM_RING,
                 ringVloume, AudioManager.FLAG_PLAY_SOUND);
+    }
+
+    public static int getScreenHeight(Context context) {
+        Display display = ((WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        return display.getHeight();
+    }
+
+    /**
+     * 获得状态栏的高度
+     *
+     * @param context
+     * @return
+     */
+    public static int getStatusBarHeight(Context context) {
+        Class<?> c = null;
+        Object obj = null;
+        Field field = null;
+        int x = 0;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            return context.getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            return 75;
+        }
     }
 }

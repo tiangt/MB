@@ -149,6 +149,7 @@ import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.control.PageTouchControl;
 import com.whzl.mengbi.ui.control.RedPacketControl;
 import com.whzl.mengbi.ui.dialog.AnchorWishDialog;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
@@ -187,6 +188,7 @@ import com.whzl.mengbi.ui.widget.view.HeadlineLayout;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
+import com.whzl.mengbi.ui.widget.view.UnclickLinearLayout;
 import com.whzl.mengbi.ui.widget.view.WeekStarView;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BitmapUtils;
@@ -364,6 +366,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout llTopContainer;
     @BindView(R.id.tv_anchor_wish_live)
     TextView tvAnchorWishLive;
+    @BindView(R.id.rootView)
+    UnclickLinearLayout unclickLinearLayout;
+    @BindView(R.id.page_head_live)
+    View pageHead;
+    @BindView(R.id.page_foot_live)
+    View pageFoot;
+
 
     private LivePresenterImpl mLivePresenter;
     public int mProgramId;
@@ -441,6 +450,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ObjectAnimator llTopUpAnima;
     private ObjectAnimator llTopDownAnima;
     private AnchorWishControl anchorWishControl;
+    private PageTouchControl pageTouchControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -573,6 +583,22 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initProtectRecycler();
         initDrawLayout(this);
         initRvRedpack();
+        initPageTouch();
+    }
+
+    private void initPageTouch() {
+        unclickLinearLayout = findViewById(R.id.rootView);
+        unclickLinearLayout.setHeadView(pageHead);
+        unclickLinearLayout.setFootView(pageFoot);
+        unclickLinearLayout.setOnRefreshListener(new UnclickLinearLayout.OnRefreshingListener() {
+            @Override
+            public void onRefresh(UnclickLinearLayout unclickLinearLayout) {
+                jumpToLive(100079);
+                unclickLinearLayout.reset();
+            }
+
+        });
+        unclickLinearLayout.init();
     }
 
     private void initRvRedpack() {
@@ -815,8 +841,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
-            , R.id.tv_popularity, R.id.btn_chat, R.id.btn_chat_private
-            , R.id.rootView, R.id.fragment_container, R.id.rl_guard_number
+            , R.id.tv_popularity, R.id.btn_chat, R.id.btn_chat_private, R.id.fragment_container, R.id.rl_guard_number
             , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more, R.id.ll_black_room, R.id.ll_red_bag})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -889,9 +914,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 user.setName(mAnchor.getName());
                 user.setAvatar(mAnchor.getAvatar());
                 showPrivateChatListDialog(user);
-                break;
-            case R.id.rootView:
-
                 break;
             case R.id.btn_send_gift:
                 if (mGiftData == null || mGiftData.getData() == null) {
@@ -2565,18 +2587,5 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                ToastUtils.showToast("ACTION_DOWN Test");
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                ToastUtils.showToast("ACTION_UP Test");
-//                break;
-//        }
-        return super.onTouchEvent(event);
     }
 }

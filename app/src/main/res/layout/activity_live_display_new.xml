@@ -754,11 +754,24 @@
             android:visibility="gone"
             app:autoPlay="true" />
 
+        <include
+            android:id="@+id/page_head_live"
+            layout="@layout/layout_live_load_head"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/page_foot_live"
+            layout="@layout/layout_live_load_foot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
     <include
         android:id="@+id/draw_layout_include_live"
         layout="@layout/draw_layout_live" />
-
 
 </android.support.v4.widget.DrawerLayout>
