@@ -16,6 +16,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.SPUtils;
@@ -107,11 +108,6 @@ public class NickNameModifyActivity extends BaseActivity {
     @Override
     protected void setupView() {
         etNickName.setText(nickname);
-        tvLimit.setText(LightSpanString.getLightString("10000", Color.parseColor("#70ff2b3f")));
-        tvLimit.append("萌币 / 次，首次免费。昵称长度限制");
-        tvLimit.append(LightSpanString.getLightString("10", Color.parseColor("#70ff2b3f")));
-        tvLimit.append("个汉字。");
-
         etNickName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -136,7 +132,29 @@ public class NickNameModifyActivity extends BaseActivity {
 
     @Override
     protected void loadData() {
+        HashMap map = new HashMap();
+        map.put("key", "edit_nickname_money");
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        ApiFactory.getInstance().getApi(Api.class)
+                .systemConfig(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<SystemConfigBean>() {
 
+
+                    @Override
+                    public void onSuccess(SystemConfigBean jsonElement) {
+                        tvLimit.setText(LightSpanString.getLightString(jsonElement.paramValue, Color.parseColor("#70ff2b3f")));
+                        tvLimit.append(jsonElement.unitType + " / 次，首次免费。昵称长度限制");
+                        tvLimit.append(LightSpanString.getLightString("10", Color.parseColor("#70ff2b3f")));
+                        tvLimit.append("个汉字。");
+                    }
+
+                    @Override
+                    public void onError(ApiResult<SystemConfigBean> body) {
+
+                    }
+                });
     }
 
     @OnClick(R.id.btn_clear)

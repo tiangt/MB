@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.message.messages.FirstEnterLiveMessage;
 import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.RedPackMessage;
 import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
@@ -116,6 +117,7 @@ public class ChatListFragment extends BaseFragment {
                 ((LiveDisplayActivity) getMyActivity()).hideChatDialog();
             }
         });
+        EventBus.getDefault().post(new UpdatePubChatEvent(new FirstEnterLiveMessage()));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

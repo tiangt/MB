@@ -56,6 +56,7 @@ import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
+import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
@@ -977,5 +978,15 @@ public interface Api {
     @POST("v1/anchor/up-down-anchors")
     @FormUrlEncoded
     Observable<ApiResult<UpdownAnchorBean>> updownAnchor(@FieldMap Map<String, String> params);
+
+    /**
+     * 通过Key获取后台配置的一些参数
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/common/key-to-value")
+    @FormUrlEncoded
+    Observable<ApiResult<SystemConfigBean>> systemConfig(@FieldMap Map<String, String> params);
 
 }
