@@ -90,22 +90,26 @@ public class UnclickLinearLayout extends LinearLayout {
             // 手指移动时，判断是否在下拉或上拉加载，如果是，则动态改变头部布局或底部布局的状态
             case MotionEvent.ACTION_MOVE:
                 offsetY = ev.getY() - startY;//下拉大于0
-                if (offsetY > 0) {//向下拉  加载上一个房间的数据
-                    setHeadMagin((int) (screenHeight - offsetY));
-                    setFootMargin((int) (screenHeight));
-                    if (offsetY >= moveHeight) {
-                        isRefreshable = true;
-                    } else {
-                        isRefreshable = false;
+                if (Math.abs(ev.getX() - startX) < Math.abs(ev.getY() - startY)) {
+
+                    if (offsetY > 0) {//向下拉  加载上一个房间的数据
+                        setHeadMagin((int) (screenHeight - offsetY));
+                        setFootMargin((int) (screenHeight));
+                        if (offsetY >= moveHeight) {
+                            isRefreshable = true;
+                        } else {
+                            isRefreshable = false;
+                        }
+                    } else if (offsetY < 0) {//向上拖  加载下一个房间的数据
+                        setFootMargin((int) (screenHeight + offsetY));
+                        setHeadMagin((int) (screenHeight));
+                        if (offsetY <= -moveHeight) {
+                            isLoadable = true;
+                        } else {
+                            isLoadable = false;
+                        }
                     }
-                } else if (offsetY < 0) {//向上拖  加载下一个房间的数据
-                    setFootMargin((int) (screenHeight + offsetY));
-                    setHeadMagin((int) (screenHeight));
-                    if (offsetY <= -moveHeight) {
-                        isLoadable = true;
-                    } else {
-                        isLoadable = false;
-                    }
+                } else {
                 }
                 break;
             // 手指抬起时，判断是否下拉或上拉到可以加载房间的程度，如果达到程度，则进行加载
@@ -116,12 +120,14 @@ public class UnclickLinearLayout extends LinearLayout {
                         setCurrentState(STATE_PREPARED);
                     } else {
                         setCurrentState(STATE_PULLING);
+                        setFootMargin((int) screenHeight);
                     }
                 } else if (offsetY < 0) {
                     if (isLoadable) {
                         setCurrentState(STATE_PREPARED);
                     } else {
                         setCurrentState(STATE_PULLING);
+                        setHeadMagin((int) screenHeight);
                     }
                 }
                 isRefreshable = false;
