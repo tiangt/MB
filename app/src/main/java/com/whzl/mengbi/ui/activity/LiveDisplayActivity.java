@@ -610,8 +610,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         updownIndex = updownAnchors.size() - 1;
                     }
                 }
-                jumpToLive(updownAnchors.get(updownIndex).programId);
-                unclickLinearLayout.reset();
+                if (updownAnchors != null && updownAnchors.size() > 0 && updownAnchors.get(updownIndex) != null) {
+                    jumpToLive(updownAnchors.get(updownIndex).programId);
+                    unclickLinearLayout.reset();
+                }
             }
 
         });
