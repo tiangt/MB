@@ -68,6 +68,7 @@ public class UnclickLinearLayout extends LinearLayout {
 
     public void init() {
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        touchSlop = 0;
         screenHeight = DeviceUtils.getScreenHeight(context) - DeviceUtils.getStatusBarHeight(context);
         moveHeight = screenHeight / 4;
         setCurrentState(STATE_NORMAL);
@@ -89,48 +90,43 @@ public class UnclickLinearLayout extends LinearLayout {
             // 手指移动时，判断是否在下拉或上拉加载，如果是，则动态改变头部布局或底部布局的状态
             case MotionEvent.ACTION_MOVE:
                 offsetY = ev.getY() - startY;//下拉大于0
-                if (Math.abs(ev.getX() - startX) < Math.abs(offsetY) && Math.abs(offsetY) > touchSlop) {
-
-                    if (offsetY > 0) {//向下拉  加载上一个房间的数据
-                        setHeadMagin((int) (screenHeight - offsetY));
-                        setFootMargin((int) (screenHeight));
-                        if (offsetY >= moveHeight) {
-                            isRefreshable = true;
-                        } else {
-                            isRefreshable = false;
-                        }
-                    } else if (offsetY < 0) {//向上拖  加载下一个房间的数据
-                        setFootMargin((int) (screenHeight + offsetY));
-                        setHeadMagin((int) (screenHeight));
-                        if (offsetY <= -moveHeight) {
-                            isLoadable = true;
-                        } else {
-                            isLoadable = false;
-                        }
+                if (offsetY > 0) {//向下拉  加载上一个房间的数据
+                    setHeadMagin((int) (screenHeight - offsetY));
+                    setFootMargin((int) (screenHeight));
+                    if (offsetY >= moveHeight) {
+                        isRefreshable = true;
+                    } else {
+                        isRefreshable = false;
+                    }
+                } else if (offsetY < 0) {//向上拖  加载下一个房间的数据
+                    setFootMargin((int) (screenHeight + offsetY));
+                    setHeadMagin((int) (screenHeight));
+                    if (offsetY <= -moveHeight) {
+                        isLoadable = true;
+                    } else {
+                        isLoadable = false;
                     }
                 }
                 break;
             // 手指抬起时，判断是否下拉或上拉到可以加载房间的程度，如果达到程度，则进行加载
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                if (Math.abs(ev.getX() - startX) < Math.abs(offsetY) && Math.abs(offsetY) > touchSlop) {
-                    if (offsetY > 0) {//向下拉  加载上一个房间的数据
-                        if (isRefreshable) {
-                            setCurrentState(STATE_PREPARED);
-                        } else {
-                            setCurrentState(STATE_PULLING);
-                        }
-                    } else if (offsetY < 0) {
-                        if (isLoadable) {
-                            setCurrentState(STATE_PREPARED);
-                        } else {
-                            setCurrentState(STATE_PULLING);
-                        }
+                if (offsetY > 0) {//向下拉  加载上一个房间的数据
+                    if (isRefreshable) {
+                        setCurrentState(STATE_PREPARED);
+                    } else {
+                        setCurrentState(STATE_PULLING);
                     }
-                    isRefreshable = false;
-                    isLoadable = false;
-                    break;
+                } else if (offsetY < 0) {
+                    if (isLoadable) {
+                        setCurrentState(STATE_PREPARED);
+                    } else {
+                        setCurrentState(STATE_PULLING);
+                    }
                 }
+                isRefreshable = false;
+                isLoadable = false;
+                break;
         }
         return true;
     }

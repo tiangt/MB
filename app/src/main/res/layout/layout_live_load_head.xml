@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FF0000">
+    android:layout_height="match_parent">
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="20dp"
         android:gravity="center"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_switch_live"
         android:text="下拉加载上一个房间"
         android:textColor="#FFFFFF"
-        android:textSize="18sp" />
+        android:textSize="14sp" />
 </FrameLayout>
