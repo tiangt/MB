@@ -47,4 +47,7 @@ public interface LivePresenter {
     void getActivityNative(int mProgramId, int mAnchorId);
 
     void getAnchorWish(int mAnchorId);
+
+    void getUpdownAnchor();
+
 }

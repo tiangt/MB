@@ -57,6 +57,7 @@ import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
+import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
 import com.whzl.mengbi.model.entity.WeekRankBean;
@@ -966,5 +967,15 @@ public interface Api {
     @POST("v1/my/query-bag-by-goods-type")
     @FormUrlEncoded
     Observable<ApiResult<QueryBagByGoodsTypeBean>> queryBagByGoodsType(@FieldMap Map<String, String> params);
+
+    /**
+     * 上下拉获取主播列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/anchor/up-down-anchors")
+    @FormUrlEncoded
+    Observable<ApiResult<UpdownAnchorBean>> updownAnchor(@FieldMap Map<String, String> params);
 
 }

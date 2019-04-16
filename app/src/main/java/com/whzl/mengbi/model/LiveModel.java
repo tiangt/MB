@@ -51,4 +51,6 @@ public interface LiveModel {
     void activityNative(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void anchorWish(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void getUpdownAnchor(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

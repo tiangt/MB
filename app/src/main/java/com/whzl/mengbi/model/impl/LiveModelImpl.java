@@ -24,6 +24,7 @@ import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
@@ -534,6 +535,27 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(ApiResult<AnchorWishBean> body) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getUpdownAnchor(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .updownAnchor(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<UpdownAnchorBean>() {
+
+
+                    @Override
+                    public void onSuccess(UpdownAnchorBean jsonElement) {
+                        listener.onUpdownAnchors(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(ApiResult<UpdownAnchorBean> body) {
 
                     }
                 });

@@ -184,7 +184,11 @@ public class UnclickLinearLayout extends LinearLayout {
 //                        mLoadding.setVisibility(View.GONE);
 //                    }
 //                },3000);
-                listener.onRefresh(this);
+                if (offsetY > 0) {
+                    listener.onRefresh(this,true);
+                } else {
+                    listener.onRefresh(this,false);
+                }
                 break;
         }
     }
@@ -240,7 +244,7 @@ public class UnclickLinearLayout extends LinearLayout {
     }
 
     public interface OnRefreshingListener {
-        void onRefresh(UnclickLinearLayout unclickLinearLayout);
+        void onRefresh(UnclickLinearLayout unclickLinearLayout, boolean isTop);
     }
 
     private void setHeadMaginByScroll(final int toMarginBottom, boolean b) {

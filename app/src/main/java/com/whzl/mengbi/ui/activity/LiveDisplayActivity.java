@@ -25,7 +25,6 @@ import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -144,6 +143,7 @@ import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunwayBean;
+import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -451,6 +451,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ObjectAnimator llTopDownAnima;
     private AnchorWishControl anchorWishControl;
     private PageTouchControl pageTouchControl;
+    private List<UpdownAnchorBean.ListBean> updownAnchors = new ArrayList<>();
+    private int updownIndex;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -470,7 +472,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         llStopTip.setVisibility(View.GONE);
         textureView.setVisibility(View.INVISIBLE);
-//        progressBar.setVisibility(View.VISIBLE);
         loadLayout.setVisibility(View.VISIBLE);
 
         if (currentSelectedIndex == 1) {
@@ -489,6 +490,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         fragmentTransaction.commit();
         initFragment();
         loadData();
+
+        if (!findIndexAnchor(updownAnchors)) {
+            updownAnchors.add(0, new UpdownAnchorBean.ListBean(mProgramId, ""));
+        }
     }
 
     @Override
@@ -587,13 +592,25 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void initPageTouch() {
+        mLivePresenter.getUpdownAnchor();
         unclickLinearLayout = findViewById(R.id.rootView);
         unclickLinearLayout.setHeadView(pageHead);
         unclickLinearLayout.setFootView(pageFoot);
         unclickLinearLayout.setOnRefreshListener(new UnclickLinearLayout.OnRefreshingListener() {
             @Override
-            public void onRefresh(UnclickLinearLayout unclickLinearLayout) {
-                jumpToLive(100079);
+            public void onRefresh(UnclickLinearLayout unclickLinearLayout, boolean isTop) {
+                if (isTop) {
+                    updownIndex += 1;
+                    if (updownIndex >= updownAnchors.size()) {
+                        updownIndex = 0;
+                    }
+                } else {
+                    updownIndex -= 1;
+                    if (updownIndex < 0) {
+                        updownIndex = updownAnchors.size() - 1;
+                    }
+                }
+                jumpToLive(updownAnchors.get(updownIndex).programId);
                 unclickLinearLayout.reset();
             }
 
@@ -1511,6 +1528,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        liveNoMoneyDialog.setShowBottom(true)
 //                .setDimAmount(0)
 //                .show(getSupportFragmentManager());
+    }
+
+    /**
+     * 上下拉获取主播列表
+     */
+    @Override
+    public void onUpdownAnchors(UpdownAnchorBean jsonElement) {
+        updownAnchors.clear();
+        updownAnchors.addAll(jsonElement.list);
+        if (!findIndexAnchor(updownAnchors)) {
+            updownAnchors.add(0, new UpdownAnchorBean.ListBean(mProgramId, ""));
+        }
+    }
+
+    private boolean findIndexAnchor(List<UpdownAnchorBean.ListBean> jsonElement) {
+        for (int i = 0; i < jsonElement.size(); i++) {
+            if (jsonElement.get(i).programId == mProgramId) {
+                updownIndex = i;
+                return true;
+            }
+        }
+        updownIndex = 0;
+        return false;
     }
 
     /**

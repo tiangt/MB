@@ -20,6 +20,7 @@ import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.model.impl.LiveModelImpl;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
@@ -126,6 +127,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     public void onSendGiftNoMoney() {
         if (liveView != null) {
             liveView.onSendGiftNoMoney();
+        }
+    }
+
+    @Override
+    public void onUpdownAnchors(UpdownAnchorBean jsonElement) {
+        if (liveView != null) {
+            liveView.onUpdownAnchors(jsonElement);
         }
     }
 
@@ -383,6 +391,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("userId", mAnchorId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.anchorWish(signPramsMap, this);
+    }
+
+    @Override
+    public void getUpdownAnchor() {
+        HashMap map = new HashMap();
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getUpdownAnchor(signPramsMap, this);
     }
 
     public void getRedPackList(int mProgramId, long mUserId) {

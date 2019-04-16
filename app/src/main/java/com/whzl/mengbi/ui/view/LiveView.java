@@ -20,6 +20,7 @@ import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
+import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 
 public interface LiveView {
     void onLiveTokenSuccess(LiveRoomTokenInfo liveRoomTokenInfo);
@@ -74,4 +75,6 @@ public interface LiveView {
     void onAnchorWishSuccess(AnchorWishBean bean);
 
     void onSendGiftNoMoney();
+
+    void onUpdownAnchors(UpdownAnchorBean jsonElement);
 }
