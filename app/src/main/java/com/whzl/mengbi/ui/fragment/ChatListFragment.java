@@ -25,15 +25,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
+import com.whzl.mengbi.chat.room.message.messageJson.SystemMsgJson;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
-import com.whzl.mengbi.chat.room.message.messages.FirstEnterLiveMessage;
 import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.RedPackMessage;
 import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.RoomAnnouceBean;
 import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
@@ -42,15 +47,23 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
+import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
@@ -117,7 +130,44 @@ public class ChatListFragment extends BaseFragment {
                 ((LiveDisplayActivity) getMyActivity()).hideChatDialog();
             }
         });
-        EventBus.getDefault().post(new UpdatePubChatEvent(new FirstEnterLiveMessage()));
+        getAnnouce();
+    }
+
+    private void getAnnouce() {
+        HashMap map = new HashMap();
+        map.put("userId", SPUtils.get(getMyActivity(), SpConfig.KEY_USER_ID, 0L).toString());
+        map.put("roomId", mProgramId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        ApiFactory.getInstance().getApi(Api.class)
+                .roomAnnounce(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<RoomAnnouceBean>() {
+                    @Override
+                    public void onSuccess(RoomAnnouceBean roomAnnouceBean) {
+                        if (roomAnnouceBean != null && roomAnnouceBean.list != null) {
+                            for (int i = 0; i < roomAnnouceBean.list.size(); i++) {
+                                RoomAnnouceBean.ListBean listBean = roomAnnouceBean.list.get(i);
+                                SystemMsgJson systemMsgJson = new SystemMsgJson();
+                                SystemMsgJson.ContextBean bean = new SystemMsgJson.ContextBean();
+                                SystemMsgJson.Message message = new SystemMsgJson.Message();
+                                message.contentLink = listBean.contentLink;
+                                message.message = listBean.content;
+                                message.pic = listBean.picUrl;
+                                Gson gson = new Gson();
+                                String jsonStr = gson.toJson(message);
+                                bean.message = jsonStr;
+                                systemMsgJson.context = bean;
+                                EventBus.getDefault().post(new UpdatePubChatEvent(new SystemMessage(systemMsgJson, getMyActivity())));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<RoomAnnouceBean> body) {
+
+                    }
+                });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -134,23 +184,6 @@ public class ChatListFragment extends BaseFragment {
             }
         }
 
-//        if (message instanceof WelcomeMsg) {
-//            WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
-//            int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
-//            if (royalLevel > 0) {
-//                if (royalEnterControl == null) {
-//                    royalEnterControl = new RoyalEnterControl();
-//                    royalEnterControl.setLlEnter(llEnter);
-//                    royalEnterControl.setTvEnter(tvEnter);
-//                    royalEnterControl.setIvEnter(ivEnter);
-//                    royalEnterControl.setContext(getMyActivity());
-//                }
-////            String imageUrl = ImageUrl.getImageUrl(((WelcomeMsg) message).getCarId(), "jpg");
-////            GlideImageLoader.getInstace().displayImage(getContext(), imageUrl, ivEnter);
-////            royalEnterControl.showEnter(welcomeJson.getContext().getInfo().getNickname());
-//                royalEnterControl.showEnter((WelcomeMsg) message);
-//            }
-//        }
     }
 
 
@@ -199,36 +232,14 @@ public class ChatListFragment extends BaseFragment {
                 holder.itemView.setOnClickListener(null);
                 if (getItemViewType(position) == 1 || getItemViewType(position) == 2) {
                     WelcomeMsg welcomeMsg = (WelcomeMsg) message;
-//                    RelativeLayout rlCarContainer = holder.itemView.findViewById(R.id.rl_car_container);
                     LinearLayout llCar = holder.itemView.findViewById(R.id.ll_car);
                     if (welcomeMsg.hasBagCar()) {
                         llCar.setVisibility(View.VISIBLE);
                         ImageView ivCar = holder.itemView.findViewById(R.id.iv_car);
                         TextView tvCarName = holder.itemView.findViewById(R.id.tv_car_name);
-//                        TextView tvPrettyDesc = holder.itemView.findViewById(R.id.tv_pretty_num_desc);
-//                        TextView tvPrettyNum = holder.itemView.findViewById(R.id.tv_pretty_num);
                         tvCarName.setText(welcomeMsg.getCarName());
-//                        tvPrettyDesc.setText(welcomeMsg.getPrettyNum() == 0 ? "普号" : "靓号");
-//                        tvPrettyNum.setText(welcomeMsg.getPrettyNum() == 0 ? welcomeMsg.getUid() + "" : welcomeMsg.getPrettyNum() + "");
                         String imageUrl = ImageUrl.getImageUrl(welcomeMsg.getCarId(), "jpg");
                         GlideImageLoader.getInstace().displayImage(BaseApplication.getInstance(), imageUrl, ivCar);
-//                        String goodsColor = welcomeMsg.getGoodsColor();
-//                        if ("A".equals(goodsColor)) {
-//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
-//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_a_text_bg);
-//                        } else if ("B".equals(goodsColor)) {
-//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
-//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_b_text_bg);
-//                        } else if ("C".equals(goodsColor)) {
-//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
-//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_c_text_bg);
-//                        } else if ("D".equals(goodsColor)) {
-//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
-//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_d_text_bg);
-//                        } else {
-//                            tvPrettyDesc.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
-//                            tvPrettyNum.setBackgroundResource(R.drawable.shape_chat_msg_pretty_num_default);
-//                        }
                     } else {
                         llCar.setVisibility(View.GONE);
                     }

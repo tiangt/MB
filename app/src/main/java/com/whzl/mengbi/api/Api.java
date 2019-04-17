@@ -50,6 +50,7 @@ import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.QueryBagByGoodsTypeBean;
 import com.whzl.mengbi.model.entity.RebateBean;
+import com.whzl.mengbi.model.entity.RoomAnnouceBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserBean;
@@ -988,5 +989,15 @@ public interface Api {
     @POST("v1/common/key-to-value")
     @FormUrlEncoded
     Observable<ApiResult<SystemConfigBean>> systemConfig(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取直播间公告
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/room-announcement")
+    @FormUrlEncoded
+    Observable<ApiResult<RoomAnnouceBean>> roomAnnounce(@FieldMap Map<String, String> params);
 
 }

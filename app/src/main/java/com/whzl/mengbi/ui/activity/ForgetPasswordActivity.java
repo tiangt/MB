@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -53,10 +51,6 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
         EventBus.getDefault().register(this);
     }
 
-    @Override
-    protected void setStatusBar() {
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
-    }
 
     @Override
     protected void setupContentView() {

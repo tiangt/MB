@@ -14,14 +14,14 @@ public class SystemMsgJson {
     public String type;
     public String platform;
 
-    public class ContextBean {
+    public static class ContextBean {
 
         public String display;
         public String userType;
         public String message;
     }
 
-    public class Message{
+    public static class Message{
         public String message;
         public String pic;
         public String contentLink;
