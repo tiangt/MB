@@ -249,10 +249,11 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
                 break;
 
             case R.id.btn_register:
-                String phoneStr = etPhone.getText().toString().trim();
+                String phoneStr = etPhone.getText().toString().trim().replaceAll(" ", "");
                 String password = etPassword.getText().toString().trim();
                 String md5Psd = EncryptUtils.md5Hex(password);
                 String verifyCode = etVerifyCode.getText().toString().trim();
+                registerPresenter.getRegister(phoneStr, md5Psd, verifyCode);
                 break;
 
             case R.id.tv_agreement:

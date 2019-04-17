@@ -298,7 +298,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
                 break;
             case R.id.btn_login:
                 showLoading("登录中...");
-                String phone = etPhone.getText().toString().trim();
+                String phone = etPhone.getText().toString().trim().replaceAll(" ", "");
                 String password = etPassword.getText().toString();
                 HashMap<String, String> paramsMap = new HashMap<>();
                 paramsMap.put("username", phone);
