@@ -25,6 +25,10 @@ public class UnclickLinearLayout extends LinearLayout {
     private static final int STATE_PREPARED = 0x002; // 达到刷新或加载的要求，松开手指就可以加载上一个房间或加载下一个房间的状态
     private static final int STATE_REFRESHING = 0x003; // 正在加载上一个房间或加载下一个房间的状态
 
+    private static final int STATE_VERTIVAL = 0x004;
+    private static final int STATE_HORIZEN = 0x005;
+    private static final int STATE_ORIGIN = 0x006;
+
     private Context context;
 
     private boolean isRefreshable; // 是否可以下拉刷新下一个房间的数据
@@ -45,8 +49,8 @@ public class UnclickLinearLayout extends LinearLayout {
     private boolean topIsAnim = false;
     private boolean footIsAnim = false;
 
-    private boolean isHorizen;
-    private boolean isVertical;
+    private int direction = STATE_ORIGIN;
+
     private LinearLayout llTopContainer;
 
     public void setOnRefreshListener(OnRefreshingListener listener) {
@@ -96,8 +100,8 @@ public class UnclickLinearLayout extends LinearLayout {
                 break;
             // 手指移动时，判断是否在下拉或上拉加载，如果是，则动态改变头部布局或底部布局的状态
             case MotionEvent.ACTION_MOVE:
-                if (!isHorizen && Math.abs(ev.getRawY() - startY) > touchSlop) {
-                    isVertical = true;
+                if (direction != STATE_HORIZEN && Math.abs(ev.getRawY() - startY) > touchSlop) {
+                    direction = STATE_VERTIVAL;
                     offsetY = ev.getRawY() - startY;//下拉大于0
                     if (offsetY > 0) {//向下拉  加载上一个房间的数据
                         setHeadMagin((int) (screenHeight - offsetY));
@@ -117,9 +121,9 @@ public class UnclickLinearLayout extends LinearLayout {
                         }
                     }
                 } else {
-                    if (!isVertical && Math.abs(ev.getRawX() - startX) > touchSlop) {
+                    if (direction != STATE_VERTIVAL && Math.abs(ev.getRawX() - startX) > touchSlop) {
+                        direction = STATE_HORIZEN;
                         offsetX = ev.getRawX() - startX;
-                        isHorizen = true;
 //                        setChildMagin((int) (ev.getRawX() - startX));
                     }
                 }
@@ -127,14 +131,14 @@ public class UnclickLinearLayout extends LinearLayout {
             // 手指抬起时，判断是否下拉或上拉到可以加载房间的程度，如果达到程度，则进行加载
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                if (offsetY > 0&&!isHorizen) {//向下拉  加载上一个房间的数据
+                if (offsetY > 0 && direction == STATE_VERTIVAL) {//向下拉  加载上一个房间的数据
                     if (isRefreshable) {
                         setCurrentState(STATE_PREPARED);
                     } else {
                         setCurrentState(STATE_PULLING);
                         setFootMargin((int) screenHeight);
                     }
-                } else if (offsetY < 0&&!isHorizen) {
+                } else if (offsetY < 0 && direction == STATE_VERTIVAL) {
                     if (isLoadable) {
                         setCurrentState(STATE_PREPARED);
                     } else {
@@ -143,7 +147,7 @@ public class UnclickLinearLayout extends LinearLayout {
                     }
                 }
 
-                if (isHorizen) {
+                if (direction == STATE_HORIZEN) {
                     if (offsetX > 0) {
 
                     } else {
@@ -154,8 +158,7 @@ public class UnclickLinearLayout extends LinearLayout {
                 isRefreshable = false;
                 isLoadable = false;
 
-                isHorizen = false;
-                isVertical = false;
+                direction = STATE_ORIGIN;
                 break;
         }
         return true;
@@ -222,7 +225,7 @@ public class UnclickLinearLayout extends LinearLayout {
         mFootLayout.clearAnimation();
         if (offsetY > 0) {
             Animation animation = new AlphaAnimation(1, 0);
-            animation.setDuration(300);
+            animation.setDuration(200);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -243,7 +246,7 @@ public class UnclickLinearLayout extends LinearLayout {
             mTopLayout.startAnimation(animation);
         } else {
             Animation animation = new AlphaAnimation(1, 0);
-            animation.setDuration(300);
+            animation.setDuration(200);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -273,11 +276,12 @@ public class UnclickLinearLayout extends LinearLayout {
     private void setHeadMaginByScroll(final int toMarginBottom, boolean b) {
         final RelativeLayout.LayoutParams lp1 = (RelativeLayout.LayoutParams) mTopLayout.getLayoutParams();
         ValueAnimator valueAnimator = ValueAnimator.ofInt((int) (screenHeight - offsetY), toMarginBottom);
-        valueAnimator.setDuration(300);
+        valueAnimator.setDuration(100);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 lp1.bottomMargin = (int) animation.getAnimatedValue();
+                lp1.topMargin=-(int) animation.getAnimatedValue();
                 mTopLayout.setLayoutParams(lp1);
                 if ((int) animation.getAnimatedValue() == toMarginBottom) {
                     topIsAnim = false;
@@ -294,11 +298,12 @@ public class UnclickLinearLayout extends LinearLayout {
     private void setFootMaginByScroll(final int toMarginTop, boolean b) {
         final RelativeLayout.LayoutParams lp1 = (RelativeLayout.LayoutParams) mFootLayout.getLayoutParams();
         ValueAnimator valueAnimator = ValueAnimator.ofInt(mFootLayout.getTop(), toMarginTop);
-        valueAnimator.setDuration(300);
+        valueAnimator.setDuration(100);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 lp1.topMargin = (int) animation.getAnimatedValue();
+                lp1.bottomMargin=-(int) animation.getAnimatedValue();
                 mFootLayout.setLayoutParams(lp1);
                 if ((int) animation.getAnimatedValue() == toMarginTop) {
                     footIsAnim = false;
@@ -318,6 +323,7 @@ public class UnclickLinearLayout extends LinearLayout {
     private void setHeadMagin(int marginBottom) {
         RelativeLayout.LayoutParams lp1 = (RelativeLayout.LayoutParams) mTopLayout.getLayoutParams();
         lp1.bottomMargin = marginBottom;
+        lp1.topMargin = -marginBottom;
         mTopLayout.setLayoutParams(lp1);
     }
 
@@ -327,6 +333,7 @@ public class UnclickLinearLayout extends LinearLayout {
     private void setFootMargin(int maginTop) {
         RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) mFootLayout.getLayoutParams();
         lp2.topMargin = maginTop;
+        lp2.bottomMargin = -maginTop;
         mFootLayout.setLayoutParams(lp2);
     }
 
