@@ -23,6 +23,7 @@ public class DeviceUtils {
 
     /**
      * 获取DeviceId
+     *
      * @param context
      * @return
      */
@@ -30,12 +31,13 @@ public class DeviceUtils {
     public static String getDeviceId(Context context) {
         final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         final String tmDevice;
-        tmDevice =tm.getDeviceId();
+        tmDevice = tm.getDeviceId();
         return tmDevice;
     }
 
     /**
      * 获取UUID
+     *
      * @param context
      * @return
      */
@@ -328,7 +330,7 @@ public class DeviceUtils {
 
     /**
      * Set media volume
-     *设置音量
+     * 设置音量
      *
      * @param context
      * @return volume:0-15
@@ -384,6 +386,13 @@ public class DeviceUtils {
         return display.getHeight();
     }
 
+    public static int getScreenWidth(Context context) {
+        Display display = ((WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+        return display.getWidth();
+    }
+
+
     /**
      * 获得状态栏的高度
      *
@@ -406,4 +415,5 @@ public class DeviceUtils {
             return 75;
         }
     }
+
 }

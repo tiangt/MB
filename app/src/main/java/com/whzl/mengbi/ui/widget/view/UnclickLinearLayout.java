@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.widget.view;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,9 +32,11 @@ public class UnclickLinearLayout extends LinearLayout {
     private boolean isLoadable; // 是否可以上拉加载上一个房间的数据
     private float moveHeight; //有效移动距离
     private float startY; // 记录手指按下时的Y坐标位置
-    private float startX; // 记录手指按下时的Y坐标位置
+    private float startX; // 记录手指按下时的X坐标位置
     private float offsetY; // 记录手指拖动过程中Y坐标的偏移量
+    private float offsetX; // 记录手指拖动过程中X坐标的偏移量
     private float screenHeight = 0;
+    private float screenWidth = 0;
 
     private View mTopLayout;
     private View mFootLayout;
@@ -41,6 +44,10 @@ public class UnclickLinearLayout extends LinearLayout {
 
     private boolean topIsAnim = false;
     private boolean footIsAnim = false;
+
+    private boolean isHorizen;
+    private boolean isVertical;
+    private LinearLayout llTopContainer;
 
     public void setOnRefreshListener(OnRefreshingListener listener) {
         this.listener = listener;
@@ -68,8 +75,8 @@ public class UnclickLinearLayout extends LinearLayout {
 
     public void init() {
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        touchSlop = 0;
         screenHeight = DeviceUtils.getScreenHeight(context) - DeviceUtils.getStatusBarHeight(context);
+        screenWidth = DeviceUtils.getScreenWidth(context);
         moveHeight = screenHeight / 4;
         setCurrentState(STATE_NORMAL);
     }
@@ -84,14 +91,14 @@ public class UnclickLinearLayout extends LinearLayout {
                 }
                 isRefreshable = false;
                 isLoadable = false;
-                startY = (int) ev.getY();
-                startX = (int) ev.getX();
+                startY = (int) ev.getRawY();
+                startX = (int) ev.getRawX();
                 break;
             // 手指移动时，判断是否在下拉或上拉加载，如果是，则动态改变头部布局或底部布局的状态
             case MotionEvent.ACTION_MOVE:
-                offsetY = ev.getY() - startY;//下拉大于0
-                if (Math.abs(ev.getX() - startX) < Math.abs(ev.getY() - startY)) {
-
+                if (!isHorizen && Math.abs(ev.getRawY() - startY) > touchSlop) {
+                    isVertical = true;
+                    offsetY = ev.getRawY() - startY;//下拉大于0
                     if (offsetY > 0) {//向下拉  加载上一个房间的数据
                         setHeadMagin((int) (screenHeight - offsetY));
                         setFootMargin((int) (screenHeight));
@@ -110,19 +117,24 @@ public class UnclickLinearLayout extends LinearLayout {
                         }
                     }
                 } else {
+                    if (!isVertical && Math.abs(ev.getRawX() - startX) > touchSlop) {
+                        offsetX = ev.getRawX() - startX;
+                        isHorizen = true;
+//                        setChildMagin((int) (ev.getRawX() - startX));
+                    }
                 }
                 break;
             // 手指抬起时，判断是否下拉或上拉到可以加载房间的程度，如果达到程度，则进行加载
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
-                if (offsetY > 0) {//向下拉  加载上一个房间的数据
+                if (offsetY > 0&&!isHorizen) {//向下拉  加载上一个房间的数据
                     if (isRefreshable) {
                         setCurrentState(STATE_PREPARED);
                     } else {
                         setCurrentState(STATE_PULLING);
                         setFootMargin((int) screenHeight);
                     }
-                } else if (offsetY < 0) {
+                } else if (offsetY < 0&&!isHorizen) {
                     if (isLoadable) {
                         setCurrentState(STATE_PREPARED);
                     } else {
@@ -130,8 +142,20 @@ public class UnclickLinearLayout extends LinearLayout {
                         setHeadMagin((int) screenHeight);
                     }
                 }
+
+                if (isHorizen) {
+                    if (offsetX > 0) {
+
+                    } else {
+
+                    }
+                }
+
                 isRefreshable = false;
                 isLoadable = false;
+
+                isHorizen = false;
+                isVertical = false;
                 break;
         }
         return true;
@@ -185,9 +209,9 @@ public class UnclickLinearLayout extends LinearLayout {
 //                    }
 //                },3000);
                 if (offsetY > 0) {
-                    listener.onRefresh(this,true);
+                    listener.onRefresh(this, true);
                 } else {
-                    listener.onRefresh(this,false);
+                    listener.onRefresh(this, false);
                 }
                 break;
         }
@@ -217,7 +241,6 @@ public class UnclickLinearLayout extends LinearLayout {
                 }
             });
             mTopLayout.startAnimation(animation);
-//            setHeadMagin((int) screenHeight);
         } else {
             Animation animation = new AlphaAnimation(1, 0);
             animation.setDuration(300);
@@ -239,9 +262,9 @@ public class UnclickLinearLayout extends LinearLayout {
                 }
             });
             mFootLayout.startAnimation(animation);
-//            setFootMargin((int) screenHeight);
         }
     }
+
 
     public interface OnRefreshingListener {
         void onRefresh(UnclickLinearLayout unclickLinearLayout, boolean isTop);
@@ -305,6 +328,23 @@ public class UnclickLinearLayout extends LinearLayout {
         RelativeLayout.LayoutParams lp2 = (RelativeLayout.LayoutParams) mFootLayout.getLayoutParams();
         lp2.topMargin = maginTop;
         mFootLayout.setLayoutParams(lp2);
+    }
+
+    private void setChildMagin(int margin) {
+        for (int i = 0; i < getChildCount(); i++) {
+            if (getChildAt(i) instanceof ConstraintLayout) {
+                ConstraintLayout childAt = (ConstraintLayout) getChildAt(i);
+                for (int j = 0; j < (childAt.getChildCount()); j++) {
+                    if (childAt.getChildAt(j) instanceof RatioRelativeLayout) {
+                        continue;
+                    }
+                    ConstraintLayout.LayoutParams lp1 = (ConstraintLayout.LayoutParams) childAt.getChildAt(j).getLayoutParams();
+                    lp1.leftMargin = margin;
+                    lp1.rightMargin = -margin;
+                    childAt.getChildAt(j).setLayoutParams(lp1);
+                }
+            }
+        }
     }
 
 

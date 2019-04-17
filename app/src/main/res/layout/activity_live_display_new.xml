@@ -584,22 +584,108 @@
 
                 </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 
-
                 <FrameLayout
                     android:id="@+id/fragment_container"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:background="@color/transparent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/rl_bottom_container"
                     app:layout_constraintTop_toBottomOf="@+id/ratio_layout" />
 
-                <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="26dp"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:background="@drawable/bg_chat_top_translate"-->
-                <!--app:layout_constraintTop_toBottomOf="@+id/ratio_layout" />-->
+                <RelativeLayout
+                    android:id="@+id/rl_bottom_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_container">
 
+                    <ImageButton
+                        android:id="@+id/btn_chat"
+                        android:layout_width="77dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:background="@null"
+                        android:src="@drawable/ic_live_display_talk" />
+
+
+                    <ImageButton
+                        android:id="@+id/btn_chat_private"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="7dp"
+                        android:layout_toRightOf="@id/btn_chat"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/private_chat_icon" />
+
+                    <View
+                        android:id="@+id/view_message_notify"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_alignRight="@id/btn_chat_private"
+                        android:layout_alignTop="@id/btn_chat_private"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginTop="2dp"
+                        android:background="@drawable/shape_red_notify"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/btn_close"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="12dp"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_live_close" />
+
+                    <ImageButton
+                        android:id="@+id/btn_share"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_toLeftOf="@id/btn_close"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_live_share" />
+
+                    <ImageButton
+                        android:id="@+id/btn_more"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_toLeftOf="@id/btn_share"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_live_more" />
+
+                    <ImageButton
+                        android:id="@+id/btn_free_gift"
+                        android:layout_width="31dp"
+                        android:layout_height="33dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="6dp"
+                        android:layout_toLeftOf="@id/btn_more"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/btn_send_gift"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_live_display_gift" />
+
+                </RelativeLayout>
 
                 <com.youth.banner.Banner
                     android:id="@+id/banner"
@@ -608,7 +694,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="9dp"
                     android:layout_marginTop="7dp"
-                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintRight_toRightOf="@id/rl_bottom_container"
                     app:layout_constraintTop_toBottomOf="@id/ratio_layout" />
 
                 <LinearLayout
@@ -620,8 +706,8 @@
                     android:layout_marginRight="7dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="parent">
+                    app:layout_constraintBottom_toTopOf="@id/rl_bottom_container"
+                    app:layout_constraintRight_toRightOf="@id/rl_bottom_container">
 
 
                     <android.support.v4.view.ViewPager
@@ -646,102 +732,10 @@
                     android:layout_height="37dp"
                     android:layout_marginTop="12dp"
                     android:overScrollMode="never"
+                    app:layout_constraintLeft_toLeftOf="@id/rl_bottom_container"
                     app:layout_constraintTop_toBottomOf="@id/ratio_layout" />
             </android.support.constraint.ConstraintLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_bottom_container"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#343a42">
-
-                <ImageButton
-                    android:id="@+id/btn_chat"
-                    android:layout_width="77dp"
-                    android:layout_height="32dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
-                    android:background="@null"
-                    android:src="@drawable/ic_live_display_talk" />
-
-
-                <ImageButton
-                    android:id="@+id/btn_chat_private"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="7dp"
-                    android:layout_toRightOf="@id/btn_chat"
-                    android:background="@null"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/private_chat_icon" />
-
-                <View
-                    android:id="@+id/view_message_notify"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_alignRight="@id/btn_chat_private"
-                    android:layout_alignTop="@id/btn_chat_private"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/shape_red_notify"
-                    android:visibility="gone" />
-
-                <ImageButton
-                    android:id="@+id/btn_close"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
-                    android:background="@null"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_live_close" />
-
-                <ImageButton
-                    android:id="@+id/btn_share"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="6dp"
-                    android:layout_toLeftOf="@id/btn_close"
-                    android:background="@null"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_live_share" />
-
-                <ImageButton
-                    android:id="@+id/btn_more"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="6dp"
-                    android:layout_toLeftOf="@id/btn_share"
-                    android:background="@null"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_live_more" />
-
-                <ImageButton
-                    android:id="@+id/btn_free_gift"
-                    android:layout_width="31dp"
-                    android:layout_height="33dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="6dp"
-                    android:layout_toLeftOf="@id/btn_more"
-                    android:background="@null"
-                    android:scaleType="centerCrop"
-                    android:visibility="visible" />
-
-                <ImageButton
-                    android:id="@+id/btn_send_gift"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_centerInParent="true"
-                    android:layout_centerVertical="true"
-                    android:background="@null"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_live_display_gift" />
-
-            </RelativeLayout>
 
         </com.whzl.mengbi.ui.widget.view.UnclickLinearLayout>
 

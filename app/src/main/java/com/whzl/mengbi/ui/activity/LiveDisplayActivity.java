@@ -474,11 +474,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         textureView.setVisibility(View.INVISIBLE);
         loadLayout.setVisibility(View.VISIBLE);
 
-        if (currentSelectedIndex == 1) {
-            currentSelectedIndex = 0;
-            setBottomContainerHeight(50);
-        }
-
         mProgramId = intent.getIntExtra(BundleConfig.PROGRAM_ID, -1);
         SPUtils.put(this, "programId", mProgramId);
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
@@ -769,35 +764,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         fragments = new Fragment[]{chatListFragment};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.commit();
-    }
-
-    public void setTabChange(int index) {
-        if (index == currentSelectedIndex) {
-            return;
-        }
-        if (index == 1) {
-//            viewMessageNotify.setVisibility(View.GONE);
-        } else {
-        }
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.hide(fragments[currentSelectedIndex]);
-        if (fragments[index].isAdded()) {
-            fragmentTransaction.show(fragments[index]);
-        } else {
-            fragmentTransaction.add(R.id.fragment_container, fragments[index]);
-        }
-        fragmentTransaction.commit();
-        setBottomContainerHeight(index == 0 ? 50 : 0);
-        currentSelectedIndex = index;
-    }
-
-    public void setBottomContainerHeight(int dpHeight) {
-        ViewGroup.LayoutParams layoutParams = rlBottomContainer.getLayoutParams();
-        layoutParams.height = UIUtil.dip2px(this, dpHeight);
-        rlBottomContainer.post(() -> {
-            rlBottomContainer.setLayoutParams(layoutParams);
-        });
     }
 
 
