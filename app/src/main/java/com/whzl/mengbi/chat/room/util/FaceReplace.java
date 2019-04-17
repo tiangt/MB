@@ -12,7 +12,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.util.DensityUtil;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.model.entity.EmjoyInfo;
+import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.FileUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -107,12 +110,7 @@ public class FaceReplace {
                 int end = m.end();
                 Drawable drawable = null;
                 try {
-//                    if ("/顶你".equals(fp.getValue()) || "/加油".equals(fp.getValue())) {
-//                        Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-//                        drawable = new BitmapDrawable(context.getResources(), bitmap);
-//                        return;
-//                    }
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT && BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
                         if ("/顶你".equals(fp.getValue()) || "/加油".equals(fp.getValue())) {
                             Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
                             drawable = new BitmapDrawable(context.getResources(), bitmap);
@@ -125,8 +123,6 @@ public class FaceReplace {
                         drawable = new BitmapDrawable(context.getResources(), bitmap);
                     }
                 } catch (Exception ignored) {
-//                    Bitmap bitmap = FileUtils.readBitmapFromAssetsFile(fp.getIcon(), context);
-//                    drawable = new BitmapDrawable(context.getResources(), bitmap);
                     ignored.printStackTrace();
                 }
                 if (drawable == null) {
@@ -150,7 +146,7 @@ public class FaceReplace {
                 int end = m.end();
                 Drawable drawable;
                 try {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT&& BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
                         drawable = new GifDrawable(fp.getFileContent());
                         drawable.setCallback(new DrawableCallback(textView));
                     } else {
@@ -181,7 +177,7 @@ public class FaceReplace {
                 int end = m.end();
                 Drawable drawable;
                 try {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT&& BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
                         drawable = new GifDrawable(fp.getFileContent());
                         drawable.setCallback(new DrawableCallback(textView));
                     } else {
@@ -211,7 +207,7 @@ public class FaceReplace {
                 int end = m.end();
                 Drawable drawable;
                 try {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT&& BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
                         drawable = new GifDrawable(fp.getFileContent());
                         drawable.setCallback(new DrawableCallback(textView));
                     } else {
@@ -241,7 +237,7 @@ public class FaceReplace {
                 int end = m.end();
                 Drawable drawable;
                 try {
-                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT&& BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
                         drawable = new GifDrawable(fp.getFileContent());
                         drawable.setCallback(new DrawableCallback(textView));
                     } else {

@@ -145,13 +145,8 @@ public class LevelUtil {
         SpannableString levelIcon = new SpannableString("icon");
         Drawable drawable = null;
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-//            Bitmap bitmap = FileUtils.readBitmapFromAssetsFile("images/face/royal/royal_" + resourceId + ".gif", context);
-//            drawable = new BitmapDrawable(context.getResources(), bitmap);
-//            bitmap.recycle();
             drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
         } else {
-//            drawable = new GifDrawable(getFileContent(context, "images/face/royal/royal_" + resourceId + ".gif"));
-//            drawable = new GifDrawable(context.getResources(), ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
             drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
             drawable.setCallback(new DrawableCallback(textView));
         }

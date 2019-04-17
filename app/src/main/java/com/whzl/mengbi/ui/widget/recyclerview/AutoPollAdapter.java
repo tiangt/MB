@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.RoyalLevel;
+import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -80,7 +81,7 @@ public class AutoPollAdapter extends BaseListAdapter {
             int mUserRoyalLevel = mAudienceList.get(position + 1).getLevelMap().getROYAL_LEVEL();
             if (mUserRoyalLevel > 0) {
                 rl.setBackgroundResource(R.drawable.shape_online_head_royal);
-                if (BaseApplication.heapSize >= 256) {
+                if (BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
                     setRoyalTag(mUserRoyalLevel, ivRoyal);
                 } else {
                     setRoyalTagNoGif(mUserRoyalLevel, ivRoyal);

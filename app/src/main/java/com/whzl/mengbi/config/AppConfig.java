@@ -8,6 +8,7 @@ public interface AppConfig {
     int NUM_TOTAL_GIFT_DIALOG = 8;
     int NUM_SPAN_GIFT_DIALOG = 4;
     int MIN_VALUE_GIFT_DIALOG = 50000;
+    int MAX_HEAP_SIZE = 256;
 
     int ANCHOR_NOT_IN_BLACK_ROOM = -1262;
 
