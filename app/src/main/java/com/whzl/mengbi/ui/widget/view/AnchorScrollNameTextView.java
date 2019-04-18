@@ -19,7 +19,7 @@ import com.whzl.mengbi.util.RxTimerUtil;
  * @author cliang
  * @date 2018.11.6
  */
-public class AutoScrollTextView3 extends AppCompatTextView implements View.OnClickListener {
+public class AnchorScrollNameTextView extends AppCompatTextView implements View.OnClickListener {
 
     public final static String TAG = AutoScrollTextView.class.getSimpleName();
     private final float DEF_TEXT_SIZE = 13.0F;
@@ -44,17 +44,17 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         this.scrollTimes = scrollTimes;
     }
 
-    public AutoScrollTextView3(Context context) {
+    public AnchorScrollNameTextView(Context context) {
         super(context, null);
         initView(context);
     }
 
-    public AutoScrollTextView3(Context context, AttributeSet attrs) {
+    public AnchorScrollNameTextView(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
         initView(context);
     }
 
-    public AutoScrollTextView3(Context context, AttributeSet attrs, int defStyle) {
+    public AnchorScrollNameTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initView(context);
     }
@@ -70,10 +70,7 @@ public class AutoScrollTextView3 extends AppCompatTextView implements View.OnCli
         paint = getPaint();
         text = getText().toString();
         textLength = paint.measureText(text);
-//        viewWidth = width;
         step = 0f;
-//        temp_view_plus_text_length = width + textLength + 50;
-//        temp_view_plus_two_text_length = width + textLength * 3;
         y = getTextSize() + getPaddingTop();
     }
 

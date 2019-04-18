@@ -181,7 +181,6 @@ import com.whzl.mengbi.ui.widget.loading.LoadLayout;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
-import com.whzl.mengbi.ui.widget.view.AutoScrollTextView3;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.HeadLineView;
 import com.whzl.mengbi.ui.widget.view.HeadlineLayout;
@@ -239,7 +238,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
     @BindView(R.id.tv_host_name)
-    AutoScrollTextView3 tvHostName;
+    TextView tvHostName;
     @BindView(R.id.btn_follow)
     TextView btnFollow;
     @BindView(R.id.rl_contribution_container)
@@ -769,15 +768,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     public void showMessageNotify() {
         viewMessageNotify.setVisibility(View.VISIBLE);
-    }
-
-    private int getMarqueeWidth() {
-        int w = View.MeasureSpec.makeMeasureSpec(50, View.MeasureSpec.EXACTLY);
-        int h = View.MeasureSpec.makeMeasureSpec((1 << 30) - 1, View.MeasureSpec.AT_MOST);
-        tvHostName.measure(w, h);
-        int height = tvHostName.getMeasuredHeight();
-        int width = tvHostName.getMeasuredWidth();
-        return width;
     }
 
     @Override
@@ -1356,17 +1346,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             ChatRoomInfo.getInstance().setRoomInfoBean(roomInfoBean);
             if (roomInfoBean.getData().getAnchor() != null) {
                 mAnchor = roomInfoBean.getData().getAnchor();
-//                PrivateChatListFragment fragment = (PrivateChatListFragment) fragments[1];
-//                fragment.setUpWithAnchor(mAnchor);
                 mAnchorName = mAnchor.getName();
                 mAnchorAvatar = mAnchor.getAvatar();
                 anchorLevel = LevelUtil.getAnchorLevel(mAnchor);
                 GlideImageLoader.getInstace().circleCropImage(this, mAnchor.getAvatar(), ivHostAvatar);
 
                 tvHostName.setText(mAnchor.getName());
-                tvHostName.init(getWindowManager(), getMarqueeWidth());
-                tvHostName.setTextColor(Color.WHITE);
-                tvHostName.startScroll();
+//                tvHostName.init(getWindowManager(), getMarqueeWidth());
+//                tvHostName.setTextColor(Color.WHITE);
+//                tvHostName.startScroll();
             }
             if (roomInfoBean.getData().getStream() != null) {
                 setupPlayerSize(roomInfoBean.getData().getStream().getHeight(), roomInfoBean.getData().getStream().getWidth());
@@ -2155,9 +2143,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void destroy() {
-        if (tvHostName != null) {
-            tvHostName.destyoy();
-        }
+//        if (tvHostName != null) {
+//            tvHostName.destyoy();
+//        }
         if (mGifGiftControl != null) {
             mGifGiftControl.destroy();
         }

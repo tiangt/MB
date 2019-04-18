@@ -47,7 +47,6 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 import com.whzl.mengbi.ui.viewholder.WelcomeTextViewHolder;
-import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -78,23 +77,6 @@ public class ChatListFragment extends BaseFragment {
     RecyclerView recycler;
     @BindView(R.id.view_click)
     View viewClick;
-    //    @BindView(R.id.ll_enter)
-    LinearLayout llEnter;
-//    @BindView(R.id.tv_enter)
-//    RollTextView tvEnter;
-//    ImageView ivEnter;
-
-//    public void setIvEnter(ImageView ivEnter) {
-//        this.ivEnter = ivEnter;
-//    }
-//
-//    public void setLlEnter(LinearLayout llEnter) {
-//        this.llEnter = llEnter;
-//    }
-//
-//    public void setTvEnter(RollTextView tvEnter) {
-//        this.tvEnter = tvEnter;
-//    }
 
     private RecyclerView.Adapter chatAdapter;
     private static final int TOTAL_CHAT_MSG = 100;

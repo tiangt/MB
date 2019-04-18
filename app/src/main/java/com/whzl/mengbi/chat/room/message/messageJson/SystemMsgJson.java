@@ -21,7 +21,7 @@ public class SystemMsgJson {
         public String message;
     }
 
-    public static class Message{
+    public static class Message {
         public String message;
         public String pic;
         public String contentLink;

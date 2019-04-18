@@ -6,6 +6,8 @@ import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.SystemMsgJson;
 import com.whzl.mengbi.chat.room.message.messages.SystemMessage;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
+
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -15,6 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 public class SystemMsgAction implements Actions {
     @Override
     public void performAction(String msgStr, Context context) {
+        LogUtils.e("SystemMsgAction " +msgStr);
         SystemMsgJson systemMsgJson = GsonUtils.GsonToBean(msgStr, SystemMsgJson.class);
         if (null == systemMsgJson || systemMsgJson.context == null || systemMsgJson.context.message == null) {
             return;
