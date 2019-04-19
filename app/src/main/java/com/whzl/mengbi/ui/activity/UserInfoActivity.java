@@ -394,6 +394,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 if (resultCode == RESULT_OK) {
                     String nickname = data.getStringExtra("nickname");
                     tvNickName.setText(nickname);
+                    if (mUserInfo != null) {
+                        mUserInfo.setNickname(nickname);
+                    }
                 }
                 break;
             case GENDER_CODE:

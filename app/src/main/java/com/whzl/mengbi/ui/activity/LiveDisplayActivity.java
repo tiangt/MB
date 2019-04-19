@@ -149,7 +149,6 @@ import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.ui.control.PageTouchControl;
 import com.whzl.mengbi.ui.control.RedPacketControl;
 import com.whzl.mengbi.ui.dialog.AnchorWishDialog;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
@@ -449,7 +448,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ObjectAnimator llTopUpAnima;
     private ObjectAnimator llTopDownAnima;
     private AnchorWishControl anchorWishControl;
-    private PageTouchControl pageTouchControl;
     private List<UpdownAnchorBean.ListBean> updownAnchors = new ArrayList<>();
     private int updownIndex;
 
