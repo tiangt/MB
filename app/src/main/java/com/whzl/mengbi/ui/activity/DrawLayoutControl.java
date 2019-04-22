@@ -52,7 +52,6 @@ public class DrawLayoutControl {
     private int[] imgIds = new int[]{
             R.drawable.ic_recharge_draw_layout,
             R.drawable.ic_shop_draw_layout,
-//            R.drawable.ic_pack_draw_layout,
             R.drawable.ic_welfare_draw_layout,
             R.drawable.ic_pk_draw_layout,
             R.drawable.ic_guard_draw_layout,
@@ -246,19 +245,19 @@ public class DrawLayoutControl {
             if (position == bannerInfoList.size()) {
                 if (((LiveDisplayActivity) activity).mUserId == 0) {
                     ((LiveDisplayActivity) activity).login();
-                    ((LiveDisplayActivity) activity).closeDrawLayout();
+                    ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
                     return;
                 }
                 activity.startActivity(new Intent(activity, RedbagActivity.class).
                         putExtra("programId", ((LiveDisplayActivity) activity).mProgramId));
-                ((LiveDisplayActivity) activity).closeDrawLayout();
+                ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
                 return;
             }
             if (bannerInfoList.get(position).flag != null && bannerInfoList.get(position).flag.equals(AppConfig.LUCK_ROB)) {
                 ((LiveDisplayActivity) activity).showSnatchDialog();
             } else {
                 ((LiveDisplayActivity) activity).jumpToBannerActivity(bannerInfoList.get(position));
-                ((LiveDisplayActivity) activity).closeDrawLayout();
+                ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
             }
         }
     }
@@ -283,7 +282,7 @@ public class DrawLayoutControl {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            ((LiveDisplayActivity) activity).closeDrawLayout();
+            ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
             switch (position) {
                 case 0:
                     if (((LiveDisplayActivity) activity).mUserId == 0) {

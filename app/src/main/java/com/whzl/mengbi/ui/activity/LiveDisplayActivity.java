@@ -651,7 +651,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             }
         });
-
     }
 
 
@@ -2540,7 +2539,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 幸运夺宝
      */
     public void showSnatchDialog() {
-        closeDrawLayout();
+        closeDrawLayoutNoAnimal();
         if (mUserId == 0) {
             login();
             return;
