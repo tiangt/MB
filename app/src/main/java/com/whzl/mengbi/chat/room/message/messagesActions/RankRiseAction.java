@@ -6,6 +6,7 @@ import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.RankRiseJson;
 import com.whzl.mengbi.chat.room.message.messages.RankRiseMessage;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -16,6 +17,7 @@ import org.greenrobot.eventbus.EventBus;
 public class RankRiseAction implements Actions {
     @Override
     public void performAction(String msgStr, Context context) {
+        LogUtils.e("RankRiseAction  " + msgStr);
         RankRiseJson json = GsonUtils.GsonToBean(msgStr, RankRiseJson.class);
         if (null == json || json.context == null) {
             return;

@@ -144,11 +144,11 @@ public class NickNameModifyActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(SystemConfigBean jsonElement) {
-                        if (jsonElement == null || jsonElement.paramValue == null || jsonElement.unitType == null) {
+                        if (jsonElement == null || jsonElement.list == null) {
                             return;
                         }
-                        tvLimit.setText(LightSpanString.getLightString(jsonElement.paramValue, Color.parseColor("#70ff2b3f")));
-                        tvLimit.append(jsonElement.unitType + " / 次，首次免费。昵称长度限制");
+                        tvLimit.setText(LightSpanString.getLightString(jsonElement.list.get(0).paramValue, Color.parseColor("#70ff2b3f")));
+                        tvLimit.append(jsonElement.list.get(0).unitType + " / 次，首次免费。昵称长度限制");
                         tvLimit.append(LightSpanString.getLightString("10", Color.parseColor("#70ff2b3f")));
                         tvLimit.append("个汉字。");
                     }

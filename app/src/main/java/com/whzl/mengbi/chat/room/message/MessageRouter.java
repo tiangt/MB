@@ -108,7 +108,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("StartLiving", new PlayNotifyAction());
         actionsMap.put("COMPOSITION2", new CompositeAction());
         actionsMap.put("REDPACKET", new RedPacketAction());
-        actionsMap.put("RANK_RISE_MSG", new RankRiseAction());
+        actionsMap.put("RANK_RISES_MSG", new RankRiseAction());
         actionsMap.put("ROB_LUCKY", new RobLuckAction());
         actionsMap.put("GAME_WISH", new AnchorWishAction());
     }

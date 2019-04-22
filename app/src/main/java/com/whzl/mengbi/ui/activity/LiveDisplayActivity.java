@@ -1420,6 +1420,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mLivePresenter.getHeadlineRank(mAnchorId, "F");
         });
         compositeDisposable.add(headlineDisposable);
+        //主播任务
+        mLivePresenter.getAnchorTask(mAnchorId);
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1608,11 +1610,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onAnchorWishSuccess(AnchorWishBean bean) {
+        LogUtils.e("sssssssssssss   onAnchorWishSuccess");
         AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean);
         anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
         mActivityGrands.add(0, anchorWishFragment);
         mGrandAdaper.notifyDataSetChanged();
         initActivityPoints();
+        vpActivity.setCurrentItem(0,false);
     }
 
 
@@ -1621,6 +1625,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
+        LogUtils.e("sssssssssssss   onActivityGrandSuccess");
         if (bean.list != null && bean.list.size() != 0) {
             for (int i = 0; i < bean.list.size(); i++) {
                 ActivityGrandBean.ListBean listBean = bean.list.get(i);
@@ -1641,13 +1646,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mActivityGrands.add(liveWebFragment);
             }
         }
-        //周星榜
-        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-        mActivityGrands.add(weekRankFragment);
         mGrandAdaper.notifyDataSetChanged();
-//        initActivityPoints();
-        //主播任务
-        mLivePresenter.getAnchorTask(mAnchorId);
+        initActivityPoints();
+        vpActivity.setCurrentItem(0,false);
     }
 
     /**
@@ -1655,14 +1656,22 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
+        LogUtils.e("sssssssssssss   onGetAnchorTaskSuccess");
         if (dataBean != null) {
             AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
             mActivityGrands.add(anchorTaskFragment);
-            mGrandAdaper.notifyDataSetChanged();
-            vpActivity.setOffscreenPageLimit(mActivityGrands.size());
-            vpActivity.setCurrentItem(0);
-            initActivityPoints();
+//            mGrandAdaper.notifyDataSetChanged();
+//            vpActivity.setOffscreenPageLimit(mActivityGrands.size());
+//            vpActivity.setCurrentItem(0);
+//            initActivityPoints();
+//            vpActivity.setCurrentItem(0);
         }
+        //周星榜
+        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        mActivityGrands.add(mActivityGrands.size()-1,weekRankFragment);
+        mGrandAdaper.notifyDataSetChanged();
+        initActivityPoints();
+        vpActivity.setCurrentItem(0,false);
     }
 
     @Override
