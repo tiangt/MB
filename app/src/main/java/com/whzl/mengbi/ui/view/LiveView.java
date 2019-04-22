@@ -77,4 +77,6 @@ public interface LiveView {
     void onSendGiftNoMoney();
 
     void onUpdownAnchors(UpdownAnchorBean jsonElement);
+
+    void onRightBottomActivityError();
 }

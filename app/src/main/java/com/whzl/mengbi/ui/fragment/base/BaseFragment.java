@@ -31,6 +31,12 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     protected View rootView;
     private Unbinder mUnbinder;
 
+    public int getBaseTag() {
+        return tag;
+    }
+
+    private int tag;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,5 +112,9 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment imp
     public <T> AutoDisposeConverter<T> bindAutoDispose() {
         return AutoDispose.autoDisposable(AndroidLifecycleScopeProvider
                 .from(this, Lifecycle.Event.ON_DESTROY));
+    }
+
+    public void setTag(int tag) {
+        this.tag = tag;
     }
 }

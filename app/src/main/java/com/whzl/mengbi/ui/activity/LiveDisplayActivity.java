@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -147,7 +148,7 @@ import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
-import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
+import com.whzl.mengbi.ui.adapter.ActivityFragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.control.RedPacketControl;
 import com.whzl.mengbi.ui.dialog.AnchorWishDialog;
@@ -175,6 +176,7 @@ import com.whzl.mengbi.ui.fragment.AnchorWishFragment;
 import com.whzl.mengbi.ui.fragment.ChatListFragment;
 import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.ui.fragment.LiveWeekRankFragment;
+import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.loading.LoadLayout;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
@@ -215,6 +217,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -234,6 +237,7 @@ import pl.droidsonroids.gif.GifImageView;
  */
 public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public static final String PROGRAMID = "programId";
+    public static final int RIGHT_BOTTOM_ACTIVITY = 3;
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
     @BindView(R.id.tv_host_name)
@@ -407,8 +411,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 抽奖活动
      */
     private List<GetActivityBean.ListBean> mBannerInfoList;
-    private ArrayList<Fragment> mActivityGrands = new ArrayList<>();
-    private FragmentPagerAdaper mGrandAdaper;
+    private ArrayList<BaseFragment> mActivityGrands = new ArrayList<>();
+    private ActivityFragmentPagerAdaper mGrandAdaper;
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList = new ArrayList<>();
     private RoyalEnterControl royalEnterControl;
@@ -451,6 +455,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private List<UpdownAnchorBean.ListBean> updownAnchors = new ArrayList<>();
     private int updownIndex;
 
+    private int rightBottomActivityNum = 0;
+
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
 
@@ -486,6 +492,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (!findIndexAnchor(updownAnchors)) {
             updownAnchors.add(0, new UpdownAnchorBean.ListBean(mProgramId, ""));
         }
+
     }
 
     @Override
@@ -576,7 +583,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initPlayer();
         initFragment();
         initBanner();
-        initVp();
         initProtectRecycler();
         initDrawLayout(this);
         initRvRedpack();
@@ -688,35 +694,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mAudienceRecycler.setAdapter(pollAdapter);
     }
 
-
-    /**
-     * 活动viewpager
-     */
-    private void initVp() {
-        mGrandAdaper = new FragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
-        vpActivity.setAdapter(mGrandAdaper);
-        vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (mActivityGrands.size() < 2) {
-                    return;
-                }
-                for (int i = 0; i < mActivityGrands.size(); i++) {
-                    llPagerIndex.getChildAt(i).setSelected(i == position);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
 
     private void initBanner() {
         //设置banner样式
@@ -1417,8 +1394,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 主播心愿 周星 主播任务 活动页面
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
-        mLivePresenter.getAnchorWish(mAnchorId);
-        mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
+        getRightBottomActivity(mProgramId, mAnchorId);
         //头条榜单
         mLivePresenter.getHeadlineRank(mAnchorId, "F");
         mLivePresenter.getBlackRoomTime(mAnchorId);
@@ -1426,8 +1402,136 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mLivePresenter.getHeadlineRank(mAnchorId, "F");
         });
         compositeDisposable.add(headlineDisposable);
+
+    }
+
+    /**
+     * 活动viewpager
+     */
+    private void initVp() {
+        if (mActivityGrands == null || mActivityGrands.isEmpty()) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mActivityGrands.sort(new Comparator<BaseFragment>() {
+                @Override
+                public int compare(BaseFragment o1, BaseFragment o2) {
+                    return o1.getBaseTag() - o2.getBaseTag();
+                }
+            });
+        }
+        mGrandAdaper = new ActivityFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
+        vpActivity.setAdapter(mGrandAdaper);
+        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
+        vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mActivityGrands.size() < 2) {
+                    return;
+                }
+                for (int i = 0; i < mActivityGrands.size(); i++) {
+                    llPagerIndex.getChildAt(i).setSelected(i == position);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        initActivityPoints();
+    }
+
+
+    private void getRightBottomActivity(int mProgramId, int mAnchorId) {
+        mLivePresenter.getAnchorWish(mAnchorId);
+        mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
         //主播任务
         mLivePresenter.getAnchorTask(mAnchorId);
+    }
+
+
+    /**
+     * 主播心愿
+     */
+    @Override
+    public void onAnchorWishSuccess(AnchorWishBean bean) {
+        rightBottomActivityNum += 1;
+        AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean);
+        anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
+        anchorWishFragment.setTag(1);
+        mActivityGrands.add(0, anchorWishFragment);
+        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+            initVp();
+        } else if (rightBottomActivityNum > RIGHT_BOTTOM_ACTIVITY) {
+            mGrandAdaper.notifyDataSetChanged();
+            initActivityPoints();
+            vpActivity.setCurrentItem(0, false);
+        }
+    }
+
+
+    /**
+     * 直播间的活动（常规活动）
+     */
+    @Override
+    public void onActivityGrandSuccess(ActivityGrandBean bean) {
+        rightBottomActivityNum += 1;
+        if (bean.list != null && bean.list.size() != 0) {
+            for (int i = 0; i < bean.list.size(); i++) {
+                ActivityGrandBean.ListBean listBean = bean.list.get(i);
+                LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
+                liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
+                    @Override
+                    public void clickListener() {
+                        if (TextUtils.isEmpty(listBean.jumpUrl)) {
+                            return;
+                        }
+                        startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                                .putExtra("anchorId", mAnchorId + "")
+                                .putExtra("programId", mProgramId + "")
+                                .putExtra("title", listBean.name)
+                                .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
+                    }
+                });
+                liveWebFragment.setTag(2);
+                mActivityGrands.add(liveWebFragment);
+            }
+        }
+        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+            initVp();
+        }
+    }
+
+    /**
+     * 主播任务成功
+     */
+    @Override
+    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
+        rightBottomActivityNum += 1;
+        if (dataBean != null) {
+            AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
+            anchorTaskFragment.setTag(3);
+            mActivityGrands.add(anchorTaskFragment);
+        }
+        //周星榜
+        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        weekRankFragment.setTag(4);
+        mActivityGrands.add(mActivityGrands.size(), weekRankFragment);
+        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+            initVp();
+        }
+    }
+
+
+    @Override
+    public void onRightBottomActivityError() {
+        rightBottomActivityNum += 1;
     }
 
     private void setupPlayerSize(int height, int width) {
@@ -1502,7 +1606,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (!findIndexAnchor(updownAnchors)) {
             updownAnchors.add(0, new UpdownAnchorBean.ListBean(mProgramId, ""));
         }
+        if (null != unclickLinearLayout) {
+            unclickLinearLayout.setCanScroll(true);
+        }
     }
+
 
     private boolean findIndexAnchor(List<UpdownAnchorBean.ListBean> jsonElement) {
         for (int i = 0; i < jsonElement.size(); i++) {
@@ -1609,76 +1717,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         pkControl.initNet(bean);
 
-    }
-
-    /**
-     * 主播心愿
-     */
-    @Override
-    public void onAnchorWishSuccess(AnchorWishBean bean) {
-        LogUtils.e("sssssssssssss   onAnchorWishSuccess");
-        AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean);
-        anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
-        mActivityGrands.add(0, anchorWishFragment);
-        mGrandAdaper.notifyDataSetChanged();
-        initActivityPoints();
-        vpActivity.setCurrentItem(0, false);
-    }
-
-
-    /**
-     * 直播间的活动（常规活动）
-     */
-    @Override
-    public void onActivityGrandSuccess(ActivityGrandBean bean) {
-        LogUtils.e("sssssssssssss   onActivityGrandSuccess");
-        if (bean.list != null && bean.list.size() != 0) {
-            for (int i = 0; i < bean.list.size(); i++) {
-                ActivityGrandBean.ListBean listBean = bean.list.get(i);
-                LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
-                liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
-                    @Override
-                    public void clickListener() {
-                        if (TextUtils.isEmpty(listBean.jumpUrl)) {
-                            return;
-                        }
-                        startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
-                                .putExtra("anchorId", mAnchorId + "")
-                                .putExtra("programId", mProgramId + "")
-                                .putExtra("title", listBean.name)
-                                .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
-                    }
-                });
-                mActivityGrands.add(liveWebFragment);
-            }
-        }
-        mGrandAdaper.notifyDataSetChanged();
-        initActivityPoints();
-        vpActivity.setCurrentItem(0, false);
-    }
-
-    /**
-     * 主播任务成功
-     */
-    @Override
-    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
-        LogUtils.e("sssssssssssss   onGetAnchorTaskSuccess");
-        if (dataBean != null) {
-            AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
-            mActivityGrands.add(anchorTaskFragment);
-//            mGrandAdaper.notifyDataSetChanged();
-//            vpActivity.setOffscreenPageLimit(mActivityGrands.size());
-//            vpActivity.setCurrentItem(0);
-//            initActivityPoints();
-//            vpActivity.setCurrentItem(0);
-        }
-        //周星榜
-        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-        mActivityGrands.add(mActivityGrands.size(), weekRankFragment);
-        mGrandAdaper.notifyDataSetChanged();
-        initActivityPoints();
-        vpActivity.setCurrentItem(0, false);
-        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
     }
 
     @Override
@@ -2191,13 +2229,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (pkControl != null) {
             pkControl.destroy();
         }
-        if (mActivityGrands.size() > 0) {
+
+        rightBottomActivityNum = 0;
+        if (mActivityGrands != null && mActivityGrands.size() > 0) {
             mActivityGrands.clear();
-            mGrandAdaper.notifyDataSetChanged();
+            if (mGrandAdaper != null) {
+                mGrandAdaper.notifyDataSetChanged();
+            }
         }
         if (llPagerIndex.getChildCount() > 0) {
             llPagerIndex.removeAllViews();
         }
+
         if (headLineControl != null) {
             headLineControl.destroy();
         }
@@ -2223,6 +2266,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (llTopDownAnima != null) {
             llTopDownAnima.end();
             llTopDownAnima = null;
+        }
+        if (unclickLinearLayout != null) {
+            unclickLinearLayout.setCanScroll(false);
         }
     }
 
@@ -2554,10 +2600,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void removeAnchorWish() {
-        if (mActivityGrands.get(0) != null && mActivityGrands.get(0) instanceof AnchorWishFragment) {
-            mActivityGrands.remove(0);
+        if (mActivityGrands != null && !mActivityGrands.isEmpty()) {
+            for (int i = 0; i < mActivityGrands.size(); i++) {
+                if (mActivityGrands.get(i) instanceof AnchorWishFragment) {
+                    mActivityGrands.remove(i);
+                }
+            }
             mGrandAdaper.notifyDataSetChanged();
             initActivityPoints();
+            vpActivity.setCurrentItem(0, false);
         }
     }
 

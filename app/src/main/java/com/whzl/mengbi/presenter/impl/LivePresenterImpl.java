@@ -138,6 +138,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
+    public void onRightBottomActivityError() {
+        if (liveView != null) {
+            liveView.onRightBottomActivityError();
+        }
+    }
+
+    @Override
     public void onGetRunWayListSuccess(RunWayListBean runWayListBean) {
         if (liveView != null) {
             liveView.onGetRunWayListSuccess(runWayListBean);

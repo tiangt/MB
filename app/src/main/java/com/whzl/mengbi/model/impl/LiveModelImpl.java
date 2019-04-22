@@ -290,7 +290,7 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(int code) {
-
+                        listener.onRightBottomActivityError();
                     }
                 });
     }
@@ -362,7 +362,7 @@ public class LiveModelImpl implements LiveModel {
     public void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .getAnchorTask(signPramsMap)
-                .delay(200,TimeUnit.MILLISECONDS)
+                .delay(200, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ApiObserver<AnchorTaskBean>() {
@@ -375,6 +375,7 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(ApiResult<AnchorTaskBean> body) {
+                        listener.onRightBottomActivityError();
                     }
                 });
     }
@@ -536,6 +537,7 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(ApiResult<AnchorWishBean> body) {
+                        listener.onRightBottomActivityError();
 
                     }
                 });

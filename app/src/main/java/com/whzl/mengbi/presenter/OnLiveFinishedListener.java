@@ -75,4 +75,6 @@ public interface OnLiveFinishedListener {
     void onSendGiftNoMoney();
 
     void onUpdownAnchors(UpdownAnchorBean jsonElement);
+
+    void onRightBottomActivityError();
 }

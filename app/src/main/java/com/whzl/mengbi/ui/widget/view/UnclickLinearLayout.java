@@ -51,6 +51,12 @@ public class UnclickLinearLayout extends LinearLayout {
 
     private int direction = STATE_ORIGIN;
 
+    public void setCanScroll(boolean canScroll) {
+        this.canScroll = canScroll;
+    }
+
+    private boolean canScroll = false;
+
     private LinearLayout llTopContainer;
 
     public void setOnRefreshListener(OnRefreshingListener listener) {
@@ -87,6 +93,7 @@ public class UnclickLinearLayout extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+
         switch (ev.getAction()) {
             // 手指按下时，判断是否可以下拉或上拉加载
             case MotionEvent.ACTION_DOWN:
@@ -226,6 +233,7 @@ public class UnclickLinearLayout extends LinearLayout {
         if (offsetY > 0) {
             Animation animation = new AlphaAnimation(1, 0);
             animation.setDuration(200);
+            animation.setStartOffset(200);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -247,6 +255,7 @@ public class UnclickLinearLayout extends LinearLayout {
         } else {
             Animation animation = new AlphaAnimation(1, 0);
             animation.setDuration(200);
+            animation.setStartOffset(200);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -281,7 +290,7 @@ public class UnclickLinearLayout extends LinearLayout {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 lp1.bottomMargin = (int) animation.getAnimatedValue();
-                lp1.topMargin=-(int) animation.getAnimatedValue();
+                lp1.topMargin = -(int) animation.getAnimatedValue();
                 mTopLayout.setLayoutParams(lp1);
                 if ((int) animation.getAnimatedValue() == toMarginBottom) {
                     topIsAnim = false;
@@ -303,7 +312,7 @@ public class UnclickLinearLayout extends LinearLayout {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 lp1.topMargin = (int) animation.getAnimatedValue();
-                lp1.bottomMargin=-(int) animation.getAnimatedValue();
+                lp1.bottomMargin = -(int) animation.getAnimatedValue();
                 mFootLayout.setLayoutParams(lp1);
                 if ((int) animation.getAnimatedValue() == toMarginTop) {
                     footIsAnim = false;
