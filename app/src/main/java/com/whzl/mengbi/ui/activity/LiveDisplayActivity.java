@@ -1068,6 +1068,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     /**
+     * 关闭侧滑菜单
+     */
+    public void closeDrawLayoutNoAnimal() {
+        if (drawerLayoutOut.isDrawerOpen(drawLayoutInclude)) {
+            drawerLayoutOut.closeDrawer(drawLayoutInclude, false);
+        }
+    }
+
+    /**
      * 守护列表弹窗
      */
     public void showGuardDialog() {
@@ -1409,6 +1418,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 活动viewpager
      */
     private void initVp() {
+        if (unclickLinearLayout != null) {
+            unclickLinearLayout.setCanScroll(true);
+        }
         if (mActivityGrands == null || mActivityGrands.isEmpty()) {
             return;
         }

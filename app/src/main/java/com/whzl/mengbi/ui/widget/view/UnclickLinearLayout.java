@@ -93,6 +93,9 @@ public class UnclickLinearLayout extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        if (!canScroll) {
+            return false;
+        }
 
         switch (ev.getAction()) {
             // 手指按下时，判断是否可以下拉或上拉加载

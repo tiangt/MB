@@ -159,7 +159,7 @@ public class DrawLayoutControl {
                 return;
             }
             ((LiveDisplayActivity) activity).jumpToLive(recommendAnchorInfoBean.getProgramId());
-            ((LiveDisplayActivity) activity).closeDrawLayout();
+            ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
         }
     }
 
