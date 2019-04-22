@@ -257,6 +257,9 @@ public class LiveWebFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            if (bridgeWebView != null) {
+                bridgeWebView.setVisibility(View.VISIBLE);
+            }
         }
     }
 

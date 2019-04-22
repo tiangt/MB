@@ -362,6 +362,7 @@ public class LiveModelImpl implements LiveModel {
     public void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .getAnchorTask(signPramsMap)
+                .delay(200,TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ApiObserver<AnchorTaskBean>() {

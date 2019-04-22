@@ -5,6 +5,7 @@
     android:orientation="vertical">
 
     <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:visibility="gone"
         android:id="@+id/JsBridgeWebView"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"

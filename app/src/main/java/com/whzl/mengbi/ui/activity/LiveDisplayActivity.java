@@ -1616,7 +1616,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mActivityGrands.add(0, anchorWishFragment);
         mGrandAdaper.notifyDataSetChanged();
         initActivityPoints();
-        vpActivity.setCurrentItem(0,false);
+        vpActivity.setCurrentItem(0, false);
     }
 
 
@@ -1648,7 +1648,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         mGrandAdaper.notifyDataSetChanged();
         initActivityPoints();
-        vpActivity.setCurrentItem(0,false);
+        vpActivity.setCurrentItem(0, false);
     }
 
     /**
@@ -1668,10 +1668,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         //周星榜
         weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-        mActivityGrands.add(mActivityGrands.size()-1,weekRankFragment);
+        mActivityGrands.add(mActivityGrands.size(), weekRankFragment);
         mGrandAdaper.notifyDataSetChanged();
         initActivityPoints();
-        vpActivity.setCurrentItem(0,false);
+        vpActivity.setCurrentItem(0, false);
+        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
     }
 
     @Override
