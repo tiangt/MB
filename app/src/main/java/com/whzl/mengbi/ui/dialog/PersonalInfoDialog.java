@@ -199,11 +199,13 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     dismiss();
                     return;
                 }
-//                EventBus.getDefault().post(new PrivateChatSelectedEvent(mViewedUser));
-                if (listener != null) {
-                    listener.onPrivateChatClick(mViewedUser);
+                if (((LiveDisplayActivity) getActivity()).getCanChatPrivate()) {
+                    if (listener != null) {
+                        listener.onPrivateChatClick(mViewedUser);
+                    }
+                    dismiss();
                 }
-                dismiss();
+
                 break;
             case R.id.rl_more:
                 if (mVisitorId == 0) {

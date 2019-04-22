@@ -247,7 +247,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         }
 
         if (phone.length() == 11) {
-            getVerifyCode(phone);
+//            getVerifyCode(phone);
         }
 
         if (isPhone && !TextUtils.isEmpty(password) && password.length() >= 6) {

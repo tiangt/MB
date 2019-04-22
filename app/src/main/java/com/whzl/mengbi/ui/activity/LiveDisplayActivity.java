@@ -878,15 +878,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     login();
                     return;
                 }
-                if (!UserIdentity.getCanChatPaivate(mRoomUserInfo)) {
-                    showToast(R.string.private_chat_permission_deny);
-                    return;
+                if (getCanChatPrivate()) {
+                    PrivateChatUser user = new PrivateChatUser();
+                    user.setPrivateUserId(Long.valueOf(mAnchor.getId()));
+                    user.setName(mAnchor.getName());
+                    user.setAvatar(mAnchor.getAvatar());
+                    showPrivateChatListDialog(user);
                 }
-                PrivateChatUser user = new PrivateChatUser();
-                user.setPrivateUserId(Long.valueOf(mAnchor.getId()));
-                user.setName(mAnchor.getName());
-                user.setAvatar(mAnchor.getAvatar());
-                showPrivateChatListDialog(user);
                 break;
             case R.id.btn_send_gift:
                 if (mGiftData == null || mGiftData.getData() == null) {
@@ -958,6 +956,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
         }
 
+    }
+
+    public boolean getCanChatPrivate() {
+        if (!UserIdentity.getCanChatPaivate(mRoomUserInfo)) {
+            showToast(R.string.private_chat_permission_deny);
+            return false;
+        }
+        return true;
     }
 
     public void jumpToBlackRoomActivity() {
