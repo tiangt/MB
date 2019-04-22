@@ -57,8 +57,6 @@ public class UnclickLinearLayout extends LinearLayout {
 
     private boolean canScroll = false;
 
-    private LinearLayout llTopContainer;
-
     public void setOnRefreshListener(OnRefreshingListener listener) {
         this.listener = listener;
     }
@@ -68,19 +66,16 @@ public class UnclickLinearLayout extends LinearLayout {
     public UnclickLinearLayout(Context context) {
         super(context);
         this.context = context;
-//        init();
     }
 
     public UnclickLinearLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-//        init();
     }
 
     public UnclickLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-//        init();
     }
 
     public void init() {
@@ -231,8 +226,7 @@ public class UnclickLinearLayout extends LinearLayout {
     }
 
     public void reset() {
-        mTopLayout.clearAnimation();
-        mFootLayout.clearAnimation();
+        destroy();
         if (offsetY > 0) {
             Animation animation = new AlphaAnimation(1, 0);
             animation.setDuration(200);
@@ -375,5 +369,12 @@ public class UnclickLinearLayout extends LinearLayout {
         this.mFootLayout = footView;
     }
 
-
+    public void destroy() {
+        if (mTopLayout != null) {
+            mTopLayout.clearAnimation();
+        }
+        if (mFootLayout != null) {
+            mFootLayout.clearAnimation();
+        }
+    }
 }

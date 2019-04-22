@@ -2200,6 +2200,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             compositeDisposable.clear();
             compositeDisposable = null;
         }
+        if (unclickLinearLayout != null) {
+            unclickLinearLayout.destroy();
+        }
         mLivePresenter.onDestory();
         super.onDestroy();
         unregisterReceiver(mReceiver);
