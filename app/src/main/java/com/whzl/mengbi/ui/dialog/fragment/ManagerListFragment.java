@@ -25,7 +25,6 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
-import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.ResourceMap;
@@ -137,7 +136,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
     class ViewHolder extends BaseViewHolder {
 
         @BindView(R.id.iv_avatar)
-        CircleImageView ivAvatar;
+        ImageView ivAvatar;
         @BindView(R.id.ll_manager_container)
         LinearLayout managerLayout;
         @BindView(R.id.tv_pretty_num)
@@ -164,7 +163,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                 tvPrettyNum.setVisibility(View.GONE);
                 ivCar.setVisibility(View.GONE);
                 tvName.setText(audienceInfoBean.getName());
-                GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
+                GlideImageLoader.getInstace().circleCropImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
                 if (audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
                     ImageView royalImg = new ImageView(getContext());
                     if (BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {

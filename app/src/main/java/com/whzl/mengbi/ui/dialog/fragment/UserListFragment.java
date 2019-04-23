@@ -26,7 +26,6 @@ import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.UserListDialog;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
-import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.ResourceMap;
@@ -121,7 +120,7 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
     class ViewHolder extends BaseViewHolder {
 
         @BindView(R.id.iv_avatar)
-        CircleImageView ivAvatar;
+        ImageView ivAvatar;
         @BindView(R.id.ll_level_container)
         LinearLayout levelLayout;
         @BindView(R.id.tv_pretty_num)
@@ -146,7 +145,7 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
             tvPrettyNum.setVisibility(View.GONE);
             ivCar.setVisibility(View.GONE);
             tvName.setText(audienceInfoBean.getName());
-            GlideImageLoader.getInstace().displayImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
+            GlideImageLoader.getInstace().circleCropImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
             int identity = audienceInfoBean.getIdentity();
             if (audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
                 ImageView royalImg = new ImageView(getContext());
