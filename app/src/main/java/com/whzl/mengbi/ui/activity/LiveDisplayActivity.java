@@ -685,7 +685,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                             showPrivateChatDialog(chatUser);
                         }
                     })
-                    .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+//                    .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                     .setDimAmount(0)
                     .show(getSupportFragmentManager());
 
@@ -820,7 +820,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                 showPrivateChatDialog(chatUser);
                             }
                         })
-                        .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+//                        .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                         .setDimAmount(0)
                         .show(getSupportFragmentManager());
                 //主播信息
@@ -2139,9 +2139,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         showPrivateChatDialog(chatUser);
                     }
                 })
-                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+//                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                 .setDimAmount(0)
-                .setShowBottom(false)
                 .show(getSupportFragmentManager());
     }
 

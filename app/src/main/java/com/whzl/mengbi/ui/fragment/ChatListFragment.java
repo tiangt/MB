@@ -84,7 +84,7 @@ public class ChatListFragment extends BaseFragment {
     public ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     //    private RoyalEnterControl royalEnterControl;
     private int mProgramId;
-    private boolean openAnimal = true;
+    private boolean openAnimal = false;
     private int layerId;
 
 

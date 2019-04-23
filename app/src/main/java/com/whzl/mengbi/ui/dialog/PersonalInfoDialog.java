@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
@@ -546,7 +548,9 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     }
 
     private void setRoyalImg(int bg_civilian) {
-        GlideImageLoader.getInstace().displayImage(getActivity(), bg_civilian, ivBgPersonal);
+        RequestOptions options = new RequestOptions().placeholder(R.drawable.bg_civilian);
+        Glide.with(getActivity()).load(bg_civilian).apply(options).into(ivBgPersonal);
+//        GlideImageLoader.getInstace().displayImage(getActivity(), bg_civilian, ivBgPersonal);
     }
 
 
@@ -580,7 +584,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         super.onStart();
         Window window = getDialog().getWindow();
         WindowManager.LayoutParams windowParams = window.getAttributes();
-        windowParams.dimAmount = 0.5f;
+        windowParams.dimAmount = 0f;
         window.setAttributes(windowParams);
     }
 
