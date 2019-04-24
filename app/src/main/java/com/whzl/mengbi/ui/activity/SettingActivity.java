@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -83,7 +84,7 @@ public class SettingActivity extends BaseActivity {
 
 
     @OnClick({R.id.rl_version_container, R.id.btn_login_out, R.id.tv_feedback,
-            R.id.tv_custom, R.id.about_us, R.id.rl_binding_phone, R.id.tv_push_setting})
+            R.id.tv_custom, R.id.about_us, R.id.rl_binding_phone, R.id.tv_push_setting,R.id.tv_rate_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_version_container:
@@ -127,6 +128,12 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.tv_push_setting:
                 startActivity(new Intent(this, MsgPushActivity.class));
+                break;
+            case R.id.tv_rate_setting:
+                Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 break;
         }
     }
