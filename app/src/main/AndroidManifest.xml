@@ -338,5 +338,6 @@
         <activity android:name=".ui.activity.me.MyGuardActivity" />
         <activity android:name=".ui.activity.FindRankActivity" />
         <activity android:name=".ui.activity.SignActivity" />
+        <activity android:name=".ui.activity.me.MsgPushActivity" />
     </application>
 </manifest>

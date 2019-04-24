@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/white_toolbar" />
+
+    <include layout="@layout/divider_shawdow_white" />
+
+    <TextView
+        android:id="@+id/tv_open_notify"
+        style="@style/setting_option_text_style"
+        android:layout_height="54dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_shawdow_deep"
+        android:text="主播开播提醒" />
+</LinearLayout>

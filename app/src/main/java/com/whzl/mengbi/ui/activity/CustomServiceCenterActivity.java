@@ -28,7 +28,7 @@ public class CustomServiceCenterActivity extends BaseActivity {
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_custom_service_center_layout, R.string.custom, true);
+        setContentView(R.layout.activity_custom_service_center_layout, "联系我们", true);
     }
 
     @Override

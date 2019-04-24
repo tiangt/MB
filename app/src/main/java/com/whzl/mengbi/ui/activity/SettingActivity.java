@@ -24,6 +24,7 @@ import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity;
 import com.whzl.mengbi.ui.activity.me.ChangePhoneActivity;
+import com.whzl.mengbi.ui.activity.me.MsgPushActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
@@ -70,7 +71,7 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void setupView() {
-        tvVersionName.setText("当前版本v" + AppUtils.getVersionName(this));
+        tvVersionName.setText("V " + AppUtils.getVersionName(this));
         String from = getIntent().getStringExtra("from");
         btnLoginOut.setVisibility("live".equals(from) ? View.GONE : View.VISIBLE);
     }
@@ -82,7 +83,7 @@ public class SettingActivity extends BaseActivity {
 
 
     @OnClick({R.id.rl_version_container, R.id.btn_login_out, R.id.tv_feedback,
-            R.id.tv_custom, R.id.about_us, R.id.rl_binding_phone})
+            R.id.tv_custom, R.id.about_us, R.id.rl_binding_phone, R.id.tv_push_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_version_container:
@@ -123,6 +124,9 @@ public class SettingActivity extends BaseActivity {
                 } else {
                     jumpToChangePhoneActivity();
                 }
+                break;
+            case R.id.tv_push_setting:
+                startActivity(new Intent(this, MsgPushActivity.class));
                 break;
         }
     }
