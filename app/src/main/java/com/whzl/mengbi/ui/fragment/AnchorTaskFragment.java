@@ -72,45 +72,45 @@ public class AnchorTaskFragment extends BaseFragment {
                         bean.needCompletion * bean.number + "" : bean.completion * bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion * bean.number + "");
-                if (!TextUtils.isEmpty(bean.unit)) {
-                    tv.append(bean.unit);
-                }
+//                if (!TextUtils.isEmpty(bean.unit)) {
+//                    tv.append(bean.unit);
+//                }
                 break;
             case "DIV":
                 tv.setText(bean.completion / bean.number >= bean.needCompletion / bean.number ?
                         bean.needCompletion / bean.number + "" : bean.completion / bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion / bean.number + "");
-                if (!TextUtils.isEmpty(bean.unit)) {
-                    tv.append(bean.unit);
-                }
+//                if (!TextUtils.isEmpty(bean.unit)) {
+//                    tv.append(bean.unit);
+//                }
                 break;
             case "ADD":
                 tv.setText(bean.completion + bean.number >= bean.needCompletion + bean.number ?
                         bean.needCompletion + bean.number + "" : bean.completion + bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion + bean.number + "");
-                if (!TextUtils.isEmpty(bean.unit)) {
-                    tv.append(bean.unit);
-                }
+//                if (!TextUtils.isEmpty(bean.unit)) {
+//                    tv.append(bean.unit);
+//                }
                 break;
             case "SUB":
                 tv.setText(bean.completion - bean.number >= bean.needCompletion - bean.number ?
                         bean.needCompletion - bean.number + "" : bean.completion - bean.number + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion - bean.number + "");
-                if (!TextUtils.isEmpty(bean.unit)) {
-                    tv.append(bean.unit);
-                }
+//                if (!TextUtils.isEmpty(bean.unit)) {
+//                    tv.append(bean.unit);
+//                }
                 break;
             default:
                 tv.setText(bean.completion >= bean.needCompletion ?
                         bean.needCompletion + "" : bean.completion + "");
                 tv.append(" / ");
                 tv.append(bean.needCompletion + "");
-                if (!TextUtils.isEmpty(bean.unit)) {
-                    tv.append(bean.unit);
-                }
+//                if (!TextUtils.isEmpty(bean.unit)) {
+//                    tv.append(bean.unit);
+//                }
                 break;
         }
 

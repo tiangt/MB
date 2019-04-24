@@ -17,14 +17,15 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/tv_detail"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="3dp"
         android:textColor="#fffeff"
         android:textSize="12sp" />
 
     <TextView
+        android:paddingBottom="2dp"
         android:id="@+id/tv_detail"
         android:layout_width="match_parent"
-        android:layout_height="19dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"

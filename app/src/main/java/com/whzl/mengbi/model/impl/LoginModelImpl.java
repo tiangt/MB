@@ -35,6 +35,8 @@ public class LoginModelImpl implements LoginModel {
                         UserInfo userInfo = GsonUtils.GsonToBean(result.toString(), UserInfo.class);
                         if (userInfo.getCode() == RequestManager.RESPONSE_CODE) {
                             listener.onLoginSuccess(userInfo);
+                        } else if (userInfo.getCode() == -1208) {
+                            listener.onError("系统繁忙");
                         } else {
                             listener.onError(userInfo.getMsg());
                         }

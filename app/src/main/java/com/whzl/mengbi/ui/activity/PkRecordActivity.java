@@ -146,7 +146,7 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
                             @Override
                             protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
                                 if (mDatas.isEmpty()) {
-                                    holder.setText(R.id.tv_card_black_room, "无");
+                                    holder.setText(R.id.tv_card_black_room, "您暂无解救卡");
                                 } else {
                                     holder.setText(R.id.tv_card_black_room, "请选择解救卡");
                                 }
