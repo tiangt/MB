@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.widget.EditText;
 
@@ -28,19 +29,19 @@ import io.reactivex.schedulers.Schedulers;
 public class FeedbackActivity extends BaseActivity {
     @BindView(R.id.et_feedback)
     EditText etFeedback;
-    @BindView(R.id.et_qq)
-    EditText etQq;
+    @BindView(R.id.et_contact)
+    EditText etContact;
     @BindView(R.id.et_email)
     EditText etEmail;
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_feed_back_layout, R.string.feedback, true);
+        setContentView(R.layout.activity_feed_back_layout, "意见反馈", "提交", true);
     }
 
     @Override
     protected void setupView() {
-
+        getTitleRightText().setTextColor(Color.parseColor("#ff2b3f"));
     }
 
     @Override
@@ -52,22 +53,15 @@ public class FeedbackActivity extends BaseActivity {
     public void onClick() {
         KeyBoardUtil.hideInputMethod(this);
         String content = etFeedback.getText().toString().trim();
-        String qq = etQq.getText().toString().trim();
+        String contact = etContact.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         if (TextUtils.isEmpty(content)) {
             showToast("请输入反馈内容");
             return;
         }
-        if (TextUtils.isEmpty(qq)) {
-            showToast("请输入联系qq");
-            return;
-        }
-        if (TextUtils.isEmpty(email)) {
-            showToast("请输入邮箱");
-            return;
-        }
+
         showLoading("请稍后...");
-        feedback(content, qq, email);
+        feedback(content, contact, email);
     }
 
     private void feedback(String content, String qq, String email) {

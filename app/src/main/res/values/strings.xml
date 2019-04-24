@@ -91,7 +91,7 @@
     <string name="user_settings_rate">为我评分</string>
     <!--意见反馈-->
     <string name="user_feed_back_content">想要新功能？使用不方便？这里吐槽吧！</string>
-    <string name="user_feed_back_qq">联系QQ</string>
+    <string name="user_feed_back_qq">请输入联系方式（QQ、邮箱或电话号码，选填）</string>
     <string name="user_feed_back_email">邮箱</string>
     <string name="user_feed_back_submit">提 交</string>
     <!--客服中心-->

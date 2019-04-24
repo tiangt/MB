@@ -56,7 +56,6 @@ public class SettingActivity extends BaseActivity {
     Button btnLoginOut;
     private ProgressDialog progressDialog;
     private AwesomeDialog awesomeDialog;
-    private String mMobile;
 
     @Override
     protected void setupContentView() {

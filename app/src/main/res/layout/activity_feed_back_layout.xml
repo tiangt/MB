@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/font_color_49"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include layout="@layout/white_toolbar" />
@@ -24,17 +24,15 @@
         android:textSize="15sp" />
 
     <EditText
-        android:id="@+id/et_qq"
+        android:id="@+id/et_contact"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/feed_back_edittext"
+        android:layout_height="54dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_shawdow_deep"
         android:hint="@string/user_feed_back_qq"
-        android:paddingLeft="18dp"
+        android:paddingLeft="@dimen/padding_12"
         android:textColor="@color/colorblack"
-        android:textColorHint="#b9b9b9"
+        android:textColorHint="#30000000"
         android:textSize="15sp" />
 
     <EditText
