@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <include layout="@layout/white_toolbar" />
@@ -21,7 +22,7 @@
             android:layout_height="45dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/padding_12"
-            android:text="绑定手机"
+            android:text="账号与安全"
             android:textColor="#70000000"
             android:textSize="13sp" />
 
@@ -34,16 +35,6 @@
             android:layout_marginRight="@dimen/padding_12"
             android:src="@drawable/arrowright" />
 
-        <TextView
-            android:id="@+id/tv_bind_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/iv_arrow"
-            android:gravity="center_vertical"
-            android:text="绑定手机"
-            android:textColor="#000000"
-            android:textSize="13sp" />
     </RelativeLayout>
 
     <TextView
@@ -151,14 +142,13 @@
 
     <Button
         android:id="@+id/btn_login_out"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/shape_upgrade_btn_bg"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="184dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/shape_yellow_btn"
         android:text="@string/login_out"
-        android:textColor="@color/comm_white"
-        android:textSize="18sp" />
+        android:textColor="#010101"
+        android:textSize="13sp" />
 
 </LinearLayout>
