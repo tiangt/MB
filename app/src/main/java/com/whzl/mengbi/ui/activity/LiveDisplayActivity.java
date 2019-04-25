@@ -1601,10 +1601,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onSendGiftNoMoney() {
-//        LiveNoMoneyDialog liveNoMoneyDialog = LiveNoMoneyDialog.Companion.newInstance(coin);
-//        liveNoMoneyDialog.setShowBottom(true)
-//                .setDimAmount(0)
-//                .show(getSupportFragmentManager());
+        LiveNoMoneyDialog liveNoMoneyDialog = LiveNoMoneyDialog.Companion.newInstance(coin);
+        liveNoMoneyDialog.setShowBottom(true)
+                .setDimAmount(0)
+                .show(getSupportFragmentManager());
     }
 
     /**
