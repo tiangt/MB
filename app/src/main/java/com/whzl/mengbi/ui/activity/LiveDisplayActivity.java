@@ -2244,11 +2244,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
 
         rightBottomActivityNum = 0;
-        if (mActivityGrands != null && mActivityGrands.size() > 0) {
+        if (mGrandAdaper != null && mActivityGrands != null && mActivityGrands.size() > 0) {
             mActivityGrands.clear();
-            if (mGrandAdaper != null) {
-                mGrandAdaper.notifyDataSetChanged();
-            }
+            mGrandAdaper.notifyDataSetChanged();
         }
         if (llPagerIndex.getChildCount() > 0) {
             llPagerIndex.removeAllViews();
