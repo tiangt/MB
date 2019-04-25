@@ -107,6 +107,7 @@
     <string name="recharge_we_chat_pay">微信支付</string>
     <string name="recharge_money">充值金额：</string>
     <string name="recharge_hint">充值到账有一定时间延迟，请耐心等待，如长时间未到账，\n请联系客服QQ：800851880</string>
+    <string name="mengbi_unit">萌币</string>
     <!--金山云直播-->
     <string name="text_resolution">请选择合适的分辨率:</string>
     <string name="text_orientation">请选择显示方式:</string>

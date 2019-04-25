@@ -51,6 +51,7 @@ import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.QueryBagByGoodsTypeBean;
 import com.whzl.mengbi.model.entity.QuickChannelBean;
 import com.whzl.mengbi.model.entity.RebateBean;
+import com.whzl.mengbi.model.entity.RechargeOrderBean;
 import com.whzl.mengbi.model.entity.RoomAnnouceBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
@@ -1010,5 +1011,15 @@ public interface Api {
     @POST("v1/recharge/quick-channel")
     @FormUrlEncoded
     Observable<ApiResult<QuickChannelBean>> quickChannel(@FieldMap Map<String, String> params);
+
+    /**
+     * 统一下单接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/recharge/order")
+    @FormUrlEncoded
+    Observable<ApiResult<RechargeOrderBean>> rechargeOrder(@FieldMap Map<String, String> params);
 
 }

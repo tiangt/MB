@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class QuickChannelBean {
 
+
     public List<ChannelListBean> channelList;
     public List<RuleListBean> ruleList;
 
@@ -18,7 +19,7 @@ public class QuickChannelBean {
          * channelFlag : AlipayMobile
          * status : ACTIVE
          * platform : MOBILE
-         * pic : http://localtest-img.mengbitv.com/default/000/08/93/42.jpg
+         * pic : https://test-img.mengbitv.com/default/000/08/93/42.jpg
          * sortValue : 0
          */
 
@@ -34,18 +35,18 @@ public class QuickChannelBean {
     public static class RuleListBean {
         /**
          * chargeCount : 10000
-         * list : [{"ruleId":483,"rechargeCount":10000,"rechargeCountCode":"","chengCount":100000,"type":"ALIPAY_M_RMB","name":"人民币","channelCat":"currency","channelFlag":"AlipayMobile"},{"ruleId":484,"rechargeCount":10000,"rechargeCountCode":"","chengCount":100000,"type":"WEIXIN_APP_RMB","name":"人民币","channelCat":"currency","channelFlag":"WeixinApp"}]
+         * chengCount : 100000
+         * list : [{"ruleId":483,"rechargeCountCode":"","type":"ALIPAY_M_RMB","name":"人民币","channelCat":"currency","channelFlag":"AlipayMobile"},{"ruleId":484,"rechargeCountCode":"","type":"WEIXIN_APP_RMB","name":"人民币","channelCat":"currency","channelFlag":"WeixinApp"}]
          */
 
         public int chargeCount;
+        public int chengCount;
         public List<ListBean> list;
 
         public static class ListBean {
             /**
              * ruleId : 483
-             * rechargeCount : 10000
              * rechargeCountCode :
-             * chengCount : 100000
              * type : ALIPAY_M_RMB
              * name : 人民币
              * channelCat : currency
@@ -53,9 +54,7 @@ public class QuickChannelBean {
              */
 
             public int ruleId;
-            public int rechargeCount;
             public String rechargeCountCode;
-            public int chengCount;
             public String type;
             public String name;
             public String channelCat;

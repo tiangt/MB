@@ -7,7 +7,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/ll_rule_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/selector_pay_rule_bg"
@@ -18,18 +17,12 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <TextView
-            android:id="@+id/tv_desc_no_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ff2b3f"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/tv_cost_no_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
+            android:text="其他金额"
             android:textColor="#70000000"
             android:textSize="11sp" />
+
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
