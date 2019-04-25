@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.model.entity.AnchorInfo
@@ -12,12 +14,14 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.util.DateUtils
+import com.whzl.mengbi.util.UIUtil
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import jp.wasabeef.glide.transformations.CropTransformation
 import kotlinx.android.synthetic.main.dialog_live_stop.*
 import java.util.*
 
@@ -100,7 +104,7 @@ class LiveStopDialog : BaseAwesomeDialog() {
 
     fun getOtherById(programId: Int?, holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
         val paramsMap = mutableMapOf<String, String>()
-        paramsMap.put("programId", programId.toString())
+        paramsMap["programId"] = programId.toString()
         ApiFactory.getInstance().getApi(Api::class.java)
                 .getRoomInfo(ParamsUtils.getSignPramsMap(paramsMap as HashMap<String, String>?))
                 .subscribeOn(Schedulers.io())
@@ -108,7 +112,8 @@ class LiveStopDialog : BaseAwesomeDialog() {
                 .subscribe(object : ApiObserver<AnchorInfo>(this) {
                     override fun onSuccess(t: AnchorInfo?) {
                         mprogramId = programId!!
-                        GlideImageLoader.getInstace().loadRoundImage(activity, t?.cover, holder?.getView(R.id.iv_cover_to), 5)
+//                        GlideImageLoader.getInstace().loadRoundImage(activity, t?.cover, holder?.getView(R.id.iv_cover_to), 5)
+                        Glide.with(context!!).load(t?.cover).apply(RequestOptions.bitmapTransform(CropTransformation(UIUtil.dip2px(activity,290f), UIUtil.dip2px(activity,176f), CropTransformation.CropType.TOP))).into(holder?.getView(R.id.iv_cover_to)!!)
                         holder?.setText(R.id.tv_nick_to, t?.anchor?.name)
                         GlideImageLoader.getInstace().circleCropImage(activity, t?.anchor?.avatar, holder?.getView(R.id.iv_avatar_to))
                     }
