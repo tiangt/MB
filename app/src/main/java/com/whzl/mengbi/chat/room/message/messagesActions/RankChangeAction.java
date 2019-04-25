@@ -26,7 +26,7 @@ public class RankChangeAction implements Actions {
     public void performAction(String msgStr, Context context) {
         LogUtils.e("RankChangeAction   " + msgStr);
         RankChangeJson rankChangeJson = GsonUtils.GsonToBean(msgStr, RankChangeJson.class);
-        if (rankChangeJson != null && rankChangeJson.context != null && !rankChangeJson.context.msgInfoList.isEmpty()) {
+        if (rankChangeJson != null && rankChangeJson.context != null && rankChangeJson.context.msgInfoList != null && !rankChangeJson.context.msgInfoList.isEmpty()) {
             List<String> imageUrlList = new ArrayList<>();
             for (int i = 0; i < rankChangeJson.context.msgInfoList.size(); i++) {
                 RankChangeJson.ContextBean.MsgInfoListBean msgInfoListBean = rankChangeJson.context.msgInfoList.get(i);
@@ -39,7 +39,7 @@ public class RankChangeAction implements Actions {
                 @Override
                 public void finished(List<SpannableString> imageSpanList) {
                     HashMap<String, SpannableString> hashMap = new HashMap<>();
-                    if (imageSpanList!=null&&!imageSpanList.isEmpty()) {
+                    if (imageSpanList != null && !imageSpanList.isEmpty()) {
                         for (int i = 0; i < imageSpanList.size(); i++) {
                             hashMap.put(imageSpanList.get(i).toString(), imageSpanList.get(i));
                         }

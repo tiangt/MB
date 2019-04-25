@@ -15,9 +15,12 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.gen.UserDao;
+import com.whzl.mengbi.greendao.User;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -85,6 +88,7 @@ public class NickNameModifyActivity extends BaseActivity {
                         intent.putExtra("nickname", nickname);
                         setResult(RESULT_OK, intent);
                         finish();
+                        ChangeInDao(nickname);
                     }
 
                     @Override
@@ -103,6 +107,15 @@ public class NickNameModifyActivity extends BaseActivity {
                         }
                     }
                 });
+    }
+
+    private void ChangeInDao(String nickname) {
+        UserDao userDao = BaseApplication.getInstance().getDaoSession().getUserDao();
+        User unique = userDao.queryBuilder().where(UserDao.Properties.UserId.eq(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L))).unique();
+        if (unique != null) {
+            unique.setNickname(nickname);
+            userDao.update(unique);
+        }
     }
 
     @Override
