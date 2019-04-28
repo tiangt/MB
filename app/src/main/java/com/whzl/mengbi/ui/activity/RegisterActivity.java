@@ -198,7 +198,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         boolean isPhone = StringUtils.isPhone(phone);
         String password = etPassword.getText().toString().trim();
         String verifyCode = etVerifyCode.getText().toString().trim();
-        if (!isPhone && !TextUtils.isEmpty(phone) && phone.length() == 11) {
+        if (phone.length() == 11 && !isPhone && !TextUtils.isEmpty(phone)) {
             showToast("请输入正确的手机号");
             return;
         }
@@ -232,7 +232,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         KeyBoardUtil.hideInputMethod(this);
         switch (view.getId()) {
             case R.id.btn_get_verify_code:
-                String phone = etPhone.getText().toString().trim();
+                String phone = etPhone.getText().toString().trim().replaceAll(" ","");
                 if (TextUtils.isEmpty(phone)) {
                     showToast("手机号码不能为空");
                     return;
