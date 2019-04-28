@@ -615,7 +615,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
 
         });
-        unclickLinearLayout.init();
+        unclickLinearLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                unclickLinearLayout.init(unclickLinearLayout.getWidth(),unclickLinearLayout.getHeight());
+            }
+        });
     }
 
     private void initRvRedpack() {
@@ -1420,6 +1425,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (unclickLinearLayout != null) {
             unclickLinearLayout.setCanScroll(true);
         }
+
+        //周星榜
+        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        weekRankFragment.setTag(4);
+        mActivityGrands.add(weekRankFragment);
+
         if (mActivityGrands == null || mActivityGrands.isEmpty()) {
             return;
         }
@@ -1530,10 +1541,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             anchorTaskFragment.setTag(3);
             mActivityGrands.add(anchorTaskFragment);
         }
-        //周星榜
-        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-        weekRankFragment.setTag(4);
-        mActivityGrands.add(weekRankFragment);
         if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
             initVp();
         }
@@ -1543,6 +1550,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onRightBottomActivityError() {
         rightBottomActivityNum += 1;
+        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+            initVp();
+        }
     }
 
     private void setupPlayerSize(int height, int width) {
