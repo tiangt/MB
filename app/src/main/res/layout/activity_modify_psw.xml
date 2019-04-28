@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/white_toolbar" />
+
+    <include layout="@layout/divider_shawdow_white" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_12"
+        android:layout_marginRight="@dimen/padding_12"
+        android:layout_marginTop="48dp">
+
+        <TextView
+            android:id="@+id/tv_old"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minEms="4"
+            android:text="原密码"
+            android:textColor="@color/text_color_70"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/underline_et_selector"
+            android:hint="请输入原密码"
+            android:maxLength="16"
+            android:singleLine="true"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/tv_old"
+            app:layout_constraintRight_toRightOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_12"
+        android:layout_marginRight="@dimen/padding_12"
+        android:layout_marginTop="36dp">
+
+        <TextView
+            android:id="@+id/tv_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minEms="4"
+            android:text="新密码"
+            android:textColor="@color/text_color_70"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/underline_et_selector"
+            android:hint="请输入新密码"
+            android:maxLength="16"
+            android:singleLine="true"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/tv_new"
+            app:layout_constraintRight_toRightOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_12"
+        android:layout_marginRight="@dimen/padding_12"
+        android:layout_marginTop="36dp">
+
+        <TextView
+            android:id="@+id/tv_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minEms="4"
+            android:text="确认密码"
+            android:textColor="@color/text_color_70"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/underline_et_selector"
+            android:hint="请再次输入新密码"
+            android:maxLength="16"
+            android:singleLine="true"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toRightOf="@id/tv_confirm"
+            app:layout_constraintRight_toRightOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_tips_modify_psw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_12"
+        android:layout_marginRight="@dimen/padding_12"
+        android:layout_marginTop="22dp"
+        android:textColor="#50000000"
+        android:textSize="11sp" />
+</LinearLayout>

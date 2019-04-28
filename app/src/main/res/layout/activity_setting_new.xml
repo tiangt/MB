@@ -57,12 +57,8 @@
             style="@style/setting_option_text_style"
             android:text="@string/user_settings_feed_back" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="@dimen/padding_12"
-            android:layout_marginRight="@dimen/padding_12"
-            android:background="#10000000" />
+        <include layout="@layout/divider_setting" />
+
 
         <TextView
             android:id="@+id/tv_custom"
@@ -70,12 +66,7 @@
             android:text="@string/user_settings_custom_service" />
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="@dimen/padding_12"
-            android:layout_marginRight="@dimen/padding_12"
-            android:background="#10000000" />
+        <include layout="@layout/divider_setting" />
 
         <TextView
             android:id="@+id/tv_rate_setting"
@@ -83,12 +74,7 @@
             android:text="@string/user_settings_rate" />
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="@dimen/padding_12"
-            android:layout_marginRight="@dimen/padding_12"
-            android:background="#10000000" />
+        <include layout="@layout/divider_setting" />
 
         <RelativeLayout
             android:id="@+id/rl_version_container"
@@ -126,12 +112,7 @@
 
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:layout_marginLeft="@dimen/padding_12"
-            android:layout_marginRight="@dimen/padding_12"
-            android:background="#10000000" />
+        <include layout="@layout/divider_setting" />
 
         <TextView
             android:id="@+id/about_us"

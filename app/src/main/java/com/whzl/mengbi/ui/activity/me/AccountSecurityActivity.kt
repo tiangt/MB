@@ -38,7 +38,12 @@ class AccountSecurityActivity : BaseActivity<BasePresenter<BaseView>>() {
                 jumpToChangePhoneActivity()
             }
         }
+
+        rl_modify_psw.setOnClickListener {
+            jumpToModifyPsweActivity()
+        }
     }
+
 
     override fun loadData() {
         getUserInfo()
@@ -88,5 +93,9 @@ class AccountSecurityActivity : BaseActivity<BasePresenter<BaseView>>() {
         val intent = Intent(this, ChangePhoneActivity::class.java)
         intent.putExtra("bindMobile", mMobile)
         startActivity(intent)
+    }
+
+    private fun jumpToModifyPsweActivity() {
+        startActivity(Intent(this, ModifyPswActivity::class.java))
     }
 }

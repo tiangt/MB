@@ -11,6 +11,8 @@
 
     <color name="text_view">#323232</color>
     <color name="text_color_chat">#ffffff</color>
+    <color name="text_color_70">#70000000</color>
+    <color name="text_color_30">#30000000</color>
     <color name="text_color_chat_yellow">#FFFFCB00</color>
     <color name="text_color_chat_orange">#ff6e23</color>
     <color name="textcolor_white_toolbar">#70000000</color>

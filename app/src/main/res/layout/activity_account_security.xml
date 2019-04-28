@@ -11,7 +11,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:background="@drawable/bg_shawdow_deep"
         android:orientation="vertical"
@@ -21,7 +21,7 @@
         <RelativeLayout
             android:id="@+id/rl_binding_phone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="54dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,6 +48,29 @@
                 android:gravity="center_vertical"
                 android:textColor="#000000"
                 android:textSize="13sp" />
+        </RelativeLayout>
+
+        <include layout="@layout/divider_setting" />
+
+        <RelativeLayout
+            android:id="@+id/rl_modify_psw"
+            android:layout_width="match_parent"
+            android:layout_height="54dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="修改密码"
+                android:textColor="#70000000"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/arrowright" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

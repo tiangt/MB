@@ -42,7 +42,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="label">
-        <meta-data android:name="android.max_aspect"  android:value="2.1"/>
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
         <!--百度统计-->
         <meta-data
             android:name="BaiduMobAd_STAT_ID"
@@ -341,5 +343,6 @@
         <activity android:name=".ui.activity.SignActivity" />
         <activity android:name=".ui.activity.me.MsgPushActivity" />
         <activity android:name=".ui.activity.me.AccountSecurityActivity" />
+        <activity android:name=".ui.activity.me.ModifyPswActivity" />
     </application>
 </manifest>
