@@ -1443,8 +1443,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             });
         }
         mGrandAdaper = new ActivityFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
-        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
         vpActivity.setAdapter(mGrandAdaper);
+        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
         vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
