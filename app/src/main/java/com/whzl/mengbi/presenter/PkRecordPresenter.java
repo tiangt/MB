@@ -98,6 +98,8 @@ public class PkRecordPresenter extends BasePresenter<PkRecordContract.View> impl
                     public void onError(ApiResult<JsonElement> body) {
                         if (body.code == AppConfig.ANCHOR_NOT_IN_BLACK_ROOM) {
                             ToastUtils.showToast("主播已被解救成功，无需重复解救。");
+                        } else {
+                            ToastUtils.showToast(body.msg);
                         }
                     }
                 });
