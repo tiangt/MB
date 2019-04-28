@@ -1605,6 +1605,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        liveNoMoneyDialog.setShowBottom(true)
 //                .setDimAmount(0)
 //                .show(getSupportFragmentManager());
+        ToastUtils.showToastUnify(this, "余额不足");
     }
 
     /**
