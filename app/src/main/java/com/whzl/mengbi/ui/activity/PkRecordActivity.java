@@ -245,6 +245,7 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
                         tvAll.setSelected(true);
 
                         tvAll.setOnClickListener(v1 -> {
+                            KeyBoardUtil.closeKeybord(etHours, PkRecordActivity.this);
                             tvAll.setSelected(true);
                             llHours.setSelected(false);
 
@@ -253,6 +254,11 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
                             tvAll.setSelected(false);
                             llHours.setSelected(true);
                         });
+                        etHours.setOnClickListener(v13 -> {
+                            tvAll.setSelected(false);
+                            llHours.setSelected(true);
+                        });
+
                         holder.setOnClickListener(R.id.tv_cancel, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -354,7 +360,7 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
         mPresenter.getPkTime(anchorId);
         mPresenter.getPkRecordList(anchorId);
         mPresenter.getRoomTime(anchorId);
-        mPresenter.getCardList(userId,"BLACK_CARD");
+        mPresenter.getCardList(userId, "BLACK_CARD");
     }
 
     @Override
@@ -425,7 +431,7 @@ public class PkRecordActivity extends BaseActivity<PkRecordPresenter> implements
             mPresenter.getRoomTime(anchorId);
         } else {
             ToastUtils.showRedToast(this, "成功解救" + selectCard.effSecond / 3600 + "小时");
-            mPresenter.getCardList(userId,"BLACK_CARD");
+            mPresenter.getCardList(userId, "BLACK_CARD");
             mPresenter.getRoomTime(anchorId);
             selectCard = null;
         }
