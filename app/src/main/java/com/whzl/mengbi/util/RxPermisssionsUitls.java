@@ -77,7 +77,7 @@ public class RxPermisssionsUitls {
      */
     public static void getPicFromCamera(Activity activity, String tempPath) {
         RxPermissions rxPermissions = new RxPermissions(activity);
-        rxPermissions.request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE)
+        rxPermissions.request(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Observer<Boolean>() {
 
                     @Override
@@ -113,7 +113,7 @@ public class RxPermisssionsUitls {
      */
     public static void getPicFromAlbm(Activity activity) {
         RxPermissions rxPermissions = new RxPermissions(activity);
-        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE)
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onSubscribe(Disposable d) {

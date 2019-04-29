@@ -21,7 +21,7 @@
             style="@style/user_info_option_left_text"
             android:text="头像" />
 
-        <com.whzl.mengbi.ui.widget.view.CircleImageView
+        <ImageView
             android:id="@+id/iv_avatar"
             android:layout_width="55dp"
             android:layout_height="55dp"
