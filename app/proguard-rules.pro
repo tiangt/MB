@@ -372,3 +372,7 @@ public static java.lang.String TABLENAME;
     public static void dropTable(org.greenrobot.greendao.database.Database, boolean);
     public static void createTable(org.greenrobot.greendao.database.Database, boolean);
 }
+
+# SVGA
+-keep class com.squareup.wire.** { *; }
+-keep class com.opensource.svgaplayer.proto.** { *; }

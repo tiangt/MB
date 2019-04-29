@@ -187,10 +187,10 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
             public void onClick(View v) {
                 if (etPassword.getInputType() == 128) {//如果现在是显示密码模式
                     etPassword.setInputType(129);//设置为隐藏密码
-                    ibCleanPsw.setSelected(true);
+                    ibCleanPsw.setSelected(false);
                 } else {
                     etPassword.setInputType(128);//设置为显示密码
-                    ibCleanPsw.setSelected(false);
+                    ibCleanPsw.setSelected(true);
                 }
                 etPassword.setSelection(etPassword.getText().length());
             }

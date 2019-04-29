@@ -139,15 +139,17 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/password_hint"
+                android:inputType="textPassword"
                 android:maxLength="16"
                 android:textColorHint="#30000000"
                 android:textSize="15sp" />
 
             <ImageView
                 android:id="@+id/ib_clean_psw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="22dp"
+                android:layout_height="13dp"
                 android:background="@drawable/selector_login_clean_psw"
+                android:scaleType="fitXY"
                 android:visibility="gone" />
         </LinearLayout>
 
