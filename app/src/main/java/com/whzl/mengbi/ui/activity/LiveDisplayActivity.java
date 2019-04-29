@@ -618,7 +618,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         unclickLinearLayout.post(new Runnable() {
             @Override
             public void run() {
-                unclickLinearLayout.init(unclickLinearLayout.getWidth(),unclickLinearLayout.getHeight());
+                unclickLinearLayout.init(unclickLinearLayout.getWidth(), unclickLinearLayout.getHeight());
             }
         });
     }
@@ -1148,11 +1148,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (mSvgaGiftControl == null) {
                 mSvgaGiftControl = new SvgaGiftControl(this, svgaGift);
             }
-            WeakReference<SvgaGiftControl> weakReference = new WeakReference<>(mSvgaGiftControl);
-            if (weakReference.get() != null) {
-                weakReference.get().load(animEvent);
-            }
-//            mSvgaGiftControl.load(animEvent);
+            mSvgaGiftControl.load(animEvent);
+            LogUtils.e("sssssss  mSvgaGiftControl.load(animEvent)");
         }
 
     }

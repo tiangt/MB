@@ -25,7 +25,7 @@ android {
         targetSdkVersion 27
         multiDexEnabled true
         versionCode 19
-        versionName "2.0.1"
+        versionName "2.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // 此处很重要，指定APP只使用 armeabi-v7a和arm64-v8a的库
@@ -183,7 +183,7 @@ dependencies {
     implementation 'com.uber.autodispose:autodispose-android:0.7.0'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.7.0'
     //SVGA动画
-    implementation 'com.github.yyued:SVGAPlayer-Android:2.1.9'
+    implementation 'com.github.yyued:SVGAPlayer-Android:2.4.3'
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.1.0'
 
