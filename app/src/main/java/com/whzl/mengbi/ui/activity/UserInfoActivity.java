@@ -1,11 +1,13 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -18,6 +20,11 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.google.gson.Gson;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
@@ -35,10 +42,7 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.JsonUtils;
-import com.whzl.mengbi.util.PhotoUtil;
-import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.StorageUtil;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -50,11 +54,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -83,8 +90,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     @BindView(R.id.rl_account_container)
     RelativeLayout rlAccount;
     private UserInfoPresenter userInfoPresenter;
-    private String tempCapturePath;
-    private String tempCropPath;
     private UserInfo.DataBean mUserInfo;
     private String mSex;
     private TimePickerView pvTime;
@@ -254,27 +259,140 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
                 .setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+
                         holder.setOnClickListener(R.id.btn_capture, v1 -> {
-                            tempCapturePath = StorageUtil.getTempDir() + File.separator
-                                    + System.currentTimeMillis()
-                                    + "avatar_captured.jpg";
-                            tempCropPath = StorageUtil.getTempDir()
-                                    + File.separator + System.currentTimeMillis()
-                                    + "avatar_crop.jpg";
-                            RxPermisssionsUitls.getPicFromCamera(UserInfoActivity.this, tempCapturePath);
-                            dialog.dismiss();
+                            RxPermissions rxPermissions = new RxPermissions(UserInfoActivity.this);
+                            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    .subscribe(new Observer<Boolean>() {
+
+                                        @Override
+                                        public void onSubscribe(Disposable d) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(Boolean aBoolean) {
+                                            if (aBoolean) {
+                                                takePhoto();
+                                                dialog.dismiss();
+                                            } else {
+                                                ToastUtils.showToast(R.string.permission_denid);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+
+                                        }
+                                    });
+
                         });
                         holder.setOnClickListener(R.id.btn_album, v12 -> {
-                            tempCropPath = StorageUtil.getTempDir() + File.separator
-                                    + System.currentTimeMillis()
-                                    + "avatar_crop.jpg";
-                            RxPermisssionsUitls.getPicFromAlbm(UserInfoActivity.this);
-                            dialog.dismiss();
+                            RxPermissions rxPermissions = new RxPermissions(UserInfoActivity.this);
+                            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                    .subscribe(new Observer<Boolean>() {
+
+                                        @Override
+                                        public void onSubscribe(Disposable d) {
+
+                                        }
+
+                                        @Override
+                                        public void onNext(Boolean aBoolean) {
+                                            if (aBoolean) {
+                                                selectPic();
+                                                dialog.dismiss();
+                                            } else {
+                                                ToastUtils.showToast(R.string.permission_denid);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+
+                                        }
+                                    });
                         });
                     }
                 })
                 .setShowBottom(true)
                 .show(getSupportFragmentManager());
+    }
+
+    private void selectPic() {
+        PictureSelector.create(UserInfoActivity.this)
+                .openGallery(PictureMimeType.ofImage())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .maxSelectNum(1)// 最大图片选择数量 int
+                .minSelectNum(1)// 最小选择数量 int
+                .imageSpanCount(4)// 每行显示个数 int
+                .selectionMode(PictureConfig.SINGLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
+                .previewImage(false)// 是否可预览图片 true or false
+                .isCamera(false)// 是否显示拍照按钮 true or false
+                .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
+                .setOutputCameraPath("/CustomPath")// 自定义拍照保存路径,可不填
+                .enableCrop(true)// 是否裁剪 true or false
+                .compress(true)// 是否压缩 true or false
+                .glideOverride(160, 160)// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                .withAspectRatio(1, 1)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                .hideBottomControls(false)// 是否显示uCrop工具栏，默认不显示 true or false
+                .isGif(false)// 是否显示gif图片 true or false
+                .compressSavePath(getPath())//压缩图片保存地址
+                .freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
+                .circleDimmedLayer(true)// 是否圆形裁剪 true or false
+                .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
+                .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
+                .openClickSound(false)// 是否开启点击声音 true or false
+//                                    .selectionMedia()// 是否传入已选图片 List<LocalMedia> list
+                .previewEggs(false)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
+                .minimumCompressSize(100)// 小于100kb的图片不压缩
+                .synOrAsy(true)//同步true或异步false 压缩 默认同步
+                .rotateEnabled(false) // 裁剪是否可旋转图片 true or false
+                .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
+                .isDragFrame(false)// 是否可拖动裁剪框(固定)
+                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+    }
+
+    private void takePhoto() {
+        PictureSelector.create(UserInfoActivity.this)
+                .openCamera(PictureMimeType.ofImage())// 单独拍照，也可录像或也可音频 看你传入的类型是图片or视频
+                .maxSelectNum(1)// 最大图片选择数量
+                .minSelectNum(1)// 最小选择数量
+                .selectionMode(PictureConfig.SINGLE)// 多选 or 单选
+                .previewImage(false)// 是否可预览图片
+                .isCamera(true)// 是否显示拍照按钮
+                .enableCrop(true)// 是否裁剪
+                .compress(true)// 是否压缩
+                .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                .withAspectRatio(1, 1)// 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                .isGif(false)// 是否显示gif图片
+                .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
+                .circleDimmedLayer(true)// 是否圆形裁剪
+                .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false
+                .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false
+                .openClickSound(true)// 是否开启点击声音
+                .previewEggs(false)//预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中)
+                .minimumCompressSize(100)// 小于100kb的图片不压缩
+                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+    }
+
+    private String getPath() {
+        String path = Environment.getExternalStorageDirectory() + "/Luban/image/";
+        File file = new File(path);
+        if (file.mkdirs()) {
+            return path;
+        }
+        return path;
     }
 
     private void showDatePick() {
@@ -355,7 +473,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     @Override
     public void showPortrait(String filename) {
-        GlideImageLoader.getInstace().displayImageNoCache(this, tempCropPath, ivAvatar);
+        GlideImageLoader.getInstace().displayImageNoCache(this, filename, ivAvatar);
         EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 
@@ -385,11 +503,16 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        PhotoUtil.onActivityResult(this, tempCapturePath, tempCropPath, requestCode, resultCode, data,
-                () -> {
-                    userInfoPresenter.onUpdataPortrait(mUserInfo.getUserId() + "", tempCropPath);
-                });
         switch (requestCode) {
+            case PictureConfig.CHOOSE_REQUEST:
+                if (resultCode == RESULT_OK) {
+                    // 图片、视频、音频选择结果回调
+                    List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                    if (selectList != null && selectList.get(0) != null) {
+                        userInfoPresenter.onUpdataPortrait(mUserInfo.getUserId() + "", selectList.get(0).getCompressPath());
+                    }
+                }
+                break;
             case NICKNAME_CODE:
                 if (resultCode == RESULT_OK) {
                     String nickname = data.getStringExtra("nickname");
