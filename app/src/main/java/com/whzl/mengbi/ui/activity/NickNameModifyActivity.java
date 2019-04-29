@@ -21,6 +21,7 @@ import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -66,47 +67,49 @@ public class NickNameModifyActivity extends BaseActivity {
     @Override
     protected void onToolbarMenuClick() {
         super.onToolbarMenuClick();
-        KeyBoardUtil.closeKeybord(etNickName, this);
+        if (ClickUtil.isFastClick()) {
+            KeyBoardUtil.closeKeybord(etNickName, this);
 
-        String nickname = etNickName.getText().toString().trim();
-        if (TextUtils.isEmpty(nickname)) {
-            showToast("昵称不能为空");
-            return;
-        }
-        HashMap hashMap = new HashMap();
-        hashMap.put("userId", SPUtils.get(this, SpConfig.KEY_USER_ID, 0L));
-        hashMap.put("nickname", nickname);
-        ApiFactory.getInstance().getApi(Api.class)
-                .nickName(ParamsUtils.getSignPramsMap(hashMap))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<JsonElement>(this) {
+            String nickname = etNickName.getText().toString().trim();
+            if (TextUtils.isEmpty(nickname)) {
+                showToast("昵称不能为空");
+                return;
+            }
+            HashMap hashMap = new HashMap();
+            hashMap.put("userId", SPUtils.get(this, SpConfig.KEY_USER_ID, 0L));
+            hashMap.put("nickname", nickname);
+            ApiFactory.getInstance().getApi(Api.class)
+                    .nickName(ParamsUtils.getSignPramsMap(hashMap))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new ApiObserver<JsonElement>(this) {
 
-                    @Override
-                    public void onSuccess(JsonElement bean) {
-                        Intent intent = new Intent();
-                        intent.putExtra("nickname", nickname);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                        ChangeInDao(nickname);
-                    }
-
-                    @Override
-                    public void onError(ApiResult<JsonElement> body) {
-                        if (body.code == -1209) {
-                            ToastUtils.snack(etNickName, "昵称已存在");
-                        } else if (body.code == -1211) {
-                            ToastUtils.snackLong(etNickName, "余额不足", "去充值", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    startActivity(new Intent(NickNameModifyActivity.this, WXPayEntryActivity.class));
-                                }
-                            });
-                        } else {
-                            ToastUtils.snack(etNickName, "保存失败");
+                        @Override
+                        public void onSuccess(JsonElement bean) {
+                            Intent intent = new Intent();
+                            intent.putExtra("nickname", nickname);
+                            setResult(RESULT_OK, intent);
+                            ChangeInDao(nickname);
+                            finish();
                         }
-                    }
-                });
+
+                        @Override
+                        public void onError(ApiResult<JsonElement> body) {
+                            if (body.code == -1209) {
+                                ToastUtils.snack(etNickName, "昵称已存在");
+                            } else if (body.code == -1211) {
+                                ToastUtils.snackLong(etNickName, "余额不足", "去充值", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        startActivity(new Intent(NickNameModifyActivity.this, WXPayEntryActivity.class));
+                                    }
+                                });
+                            } else {
+                                ToastUtils.snack(etNickName, "保存失败");
+                            }
+                        }
+                    });
+        }
     }
 
     private void ChangeInDao(String nickname) {
