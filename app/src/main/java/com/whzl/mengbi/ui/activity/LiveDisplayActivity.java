@@ -214,7 +214,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -615,12 +614,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
 
         });
-        unclickLinearLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                unclickLinearLayout.init(unclickLinearLayout.getWidth(), unclickLinearLayout.getHeight());
-            }
-        });
+        unclickLinearLayout.init();
     }
 
     private void initRvRedpack() {

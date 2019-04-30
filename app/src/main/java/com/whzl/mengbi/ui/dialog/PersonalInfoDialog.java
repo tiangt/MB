@@ -77,8 +77,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     TextView tvFollow;
     @BindView(R.id.tv_ranking)
     TextView tVRank;
-    @BindView(R.id.tv_pretty_num_dialog_personal)
-    PrettyNumText tvPrettyNum;
     @BindView(R.id.tv_private_chat)
     TextView tvPrivateChat;
     @BindView(R.id.rl_more)
@@ -91,6 +89,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     RelativeLayout rlChat;
     @BindView(R.id.tv_at)
     TextView tvAt;
+
+    PrettyNumText tvPrettyNum;
 
     private long mUserId;
     private int mProgramId;
@@ -149,6 +149,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         tvPrettyNum = holder.getView(R.id.tv_pretty_num_dialog_personal);
+
         mUserId = getArguments().getLong("userId");
         mProgramId = getArguments().getInt("programId");
         mIsFollowed = getArguments().getString("isFollowed");
@@ -160,7 +161,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         tvAt.setText("@Ta");
         getUserInfo(mUserId, mProgramId, mVisitorId);
         getHomePageInfo(mUserId, mVisitorId);
-//        isRoyal();
     }
 
     @OnClick({R.id.btn_personal, R.id.btn_buy_royal, R.id.tv_follow, R.id.btn_close,

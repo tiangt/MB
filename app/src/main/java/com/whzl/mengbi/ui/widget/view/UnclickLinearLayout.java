@@ -13,6 +13,8 @@ import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.whzl.mengbi.util.DeviceUtils;
+
 /**
  * @author nobody
  * @date 2019/4/11
@@ -76,19 +78,11 @@ public class UnclickLinearLayout extends LinearLayout {
         this.context = context;
     }
 
-    public void init(int width, int height) {
+    public void init() {
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-//        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-//        if (resourceId > 0) {
-//            int result = context.getResources().getDimensionPixelSize(resourceId);
-//            screenHeight = DeviceUtils.getScreenHeight(context) + result;
-//        } else {
-//            screenHeight = DeviceUtils.getScreenHeight(context);
-//        }
-//        screenWidth = DeviceUtils.getScreenWidth(context);
-//        int[] screenSize = DeviceUtils.getScreenSize(context);
-        screenWidth = width;
-        screenHeight = height;
+        int[] screenSize = DeviceUtils.getScreenSize(context);
+        screenWidth = screenSize[0];
+        screenHeight = screenSize[1] - DeviceUtils.getStatusBarHeight(context);
         moveHeight = screenHeight / 4;
         setCurrentState(STATE_NORMAL);
     }

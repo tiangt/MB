@@ -13,7 +13,6 @@ import android.provider.Settings;
 import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
@@ -380,18 +379,6 @@ public class DeviceUtils {
         }
         ((AudioManager) context.getSystemService(Context.AUDIO_SERVICE)).setStreamVolume(AudioManager.STREAM_RING,
                 ringVloume, AudioManager.FLAG_PLAY_SOUND);
-    }
-
-    public static int getScreenHeight(Context context) {
-        Display display = ((WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        return display.getHeight();
-    }
-
-    public static int getScreenWidth(Context context) {
-        Display display = ((WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-        return display.getWidth();
     }
 
 

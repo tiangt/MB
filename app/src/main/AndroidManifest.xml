@@ -42,7 +42,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="label">
-        <meta-data android:name="android.max_aspect"  android:value="2.1"/>
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
         <!--百度统计-->
         <meta-data
             android:name="BaiduMobAd_STAT_ID"
