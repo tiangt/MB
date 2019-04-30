@@ -54,8 +54,8 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="_Users_tt__gradle_caches_modules_2_files_2_1_org_jetbrains_kotlin_kotlin_stdlib_jre8_1_2_71_ef662c1fea4d5060a45d6beb0f063be7fc14d92_kotlin_stdlib_jre8_1_2_71_jar" level="project" />
-    <orderEntry type="library" exported="" scope="PROVIDED" name="_Users_tt__gradle_caches_modules_2_files_2_1_org_jetbrains_kotlin_kotlin_stdlib_jre7_1_2_71_3dadc3b79b7ef40318e8b41d6ea99bedd95a8b5f_kotlin_stdlib_jre7_1_2_71_jar" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-jre8-1.2.71" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-jre7-1.2.71" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-1.2.71" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="kotlin-stdlib-common-1.2.71" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="annotations-13.0" level="project" />
