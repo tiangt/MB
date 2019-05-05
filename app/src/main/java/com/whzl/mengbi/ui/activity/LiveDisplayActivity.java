@@ -9,9 +9,11 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -38,6 +40,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -229,6 +237,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import pl.droidsonroids.gif.GifImageView;
 
 /**
@@ -464,6 +473,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private int updownIndex;
 
     private int rightBottomActivityNum = 0;
+    private ImageView ivTopUpDown;
+    private ImageView ivFootUpDown;
+
+    private boolean isFirstCome = true;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -500,7 +513,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (!findIndexAnchor(updownAnchors)) {
             updownAnchors.add(0, new UpdownAnchorBean.ListBean(mProgramId, ""));
         }
-
     }
 
     @Override
@@ -598,7 +610,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void initPageTouch() {
-        mLivePresenter.getUpdownAnchor();
+        ivTopUpDown = pageHead.findViewById(R.id.iv_top_up_down);
+        ivFootUpDown = pageFoot.findViewById(R.id.iv_foot_up_down);
         unclickLinearLayout = findViewById(R.id.rootView);
         unclickLinearLayout.setHeadView(pageHead);
         unclickLinearLayout.setFootView(pageFoot);
@@ -618,8 +631,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
                 if (updownAnchors != null && updownAnchors.size() > 0 && updownAnchors.get(updownIndex) != null) {
                     jumpToLive(updownAnchors.get(updownIndex).programId);
-                    unclickLinearLayout.reset();
+                    if (unclickLinearLayout != null) {
+                        unclickLinearLayout.setCanScroll(false);
+                        unclickLinearLayout.reset();
+                    }
                 }
+            }
+
+            @Override
+            public void onRefreshEnd() {
+                setUpDownImg();
             }
 
         });
@@ -1372,6 +1393,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initAboutAnchor(mProgramId, mAnchorId);
         mLivePresenter.getActivityNative(mProgramId, mAnchorId);
         initIgnore(roomInfoBean);
+        if (isFirstCome) {
+            mLivePresenter.getUpdownAnchor();
+            isFirstCome = false;
+        }
     }
 
     /**
@@ -1418,10 +1443,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 活动viewpager
      */
     private void initVp() {
-        if (unclickLinearLayout != null) {
-            unclickLinearLayout.setCanScroll(true);
-        }
-
         //周星榜
         weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
         weekRankFragment.setTag(4);
@@ -1621,11 +1642,46 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         updownAnchors.clear();
         updownAnchors.addAll(jsonElement.list);
         if (!findIndexAnchor(updownAnchors)) {
-            updownAnchors.add(0, new UpdownAnchorBean.ListBean(mProgramId, ""));
+            updownAnchors.add(0, new UpdownAnchorBean.ListBean(mProgramId, mAnchorCover));
         }
-        if (null != unclickLinearLayout) {
-            unclickLinearLayout.setCanScroll(true);
+        setUpDownImg();
+    }
+
+    /**
+     * 上下拉获取主播列表图片
+     */
+    private void setUpDownImg() {
+        if (isFinishing()) {
+            return;
         }
+        if (updownIndex + 1 >= updownAnchors.size()) {
+            glideLoadUpdownImg(updownAnchors.get(0).coverUrl, ivTopUpDown);
+        } else {
+            glideLoadUpdownImg(updownAnchors.get(updownIndex + 1).coverUrl, ivTopUpDown);
+        }
+
+        if (updownIndex - 1 < 0) {
+            glideLoadUpdownImg(updownAnchors.get(updownAnchors.size() - 1).coverUrl, ivFootUpDown);
+        } else {
+            glideLoadUpdownImg(updownAnchors.get(updownIndex - 1).coverUrl, ivFootUpDown);
+        }
+    }
+
+    private void glideLoadUpdownImg(Object object, ImageView iv) {
+        Glide.with(this).load(object).addListener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                if (null != unclickLinearLayout) {
+                    unclickLinearLayout.setCanScroll(true);
+                }
+                return false;
+            }
+        }).apply(RequestOptions.bitmapTransform(new BlurTransformation()).override(200).placeholder(R.drawable.img_switch_live)).into(iv);
     }
 
 
@@ -2281,9 +2337,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (llTopDownAnima != null) {
             llTopDownAnima.end();
             llTopDownAnima = null;
-        }
-        if (unclickLinearLayout != null) {
-            unclickLinearLayout.setCanScroll(false);
         }
     }
 

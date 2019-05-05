@@ -83,7 +83,7 @@ public class UnclickLinearLayout extends LinearLayout {
         int[] screenSize = DeviceUtils.getScreenSize(context);
         screenWidth = screenSize[0];
         screenHeight = screenSize[1] - DeviceUtils.getStatusBarHeight(context);
-        moveHeight = screenHeight / 4;
+        moveHeight = screenHeight / 3;
         setCurrentState(STATE_NORMAL);
     }
 
@@ -231,7 +231,7 @@ public class UnclickLinearLayout extends LinearLayout {
         destroy();
         if (offsetY > 0) {
             Animation animation = new AlphaAnimation(1, 0);
-            animation.setDuration(200);
+            animation.setDuration(600);
             animation.setStartOffset(200);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -243,6 +243,7 @@ public class UnclickLinearLayout extends LinearLayout {
                 public void onAnimationEnd(Animation animation) {
                     topIsAnim = false;
                     setHeadMagin((int) screenHeight);
+                    listener.onRefreshEnd();
                 }
 
                 @Override
@@ -253,7 +254,7 @@ public class UnclickLinearLayout extends LinearLayout {
             mTopLayout.startAnimation(animation);
         } else {
             Animation animation = new AlphaAnimation(1, 0);
-            animation.setDuration(200);
+            animation.setDuration(600);
             animation.setStartOffset(200);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -265,6 +266,7 @@ public class UnclickLinearLayout extends LinearLayout {
                 public void onAnimationEnd(Animation animation) {
                     footIsAnim = false;
                     setFootMargin((int) screenHeight);
+                    listener.onRefreshEnd();
                 }
 
                 @Override
@@ -279,6 +281,8 @@ public class UnclickLinearLayout extends LinearLayout {
 
     public interface OnRefreshingListener {
         void onRefresh(UnclickLinearLayout unclickLinearLayout, boolean isTop);
+
+        void onRefreshEnd();
     }
 
     private void setHeadMaginByScroll(final int toMarginBottom, boolean b) {

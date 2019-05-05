@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/iv_foot_up_down"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top|center_horizontal"
         android:gravity="center"
-        android:scaleType="centerCrop"
-        android:src="@drawable/img_switch_live"
-        android:text="上拉加载下一个房间"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp" />
-</FrameLayout>
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="上拉换个直播间看看~"
+        android:textColor="@color/white"
+        android:textSize="12sp" />
+</RelativeLayout>
