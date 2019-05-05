@@ -158,6 +158,7 @@ import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardianListDialog;
 import com.whzl.mengbi.ui.dialog.HeadlineDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
+import com.whzl.mengbi.ui.dialog.LiveNoMoneyDialog;
 import com.whzl.mengbi.ui.dialog.LiveStopDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
@@ -1602,11 +1603,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onSendGiftNoMoney() {
-//        LiveNoMoneyDialog liveNoMoneyDialog = LiveNoMoneyDialog.Companion.newInstance(coin);
-//        liveNoMoneyDialog.setShowBottom(true)
-//                .setDimAmount(0)
-//                .show(getSupportFragmentManager());
-        ToastUtils.showToastUnify(this, "余额不足");
+        LiveNoMoneyDialog liveNoMoneyDialog = LiveNoMoneyDialog.Companion.newInstance();
+        liveNoMoneyDialog.setShowBottom(true)
+                .setDimAmount(0)
+                .show(getSupportFragmentManager());
     }
 
     /**

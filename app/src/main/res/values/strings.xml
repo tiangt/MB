@@ -84,12 +84,14 @@
     <!--设置-->
     <string name="user_settings_feed_back">意见反馈</string>
     <string name="user_settings_custom_service">官方客服</string>
-    <string name="user_settings_about">关于我们</string>
+    <string name="user_settings_about">关于萌比</string>
     <string name="user_settings_version_update">版本更新</string>
     <string name="user_settings_exit_login">退出登录</string>
+    <string name="user_settings_push">消息推送</string>
+    <string name="user_settings_rate">为我评分</string>
     <!--意见反馈-->
     <string name="user_feed_back_content">想要新功能？使用不方便？这里吐槽吧！</string>
-    <string name="user_feed_back_qq">联系QQ</string>
+    <string name="user_feed_back_qq">请输入联系方式（QQ、邮箱或电话号码，选填）</string>
     <string name="user_feed_back_email">邮箱</string>
     <string name="user_feed_back_submit">提 交</string>
     <!--客服中心-->
@@ -105,6 +107,7 @@
     <string name="recharge_we_chat_pay">微信支付</string>
     <string name="recharge_money">充值金额：</string>
     <string name="recharge_hint">充值到账有一定时间延迟，请耐心等待，如长时间未到账，\n请联系客服QQ：800851880</string>
+    <string name="mengbi_unit">萌币</string>
     <!--金山云直播-->
     <string name="text_resolution">请选择合适的分辨率:</string>
     <string name="text_orientation">请选择显示方式:</string>
@@ -268,7 +271,7 @@
     <string name="register_btn">同意协议并注册</string>
     <string name="verify_code_hint">请输入验证码</string>
     <string name="get_verify_code">获取验证码</string>
-    <string name="upgrade">立即更新</string>
+    <string name="upgrade">软件升级</string>
     <string name="login_out">退出登录</string>
     <string name="about_us">关于萌比</string>
     <string name="custom">官方客服</string>

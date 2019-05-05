@@ -344,5 +344,8 @@
         <activity android:name=".ui.activity.me.MyGuardActivity" />
         <activity android:name=".ui.activity.FindRankActivity" />
         <activity android:name=".ui.activity.SignActivity" />
+        <activity android:name=".ui.activity.me.MsgPushActivity" />
+        <activity android:name=".ui.activity.me.AccountSecurityActivity" />
+        <activity android:name=".ui.activity.me.ModifyPswActivity" />
     </application>
 </manifest>

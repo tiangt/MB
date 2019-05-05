@@ -25,6 +25,7 @@ import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.modelpay.PayReq;
+import com.tencent.mm.opensdk.modelpay.PayResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -34,6 +35,7 @@ import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SDKConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.QuickPayEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.RebateBean;
@@ -556,23 +558,28 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
     @Override
     public void onResp(BaseResp baseResp) {
         if (baseResp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-            switch (baseResp.errCode) {
-                case NetConfig.CODE_WE_CHAT_PAY_SUCCESS:
-                    showToast(R.string.pay_success);
-                    mPresent.getUserInfo(mUserId);
-                    mPresent.getCoupon(mUserId);
-                    EventBus.getDefault().post(new UserInfoUpdateEvent());
-                    SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
-                    break;
-                case NetConfig.CODE_WE_CHAT_PAY_CANCEL:
-                    mPresent.getCoupon(mUserId);
-                    showToast(R.string.user_cancel);
-                    break;
-                case NetConfig.CODE_WE_CHAT_PAY_FAIL:
-                default:
-                    mPresent.getCoupon(mUserId);
-                    showToast(R.string.pay_fail);
-                    break;
+            if (((PayResp) baseResp).extData.equals("quick")) {
+                EventBus.getDefault().post(new QuickPayEvent(baseResp));
+                finish();
+            } else {
+                switch (baseResp.errCode) {
+                    case NetConfig.CODE_WE_CHAT_PAY_SUCCESS:
+                        showToast(R.string.pay_success);
+                        mPresent.getUserInfo(mUserId);
+                        mPresent.getCoupon(mUserId);
+                        EventBus.getDefault().post(new UserInfoUpdateEvent());
+                        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, true);
+                        break;
+                    case NetConfig.CODE_WE_CHAT_PAY_CANCEL:
+                        mPresent.getCoupon(mUserId);
+                        showToast(R.string.user_cancel);
+                        break;
+                    case NetConfig.CODE_WE_CHAT_PAY_FAIL:
+                    default:
+                        mPresent.getCoupon(mUserId);
+                        showToast(R.string.pay_fail);
+                        break;
+                }
             }
         }
     }
