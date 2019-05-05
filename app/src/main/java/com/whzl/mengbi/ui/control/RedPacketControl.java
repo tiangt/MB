@@ -152,7 +152,7 @@ public class RedPacketControl {
     public void openRed(RoomRedpackList.ListBean listBean) {
         HashMap params = new HashMap();
         params.put("packed", listBean.redPacketId);
-        params.put("userId", userId + "");
+        params.put("userId", SPUtils.get(context, SpConfig.KEY_USER_ID, 0L).toString());
         params.put("token", sessionId);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(SPUtils.get(context, SpConfig.REDPACKETURL, "").toString(), RequestManager.TYPE_POST_URL, params,
                 new RequestManager.ReqCallBack<Object>() {
