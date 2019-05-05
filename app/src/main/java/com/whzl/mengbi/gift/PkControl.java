@@ -264,6 +264,9 @@ public class PkControl {
                     }
                 }
                 pkLayout.hidePkWindow();
+
+                expCardDestroy();
+
                 break;
             case "PK_TIE_START"://平局时间开始
                 pkLayout.setVisibility(View.VISIBLE);
@@ -325,6 +328,38 @@ public class PkControl {
                     }
                     needShow = false;
                     pkLayout.setPunishWay(bean.punishWay, mvpWindow);
+                }
+                break;
+
+            case "PK_OPEN_EXP_CARD": //PK经验卡
+                if (bean.openExpCardUserId == mAnchorId) {
+                    tvLeftAddEffect.setText(bean.expCardMultiple / 100f + "");
+                    leftCardDispose = Observable.interval(1, TimeUnit.SECONDS)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(aLong -> {
+                                LogUtils.e("ssssssss  leftSecond" + aLong);
+                                tvLeftSecondEffect.setText(bean.effSecond - aLong + "秒");
+                                if (aLong >= bean.effSecond) {
+                                    LogUtils.e("ssssssss  leftSecond  dispose");
+                                    leftCardDispose.dispose();
+                                    llLeftEffect.setVisibility(View.GONE);
+                                }
+                            });
+                    llLeftEffect.setVisibility(View.VISIBLE);
+                } else {
+                    tvRightAddEffect.setText(bean.expCardMultiple / 100f + "");
+                    rightCardDispose = Observable.interval(1, TimeUnit.SECONDS)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(aLong -> {
+                                LogUtils.e("ssssssss  rightSecond" + aLong);
+                                tvRightSecondEffect.setText(bean.effSecond - aLong + "秒");
+                                if (aLong >= bean.effSecond) {
+                                    LogUtils.e("ssssssss  rightSecond  dispose");
+                                    rightCardDispose.dispose();
+                                    llRightEffect.setVisibility(View.GONE);
+                                }
+                            });
+                    llRightEffect.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -457,13 +492,13 @@ public class PkControl {
             }
         }
 
-        if (bean.lanchPkEffect != null) {
+        if (bean.lanchPkEffect != null && bean.lanchPkEffect.addMultiple != 0) {
             tvLeftAddEffect.setText(bean.lanchPkEffect.addMultiple / 100f + "");
             leftCardDispose = Observable.interval(1, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(aLong -> {
                         LogUtils.e("ssssssss  leftSecond" + aLong);
-                        tvLeftSecondEffect.setText(bean.lanchPkEffect.effSecond - aLong + "");
+                        tvLeftSecondEffect.setText(bean.lanchPkEffect.effSecond - aLong + "秒");
                         if (aLong >= bean.lanchPkEffect.effSecond) {
                             LogUtils.e("ssssssss  leftSecond  dispose");
                             leftCardDispose.dispose();
@@ -473,13 +508,13 @@ public class PkControl {
             llLeftEffect.setVisibility(View.VISIBLE);
         }
 
-        if (bean.pkEffect != null) {
+        if (bean.pkEffect != null && bean.pkEffect.addMultiple != 0) {
             tvRightAddEffect.setText(bean.pkEffect.addMultiple / 100f + "");
             rightCardDispose = Observable.interval(1, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(aLong -> {
                         LogUtils.e("ssssssss  rightSecond" + aLong);
-                        tvRightSecondEffect.setText(bean.lanchPkEffect.effSecond - aLong + "");
+                        tvRightSecondEffect.setText(bean.pkEffect.effSecond - aLong + "秒");
                         if (aLong >= bean.pkEffect.effSecond) {
                             LogUtils.e("ssssssss  rightSecond  dispose");
                             rightCardDispose.dispose();
@@ -547,6 +582,26 @@ public class PkControl {
         if (disposable != null) {
             disposable.dispose();
         }
+        expCardDestroy();
+        if (animatorSetsuofang != null) {
+            tvCountDown.clearAnimation();
+            tvCountDown.setVisibility(View.GONE);
+        }
+        isMvp = false;
+        needShow = false;
+        if (svgaImageView != null) {
+            svgaImageView.stopAnimation();
+        }
+        if (animationDrawable != null) {
+            animationDrawable.stop();
+            ivCountDown.setVisibility(View.GONE);
+        }
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    private void expCardDestroy() {
         if (leftCardDispose != null) {
             leftCardDispose.dispose();
         }
@@ -564,22 +619,6 @@ public class PkControl {
         }
         if (tvRightSecondEffect != null) {
             tvRightSecondEffect.setText("");
-        }
-        if (animatorSetsuofang != null) {
-            tvCountDown.clearAnimation();
-            tvCountDown.setVisibility(View.GONE);
-        }
-        isMvp = false;
-        needShow = false;
-        if (svgaImageView != null) {
-            svgaImageView.stopAnimation();
-        }
-        if (animationDrawable != null) {
-            animationDrawable.stop();
-            ivCountDown.setVisibility(View.GONE);
-        }
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
         }
     }
 

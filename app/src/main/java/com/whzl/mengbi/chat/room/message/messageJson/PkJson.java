@@ -83,6 +83,17 @@ public class PkJson {
         public String nickname;
         public int userId;
         public int blackHouseMinute;
+        /**
+         * userRoomList : [100163,100079]
+         * effSecond : 30
+         * expCardMultiple : 120
+         * openExpCardUserId : 30000139
+         */
+
+        public int effSecond;
+        public int expCardMultiple;
+        public int openExpCardUserId;
+        public List<Integer> userRoomList;
 
 
         public static class LaunchPkUserInfoBean {
@@ -158,5 +169,7 @@ public class PkJson {
         public List<PKFansBean> launchPkUserFans;
         public List<PKFansBean> pkUserFans;
         public List<PKFansBean> userFans;
+
+
     }
 }

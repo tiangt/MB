@@ -299,7 +299,6 @@
                                 android:id="@+id/tv_left_add_effect"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="1.2"
                                 android:textColor="#ffea00"
                                 android:textSize="18sp"
                                 android:textStyle="italic|bold" />
@@ -318,7 +317,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="4dp"
-                                android:text="30秒"
                                 android:textColor="#ffffff"
                                 android:textSize="9sp"
                                 android:textStyle="bold" />
@@ -342,7 +340,6 @@
                                 android:id="@+id/tv_right_add_effect"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="1.5"
                                 android:textColor="#ffea00"
                                 android:textSize="18sp"
                                 android:textStyle="italic|bold" />
@@ -361,7 +358,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="4dp"
-                                android:text="30秒"
                                 android:textColor="#ffffff"
                                 android:textSize="9sp"
                                 android:textStyle="bold" />
