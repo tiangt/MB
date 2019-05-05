@@ -147,7 +147,7 @@
             <ImageView
                 android:id="@+id/ib_clean_psw"
                 android:layout_width="22dp"
-                android:layout_height="13dp"
+                android:layout_height="15dp"
                 android:background="@drawable/selector_login_clean_psw"
                 android:scaleType="fitXY"
                 android:visibility="gone" />

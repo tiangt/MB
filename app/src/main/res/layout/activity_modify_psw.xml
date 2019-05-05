@@ -28,15 +28,25 @@
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <EditText
+            android:id="@+id/et_old_psw_modify_psw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:background="@drawable/underline_et_selector"
             android:hint="请输入原密码"
+            android:inputType="textPassword"
             android:maxLength="16"
             android:singleLine="true"
             android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@id/tv_old"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_old_modify_psw"
+            android:layout_width="22dp"
+            android:layout_height="15dp"
+            android:src="@drawable/selector_login_clean_psw"
+            android:visibility="visible"
             app:layout_constraintRight_toRightOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
@@ -58,15 +68,25 @@
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <EditText
+            android:id="@+id/et_new_psw_modify_psw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:background="@drawable/underline_et_selector"
             android:hint="请输入新密码"
+            android:inputType="textPassword"
             android:maxLength="16"
             android:singleLine="true"
             android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@id/tv_new"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_new_modify_psw"
+            android:layout_width="22dp"
+            android:layout_height="15dp"
+            android:src="@drawable/selector_login_clean_psw"
+            android:visibility="visible"
             app:layout_constraintRight_toRightOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
@@ -88,15 +108,25 @@
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <EditText
+            android:id="@+id/et_confirm_psw_modify_psw"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:background="@drawable/underline_et_selector"
             android:hint="请再次输入新密码"
+            android:inputType="textPassword"
             android:maxLength="16"
             android:singleLine="true"
             android:textSize="12sp"
             app:layout_constraintLeft_toRightOf="@id/tv_confirm"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_confirm_modify_psw"
+            android:layout_width="22dp"
+            android:layout_height="15dp"
+            android:src="@drawable/selector_login_clean_psw"
+            android:visibility="visible"
             app:layout_constraintRight_toRightOf="parent" />
     </android.support.constraint.ConstraintLayout>
 

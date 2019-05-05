@@ -1022,4 +1022,14 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<RechargeOrderBean>> rechargeOrder(@FieldMap Map<String, String> params);
 
+    /**
+     * 根据旧密码修改密码接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/edit-password")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> editPassword(@FieldMap Map<String, String> params);
+
 }
