@@ -374,6 +374,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     View pageHead;
     @BindView(R.id.page_foot_live)
     View pageFoot;
+    @BindView(R.id.ll_left_effect)
+    LinearLayout llLeftEffect;
+    @BindView(R.id.ll_right_effect)
+    LinearLayout llRightEffect;
+    @BindView(R.id.tv_left_add_effect)
+    TextView tvLeftAddEffect;
+    @BindView(R.id.tv_right_add_effect)
+    TextView tvRightAddEffect;
+    @BindView(R.id.tv_left_second_effect)
+    TextView tvLeftSecondEffect;
+    @BindView(R.id.tv_right_second_effect)
+    TextView tvRightSecondEffect;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -394,17 +406,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
     public boolean isGuard;
     private boolean isVip;
-    private int currentSelectedIndex;
     private Fragment[] fragments;
     private ObjectAnimator showGuardAnim;
     private ObjectAnimator hideGuardAnim;
     private RoomUserInfo.DataBean mRoomUserInfo;
     private NetStateChangeReceiver mReceiver;
-    private BaseAwesomeDialog mRankDialog;
     private BaseAwesomeDialog mChatDialog;
-    private BaseAwesomeDialog mGuardListDialog;
     private BaseAwesomeDialog mShareDialog;
-    private long mAudienceCount;
     private RunWayBroadControl mRunWayBroadControl;
     private PkControl pkControl;
     /**
@@ -668,9 +676,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         if (mUserListDialog != null && mUserListDialog.isAdded()) {
                             mUserListDialog.dismiss();
                         }
-                        if (mRankDialog != null && mRankDialog.isAdded()) {
-                            mRankDialog.dismiss();
-                        }
                         if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
                             mGuardianDialog.dismiss();
                         }
@@ -802,9 +807,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .setListener((RoomUserInfo.DataBean mViewedUser) -> {
                             if (mUserListDialog != null && mUserListDialog.isAdded()) {
                                 mUserListDialog.dismiss();
-                            }
-                            if (mRankDialog != null && mRankDialog.isAdded()) {
-                                mRankDialog.dismiss();
                             }
                             if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
                                 mGuardianDialog.dismiss();
@@ -1208,6 +1210,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setTvCountDown(tvCountDown);
         pkControl.setRightInfo(ivOtherSide, tvOtherSide);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
+        pkControl.setLeftExpCard(llLeftEffect, tvLeftAddEffect, tvLeftSecondEffect);
+        pkControl.setRightExpCard(llRightEffect, tvRightAddEffect, tvRightSecondEffect);
         pkControl.setBean(bean);
         pkControl.init();
     }
@@ -1725,6 +1729,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setTvCountDown(tvCountDown);
         pkControl.setRightInfo(ivOtherSide, tvOtherSide);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
+        pkControl.setLeftExpCard(llLeftEffect, tvLeftAddEffect, tvLeftSecondEffect);
+        pkControl.setRightExpCard(llRightEffect, tvRightAddEffect, tvRightSecondEffect);
 
         rlOtherSideInfo.setVisibility(View.VISIBLE);
 
@@ -1734,7 +1740,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onGetAudienceListSuccess(AudienceListBean.DataBean bean) {
-        mAudienceCount = bean.total;
         if (bean.getList() == null && bean.getList().size() == 0) {
             tvPopularity.setText(getString(R.string.audience, 0));
         } else {
@@ -2123,9 +2128,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .setListener((RoomUserInfo.DataBean mViewedUser) -> {
                     if (mUserListDialog != null && mUserListDialog.isAdded()) {
                         mUserListDialog.dismiss();
-                    }
-                    if (mRankDialog != null && mRankDialog.isAdded()) {
-                        mRankDialog.dismiss();
                     }
                     if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
                         mGuardianDialog.dismiss();

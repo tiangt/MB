@@ -46,6 +46,14 @@ public class PKResultBean {
     public OtherStreamBean otherStream;
     public List<PKFansBean> launchPkUserFans;
     public List<PKFansBean> pkUserFans;
+    /**
+     * pkEffect : {"addMultiple":120,"effSecond":248}
+     * lanchPkEffect : {"addMultiple":120,"effSecond":279}
+     */
+
+    public PkEffectBean pkEffect;
+    public PkEffectBean lanchPkEffect;
+
 
     public static class UserInfoBean {
         /**
@@ -102,5 +110,14 @@ public class PKResultBean {
     }
 
 
+    public static class PkEffectBean {
+        /**
+         * addMultiple : 120
+         * effSecond : 248
+         */
+
+        public int addMultiple;
+        public int effSecond;
+    }
 }
 

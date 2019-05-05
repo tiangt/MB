@@ -281,6 +281,92 @@
                                 android:textSize="10sp" />
                         </RelativeLayout>
 
+                        <LinearLayout
+                            android:id="@+id/ll_left_effect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_expcard"
+                            android:gravity="center|bottom"
+                            android:orientation="horizontal"
+                            android:paddingLeft="2.5dp"
+                            android:paddingRight="2.5dp"
+                            android:visibility="gone"
+                            app:layout_constraintHorizontal_bias="0.25"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent">
+
+                            <TextView
+                                android:id="@+id/tv_left_add_effect"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1.2"
+                                android:textColor="#ffea00"
+                                android:textSize="18sp"
+                                android:textStyle="italic|bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="3dp"
+                                android:text="倍经验"
+                                android:textColor="#faf5ff"
+                                android:textSize="7.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_left_second_effect"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:text="30秒"
+                                android:textColor="#ffffff"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_right_effect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_expcard"
+                            android:gravity="center|bottom"
+                            android:orientation="horizontal"
+                            android:paddingLeft="2.5dp"
+                            android:paddingRight="2.5dp"
+                            android:visibility="gone"
+                            app:layout_constraintHorizontal_bias="0.75"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent">
+
+                            <TextView
+                                android:id="@+id/tv_right_add_effect"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1.5"
+                                android:textColor="#ffea00"
+                                android:textSize="18sp"
+                                android:textStyle="italic|bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="3dp"
+                                android:text="倍经验"
+                                android:textColor="#faf5ff"
+                                android:textSize="7.5sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_right_second_effect"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="4dp"
+                                android:text="30秒"
+                                android:textColor="#ffffff"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
                     </android.support.constraint.ConstraintLayout>
 
                     <LinearLayout

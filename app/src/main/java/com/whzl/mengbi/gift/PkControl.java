@@ -122,6 +122,14 @@ public class PkControl {
     private boolean needShow;
     private AnimationDrawable animationDrawable;
     private WeakHandler handler = new WeakHandler();
+    private LinearLayout llLeftEffect;
+    private TextView tvLeftAddEffect;
+    private TextView tvLeftSecondEffect;
+    private LinearLayout llRightEffect;
+    private TextView tvRightAddEffect;
+    private TextView tvRightSecondEffect;
+    private Disposable leftCardDispose;
+    private Disposable rightCardDispose;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -400,9 +408,7 @@ public class PkControl {
             if ("T".equals(bean.pkStatus)) {
                 pkLayout.timer("PK倒计时 ", bean.pkSurPlusSecond);
                 if (pkLayout.getProgressBar().getProgress() > 50) {
-//                    pkLayout.setLeftLead();
                 } else if (pkLayout.getProgressBar().getProgress() < 50) {
-//                    pkLayout.setRightLead();
                 }
             }
             if ("T".equals(bean.punishStatus)) {
@@ -414,7 +420,6 @@ public class PkControl {
                             needShow = true;
                             showPunishment(true);
                             isMvp = true;
-//                                choosePunishWay(true);
                         } else {
                             needShow = false;
                             pkLayout.setPunishWay(bean.punishWay, mvpWindow);
@@ -425,33 +430,9 @@ public class PkControl {
                         } else {
                             needShow = false;
                         }
-//                            showPunishment(false);
                         isMvp = false;
-//                            choosePunishWay(false);
                         pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                     }
-//                if (pkLayout.getProgressBar().getProgress() > 50) {
-//
-//                    }
-//                } else if (pkLayout.getProgressBar().getProgress() < 50) {
-//                    if (bean.mvpUser != null) {
-//                        punishment = bean.punishWay;
-//                        if (bean.mvpUser.userId == mUserId) {
-//                            if (TextUtils.isEmpty(bean.punishWay)) {
-//                                showPunishment(true);
-//                                isMvp = true;
-////                                choosePunishWay(true);
-//                            } else {
-//                                pkLayout.setPunishWay(bean.punishWay, mvpWindow);
-//                            }
-//                        } else {
-//                            needShow = false;
-////                            showPunishment(false);
-//                            isMvp = false;
-////                            choosePunishWay(false);
-//                            pkLayout.setPunishWay(bean.punishWay, mvpWindow);
-//                        }
-//                    }
                 }
             }
             if ("T".equals(bean.tieStatus)) {
@@ -474,7 +455,38 @@ public class PkControl {
             } else {
                 pkLayout.setPkFanRank(bean.pkUserFans, bean.launchPkUserFans);
             }
+        }
 
+        if (bean.lanchPkEffect != null) {
+            tvLeftAddEffect.setText(bean.lanchPkEffect.addMultiple / 100f + "");
+            leftCardDispose = Observable.interval(1, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> {
+                        LogUtils.e("ssssssss  leftSecond" + aLong);
+                        tvLeftSecondEffect.setText(bean.lanchPkEffect.effSecond - aLong + "");
+                        if (aLong >= bean.lanchPkEffect.effSecond) {
+                            LogUtils.e("ssssssss  leftSecond  dispose");
+                            leftCardDispose.dispose();
+                            llLeftEffect.setVisibility(View.GONE);
+                        }
+                    });
+            llLeftEffect.setVisibility(View.VISIBLE);
+        }
+
+        if (bean.pkEffect != null) {
+            tvRightAddEffect.setText(bean.pkEffect.addMultiple / 100f + "");
+            rightCardDispose = Observable.interval(1, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(aLong -> {
+                        LogUtils.e("ssssssss  rightSecond" + aLong);
+                        tvRightSecondEffect.setText(bean.lanchPkEffect.effSecond - aLong + "");
+                        if (aLong >= bean.pkEffect.effSecond) {
+                            LogUtils.e("ssssssss  rightSecond  dispose");
+                            rightCardDispose.dispose();
+                            llRightEffect.setVisibility(View.GONE);
+                        }
+                    });
+            llRightEffect.setVisibility(View.VISIBLE);
         }
     }
 
@@ -534,6 +546,24 @@ public class PkControl {
     public void destroy() {
         if (disposable != null) {
             disposable.dispose();
+        }
+        if (leftCardDispose != null) {
+            leftCardDispose.dispose();
+        }
+        if (rightCardDispose != null) {
+            rightCardDispose.dispose();
+        }
+        if (llLeftEffect != null) {
+            llLeftEffect.setVisibility(View.GONE);
+        }
+        if (llRightEffect != null) {
+            llRightEffect.setVisibility(View.GONE);
+        }
+        if (tvLeftSecondEffect != null) {
+            tvLeftSecondEffect.setText("");
+        }
+        if (tvRightSecondEffect != null) {
+            tvRightSecondEffect.setText("");
         }
         if (animatorSetsuofang != null) {
             tvCountDown.clearAnimation();
@@ -710,6 +740,18 @@ public class PkControl {
             }
         };
         rvPunishment.setAdapter(mvpAdapter);
+    }
+
+    public void setLeftExpCard(LinearLayout llLeftEffect, TextView tvLeftAddEffect, TextView tvLeftSecondEffect) {
+        this.llLeftEffect = llLeftEffect;
+        this.tvLeftAddEffect = tvLeftAddEffect;
+        this.tvLeftSecondEffect = tvLeftSecondEffect;
+    }
+
+    public void setRightExpCard(LinearLayout llRightEffect, TextView tvRightAddEffect, TextView tvRightSecondEffect) {
+        this.llRightEffect = llRightEffect;
+        this.tvRightAddEffect = tvRightAddEffect;
+        this.tvRightSecondEffect = tvRightSecondEffect;
     }
 
 
