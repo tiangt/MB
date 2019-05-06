@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -50,7 +49,6 @@ import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -65,7 +63,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -114,50 +111,6 @@ public class MainActivity extends BaseActivity {
                 MineFragment.newInstance()};
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, fragments[0]).commit();
-//        rgTab.setOnCheckedChangeListener((group, checkedId) -> {
-//            switch (checkedId) {
-//                //直播
-//                case R.id.rb_home:
-//                    setTabChange(0);
-//                    break;
-//
-//                //订阅
-//                case R.id.rb_follow:
-//                    if (checkLogin()) {
-//                        setTabChange(1);
-//                        EventBus.getDefault().post(new FollowRefreshEvent());
-//                        return;
-//                    }
-//                    login();
-//                    break;
-//
-//                case R.id.rb_message:
-//                    if (checkLogin()) {
-//                        setTabChange(2);
-//                        EventBus.getDefault().post(new MainMsgClickEvent());
-//                        return;
-//                    }
-//                    login();
-//                    break;
-//
-//                //榜单
-//                case R.id.rb_rank:
-//                    if (checkLogin()) {
-//                        setTabChange(3);
-//                        return;
-//                    }
-//                    login();
-//                    break;
-//
-//                case R.id.rb_me:
-//                    if (checkLogin()) {
-//                        setTabChange(4);
-//                        return;
-//                    }
-//                    login();
-//                    break;
-//            }
-//        });
     }
 
     @OnClick({R.id.rb_home, R.id.rb_follow, R.id.rb_message, R.id.rb_rank, R.id.rb_me})
@@ -170,45 +123,26 @@ public class MainActivity extends BaseActivity {
                 if (checkLogin()) {
                     setTabChange(1);
                     EventBus.getDefault().post(new FollowRefreshEvent());
-                    return;
                 }
-                login();
                 break;
             case R.id.rb_message:
                 if (checkLogin()) {
                     setTabChange(2);
                     EventBus.getDefault().post(new MainMsgClickEvent());
-                    return;
                 }
-                login();
                 break;
             case R.id.rb_rank:
-                if (checkLogin()) {
-                    setTabChange(3);
-                    return;
-                }
-                login();
+                setTabChange(3);
                 break;
             case R.id.rb_me:
                 if (checkLogin()) {
                     setTabChange(4);
-                    return;
                 }
-                login();
                 break;
         }
     }
 
     public void login() {
-//        currentSelectedIndex = 0;
-//        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//        startActivityForResult(intent, REQUEST_LOGIN);
-//        LoginDialog.newInstance()
-//                .setLoginSuccessListener(() -> getNewUserAward(true))
-//                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
-//                .setDimAmount(0.7f)
-//                .show(getSupportFragmentManager());
-
         LoginDialog.newInstance()
                 .setLoginSuccessListener(new LoginDialog.LoginSuccessListener() {
                     @Override
@@ -223,10 +157,11 @@ public class MainActivity extends BaseActivity {
         rgTab.check(rgTab.getChildAt(currentSelectedIndex).getId());
     }
 
-    private boolean checkLogin() {
+    public boolean checkLogin() {
         String sessionId = (String) SPUtils.get(MainActivity.this, SpConfig.KEY_SESSION_ID, "");
         long userId = Long.parseLong(SPUtils.get(MainActivity.this, "userId", (long) 0).toString());
         if (userId == 0 || TextUtils.isEmpty(sessionId)) {
+            login();
             return false;
         }
         return true;

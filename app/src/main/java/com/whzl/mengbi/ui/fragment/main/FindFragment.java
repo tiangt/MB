@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.activity.FindRankActivity;
+import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.fragment.RankFragment;
@@ -58,16 +59,22 @@ public class FindFragment extends BaseFragment {
                 break;
 
             case R.id.rl_find_task:
-                startActivity(new Intent(getMyActivity(), FrgActivity.class)
-                        .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
+                if (((MainActivity) getActivity()).checkLogin()) {
+                    startActivity(new Intent(getMyActivity(), FrgActivity.class)
+                            .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
+                }
                 break;
 
             case R.id.rl_find_prop:
-                startActivity(new Intent(getMyActivity(), ShopActivity.class));
+                if (((MainActivity) getActivity()).checkLogin()) {
+                    startActivity(new Intent(getMyActivity(), ShopActivity.class));
+                }
                 break;
 
             case R.id.rl_find_recharge:
-                startActivity(new Intent(getMyActivity(), WXPayEntryActivity.class));
+                if (((MainActivity) getActivity()).checkLogin()) {
+                    startActivity(new Intent(getMyActivity(), WXPayEntryActivity.class));
+                }
                 break;
 
             default:
