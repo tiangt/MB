@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.whzl.mengbi.BuildConfig;
-import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.LogUtils;
 
 import java.io.File;

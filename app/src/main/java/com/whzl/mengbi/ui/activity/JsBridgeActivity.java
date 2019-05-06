@@ -36,7 +36,6 @@ import com.whzl.mengbi.model.entity.js.UserInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -397,7 +396,6 @@ public class JsBridgeActivity extends BaseActivity {
                 setResult(RESULT_OK);
                 LoginCallbackBean bean = new LoginCallbackBean(checkLogin());
                 Gson gson = new Gson();
-                LogUtil.e("sssssss    " + gson.toJson(bean));
                 bridgeWebView.callHandler("loginedNotice", gson.toJson(bean), new CallBackFunction() {
                     @Override
                     public void onCallBack(String data) {

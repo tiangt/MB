@@ -36,6 +36,7 @@ import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
+import com.whzl.mengbi.model.entity.ImgUploadBean;
 import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.MyCouponBean;
 import com.whzl.mengbi.model.entity.NewTaskBean;
@@ -156,7 +157,7 @@ public interface Api {
     Observable<ApiResult<JsonElement>> buy(@FieldMap Map<String, String> params);
 
     /**
-     * 观众列表
+     * 意见反馈接口
      *
      * @param params
      * @return
@@ -1031,5 +1032,17 @@ public interface Api {
     @POST("v1/user/edit-password")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> editPassword(@FieldMap Map<String, String> params);
+
+    /**
+     * 上传图片接口
+     *
+     * @param params
+     * @param parts
+     * @return
+     */
+    @Multipart
+    @POST("v1/upload/img-upload")
+    Observable<ApiResult<ImgUploadBean>> imgUpload(@PartMap Map<String, RequestBody> params,
+                                                   @Part MultipartBody.Part parts);
 
 }

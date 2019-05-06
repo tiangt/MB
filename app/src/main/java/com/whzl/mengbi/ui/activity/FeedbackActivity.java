@@ -25,6 +25,8 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.ImgUploadBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -42,9 +44,6 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
 import java.io.File;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -57,10 +56,12 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import top.zibin.luban.CompressionPredicate;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
-import top.zibin.luban.OnRenameListener;
 
 /**
  * @author shaw
@@ -79,15 +80,13 @@ public class FeedbackActivity extends BaseActivity {
     @BindView(R.id.rv_pic_feed_back)
     RecyclerView recyclerView;
 
-    @BindView(R.id.iv1)
-    ImageView iv1;
-    @BindView(R.id.iv2)
-    ImageView iv2;
 
     private TimePickerView pvTime;
     List<String> mSelected = new ArrayList<>();
     List<File> files = new ArrayList<>();
     private BaseListAdapter adapter;
+    private int upImgCount = 0;
+    private StringBuffer pictureIds = new StringBuffer("");
 
     @Override
     protected void setupContentView() {
@@ -119,14 +118,6 @@ public class FeedbackActivity extends BaseActivity {
 
     private void initRV() {
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
-        //            @Override
-//            protected int getDataViewType(int position) {
-//                if (position < mSelected.size()) {
-//                    return 1;
-//                } else {
-//                    return 2;
-//                }
-//            }
         adapter = new BaseListAdapter() {
 
             @Override
@@ -190,21 +181,66 @@ public class FeedbackActivity extends BaseActivity {
         String content = etFeedback.getText().toString().trim();
         String contact = etContact.getText().toString().trim();
         if (TextUtils.isEmpty(content)) {
-            showToast("请输入反馈内容");
+            ToastUtils.showToastUnify(this, "请输入反馈内容");
             return;
         }
 
         showLoading("请稍后...");
-//        feedback(content, contact, email);
+        imgUpoad(files);
     }
 
-    private void feedback(String content, String qq, String email) {
+    private void imgUpoad(List<File> files) {
+        if (files.size() == 0) {
+            feedback("");
+            return;
+        }
+        for (int i = 0; i < files.size(); i++) {
+            upload(files.get(i));
+        }
+    }
+
+    private void upload(File file) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("userId", SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString());
+//        File file = new File(file2.getAbsolutePath()+".jpg");
+        LogUtils.e("ssssssss    " + file.getAbsolutePath());
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/png/jpeg"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("default", file.getName(), requestFile);
+        ApiFactory.getInstance().getApi(Api.class)
+                .imgUpload(ParamsUtils.getMultiParamsMap(paramsMap), part)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<ImgUploadBean>() {
+
+                    @Override
+                    public void onSuccess(ImgUploadBean bean) {
+                        upImgCount += 1;
+                        if (upImgCount == 1) {
+                            pictureIds.append(String.valueOf(bean.filedId));
+                        } else {
+                            pictureIds.append(",").append(String.valueOf(bean.filedId));
+                        }
+
+                        if (upImgCount == files.size()) {
+                            feedback(pictureIds.toString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
+
+    private void feedback(String s) {
         long userId = (long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", userId);
-        paramsMap.put("content", content);
-        paramsMap.put("qq", qq);
-        paramsMap.put("contact", email);
+        paramsMap.put("content", etFeedback.getText().toString().trim());
+        paramsMap.put("contact", etContact.getText().toString().trim());
+        paramsMap.put("happenTime", tvTimeFeedBack.getText().toString().trim());
+        paramsMap.put("pictureIds", s);
         ApiFactory.getInstance().getApi(Api.class)
                 .feedback(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())
@@ -213,13 +249,16 @@ public class FeedbackActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
-                        showToast("反馈成功");
+                        ToastUtils.showToastUnify(FeedbackActivity.this, "提交成功");
                         dismissLoading();
                         finish();
                     }
 
+
                     @Override
-                    public void onError(int code) {
+                    public void onError(ApiResult<JsonElement> body) {
+                        upImgCount = 0;
+                        ToastUtils.showToastUnify(FeedbackActivity.this, body.msg);
                         dismissLoading();
                     }
                 });
@@ -251,7 +290,7 @@ public class FeedbackActivity extends BaseActivity {
                                     .choose(MimeType.ofImage())
                                     .theme(R.style.Matisse_Dracula)
                                     .countable(true)
-                                    .maxSelectable(3)
+                                    .maxSelectable(3 - files.size())
                                     .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                                     .thumbnailScale(0.85f)
                                     .imageEngine(new Glide4Engine())
@@ -321,19 +360,19 @@ public class FeedbackActivity extends BaseActivity {
                         return !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"));
                     }
                 })
-                .setRenameListener(new OnRenameListener() {
-                    @Override
-                    public String rename(String filePath) {
-                        try {
-                            MessageDigest md = MessageDigest.getInstance("MD5");
-                            md.update(filePath.getBytes());
-                            return new BigInteger(1, md.digest()).toString(32);
-                        } catch (NoSuchAlgorithmException e) {
-                            e.printStackTrace();
-                        }
-                        return "";
-                    }
-                })
+//                .setRenameListener(new OnRenameListener() {
+//                    @Override
+//                    public String rename(String filePath) {
+//                        try {
+//                            MessageDigest md = MessageDigest.getInstance("MD5");
+//                            md.update(filePath.getBytes());
+//                            return new BigInteger(1, md.digest()).toString(32);
+//                        } catch (NoSuchAlgorithmException e) {
+//                            e.printStackTrace();
+//                        }
+//                        return "";
+//                    }
+//                })
                 .setCompressListener(new OnCompressListener() {
                     @Override
                     public void onStart() {
@@ -342,6 +381,7 @@ public class FeedbackActivity extends BaseActivity {
                     @Override
                     public void onSuccess(File file) {
                         files.add(file);
+                        LogUtils.e("ssssssss   onSuccess" + file.getAbsolutePath());
                         adapter.notifyDataSetChanged();
                     }
 

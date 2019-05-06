@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 
-import com.whzl.mengbi.util.LogUtil;
 import com.whzl.mengbi.util.zxing.NetUtils;
 
 /**
@@ -21,7 +20,6 @@ public class NetStateChangeReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             NetUtils utils = new NetUtils(context);
             int netWorkState = utils.getNetWorkState();
-            LogUtil.d("shaw", netWorkState + "+++++++++++++++++++++++++==");
             if (evevt != null) {
                 evevt.onNetChange(netWorkState);
             }

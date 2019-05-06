@@ -39,7 +39,8 @@
                 android:id="@+id/rv_pic_feed_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true" />
+                android:layout_alignParentBottom="true"
+                android:overScrollMode="never" />
 
             <TextView
                 android:id="@+id/tv_limit_feed_back"
@@ -103,15 +104,5 @@
             android:textSize="13sp" />
 
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/iv1"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
-
-    <ImageView
-        android:id="@+id/iv2"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
 
 </LinearLayout>
