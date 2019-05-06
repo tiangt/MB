@@ -57,7 +57,7 @@
     <dimen name="popup_gap">8dp</dimen>
 
     <!--展示相册图片大小-->
-    <dimen name="grid_expected_size">120dp</dimen>
+    <dimen name="grid_expected_size">70dp</dimen>
 
     <dimen name="text_chat_size">14sp</dimen>
     <dimen name="margin_right_chat">100dp</dimen>
