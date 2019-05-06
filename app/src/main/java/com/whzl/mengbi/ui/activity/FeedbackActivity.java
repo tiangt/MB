@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
-import com.bumptech.glide.Glide;
 import com.google.gson.JsonElement;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
@@ -24,8 +24,8 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
-import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.Glide4Engine;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -33,6 +33,10 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 
+import java.io.File;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +48,10 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import top.zibin.luban.CompressionPredicate;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
+import top.zibin.luban.OnRenameListener;
 
 /**
  * @author shaw
@@ -153,14 +161,12 @@ public class FeedbackActivity extends BaseActivity {
                                     .theme(R.style.Matisse_Dracula)
                                     .countable(true)
                                     .maxSelectable(3)
-//                .addFilter(new GifSizeFilter( 320, 320, 5 * Filter.K * Filter.K))
-//                                    .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                                     .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                                     .thumbnailScale(0.85f)
                                     .imageEngine(new Glide4Engine())
                                     .forResult(REQUEST_CODE_CHOOSE);
                         } else {
-
+                            ToastUtils.showToast(R.string.permission_storage_denid);
                         }
                     }
 
@@ -182,11 +188,84 @@ public class FeedbackActivity extends BaseActivity {
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
             mSelected = Matisse.obtainResult(data);
             mSelected2 = Matisse.obtainPathResult(data);
-            LogUtils.e("sssssssssssss   " + mSelected);
-            LogUtils.e("sssssssssssss   " + mSelected2);
-            Glide.with(this).load(mSelected.get(0)).into(iv1);
-            Glide.with(this).load(mSelected2.get(0)).into(iv2);
+            LogUtils.e("sssssssss   " + mSelected);
+            RxPermissions rxPermissions = new RxPermissions(FeedbackActivity.this);
+            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .subscribe(new Observer<Boolean>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(Boolean aBoolean) {
+                            if (aBoolean) {
+                                withLs(mSelected2);
+                            } else {
+                                ToastUtils.showToast(R.string.permission_storage_denid);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
         }
+    }
+
+    private <T> void withLs(final List<T> photos) {
+        Luban.with(this)
+                .load(photos)
+                .ignoreBy(100)
+                .setTargetDir(getPath())
+                .setFocusAlpha(false)
+                .filter(new CompressionPredicate() {
+                    @Override
+                    public boolean apply(String path) {
+                        return !(TextUtils.isEmpty(path) || path.toLowerCase().endsWith(".gif"));
+                    }
+                })
+                .setRenameListener(new OnRenameListener() {
+                    @Override
+                    public String rename(String filePath) {
+                        try {
+                            MessageDigest md = MessageDigest.getInstance("MD5");
+                            md.update(filePath.getBytes());
+                            return new BigInteger(1, md.digest()).toString(32);
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+                        return "";
+                    }
+                })
+                .setCompressListener(new OnCompressListener() {
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onSuccess(File file) {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                }).launch();
+    }
+
+    private String getPath() {
+        String path = Environment.getExternalStorageDirectory() + "/Luban/image/";
+        File file = new File(path);
+        if (file.mkdirs()) {
+            return path;
+        }
+        return path;
     }
 
     private void showDatePick() {
