@@ -4,10 +4,15 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Environment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,12 +26,15 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
+import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.Glide4Engine;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -37,6 +45,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -65,6 +74,10 @@ public class FeedbackActivity extends BaseActivity {
     EditText etContact;
     @BindView(R.id.tv_time_feed_back)
     TextView tvTimeFeedBack;
+    @BindView(R.id.tv_limit_feed_back)
+    TextView tvLimit;
+    @BindView(R.id.rv_pic_feed_back)
+    RecyclerView recyclerView;
 
     @BindView(R.id.iv1)
     ImageView iv1;
@@ -72,8 +85,9 @@ public class FeedbackActivity extends BaseActivity {
     ImageView iv2;
 
     private TimePickerView pvTime;
-    List<Uri> mSelected;
-    List<String> mSelected2;
+    List<String> mSelected = new ArrayList<>();
+    List<File> files = new ArrayList<>();
+    private BaseListAdapter adapter;
 
     @Override
     protected void setupContentView() {
@@ -84,6 +98,84 @@ public class FeedbackActivity extends BaseActivity {
     protected void setupView() {
         getTitleRightText().setTextColor(Color.parseColor("#ff2b3f"));
         tvTimeFeedBack.setText(DateUtils.getStringDate());
+        etFeedback.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tvLimit.setText(s.toString().length() + "/100");
+            }
+        });
+        initRV();
+    }
+
+    private void initRV() {
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        //            @Override
+//            protected int getDataViewType(int position) {
+//                if (position < mSelected.size()) {
+//                    return 1;
+//                } else {
+//                    return 2;
+//                }
+//            }
+        adapter = new BaseListAdapter() {
+
+            @Override
+            protected int getDataCount() {
+                return files.size() >= 3 ? 3 : files.size() + 1;
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(FeedbackActivity.this).inflate(R.layout.item_feed_back, parent, false);
+                return new FootViewHolder(view);
+            }
+        };
+        recyclerView.setAdapter(adapter);
+    }
+
+    class FootViewHolder extends BaseViewHolder {
+
+        private final ImageView imageView;
+        private final ImageView delete;
+
+        public FootViewHolder(View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.iv_item_feed_back);
+            delete = itemView.findViewById(R.id.iv_del_item_feed_back);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            if (position == files.size()) {
+                delete.setVisibility(View.GONE);
+                GlideImageLoader.getInstace().displayImage(FeedbackActivity.this, R.drawable.ic_item_feed_back, imageView);
+            } else {
+                delete.setVisibility(View.VISIBLE);
+                GlideImageLoader.getInstace().loadRoundImage(FeedbackActivity.this, files.get(position).getAbsolutePath(), imageView, 2);
+                delete.setOnClickListener(v -> {
+                    files.remove(position);
+                    adapter.notifyDataSetChanged();
+                });
+            }
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            if (position == files.size()) {
+                selectPic();
+            }
+        }
     }
 
     @Override
@@ -138,8 +230,7 @@ public class FeedbackActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_time_feed_back:
-//                showDatePick();
-                selectPic();
+                showDatePick();
                 break;
         }
     }
@@ -186,8 +277,7 @@ public class FeedbackActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            mSelected = Matisse.obtainResult(data);
-            mSelected2 = Matisse.obtainPathResult(data);
+            mSelected = Matisse.obtainPathResult(data);
             LogUtils.e("sssssssss   " + mSelected);
             RxPermissions rxPermissions = new RxPermissions(FeedbackActivity.this);
             rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -200,7 +290,7 @@ public class FeedbackActivity extends BaseActivity {
                         @Override
                         public void onNext(Boolean aBoolean) {
                             if (aBoolean) {
-                                withLs(mSelected2);
+                                withLs(mSelected);
                             } else {
                                 ToastUtils.showToast(R.string.permission_storage_denid);
                             }
@@ -251,6 +341,8 @@ public class FeedbackActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(File file) {
+                        files.add(file);
+                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
