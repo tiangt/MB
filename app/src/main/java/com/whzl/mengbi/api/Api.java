@@ -102,7 +102,7 @@ public interface Api {
      * @param params
      * @return
      */
-    @POST("v1/consume/user-combine-gift")
+    @POST("v1/my/query-bag-by-goods-type")
     @FormUrlEncoded
     Observable<ApiResult<BackpackListBean>> getBackpack(@FieldMap Map<String, String> params);
 
@@ -1044,5 +1044,15 @@ public interface Api {
     @POST("v1/upload/img-upload")
     Observable<ApiResult<ImgUploadBean>> imgUpload(@PartMap Map<String, RequestBody> params,
                                                    @Part MultipartBody.Part parts);
+
+    /**
+     * 开启pk经验卡
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/open-exp-card")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> expOpenCard(@FieldMap Map<String, String> params);
 
 }

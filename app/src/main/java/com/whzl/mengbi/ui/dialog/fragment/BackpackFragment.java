@@ -190,6 +190,7 @@ public class BackpackFragment extends BaseFragment {
             GoodsDetailBean goodsDetailBean = mDatas.get(position);
             GiftInfo.GiftDetailInfoBean giftDetailInfoBean = new GiftInfo.GiftDetailInfoBean();
             giftDetailInfoBean.setGoodsId(goodsDetailBean.goodsId);
+            giftDetailInfoBean.setGoodsTypeName(goodsDetailBean.goodsType);
             selectId = goodsDetailBean.goodsId;
             giftDetailInfoBean.setBackpack(true);
             flagOnMessageEvent = false;
@@ -221,6 +222,7 @@ public class BackpackFragment extends BaseFragment {
         HashMap params = new HashMap();
         Long userId = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
         params.put("userId", userId);
+        params.put("goodsTypes", "PK_CARD,GIFT");
         Map signPramsMap = ParamsUtils.getSignPramsMap(params);
         ApiFactory.getInstance().getApi(Api.class)
                 .getBackpack(signPramsMap)
@@ -245,7 +247,7 @@ public class BackpackFragment extends BaseFragment {
                                 for (int i = 0; i < mDatas.size(); i++) {
                                     if (mDatas.get(i).goodsId == selectId) {
                                         mDatas.get(i).count = check;
-                                        ((TextView)recycler.getChildAt(i).findViewById(R.id.tv_cost)).setText(mDatas.get(i).count+"");
+                                        ((TextView) recycler.getChildAt(i).findViewById(R.id.tv_cost)).setText(mDatas.get(i).count + "");
                                     }
                                 }
 //                                giftAdapter.notifyDataSetChanged();

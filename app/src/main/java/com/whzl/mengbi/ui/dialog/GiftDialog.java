@@ -26,8 +26,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
@@ -39,7 +41,9 @@ import com.whzl.mengbi.model.entity.FreeGiftBean;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
+import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.BackpackMotherFragment;
@@ -337,6 +341,27 @@ public class GiftDialog extends BaseAwesomeDialog {
                 }
                 if (giftCount == 0) {
                     ToastUtils.showToast("礼物数量不能为0");
+                    return;
+                }
+                if (giftDetailInfoBean.getGoodsTypeName().equals("PK_CARD")) {
+                    HashMap map = new HashMap();
+                    map.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L).toString());
+                    map.put("goodsId", giftDetailInfoBean.getGoodsId());
+                    HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+                    ApiFactory.getInstance().getApi(Api.class)
+                            .expOpenCard(signPramsMap)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new ApiObserver<JsonElement>() {
+                                @Override
+                                public void onSuccess(JsonElement jsonElement) {
+                                }
+
+                                @Override
+                                public void onError(ApiResult<JsonElement> body) {
+
+                                }
+                            });
                     return;
                 }
                 superValue = false;

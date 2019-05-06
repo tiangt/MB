@@ -18,6 +18,7 @@ public class GoodsDetailBean implements Parcelable {
     public int goodsId;
     public String goodsName;
     public String goodsPic;
+    public String goodsType;
     public int count;
 
 
@@ -31,6 +32,7 @@ public class GoodsDetailBean implements Parcelable {
         dest.writeInt(this.goodsId);
         dest.writeString(this.goodsName);
         dest.writeString(this.goodsPic);
+        dest.writeString(this.goodsType);
         dest.writeInt(this.count);
     }
 
@@ -41,10 +43,11 @@ public class GoodsDetailBean implements Parcelable {
         this.goodsId = in.readInt();
         this.goodsName = in.readString();
         this.goodsPic = in.readString();
+        this.goodsType = in.readString();
         this.count = in.readInt();
     }
 
-    public static final Parcelable.Creator<GoodsDetailBean> CREATOR = new Parcelable.Creator<GoodsDetailBean>() {
+    public static final Creator<GoodsDetailBean> CREATOR = new Creator<GoodsDetailBean>() {
         @Override
         public GoodsDetailBean createFromParcel(Parcel source) {
             return new GoodsDetailBean(source);
