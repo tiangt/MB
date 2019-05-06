@@ -245,9 +245,10 @@ public class BackpackFragment extends BaseFragment {
                                 for (int i = 0; i < mDatas.size(); i++) {
                                     if (mDatas.get(i).goodsId == selectId) {
                                         mDatas.get(i).count = check;
+                                        ((TextView)recycler.getChildAt(i).findViewById(R.id.tv_cost)).setText(mDatas.get(i).count+"");
                                     }
                                 }
-                                giftAdapter.notifyDataSetChanged();
+//                                giftAdapter.notifyDataSetChanged();
                             } else {
                                 for (int i = 0; i < mDatas.size(); i++) {
                                     if (mDatas.get(i).goodsId == selectId) {
@@ -255,9 +256,10 @@ public class BackpackFragment extends BaseFragment {
                                         selectId = -1;
                                         selectedPosition = -1;
                                         EventBus.getDefault().post(new GiftSelectedEvent(null));
+                                        EventBus.getDefault().post(new ClearAllAnim());
                                     }
                                 }
-                                giftAdapter.notifyDataSetChanged();
+//                                giftAdapter.notifyDataSetChanged();
                             }
 //                            if (mDatas.size() != backpackListBean.list.size()) {
 //                                selectedPosition = -1;
