@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.ui.activity.FindRankActivity;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
@@ -12,6 +13,8 @@ import com.whzl.mengbi.ui.fragment.RankFragment;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.fragment.me.WelfareFragment;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -62,19 +65,25 @@ public class FindFragment extends BaseFragment {
                 if (((MainActivity) getActivity()).checkLogin()) {
                     startActivity(new Intent(getMyActivity(), FrgActivity.class)
                             .putExtra(FrgActivity.FRAGMENT_CLASS, WelfareFragment.class));
+                    return;
                 }
+                ((MainActivity) getActivity()).login();
                 break;
 
             case R.id.rl_find_prop:
                 if (((MainActivity) getActivity()).checkLogin()) {
                     startActivity(new Intent(getMyActivity(), ShopActivity.class));
+                    return;
                 }
+                ((MainActivity) getActivity()).login();
                 break;
 
             case R.id.rl_find_recharge:
                 if (((MainActivity) getActivity()).checkLogin()) {
                     startActivity(new Intent(getMyActivity(), WXPayEntryActivity.class));
+                    return;
                 }
+                ((MainActivity) getActivity()).login();
                 break;
 
             default:

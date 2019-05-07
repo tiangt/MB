@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -49,6 +50,7 @@ import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -63,6 +65,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -123,13 +126,17 @@ public class MainActivity extends BaseActivity {
                 if (checkLogin()) {
                     setTabChange(1);
                     EventBus.getDefault().post(new FollowRefreshEvent());
+                    return;
                 }
+                login();
                 break;
             case R.id.rb_message:
                 if (checkLogin()) {
                     setTabChange(2);
                     EventBus.getDefault().post(new MainMsgClickEvent());
+                    return;
                 }
+                login();
                 break;
             case R.id.rb_rank:
                 setTabChange(3);
@@ -137,7 +144,9 @@ public class MainActivity extends BaseActivity {
             case R.id.rb_me:
                 if (checkLogin()) {
                     setTabChange(4);
+                    return;
                 }
+                login();
                 break;
         }
     }
@@ -161,7 +170,6 @@ public class MainActivity extends BaseActivity {
         String sessionId = (String) SPUtils.get(MainActivity.this, SpConfig.KEY_SESSION_ID, "");
         long userId = Long.parseLong(SPUtils.get(MainActivity.this, "userId", (long) 0).toString());
         if (userId == 0 || TextUtils.isEmpty(sessionId)) {
-            login();
             return false;
         }
         return true;
