@@ -67,8 +67,6 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     RecyclerView rvWeekGift;
     @BindView(R.id.rv_anchor)
     RecyclerView rvAnchor;
-    @BindView(R.id.rv_user)
-    RecyclerView rvUser;
     @BindView(R.id.rl_gift)
     RelativeLayout rlGift;
     @BindView(R.id.tv_own_ranking)
@@ -83,23 +81,17 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     TextView tvClickGift;
     @BindView(R.id.tv_need_value)
     TextView tvNeedValue;
-    @BindView(R.id.rl_empty_anchor)
-    RelativeLayout ivEmptyAnchor;
-    @BindView(R.id.rl_empty_user)
-    RelativeLayout ivEmptyUser;
     @BindView(R.id.refresh_layout)
     SmartRefreshLayout refreshLayout;
 
     private WeekStarPresenterImpl mPresenterImpl;
     private String mType;
     private int mAnchorId;
-    private BaseListAdapter userAdapter;
     private BaseListAdapter anchorAdapter;
     private BaseListAdapter giftAdapter;
     private int[] gifts = {R.drawable.shape_weekstar_1, R.drawable.shape_weekstar_2, R.drawable.shape_weekstar_3, R.drawable.shape_weekstar_4};
     private ArrayList<WeekStarGiftInfo.DataBean.ListBean> mListBean = new ArrayList<>();
     private ArrayList<WeekStarRankListBean.RankListBean> mAnchorList = new ArrayList<>();
-    private ArrayList<WeekStarRankListBean.RankListBean> mUserList = new ArrayList<>();
     private int mAnchorRankId;
     private int mUserRankId;
     private String mNickName;
@@ -110,7 +102,6 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     private int needGifts;
     private int mProgramId;
     private int mGoodsId;
-    //    private ArrayList<Boolean> isCheck = new ArrayList<>();
     private int selfScore;
     private int topScore;
     private int[] rankIcons = new int[]{R.drawable.ic_headline_rank1, R.drawable.ic_headline_rank2, R.drawable.ic_headline_rank3};
@@ -159,7 +150,6 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
 
         initGift();
         initAnchorRecycler();
-        initUserRecycler();
         loadData();
 
         refreshLayout.setOnRefreshListener(this);
@@ -189,6 +179,7 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                 if ("F".equals(mType)) {
                     getBeyondFirst(mAnchorId, mListBean.get(0).goodsId, mListBean.get(0).anchorRankId, mListBean.get(0).goodsName);
                 }
+                currentPosition = 0;
                 giftAdapter.notifyDataSetChanged();
             }
         }
@@ -289,74 +280,12 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         rvAnchor.setAdapter(anchorAdapter);
     }
 
-    private void initUserRecycler() {
-        LinearLayoutManager layoutManage = new LinearLayoutManager(getMyActivity());
-        layoutManage.setOrientation(LinearLayoutManager.VERTICAL);
-        rvUser.setFocusableInTouchMode(false);
-        rvUser.setHasFixedSize(true);
-        rvUser.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-        rvUser.setLayoutManager(layoutManage);
-
-        userAdapter = new BaseListAdapter() {
-            @Override
-            protected int getDataCount() {
-                return mUserList == null ? 0 : mUserList.size();
-            }
-
-            @Override
-            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_week_star, parent, false);
-                return new UserViewHolder(itemView);
-            }
-        };
-        rvUser.setAdapter(userAdapter);
-    }
 
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         loadData();
     }
 
-    class UserViewHolder extends BaseViewHolder {
-        @BindView(R.id.tv_ranking)
-        TextView tvRanking;
-        @BindView(R.id.tv_nick_name)
-        TextView tvNickName;
-        @BindView(R.id.iv_avatar)
-        CircleImageView ivAvatar;
-        @BindView(R.id.iv_level)
-        ImageView ivLevel;
-        @BindView(R.id.tv_value)
-        TextView tvUserValue;
-
-        public UserViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-
-        @Override
-        public void onBindViewHolder(int position) {
-            tvNickName.setText(mUserList.get(position).nickname);
-            if (position < 3) {
-                tvRanking.setBackgroundResource(rankIcons[position]);
-                tvRanking.setText("");
-            } else {
-                tvRanking.setText(String.valueOf(position + 1));
-            }
-            tvUserValue.setText(StringUtils.formatNumber(mUserList.get(position).value) + "个");
-            GlideImageLoader.getInstace().displayImage(getMyActivity(), mUserList.get(position).avatar, ivAvatar);
-            ivLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(mUserList.get(position).getUserLevelMap().USER_LEVEL));
-        }
-
-        @Override
-        public void onItemClick(View view, int position) {
-            if (ClickUtil.isFastClick()) {
-                if (getMyActivity() != null) {
-                    ((LiveDisplayActivity) getActivity()).showAudienceInfoDialog(mUserList.get(position).userId, true);
-                }
-            }
-        }
-    }
 
     class AnchorViewHolder extends BaseViewHolder {
         @BindView(R.id.tv_ranking)
@@ -369,6 +298,8 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         ImageView ivLevel;
         @BindView(R.id.tv_value)
         TextView tvUserValue;
+        @BindView(R.id.iv_top_item_week_star)
+        ImageView ivTop;
 
         public AnchorViewHolder(View itemView) {
             super(itemView);
@@ -377,16 +308,33 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
 
         @Override
         public void onBindViewHolder(int position) {
+            int rank = mAnchorList.get(position).rank;
+            if (rank == 0) {
+                ivTop.setVisibility(View.VISIBLE);
+                if (mAnchorList.get(position).type.equals("anchor")) {
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_week_anchor, ivTop);
+                } else {
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), R.drawable.ic_week_rich, ivTop);
+                }
+            } else {
+                ivTop.setVisibility(View.GONE);
+            }
             tvNickName.setText(mAnchorList.get(position).nickname);
-            if (position < 3) {
-                tvRanking.setBackgroundResource(rankIcons[position]);
+            if (rank < 3) {
+                tvRanking.setBackgroundResource(rankIcons[rank]);
                 tvRanking.setText("");
             } else {
-                tvRanking.setText(String.valueOf(position + 1));
+                tvRanking.setText(String.valueOf(rank + 1));
+                tvRanking.setBackground(null);
             }
             tvUserValue.setText(StringUtils.formatNumber(mAnchorList.get(position).value) + "个");
             GlideImageLoader.getInstace().displayImage(getMyActivity(), mAnchorList.get(position).avatar, ivAvatar);
-            ivLevel.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(mAnchorList.get(position).getUserLevelMap().ANCHOR_LEVEL));
+            if (mAnchorList.get(position).type.equals("anchor")) {
+                ivLevel.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(mAnchorList.get(position).getUserLevelMap().ANCHOR_LEVEL));
+            } else {
+                ivLevel.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(mAnchorList.get(position).getUserLevelMap().USER_LEVEL));
+            }
+
         }
 
         @Override
@@ -470,34 +418,26 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                         if (weekStarRankInfo.getCode() == 200) {
                             if (weekStarRankInfo != null && weekStarRankInfo.getData() != null) {
                                 if (weekStarRankInfo.getData().getList() != null) {
+                                    mAnchorList.clear();
                                     for (int i = 0; i < weekStarRankInfo.getData().getList().size(); i++) {
                                         String rankId = weekStarRankInfo.getData().getList().get(i).rankId;
                                         if (rankId.equals(mAnchorRankId + "")) {
                                             //主播周星榜
-                                            mAnchorList.clear();
-                                            mAnchorList.addAll(weekStarRankInfo.getData().getList().get(i).getRankList());
-                                            anchorAdapter.notifyDataSetChanged();
-                                            if (ivEmptyAnchor != null) {
-                                                if (mAnchorList == null || mAnchorList.size() == 0) {
-                                                    ivEmptyAnchor.setVisibility(View.VISIBLE);
-                                                } else {
-                                                    ivEmptyAnchor.setVisibility(View.GONE);
-                                                }
+                                            for (int j = 0; j < weekStarRankInfo.getData().getList().get(i).getRankList().size(); j++) {
+                                                weekStarRankInfo.getData().getList().get(i).getRankList().get(j).rank = j;
+                                                weekStarRankInfo.getData().getList().get(i).getRankList().get(j).type = "anchor";
                                             }
+                                            mAnchorList.addAll(weekStarRankInfo.getData().getList().get(i).getRankList());
                                         } else if (rankId.equals(mUserRankId + "")) {
                                             //富豪周星榜
-                                            mUserList.clear();
-                                            mUserList.addAll(weekStarRankInfo.getData().getList().get(i).getRankList());
-                                            userAdapter.notifyDataSetChanged();
-                                            if (ivEmptyUser != null) {
-                                                if (mUserList == null || mUserList.size() == 0) {
-                                                    ivEmptyUser.setVisibility(View.VISIBLE);
-                                                } else {
-                                                    ivEmptyUser.setVisibility(View.GONE);
-                                                }
+                                            for (int j = 0; j < weekStarRankInfo.getData().getList().get(i).getRankList().size(); j++) {
+                                                weekStarRankInfo.getData().getList().get(i).getRankList().get(j).rank = j;
+                                                weekStarRankInfo.getData().getList().get(i).getRankList().get(j).type = "rich";
                                             }
+                                            mAnchorList.addAll(weekStarRankInfo.getData().getList().get(i).getRankList());
                                         }
                                     }
+                                    anchorAdapter.notifyDataSetChanged();
                                 }
                             }
                         }

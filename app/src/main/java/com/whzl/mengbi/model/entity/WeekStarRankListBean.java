@@ -57,8 +57,10 @@ public class WeekStarRankListBean {
         public int userId;
         public String nickname;
         public String avatar;
+        public String type;
         private UserLevelMapBean userLevelMap;
         public int value;
+        public int rank;
 
         public UserLevelMapBean getUserLevelMap() {
             return userLevelMap;

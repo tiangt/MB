@@ -70,6 +70,7 @@ public class HeadlineDialog extends BaseAwesomeDialog {
         fragments.add(WeekStarMasterFragment.newInstance(anchorId, nickName, avatar, programId));
         viewPager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         viewPager.setCurrentItem(index);
+        viewPager.setOffscreenPageLimit(3);
 
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
