@@ -21,4 +21,5 @@ public interface SpConfig {
     String WEEKSTARHELPURL = "weekStarHelpUrl";
     String ANCHORAGREEURL = "anchorAgreeUrl";
     String USERAGREEURL = "userAgreeUrl";
+    String VISITOR_WATCH_HISTORY = "visitor_watch_history";
 }

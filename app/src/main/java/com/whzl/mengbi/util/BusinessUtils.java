@@ -1,16 +1,22 @@
 package com.whzl.mengbi.util;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.UserInfo;
+import com.whzl.mengbi.model.entity.VistorWatchBean;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,7 +30,7 @@ public class BusinessUtils {
 
     public static void mallBuy(Activity context, String userId, String goodsId, String priceId,
                                String count, String toUserId, String salerId, MallBuyListener listener) {
-        mallBuyDay(context,userId,goodsId,priceId,count,toUserId,salerId,"",listener);
+        mallBuyDay(context, userId, goodsId, priceId, count, toUserId, salerId, "", listener);
 //        HashMap paramsMap = new HashMap();
 //        paramsMap.put("userId", userId);
 //        paramsMap.put("goodsId", goodsId);
@@ -51,7 +57,7 @@ public class BusinessUtils {
     }
 
     public static void mallBuyDay(Activity context, String userId, String goodsId, String priceId,
-                               String count, String toUserId, String salerId,String days, MallBuyListener listener) {
+                                  String count, String toUserId, String salerId, String days, MallBuyListener listener) {
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", userId);
         paramsMap.put("goodsId", goodsId);
@@ -142,5 +148,23 @@ public class BusinessUtils {
         void onSuccess(ProgramInfoByAnchorBean bean);
 
         void onError(int code);
+    }
+
+    public static void saveVistorHistory(int programId) {
+        String s = SPUtils.get(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, "").toString();
+        Gson gson = new Gson();
+        VistorWatchBean vistorWatchBean = gson.fromJson(s, VistorWatchBean.class);
+        if (vistorWatchBean == null) {
+            vistorWatchBean = new VistorWatchBean();
+            vistorWatchBean.list = new ArrayList<>();
+        }
+
+        VistorWatchBean.VistorWatchDetailBean vistorWatchDetailBean = new VistorWatchBean.VistorWatchDetailBean();
+        vistorWatchDetailBean.programId = programId;
+
+        vistorWatchBean.list.add(vistorWatchDetailBean);
+
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, gson.toJson(vistorWatchBean));
+        LogUtils.e("ssssssssssss  " + SPUtils.get(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, ""));
     }
 }
