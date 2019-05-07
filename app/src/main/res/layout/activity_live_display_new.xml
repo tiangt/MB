@@ -100,6 +100,30 @@
 
                         </RelativeLayout>
 
+                        <RelativeLayout
+                            android:id="@+id/rl_guard_number"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_toRightOf="@id/rl_anchor_info">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/live_display_guard_num" />
+
+                            <TextView
+                                android:paddingBottom="4.5dp"
+                                android:id="@+id/tv_guard_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_centerHorizontal="true"
+                                android:textColor="#ff188e"
+                                android:textStyle="bold"
+                                android:textSize="8sp" />
+                        </RelativeLayout>
+
                         <TextView
                             android:id="@+id/tv_popularity"
                             android:layout_width="31dp"
@@ -118,7 +142,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="11dp"
                             android:layout_toLeftOf="@id/tv_popularity"
-                            android:layout_toRightOf="@id/rl_anchor_info">
+                            android:layout_toRightOf="@id/rl_guard_number">
 
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/audience_recycler"
@@ -165,36 +189,13 @@
                         </RelativeLayout>
 
 
-                        <RelativeLayout
-                            android:id="@+id/rl_guard_number"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="6dp"
-                            android:layout_toRightOf="@id/rl_head">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/live_display_guard_num" />
-
-                            <TextView
-                                android:id="@+id/tv_guard_count"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentBottom="true"
-                                android:layout_centerHorizontal="true"
-                                android:paddingBottom="4dp"
-                                android:textColor="@color/white"
-                                android:textSize="6sp" />
-                        </RelativeLayout>
-
                         <FrameLayout
                             android:id="@+id/frame_supercar_track"
                             android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/rl_guard_number"
+                            android:layout_toRightOf="@id/rl_head"
                             android:visibility="gone" />
 
                         <android.support.constraint.ConstraintLayout
@@ -203,7 +204,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="5dp"
-                            android:layout_toRightOf="@id/rl_guard_number">
+                            android:layout_toRightOf="@id/rl_head">
 
                             <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
                                 android:id="@+id/tv_run_way_gift"
