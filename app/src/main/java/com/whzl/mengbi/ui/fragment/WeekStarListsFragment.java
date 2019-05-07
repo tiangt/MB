@@ -1,14 +1,19 @@
 package com.whzl.mengbi.ui.fragment;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,6 +43,7 @@ import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -90,7 +96,7 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     private BaseListAdapter userAdapter;
     private BaseListAdapter anchorAdapter;
     private BaseListAdapter giftAdapter;
-    private int[] gifts = {R.drawable.shape_gradient_magenta, R.drawable.shape_gradient_red, R.drawable.shape_gradient_yellow};
+    private int[] gifts = {R.drawable.shape_weekstar_1, R.drawable.shape_weekstar_2, R.drawable.shape_weekstar_3, R.drawable.shape_weekstar_4};
     private ArrayList<WeekStarGiftInfo.DataBean.ListBean> mListBean = new ArrayList<>();
     private ArrayList<WeekStarRankListBean.RankListBean> mAnchorList = new ArrayList<>();
     private ArrayList<WeekStarRankListBean.RankListBean> mUserList = new ArrayList<>();
@@ -104,12 +110,15 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     private int needGifts;
     private int mProgramId;
     private int mGoodsId;
-    private ArrayList<Boolean> isCheck = new ArrayList<>();
+    //    private ArrayList<Boolean> isCheck = new ArrayList<>();
     private int selfScore;
     private int topScore;
     private int[] rankIcons = new int[]{R.drawable.ic_headline_rank1, R.drawable.ic_headline_rank2, R.drawable.ic_headline_rank3};
     private BaseAwesomeDialog show;
     private boolean canShow;
+
+    private int currentPosition;
+    private RotateAnimation animation;
 
 
     public static WeekStarListsFragment newInstance(String type, int anchorId, String nickName, String avatar, int programId) {
@@ -141,8 +150,17 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         } else {
             rlGift.setVisibility(View.GONE);
         }
-        loadData();
+
+        animation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(3000);
+        animation.setRepeatCount(-1);
+        animation.setInterpolator(new LinearInterpolator());
+
         initGift();
+        initAnchorRecycler();
+        initUserRecycler();
+        loadData();
 
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setEnableLoadMore(false);
@@ -163,26 +181,13 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         if (weekStarGiftInfo != null && weekStarGiftInfo.getData() != null && weekStarGiftInfo.getData().getList() != null) {
             if (weekStarGiftInfo.getData().getList() != null) {
                 mListBean.clear();
-                for (int j = 0; j < weekStarGiftInfo.getData().getList().size(); j++) {
-                    mListBean.add(weekStarGiftInfo.getData().getList().get(j));
-                    if (j == 0) {
-                        isCheck.add(true);
-                    } else {
-                        isCheck.add(false);
-                    }
-
-                }
-                for (int i = 0; i < mListBean.size(); i++) {
-                    if (i == 0) {
-                        mAnchorRankId = mListBean.get(i).anchorRankId;
-                        mUserRankId = mListBean.get(i).userRankId;
-                        loadRankList(mAnchorRankId, mUserRankId, mType);
-                        mGoodsId = mListBean.get(i).goodsId;
-                        if ("F".equals(mType)) {
-                            getBeyondFirst(mAnchorId, mListBean.get(i).goodsId, mListBean.get(i).anchorRankId, mListBean.get(i).goodsName);
-                        }
-                        break;
-                    }
+                mListBean.addAll(weekStarGiftInfo.getData().getList());
+                mAnchorRankId = mListBean.get(0).anchorRankId;
+                mUserRankId = mListBean.get(0).userRankId;
+                loadRankList(mAnchorRankId, mUserRankId, mType);
+                mGoodsId = mListBean.get(0).goodsId;
+                if ("F".equals(mType)) {
+                    getBeyondFirst(mAnchorId, mListBean.get(0).goodsId, mListBean.get(0).anchorRankId, mListBean.get(0).goodsName);
                 }
                 giftAdapter.notifyDataSetChanged();
             }
@@ -237,11 +242,14 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     }
 
     private void initGift() {
-        LinearLayoutManager layoutManage = new LinearLayoutManager(getMyActivity());
-        layoutManage.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvWeekGift.setFocusableInTouchMode(false);
-        rvWeekGift.setHasFixedSize(true);
-        rvWeekGift.setLayoutManager(layoutManage);
+        rvWeekGift.setLayoutManager(new GridLayoutManager(getMyActivity(), 4));
+        rvWeekGift.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.left = UIUtil.dip2px(getContext(), 1);
+                outRect.right = UIUtil.dip2px(getContext(), 1);
+            }
+        });
         giftAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
@@ -251,17 +259,12 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_week_gift, parent, false);
-                int parentWidth = parent.getWidth();
                 GiftViewHolder viewHolder = new GiftViewHolder(itemView);
-                ViewGroup.LayoutParams layoutParams = viewHolder.itemView.getLayoutParams();
-                layoutParams.width = parentWidth / 3;
                 return viewHolder;
             }
 
         };
         rvWeekGift.setAdapter(giftAdapter);
-        initUserRecycler();
-        initAnchorRecycler();
     }
 
     private void initAnchorRecycler() {
@@ -403,6 +406,8 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         RelativeLayout rlWeekGift;
         @BindView(R.id.iv_week_gift)
         ImageView ivGift;
+        @BindView(R.id.iv_select)
+        ImageView ivAnimation;
 
         public GiftViewHolder(View itemView) {
             super(itemView);
@@ -411,22 +416,14 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
 
         @Override
         public void onBindViewHolder(int position) {
-            int remainder = 0;
-            if (position < 3) {
-                remainder = position;
+            int i = position % gifts.length;
+            rlWeekGift.setBackgroundResource(gifts[i]);
+            if (position == currentPosition) {
+                ivAnimation.setVisibility(View.VISIBLE);
+                ivAnimation.startAnimation(animation);
             } else {
-                remainder = position % 3;
-            }
-            if (isCheck.get(position)) {
-                if (0 == remainder) {
-                    rlWeekGift.setBackgroundResource(gifts[0]);
-                } else if (1 == remainder) {
-                    rlWeekGift.setBackgroundResource(gifts[1]);
-                } else {
-                    rlWeekGift.setBackgroundResource(gifts[2]);
-                }
-            } else {
-                rlWeekGift.setBackgroundColor(Color.WHITE);
+                ivAnimation.setVisibility(View.GONE);
+                ivAnimation.clearAnimation();
             }
             GlideImageLoader.getInstace().displayImage(getMyActivity(), mListBean.get(position).goodsPic, ivGift);
         }
@@ -434,10 +431,10 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            for (int i = 0; i < isCheck.size(); i++) {
-                isCheck.set(i, false);
+            if (currentPosition == position) {
+                return;
             }
-            isCheck.set(position, true);
+            currentPosition = position;
             mAnchorRankId = mListBean.get(position).anchorRankId;
             mUserRankId = mListBean.get(position).userRankId;
             //点击更换RankList
@@ -447,19 +444,9 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
                 getBeyondFirst(mAnchorId, mListBean.get(position).goodsId, mListBean.get(position).anchorRankId, mListBean.get(position).goodsName);
             }
             giftAdapter.notifyDataSetChanged();
-            smoothToPosition(itemView);
         }
     }
 
-    private void smoothToPosition(View itemView) {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) rvWeekGift.getLayoutManager();
-        int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
-        if (lastVisibleItemPosition == mListBean.size() - 1) {
-            return;
-        }
-        int left = itemView.getLeft();
-        rvWeekGift.smoothScrollBy(left, 0);
-    }
 
     /**
      * 根据RankId取主播及富豪RankList
@@ -614,5 +601,14 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
             public void onReqFailed(String errorMsg) {
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (animation != null) {
+            animation.cancel();
+            animation = null;
+        }
     }
 }
