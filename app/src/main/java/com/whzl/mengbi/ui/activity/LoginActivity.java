@@ -32,6 +32,7 @@ import com.whzl.mengbi.presenter.impl.LoginPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.view.LoginView;
+import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
@@ -322,6 +323,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         dismissLoading();
         showToast(R.string.login_success);
         saveGreenDao(userInfo);
+        BusinessUtils.clearVistorHistory();
         LogUtils.e("sssssssssssss    " + userInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());

@@ -167,4 +167,9 @@ public class BusinessUtils {
         SPUtils.put(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, gson.toJson(vistorWatchBean));
         LogUtils.e("ssssssssssss  " + SPUtils.get(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, ""));
     }
+
+    public static void clearVistorHistory() {
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, "");
+        LogUtils.e("ssssssssssss  " + SPUtils.get(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, ""));
+    }
 }

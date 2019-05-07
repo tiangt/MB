@@ -504,6 +504,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         mProgramId = intent.getIntExtra(BundleConfig.PROGRAM_ID, -1);
         SPUtils.put(this, "programId", mProgramId);
+        if (mUserId == 0) {
+            BusinessUtils.saveVistorHistory(mProgramId);
+        }
+
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
         isGuard = false;
         isVip = false;
@@ -526,10 +530,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (getIntent() != null) {
             mProgramId = getIntent().getIntExtra(BundleConfig.PROGRAM_ID, -1);
             SPUtils.put(this, "programId", mProgramId);
-            BusinessUtils.saveVistorHistory(mProgramId);
         }
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
         mUserId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
+        if (mUserId <= 0) {
+            BusinessUtils.saveVistorHistory(mProgramId);
+        }
         mLivePresenter.getLiveGift();
         initReceiver();
     }

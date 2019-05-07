@@ -30,6 +30,7 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.view.LoginView;
 import com.whzl.mengbi.util.AppUtils;
+import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 
@@ -207,6 +208,7 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
         ((BaseActivity) getActivity()).dismissLoading();
         showToast(R.string.login_success);
         saveGreenDao(userInfo);
+        BusinessUtils.clearVistorHistory();
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, userInfo.getData().getNickname());
