@@ -139,6 +139,55 @@
         app:containerShadowRadius="5dp">
 
         <RelativeLayout
+            android:id="@+id/rl_sign_find"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_radius_five">
+
+            <ImageView
+                android:id="@+id/iv_sign_find"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19dp"
+                android:layout_marginRight="19dp"
+                android:src="@drawable/ic_find_sign" />
+
+            <TextView
+                android:id="@+id/tv_sign_find"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/iv_sign_find"
+                android:text="每周签到"
+                android:textColor="@color/tran_black2"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_sign_find"
+                android:layout_toRightOf="@id/iv_sign_find"
+                android:text="神秘大奖等你拿"
+                android:textColor="@color/tran_black5"
+                android:textSize="9sp" />
+        </RelativeLayout>
+
+    </com.whzl.mengbi.ui.widget.view.ShadowContainer>
+
+    <com.whzl.mengbi.ui.widget.view.ShadowContainer
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_gravity="center_horizontal"
+        app:containerCornerRadius="5dp"
+        app:containerDeltaLength="5dp"
+        app:containerShadowColor="@color/tran_black6"
+        app:containerShadowRadius="5dp">
+
+        <RelativeLayout
             android:id="@+id/rl_find_prop"
             android:layout_width="match_parent"
             android:layout_height="50dp"

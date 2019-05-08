@@ -60,6 +60,7 @@ import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
+import com.whzl.mengbi.model.entity.SignInfoBean;
 import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
@@ -1054,5 +1055,15 @@ public interface Api {
     @POST("v1/pk/open-exp-card")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> expOpenCard(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取签到信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/sign/user-sign-info")
+    @FormUrlEncoded
+    Observable<ApiResult<SignInfoBean>> signInfo(@FieldMap Map<String, String> params);
 
 }

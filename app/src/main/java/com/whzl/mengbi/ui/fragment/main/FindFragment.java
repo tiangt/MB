@@ -40,7 +40,7 @@ public class FindFragment extends BaseFragment {
     }
 
     @OnClick({R.id.tv_rank_star, R.id.tv_rank_regal, R.id.tv_rank_pop,
-            R.id.rl_find_task, R.id.rl_find_prop, R.id.rl_find_recharge})
+            R.id.rl_find_task, R.id.rl_find_prop, R.id.rl_find_recharge, R.id.rl_sign_find})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_rank_star:
@@ -85,7 +85,13 @@ public class FindFragment extends BaseFragment {
                 }
                 ((MainActivity) getActivity()).login();
                 break;
-
+            case R.id.rl_sign_find:
+                if (((MainActivity) getActivity()).checkLogin()) {
+                    ((MainActivity) getActivity()).showSignDialog();
+                    return;
+                }
+                ((MainActivity) getActivity()).login();
+                break;
             default:
                 break;
         }

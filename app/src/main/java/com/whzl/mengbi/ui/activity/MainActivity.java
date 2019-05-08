@@ -33,6 +33,7 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.BindingPhoneDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.QuitAppDialog;
+import com.whzl.mengbi.ui.dialog.SignDialog;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener;
@@ -91,6 +92,7 @@ public class MainActivity extends BaseActivity {
     private static final String TAG_EXIT = "exit";
     private int[] colors = new int[]{Color.parseColor("#ffffff"), Color.parseColor("#ffffff"),
             Color.parseColor("#ffffff"), Color.parseColor("#ffffff"), Color.parseColor("#181818")};
+    private BaseAwesomeDialog signDialog;
 
     @Override
     protected void initEnv() {
@@ -235,6 +237,7 @@ public class MainActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LoginSuccussEvent event) {
         getMsgRemind();
+        showSignDialog();
         isFirst = true;
     }
 
@@ -554,4 +557,16 @@ public class MainActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * 签到
+     */
+    public void showSignDialog() {
+        if (signDialog != null && signDialog.isAdded()) {
+            return;
+        }
+        signDialog = SignDialog.Companion.newInstance()
+                .setAnimStyle(-1)
+                .setDimAmount(0)
+                .show(getSupportFragmentManager());
+    }
 }
