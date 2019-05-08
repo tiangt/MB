@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.dialog
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.graphics.Color
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,8 +15,10 @@ import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.config.SpConfig
+import com.whzl.mengbi.model.entity.ApiResult
 import com.whzl.mengbi.model.entity.RetroInfoBean
 import com.whzl.mengbi.model.entity.SignInfoBean
+import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
@@ -199,6 +202,14 @@ class SignDialog : BaseAwesomeDialog() {
                         showSignSuccessDialog()
                         getSignInfo()
                     }
+
+                    override fun onError(body: ApiResult<JsonElement>?) {
+                        if (body?.code == -1239) {
+                            showBindDialog()
+                        } else {
+                            ToastUtils.showToastUnify(activity, body?.msg)
+                        }
+                    }
                 })
     }
 
@@ -215,7 +226,38 @@ class SignDialog : BaseAwesomeDialog() {
                         showSignSuccessDialog()
                         getSignInfo()
                     }
+
+                    override fun onError(body: ApiResult<JsonElement>?) {
+                        if (body?.code == -1239) {
+                            showBindDialog()
+                        } else {
+                            ToastUtils.showToastUnify(activity, body?.msg)
+                        }
+                    }
                 })
+    }
+
+    private fun showBindDialog() {
+        if (awesomeDialog != null && awesomeDialog?.isAdded!!) {
+            return
+        }
+        awesomeDialog = AwesomeDialog.init()
+        awesomeDialog?.setLayoutId(R.layout.dialog_simple)?.setConvertListener(object : ViewConvertListener() {
+            override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                val btn = holder?.getView<TextView>(R.id.btn_confirm_simple_dialog)
+                btn?.text = "去绑定"
+                val textView = holder?.getView<TextView>(R.id.tv_content_simple_dialog)
+                textView?.text = "请先绑定手机号码，才能领取奖励"
+                holder?.setOnClickListener(R.id.btn_confirm_simple_dialog, {
+                    dialog?.dismissDialog()
+                    startActivity(Intent(activity, BindingPhoneActivity::class.java))
+                })
+                holder?.setOnClickListener(R.id.btn_cancel_simple_dialog, {
+                    dialog?.dismissDialog()
+                })
+            }
+
+        })?.show(fragmentManager)
     }
 
     private fun showSignSuccessDialog() {

@@ -4,19 +4,14 @@ import android.content.Intent;
 import android.view.View;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.ui.activity.FindRankActivity;
 import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
-import com.whzl.mengbi.ui.fragment.RankFragment;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.fragment.me.WelfareFragment;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
-import org.greenrobot.eventbus.EventBus;
-
-import butterknife.BindView;
 import butterknife.OnClick;
 
 /**

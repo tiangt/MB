@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -51,7 +50,6 @@ import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -66,7 +64,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -232,12 +229,19 @@ public class MainActivity extends BaseActivity {
         if (checkLogin()) {
             getMsgRemind();
         }
+
+        if (checkLogin()) {
+            String date = SPUtils.get(BaseApplication.getInstance(), SpConfig.SIGN_DATE, "").toString();
+            if (!date.equals(DateUtils.getStringDateYMD())) {
+                showSignDialog();
+                SPUtils.put(BaseApplication.getInstance(), SpConfig.SIGN_DATE, DateUtils.getStringDateYMD());
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LoginSuccussEvent event) {
         getMsgRemind();
-        showSignDialog();
         isFirst = true;
     }
 

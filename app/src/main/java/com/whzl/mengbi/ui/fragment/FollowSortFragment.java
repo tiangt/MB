@@ -204,7 +204,6 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LoginSuccussEvent event) {
-//        getRefreshLayout().autoRefresh(2000);
         needFresh = true;
     }
 

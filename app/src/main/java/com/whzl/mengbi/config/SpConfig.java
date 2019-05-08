@@ -22,4 +22,5 @@ public interface SpConfig {
     String ANCHORAGREEURL = "anchorAgreeUrl";
     String USERAGREEURL = "userAgreeUrl";
     String VISITOR_WATCH_HISTORY = "visitor_watch_history";
+    String SIGN_DATE = "sign_date";
 }
