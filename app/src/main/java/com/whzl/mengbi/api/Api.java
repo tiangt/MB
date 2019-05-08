@@ -53,6 +53,7 @@ import com.whzl.mengbi.model.entity.QueryBagByGoodsTypeBean;
 import com.whzl.mengbi.model.entity.QuickChannelBean;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RechargeOrderBean;
+import com.whzl.mengbi.model.entity.RetroInfoBean;
 import com.whzl.mengbi.model.entity.RoomAnnouceBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
@@ -1065,5 +1066,36 @@ public interface Api {
     @POST("v1/sign/user-sign-info")
     @FormUrlEncoded
     Observable<ApiResult<SignInfoBean>> signInfo(@FieldMap Map<String, String> params);
+
+    /**
+     * 用户签到
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/sign/user-sign")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> sign(@FieldMap Map<String, String> params);
+
+
+    /**
+     * 用户签到
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/sign/user-retroactive")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> retroactive(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取补签消费的财富信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/sign/retroactive-consume-info")
+    @FormUrlEncoded
+    Observable<ApiResult<RetroInfoBean>> retroactiveInfo(@FieldMap Map<String, String> params);
 
 }

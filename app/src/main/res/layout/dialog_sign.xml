@@ -9,7 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/ll_sign_dialog"
         android:layout_width="310dp"
-        android:layout_height="300dp"
+        android:layout_height="264dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -34,15 +34,10 @@
                 android:id="@+id/rv_sign_dialog"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="7dp"
                 android:layout_weight="1" />
 
-            <Button
-                android:layout_width="125dp"
-                android:layout_height="36dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/btn_sign_dialog" />
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 

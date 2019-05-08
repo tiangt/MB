@@ -566,7 +566,6 @@ public class MainActivity extends BaseActivity {
         }
         signDialog = SignDialog.Companion.newInstance()
                 .setAnimStyle(-1)
-                .setDimAmount(0)
                 .show(getSupportFragmentManager());
     }
 }

@@ -7,18 +7,23 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
-import android.view.animation.RotateAnimation
+import android.widget.TextView
+import com.google.gson.JsonElement
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.config.SpConfig
+import com.whzl.mengbi.model.entity.RetroInfoBean
 import com.whzl.mengbi.model.entity.SignInfoBean
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.util.SPUtils
+import com.whzl.mengbi.util.ToastUtils
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -43,25 +48,22 @@ class SignDialog : BaseAwesomeDialog() {
 
     private var curAwardId: Int = 0
     private var animation: ObjectAnimator? = null
+    private var awesomeDialog: AwesomeDialog? = null
 
     override fun intLayoutId(): Int {
         return R.layout.dialog_sign
     }
 
     override fun convertView(holder: ViewHolder, dialog: BaseAwesomeDialog) {
-//        animation = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f,
-//                Animation.RELATIVE_TO_SELF, 0.5f)
-//        animation?.duration = 3000
-//        animation?.repeatCount = -1
-//        animation?.interpolator = LinearInterpolator()
-
         iv_close_sign_dialog.setOnClickListener {
             dismissDialog()
         }
+
         init(rv_sign_dialog)
         loadData()
 
     }
+
 
     private fun loadData() {
         getSignInfo()
@@ -116,7 +118,7 @@ class SignDialog : BaseAwesomeDialog() {
 //                itemView.iv_select_item_sign_dialog.startAnimation(animation)
                 animation = ObjectAnimator.ofFloat(itemView.iv_select_item_sign_dialog, "rotation", 0f, 360f)
                 animation?.repeatCount = 1000
-                animation?.duration = 3000
+                animation?.duration = 4000
                 animation?.interpolator = LinearInterpolator()
                 animation?.start()
             } else {
@@ -131,6 +133,102 @@ class SignDialog : BaseAwesomeDialog() {
                 itemView.rl_item_sign_dialog.setBackgroundResource(R.drawable.bg_secret_sign_dialog)
             }
         }
+
+        override fun onItemClick(view: View?, position: Int) {
+            super.onItemClick(view, position)
+            val bean = mData[position]
+            if (bean.awardId == curAwardId && bean.signStatus == "notsign") {
+                userSign()
+            } else if ("retroactive" == bean.signStatus) {
+                getRetroInfo(bean.awardId, bean.dayIndex)
+            } else if (bean.dayIndex == 8) {
+                ToastUtils.showToast("神秘")
+            }
+        }
+    }
+
+    private fun getRetroInfo(awardId: Int, dayIndex: Int) {
+        val param = HashMap<String, String>()
+        param["userId"] = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L).toString()
+        param["awardId"] = awardId.toString()
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .retroactiveInfo(ParamsUtils.getSignPramsMap(param))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<RetroInfoBean>() {
+                    override fun onSuccess(retroInfoBean: RetroInfoBean) {
+                        showRetroDialog(awardId, dayIndex, retroInfoBean.consumeNum)
+                    }
+                })
+    }
+
+    private fun showRetroDialog(awardId: Int, dayIndex: Int, consumeNum: Int) {
+        if (awesomeDialog != null && awesomeDialog?.isAdded!!) {
+            return
+        }
+        awesomeDialog = AwesomeDialog.init()
+        awesomeDialog?.setLayoutId(R.layout.dialog_simple)?.setConvertListener(object : ViewConvertListener() {
+            override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                val textView = holder?.getView<TextView>(R.id.tv_content_simple_dialog)
+                textView?.text = "补签需要花费"
+                textView?.append(LightSpanString.getLightString(consumeNum.toString(), Color.parseColor("#70ff2b3f")))
+                textView?.append("萌币，确认补签吗？")
+                holder?.setOnClickListener(R.id.btn_confirm_simple_dialog, {
+                    retroactive(awardId, dayIndex)
+                    dialog?.dismissDialog()
+                })
+                holder?.setOnClickListener(R.id.btn_cancel_simple_dialog, {
+                    dialog?.dismissDialog()
+                })
+            }
+
+        })?.show(fragmentManager)
+    }
+
+    private fun retroactive(awardId: Int, dayIndex: Int) {
+        val param = HashMap<String, String>()
+        param["userId"] = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L).toString()
+        param["awardId"] = awardId.toString()
+        param["dayIndex"] = dayIndex.toString()
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .retroactive(ParamsUtils.getSignPramsMap(param))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<JsonElement>() {
+                    override fun onSuccess(jsonElement: JsonElement) {
+                        showSignSuccessDialog()
+                        getSignInfo()
+                    }
+                })
+    }
+
+
+    private fun userSign() {
+        val param = HashMap<String, String>()
+        param["userId"] = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L).toString()
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .sign(ParamsUtils.getSignPramsMap(param))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<JsonElement>() {
+                    override fun onSuccess(jsonElement: JsonElement) {
+                        showSignSuccessDialog()
+                        getSignInfo()
+                    }
+                })
+    }
+
+    private fun showSignSuccessDialog() {
+        if (awesomeDialog != null && awesomeDialog?.isAdded!!) {
+            return
+        }
+        awesomeDialog = AwesomeDialog.init()
+        awesomeDialog?.setLayoutId(R.layout.dialog_sign_success)?.setConvertListener(object : ViewConvertListener() {
+            override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+
+            }
+
+        })?.show(fragmentManager)
     }
 
 
@@ -143,6 +241,7 @@ class SignDialog : BaseAwesomeDialog() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : ApiObserver<SignInfoBean>() {
                     override fun onSuccess(signInfoBean: SignInfoBean) {
+                        mData.clear()
                         mData.addAll(signInfoBean.list)
                         curAwardId = signInfoBean.curAwardId
                         adapter.notifyDataSetChanged()
