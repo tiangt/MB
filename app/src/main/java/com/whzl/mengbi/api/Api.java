@@ -1098,4 +1098,14 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<RetroInfoBean>> retroactiveInfo(@FieldMap Map<String, String> params);
 
+    /**
+     * 一键下线用户
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/one-key-offline")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> offLine(@FieldMap Map<String, String> params);
+
 }

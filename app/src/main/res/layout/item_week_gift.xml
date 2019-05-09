@@ -9,12 +9,10 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/iv_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_rotate"
-            android:visibility="gone" />
+            android:scaleType="fitXY"
+            android:id="@+id/iv_select_item_week_gift"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <ImageView
             android:id="@+id/iv_week_gift"

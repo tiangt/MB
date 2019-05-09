@@ -66,6 +66,28 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#eeeeee" />
+
+        <LinearLayout
+            android:id="@+id/ll_offline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_offline"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:gravity="center"
+                android:text="@string/offline"
+                android:textColor="#808080"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eeeeee" />
+        </LinearLayout>
     </LinearLayout>
 
     <TextView

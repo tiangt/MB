@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -21,6 +23,7 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -62,6 +65,8 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
     TextView tvManager;
     @BindView(R.id.tv_report)
     TextView tvReport;
+    @BindView(R.id.ll_offline)
+    LinearLayout llOffline;
 
     private long visitorId;
     private long mUserId;
@@ -101,14 +106,16 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
                     || mUser.getIdentityId() == UserIdentity.OPTR_MANAGER
                     || mUser.getIdentityId() == UserIdentity.ANCHOR) {
                 llOptionContainer.setVisibility(View.VISIBLE);
-                return;
+            }
+            if (mUser.getIdentityId() == UserIdentity.OPTR_MANAGER) {
+                llOffline.setVisibility(View.VISIBLE);
             }
         }
 
     }
 
     @OnClick({R.id.tv_cancel, R.id.tv_room, R.id.tv_global, R.id.tv_kick_out,
-            R.id.tv_manager, R.id.tv_report})
+            R.id.tv_manager, R.id.tv_report, R.id.ll_offline})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_cancel:
@@ -161,9 +168,31 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
                         .show(getActivity().getSupportFragmentManager());
                 dismiss();
                 break;
+            case R.id.ll_offline:
+                offline(mUserId, visitorId);
+                dismissDialog();
+                break;
             default:
                 break;
         }
+    }
+
+    private void offline(long mUserId, long visitorId) {
+        HashMap map = new HashMap();
+        map.put("userId", visitorId);
+        map.put("toUserId", mUserId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        ApiFactory.getInstance().getApi(Api.class)
+                .offLine(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+                    @Override
+                    public void onSuccess(JsonElement jsonElement) {
+
+                    }
+
+                });
     }
 
     private void getUserInfo(long userId, int programId, long visitorId) {

@@ -11,9 +11,6 @@ import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -109,7 +106,6 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     private boolean canShow;
 
     private int currentPosition;
-    private RotateAnimation animation;
 
 
     public static WeekStarListsFragment newInstance(String type, int anchorId, String nickName, String avatar, int programId) {
@@ -141,12 +137,6 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         } else {
             rlGift.setVisibility(View.GONE);
         }
-
-        animation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f);
-        animation.setDuration(3000);
-        animation.setRepeatCount(-1);
-        animation.setInterpolator(new LinearInterpolator());
 
         initGift();
         initAnchorRecycler();
@@ -354,8 +344,8 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
         RelativeLayout rlWeekGift;
         @BindView(R.id.iv_week_gift)
         ImageView ivGift;
-        @BindView(R.id.iv_select)
-        ImageView ivAnimation;
+        @BindView(R.id.iv_select_item_week_gift)
+        ImageView ivSelect;
 
         public GiftViewHolder(View itemView) {
             super(itemView);
@@ -367,11 +357,9 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
             int i = position % gifts.length;
             rlWeekGift.setBackgroundResource(gifts[i]);
             if (position == currentPosition) {
-                ivAnimation.setVisibility(View.VISIBLE);
-                ivAnimation.startAnimation(animation);
+                GlideImageLoader.getInstace().loadGif(getMyActivity(), R.drawable.bg_select_week_gift, ivSelect, null);
             } else {
-                ivAnimation.setVisibility(View.GONE);
-                ivAnimation.clearAnimation();
+                GlideImageLoader.getInstace().displayImage(getMyActivity(), null, ivSelect);
             }
             GlideImageLoader.getInstace().displayImage(getMyActivity(), mListBean.get(position).goodsPic, ivGift);
         }
@@ -546,9 +534,5 @@ public class WeekStarListsFragment extends BaseFragment implements WeekStarListV
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (animation != null) {
-            animation.cancel();
-            animation = null;
-        }
     }
 }
