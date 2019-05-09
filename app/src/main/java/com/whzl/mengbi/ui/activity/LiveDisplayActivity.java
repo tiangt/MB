@@ -46,7 +46,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -116,7 +115,7 @@ import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.gen.UserDao;
 import com.whzl.mengbi.gen.UsualGiftDao;
 import com.whzl.mengbi.gift.AnchorWishControl;
-import com.whzl.mengbi.gift.GifGiftControl;
+import com.whzl.mengbi.gift.GifSvgaControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.HeadLineControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
@@ -125,7 +124,6 @@ import com.whzl.mengbi.gift.RedPackRunWayControl;
 import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
-import com.whzl.mengbi.gift.SvgaGiftControl;
 import com.whzl.mengbi.gift.WeekStarControl;
 import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.greendao.PrivateChatUser;
@@ -154,7 +152,6 @@ import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunwayBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
-import com.whzl.mengbi.model.entity.VistorWatchBean;
 import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -205,7 +202,6 @@ import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BitmapUtils;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.DateUtils;
-import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -414,8 +410,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private String mStream;
     private RunWayGiftControl mRunWayGiftControl;
     private LuckGiftControl mLuckyGiftControl;
-    private GifGiftControl mGifGiftControl;
-    private SvgaGiftControl mSvgaGiftControl;
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
     public boolean isGuard;
     private boolean isVip;
@@ -481,6 +475,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ImageView ivFootUpDown;
 
     private boolean isFirstCome = true;
+    private GifSvgaControl gifSvgaControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1167,17 +1162,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
             giftControl.loadGift(animJson);
         } else if ("MOBILE_GIFT_GIF".equals(animEvent.getAnimJson().getAnimType())
-                || "MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())) {
-            if (mGifGiftControl == null) {
-                mGifGiftControl = new GifGiftControl(this, ivGiftGif);
-            }
-            mGifGiftControl.loadGif(animEvent);
-        } else if ("MOBILE_CAR_SVGA".equals(animEvent.getAnimJson().getAnimType())
+                || "MOBILE_CAR_GIF".equals(animEvent.getAnimJson().getAnimType())
+                || "MOBILE_CAR_SVGA".equals(animEvent.getAnimJson().getAnimType())
                 || "MOBILE_GIFT_SVGA".equals(animEvent.getAnimJson().getAnimType())) {
-            if (mSvgaGiftControl == null) {
-                mSvgaGiftControl = new SvgaGiftControl(this, svgaGift);
+            if (gifSvgaControl == null) {
+                gifSvgaControl = new GifSvgaControl(this, ivGiftGif, svgaGift);
             }
-            mSvgaGiftControl.load(animEvent);
+            gifSvgaControl.loadAnim(animEvent);
         }
 
     }
@@ -2281,12 +2272,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        if (tvHostName != null) {
 //            tvHostName.destyoy();
 //        }
-        if (mGifGiftControl != null) {
-            mGifGiftControl.destroy();
-        }
-        if (mSvgaGiftControl != null) {
-            mSvgaGiftControl.destroy();
-            mSvgaGiftControl = null;
+        if (gifSvgaControl != null) {
+            gifSvgaControl.destroy();
+            gifSvgaControl = null;
         }
         if (giftControl != null) {
             giftControl.destroy();
