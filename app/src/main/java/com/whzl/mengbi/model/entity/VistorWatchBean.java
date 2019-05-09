@@ -11,5 +11,6 @@ public class VistorWatchBean {
 
     public static class VistorWatchDetailBean {
         public int programId;
+        public long timestamp;
     }
 }

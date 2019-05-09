@@ -1119,4 +1119,14 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<SignAwardBean>> signAward(@FieldMap Map<String, String> params);
 
+    /**
+     * 保存观看记录接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/save-watch-record")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> saveWatchRecord(@FieldMap Map<String, String> params);
+
 }

@@ -18,6 +18,7 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -152,6 +153,7 @@ public class BusinessUtils {
 
     public static void saveVistorHistory(int programId) {
         String s = SPUtils.get(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, "").toString();
+        long timeDiff = (long) SPUtils.get(BaseApplication.getInstance(), SpConfig.TIME_DIFF, 0L);
         Gson gson = new Gson();
         VistorWatchBean vistorWatchBean = gson.fromJson(s, VistorWatchBean.class);
         if (vistorWatchBean == null) {
@@ -161,15 +163,39 @@ public class BusinessUtils {
 
         VistorWatchBean.VistorWatchDetailBean vistorWatchDetailBean = new VistorWatchBean.VistorWatchDetailBean();
         vistorWatchDetailBean.programId = programId;
+        vistorWatchDetailBean.timestamp = System.currentTimeMillis() / 1000 + timeDiff;
 
         vistorWatchBean.list.add(vistorWatchDetailBean);
 
         SPUtils.put(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, gson.toJson(vistorWatchBean));
-        LogUtils.e("ssssssssssss  " + SPUtils.get(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, ""));
     }
 
     public static void clearVistorHistory() {
+        String s = SPUtils.get(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, "").toString();
+        if (TextUtils.isEmpty(s)) {
+            return;
+        }
+        Gson gson = new Gson();
+        VistorWatchBean vistorWatchBean = gson.fromJson(s, VistorWatchBean.class);
+        List<VistorWatchBean.VistorWatchDetailBean> list = vistorWatchBean.list;
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L).toString());
+        paramsMap.put("watchRecord", gson.toJson(list));
+        ApiFactory.getInstance().getApi(Api.class)
+                .saveWatchRecord(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+
+                    @Override
+                    public void onSuccess(JsonElement bean) {
+                    }
+
+
+                    @Override
+                    public void onError(ApiResult<JsonElement> body) {
+                    }
+                });
         SPUtils.put(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, "");
-        LogUtils.e("ssssssssssss  " + SPUtils.get(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, ""));
     }
 }

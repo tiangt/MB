@@ -208,12 +208,14 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
         ((BaseActivity) getActivity()).dismissLoading();
         showToast(R.string.login_success);
         saveGreenDao(userInfo);
-        BusinessUtils.clearVistorHistory();
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, userInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, userInfo.getData().getNickname());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, userInfo.getData().getLastRechargeTime()
                 != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
+
+        BusinessUtils.clearVistorHistory();
+
         if (loginSuccessListener != null) {
             loginSuccessListener.onLoginSuccessListener();
         }
