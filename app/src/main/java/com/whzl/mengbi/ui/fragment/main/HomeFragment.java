@@ -213,13 +213,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
                 break;
 
             case R.id.iv_history:
-                if (checkLogin()) {
-                    Intent intent = new Intent(getContext(), HistoryListActivity.class);
-                    intent.putExtra("index", 3);
-                    startActivity(intent);
-                    return;
-                }
-                ((MainActivity) getMyActivity()).login();
+                Intent intent = new Intent(getContext(), HistoryListActivity.class);
+                intent.putExtra("index", 3);
+                startActivity(intent);
                 break;
         }
     }

@@ -12,19 +12,25 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.FollowSortContract;
 import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
 import com.whzl.mengbi.model.entity.FollowSortBean;
+import com.whzl.mengbi.model.entity.VistorWatchBean;
 import com.whzl.mengbi.presenter.FollowSortPresenter;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
+import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.ResourceMap;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -82,7 +88,41 @@ public class WatchHistoryFragment extends BasePullListFragment<FollowSortBean.Li
     @Override
     protected void loadData(int action, int mPage) {
         needFresh = false;
-        mPresenter.getWatchRecord(mPage);
+        long user = (long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
+        if (user == 0) {
+            getInfoBatch();
+        } else {
+            mPresenter.getWatchRecord(mPage);
+        }
+    }
+
+    private void getInfoBatch() {
+        String string = SPUtils.get(getMyActivity(), SpConfig.VISITOR_WATCH_HISTORY, "").toString();
+        if (TextUtils.isEmpty(string)) {
+            loadSuccess(null);
+        } else {
+            Gson gson = new Gson();
+            VistorWatchBean vistorWatchBean = gson.fromJson(string, VistorWatchBean.class);
+            if (vistorWatchBean.list != null && !vistorWatchBean.list.isEmpty()) {
+                StringBuffer stringBuffer = new StringBuffer();
+                for (int i = 0; i < vistorWatchBean.list.size(); i++) {
+                    VistorWatchBean.VistorWatchDetailBean vistorWatchDetailBean = vistorWatchBean.list.get(i);
+                    if (i == vistorWatchBean.list.size() - 1) {
+                        stringBuffer.append(String.valueOf(vistorWatchDetailBean.programId));
+                    } else {
+                        stringBuffer.append((vistorWatchDetailBean.programId) + ",");
+                    }
+                }
+                getInfo(stringBuffer.toString());
+            } else {
+                loadSuccess(null);
+            }
+        }
+
+    }
+
+    private void getInfo(String s) {
+        mPresenter.getInfoBatch(s);
     }
 
     @Override
@@ -109,6 +149,12 @@ public class WatchHistoryFragment extends BasePullListFragment<FollowSortBean.Li
     @Override
     public void onClearWatchRecord() {
         loadSuccess(null);
+    }
+
+    @Override
+    public void onGetInfoBatch(FollowSortBean bean) {
+        mDatas.clear();
+        loadSuccess(bean.list);
     }
 
     class ViewHolder extends BaseViewHolder {
@@ -165,7 +211,14 @@ public class WatchHistoryFragment extends BasePullListFragment<FollowSortBean.Li
     }
 
     public void clickIbClear() {
-        mPresenter.clearWatchRecord();
+        long user = (long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
+        if (user == 0) {
+            BusinessUtils.clearVistorHistory();
+            loadSuccess(null);
+        } else {
+            mPresenter.clearWatchRecord();
+        }
+
     }
 
     @Override

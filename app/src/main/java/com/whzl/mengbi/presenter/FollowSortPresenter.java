@@ -115,4 +115,27 @@ public class FollowSortPresenter extends BasePresenter<FollowSortContract.View> 
                     }
                 });
     }
+
+    @Override
+    public void getInfoBatch(String programIds) {
+        if (!isViewAttached()) {
+            return;
+        }
+        followSortModel.getInfoBatch(programIds)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(mView.<ApiResult<FollowSortBean>>bindAutoDispose())
+                .subscribe(new ApiObserver<FollowSortBean>() {
+
+                    @Override
+                    public void onSuccess(FollowSortBean bean) {
+                        mView.onGetInfoBatch(bean);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+
+                    }
+                });
+    }
 }

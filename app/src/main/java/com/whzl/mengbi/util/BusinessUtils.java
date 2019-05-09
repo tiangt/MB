@@ -165,12 +165,12 @@ public class BusinessUtils {
         vistorWatchDetailBean.programId = programId;
         vistorWatchDetailBean.timestamp = System.currentTimeMillis() / 1000 + timeDiff;
 
-        vistorWatchBean.list.add(vistorWatchDetailBean);
+        vistorWatchBean.list.add(0, vistorWatchDetailBean);
 
         SPUtils.put(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, gson.toJson(vistorWatchBean));
     }
 
-    public static void clearVistorHistory() {
+    public static void uploadVistorHistory() {
         String s = SPUtils.get(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, "").toString();
         if (TextUtils.isEmpty(s)) {
             return;
@@ -196,6 +196,10 @@ public class BusinessUtils {
                     public void onError(ApiResult<JsonElement> body) {
                     }
                 });
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, "");
+    }
+
+    public static void clearVistorHistory() {
         SPUtils.put(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, "");
     }
 }

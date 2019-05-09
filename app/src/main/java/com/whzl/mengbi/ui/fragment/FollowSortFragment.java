@@ -133,6 +133,11 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
         loadSuccess(null);
     }
 
+    @Override
+    public void onGetInfoBatch(FollowSortBean bean) {
+
+    }
+
     class ViewHolder extends BaseViewHolder {
         @BindView(R.id.iv_avatar)
         ImageView ivAvatar;

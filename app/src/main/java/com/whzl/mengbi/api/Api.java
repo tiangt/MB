@@ -1129,4 +1129,14 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> saveWatchRecord(@FieldMap Map<String, String> params);
 
+    /**
+     * 根据节目id批量获取节目信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/program/program-info-batch")
+    @FormUrlEncoded
+    Observable<ApiResult<FollowSortBean>> programInfoBatch(@FieldMap Map<String, String> params);
+
 }

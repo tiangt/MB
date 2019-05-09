@@ -53,4 +53,11 @@ public class FollowSortModel {
         return ApiFactory.getInstance().getApi(Api.class)
                 .clearWatchRecord(ParamsUtils.getSignPramsMap(paramsMap));
     }
+
+    public Observable<ApiResult<FollowSortBean>> getInfoBatch(String programIds) {
+        HashMap paramsMap = new HashMap();
+        paramsMap.put("programIds", programIds);
+        return ApiFactory.getInstance().getApi(Api.class)
+                .programInfoBatch(ParamsUtils.getSignPramsMap(paramsMap));
+    }
 }

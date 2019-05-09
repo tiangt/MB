@@ -16,6 +16,8 @@ public interface FollowSortContract {
         void onGetWatchRecord(FollowSortBean bean);
 
         void onClearWatchRecord();
+
+        void onGetInfoBatch(FollowSortBean bean);
     }
 
     interface Presenter {
@@ -26,5 +28,7 @@ public interface FollowSortContract {
         void getWatchRecord(int page);
 
         void clearWatchRecord();
+
+        void getInfoBatch(String programIds);
     }
 }
