@@ -299,7 +299,11 @@ class SignDialog : BaseAwesomeDialog() {
                 when (get.awardType) {
                     "GOODS" -> {
                         textView?.append(LightSpanString.getLightString(get.goodsName, Color.parseColor("#70ff2b3f")))
-                        textView?.append(" x${get.goodsName}")
+                        if (get.effDays > 0) {
+                            textView?.append(" x${get.effDays}天")
+                        } else {
+                            textView?.append(" x${get.num}")
+                        }
                     }
                     "EXP" -> {
                         textView?.append(LightSpanString.getLightString(get.num.toString(), Color.parseColor("#70ff2b3f")))
