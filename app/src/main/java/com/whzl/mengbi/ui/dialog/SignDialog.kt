@@ -17,6 +17,7 @@ import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.model.entity.ApiResult
 import com.whzl.mengbi.model.entity.RetroInfoBean
+import com.whzl.mengbi.model.entity.SignAwardBean
 import com.whzl.mengbi.model.entity.SignInfoBean
 import com.whzl.mengbi.ui.activity.me.BindingPhoneActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
@@ -118,7 +119,6 @@ class SignDialog : BaseAwesomeDialog() {
             if (bean.awardId == curAwardId && bean.signStatus == "notsign") {
                 itemView.rl_item_sign_dialog.setBackgroundResource(R.drawable.bg_select_sign_dialog)
                 itemView.iv_select_item_sign_dialog.visibility = View.VISIBLE
-//                itemView.iv_select_item_sign_dialog.startAnimation(animation)
                 animation = ObjectAnimator.ofFloat(itemView.iv_select_item_sign_dialog, "rotation", 0f, 360f)
                 animation?.repeatCount = 1000
                 animation?.duration = 4000
@@ -134,6 +134,8 @@ class SignDialog : BaseAwesomeDialog() {
             if (position == 7) {
                 itemView.tv_name_item_sign_dialog.setTextColor(Color.parseColor("#ffff00"))
                 itemView.rl_item_sign_dialog.setBackgroundResource(R.drawable.bg_secret_sign_dialog)
+            } else {
+                itemView.tv_name_item_sign_dialog.setTextColor(Color.parseColor("#ffffff"))
             }
         }
 
@@ -145,9 +147,30 @@ class SignDialog : BaseAwesomeDialog() {
             } else if ("retroactive" == bean.signStatus) {
                 getRetroInfo(bean.awardId, bean.dayIndex)
             } else if (bean.dayIndex == 8) {
-                ToastUtils.showToast("神秘")
+                querySignAward(bean.awardSn)
             }
         }
+    }
+
+    private fun querySignAward(awardSn: Int) {
+        val param = HashMap<String, String>()
+        param["userId"] = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L).toString()
+        param["awardSn"] = awardSn.toString()
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .signAward(ParamsUtils.getSignPramsMap(param))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<SignAwardBean>() {
+                    override fun onSuccess(signAwardBean: SignAwardBean) {
+                        if (signAwardBean.list != null && signAwardBean.list[0] != null) {
+                            showSignSuccessDialog(signAwardBean.list.get(0))
+                        }
+                    }
+
+                    override fun onError(body: ApiResult<SignAwardBean>?) {
+                        ToastUtils.showToastUnify(activity, body?.msg)
+                    }
+                })
     }
 
     private fun getRetroInfo(awardId: Int, dayIndex: Int) {
@@ -199,7 +222,8 @@ class SignDialog : BaseAwesomeDialog() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : ApiObserver<JsonElement>() {
                     override fun onSuccess(jsonElement: JsonElement) {
-                        showSignSuccessDialog()
+//                        showSignSuccessDialog()
+                        ToastUtils.showToastUnify(activity, "补签成功")
                         getSignInfo()
                     }
 
@@ -223,7 +247,7 @@ class SignDialog : BaseAwesomeDialog() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : ApiObserver<JsonElement>() {
                     override fun onSuccess(jsonElement: JsonElement) {
-                        showSignSuccessDialog()
+                        ToastUtils.showToastUnify(activity, "签到成功")
                         getSignInfo()
                     }
 
@@ -260,14 +284,39 @@ class SignDialog : BaseAwesomeDialog() {
         })?.show(fragmentManager)
     }
 
-    private fun showSignSuccessDialog() {
+    private fun showSignSuccessDialog(get: SignAwardBean.ListBean) {
         if (awesomeDialog != null && awesomeDialog?.isAdded!!) {
             return
         }
         awesomeDialog = AwesomeDialog.init()
         awesomeDialog?.setLayoutId(R.layout.dialog_sign_success)?.setConvertListener(object : ViewConvertListener() {
             override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
-
+                holder?.setOnClickListener(R.id.iv_close_sign_success, {
+                    dialog?.dismissDialog()
+                })
+                val textView = holder?.getView<TextView>(R.id.tv_content_sign_success)
+                textView?.text = "恭喜您 抽到 "
+                when (get.awardType) {
+                    "GOODS" -> {
+                        textView?.append(LightSpanString.getLightString(get.goodsName, Color.parseColor("#70ff2b3f")))
+                        textView?.append(" x${get.goodsName}")
+                    }
+                    "EXP" -> {
+                        textView?.append(LightSpanString.getLightString(get.num.toString(), Color.parseColor("#70ff2b3f")))
+                        textView?.append(" 用户经验")
+                    }
+                    "WEALTH" -> {
+                        textView?.append(LightSpanString.getLightString(get.num.toString(), Color.parseColor("#70ff2b3f")))
+                        if (get.subAwardType == "MENG_DOU") {
+                            textView?.append(" 萌豆")
+                        } else {
+                            textView?.append(" 萌币")
+                        }
+                    }
+                    else -> {
+                        textView?.append(" 神秘礼包")
+                    }
+                }
             }
 
         })?.show(fragmentManager)

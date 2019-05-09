@@ -61,6 +61,7 @@ import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
+import com.whzl.mengbi.model.entity.SignAwardBean;
 import com.whzl.mengbi.model.entity.SignInfoBean;
 import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
@@ -1107,5 +1108,15 @@ public interface Api {
     @POST("v1/user/one-key-offline")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> offLine(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取全勤的奖励
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/sign/query-sign-award")
+    @FormUrlEncoded
+    Observable<ApiResult<SignAwardBean>> signAward(@FieldMap Map<String, String> params);
 
 }

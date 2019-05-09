@@ -1178,7 +1178,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mSvgaGiftControl = new SvgaGiftControl(this, svgaGift);
             }
             mSvgaGiftControl.load(animEvent);
-            LogUtils.e("sssssss  mSvgaGiftControl.load(animEvent)");
         }
 
     }
