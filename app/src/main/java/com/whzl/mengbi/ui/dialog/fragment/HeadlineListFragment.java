@@ -182,7 +182,7 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
                 HeadlineListBean rankBean = GsonUtils.GsonToBean(result.toString(), HeadlineListBean.class);
                 if (rankBean.code == 200) {
                     if (rankBean.data != null && rankBean.data.list != null) {
-                        if (refreshLayout!=null) {
+                        if (refreshLayout != null) {
                             refreshLayout.finishRefresh();
                         }
                         if (rankBean.data.list.size() == 0) {
@@ -367,8 +367,9 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
      *
      * @param goodsId
      * @param diffScore
+     * @param topScore
      */
-    private void getNeedGoods(int goodsId, int diffScore, int rank) {
+    private void getNeedGoods(int goodsId, int diffScore, int rank, int topScore) {
         HashMap paramsMap = new HashMap<>();
         paramsMap.put("goodsId", goodsId);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GOODS_PRICE, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
@@ -389,8 +390,13 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
                             if (rank == 1) {
                                 tvNeedValue.setText(R.string.top_rank);
                             } else {
-                                SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needValue), Color.parseColor("#000000"));
-                                tvNeedValue.append(ss);
+                                if (topScore == 0) {
+                                    SpannableString ss = StringUtils.spannableStringColor("1", Color.parseColor("#000000"));
+                                    tvNeedValue.append(ss);
+                                } else {
+                                    SpannableString ss = StringUtils.spannableStringColor(StringUtils.formatNumber(needValue), Color.parseColor("#000000"));
+                                    tvNeedValue.append(ss);
+                                }
                                 SpannableString goods = StringUtils.spannableStringColor("魅力", Color.parseColor("#70000000"));
                                 tvNeedValue.append(goods);
                             }
@@ -445,7 +451,7 @@ public class HeadlineListFragment extends BaseFragment implements OnRefreshListe
                             tvNickName.setTextColor(Color.parseColor("#ff2b3f"));
                             GlideImageLoader.getInstace().displayImage(getMyActivity(), mAvatar, ivOwnAvatar);
                             int diff = topScore - selfScore;
-                            getNeedGoods(goodsId, diff, rank);
+                            getNeedGoods(goodsId, diff, rank, topScore);
                         }
                     }
                 }
