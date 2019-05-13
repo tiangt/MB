@@ -81,6 +81,11 @@ public class RedbagActivity extends BaseActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewpager.setCurrentItem(tab.getPosition(), false);
                 type = types[tab.getPosition()];
+                if (tab.getPosition() == 2) {
+                    btnSend.setVisibility(View.INVISIBLE);
+                } else {
+                    btnSend.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -103,6 +108,11 @@ public class RedbagActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 type = types[position];
+                if (position == 2) {
+                    btnSend.setVisibility(View.INVISIBLE);
+                } else {
+                    btnSend.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
