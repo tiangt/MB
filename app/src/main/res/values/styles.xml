@@ -406,7 +406,7 @@
         <!--<selectedItem name="tabIndicatorColor">@android:color/white</selectedItem>-->
         <!--<item name="tabPaddingStart">15dp</item>-->
         <!--<item name="tabPaddingEnd">15dp</item>-->
-        <item name="tabBackground">@color/appBg</item>
+        <item name="tabBackground">@color/white</item>
         <item name="tabTextAppearance">@style/Red_Bag_TabText</item>
         <item name="tabSelectedTextColor">@color/red_bag</item>
         <item name="tabGravity">fill</item>

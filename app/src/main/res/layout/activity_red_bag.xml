@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rl_top_red_bag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -12,7 +15,9 @@
             style="@style/fragmentTitleText"
             android:background="#ff2626"
             android:text="发红包 拿分红"
-            android:textColor="#fffef8" />
+            android:textColor="#fffef8"
+            android:textSize="15sp"
+            android:textStyle="normal" />
 
         <ImageButton
             android:id="@+id/btn_note"
@@ -35,22 +40,66 @@
             android:src="@drawable/ic_close_red_bag" />
     </RelativeLayout>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
-        style="@style/Red_Bag_Tab"
+    <LinearLayout
+        android:id="@+id/ll_center_red_bag"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="280dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp">
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/bg_shawdow_whole"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/rl_top_red_bag">
 
-    </android.support.design.widget.TabLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_top_red_pack" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            style="@style/Red_Bag_Tab"
+            android:layout_width="match_parent"
+            android:layout_height="44dp">
+
+        </android.support.design.widget.TabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:overScrollMode="never">
+
+        </android.support.v4.view.ViewPager>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_bottom_red_pack" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:layout_marginRight="7dp"
+        android:src="@drawable/ic_send_red_pack"
+        app:layout_constraintBottom_toTopOf="@id/btn_send"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btn_send"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never">
-
-    </android.support.v4.view.ViewPager>
-
-</LinearLayout>
+        android:layout_height="40dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/btn_red_bag"
+        android:text="塞币进红包"
+        android:textColor="#fefefe"
+        android:textSize="16.4sp"
+        app:layout_constraintTop_toBottomOf="@id/ll_center_red_bag" />
+</android.support.constraint.ConstraintLayout>

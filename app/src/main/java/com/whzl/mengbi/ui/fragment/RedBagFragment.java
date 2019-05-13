@@ -54,8 +54,6 @@ public class RedBagFragment extends BaseFragment {
     EditText etNumber;
     @BindView(R.id.tv_total)
     TextView tvTotal;
-    @BindView(R.id.btn_send)
-    Button btnSend;
     @BindView(R.id.ll_empty)
     LinearLayout llEmpty;
     @BindView(R.id.ll_red_bag)
@@ -63,7 +61,7 @@ public class RedBagFragment extends BaseFragment {
     Unbinder unbinder;
     private String type;
 
-    public static Fragment newInstance(String type) {
+    public static RedBagFragment newInstance(String type) {
         RedBagFragment redBagFragment = new RedBagFragment();
         Bundle bundle = new Bundle();
         bundle.putString("type", type);
@@ -157,29 +155,7 @@ public class RedBagFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.btn_send})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_send:
-                KeyBoardUtil.closeKeybord(etNumber, getContext());
-                if (type.equals(NORMAL)) {
-                    if (checkNormal()) {
-                        if (ClickUtil.isFastClick()) {
-                            sendRedPack("NORMAL");
-                        }
-                    }
-                } else if (type.equals(LUCK)) {
-                    if (checkLuck()) {
-                        if (ClickUtil.isFastClick()) {
-                            sendRedPack("RANDOM");
-                        }
-                    }
-                }
-                break;
-        }
-    }
-
-    private void sendRedPack(String s) {
+    public void sendRedPack(String s) {
         HashMap hashMap = new HashMap();
         hashMap.put("amount", Long.parseLong(etMoney.getText().toString()));
         hashMap.put("contentType", "COIN");
@@ -204,7 +180,7 @@ public class RedBagFragment extends BaseFragment {
                     public void onError(ApiResult<JsonElement> body) {
                         switch (body.code) {
                             case -1211:
-                                ToastUtils.snackLong(btnSend, "您的萌币余额不足", "充值", new View.OnClickListener() {
+                                ToastUtils.snackLong(tvMoney, "您的萌币余额不足", "充值", new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         getActivity().startActivity(new Intent(getActivity(), WXPayEntryActivity.class));
@@ -223,7 +199,7 @@ public class RedBagFragment extends BaseFragment {
     }
 
 
-    private boolean checkLuck() {
+    public boolean checkLuck() {
         if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5 ||
                 Long.parseLong(etNumber.getText().toString()) > 50 ||
                 TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 10000 ||
@@ -246,7 +222,7 @@ public class RedBagFragment extends BaseFragment {
         }
     }
 
-    private boolean checkNormal() {
+    public boolean checkNormal() {
         if (TextUtils.isEmpty(etNumber.getText()) || Long.parseLong(etNumber.getText().toString()) < 5
                 || Long.parseLong(etNumber.getText().toString()) > 50
                 || TextUtils.isEmpty(etMoney.getText()) || Long.parseLong(etMoney.getText().toString()) < 2000

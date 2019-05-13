@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
@@ -17,6 +18,8 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.RedBagFragment;
+import com.whzl.mengbi.util.ClickUtil;
+import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.UIUtil;
 
@@ -24,6 +27,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.whzl.mengbi.ui.fragment.RedBagFragment.LUCK;
+import static com.whzl.mengbi.ui.fragment.RedBagFragment.NORMAL;
 
 /**
  * @author nobody
@@ -38,7 +44,15 @@ public class RedbagActivity extends BaseActivity {
     TabLayout tabLayout;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
+    @BindView(R.id.btn_send)
+    Button btnSend;
     public int programId;
+
+    private String type = NORMAL;
+
+    private String[] types = new String[]{NORMAL, LUCK, RedBagFragment.FUND};
+    private RedBagFragment normalFragment;
+    private RedBagFragment luckFragment;
 
     @Override
     protected void setupContentView() {
@@ -48,22 +62,15 @@ public class RedbagActivity extends BaseActivity {
     @Override
     protected void setupView() {
         programId = getIntent().getIntExtra("programId", 0);
-    }
-
-    @Override
-    protected void setStatusBar() {
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.statusbar_black));
-    }
-
-    @Override
-    protected void loadData() {
         ArrayList<String> titles = new ArrayList<>();
         titles.add("普通红包");
         titles.add("手气红包");
         titles.add("红包基金");
+        normalFragment = RedBagFragment.newInstance(NORMAL);
+        luckFragment = RedBagFragment.newInstance(LUCK);
         ArrayList<Fragment> fragments = new ArrayList<>();
-        fragments.add(RedBagFragment.newInstance(RedBagFragment.NORMAL));
-        fragments.add(RedBagFragment.newInstance(RedBagFragment.LUCK));
+        fragments.add(normalFragment);
+        fragments.add(luckFragment);
         fragments.add(RedBagFragment.newInstance(RedBagFragment.FUND));
         viewpager.setOffscreenPageLimit(titles.size());
         viewpager.setAdapter(new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles));
@@ -73,6 +80,7 @@ public class RedbagActivity extends BaseActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewpager.setCurrentItem(tab.getPosition(), false);
+                type = types[tab.getPosition()];
             }
 
             @Override
@@ -85,10 +93,36 @@ public class RedbagActivity extends BaseActivity {
 
             }
         });
+
+        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                type = types[position];
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.statusbar_black));
+    }
+
+    @Override
+    protected void loadData() {
     }
 
 
-    @OnClick({R.id.btn_note, R.id.btn_close})
+    @OnClick({R.id.btn_note, R.id.btn_close, R.id.btn_send})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_note:
@@ -100,8 +134,25 @@ public class RedbagActivity extends BaseActivity {
             case R.id.btn_close:
                 finish();
                 break;
+            case R.id.btn_send:
+                KeyBoardUtil.hide(this);
+                if (type.equals(NORMAL)) {
+                    if (normalFragment.checkNormal()) {
+                        if (ClickUtil.isFastClick()) {
+                            normalFragment.sendRedPack("NORMAL");
+                        }
+                    }
+                } else if (type.equals(LUCK)) {
+                    if (luckFragment.checkLuck()) {
+                        if (ClickUtil.isFastClick()) {
+                            luckFragment.sendRedPack("RANDOM");
+                        }
+                    }
+                }
+                break;
         }
     }
+
 
     private void showNotePop() {
         View popView = getLayoutInflater().inflate(R.layout.popwindow_note_redbag, null);

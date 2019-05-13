@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/ll_red_bag"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="37dp"
             android:layout_marginRight="37dp"
-            android:background="@drawable/bg_edit_red_bag"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
@@ -55,13 +54,19 @@
                 android:textSize="14.5sp" />
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:background="#10000000" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="37dp"
             android:layout_marginRight="37dp"
             android:layout_marginTop="14.5dp"
-            android:background="@drawable/bg_edit_red_bag"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="16dp"
@@ -100,6 +105,13 @@
                 android:textSize="14.5sp" />
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:background="#10000000" />
+
 
         <TextView
             android:id="@+id/tv_total"
@@ -113,23 +125,12 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btn_send"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="37dp"
-            android:layout_marginRight="37dp"
-            android:layout_marginTop="18dp"
-            android:background="@drawable/btn_red_bag"
-            android:text="塞币进红包"
-            android:textColor="#fefefe"
-            android:textSize="16.4sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_empty"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="gone">
