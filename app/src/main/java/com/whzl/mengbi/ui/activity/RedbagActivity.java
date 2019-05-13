@@ -18,6 +18,7 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.RedBagFragment;
+import com.whzl.mengbi.ui.fragment.RedFundFragment;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.SPUtils;
@@ -71,7 +72,7 @@ public class RedbagActivity extends BaseActivity {
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(normalFragment);
         fragments.add(luckFragment);
-        fragments.add(RedBagFragment.newInstance(RedBagFragment.FUND));
+        fragments.add(RedFundFragment.Companion.newInstance());
         viewpager.setOffscreenPageLimit(titles.size());
         viewpager.setAdapter(new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles));
         tabLayout.setupWithViewPager(viewpager);

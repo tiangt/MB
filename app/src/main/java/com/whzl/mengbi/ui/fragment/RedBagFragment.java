@@ -2,12 +2,10 @@ package com.whzl.mengbi.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,8 +18,6 @@ import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.ui.activity.RedbagActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.AmountConversionUitls;
-import com.whzl.mengbi.util.ClickUtil;
-import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
@@ -33,8 +29,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.HashMap;
 
 import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -54,11 +48,8 @@ public class RedBagFragment extends BaseFragment {
     EditText etNumber;
     @BindView(R.id.tv_total)
     TextView tvTotal;
-    @BindView(R.id.ll_empty)
-    LinearLayout llEmpty;
     @BindView(R.id.ll_red_bag)
     LinearLayout llRedBag;
-    Unbinder unbinder;
     private String type;
 
     public static RedBagFragment newInstance(String type) {
@@ -89,8 +80,6 @@ public class RedBagFragment extends BaseFragment {
                 initMoney(LUCK);
                 break;
             case FUND:
-                llEmpty.setVisibility(View.VISIBLE);
-                llRedBag.setVisibility(View.GONE);
                 break;
         }
     }

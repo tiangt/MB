@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_amount_fund"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:background="@drawable/bg_red_fund"
+        android:gravity="center"
+        android:textColor="#ff5705"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="上轮幸运玩家"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/iv_avatar_fund"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tv_nick_fund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_fenhong_fund"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:textColor="#757575"
+        android:textSize="12sp" />
+</LinearLayout>
