@@ -11,6 +11,9 @@ public class AppDataBean {
     public String weekStarHelpUrl;
     public String anchorAgreeUrl;
     public String userAgreeUrl;
+    public String userGradeUrl;
+    public String anchorGradeUrl;
+    public String redpacketHelpUrl;
     public UserAwardBean newUserAward;
 
     public class UserAwardBean {

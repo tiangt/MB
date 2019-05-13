@@ -2,7 +2,9 @@
 
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:overScrollMode="never">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,7 +26,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:background="@color/transparent">
+                android:background="#70000000">
 
                 <ImageButton
                     android:id="@+id/btn_back"
@@ -375,7 +377,16 @@
                 <com.whzl.mengbi.ui.widget.view.ExpValueLayout
                     android:id="@+id/evl_anchor_level"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/ib_anchor_note_personinfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:paddingRight="@dimen/padding_12"
+                    android:src="@drawable/arrowright" />
 
             </LinearLayout>
 
@@ -384,6 +395,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="19dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
@@ -398,7 +410,16 @@
                 <com.whzl.mengbi.ui.widget.view.ExpValueLayout
                     android:id="@+id/evl_user_level"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/ib_rich_note_personinfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:paddingRight="@dimen/padding_12"
+                    android:src="@drawable/arrowright" />
 
             </LinearLayout>
 
@@ -421,8 +442,17 @@
                 <com.whzl.mengbi.ui.widget.view.ExpValueLayout
                     android:id="@+id/evl_royal_level"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
+                <ImageButton
+                    android:id="@+id/ib_royal_note_personinfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:paddingRight="@dimen/padding_12"
+                    android:visibility="invisible"
+                    android:src="@drawable/arrowright" />
             </LinearLayout>
 
             <TextView

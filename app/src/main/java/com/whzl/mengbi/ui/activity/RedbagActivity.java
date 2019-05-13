@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,11 @@ import android.widget.PopupWindow;
 
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.fragment.RedBagFragment;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.util.ArrayList;
@@ -89,7 +92,10 @@ public class RedbagActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_note:
-                showNotePop();
+//                showNotePop();
+                startActivity(new Intent(RedbagActivity.this, JsBridgeActivity.class)
+                        .putExtra("title", "红包说明")
+                        .putExtra("url", SPUtils.get(RedbagActivity.this, SpConfig.REDPACKETHELPURL, "").toString()));
                 break;
             case R.id.btn_close:
                 finish();

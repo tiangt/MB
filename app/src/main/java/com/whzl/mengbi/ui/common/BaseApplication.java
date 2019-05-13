@@ -207,6 +207,9 @@ public class BaseApplication extends Application {
                         SPUtils.put(instance, SpConfig.WEEKSTARHELPURL, appDataBean.weekStarHelpUrl);
                         SPUtils.put(instance, SpConfig.ANCHORAGREEURL, appDataBean.anchorAgreeUrl);
                         SPUtils.put(instance, SpConfig.USERAGREEURL, appDataBean.userAgreeUrl);
+                        SPUtils.put(instance, SpConfig.USERGRADEURL, appDataBean.userGradeUrl);
+                        SPUtils.put(instance, SpConfig.ANCHORGRADEURL, appDataBean.anchorGradeUrl);
+                        SPUtils.put(instance, SpConfig.REDPACKETHELPURL, appDataBean.redpacketHelpUrl);
                         if (appDataBean != null && appDataBean.newUserAward != null) {
                             if (!TextUtils.isEmpty(appDataBean.newUserAward.guestUserAward)) {
                                 SPUtils.put(instance, SpConfig.AWARD_SHOW_TIME, System.currentTimeMillis());

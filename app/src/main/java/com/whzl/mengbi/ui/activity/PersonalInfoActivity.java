@@ -17,6 +17,7 @@ import com.jaeger.library.StatusBarUtil;
 import com.squareup.picasso.Picasso;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -122,7 +123,7 @@ public class PersonalInfoActivity extends BaseActivity {
     @Override
     protected void setStatusBar() {
         View mViewNeedOffset = findViewById(R.id.view_need_offset);
-        StatusBarUtil.setTransparentForImageView(this,null);
+        StatusBarUtil.setTransparentForImageView(this, null);
     }
 
     @Override
@@ -147,7 +148,8 @@ public class PersonalInfoActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.btn_back, R.id.tv_follow_state, R.id.tv_copy_num, R.id.tv_live_state})
+    @OnClick({R.id.btn_back, R.id.tv_follow_state, R.id.tv_copy_num, R.id.tv_live_state,
+            R.id.ib_anchor_note_personinfo, R.id.ib_rich_note_personinfo, R.id.ib_royal_note_personinfo})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_back:
@@ -167,6 +169,20 @@ public class PersonalInfoActivity extends BaseActivity {
                 Intent intent = new Intent(this, LiveDisplayActivity.class);
                 intent.putExtra(BundleConfig.PROGRAM_ID, mProgramId);
                 startActivity(intent);
+                break;
+            case R.id.ib_anchor_note_personinfo:
+                startActivity(new Intent(PersonalInfoActivity.this, JsBridgeActivity.class)
+                        .putExtra("title", "主播等级")
+                        .putExtra("url", SPUtils.get(PersonalInfoActivity.this, SpConfig.ANCHORGRADEURL, "").toString()));
+                break;
+            case R.id.ib_rich_note_personinfo:
+                startActivity(new Intent(PersonalInfoActivity.this, JsBridgeActivity.class)
+                        .putExtra("title", "贵族等级")
+                        .putExtra("url", SPUtils.get(PersonalInfoActivity.this, SpConfig.USERGRADEURL, "").toString()));
+                break;
+            case R.id.ib_royal_note_personinfo:
+                startActivity(new Intent(PersonalInfoActivity.this, JsBridgeActivity.class)
+                        .putExtra("title", "royal"));
                 break;
             default:
                 break;

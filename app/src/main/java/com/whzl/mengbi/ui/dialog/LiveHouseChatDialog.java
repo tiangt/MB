@@ -426,6 +426,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     public void onSuccess(JsonElement bean) {
                         ToastUtils.showToast("发送成功");
                         EventBus.getDefault().post(new SendBroadEvent());
+                        hide();
                     }
 
                     @Override
