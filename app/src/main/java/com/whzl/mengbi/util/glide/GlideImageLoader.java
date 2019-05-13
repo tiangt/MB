@@ -70,6 +70,13 @@ public class GlideImageLoader extends ImageLoader {
         }
     }
 
+    public void displayImageOption(Context context, Object path, ImageView imageView, RequestOptions options) {
+        //Glide 加载图片简单用法
+        if (isValidContextForGlide(context)) {
+            Glide.with(context).load(path).apply(options).into(imageView);
+        }
+    }
+
     public void displayImageNoCache(Context context, Object path, ImageView imageView) {
         if (isValidContextForGlide(context)) {
             RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE);

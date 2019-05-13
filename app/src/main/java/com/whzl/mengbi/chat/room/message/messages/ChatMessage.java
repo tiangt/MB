@@ -183,22 +183,26 @@ public class ChatMessage implements FillHolderMessage {
         }
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
             mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#2da8ee")));
+            mholder.textView.append(LightSpanString.getLightString("：", Color.parseColor("#2da8ee")));
         } else {
             if (hasVip) {
                 mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#fff607")));
+                mholder.textView.append(LightSpanString.getLightString("：", Color.parseColor("#fff607")));
             } else if (from_uid == 0) {
                 mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#d9d9d9")));
+                mholder.textView.append(LightSpanString.getLightString("：", Color.parseColor("#d9d9d9")));
             } else {
                 mholder.textView.append(LightSpanString.getNickNameSpan(mContext, from_nickname, from_uid, programId, Color.parseColor("#2da8ee")));
+                mholder.textView.append(LightSpanString.getLightString("：", Color.parseColor("#2da8ee")));
             }
         }
 
-        mholder.textView.append(LightSpanString.getLightString("  ", Color.parseColor("#75bbfb")));
         SpannableString spanString;
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
             spanString = LightSpanString.getLightString(contentString, Color.parseColor("#fc8f7a"));
         } else {
-            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
+//            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
+            spanString = new SpannableString(contentString);
         }
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
         if (hasGuard) {

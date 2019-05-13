@@ -1241,7 +1241,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initRunWayBroad() {
         if (mRunWayBroadControl == null) {
-            mRunWayBroadControl = new RunWayBroadControl(this,runWayBroad,clBottom);
+            mRunWayBroadControl = new RunWayBroadControl(this, runWayBroad, clBottom);
         }
     }
 
