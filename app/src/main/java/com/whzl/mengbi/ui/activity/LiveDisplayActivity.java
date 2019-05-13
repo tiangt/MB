@@ -1683,7 +1683,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
                 return false;
             }
-        }).apply(RequestOptions.bitmapTransform(new BlurTransformation()).override(200).placeholder(R.drawable.img_switch_live)).into(iv);
+        }).apply(RequestOptions.bitmapTransform(new BlurTransformation()).override(600).placeholder(R.drawable.img_switch_live)).into(iv);
     }
 
 

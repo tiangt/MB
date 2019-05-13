@@ -12,7 +12,8 @@
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:overScrollMode="never" />
 
         <LinearLayout
             android:id="@+id/pager_index_container"
