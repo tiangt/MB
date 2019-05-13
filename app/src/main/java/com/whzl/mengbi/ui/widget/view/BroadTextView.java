@@ -18,11 +18,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 /**
- * @author shaw
+ * @author nobody
  * @date 2018/8/2
  */
-public class AutoScrollTextView2 extends AppCompatTextView {
-    public final static String TAG = AutoScrollTextView2.class.getSimpleName();
+public class BroadTextView extends AppCompatTextView {
+    public final static String TAG = BroadTextView.class.getSimpleName();
 
     /**
      * 文本长度
@@ -56,17 +56,17 @@ public class AutoScrollTextView2 extends AppCompatTextView {
      */
     private BroadEvent broadEvent;
 
-    public AutoScrollTextView2(Context context) {
+    public BroadTextView(Context context) {
         this(context, null);
     }
 
-    public AutoScrollTextView2(Context context, AttributeSet attrs) {
+    public BroadTextView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public AutoScrollTextView2(Context context, AttributeSet attrs, int defStyle) {
+    public BroadTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        viewWidth = UIUtil.getScreenWidthPixels(getContext()) - UIUtil.dip2px(getContext(), 0);
+        viewWidth = UIUtil.getScreenWidthPixels(getContext()) - UIUtil.dip2px(getContext(), 100);
     }
 
     public void init(BroadEvent event, RunStateListener listener) {

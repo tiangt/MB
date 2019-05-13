@@ -97,7 +97,6 @@ import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
-import com.whzl.mengbi.chat.room.message.messages.PkMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
@@ -189,7 +188,7 @@ import com.whzl.mengbi.ui.view.LiveView;
 import com.whzl.mengbi.ui.widget.loading.LoadLayout;
 import com.whzl.mengbi.ui.widget.recyclerview.AutoPollAdapter;
 import com.whzl.mengbi.ui.widget.view.AutoScrollTextView;
-import com.whzl.mengbi.ui.widget.view.AutoScrollTextView2;
+import com.whzl.mengbi.ui.widget.view.BroadTextView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.HeadLineView;
 import com.whzl.mengbi.ui.widget.view.HeadlineLayout;
@@ -296,7 +295,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.btn_chat_private)
     ImageButton btnChatPrivate;
     @BindView(R.id.tv_run_way_broad)
-    AutoScrollTextView2 runWayBroad;
+    BroadTextView runWayBroad;
     @BindView(R.id.pk_layout)
     PkLayout pkLayout;
     @BindView(R.id.tv_count_down)
@@ -395,6 +394,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvLeftSecondEffect;
     @BindView(R.id.tv_right_second_effect)
     TextView tvRightSecondEffect;
+    @BindView(R.id.cl_bottom_live)
+    ConstraintLayout clBottom;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -1240,7 +1241,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initRunWayBroad() {
         if (mRunWayBroadControl == null) {
-            mRunWayBroadControl = new RunWayBroadControl(runWayBroad);
+            mRunWayBroadControl = new RunWayBroadControl(this,runWayBroad,clBottom);
         }
     }
 
@@ -2428,11 +2429,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
                 royalEnterControl.showEnter((WelcomeMsg) message);
             }
-        } else if (message instanceof PkMessage && ((PkMessage) message).pkJson.context.busiCode.equals("PK_RECORD")) {
-            initRunWayBroad();
-            PkEvent pkEvent = new PkEvent(((PkMessage) message).pkJson, this);
-            mRunWayBroadControl.load(pkEvent);
         }
+//        else if (message instanceof PkMessage && ((PkMessage) message).pkJson.context.busiCode.equals("PK_RECORD")) {
+//            initRunWayBroad();
+//            PkEvent pkEvent = new PkEvent(((PkMessage) message).pkJson, this);
+//            mRunWayBroadControl.load(pkEvent);
+//        }
     }
 
 

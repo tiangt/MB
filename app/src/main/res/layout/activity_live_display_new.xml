@@ -113,15 +113,15 @@
                                 android:src="@drawable/live_display_guard_num" />
 
                             <TextView
-                                android:paddingBottom="4.5dp"
                                 android:id="@+id/tv_guard_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
                                 android:layout_centerHorizontal="true"
+                                android:paddingBottom="4.5dp"
                                 android:textColor="#ff188e"
-                                android:textStyle="bold"
-                                android:textSize="8sp" />
+                                android:textSize="8sp"
+                                android:textStyle="bold" />
                         </RelativeLayout>
 
                         <TextView
@@ -591,28 +591,6 @@
                         android:layout_marginRight="20dp"
                         android:visibility="gone" />
 
-                    <android.support.design.widget.CoordinatorLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerVertical="true">
-
-                        <com.whzl.mengbi.ui.widget.view.AutoScrollTextView2
-                            android:id="@+id/tv_run_way_broad"
-                            android:layout_width="1000dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:background="#702d2933"
-                            android:gravity="center_vertical"
-                            android:paddingBottom="3dp"
-                            android:paddingLeft="7dp"
-                            android:paddingRight="7dp"
-                            android:paddingTop="2dp"
-                            android:singleLine="true"
-                            android:textSize="12sp"
-                            android:visibility="gone" />
-                    </android.support.design.widget.CoordinatorLayout>
-
                     <TextView
                         android:id="@+id/tv_count_down"
                         android:layout_width="wrap_content"
@@ -820,6 +798,45 @@
                     android:overScrollMode="never"
                     app:layout_constraintLeft_toLeftOf="@id/rl_bottom_container"
                     app:layout_constraintTop_toBottomOf="@id/ratio_layout" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/cl_bottom_live"
+                    android:layout_width="284dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginTop="2dp"
+                    android:background="@drawable/bg_broad_bottom_live"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@id/fragment_container">
+
+                    <ImageView
+                        android:id="@+id/iv_broad_bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:src="@drawable/ic_broad_bottom_live"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.whzl.mengbi.ui.widget.view.BroadTextView
+                        android:id="@+id/tv_run_way_broad"
+                        android:layout_width="1000dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="7dp"
+                        android:paddingRight="7dp"
+                        android:paddingTop="2dp"
+                        android:singleLine="true"
+                        android:textSize="12sp"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/iv_broad_bottom"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
             </android.support.constraint.ConstraintLayout>
 
 
