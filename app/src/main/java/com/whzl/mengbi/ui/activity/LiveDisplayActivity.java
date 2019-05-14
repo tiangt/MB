@@ -33,7 +33,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,7 +43,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
@@ -56,7 +54,6 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnchorWishBeginEvent;
@@ -129,7 +126,6 @@ import com.whzl.mengbi.greendao.UsualGift;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AnchorWishBean;
-import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
@@ -205,8 +201,6 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.util.network.retrofit.ApiFactory;
-import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
 import com.youth.banner.Banner;
@@ -232,7 +226,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -449,7 +442,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private HeadLineControl headLineControl;
     private boolean ignoreChat = false;
     private boolean playNotify = false;
-    private PopupWindow redPopupWindow;
     private RedPackRunWayControl redPackRunWayControl;
     private RedPacketControl redPacketControl;
     private CompositeDisposable compositeDisposable;
@@ -1011,52 +1003,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
 
     /**
-     * 发送红包
-     */
-    private void sendRedPack() {
-        HashMap hashMap = new HashMap();
-        hashMap.put("amount", 180000);
-        hashMap.put("contentType", "COIN");
-        hashMap.put("objectType", "PROGRAM_TREASURE");
-        hashMap.put("programId", mProgramId);
-        hashMap.put("quantity", 20);
-        hashMap.put("redPacketType", "RANDOM");
-        ApiFactory.getInstance().getApi(Api.class)
-                .sendRedPacket(ParamsUtils.getSignPramsMap(hashMap))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<JsonElement>(this) {
-
-                    @Override
-                    public void onSuccess(JsonElement bean) {
-                        if (redPopupWindow != null && redPopupWindow.isShowing()) {
-                            redPopupWindow.dismiss();
-                        }
-                        EventBus.getDefault().post(new UserInfoUpdateEvent());
-                        ToastUtils.showToastUnify(LiveDisplayActivity.this, "发送成功");
-                    }
-
-                    @Override
-                    public void onError(ApiResult<JsonElement> body) {
-                        switch (body.code) {
-                            case -1265:
-                                ToastUtils.showToastUnify(LiveDisplayActivity.this, getString(R.string.red_pack_full));
-                                break;
-                            case -1135:
-                                ToastUtils.showToastUnify(LiveDisplayActivity.this, getString(R.string.red_pack_unplay));
-                                break;
-                            case -1211:
-                                ToastUtils.showToastUnify(LiveDisplayActivity.this, getString(R.string.red_pack_money_unfull));
-                                break;
-                            default:
-                                ToastUtils.showToastUnify(LiveDisplayActivity.this, body.msg);
-                                break;
-                        }
-                    }
-                });
-    }
-
-    /**
      * 关闭侧滑菜单
      */
     public void closeDrawLayout() {
@@ -1294,6 +1240,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             redPackRunWayControl = new RedPackRunWayControl(this, tvRedBagRunWay);
         }
         redPackRunWayControl.load(redPackTreasureEvent);
+
         if ((redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.USER_SEND_REDPACKET)
                 || redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.PROGRAM_TREASURE_SEND_REDPACKET) ||
                 redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OFFICIAL_SEND_REDPACKET))) {
