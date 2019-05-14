@@ -150,7 +150,6 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.ActivityFragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.control.NewRedPacketControl;
-import com.whzl.mengbi.ui.control.RedPacketControl;
 import com.whzl.mengbi.ui.dialog.AnchorWishDialog;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
@@ -219,7 +218,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -354,8 +352,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     SVGAImageView svgaGift;
     @BindView(R.id.tv_red_bag_run_way)
     TextView tvRedBagRunWay;
-    @BindView(R.id.rv_redpack)
-    RecyclerView rvRedPack;
     @BindView(R.id.ll_loading)
     LoadLayout loadLayout;
     @BindView(R.id.tv_stop_time)
@@ -449,7 +445,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private boolean ignoreChat = false;
     private boolean playNotify = false;
     private RedPackRunWayControl redPackRunWayControl;
-    private RedPacketControl redPacketControl;
     private CompositeDisposable compositeDisposable;
     private BaseAwesomeDialog privateChatListDialog;
     private BaseAwesomeDialog awesomeDialog;
@@ -1249,18 +1244,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (redPackTreasureEvent.treasureNum.context.programId != mProgramId) {
                 return;
             }
-//            if (redPacketControl == null) {
-//                redPacketControl = new RedPacketControl(this, rvRedPack);
-//                redPacketControl.init();
-//            }
-//            redPacketControl.destroy();
-//            RoomRedpackList.ListBean bean = new RoomRedpackList.ListBean();
-//            bean.leftSeconds = redPackTreasureEvent.treasureNum.context.leftSeconds;
-//            bean.effDate = redPackTreasureEvent.treasureNum.context.effDate;
-//            bean.expDate = redPackTreasureEvent.treasureNum.context.expDate;
-//            bean.redPacketId = redPackTreasureEvent.treasureNum.context.redPacketId;
-//            redPacketControl.redPackList.add(bean);
-//            redPacketControl.redpackAdapter.notifyDataSetChanged();
 
             if (newRedPacketControl == null) {
                 newRedPacketControl = new NewRedPacketControl(this, rlRedbagLive, rlProductRedbag);
@@ -1823,13 +1806,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (dataBean == null || dataBean.list == null || dataBean.list.isEmpty()) {
             return;
         }
-//        if (redPacketControl == null) {
-//            redPacketControl = new RedPacketControl(this, rvRedPack);
-//            redPacketControl.init();
-//        }
-//        redPacketControl.redPackList.clear();
-//        redPacketControl.redPackList.addAll(dataBean.list);
-//        redPacketControl.redpackAdapter.notifyDataSetChanged();
 
         if (newRedPacketControl == null) {
             newRedPacketControl = new NewRedPacketControl(this, rlRedbagLive, rlProductRedbag);

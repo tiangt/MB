@@ -758,15 +758,6 @@
                         android:orientation="horizontal" />
                 </LinearLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_redpack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="37dp"
-                    android:layout_marginTop="12dp"
-                    android:overScrollMode="never"
-                    app:layout_constraintLeft_toLeftOf="@id/rl_bottom_container"
-                    app:layout_constraintTop_toBottomOf="@id/ratio_layout" />
-
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/cl_bottom_live"
                     android:layout_width="284dp"
