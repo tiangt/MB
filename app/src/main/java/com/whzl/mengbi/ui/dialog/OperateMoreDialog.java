@@ -107,7 +107,7 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
                     || mUser.getIdentityId() == UserIdentity.ANCHOR) {
                 llOptionContainer.setVisibility(View.VISIBLE);
             }
-            if (mUser.getIdentityId() == UserIdentity.OPTR_MANAGER) {
+            if (mUser.getUserType().equals("MANAGER")) {
                 llOffline.setVisibility(View.VISIBLE);
             }
         }

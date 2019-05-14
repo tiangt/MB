@@ -469,6 +469,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private boolean isFirstCome = true;
     private GifSvgaControl gifSvgaControl;
     private NewRedPacketControl newRedPacketControl;
+    private LiveNoMoneyDialog liveNoMoneyDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1553,7 +1554,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onSendGiftNoMoney() {
-        LiveNoMoneyDialog liveNoMoneyDialog = LiveNoMoneyDialog.Companion.newInstance();
+        if (liveNoMoneyDialog != null && liveNoMoneyDialog.isAdded()) {
+            return;
+        }
+        liveNoMoneyDialog = LiveNoMoneyDialog.Companion.newInstance();
         liveNoMoneyDialog.setShowBottom(true)
                 .setDimAmount(0)
                 .show(getSupportFragmentManager());

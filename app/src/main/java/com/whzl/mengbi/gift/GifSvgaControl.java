@@ -146,7 +146,8 @@ public class GifSvgaControl {
 
                 @Override
                 public void onError() {
-
+                    isShowSvga = false;
+                    svgaImageView.setVisibility(View.GONE);
                 }
             });
         } catch (Exception e) {

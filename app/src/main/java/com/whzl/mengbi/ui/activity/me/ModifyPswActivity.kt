@@ -12,6 +12,7 @@ import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.ApiResult
 import com.whzl.mengbi.ui.activity.base.BaseActivity
+import com.whzl.mengbi.util.AmountConversionUitls
 import com.whzl.mengbi.util.EncryptUtils
 import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.ToastUtils
@@ -75,8 +76,21 @@ class ModifyPswActivity : BaseActivity<BasePresenter<BaseView>>() {
 
     override fun onToolbarMenuClick() {
         super.onToolbarMenuClick()
+        if (!AmountConversionUitls.ispsd(et_new_psw_modify_psw.text.toString())
+                || !AmountConversionUitls.ispsd(et_confirm_psw_modify_psw.text.toString())) {
+            ToastUtils.showToastUnify(this@ModifyPswActivity, "不能输入纯数字或纯英文")
+            return
+        }
         if (et_new_psw_modify_psw.text.toString() != et_confirm_psw_modify_psw.text.toString()) {
             ToastUtils.showToastUnify(this@ModifyPswActivity, "两次输入密码不一致")
+            return
+        }
+        if (et_new_psw_modify_psw.text.toString().length<6) {
+            ToastUtils.showToastUnify(this@ModifyPswActivity, "新密码长度不能小于6位")
+            return
+        }
+        if (et_confirm_psw_modify_psw.text.toString() .length<6) {
+            ToastUtils.showToastUnify(this@ModifyPswActivity, "确认密码长度不能小于6位")
             return
         }
         val map = mutableMapOf<String, String>()

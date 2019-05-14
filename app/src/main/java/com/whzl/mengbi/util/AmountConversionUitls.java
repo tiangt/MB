@@ -2,6 +2,8 @@ package com.whzl.mengbi.util;
 
 import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AmountConversionUitls {
     /**
@@ -96,5 +98,49 @@ public class AmountConversionUitls {
      */
     public static String amountConversionFormat(double amount) {
         return NumberFormat.getInstance().format(amount);
+    }
+
+    /**
+     * 纯数字
+     *
+     * @param str
+     * @return
+     */
+    public static boolean isNumeric(String str) {
+        for (int i = str.length(); --i >= 0; ) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 纯字母
+     *
+     * @param data
+     * @return
+     */
+    public static boolean isChar(String data) {
+        {
+            for (int i = data.length(); --i >= 0; ) {
+                char c = data.charAt(i);
+                if (((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+    }
+
+    public static boolean ispsd(String psd) {
+        Pattern p = Pattern
+                .compile("^[a-zA-Z].*[0-9]|.*[0-9].*[a-zA-Z]");
+        Matcher m = p.matcher(psd);
+
+        return m.matches();
     }
 }
