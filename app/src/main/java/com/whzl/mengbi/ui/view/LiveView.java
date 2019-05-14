@@ -66,8 +66,6 @@ public interface LiveView {
 
     void onGetUsetSetSuccesd(GetUserSetBean dataBean);
 
-    void onGetRoomRedpackTreasureSuccess(RoomRedPackTreasure dataBean);
-
     void onGetRoomRedListSuccess(RoomRedpackList dataBean);
 
     void onActivityNativeSuccess(GetActivityBean bean);

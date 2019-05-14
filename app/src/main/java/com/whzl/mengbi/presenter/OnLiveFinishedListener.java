@@ -64,8 +64,6 @@ public interface OnLiveFinishedListener {
 
     void onGetUserSet(GetUserSetBean dataBean);
 
-    void onGetRoomRedTreasure(RoomRedPackTreasure dataBean);
-
     void onGetRoomRedList(RoomRedpackList dataBean);
 
     void onActivityNativeSuccess(GetActivityBean bean);

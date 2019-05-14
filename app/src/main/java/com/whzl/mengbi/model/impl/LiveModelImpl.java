@@ -461,26 +461,6 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void getRedPackTreasure(HashMap signPramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .getRoomRedpacketTreasure(signPramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<RoomRedPackTreasure>() {
-                    @Override
-                    public void onSuccess(RoomRedPackTreasure dataBean) {
-                        if (dataBean != null) {
-                            listener.onGetRoomRedTreasure(dataBean);
-                        }
-                    }
-
-                    @Override
-                    public void onError(ApiResult<RoomRedPackTreasure> body) {
-                    }
-                });
-    }
-
-    @Override
     public void getRedPackList(HashMap signPramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .getRoomRedpacketList(signPramsMap)

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -29,7 +28,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -145,7 +143,6 @@ import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
-import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -360,10 +357,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvTimeBlackRoom;
     @BindView(R.id.svga_gift)
     SVGAImageView svgaGift;
-    @BindView(R.id.ll_red_bag)
-    LinearLayout llRedBag;
-    @BindView(R.id.tv_red_bag)
-    TextView tvRedBag;
     @BindView(R.id.tv_red_bag_run_way)
     TextView tvRedBagRunWay;
     @BindView(R.id.rv_redpack)
@@ -801,7 +794,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mLivePresenter.getDailyTaskState(mUserId);
         }
         mLivePresenter.getUserSet(mUserId);
-        mLivePresenter.getRedPackTreasure(mProgramId);
         mLivePresenter.getRedPackList(mProgramId, mUserId);
     }
 
@@ -824,7 +816,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.btn_chat, R.id.btn_chat_private, R.id.fragment_container, R.id.rl_guard_number
-            , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more, R.id.ll_black_room, R.id.ll_red_bag})
+            , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more, R.id.ll_black_room})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
@@ -955,9 +947,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             case R.id.ll_black_room:
                 jumpToBlackRoomActivity();
                 break;
-            case R.id.ll_red_bag:
-                showRedbagPopwindow();
-                break;
             default:
                 break;
         }
@@ -1020,26 +1009,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         awesomeDialog.show(getSupportFragmentManager());
     }
 
-    private void showRedbagPopwindow() {
-        View popView = getLayoutInflater().inflate(R.layout.popwindow_redbag_live, null);
-        TextView tvSend = popView.findViewById(R.id.tv_send);
-        tvSend.setVisibility(mAnchorId == mUserId ? View.VISIBLE : View.GONE);
-        tvSend.setSelected(mAnchorId == mUserId);
-        tvSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (tvSend.isSelected()) {
-                    sendRedPack();
-                }
-            }
-        });
-        redPopupWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        redPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-        redPopupWindow.setOutsideTouchable(true);
-        redPopupWindow.setFocusable(true);
-        redPopupWindow.showAsDropDown(llRedBag, 0, UIUtil.dip2px(LiveDisplayActivity.this, 1));
-    }
 
     /**
      * 发送红包
@@ -1321,11 +1290,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RedPackTreasureEvent redPackTreasureEvent) {
-        if (!redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OPEN_REDPACKET) &&
-                !redPackTreasureEvent.treasureNum.context.busiCodeName.equals("RP_RETURN_TO_U") &&
-                !redPackTreasureEvent.treasureNum.context.busiCodeName.equals("RP_HAD_FINISHED")) {
-            tvRedBag.setText(redPackTreasureEvent.treasureNum.context.programTreasureNum + "");
-        }
         if (redPackRunWayControl == null) {
             redPackRunWayControl = new RedPackRunWayControl(this, tvRedBagRunWay);
         }
@@ -1886,15 +1850,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             }
         }
-    }
-
-    /**
-     * 直播间红包池金额
-     */
-    @Override
-    public void onGetRoomRedpackTreasureSuccess(RoomRedPackTreasure dataBean) {
-        llRedBag.setVisibility(View.VISIBLE);
-        tvRedBag.setText(String.valueOf(dataBean.amountTotal));
     }
 
     /**

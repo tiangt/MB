@@ -366,39 +366,6 @@
 
                     </android.support.constraint.ConstraintLayout>
 
-                    <LinearLayout
-                        android:id="@+id/ll_red_bag"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/bg_red_bag_live"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_red_bag_live" />
-
-                        <TextView
-                            android:id="@+id/tv_red_bag"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4.5dp"
-                            android:textColor="#FFFF5D05"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="3.5dp"
-                            android:layout_marginRight="5dp"
-                            android:text="萌币"
-                            android:textColor="#FF323232"
-                            android:textSize="11sp" />
-                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/ll_black_room"
