@@ -149,6 +149,7 @@ import com.whzl.mengbi.receiver.NetStateChangeReceiver;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.ActivityFragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.control.NewRedPacketControl;
 import com.whzl.mengbi.ui.control.RedPacketControl;
 import com.whzl.mengbi.ui.dialog.AnchorWishDialog;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
@@ -218,6 +219,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -382,6 +384,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvRightSecondEffect;
     @BindView(R.id.cl_bottom_live)
     ConstraintLayout clBottom;
+    @BindView(R.id.rl_red_bag_live)
+    RelativeLayout rlRedbagLive;
+    @BindView(R.id.rl_product_redbag)
+    RelativeLayout rlProductRedbag;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -462,6 +468,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private boolean isFirstCome = true;
     private GifSvgaControl gifSvgaControl;
+    private NewRedPacketControl newRedPacketControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -597,7 +604,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initBanner();
         initProtectRecycler();
         initDrawLayout(this);
-        initRvRedpack();
         initPageTouch();
     }
 
@@ -637,11 +643,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         });
         unclickLinearLayout.init();
-    }
-
-    private void initRvRedpack() {
-        redPacketControl = new RedPacketControl(this, rvRedPack);
-        redPacketControl.init();
     }
 
 
@@ -1247,18 +1248,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (redPackTreasureEvent.treasureNum.context.programId != mProgramId) {
                 return;
             }
-            if (redPacketControl == null) {
-                redPacketControl = new RedPacketControl(this, rvRedPack);
-                redPacketControl.init();
+//            if (redPacketControl == null) {
+//                redPacketControl = new RedPacketControl(this, rvRedPack);
+//                redPacketControl.init();
+//            }
+//            redPacketControl.destroy();
+//            RoomRedpackList.ListBean bean = new RoomRedpackList.ListBean();
+//            bean.leftSeconds = redPackTreasureEvent.treasureNum.context.leftSeconds;
+//            bean.effDate = redPackTreasureEvent.treasureNum.context.effDate;
+//            bean.expDate = redPackTreasureEvent.treasureNum.context.expDate;
+//            bean.redPacketId = redPackTreasureEvent.treasureNum.context.redPacketId;
+//            redPacketControl.redPackList.add(bean);
+//            redPacketControl.redpackAdapter.notifyDataSetChanged();
+
+            if (newRedPacketControl == null) {
+                newRedPacketControl = new NewRedPacketControl(this, rlRedbagLive, rlProductRedbag);
             }
-            redPacketControl.destroy();
-            RoomRedpackList.ListBean bean = new RoomRedpackList.ListBean();
-            bean.leftSeconds = redPackTreasureEvent.treasureNum.context.leftSeconds;
-            bean.effDate = redPackTreasureEvent.treasureNum.context.effDate;
-            bean.expDate = redPackTreasureEvent.treasureNum.context.expDate;
-            bean.redPacketId = redPackTreasureEvent.treasureNum.context.redPacketId;
-            redPacketControl.redPackList.add(bean);
-            redPacketControl.redpackAdapter.notifyDataSetChanged();
+            RoomRedpackList.ListBean listBean = new RoomRedpackList.ListBean();
+            listBean.leftSeconds = redPackTreasureEvent.treasureNum.context.leftSeconds;
+            listBean.effDate = redPackTreasureEvent.treasureNum.context.effDate;
+            listBean.expDate = redPackTreasureEvent.treasureNum.context.expDate;
+            listBean.redPacketId = redPackTreasureEvent.treasureNum.context.redPacketId;
+            newRedPacketControl.redPackList.add(listBean);
+            newRedPacketControl.init();
         }
     }
 
@@ -1374,7 +1386,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         mGrandAdaper = new ActivityFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
         vpActivity.setAdapter(mGrandAdaper);
-        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
+//        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
         vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -1804,13 +1816,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onGetRoomRedListSuccess(RoomRedpackList dataBean) {
-        if (redPacketControl == null) {
-            redPacketControl = new RedPacketControl(this, rvRedPack);
-            redPacketControl.init();
+        if (dataBean == null || dataBean.list == null || dataBean.list.isEmpty()) {
+            return;
         }
-        redPacketControl.redPackList.clear();
-        redPacketControl.redPackList.addAll(dataBean.list);
-        redPacketControl.redpackAdapter.notifyDataSetChanged();
+//        if (redPacketControl == null) {
+//            redPacketControl = new RedPacketControl(this, rvRedPack);
+//            redPacketControl.init();
+//        }
+//        redPacketControl.redPackList.clear();
+//        redPacketControl.redPackList.addAll(dataBean.list);
+//        redPacketControl.redpackAdapter.notifyDataSetChanged();
+
+        if (newRedPacketControl == null) {
+            newRedPacketControl = new NewRedPacketControl(this, rlRedbagLive, rlProductRedbag);
+        }
+        newRedPacketControl.redPackList.clear();
+        newRedPacketControl.redPackList.addAll(dataBean.list);
+        newRedPacketControl.init();
     }
 
     /**
@@ -2225,8 +2247,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (redPackRunWayControl != null) {
             redPackRunWayControl.destroy();
         }
-        if (redPacketControl != null) {
-            redPacketControl.destroy();
+        if (newRedPacketControl != null) {
+            newRedPacketControl.destroy();
+            newRedPacketControl = null;
         }
         if (compositeDisposable != null) {
             compositeDisposable.clear();

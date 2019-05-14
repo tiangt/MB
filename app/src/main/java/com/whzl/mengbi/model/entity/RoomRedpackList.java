@@ -46,5 +46,6 @@ public class RoomRedpackList {
         public Object founderUserNickname;
         public Object gmtCreated;
         public Object gmtModified;
+        public long currentTime = System.currentTimeMillis();
     }
 }

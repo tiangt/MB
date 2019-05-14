@@ -18,6 +18,7 @@
             android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_live"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -804,6 +805,61 @@
                         app:layout_constraintLeft_toRightOf="@id/iv_broad_bottom"
                         app:layout_constraintTop_toTopOf="parent" />
                 </android.support.constraint.ConstraintLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_red_bag_live"
+                    android:layout_width="35dp"
+                    android:layout_height="42dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="12dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/ratio_layout"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <RelativeLayout
+                        android:layout_width="29dp"
+                        android:layout_height="37dp"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="29dp"
+                            android:layout_height="37dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_red_pack_off_live" />
+
+                        <TextView
+                            android:id="@+id/tv_second_redbag_live"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="4.5dp"
+                            android:text="0"
+                            android:textColor="#fddd2b"
+                            android:textSize="8.5sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="5dp"
+                            android:layout_toRightOf="@id/tv_second_redbag_live"
+                            android:text="s"
+                            android:textColor="#fddd2b"
+                            android:textSize="6.5sp" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tv_size_redbag_live"
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/bg_num_red_pack_live"
+                        android:gravity="center"
+                        android:textColor="#fca92e"
+                        android:textSize="6sp" />
+                </RelativeLayout>
             </android.support.constraint.ConstraintLayout>
 
 
@@ -818,6 +874,11 @@
             android:visibility="gone"
             app:autoPlay="true" />
 
+        <RelativeLayout
+            android:id="@+id/rl_product_redbag"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <include
             android:id="@+id/page_head_live"
             layout="@layout/layout_live_load_head"
@@ -831,6 +892,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
+
 
     </RelativeLayout>
 
