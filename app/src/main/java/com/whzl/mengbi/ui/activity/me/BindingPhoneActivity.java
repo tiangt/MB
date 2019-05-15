@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.presenter.impl.BindingPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -21,6 +22,7 @@ import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.EncryptUtils;
 import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -216,6 +218,7 @@ public class BindingPhoneActivity extends BaseActivity implements BindingPhoneVi
                             showToast("绑定成功");
                             setResult(RESULT_OK);
                             finish();
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_BIND_MOBILE, mobile);
                         } else {
                             showToast(msg);
                         }

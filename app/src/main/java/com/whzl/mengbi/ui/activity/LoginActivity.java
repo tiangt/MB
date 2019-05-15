@@ -328,6 +328,7 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, userInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, userInfo.getData().getNickname());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, userInfo.getData().getLastRechargeTime() != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
+        SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_BIND_MOBILE, userInfo.getData().getBindMobile());
 
         BusinessUtils.uploadVistorHistory();
 

@@ -26,4 +26,5 @@ public interface SpConfig {
     String USERGRADEURL = "usergradeurl";
     String ANCHORGRADEURL = "anchorgradeurl";
     String REDPACKETHELPURL = "redpackethelpurl";
+    String KEY_BIND_MOBILE = "bind_mobile";
 }

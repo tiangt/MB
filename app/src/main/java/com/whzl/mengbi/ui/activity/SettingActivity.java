@@ -210,6 +210,7 @@ public class SettingActivity extends BaseActivity {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(strJson, ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
                     showToast("已退出登录");
+                    SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_BIND_MOBILE, "");
                     setResult(RESULT_OK);
                     finish();
                     delete();

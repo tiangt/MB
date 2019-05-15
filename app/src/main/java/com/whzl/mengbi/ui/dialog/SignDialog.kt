@@ -141,6 +141,11 @@ class SignDialog : BaseAwesomeDialog() {
 
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
+            val bind = SPUtils.get(context, SpConfig.KEY_BIND_MOBILE, "").toString()
+            if (bind.isEmpty()) {
+                showBindDialog()
+                return
+            }
             val bean = mData[position]
             if (bean.awardId == curAwardId && bean.signStatus == "notsign") {
                 userSign()
