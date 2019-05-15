@@ -38,6 +38,7 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.ImgUploadBean;
 import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
+import com.whzl.mengbi.model.entity.ModifyNameCardBean;
 import com.whzl.mengbi.model.entity.MyCouponBean;
 import com.whzl.mengbi.model.entity.NewTaskBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
@@ -1138,5 +1139,15 @@ public interface Api {
     @POST("v1/program/program-info-batch")
     @FormUrlEncoded
     Observable<ApiResult<FollowSortBean>> programInfoBatch(@FieldMap Map<String, String> params);
+
+    /**
+     * 查询用户改名卡信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/my/query-modify-name-card")
+    @FormUrlEncoded
+    Observable<ApiResult<ModifyNameCardBean>> modifyNameCard(@FieldMap Map<String, String> params);
 
 }

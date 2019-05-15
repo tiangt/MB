@@ -18,6 +18,7 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.gen.UserDao;
 import com.whzl.mengbi.greendao.User;
 import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.ModifyNameCardBean;
 import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -47,6 +48,8 @@ public class NickNameModifyActivity extends BaseActivity {
     EditText etNickName;
     @BindView(R.id.tv_limit_nick_name_modify)
     TextView tvLimit;
+    @BindView(R.id.tv_limit2_nick_name_modify)
+    TextView tvLimit2;
     @BindView(R.id.btn_clear)
     ImageButton btnClear;
     private String nickname;
@@ -164,14 +167,29 @@ public class NickNameModifyActivity extends BaseActivity {
                             return;
                         }
                         tvLimit.setText(LightSpanString.getLightString(jsonElement.list.get(0).paramValue, Color.parseColor("#70ff2b3f")));
-                        tvLimit.append(jsonElement.list.get(0).unitType + " / 次，首次免费。昵称长度限制");
-                        tvLimit.append(LightSpanString.getLightString("10", Color.parseColor("#70ff2b3f")));
-                        tvLimit.append("个汉字。");
+                        tvLimit.append(jsonElement.list.get(0).unitType + " / 次，首次免费");
                     }
 
                     @Override
                     public void onError(ApiResult<SystemConfigBean> body) {
 
+                    }
+                });
+
+        HashMap hashMap = new HashMap();
+        hashMap.put("userId", SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString());
+        ApiFactory.getInstance().getApi(Api.class)
+                .modifyNameCard(ParamsUtils.getSignPramsMap(hashMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<ModifyNameCardBean>() {
+
+
+                    @Override
+                    public void onSuccess(ModifyNameCardBean jsonElement) {
+                        tvLimit2.setText("（免费改名卡 ");
+                        tvLimit2.append(LightSpanString.getLightString(String.valueOf(jsonElement.count), Color.parseColor("#70ff2b3f")));
+                        tvLimit2.append(" 张，优先使用）");
                     }
                 });
     }
