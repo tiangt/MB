@@ -43,6 +43,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
 import com.ksyun.media.player.KSYMediaPlayer;
@@ -54,6 +55,7 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.umeng.socialize.UMShareAPI;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.ChatRoomPresenterImpl;
 import com.whzl.mengbi.chat.room.message.events.AnchorLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.AnchorWishBeginEvent;
@@ -126,6 +128,7 @@ import com.whzl.mengbi.greendao.UsualGift;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AnchorWishBean;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
@@ -201,6 +204,8 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import com.whzl.mengbi.util.zxing.NetUtils;
 import com.youth.banner.Banner;
@@ -226,6 +231,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import pl.droidsonroids.gif.GifImageView;
 
@@ -1943,6 +1949,30 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         usualGift.setUserId(mUserId);
         usualGift.setGiftId(Long.valueOf(goodId));
         addCommonGift(usualGift, goodId + "");
+    }
+
+    public void sendPkExpCard(GiftInfo.GiftDetailInfoBean giftDetailInfoBean) {
+        if (mAnchorId != mUserId) {
+            return;
+        }
+        HashMap map = new HashMap();
+        map.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L).toString());
+        map.put("goodsId", giftDetailInfoBean.getGoodsId());
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        ApiFactory.getInstance().getApi(Api.class)
+                .expOpenCard(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+                    @Override
+                    public void onSuccess(JsonElement jsonElement) {
+                    }
+
+                    @Override
+                    public void onError(ApiResult<JsonElement> body) {
+
+                    }
+                });
     }
 
     /**

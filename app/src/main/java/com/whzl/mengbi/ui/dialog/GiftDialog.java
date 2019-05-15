@@ -344,24 +344,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                     return;
                 }
                 if (giftDetailInfoBean.getGoodsTypeName().equals("PK_CARD")) {
-                    HashMap map = new HashMap();
-                    map.put("userId", SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L).toString());
-                    map.put("goodsId", giftDetailInfoBean.getGoodsId());
-                    HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-                    ApiFactory.getInstance().getApi(Api.class)
-                            .expOpenCard(signPramsMap)
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new ApiObserver<JsonElement>() {
-                                @Override
-                                public void onSuccess(JsonElement jsonElement) {
-                                }
-
-                                @Override
-                                public void onError(ApiResult<JsonElement> body) {
-
-                                }
-                            });
+                    ((LiveDisplayActivity) getActivity()).sendPkExpCard(giftDetailInfoBean);
                     return;
                 }
                 superValue = false;
