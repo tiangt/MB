@@ -27,11 +27,10 @@ import com.whzl.mengbi.model.entity.LiveShowListInfo;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.impl.HomePresenterImpl;
-import com.whzl.mengbi.ui.activity.CommWebActivity;
 import com.whzl.mengbi.ui.activity.HistoryListActivity;
+import com.whzl.mengbi.ui.activity.JsBridgeActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.LoginActivity;
-import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.activity.RankListActivity;
 import com.whzl.mengbi.ui.activity.SearchActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
@@ -370,7 +369,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                     startActivity(intent);
                 }
                 if ("web".equals(listBean.getType()) && !TextUtils.isEmpty(listBean.getUrl())) {
-                    Intent intent = new Intent(getContext(), CommWebActivity.class);
+                    Intent intent = new Intent(getContext(), JsBridgeActivity.class);
                     intent.putExtra("title", listBean.getTitle());
                     intent.putExtra("url", listBean.getUrl());
                     startActivity(intent);

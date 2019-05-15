@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -79,6 +80,7 @@ public class JsBridgeActivity extends BaseActivity {
         setContentView(R.layout.activity_jsbridge, title, true);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void setupView() {
         button = findViewById(R.id.button3);

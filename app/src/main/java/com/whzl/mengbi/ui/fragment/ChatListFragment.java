@@ -39,7 +39,7 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.RoomAnnouceBean;
-import com.whzl.mengbi.ui.activity.CommWebActivity;
+import com.whzl.mengbi.ui.activity.JsBridgeActivity;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
 import com.whzl.mengbi.ui.adapter.ChatMsgAnimation;
@@ -239,7 +239,7 @@ public class ChatListFragment extends BaseFragment {
                         }
                         if (!TextUtils.isEmpty(((SystemMessage) message).getLink())) {
                             holder.itemView.setOnClickListener(v -> {
-                                Intent intent = new Intent(getMyActivity(), CommWebActivity.class);
+                                Intent intent = new Intent(getMyActivity(), JsBridgeActivity.class);
                                 intent.putExtra("title", "公告");
                                 intent.putExtra("url", systemMessage.getLink());
                                 startActivity(intent);
