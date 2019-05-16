@@ -152,15 +152,16 @@ class SignDialog : BaseAwesomeDialog() {
             } else if ("retroactive" == bean.signStatus) {
                 getRetroInfo(bean.awardId, bean.dayIndex)
             } else if (bean.dayIndex == 8) {
-                querySignAward(bean.awardSn)
+                querySignAward(bean.awardSn, bean.awardId)
             }
         }
     }
 
-    private fun querySignAward(awardSn: Int) {
+    private fun querySignAward(awardSn: Int, awardId: Int) {
         val param = HashMap<String, String>()
         param["userId"] = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L).toString()
         param["awardSn"] = awardSn.toString()
+        param["awardId"] = awardId.toString()
         ApiFactory.getInstance().getApi(Api::class.java)
                 .signAward(ParamsUtils.getSignPramsMap(param))
                 .subscribeOn(Schedulers.io())
