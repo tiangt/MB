@@ -45,6 +45,7 @@ import com.whzl.mengbi.ui.fragment.main.MineFragment;
 import com.whzl.mengbi.ui.widget.view.TipRadioButton;
 import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.AsyncRun;
+import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
@@ -236,6 +237,19 @@ public class MainActivity extends BaseActivity {
                 showSignDialog();
                 SPUtils.put(BaseApplication.getInstance(), SpConfig.SIGN_DATE, DateUtils.getStringDateYMD());
             }
+        }
+        if (Long.parseLong(SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, 0L).toString()) != 0) {
+            BusinessUtils.getUserInfo(this, SPUtils.get(MainActivity.this, "userId", (long) 0).toString(), new BusinessUtils.UserInfoListener() {
+                @Override
+                public void onSuccess(UserInfo.DataBean bean) {
+                    SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_BIND_MOBILE, bean.getBindMobile());
+                }
+
+                @Override
+                public void onError(int code) {
+
+                }
+            });
         }
     }
 

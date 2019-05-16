@@ -342,6 +342,7 @@ public class PkControl {
                                 if (aLong >= bean.effSecond) {
                                     LogUtils.e("ssssssss  leftSecond  dispose");
                                     leftCardDispose.dispose();
+                                    tvLeftSecondEffect.setText("");
                                     llLeftEffect.setVisibility(View.GONE);
                                 }
                             });
@@ -356,6 +357,7 @@ public class PkControl {
                                 if (aLong >= bean.effSecond) {
                                     LogUtils.e("ssssssss  rightSecond  dispose");
                                     rightCardDispose.dispose();
+                                    tvRightSecondEffect.setText("");
                                     llRightEffect.setVisibility(View.GONE);
                                 }
                             });
@@ -503,6 +505,7 @@ public class PkControl {
                             if (aLong >= bean.lanchPkEffect.effSecond) {
                                 LogUtils.e("ssssssss  leftSecond  dispose");
                                 leftCardDispose.dispose();
+                                tvLeftSecondEffect.setText("");
                                 llLeftEffect.setVisibility(View.GONE);
                             }
                         });
@@ -518,6 +521,7 @@ public class PkControl {
                             if (aLong >= bean.pkEffect.effSecond) {
                                 LogUtils.e("ssssssss  rightSecond  dispose");
                                 rightCardDispose.dispose();
+                                tvRightSecondEffect.setText("");
                                 llRightEffect.setVisibility(View.GONE);
                             }
                         });
@@ -534,6 +538,7 @@ public class PkControl {
                             if (aLong >= bean.lanchPkEffect.effSecond) {
                                 LogUtils.e("ssssssss  leftSecond  dispose");
                                 rightCardDispose.dispose();
+                                tvRightSecondEffect.setText("");
                                 llRightEffect.setVisibility(View.GONE);
                             }
                         });
@@ -549,13 +554,13 @@ public class PkControl {
                             if (aLong >= bean.pkEffect.effSecond) {
                                 LogUtils.e("ssssssss  rightSecond  dispose");
                                 leftCardDispose.dispose();
+                                tvLeftAddEffect.setText("");
                                 llLeftEffect.setVisibility(View.GONE);
                             }
                         });
                 llLeftEffect.setVisibility(View.VISIBLE);
             }
         }
-
 
 
     }
