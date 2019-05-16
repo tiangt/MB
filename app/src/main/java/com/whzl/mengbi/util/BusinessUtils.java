@@ -1,20 +1,31 @@
 package com.whzl.mengbi.util;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
+import com.whzl.mengbi.gen.CommonGiftDao;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
+import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.UserInfo;
+import com.whzl.mengbi.model.entity.VisitorUserInfo;
 import com.whzl.mengbi.model.entity.VistorWatchBean;
+import com.whzl.mengbi.ui.activity.MainActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -201,5 +212,67 @@ public class BusinessUtils {
 
     public static void clearVistorHistory() {
         SPUtils.put(BaseApplication.getInstance(), SpConfig.VISITOR_WATCH_HISTORY, "");
+    }
+
+    public static void transferVistor(Activity context) {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.LOGOUT, RequestManager.TYPE_POST_JSON, new HashMap<>(), new RequestManager.ReqCallBack() {
+            @Override
+            public void onReqSuccess(Object result) {
+                String strJson = result.toString();
+                ResponseInfo responseInfo = GsonUtils.GsonToBean(strJson, ResponseInfo.class);
+                if (responseInfo.getCode() == 200) {
+                    SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_BIND_MOBILE, "");
+                    context.startActivity(new Intent(context, MainActivity.class));
+                    EventBus.getDefault().postSticky(new JumpMainActivityEvent(0));
+                    Long aLong = (Long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
+
+                    CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
+                    commonGiftDao.deleteByKey(aLong);
+
+                    SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
+                    HashMap paramsMap = new HashMap();
+                    paramsMap.put("platform", RequestManager.CLIENTTYPE);
+                    RxPermisssionsUitls.getDevice(context, new RxPermisssionsUitls.OnPermissionListener() {
+                        @Override
+                        public void onGranted() {
+                            paramsMap.put("deviceNumber", DeviceUtils.getDeviceId(context));
+                            visitorLogin(paramsMap);
+                        }
+
+                        @Override
+                        public void onDeny() {
+                            paramsMap.put("deviceNumber", "");
+                            visitorLogin(paramsMap);
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+                LogUtils.d(errorMsg);
+            }
+        });
+    }
+
+    private static void visitorLogin(HashMap paramsMap) {
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.USER_VISITOR_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
+                new RequestManager.ReqCallBack<Object>() {
+                    @Override
+                    public void onReqSuccess(Object object) {
+                        VisitorUserInfo visitorUserInfo = GsonUtils.GsonToBean(object.toString(), VisitorUserInfo.class);
+                        if (visitorUserInfo.getCode() == RequestManager.RESPONSE_CODE) {
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, visitorUserInfo.getData().getUserId());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, visitorUserInfo.getData().getSessionId());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, visitorUserInfo.getData().getNickname());
+                            SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, false);
+                        }
+                    }
+
+                    @Override
+                    public void onReqFailed(String errorMsg) {
+                    }
+                });
     }
 }

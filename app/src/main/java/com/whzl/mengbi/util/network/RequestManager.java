@@ -9,9 +9,17 @@ import android.os.Handler;
 import com.alibaba.fastjson.JSON;
 import com.whzl.mengbi.BuildConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.ApiResult;
+import com.whzl.mengbi.model.entity.ResponseInfo;
+import com.whzl.mengbi.ui.activity.MainActivity;
+import com.whzl.mengbi.ui.common.ActivityStackManager;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.util.BusinessUtils;
+import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.EncryptUtils;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.RxPermisssionsUitls;
 import com.whzl.mengbi.util.SPUtils;
 
 import java.io.File;
@@ -436,6 +444,11 @@ public class RequestManager {
                     if (response.isSuccessful()) {
                         String string = response.body().string();
                         LogUtils.e("url=" + actionUrl + ",response ----->" + string);
+                        ApiResult apiResult = GsonUtils.GsonToBean(string, ApiResult.class);
+                        if (apiResult.code == -17) {
+                            BusinessUtils.transferVistor(ActivityStackManager.getInstance().getTopActivity());
+                            return;
+                        }
                         successCallBack((T) string, callBack);
                     } else {
                         failedCallBack("服务器错误", callBack);
@@ -599,7 +612,7 @@ public class RequestManager {
             LogUtils.e(params.toString());
             RequestBody formBody = builder.build();
             String requestUrl = String.format("%s", /*"https://t3.mengbitv.com/",*/ actionUrl);
-            LogUtils.e("ssssssssss   "+requestUrl);
+            LogUtils.e("ssssssssss   " + requestUrl);
             final Request request = addHeaders().url(requestUrl).post(formBody).build();
             final Call call = mOkHttpClient.newCall(request);
             call.enqueue(new Callback() {

@@ -519,6 +519,7 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe
     public void onMessageEvent(JumpMainActivityEvent event) {
+        rgTab.check(rgTab.getChildAt(event.check).getId());
         setTabChange(event.check);
     }
 
