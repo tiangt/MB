@@ -152,6 +152,10 @@ class SignDialog : BaseAwesomeDialog() {
             } else if ("retroactive" == bean.signStatus) {
                 getRetroInfo(bean.awardId, bean.dayIndex)
             } else if (bean.dayIndex == 8) {
+                if (bean.signStatus == "signed") {
+                    ToastUtils.showToastUnify(activity, "您已抽取过神秘全勤奖请下周再来")
+                    return
+                }
                 querySignAward(bean.awardSn, bean.awardId)
             }
         }
@@ -169,12 +173,17 @@ class SignDialog : BaseAwesomeDialog() {
                 .subscribe(object : ApiObserver<SignAwardBean>() {
                     override fun onSuccess(signAwardBean: SignAwardBean) {
                         if (signAwardBean.list != null && signAwardBean.list[0] != null) {
-                            showSignSuccessDialog(signAwardBean.list.get(0))
+                            showSignSuccessDialog(signAwardBean.list[0])
+                            getSignInfo()
                         }
                     }
 
                     override fun onError(body: ApiResult<SignAwardBean>?) {
-                        ToastUtils.showToastUnify(activity, body?.msg)
+                        if (body?.code == -1242) {
+                            ToastUtils.showToastUnify(activity, "您不满足全勤奖要求无法抽奖")
+                        } else {
+                            ToastUtils.showToastUnify(activity, body?.msg)
+                        }
                     }
                 })
     }
