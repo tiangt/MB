@@ -550,11 +550,11 @@ public class PkControl {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {
                             LogUtils.e("ssssssss  rightSecond" + aLong);
-                            tvLeftAddEffect.setText(bean.pkEffect.effSecond - aLong + "秒");
+                            tvLeftSecondEffect.setText(bean.pkEffect.effSecond - aLong + "秒");
                             if (aLong >= bean.pkEffect.effSecond) {
                                 LogUtils.e("ssssssss  rightSecond  dispose");
                                 leftCardDispose.dispose();
-                                tvLeftAddEffect.setText("");
+                                tvLeftSecondEffect.setText("");
                                 llLeftEffect.setVisibility(View.GONE);
                             }
                         });

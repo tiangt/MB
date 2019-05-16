@@ -1966,6 +1966,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .subscribe(new ApiObserver<JsonElement>() {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
+                        EventBus.getDefault().post(new LiveHouseUserInfoUpdateEvent());
                     }
 
                     @Override
