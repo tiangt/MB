@@ -76,8 +76,8 @@ class ModifyPswActivity : BaseActivity<BasePresenter<BaseView>>() {
 
     override fun onToolbarMenuClick() {
         super.onToolbarMenuClick()
-        if (!AmountConversionUitls.ispsd(et_new_psw_modify_psw.text.toString())
-                || !AmountConversionUitls.ispsd(et_confirm_psw_modify_psw.text.toString())) {
+        if (AmountConversionUitls.isNumeric(et_new_psw_modify_psw.text.toString())||AmountConversionUitls.isChar(et_new_psw_modify_psw.text.toString())
+                || AmountConversionUitls.isNumeric(et_confirm_psw_modify_psw.text.toString())||AmountConversionUitls.isChar(et_confirm_psw_modify_psw.text.toString())) {
             ToastUtils.showToastUnify(this@ModifyPswActivity, "不能输入纯数字或纯英文")
             return
         }
