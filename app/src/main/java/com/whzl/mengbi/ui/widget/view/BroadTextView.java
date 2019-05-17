@@ -66,7 +66,8 @@ public class BroadTextView extends AppCompatTextView {
 
     public BroadTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        viewWidth = UIUtil.getScreenWidthPixels(getContext()) - UIUtil.dip2px(getContext(), 100);
+//        viewWidth = UIUtil.getScreenWidthPixels(getContext()) - UIUtil.dip2px(getContext(), 100);
+        viewWidth = UIUtil.dip2px(context, 250);
     }
 
     public void init(BroadEvent event, RunStateListener listener) {
@@ -84,106 +85,6 @@ public class BroadTextView extends AppCompatTextView {
         textLength = paint.measureText(text);
         maxTranslateX = textLength + viewWidth + 50;
         dispose();
-
-//        if (event instanceof UserLevelChangeEvent) {
-//            broadEvent = event;
-//            this.listener = listener;
-//            setVisibility(GONE);
-//            try {
-//                ((UserLevelChangeEvent) event).showRunWay(this);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            paint = getPaint();
-//            String text = getText().toString();
-//            step = 0f;
-//            textLength = paint.measureText(text);
-//            maxTranslateX = textLength + viewWidth + 50;
-//            dispose();
-//        }
-//        if (event instanceof RoyalLevelChangeEvent) {
-//            broadEvent = event;
-//            this.listener = listener;
-//            setVisibility(GONE);
-//            try {
-//                ((RoyalLevelChangeEvent) event).showRunWay(this);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            paint = getPaint();
-//            String text = getText().toString();
-//            step = 0f;
-//            textLength = paint.measureText(text);
-//            maxTranslateX = textLength + viewWidth + 50;
-//            dispose();
-//        }
-//        if (event instanceof AnchorLevelChangeEvent) {
-//            broadEvent = event;
-//            this.listener = listener;
-//            setVisibility(GONE);
-//            try {
-//                ((AnchorLevelChangeEvent) event).showRunWay(this);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            paint = getPaint();
-//            String text = getText().toString();
-//            step = 0f;
-//            textLength = paint.measureText(text);
-//            maxTranslateX = textLength + viewWidth + 50;
-//            dispose();
-//        }
-//
-//        if (event instanceof LuckGiftBigEvent) {
-//            broadEvent = event;
-//            this.listener = listener;
-//            setVisibility(GONE);
-//            try {
-//                ((LuckGiftBigEvent) event).showRunWay(this);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            paint = getPaint();
-//            String text = getText().toString();
-//            step = 0f;
-//            textLength = paint.measureText(text);
-//            maxTranslateX = textLength + viewWidth + 50;
-//            dispose();
-//        }
-//
-//        if (event instanceof BroadCastBottomEvent) {
-//            broadEvent = event;
-//            this.listener = listener;
-//            setVisibility(GONE);
-//            try {
-//                ((BroadCastBottomEvent) event).showRunWay(this);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            paint = getPaint();
-//            String text = getText().toString();
-//            step = 0f;
-//            textLength = paint.measureText(text);
-//            maxTranslateX = textLength + viewWidth + 50;
-//            dispose();
-//        }
-//
-//        if (event instanceof PkEvent) {
-//            broadEvent = event;
-//            this.listener = listener;
-//            setVisibility(GONE);
-//            try {
-//                ((PkEvent) event).showRunWay(this);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            paint = getPaint();
-//            String text = getText().toString();
-//            step = 0f;
-//            textLength = paint.measureText(text);
-//            maxTranslateX = textLength + viewWidth + 50;
-//            dispose();
-//        }
     }
 
     public void dispose() {
@@ -281,30 +182,51 @@ public class BroadTextView extends AppCompatTextView {
         if (!isStarting || broadEvent == null) {
             return;
         }
-        canvas.translate(viewWidth - step, 0);
-//        paint.setColor(getResources().getColor(R.color.bg_broadcast_bottom));
-//        canvas.drawRoundRect(0,0,textLength+50,getMeasuredHeight(),60,60,paint);
+//        canvas.translate(viewWidth - step, 0);
+        canvas.translate(-step, 0);
         super.onDraw(canvas);
         //滚动速度
-        if (step <= viewWidth && step + 2.5 > viewWidth) {
-            Observable.just(1)
+//        if (step <= viewWidth && step + 2.5 > viewWidth) {
+        if (textLength < viewWidth) {
+            mDispose = Observable.just(1)
                     .delay(3, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(integer -> {
-                        step += 2.5;
-                        invalidate();
+//                        step += 2.5;
+//                        invalidate();
+                        if (listener != null) {
+                            listener.finishSingleRun();
+                        }
                     });
-            return;
-        }
-        step += 2.5;
-        if (step > maxTranslateX) {
-            if (listener != null) {
-                listener.finishSingleRun();
-            }
 
-            step = 0;
+        } else {
+            if (step + viewWidth >= textLength+10) {
+                mDispose = Observable.just(1)
+                        .delay(3, TimeUnit.SECONDS)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(integer -> {
+                            step = 0;
+                            if (listener != null) {
+                                listener.finishSingleRun();
+                            }
+                        });
+            } else {
+                step += 2;
+                invalidate();
+            }
         }
-        invalidate();
+
+//            return;
+//        }
+//        step += 2.5;
+//        if (step > maxTranslateX) {
+//            if (listener != null) {
+//                listener.finishSingleRun();
+//            }
+//
+//            step = 0;
+//        }
+//        invalidate();
     }
 
     private RunStateListener listener;
