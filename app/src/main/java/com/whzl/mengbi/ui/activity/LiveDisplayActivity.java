@@ -71,6 +71,7 @@ import com.whzl.mengbi.chat.room.message.events.HeadLineEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
+import com.whzl.mengbi.chat.room.message.events.OneKeyOfflineEvent;
 import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.PlayNotifyEvent;
 import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
@@ -471,6 +472,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private GifSvgaControl gifSvgaControl;
     private NewRedPacketControl newRedPacketControl;
     private LiveNoMoneyDialog liveNoMoneyDialog;
+    private AwesomeDialog offlineDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -2601,6 +2603,40 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             anchorWishControl = new AnchorWishControl(tvAnchorWishLive);
         }
         anchorWishControl.load(anchorWishEndEvent);
+    }
+
+    /**
+     * 一键下线
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(OneKeyOfflineEvent oneKeyOfflineEvent) {
+        if (!oneKeyOfflineEvent.isInSession()) {
+            return;
+        }
+        if (offlineDialog != null && offlineDialog.isAdded()) {
+            return;
+        }
+        offlineDialog = AwesomeDialog.init();
+        offlineDialog.setLayoutId(R.layout.dialog_simple).setConvertListener(new ViewConvertListener() {
+            @Override
+            protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                holder.setText(R.id.tv_content_simple_dialog, "您已退出登录，请重新登录");
+                holder.setOnClickListener(R.id.btn_confirm_simple_dialog, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismissDialog();
+                        BusinessUtils.transferVistor(LiveDisplayActivity.this);
+                    }
+                });
+                holder.setOnClickListener(R.id.btn_cancel_simple_dialog, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismissDialog();
+                        BusinessUtils.transferVistor(LiveDisplayActivity.this);
+                    }
+                });
+            }
+        }).setOutCancel(false).show(getSupportFragmentManager());
     }
 
     public void removeAnchorWish() {

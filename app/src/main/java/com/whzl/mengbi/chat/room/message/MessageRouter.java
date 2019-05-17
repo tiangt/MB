@@ -23,6 +23,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.LotteryAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.LuckGiftBigAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.NoChatAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.OneKeyOfflineAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.OpenGuardAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PkAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.PlayNotifyAction;
@@ -113,6 +114,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("ROB_LUCKY", new RobLuckAction());
         actionsMap.put("GAME_WISH", new AnchorWishAction());
         actionsMap.put("RANK_CHANGE_MSG", new RankChangeAction());
+        actionsMap.put("ONE_KEY_OFFLINE", new OneKeyOfflineAction());
     }
 
     private void initChatAction() {
