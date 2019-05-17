@@ -7,10 +7,13 @@ import android.support.v4.app.Fragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.ui.common.ActivityStackManager;
+import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.GenericUtil;
+import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 
 import org.json.JSONException;
@@ -144,7 +147,8 @@ public abstract class ApiObserver<T> implements Observer<ApiResult<T>> {
                     onError(body);
                     return;
                 }
-                if (body.code == -17) {
+                if (body.code == -17 && Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID,
+                        0L).toString()) > 0) {
                     BusinessUtils.transferVistor(ActivityStackManager.getInstance().getTopActivity());
                     return;
                 }

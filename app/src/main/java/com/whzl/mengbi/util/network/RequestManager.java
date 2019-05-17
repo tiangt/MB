@@ -445,7 +445,8 @@ public class RequestManager {
                         String string = response.body().string();
                         LogUtils.e("url=" + actionUrl + ",response ----->" + string);
                         ApiResult apiResult = GsonUtils.GsonToBean(string, ApiResult.class);
-                        if (apiResult.code == -17) {
+                        if (apiResult.code == -17 && Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID,
+                                0L).toString()) > 0) {
                             BusinessUtils.transferVistor(ActivityStackManager.getInstance().getTopActivity());
                             return;
                         }

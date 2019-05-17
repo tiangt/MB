@@ -128,7 +128,6 @@ class LiveNoMoneyDialog : BaseAwesomeDialog() {
             if (findRuleId == -1) {
                 jumpToWXActivity()
             } else {
-                toast(activity, "${channelMap[R.id.ib_wechat_no_money]}   $findRuleId")
                 getOrderInfo(R.id.ib_wechat_no_money, channelMap[R.id.ib_wechat_no_money].toString(), findRuleId.toString())
             }
         })
@@ -138,7 +137,6 @@ class LiveNoMoneyDialog : BaseAwesomeDialog() {
             if (findRuleId == -1) {
                 jumpToWXActivity()
             } else {
-                toast(activity, "${channelMap[R.id.ib_alipay_no_money]}   $findRuleId")
                 getOrderInfo(R.id.ib_alipay_no_money, channelMap[R.id.ib_alipay_no_money].toString(), findRuleId.toString())
             }
         })

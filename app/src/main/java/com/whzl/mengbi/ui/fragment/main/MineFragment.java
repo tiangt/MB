@@ -16,6 +16,7 @@ import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gen.CommonGiftDao;
+import com.whzl.mengbi.gen.UserDao;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
@@ -362,6 +363,7 @@ public class MineFragment extends BaseFragment implements MeView {
                 Long aLong = (Long) SPUtils.get(getContext(), SpConfig.KEY_USER_ID, 0L);
                 removeGreenDao(aLong);
                 SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
+                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_BIND_MOBILE, "");
                 HashMap paramsMap = new HashMap();
                 paramsMap.put("platform", RequestManager.CLIENTTYPE);
                 RxPermisssionsUitls.getDevice(getMyActivity(), new RxPermisssionsUitls.OnPermissionListener() {
@@ -390,8 +392,8 @@ public class MineFragment extends BaseFragment implements MeView {
     }
 
     private void removeGreenDao(Long aLong) {
-        CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
-        commonGiftDao.deleteByKey(aLong);
+        UserDao userDao = BaseApplication.getInstance().getDaoSession().getUserDao();
+        userDao.deleteAll();
     }
 
     private void visitorLogin(HashMap paramsMap) {

@@ -11,6 +11,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.JumpMainActivityEvent;
 import com.whzl.mengbi.gen.CommonGiftDao;
+import com.whzl.mengbi.gen.UserDao;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
@@ -223,11 +224,10 @@ public class BusinessUtils {
                 if (responseInfo.getCode() == 200) {
                     SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_BIND_MOBILE, "");
                     context.startActivity(new Intent(context, MainActivity.class));
-                    EventBus.getDefault().postSticky(new JumpMainActivityEvent(0));
-                    Long aLong = (Long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
+                    EventBus.getDefault().post(new JumpMainActivityEvent(0));
 
-                    CommonGiftDao commonGiftDao = BaseApplication.getInstance().getDaoSession().getCommonGiftDao();
-                    commonGiftDao.deleteByKey(aLong);
+                    UserDao userDao = BaseApplication.getInstance().getDaoSession().getUserDao();
+                    userDao.deleteAll();
 
                     SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L);
                     HashMap paramsMap = new HashMap();

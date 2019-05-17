@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.contract.FollowSortContract;
-import com.whzl.mengbi.eventbus.event.FollowRefreshEvent;
-import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
 import com.whzl.mengbi.model.entity.FollowSortBean;
 import com.whzl.mengbi.presenter.FollowSortPresenter;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
@@ -28,10 +25,6 @@ import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +64,6 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -204,18 +196,6 @@ public class FollowSortFragment extends BasePullListFragment<FollowSortBean.List
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LoginSuccussEvent event) {
-        needFresh = true;
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(FollowRefreshEvent event) {
-        if (hasLoadData && needFresh) {
-            getRefreshLayout().autoRefresh();
-        }
-    }
 }

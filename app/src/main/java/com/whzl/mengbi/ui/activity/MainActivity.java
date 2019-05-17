@@ -239,22 +239,27 @@ public class MainActivity extends BaseActivity {
             }
         }
         if (Long.parseLong(SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, 0L).toString()) != 0) {
-            BusinessUtils.getUserInfo(this, SPUtils.get(MainActivity.this, "userId", (long) 0).toString(), new BusinessUtils.UserInfoListener() {
-                @Override
-                public void onSuccess(UserInfo.DataBean bean) {
-                    SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_BIND_MOBILE, bean.getBindMobile());
-                }
-
-                @Override
-                public void onError(int code) {
-
-                }
-            });
+            getUserInfo();
         }
+    }
+
+    private void getUserInfo() {
+        BusinessUtils.getUserInfo(this, SPUtils.get(MainActivity.this, "userId", (long) 0).toString(), new BusinessUtils.UserInfoListener() {
+            @Override
+            public void onSuccess(UserInfo.DataBean userInfo) {
+                SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_BIND_MOBILE, userInfo.getBindMobile());
+            }
+
+            @Override
+            public void onError(int code) {
+
+            }
+        });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LoginSuccussEvent event) {
+        getUserInfo();
         getMsgRemind();
         isFirst = true;
     }
