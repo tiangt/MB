@@ -45,7 +45,8 @@ public class RedPackRunWayControl {
         if (redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.OFFICIAL_SEND_REDPACKET) || redPackTreasureEvent
                 .treasureNum.context.busiCodeName.equals(AppConfig.PROGRAM_TREASURE_SEND_REDPACKET) ||
                 (redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.USER_SEND_REDPACKET) && redPackTreasureEvent.treasureNum
-                        .context.messageSubType.equals("broadcast"))) {
+                        .context.messageSubType.equals("broadcast"))
+                || redPackTreasureEvent.treasureNum.context.busiCodeName.equals("REDPACKETPOOL")) {
             if (!isShow) {
                 show(redPackTreasureEvent);
                 return;
@@ -83,6 +84,12 @@ public class RedPackRunWayControl {
             tvRedPack.append(LightSpanString.getLightString("红包", Color.parseColor("#FFF8CF2C")));
             tvRedPack.append(LightSpanString.getLightString(context.leftSeconds + "秒 ", Color.parseColor("#FFF8CF2C")));
             tvRedPack.append(LightSpanString.getLightString("后开抢,速度围观哦！", Color.parseColor("#ffffff")));
+        } else if ("REDPACKETPOOL".equals(redPackTreasureEvent.treasureNum.context.busiCodeName)) {
+            tvRedPack.append(LightSpanString.getLightString(" 恭喜 ", Color.parseColor("#ffffff")));
+            tvRedPack.append(LightSpanString.getLightString(context.sendObjectNickname, Color.rgb(255,230,142)));
+            tvRedPack.append(LightSpanString.getLightString(" 中得红包基金分红，共获得 ", Color.parseColor("#ffffff")));
+            tvRedPack.append(LightSpanString.getLightString(context.awardCoin + " ", Color.parseColor("#FFF8CF2C")));
+            tvRedPack.append(LightSpanString.getLightString("萌币，我也要分红！", Color.parseColor("#ffffff")));
         }
         showTranslateAnim();
     }

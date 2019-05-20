@@ -32,6 +32,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.ProgramFirstAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RankChangeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RankRiseAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RedPacketAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.RedPacketPoolAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RobLuckAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RoyalLevelChangeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.RunWayAction;
@@ -115,6 +116,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("GAME_WISH", new AnchorWishAction());
         actionsMap.put("RANK_CHANGE_MSG", new RankChangeAction());
         actionsMap.put("ONE_KEY_OFFLINE", new OneKeyOfflineAction());
+        actionsMap.put("REDPACKETPOOL", new RedPacketPoolAction());
     }
 
     private void initChatAction() {

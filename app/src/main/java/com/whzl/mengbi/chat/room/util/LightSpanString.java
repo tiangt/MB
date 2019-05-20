@@ -92,6 +92,21 @@ public class LightSpanString {
         return nickSpan;
     }
 
+    /**
+     * click
+     */
+    public static SpannableString getClickSpan(Context context, String content, int color, View.OnClickListener listener) {
+        SpannableString nickSpan = new SpannableString(content);
+        ClickSpan clickSpan = new ClickSpan(context, color) {
+            @Override
+            public void onClick(View widget) {
+                listener.onClick(widget);
+            }
+        };
+        nickSpan.setSpan(clickSpan, 0, nickSpan.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return nickSpan;
+    }
+
     public static SpannableString getPrettyNumSpanByType(Context context, String num, String type) {
         switch (type) {
             case "A":

@@ -51,5 +51,6 @@ public class RedPackJson {
         public int programId;
         public int leftSeconds;
         public long openAmount;
+        public long awardCoin;
     }
 }
