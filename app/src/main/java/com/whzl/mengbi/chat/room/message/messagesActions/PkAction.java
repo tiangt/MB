@@ -26,7 +26,8 @@ public class PkAction implements Actions {
         EventBus.getDefault().post(new PkEvent(pkJson, context));
 
         if ("PK_FIRST_BLOOD".equals(pkJson.context.busiCode) || "PK_RECORD".equals(pkJson.context.busiCode)
-                || "BALCK_HOUSE".equals(pkJson.context.busiCode) || "uRescueAnchor".equals(pkJson.context.busiCode)) {
+                || "BALCK_HOUSE".equals(pkJson.context.busiCode) || "uRescueAnchor".equals(pkJson.context.busiCode)
+                || "PK_OPEN_EXP_CARD".equals(pkJson.context.busiCode)) {
             PkMessage pkMessage = new PkMessage(pkJson, context);
             UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(pkMessage);
             EventBus.getDefault().post(chatEvent);

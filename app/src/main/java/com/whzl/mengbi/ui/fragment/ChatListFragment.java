@@ -84,13 +84,15 @@ public class ChatListFragment extends BaseFragment {
     public ArrayList<FillHolderMessage> chatList = new ArrayList<>();
     //    private RoyalEnterControl royalEnterControl;
     private int mProgramId;
+    private int mAnchorId;
     private boolean openAnimal = false;
     private int layerId;
 
 
-    public static ChatListFragment newInstance(int programId) {
+    public static ChatListFragment newInstance(int programId, int mAnchorId) {
         Bundle args = new Bundle();
         args.putInt("programId", programId);
+        args.putInt("mAnchorId", mAnchorId);
         ChatListFragment chatListFragment = new ChatListFragment();
         chatListFragment.setArguments(args);
         return chatListFragment;
@@ -106,6 +108,7 @@ public class ChatListFragment extends BaseFragment {
         initChatRecycler();
         EventBus.getDefault().register(this);
         mProgramId = getArguments().getInt("programId");
+        mAnchorId = getArguments().getInt("mAnchorId");
         viewClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,6 +209,7 @@ public class ChatListFragment extends BaseFragment {
                 FillHolderMessage message = chatList.get(position);
                 if (message instanceof PkMessage) {
                     ((PkMessage) message).setProgramId(mProgramId);
+                    ((PkMessage) message).setAnchorId(mAnchorId);
                 }
                 if (message instanceof RedPackMessage) {
                     ((RedPackMessage) message).setProgramId(mProgramId);

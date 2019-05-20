@@ -4,12 +4,19 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
+import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
+import com.whzl.mengbi.util.LogUtils;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * @author nobody
@@ -28,6 +35,7 @@ public class PkMessage implements FillHolderMessage {
     private String pkUserNickname;
     private String mvpNickname;
     public PkJson pkJson;
+    private int mAnchorId;
 
     public void setProgramId(int programId) {
         this.currentProgramId = programId;
@@ -121,11 +129,30 @@ public class PkMessage implements FillHolderMessage {
                 mholder.textView.append(LightSpanString.getLightString(" 小时,", Color.parseColor("#f9f9f9")));
                 mholder.textView.append(LightSpanString.getSaveBlackRoomSpan(context, "我也要解救主播", Color.parseColor("#FFF8B930")));
             }
+        } else if ("PK_OPEN_EXP_CARD".equals(busiCode)) {
+            mholder.textView.setText("");
+            mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
+            mholder.textView.append(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_pk_icon, 10));
+            if (pkJson.context.openExpCardUserId == mAnchorId) {
+                mholder.textView.append(LightSpanString.getLightString(" 我方主播 ", Color.rgb(255, 83, 140)));
+                mholder.textView.append("使用了 ");
+                mholder.textView.append(LightSpanString.getLightString(pkJson.context.expCardMultiple / 100f + "倍PK经验卡，", Color.rgb(46, 233, 255)));
+                mholder.textView.append(LightSpanString.getLightString("快快助力主播！", Color.rgb(253, 220, 6)));
+            } else {
+                mholder.textView.append(LightSpanString.getLightString(" 对方主播 ", Color.rgb(198, 123, 255)));
+                mholder.textView.append("使用了 ");
+                mholder.textView.append(LightSpanString.getLightString(pkJson.context.expCardMultiple / 100f + "倍PK经验卡，", Color.rgb(46, 233, 255)));
+                mholder.textView.append(LightSpanString.getLightString("快快助力主播！", Color.rgb(253, 220, 6)));
+            }
         }
     }
 
     @Override
     public int getHolderType() {
         return SINGLE_TEXTVIEW;
+    }
+
+    public void setAnchorId(int mAnchorId) {
+        this.mAnchorId = mAnchorId;
     }
 }

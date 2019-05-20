@@ -756,7 +756,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        ChatListFragment chatListFragment = ChatListFragment.newInstance(mProgramId);
+        ChatListFragment chatListFragment = ChatListFragment.newInstance(mProgramId,mAnchorId);
         fragments = new Fragment[]{chatListFragment};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.commit();
