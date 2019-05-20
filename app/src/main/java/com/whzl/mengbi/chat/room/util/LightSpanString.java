@@ -100,6 +100,9 @@ public class LightSpanString {
         ClickSpan clickSpan = new ClickSpan(context, color) {
             @Override
             public void onClick(View widget) {
+                if (((LiveDisplayActivity) context).hideChatDialog()) {
+                    return;
+                }
                 listener.onClick(widget);
             }
         };
