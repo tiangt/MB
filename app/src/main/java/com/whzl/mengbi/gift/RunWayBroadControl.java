@@ -149,13 +149,13 @@ public class RunWayBroadControl {
     private void startAnimal() {
         clBottom.setVisibility(View.VISIBLE);
         if (showAnim == null) {
-            showAnim = ValueAnimator.ofFloat(screenWidthPixels, screenWidthPixels / 2 - UIUtil.dip2px(context, 284) / 2);
+            showAnim = ValueAnimator.ofFloat(screenWidthPixels, 0);
             showAnim.setInterpolator(new DecelerateInterpolator());
             showAnim.setDuration(800);
             showAnim.addUpdateListener(animation -> {
                 float animatedValue = ((float) animation.getAnimatedValue());
                 clBottom.setTranslationX(animatedValue);
-                if (animatedValue == screenWidthPixels / 2 - UIUtil.dip2px(context, 284) / 2) {
+                if (animatedValue == 0) {
                     autoScrollView.startScroll();
                 }
             });
@@ -165,7 +165,7 @@ public class RunWayBroadControl {
 
     private void hideTranslateAnim() {
         if (hideAnim == null) {
-            hideAnim = ValueAnimator.ofFloat(screenWidthPixels / 2 - UIUtil.dip2px(context, 284) / 2, -UIUtil.dip2px(context, 284));
+            hideAnim = ValueAnimator.ofFloat(0, -UIUtil.dip2px(context, 284));
             hideAnim.setInterpolator(new AccelerateInterpolator());
             hideAnim.setDuration(800);
             hideAnim.addUpdateListener(animation -> {
