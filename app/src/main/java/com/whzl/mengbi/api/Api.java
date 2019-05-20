@@ -54,6 +54,7 @@ import com.whzl.mengbi.model.entity.QueryBagByGoodsTypeBean;
 import com.whzl.mengbi.model.entity.QuickChannelBean;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RechargeOrderBean;
+import com.whzl.mengbi.model.entity.RedFundInfoBean;
 import com.whzl.mengbi.model.entity.RetroInfoBean;
 import com.whzl.mengbi.model.entity.RoomAnnouceBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
@@ -1149,5 +1150,15 @@ public interface Api {
     @POST("v1/my/query-modify-name-card")
     @FormUrlEncoded
     Observable<ApiResult<ModifyNameCardBean>> modifyNameCard(@FieldMap Map<String, String> params);
+
+    /**
+     * 查询用户改名卡信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/redpacket/red-envelope-info")
+    @FormUrlEncoded
+    Observable<ApiResult<RedFundInfoBean>> redFundInfo(@FieldMap Map<String, String> params);
 
 }
