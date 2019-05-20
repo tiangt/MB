@@ -151,7 +151,7 @@ public class RunWayBroadControl {
         if (showAnim == null) {
             showAnim = ValueAnimator.ofFloat(screenWidthPixels, 0);
             showAnim.setInterpolator(new DecelerateInterpolator());
-            showAnim.setDuration(800);
+            showAnim.setDuration(1000);
             showAnim.addUpdateListener(animation -> {
                 float animatedValue = ((float) animation.getAnimatedValue());
                 clBottom.setTranslationX(animatedValue);
@@ -167,7 +167,7 @@ public class RunWayBroadControl {
         if (hideAnim == null) {
             hideAnim = ValueAnimator.ofFloat(0, -UIUtil.dip2px(context, 284));
             hideAnim.setInterpolator(new AccelerateInterpolator());
-            hideAnim.setDuration(800);
+            hideAnim.setDuration(1000);
             hideAnim.addUpdateListener(animation -> {
                 float animatedValue = ((float) animation.getAnimatedValue());
                 clBottom.setTranslationX(animatedValue);
