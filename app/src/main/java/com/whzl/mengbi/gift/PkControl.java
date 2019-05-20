@@ -131,6 +131,9 @@ public class PkControl {
     private Disposable leftCardDispose;
     private Disposable rightCardDispose;
 
+    private int maxLaunchPkScroe;
+    private int maxAcceptPkScroe;
+
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
     }
@@ -217,6 +220,11 @@ public class PkControl {
                     return;
                 }
                 if (mAnchorId == bean.launchPkUserId) {
+                    if (maxLaunchPkScroe > bean.launchPkUserScore||maxAcceptPkScroe>bean.pkUserScore) {
+                        return;
+                    }
+                    maxLaunchPkScroe = bean.launchPkUserScore;
+                    maxAcceptPkScroe = bean.pkUserScore;
                     pkLayout.setLeftScore(bean.launchPkUserScore);
                     pkLayout.setRightScore(bean.pkUserScore);
                     double a = bean.launchPkUserScore;
@@ -230,6 +238,11 @@ public class PkControl {
                         pkLayout.setAnimation((int) v);
                     }
                 } else if (mAnchorId == bean.pkUserId) {
+                    if (maxAcceptPkScroe > bean.pkUserScore || maxLaunchPkScroe > bean.launchPkUserScore) {
+                        return;
+                    }
+                    maxLaunchPkScroe = bean.pkUserScore;
+                    maxAcceptPkScroe = bean.launchPkUserScore;
                     pkLayout.setLeftScore(bean.pkUserScore);
                     pkLayout.setRightScore(bean.launchPkUserScore);
                     double a = bean.pkUserScore;
@@ -619,6 +632,8 @@ public class PkControl {
     }
 
     public void destroy() {
+        maxAcceptPkScroe = 0;
+        maxLaunchPkScroe = 0;
         if (disposable != null) {
             disposable.dispose();
         }
