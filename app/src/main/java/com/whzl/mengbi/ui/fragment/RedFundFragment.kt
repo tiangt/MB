@@ -52,7 +52,7 @@ class RedFundFragment : BaseFragment<BasePresenter<BaseView>>() {
                         tv_nick_fund.text = t?.nickname
                         tv_fenhong_fund.text = "分红 "
                         tv_fenhong_fund.append(LightSpanString.getLightString(t?.userPoolCount?.toString(), Color.rgb(255, 87, 5)))
-                        tv_fenhong_fund.text = " 萌币"
+                        tv_fenhong_fund.append(" 萌币")
                         GlideImageLoader.getInstace().circleCropImage(activity,
                                 ImageUrl.getAvatarUrl(t?.userId!!, "jpg", t.lastUpdateTime), iv_avatar_fund)
 
