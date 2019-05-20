@@ -35,7 +35,6 @@ public class PkMessage implements FillHolderMessage {
     private String pkUserNickname;
     private String mvpNickname;
     public PkJson pkJson;
-    private int mAnchorId;
 
     public void setProgramId(int programId) {
         this.currentProgramId = programId;
@@ -130,10 +129,13 @@ public class PkMessage implements FillHolderMessage {
                 mholder.textView.append(LightSpanString.getSaveBlackRoomSpan(context, "我也要解救主播", Color.parseColor("#FFF8B930")));
             }
         } else if ("PK_OPEN_EXP_CARD".equals(busiCode)) {
+            if (pkJson.context.userRoom == null || pkJson.context.userRoom.get(0) == null) {
+                return;
+            }
             mholder.textView.setText("");
             mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
             mholder.textView.append(LevelUtil.getImageResourceSpanByHeight(context, R.drawable.ic_pk_icon, 10));
-            if (pkJson.context.openExpCardUserId == mAnchorId) {
+            if (currentProgramId == pkJson.context.userRoom.get(0)) {
                 mholder.textView.append(LightSpanString.getLightString(" 我方主播 ", Color.rgb(255, 83, 140)));
                 mholder.textView.append("使用了 ");
                 mholder.textView.append(LightSpanString.getLightString(pkJson.context.expCardMultiple / 100f + "倍PK经验卡，", Color.rgb(46, 233, 255)));
@@ -152,7 +154,4 @@ public class PkMessage implements FillHolderMessage {
         return SINGLE_TEXTVIEW;
     }
 
-    public void setAnchorId(int mAnchorId) {
-        this.mAnchorId = mAnchorId;
-    }
 }

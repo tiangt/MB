@@ -241,8 +241,8 @@ public class PkControl {
                     if (maxAcceptPkScroe > bean.pkUserScore || maxLaunchPkScroe > bean.launchPkUserScore) {
                         return;
                     }
-                    maxLaunchPkScroe = bean.pkUserScore;
-                    maxAcceptPkScroe = bean.launchPkUserScore;
+                    maxLaunchPkScroe = bean.launchPkUserScore;
+                    maxAcceptPkScroe = bean.pkUserScore;
                     pkLayout.setLeftScore(bean.pkUserScore);
                     pkLayout.setRightScore(bean.launchPkUserScore);
                     double a = bean.pkUserScore;
@@ -546,10 +546,10 @@ public class PkControl {
                 rightCardDispose = Observable.interval(1, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {
-                            LogUtils.e("ssssssss  leftSecond" + aLong);
+                            LogUtils.e("ssssssss  rightSecond" + aLong);
                             tvRightSecondEffect.setText(bean.lanchPkEffect.effSecond - aLong + "秒");
                             if (aLong >= bean.lanchPkEffect.effSecond) {
-                                LogUtils.e("ssssssss  leftSecond  dispose");
+                                LogUtils.e("ssssssss  rightSecond  dispose");
                                 rightCardDispose.dispose();
                                 tvRightSecondEffect.setText("");
                                 llRightEffect.setVisibility(View.GONE);
@@ -562,10 +562,10 @@ public class PkControl {
                 leftCardDispose = Observable.interval(1, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(aLong -> {
-                            LogUtils.e("ssssssss  rightSecond" + aLong);
+                            LogUtils.e("ssssssss  leftSecond" + aLong);
                             tvLeftSecondEffect.setText(bean.pkEffect.effSecond - aLong + "秒");
                             if (aLong >= bean.pkEffect.effSecond) {
-                                LogUtils.e("ssssssss  rightSecond  dispose");
+                                LogUtils.e("ssssssss  leftSecond  dispose");
                                 leftCardDispose.dispose();
                                 tvLeftSecondEffect.setText("");
                                 llLeftEffect.setVisibility(View.GONE);

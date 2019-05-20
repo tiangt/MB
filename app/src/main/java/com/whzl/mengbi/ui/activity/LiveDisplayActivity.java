@@ -756,7 +756,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void initFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        ChatListFragment chatListFragment = ChatListFragment.newInstance(mProgramId,mAnchorId);
+        ChatListFragment chatListFragment = ChatListFragment.newInstance(mProgramId);
         fragments = new Fragment[]{chatListFragment};
         fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.commit();
@@ -775,7 +775,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         mLivePresenter.getRunWayList(ParamsUtils.getSignPramsMap(new HashMap<>()));
         mLivePresenter.getActivityList();
-        mLivePresenter.getPkInfo(mProgramId);
         roomOnlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
             mLivePresenter.getAudienceList(mProgramId);
         });
@@ -1308,6 +1307,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
 
         initAboutAnchor(mProgramId, mAnchorId);
+        mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getActivityNative(mProgramId, mAnchorId);
         initIgnore(roomInfoBean);
         if (isFirstCome) {
