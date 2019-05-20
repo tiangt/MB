@@ -20,7 +20,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.gen.UserDao;
+import com.whzl.mengbi.greendao.User;
 import com.whzl.mengbi.model.entity.RegisterInfo;
+import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.presenter.impl.RegisterPresenterImpl;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -110,12 +113,34 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
 
     @Override
     public void navigateToAll(RegisterInfo registerInfo) {
+        saveGreenDao(registerInfo);
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, registerInfo.getData().getUserId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, registerInfo.getData().getSessionId());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, registerInfo.getData().getNickName());
         SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, registerInfo.getData().getLastRechargeTime() != null);
         setResult(RESULT_OK);
         finish();
+    }
+
+    private void saveGreenDao(RegisterInfo userInfo) {
+        UserDao userDao = BaseApplication.getInstance().getDaoSession().getUserDao();
+        User unique = userDao.queryBuilder().where(UserDao.Properties.UserId.eq(userInfo.getData().getUserId())).unique();
+        if (unique == null) {
+            User user = new User();
+            user.setUserId(userInfo.getData().getUserId());
+            user.setAvatar(userInfo.getData().getAvatar());
+            user.setNickname(userInfo.getData().getNickName());
+            user.setSeesionId(userInfo.getData().getSessionId());
+            user.setRecharged(userInfo.getData().getLastRechargeTime() != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
+            userDao.insert(user);
+        } else {
+            unique.setUserId(userInfo.getData().getUserId());
+            unique.setAvatar(userInfo.getData().getAvatar());
+            unique.setNickname(userInfo.getData().getNickName());
+            unique.setSeesionId(userInfo.getData().getSessionId());
+            unique.setRecharged(userInfo.getData().getLastRechargeTime() != null && !TextUtils.isEmpty(userInfo.getData().getLastRechargeTime()));
+            userDao.update(unique);
+        }
     }
 
     @Override
@@ -232,7 +257,7 @@ public class RegisterActivity extends BaseActivity implements RegisterView, Text
         KeyBoardUtil.hideInputMethod(this);
         switch (view.getId()) {
             case R.id.btn_get_verify_code:
-                String phone = etPhone.getText().toString().trim().replaceAll(" ","");
+                String phone = etPhone.getText().toString().trim().replaceAll(" ", "");
                 if (TextUtils.isEmpty(phone)) {
                     showToast("手机号码不能为空");
                     return;
