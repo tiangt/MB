@@ -34,6 +34,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.common.BaseApplication
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
+import com.whzl.mengbi.util.AmountConversionUitls
 import com.whzl.mengbi.util.GsonUtils
 import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
@@ -261,9 +262,9 @@ class LiveNoMoneyDialog : BaseAwesomeDialog() {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(position: Int) {
             val ruleListBean = ruleList[position]
-            tvDes?.text = ruleListBean.chengCount.toString()
-            tvDes?.append(LightSpanString.getLightString(getString(R.string.mengbi_unit), Color.parseColor("#000000")))
-            tvCost?.text = "${ruleListBean.chargeCount / 100}元"
+            tvDes?.text = AmountConversionUitls.amountConversionFormat(ruleListBean.chengCount.toDouble())
+                    tvDes ?. append (LightSpanString.getLightString(getString(R.string.mengbi_unit), Color.parseColor("#000000")))
+                    tvCost ?. text = "${ruleListBean.chargeCount / 100}元"
 
             llRuleContain?.isSelected = rulePosition == position
         }

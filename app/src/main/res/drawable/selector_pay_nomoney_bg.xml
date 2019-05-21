@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/bg_check_no_money" android:state_selected="true">
+        <!--<shape>-->
+        <!--<padding android:right="4dp" android:bottom="4dp" android:left="4dp" android:top="4dp"/>-->
+        <!--<corners android:radius="2dp"/>-->
+        <!--<solid android:color="#ffa800"/>-->
+        <!--</shape>-->
+    </item>
+
+    <item android:drawable="@drawable/bg_normal_no_money">
+        <!--<shape>-->
+        <!--<corners android:radius="4dp"/>-->
+        <!--<stroke android:color="#b9b9b9" android:width="0.5dp"/>-->
+        <!--</shape>-->
+    </item>
+
+</selector>
