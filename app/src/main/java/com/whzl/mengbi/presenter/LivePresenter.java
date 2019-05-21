@@ -16,7 +16,7 @@ public interface LivePresenter {
 
     void onDestory();
 
-    void sendGift(HashMap paramsMap);
+    void sendGift(HashMap paramsMap, boolean useBag);
 
     void getRunWayList(HashMap paramsMap);
 

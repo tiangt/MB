@@ -1,7 +1,6 @@
 package com.whzl.mengbi.model;
 
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
-import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 
 import java.util.HashMap;
 
@@ -16,7 +15,7 @@ public interface LiveModel {
 
     void doRoomUserInfo(long visitorId,int programId, OnLiveFinishedListener listener);
 
-    void doSendGift(HashMap paramsMap, OnLiveFinishedListener listener);
+    void doSendGift(HashMap paramsMap, boolean useBag, OnLiveFinishedListener listener);
 
     void getRunWayList(HashMap paramsMap, OnLiveFinishedListener listener);
 

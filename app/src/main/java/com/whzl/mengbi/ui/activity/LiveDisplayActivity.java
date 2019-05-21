@@ -106,7 +106,7 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LiveHouseCoinUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
-import com.whzl.mengbi.eventbus.event.SendPropEvent;
+import com.whzl.mengbi.eventbus.event.SendBackpackEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
@@ -1557,10 +1557,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @Override
-    public void onSendGiftSuccess() {
+    public void onSendGiftSuccess(boolean useBag) {
         mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
         if (mGiftDialog != null && ((GiftDialog) mGiftDialog).superValue) {
             EventBus.getDefault().post(new SendGiftSuccessEvent());
+        }
+        if (useBag) {
+            EventBus.getDefault().post(new SendBackpackEvent());
         }
     }
 
@@ -1970,7 +1973,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } else {
             paramsMap.put("runwayAppend", runwayAppend);
         }
-        mLivePresenter.sendGift(paramsMap);
+        mLivePresenter.sendGift(paramsMap, useBag);
         UsualGift usualGift = new UsualGift();
         usualGift.setUserId(mUserId);
         usualGift.setGiftId(Long.valueOf(goodId));
@@ -1992,7 +1995,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .subscribe(new ApiObserver<JsonElement>() {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
-                        EventBus.getDefault().post(new SendPropEvent());
+                        EventBus.getDefault().post(new SendBackpackEvent());
                     }
 
                     @Override

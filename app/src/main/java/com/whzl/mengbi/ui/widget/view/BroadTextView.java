@@ -286,7 +286,7 @@ public class BroadTextView extends AppCompatTextView {
 //        canvas.drawRoundRect(0,0,textLength+50,getMeasuredHeight(),60,60,paint);
         super.onDraw(canvas);
         //滚动速度
-        if (step <= viewWidth && step + 2.5 > viewWidth) {
+        if (step <= viewWidth && step + 3 > viewWidth) {
             Observable.just(1)
                     .delay(3, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())

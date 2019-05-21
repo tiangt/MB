@@ -16,7 +16,6 @@ import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
-import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -60,8 +59,8 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void sendGift(HashMap paramsMap) {
-        liveModel.doSendGift(paramsMap, this);
+    public void sendGift(HashMap paramsMap, boolean useBag) {
+        liveModel.doSendGift(paramsMap,useBag, this);
     }
 
     @Override
@@ -117,9 +116,9 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void onSendGiftSuccess() {
+    public void onSendGiftSuccess(boolean useBag) {
         if (liveView != null) {
-            liveView.onSendGiftSuccess();
+            liveView.onSendGiftSuccess(useBag);
         }
     }
 

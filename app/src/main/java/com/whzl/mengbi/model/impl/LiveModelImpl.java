@@ -20,7 +20,6 @@ import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
-import com.whzl.mengbi.model.entity.RoomRedPackTreasure;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -163,13 +162,13 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void doSendGift(HashMap paramsMap, OnLiveFinishedListener listener) {
+    public void doSendGift(HashMap paramsMap, boolean useBag, OnLiveFinishedListener listener) {
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SEND_GIFT, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
             @Override
             public void onReqSuccess(Object result) {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
-                    listener.onSendGiftSuccess();
+                    listener.onSendGiftSuccess(useBag);
                 } else if (responseInfo.getCode() == -1211) {
                     listener.onSendGiftNoMoney();
                 } else {
