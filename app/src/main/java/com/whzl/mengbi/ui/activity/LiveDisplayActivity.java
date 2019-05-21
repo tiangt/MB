@@ -1360,23 +1360,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     /**
      * 活动viewpager
      */
-    private void initVp() {
+    private void initBottomRightVp() {
         //周星榜
-        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-        weekRankFragment.setTag(4);
-        mActivityGrands.add(weekRankFragment);
-
-        if (mActivityGrands == null || mActivityGrands.isEmpty()) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mActivityGrands.sort(new Comparator<BaseFragment>() {
-                @Override
-                public int compare(BaseFragment o1, BaseFragment o2) {
-                    return o1.getBaseTag() - o2.getBaseTag();
-                }
-            });
-        }
+//        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+//        weekRankFragment.setTag(4);
+//        mActivityGrands.add(weekRankFragment);
+//
+//        if (mActivityGrands == null || mActivityGrands.isEmpty()) {
+//            return;
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            mActivityGrands.sort(new Comparator<BaseFragment>() {
+//                @Override
+//                public int compare(BaseFragment o1, BaseFragment o2) {
+//                    return o1.getBaseTag() - o2.getBaseTag();
+//                }
+//            });
+//        }
         mGrandAdaper = new ActivityFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
         vpActivity.setAdapter(mGrandAdaper);
 //        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
@@ -1401,11 +1401,34 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
             }
         });
+//        initActivityPoints();
+    }
+
+    private void refreshBottomRightVp() {
+        //周星榜
+        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        weekRankFragment.setTag(4);
+        mActivityGrands.add(weekRankFragment);
+
+        if (mActivityGrands == null || mActivityGrands.isEmpty()) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mActivityGrands.sort(new Comparator<BaseFragment>() {
+                @Override
+                public int compare(BaseFragment o1, BaseFragment o2) {
+                    return o1.getBaseTag() - o2.getBaseTag();
+                }
+            });
+        }
+        mGrandAdaper.notifyDataSetChanged();
+        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
         initActivityPoints();
     }
 
 
     private void getRightBottomActivity(int mProgramId, int mAnchorId) {
+        initBottomRightVp();
         mLivePresenter.getAnchorWish(mAnchorId);
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
         //主播任务
@@ -1424,7 +1447,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         anchorWishFragment.setTag(1);
         mActivityGrands.add(0, anchorWishFragment);
         if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            initVp();
+            refreshBottomRightVp();
         } else if (rightBottomActivityNum > RIGHT_BOTTOM_ACTIVITY) {
             mGrandAdaper.notifyDataSetChanged();
             initActivityPoints();
@@ -1461,7 +1484,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
         }
         if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            initVp();
+            refreshBottomRightVp();
         }
     }
 
@@ -1477,7 +1500,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mActivityGrands.add(anchorTaskFragment);
         }
         if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            initVp();
+            refreshBottomRightVp();
         }
     }
 
@@ -1486,7 +1509,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onRightBottomActivityError() {
         rightBottomActivityNum += 1;
         if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            initVp();
+            refreshBottomRightVp();
         }
     }
 
