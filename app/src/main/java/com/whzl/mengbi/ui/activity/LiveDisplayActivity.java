@@ -1307,7 +1307,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
 
         initAboutAnchor(mProgramId, mAnchorId);
-        mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getActivityNative(mProgramId, mAnchorId);
         initIgnore(roomInfoBean);
         if (isFirstCome) {
@@ -1354,6 +1353,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         });
         compositeDisposable.add(headlineDisposable);
 
+        mLivePresenter.getPkInfo(mProgramId);
     }
 
     /**
