@@ -102,4 +102,15 @@
         android:textColor="#fefefe"
         android:textSize="16.4sp"
         app:layout_constraintTop_toBottomOf="@id/ll_center_red_bag" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="未领取的红包，将于60秒后退回账户"
+        android:textColor="#a4a4a4"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

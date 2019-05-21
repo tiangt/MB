@@ -47,6 +47,7 @@ class RedFundFragment : BaseFragment<BasePresenter<BaseView>>() {
                             tv_nick_fund.visibility = View.GONE
                             tv_fenhong_fund.visibility = View.GONE
                             iv_avatar_fund.visibility = View.GONE
+                            tv_tips_fund.visibility = View.GONE
                             return
                         }
                         tv_nick_fund.text = t?.nickname
