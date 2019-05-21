@@ -1354,7 +1354,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mLivePresenter.getHeadlineRank(mAnchorId, "F");
         });
         compositeDisposable.add(headlineDisposable);
-
+        mLivePresenter.getPkInfo(mProgramId);
     }
 
     /**
