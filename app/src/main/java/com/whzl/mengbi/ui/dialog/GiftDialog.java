@@ -26,14 +26,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
-import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
+import com.whzl.mengbi.eventbus.event.LiveHouseCoinUpdateEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.SendSuperWordEvent;
 import com.whzl.mengbi.model.entity.ApiResult;
@@ -41,9 +39,7 @@ import com.whzl.mengbi.model.entity.FreeGiftBean;
 import com.whzl.mengbi.model.entity.GiftCountInfoBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
-import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.BackpackMotherFragment;
@@ -605,7 +601,7 @@ public class GiftDialog extends BaseAwesomeDialog {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LiveHouseUserInfoUpdateEvent event) {
+    public void onMessageEvent(LiveHouseCoinUpdateEvent event) {
         tvAmount.setText(AmountConversionUitls.amountConversionFormat(event.coin));
     }
 

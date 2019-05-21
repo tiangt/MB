@@ -103,9 +103,10 @@ import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
+import com.whzl.mengbi.eventbus.event.LiveHouseCoinUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
+import com.whzl.mengbi.eventbus.event.SendPropEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
@@ -1307,6 +1308,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
 
         initAboutAnchor(mProgramId, mAnchorId);
+
         mLivePresenter.getActivityNative(mProgramId, mAnchorId);
         initIgnore(roomInfoBean);
         if (isFirstCome) {
@@ -1353,7 +1355,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         });
         compositeDisposable.add(headlineDisposable);
 
-        mLivePresenter.getPkInfo(mProgramId);
     }
 
     /**
@@ -1512,9 +1513,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mRoomUserInfo = data;
             if (data.getWeathMap() != null) {
                 coin = data.getWeathMap().getCoin();
-                LiveHouseUserInfoUpdateEvent liveHouseUserInfoUpdateEvent = new LiveHouseUserInfoUpdateEvent();
-                liveHouseUserInfoUpdateEvent.coin = coin;
-                EventBus.getDefault().post(liveHouseUserInfoUpdateEvent);
+                LiveHouseCoinUpdateEvent liveHouseCoinUpdateEvent = new LiveHouseCoinUpdateEvent();
+                liveHouseCoinUpdateEvent.coin = coin;
+                EventBus.getDefault().post(liveHouseCoinUpdateEvent);
             }
             if (data.getGoodsList() != null) {
                 for (int i = 0; i < data.getGoodsList().size(); i++) {
@@ -1968,7 +1969,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .subscribe(new ApiObserver<JsonElement>() {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
-                        EventBus.getDefault().post(new LiveHouseUserInfoUpdateEvent());
+                        EventBus.getDefault().post(new SendPropEvent());
                     }
 
                     @Override

@@ -21,7 +21,7 @@ import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.ClearAllAnim;
 import com.whzl.mengbi.eventbus.event.GiftSelectedEvent;
-import com.whzl.mengbi.eventbus.event.LiveHouseUserInfoUpdateEvent;
+import com.whzl.mengbi.eventbus.event.SendPropEvent;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.BackpackListBean;
 import com.whzl.mengbi.model.entity.GiftInfo;
@@ -122,7 +122,7 @@ public class BackpackFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LiveHouseUserInfoUpdateEvent event) {
+    public void onMessageEvent(SendPropEvent event) {
         getBackPack();
     }
 
