@@ -849,8 +849,9 @@
                         android:layout_alignParentRight="true"
                         android:background="@drawable/bg_num_red_pack_live"
                         android:gravity="center"
-                        android:textColor="#fca92e"
-                        android:textSize="6sp" />
+                        android:textColor="#ff0000"
+                        android:textSize="8sp"
+                        android:textStyle="bold" />
                 </RelativeLayout>
             </android.support.constraint.ConstraintLayout>
 

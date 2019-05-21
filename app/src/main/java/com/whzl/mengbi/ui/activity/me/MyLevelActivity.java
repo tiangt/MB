@@ -75,7 +75,7 @@ public class MyLevelActivity extends BaseActivity {
         if ("ANCHOR_LEVEL".equals(levelType)) {
             fragments.add(MyAnchorLevelFragment.newInstance(dataBean));
         }
-
+        viewPager.setOffscreenPageLimit(fragments.size());
         viewPager.setAdapter(new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles));
         viewPager.setPageTransformer(true, new ZoomOutTranformer());
 
