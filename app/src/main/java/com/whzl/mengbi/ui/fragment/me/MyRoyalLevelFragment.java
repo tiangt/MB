@@ -1,10 +1,15 @@
 package com.whzl.mengbi.ui.fragment.me;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,15 +18,20 @@ import com.github.sahasbhop.apngview.ApngImageLoader;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
+import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
+import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
 import com.whzl.mengbi.ui.widget.view.MyLevelProgressLayout;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.StringUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,6 +52,8 @@ public class MyRoyalLevelFragment extends BaseFragment {
     TextView tvKeepLevel;
     @BindView(R.id.evl_royal_level)
     MyLevelProgressLayout evlRoyalLevel;
+    @BindView(R.id.rv_my_royal_level)
+    RecyclerView recycler;
 
     private PersonalInfoBean.DataBean dataBean;
     private int levelValue;
@@ -52,6 +64,38 @@ public class MyRoyalLevelFragment extends BaseFragment {
     private long sjNeedExpValue;
     private long bjExpValue;
     private long bjNeedExpValue;
+
+    private int royalLevelValue;
+
+
+    private List<Integer> imgs = new ArrayList<Integer>() {
+        {
+            add(R.drawable.ic_my_royal_1);
+            add(R.drawable.ic_my_royal_2);
+            add(R.drawable.ic_my_royal_3);
+            add(R.drawable.ic_my_royal_4);
+            add(R.drawable.ic_my_royal_5);
+            add(R.drawable.ic_my_royal_6);
+            add(R.drawable.ic_my_royal_7);
+            add(R.drawable.ic_my_royal_8);
+            add(R.drawable.ic_my_royal_9);
+        }
+    };
+
+    private List<String> tips = new ArrayList<String>() {
+        {
+            add("尊贵标识");
+            add("升级提醒");
+            add("专属礼物定制");
+            add("专属座驾");
+            add("酷炫入场");
+            add("防禁踢");
+            add("聊天字数增加");
+            add("私聊");
+            add("排位靠前");
+        }
+    };
+
 
     public static MyRoyalLevelFragment newInstance(PersonalInfoBean.DataBean dataBean) {
         Bundle args = new Bundle();
@@ -73,6 +117,9 @@ public class MyRoyalLevelFragment extends BaseFragment {
             listBeans = dataBean.getLevelList();
             if (listBeans != null) {
                 for (int i = 0; i < listBeans.size(); i++) {
+                    if ("ROYAL_LEVEL".equals(listBeans.get(i).getLevelType())) {
+                        royalLevelValue = listBeans.get(i).getLevelValue();
+                    }
                     levelType = listBeans.get(i).getLevelType();
                     levelValue = listBeans.get(i).getLevelValue();
                     evlRoyalLevel.setLevelValue(levelType, levelValue, listBeans.get(i).getLevelName(), listBeans.get(i).getExpList());
@@ -126,7 +173,49 @@ public class MyRoyalLevelFragment extends BaseFragment {
                         break;
                     }
                 }
+
+                if (royalLevelValue != 8) {
+                    imgs.remove(2);
+                    tips.remove(2);
+                }
+
+                initRv();
             }
+        }
+    }
+
+    private void initRv() {
+        recycler.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        recycler.setAdapter(new BaseListAdapter() {
+            @Override
+            protected int getDataCount() {
+                return imgs.size();
+            }
+
+            @Override
+            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+                View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_royal, parent, false);
+                return new Holder(inflate);
+            }
+        });
+    }
+
+
+    class Holder extends BaseViewHolder {
+
+        private  ImageView image;
+        private  TextView textView;
+
+        public Holder(View itemView) {
+            super(itemView);
+            image = itemView.findViewById(R.id.iv_item_my_royal);
+            textView = itemView.findViewById(R.id.tv_item_my_royal);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            GlideImageLoader.getInstace().circleCropImage(getMyActivity(), imgs.get(position), image);
+            textView.setText(tips.get(position));
         }
     }
 
