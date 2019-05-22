@@ -131,6 +131,10 @@ public class NewRedPacketControl {
 
 
     public void openRed(RoomRedpackList.ListBean listBean) {
+        if ((Long) SPUtils.get(context, SpConfig.KEY_USER_ID, 0L) == 0) {
+            ((LiveDisplayActivity) context).login();
+            return;
+        }
         HashMap params = new HashMap();
         params.put("packed", listBean.redPacketId);
         params.put("userId", SPUtils.get(context, SpConfig.KEY_USER_ID, 0L).toString());

@@ -339,7 +339,7 @@ public class GiftDialog extends BaseAwesomeDialog {
                     ToastUtils.showToast("礼物数量不能为0");
                     return;
                 }
-                if (giftDetailInfoBean.getGoodsTypeName().equals("PK_CARD")) {
+                if ("PK_CARD".equals(giftDetailInfoBean.getGoodsTypeName())) {
                     ((LiveDisplayActivity) getActivity()).sendPkExpCard(giftDetailInfoBean);
                     return;
                 }

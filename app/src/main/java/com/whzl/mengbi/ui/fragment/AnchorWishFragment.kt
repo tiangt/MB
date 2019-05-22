@@ -69,7 +69,7 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
         tv_total.append(" 个${bean.sendGiftName}")
         tv_unfinish.text = "还差 "
         tv_unfinish.append(LightSpanString.getLightString((bean.totalWishCard - bean.finishedWishCard).toString(), Color.parseColor("#FFFE4D87")))
-        tv_unfinish.append(" 张")
+        tv_unfinish.append(" 个")
         tv_support.text = "共有 "
         tv_support.append(LightSpanString.getLightString(bean.supportPeopleNum.toString(), Color.parseColor("#FF732EFF")))
         tv_support.append(" 人支持")
@@ -100,7 +100,7 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
         val i = (totalWishCard * sendGiftPrice - anchorWishEndEvent.anchorWishJson.context.totalScore) / sendGiftPrice
         tv_unfinish.text = "还差 "
         tv_unfinish.append(LightSpanString.getLightString(i.toString(), Color.parseColor("#FFFE4D87")))
-        tv_unfinish.append(" 张")
+        tv_unfinish.append(" 个")
     }
 
     override fun onDestroy() {
