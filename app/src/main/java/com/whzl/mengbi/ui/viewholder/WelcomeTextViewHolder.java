@@ -10,9 +10,16 @@ import com.whzl.mengbi.R;
 public class WelcomeTextViewHolder extends RecyclerView.ViewHolder {
     public TextView textView;
     public LinearLayout linearLayout;
+
     public WelcomeTextViewHolder(View itemView) {
         super(itemView);
         textView = itemView.findViewById(R.id.chat_text);
         linearLayout = itemView.findViewById(R.id.ll_welcome);
+        textView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
     }
 }

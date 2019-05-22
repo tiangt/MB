@@ -8,6 +8,7 @@ import com.whzl.mengbi.R;
 
 public class SingleTextViewHolder extends RecyclerView.ViewHolder {
     public TextView textView;
+
     public SingleTextViewHolder(View itemView) {
         super(itemView);
         textView = itemView.findViewById(R.id.chat_text);
