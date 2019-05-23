@@ -190,6 +190,7 @@ import com.whzl.mengbi.ui.widget.view.BroadTextView;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.HeadLineView;
 import com.whzl.mengbi.ui.widget.view.HeadlineLayout;
+import com.whzl.mengbi.ui.widget.view.NoScrollViewPager;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
@@ -301,7 +302,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.banner)
     Banner banner;
     @BindView(R.id.vp_activity)
-    ViewPager vpActivity;
+    NoScrollViewPager vpActivity;
     @BindView(R.id.frame_supercar_track)
     FrameLayout frameSupercarTrack;
     @BindView(R.id.iv_live_rocket)
@@ -1405,25 +1406,30 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     private void refreshBottomRightVp() {
-        //周星榜
-        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-        weekRankFragment.setTag(4);
-        mActivityGrands.add(weekRankFragment);
+        try {
+            //周星榜
+            weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+            weekRankFragment.setTag(4);
+            mActivityGrands.add(weekRankFragment);
 
-        if (mActivityGrands == null || mActivityGrands.isEmpty()) {
-            return;
+            if (mActivityGrands == null || mActivityGrands.isEmpty()) {
+                return;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                mActivityGrands.sort(new Comparator<BaseFragment>() {
+                    @Override
+                    public int compare(BaseFragment o1, BaseFragment o2) {
+                        return o1.getBaseTag() - o2.getBaseTag();
+                    }
+                });
+            }
+            mGrandAdaper.notifyDataSetChanged();
+            vpActivity.setOffscreenPageLimit(mActivityGrands.size());
+            initActivityPoints();
+            vpActivity.setScroll(true);
+        } catch (Exception e) {
+            vpActivity.setVisibility(View.GONE);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mActivityGrands.sort(new Comparator<BaseFragment>() {
-                @Override
-                public int compare(BaseFragment o1, BaseFragment o2) {
-                    return o1.getBaseTag() - o2.getBaseTag();
-                }
-            });
-        }
-        mGrandAdaper.notifyDataSetChanged();
-        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
-        initActivityPoints();
     }
 
 
@@ -1442,16 +1448,20 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onAnchorWishSuccess(AnchorWishBean bean) {
         rightBottomActivityNum += 1;
-        AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean);
-        anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
-        anchorWishFragment.setTag(1);
-        mActivityGrands.add(0, anchorWishFragment);
-        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            refreshBottomRightVp();
-        } else if (rightBottomActivityNum > RIGHT_BOTTOM_ACTIVITY) {
-            mGrandAdaper.notifyDataSetChanged();
-            initActivityPoints();
-            vpActivity.setCurrentItem(0, false);
+        try {
+            AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean);
+            anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
+            anchorWishFragment.setTag(1);
+            mActivityGrands.add(0, anchorWishFragment);
+            if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+                refreshBottomRightVp();
+            } else if (rightBottomActivityNum > RIGHT_BOTTOM_ACTIVITY) {
+                mGrandAdaper.notifyDataSetChanged();
+                initActivityPoints();
+                vpActivity.setCurrentItem(0, false);
+            }
+        } catch (Exception e) {
+
         }
     }
 
@@ -1462,29 +1472,33 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
         rightBottomActivityNum += 1;
-        if (bean.list != null && bean.list.size() != 0) {
-            for (int i = 0; i < bean.list.size(); i++) {
-                ActivityGrandBean.ListBean listBean = bean.list.get(i);
-                LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
-                liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
-                    @Override
-                    public void clickListener() {
-                        if (TextUtils.isEmpty(listBean.jumpUrl)) {
-                            return;
+        try {
+            if (bean.list != null && bean.list.size() != 0) {
+                for (int i = 0; i < bean.list.size(); i++) {
+                    ActivityGrandBean.ListBean listBean = bean.list.get(i);
+                    LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
+                    liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
+                        @Override
+                        public void clickListener() {
+                            if (TextUtils.isEmpty(listBean.jumpUrl)) {
+                                return;
+                            }
+                            startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                                    .putExtra("anchorId", mAnchorId + "")
+                                    .putExtra("programId", mProgramId + "")
+                                    .putExtra("title", listBean.name)
+                                    .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
                         }
-                        startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
-                                .putExtra("anchorId", mAnchorId + "")
-                                .putExtra("programId", mProgramId + "")
-                                .putExtra("title", listBean.name)
-                                .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
-                    }
-                });
-                liveWebFragment.setTag(2);
-                mActivityGrands.add(liveWebFragment);
+                    });
+                    liveWebFragment.setTag(2);
+                    mActivityGrands.add(liveWebFragment);
+                }
             }
-        }
-        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            refreshBottomRightVp();
+            if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+                refreshBottomRightVp();
+            }
+        } catch (Exception e) {
+
         }
     }
 
@@ -1494,13 +1508,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
         rightBottomActivityNum += 1;
-        if (dataBean != null) {
-            AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
-            anchorTaskFragment.setTag(3);
-            mActivityGrands.add(anchorTaskFragment);
-        }
-        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            refreshBottomRightVp();
+        try {
+            if (dataBean != null) {
+                AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
+                anchorTaskFragment.setTag(3);
+                mActivityGrands.add(anchorTaskFragment);
+            }
+            if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+                refreshBottomRightVp();
+            }
+        } catch (Exception e) {
         }
     }
 
@@ -2271,6 +2288,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             mActivityGrands.clear();
             mGrandAdaper.notifyDataSetChanged();
         }
+
+        vpActivity.setScroll(false);
         if (llPagerIndex.getChildCount() > 0) {
             llPagerIndex.removeAllViews();
         }

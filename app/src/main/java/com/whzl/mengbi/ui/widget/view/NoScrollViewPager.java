@@ -1,62 +1,69 @@
 package com.whzl.mengbi.ui.widget.view;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.whzl.mengbi.util.LogUtils;
-
-/**
- * @author shaw
- * @date 03/12/2017
- */
 public class NoScrollViewPager extends ViewPager {
-    private boolean noScroll = true;
-
-    int mLastMotionY=0;
-    int mLastMotionX=0;
-
-    public NoScrollViewPager(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+    private boolean isScroll;
 
     public NoScrollViewPager(Context context) {
         super(context);
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent e) {
-        int y = (int) e.getRawY();
-        int x = (int) e.getRawX();
-        boolean resume = false;
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                // 发生down事件时,记录y坐标
-                mLastMotionY = y;
-                mLastMotionX = x;
-                resume = false;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                // deltaY > 0 是向下运动,< 0是向上运动
-                int deltaY = y - mLastMotionY;
-                int deleaX = x - mLastMotionX;
+    public NoScrollViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
 
-                if (Math.abs(deleaX) > Math.abs(deltaY)) {
-                    resume = super.onInterceptTouchEvent(e);
-                } else {
-                    //当前正处于滑动
-//                    if (isRefreshViewScroll(deltaY)) {
-//                        resume = true;
-//                    }
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                resume = false;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                break;
+    /**
+     * 1.dispatchTouchEvent一般情况不做处理
+     * ,如果修改了默认的返回值,子孩子都无法收到事件
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);   // return true;不行
+    }
+
+    /**
+     * 是否拦截
+     * 拦截:会走到自己的onTouchEvent方法里面来
+     * 不拦截:事件传递给子孩子
+     */
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        // return false;//可行,不拦截事件,
+        // return true;//不行,孩子无法处理事件
+        //return super.onInterceptTouchEvent(ev);//不行,会有细微移动
+        if (isScroll) {
+            return super.onInterceptTouchEvent(ev);
+        } else {
+            return false;
         }
-        return resume;
+    }
+
+    /**
+     * 是否消费事件
+     * 消费:事件就结束
+     * 不消费:往父控件传
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        //return false;// 可行,不消费,传给父控件
+        //return true;// 可行,消费,拦截事件
+        //super.onTouchEvent(ev); //不行,
+        //虽然onInterceptTouchEvent中拦截了,
+        //但是如果viewpage里面子控件不是viewgroup,还是会调用这个方法.
+        if (isScroll) {
+            return super.onTouchEvent(ev);
+        } else {
+            return true;// 可行,消费,拦截事件
+        }
+    }
+
+    public void setScroll(boolean scroll) {
+        isScroll = scroll;
     }
 }

@@ -744,7 +744,7 @@
                     app:layout_constraintRight_toRightOf="@id/rl_bottom_container">
 
 
-                    <android.support.v4.view.ViewPager
+                    <com.whzl.mengbi.ui.widget.view.NoScrollViewPager
                         android:id="@+id/vp_activity"
                         android:layout_width="@dimen/widgh_live_activity"
                         android:layout_height="@dimen/height_live_activity"
