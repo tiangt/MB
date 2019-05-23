@@ -138,7 +138,9 @@ public class AutoPollAdapter extends BaseListAdapter {
             case RoyalLevel.ROYAL_KING:
                 GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_7, mRoyalLevel);
                 break;
-
+            case RoyalLevel.ROYAL_LEGENT:
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_8, mRoyalLevel);
+                break;
         }
     }
 
@@ -170,6 +172,9 @@ public class AutoPollAdapter extends BaseListAdapter {
                 break;
             case RoyalLevel.ROYAL_KING:
                 Glide.with(context).asBitmap().load(R.drawable.royal_7).into(mRoyalLevel);
+                break;
+            case RoyalLevel.ROYAL_LEGENT:
+                Glide.with(context).asBitmap().load(R.drawable.royal_8).into(mRoyalLevel);
                 break;
 
         }

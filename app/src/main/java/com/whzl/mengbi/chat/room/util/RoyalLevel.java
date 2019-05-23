@@ -19,4 +19,6 @@ public class RoyalLevel {
     public static final int ROYAL_STAR = 6;
 
     public static final int ROYAL_KING = 7;
+
+    public static final int ROYAL_LEGENT = 8;
 }
