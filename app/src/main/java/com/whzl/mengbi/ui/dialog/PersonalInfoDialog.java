@@ -47,6 +47,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+
 /**
  * @author cliang
  * @date 2018.11.29
@@ -548,8 +550,11 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     }
 
     private void setRoyalImg(int bg_civilian) {
+        if (getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
         RequestOptions options = new RequestOptions().placeholder(R.drawable.bg_civilian);
-        Glide.with(getActivity()).load(bg_civilian).apply(options).into(ivBgPersonal);
+        Glide.with(getActivity()).load(bg_civilian).apply(options).transition(withCrossFade()).into(ivBgPersonal);
 //        GlideImageLoader.getInstace().displayImage(getActivity(), bg_civilian, ivBgPersonal);
     }
 
