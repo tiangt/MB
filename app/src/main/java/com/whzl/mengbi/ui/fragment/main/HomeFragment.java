@@ -262,7 +262,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                         tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
                     }
                     tvWatchCount.setText(recommendAnchorInfoBean.getRoomUserCount() + "");
-                    GlideImageLoader.getInstace().loadRoundImage(getContext(), recommendAnchorInfoBean.getCover(), ivCover, 5);
+                    GlideImageLoader.getInstace().displayProgramCover(getContext(), recommendAnchorInfoBean.getCover(), ivCover, 5);
                     if (needAnimal) {
                         addAnimation(this, position, TYPE_RECOMMEND);
                     }
@@ -280,7 +280,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
                         tvAnchorName.setText(liveShowListInfo.getAnchorNickname());
                     }
                     tvWatchCount.setText(liveShowListInfo.getRoomUserCount() + "");
-                    GlideImageLoader.getInstace().loadRoundImage(getContext(), liveShowListInfo.getCover(), ivCover, 5);
+                    GlideImageLoader.getInstace().displayProgramCover(getContext(), liveShowListInfo.getCover(), ivCover, 5);
                     if (needAnimal) {
                         addAnimation(this, position, TYPE_ANCHOR);
                     }

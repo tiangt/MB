@@ -147,7 +147,7 @@ public class DrawLayoutControl {
             } else {
                 tvAnchorName.setText(recommendAnchorInfoBean.getAnchorNickname());
             }
-            GlideImageLoader.getInstace().loadRoundImage(activity, recommendAnchorInfoBean.getCover(), ivCover, 5);
+            GlideImageLoader.getInstace().displayProgramCover(activity, recommendAnchorInfoBean.getCover(), ivCover, 5);
         }
 
         @Override

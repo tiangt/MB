@@ -8,12 +8,15 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -25,6 +28,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.whzl.mengbi.BuildConfig;
+import com.whzl.mengbi.R;
 import com.whzl.mengbi.util.UIUtil;
 import com.youth.banner.loader.ImageLoader;
 
@@ -32,6 +36,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class GlideImageLoader extends ImageLoader {
 
@@ -89,6 +95,61 @@ public class GlideImageLoader extends ImageLoader {
             RequestOptions options = new RequestOptions().circleCrop();
             Glide.with(context).load(path).apply(options).into(imageView);
         }
+    }
+
+    /**
+     * 节目封面
+     */
+    public void displayProgramCover(Context context, Object object, ImageView imageView, int radius) {
+        if (isValidContextForGlide(context)) {
+            RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(context, radius));
+            RequestOptions requestOptions = new RequestOptions().transform(roundedCorners);
+            Glide.with(context).load(object).apply(requestOptions)
+                    .thumbnail(loadProgramTransform(context, R.drawable.ic_program_place, radius)).transition(withCrossFade()).into(imageView);
+        }
+    }
+
+    private static RequestBuilder<Drawable> loadProgramTransform(Context context, @DrawableRes int placeholderId, float radius) {
+        return Glide.with(context)
+                .load(placeholderId)
+                .apply(new RequestOptions().centerCrop()
+                        .transform(new RoundedCorners(UIUtil.dip2px(context, radius))));
+    }
+
+    /**
+     * 圆形头像
+     */
+    public void displayCircleAvatar(Context context, Object object, ImageView imageView, int radius) {
+        if (isValidContextForGlide(context)) {
+            RequestOptions options = new RequestOptions().circleCrop();
+            Glide.with(context).load(object).apply(options)
+                    .thumbnail(loadAvatarTransform(context, R.drawable.ic_avatar_place)).transition(withCrossFade()).into(imageView);
+        }
+    }
+
+    private static RequestBuilder<Drawable> loadAvatarTransform(Context context, @DrawableRes int placeholderId) {
+        return Glide.with(context)
+                .load(placeholderId)
+                .apply(new RequestOptions().circleCrop());
+    }
+
+    /**
+     * 圆角头像
+     */
+    public void displayRoundAvatar(Context context, Object object, ImageView imageView, int radius) {
+        if (isValidContextForGlide(context)) {
+            RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(context, radius));
+            RequestOptions requestOptions = new RequestOptions().transform(roundedCorners);
+            Glide.with(context).load(object).apply(requestOptions)
+                    .thumbnail(loadRoundAvatarTransform(context, R.drawable.ic_avatar_place, radius)).transition(withCrossFade()).into(imageView);
+        }
+    }
+
+    private static RequestBuilder<Drawable> loadRoundAvatarTransform(Context context, @DrawableRes int placeholderId, float radius) {
+        return Glide.with(context)
+                .load(placeholderId)
+                .apply(new RequestOptions().centerCrop()
+                        .transform(new RoundedCorners(UIUtil.dip2px(context, radius))));
     }
 
     @Override

@@ -63,7 +63,7 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
         ll_anchor_wish.clickDelay {
             mOnclick.onCLick()
         }
-        GlideImageLoader.getInstace().loadRoundImage(activity, bean.giftPicUrl, iv_gift, 2)
+        GlideImageLoader.getInstace().displayRoundAvatar(activity, bean.giftPicUrl, iv_gift, 2)
         tv_total.text = "需 "
         tv_total.append(LightSpanString.getLightString(bean.totalWishCard.toString(), Color.parseColor("#FFFE4D87")))
         tv_total.append(" 个${bean.sendGiftName}")
