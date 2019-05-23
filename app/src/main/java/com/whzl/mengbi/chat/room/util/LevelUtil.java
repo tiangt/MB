@@ -117,6 +117,9 @@ public class LevelUtil {
      */
     public static SpannableString getImageResourceSpan(Context context, int resourceId) {
         SpannableString levelIcon = new SpannableString("icon");
+        if (context == null) {
+            return levelIcon;
+        }
         Resources res = context.getResources();
         Drawable levelIconDrawable = res.getDrawable(resourceId);
         if (levelIconDrawable == null) {

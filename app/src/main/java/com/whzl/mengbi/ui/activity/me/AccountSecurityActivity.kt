@@ -49,7 +49,7 @@ class AccountSecurityActivity : BaseActivity<BasePresenter<BaseView>>() {
         getUserInfo()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_BINDING) {
             if (resultCode == Activity.RESULT_OK) {
