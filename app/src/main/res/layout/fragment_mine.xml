@@ -49,7 +49,7 @@
                 android:background="@drawable/shape_radius_five"
                 android:orientation="horizontal">
 
-                <com.whzl.mengbi.ui.widget.view.CircleImageView
+                <ImageView
                     android:id="@+id/iv_avatar"
                     android:layout_width="50dp"
                     android:layout_height="50dp"

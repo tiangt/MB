@@ -1222,7 +1222,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
                         holder.setText(R.id.tv_nick_play_notify, contextBean.nickname);
                         String jpg = ImageUrl.getAvatarUrl(contextBean.userId, "jpg", contextBean.lastUpdateTime);
-                        GlideImageLoader.getInstace().circleCropImage(
+                        GlideImageLoader.getInstace().displayCircleAvatar(
                                 LiveDisplayActivity.this, jpg, holder.getView(R.id.iv_avatar_play_notify));
                         holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
                         holder.setOnClickListener(R.id.tv_transfer, v -> {

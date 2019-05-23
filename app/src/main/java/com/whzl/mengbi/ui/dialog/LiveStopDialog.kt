@@ -67,7 +67,7 @@ class LiveStopDialog : BaseAwesomeDialog() {
         if (TextUtils.isEmpty(lastTime)) holder?.setText(R.id.tv_last_live, "上次开播：刚刚")
         else holder?.setText(R.id.tv_last_live, "上次开播：" + DateUtils.getTimeRange(lastTime))
 
-        GlideImageLoader.getInstace().circleCropImage(activity, fromAvatar, holder?.getView(R.id.iv_avatar_from))
+        GlideImageLoader.getInstace().displayCircleAvatar(activity, fromAvatar, holder?.getView(R.id.iv_avatar_from))
         holder?.setText(R.id.tv_nick_from, fromName.toString())
         holder?.setOnClickListener(R.id.tv_change_live_stop) {
             iv_change_live_stop.clearAnimation()
@@ -115,7 +115,7 @@ class LiveStopDialog : BaseAwesomeDialog() {
 //                        GlideImageLoader.getInstace().loadRoundImage(activity, t?.cover, holder?.getView(R.id.iv_cover_to), 5)
                         Glide.with(context!!).load(t?.cover).apply(RequestOptions.bitmapTransform(CropTransformation(UIUtil.dip2px(activity,290f), UIUtil.dip2px(activity,176f), CropTransformation.CropType.TOP))).into(holder?.getView(R.id.iv_cover_to)!!)
                         holder?.setText(R.id.tv_nick_to, t?.anchor?.name)
-                        GlideImageLoader.getInstace().circleCropImage(activity, t?.anchor?.avatar, holder?.getView(R.id.iv_avatar_to))
+                        GlideImageLoader.getInstace().displayCircleAvatar(activity, t?.anchor?.avatar, holder?.getView(R.id.iv_avatar_to))
                     }
 
                 })

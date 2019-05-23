@@ -186,7 +186,7 @@ public class GuardianListDialog extends BaseFullScreenDialog {
         public void onBindViewHolder(int position) {
             GuardListBean.GuardDetailBean guardDetailBean = mData.get(position);
             ivAvatar.setAlpha(guardDetailBean.isOnline == 1 ? 1f : 0.5f);
-            GlideImageLoader.getInstace().displayImage(getContext(), guardDetailBean.avatar, ivAvatar);
+            GlideImageLoader.getInstace().displayCircleAvatar(getContext(), guardDetailBean.avatar, ivAvatar);
             int userLevelIcon = ResourceMap.getResourceMap().getUserLevelIcon(guardDetailBean.userLevel);
             ivLevelIcon.setImageResource(userLevelIcon);
             tvName.setText(guardDetailBean.nickName);

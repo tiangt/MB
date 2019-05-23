@@ -76,7 +76,7 @@ public class MineFragment extends BaseFragment implements MeView {
     private static final int REQUEST_SETTING = 100;
     private static final int REQUEST_BINDING = 101;
     @BindView(R.id.iv_avatar)
-    CircleImageView ivAvatar;
+    ImageView ivAvatar;
     @BindView(R.id.tv_nick_name)
     TextView tvNickName;
     @BindView(R.id.iv_user_gender)
@@ -160,7 +160,7 @@ public class MineFragment extends BaseFragment implements MeView {
             return;
         }
         mUserInfo = userInfo;
-        GlideImageLoader.getInstace().displayImage(getContext(), userInfo.getData().getAvatar(), ivAvatar);
+        GlideImageLoader.getInstace().displayCircleAvatar(getContext(), userInfo.getData().getAvatar(), ivAvatar);
         tvNickName.setText(mUserInfo.getData().getNickname().trim());
         SPUtils.put(getContext(), SpConfig.KEY_USER_NAME, mUserInfo.getData().getNickname().trim());
 

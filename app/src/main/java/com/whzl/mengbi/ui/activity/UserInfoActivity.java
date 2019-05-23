@@ -140,7 +140,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     private void initView() {
         if (mUserInfo != null) {
-            GlideImageLoader.getInstace().circleCropImage(this, mUserInfo.getAvatar(), ivAvatar);
+            GlideImageLoader.getInstace().displayCircleAvatar(this, mUserInfo.getAvatar(), ivAvatar);
         }
         tvAccount.setText(mUserInfo.getUserId() + "");
         tvNickName.setText(mUserInfo.getNickname() == null ? "" : mUserInfo.getNickname());
@@ -358,7 +358,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     @Override
     public void showPortrait(String filename) {
-        GlideImageLoader.getInstace().circleCropImage(this, tempCropPath, ivAvatar);
+        GlideImageLoader.getInstace().displayCircleAvatar(this, tempCropPath, ivAvatar);
         EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 

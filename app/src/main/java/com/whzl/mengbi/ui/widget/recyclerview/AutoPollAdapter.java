@@ -90,7 +90,7 @@ public class AutoPollAdapter extends BaseListAdapter {
                 rl.setBackgroundResource(R.drawable.shape_online_head_civilian);
                 GlideImageLoader.getInstace().displayImage(context, null, ivRoyal);
             }
-            GlideImageLoader.getInstace().displayImage(context, mAudienceList.get(position + 1).getAvatar(), ivHead);
+            GlideImageLoader.getInstace().displayCircleAvatar(context, mAudienceList.get(position + 1).getAvatar(), ivHead);
         }
 
         @Override

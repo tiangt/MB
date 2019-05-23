@@ -163,7 +163,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                 tvPrettyNum.setVisibility(View.GONE);
                 ivCar.setVisibility(View.GONE);
                 tvName.setText(audienceInfoBean.getName());
-                GlideImageLoader.getInstace().circleCropImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
+                GlideImageLoader.getInstace().displayCircleAvatar(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
                 if (audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
                     ImageView royalImg = new ImageView(getContext());
                     if (BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {

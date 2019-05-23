@@ -145,7 +145,7 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
             tvPrettyNum.setVisibility(View.GONE);
             ivCar.setVisibility(View.GONE);
             tvName.setText(audienceInfoBean.getName());
-            GlideImageLoader.getInstace().circleCropImage(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
+            GlideImageLoader.getInstace().displayCircleAvatar(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
             int identity = audienceInfoBean.getIdentity();
             if (audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
                 ImageView royalImg = new ImageView(getContext());

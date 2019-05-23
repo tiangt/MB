@@ -141,7 +141,7 @@ public class AccountSwitchActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(int position) {
             User user = accountList.get(position);
-            GlideImageLoader.getInstace().circleCropImage(AccountSwitchActivity.this, user.getAvatar(), ivAvatar);
+            GlideImageLoader.getInstace().displayCircleAvatar(AccountSwitchActivity.this, user.getAvatar(), ivAvatar);
             tvName.setText(user.getNickname());
             tvNum.setText("萌号：" + user.getUserId());
             GlideImageLoader.getInstace().displayImage(

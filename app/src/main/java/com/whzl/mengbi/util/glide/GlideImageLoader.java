@@ -119,7 +119,7 @@ public class GlideImageLoader extends ImageLoader {
     /**
      * 圆形头像
      */
-    public void displayCircleAvatar(Context context, Object object, ImageView imageView, int radius) {
+    public void displayCircleAvatar(Context context, Object object, ImageView imageView) {
         if (isValidContextForGlide(context)) {
             RequestOptions options = new RequestOptions().circleCrop();
             Glide.with(context).load(object).apply(options)

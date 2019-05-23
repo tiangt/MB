@@ -6,7 +6,7 @@
     android:layout_margin="3dp"
     android:background="@drawable/shape_online_head_royal">
 
-    <com.whzl.mengbi.ui.widget.view.CircleImageView
+    <ImageView
         android:id="@+id/iv_circle_head"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
