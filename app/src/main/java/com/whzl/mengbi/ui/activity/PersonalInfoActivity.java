@@ -177,7 +177,7 @@ public class PersonalInfoActivity extends BaseActivity {
                 break;
             case R.id.ib_rich_note_personinfo:
                 startActivity(new Intent(PersonalInfoActivity.this, JsBridgeActivity.class)
-                        .putExtra("title", "贵族等级")
+                        .putExtra("title", "富豪等级")
                         .putExtra("url", SPUtils.get(PersonalInfoActivity.this, SpConfig.USERGRADEURL, "").toString()));
                 break;
             case R.id.ib_royal_note_personinfo:

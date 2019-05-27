@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:gravity="bottom"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="115dp"
     android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bg_week_rank_top" />
 
     <LinearLayout
         android:id="@+id/ll_week_rank"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="77dp"
+        android:layout_height="85dp"
         android:background="@drawable/bg_week_rank_bottom"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="3dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="3dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,14 +30,14 @@
             <ImageView
                 android:id="@+id/iv_1"
                 android:layout_width="15dp"
-                android:layout_height="13dp" />
+                android:layout_height="15dp" />
 
-            <TextView
-                android:id="@+id/tv_name_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#eb0f05"
-                android:textSize="9sp" />
+            <!--<TextView-->
+            <!--android:id="@+id/tv_name_1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="#eb0f05"-->
+            <!--android:textSize="9sp" />-->
 
             <TextView
                 android:id="@+id/tv_rank_1"
@@ -47,9 +45,14 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="end"
-                android:textColor="#505050"
+                android:textColor="#f9f9f9"
                 android:textSize="9sp" />
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#5a63f7" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,23 +64,28 @@
             <ImageView
                 android:id="@+id/iv_2"
                 android:layout_width="15dp"
-                android:layout_height="13dp" />
+                android:layout_height="15dp" />
 
-            <TextView
-                android:id="@+id/tv_name_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#eb0f05"
-                android:textSize="9sp" />
+            <!--<TextView-->
+            <!--android:id="@+id/tv_name_2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="#eb0f05"-->
+            <!--android:textSize="9sp" />-->
 
             <TextView
                 android:id="@+id/tv_rank_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:textColor="#505050"
+                android:textColor="#f9f9f9"
                 android:textSize="9sp" />
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#5a63f7" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,23 +97,28 @@
             <ImageView
                 android:id="@+id/iv_3"
                 android:layout_width="15dp"
-                android:layout_height="13dp" />
+                android:layout_height="15dp" />
 
-            <TextView
-                android:id="@+id/tv_name_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#eb0f05"
-                android:textSize="9sp" />
+            <!--<TextView-->
+            <!--android:id="@+id/tv_name_3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="#eb0f05"-->
+            <!--android:textSize="9sp" />-->
 
             <TextView
                 android:id="@+id/tv_rank_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:textColor="#505050"
+                android:textColor="#f9f9f9"
                 android:textSize="9sp" />
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#5a63f7" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -117,14 +130,14 @@
             <ImageView
                 android:id="@+id/iv_4"
                 android:layout_width="15dp"
-                android:layout_height="13dp" />
+                android:layout_height="15dp" />
 
-            <TextView
-                android:id="@+id/tv_name_4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#eb0f05"
-                android:textSize="9sp" />
+            <!--<TextView-->
+            <!--android:id="@+id/tv_name_4"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="#eb0f05"-->
+            <!--android:textSize="9sp" />-->
 
             <TextView
                 android:id="@+id/tv_rank_4"
@@ -132,10 +145,20 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="end"
-                android:textColor="#505050"
+                android:textColor="#f9f9f9"
                 android:textSize="9sp" />
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="31dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/bg_week_rank_top"
+        app:layout_constraintBottom_toBottomOf="@id/ll_week_rank"
+        app:layout_constraintRight_toRightOf="@id/ll_week_rank" />
+
+</android.support.constraint.ConstraintLayout>

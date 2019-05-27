@@ -32,26 +32,26 @@ import io.reactivex.schedulers.Schedulers;
 public class LiveWeekRankFragment extends BaseFragment {
     @BindView(R.id.iv_1)
     ImageView iv1;
-    @BindView(R.id.tv_name_1)
-    TextView tvName1;
+    //    @BindView(R.id.tv_name_1)
+//    TextView tvName1;
     @BindView(R.id.tv_rank_1)
     TextView tvRank1;
     @BindView(R.id.iv_2)
     ImageView iv2;
-    @BindView(R.id.tv_name_2)
-    TextView tvName2;
+    //    @BindView(R.id.tv_name_2)
+//    TextView tvName2;
     @BindView(R.id.tv_rank_2)
     TextView tvRank2;
     @BindView(R.id.iv_3)
     ImageView iv3;
-    @BindView(R.id.tv_name_3)
-    TextView tvName3;
+    //    @BindView(R.id.tv_name_3)
+//    TextView tvName3;
     @BindView(R.id.tv_rank_3)
     TextView tvRank3;
     @BindView(R.id.iv_4)
     ImageView iv4;
-    @BindView(R.id.tv_name_4)
-    TextView tvName4;
+    //    @BindView(R.id.tv_name_4)
+//    TextView tvName4;
     @BindView(R.id.tv_rank_4)
     TextView tvRank4;
 
@@ -97,20 +97,20 @@ public class LiveWeekRankFragment extends BaseFragment {
                     @Override
                     public void onSuccess(WeekRankBean bean) {
                         if (bean.list != null && bean.list.size() > 0) {
-                            tvName1.setText(bean.list.get(0).goodsName);
-                            tvName2.setText(bean.list.get(1).goodsName);
-                            tvName3.setText(bean.list.get(2).goodsName);
-                            tvName4.setText(bean.list.get(3).goodsName);
+//                            tvName1.setText(bean.list.get(0).goodsName);
+//                            tvName2.setText(bean.list.get(1).goodsName);
+//                            tvName3.setText(bean.list.get(2).goodsName);
+//                            tvName4.setText(bean.list.get(3).goodsName);
 
                             tvRank1.setText(bean.list.get(0).rankValue < 0 ? "未上榜" : "第" + bean.list.get(0).rankValue + "名");
                             tvRank2.setText(bean.list.get(1).rankValue < 0 ? "未上榜" : "第" + bean.list.get(1).rankValue + "名");
                             tvRank3.setText(bean.list.get(2).rankValue < 0 ? "未上榜" : "第" + bean.list.get(2).rankValue + "名");
                             tvRank4.setText(bean.list.get(3).rankValue < 0 ? "未上榜" : "第" + bean.list.get(3).rankValue + "名");
 
-                            tvRank1.setTextColor(bean.list.get(0).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
-                            tvRank2.setTextColor(bean.list.get(1).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
-                            tvRank3.setTextColor(bean.list.get(2).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
-                            tvRank4.setTextColor(bean.list.get(3).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
+//                            tvRank1.setTextColor(bean.list.get(0).rankValue < 0 ? Color.parseColor("#f9f9f9") : Color.parseColor("#ec5b03"));
+//                            tvRank2.setTextColor(bean.list.get(1).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
+//                            tvRank3.setTextColor(bean.list.get(2).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
+//                            tvRank4.setTextColor(bean.list.get(3).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
 
                             Glide.with(LiveWeekRankFragment.this).load(bean.list.get(0).goodsPic).into(iv1);
                             Glide.with(LiveWeekRankFragment.this).load(bean.list.get(1).goodsPic).into(iv2);
