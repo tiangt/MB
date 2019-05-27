@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
@@ -75,7 +77,6 @@ public class RedbagActivity extends BaseActivity {
         fragments.add(RedFundFragment.Companion.newInstance());
         viewpager.setOffscreenPageLimit(titles.size());
         viewpager.setAdapter(new FragmentPagerAdaper(getSupportFragmentManager(), fragments, titles));
-        tabLayout.setupWithViewPager(viewpager);
         tabLayout.clearOnTabSelectedListeners();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -87,11 +88,24 @@ public class RedbagActivity extends BaseActivity {
                 } else {
                     btnSend.setVisibility(View.VISIBLE);
                 }
+
+                View view = tab.getCustomView();
+                if (null == view) {
+                    tab.setCustomView(R.layout.tab_item_red_bag);
+                }
+                TextView textView = tab.getCustomView().findViewById(android.R.id.text1);
+                textView.setTextColor(tabLayout.getTabTextColors());
+                textView.setTypeface(Typeface.DEFAULT_BOLD);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                View view = tab.getCustomView();
+                if (null == view) {
+                    tab.setCustomView(R.layout.tab_item_red_bag);
+                }
+                TextView textView = tab.getCustomView().findViewById(android.R.id.text1);
+                textView.setTypeface(Typeface.DEFAULT);
             }
 
             @Override
@@ -99,6 +113,7 @@ public class RedbagActivity extends BaseActivity {
 
             }
         });
+        tabLayout.setupWithViewPager(viewpager);
 
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

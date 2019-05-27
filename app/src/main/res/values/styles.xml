@@ -413,7 +413,7 @@
     </style>
 
     <style name="Red_Bag_TabText" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">#757575</item>
         <!--<selectedItem name="android:textColor">@android:color/white</selectedItem>-->
         <item name="textAllCaps">true</item>
