@@ -230,8 +230,8 @@ public class GiftDialog extends BaseAwesomeDialog {
 
             @Override
             public void onPageSelected(int position) {
-                viewSuper.setVisibility(position == fragments.size() - 1 ? View.INVISIBLE : View.VISIBLE);
-                llSuper.setVisibility(position == fragments.size() - 1 ? View.INVISIBLE : View.VISIBLE);
+//                viewSuper.setVisibility(position == fragments.size() - 1 ? View.INVISIBLE : View.VISIBLE);
+//                llSuper.setVisibility(position == fragments.size() - 1 ? View.INVISIBLE : View.VISIBLE);
 
             }
 

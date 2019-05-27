@@ -2284,9 +2284,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
 
         rightBottomActivityNum = 0;
-        if (mGrandAdaper != null && mActivityGrands != null && mActivityGrands.size() > 0) {
-            mActivityGrands.clear();
-            mGrandAdaper.notifyDataSetChanged();
+        try {
+            if (mGrandAdaper != null && mActivityGrands != null && mActivityGrands.size() > 0) {
+                mActivityGrands.clear();
+                mGrandAdaper.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+
         }
 
         vpActivity.setScroll(false);
