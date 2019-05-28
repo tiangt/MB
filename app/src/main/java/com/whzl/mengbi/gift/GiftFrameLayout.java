@@ -6,10 +6,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.text.SpannableString;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +19,7 @@ import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
-import com.whzl.mengbi.chat.room.message.messagesActions.AnimAction;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
-import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -120,7 +116,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     @Override
     public void setGiftViewEndVisibility(boolean hasGift) {
 
-        if (hasGift) {
+        if (isHideMode && hasGift) {
             GiftFrameLayout.this.setVisibility(View.GONE);
         } else {
             GiftFrameLayout.this.setVisibility(View.INVISIBLE);
@@ -140,7 +136,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case RESTART_GIFT_ANIMATION_CODE:
-                tvCount.setText("x " + comboList.get(0));
+                tvCount.setText(String.valueOf(comboList.get(0)));
                 comboList.remove(0);
                 comboAnimation(false);
                 removeDismissGiftCallback();
@@ -273,11 +269,11 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
      */
     public void initLayoutState() {
         this.setVisibility(View.VISIBLE);
-        tvCount.setText("x" + mGift.getGiftTotalCount());
+        tvCount.setText(String.valueOf(mGift.getGiftTotalCount()));
         tvFromNickName.setText(mGift.getNickname());
         tvGiftName.setText("送 ");
-        SpannableString spannableString = StringUtils.spannableStringColor(mGift.getGoodsName(), Color.parseColor("#fe4b21"));
-        tvGiftName.append(spannableString);
+//        SpannableString spannableString = StringUtils.spannableStringColor(mGift.getGoodsName(), Color.parseColor("#fe4b21"));
+        tvGiftName.append(mGift.getGoodsName());
         String avatarUrl = ImageUrl.getAvatarUrl(mGift.getUserId(), "jpg", mGift.getLastUpdateTime());
         GlideImageLoader.getInstace().displayImage(getContext(), avatarUrl, ivAvatar);
         GlideImageLoader.getInstace().displayImage(getContext(), mGift.getGiftUrl(), ivGift);
@@ -301,7 +297,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     public AnimatorSet startAnimation() {
         hideView();
 //            布局飞入
-        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, -          UIUtil.getScreenWidthPixels(getContext()), 0, 300, new OvershootInterpolator());
+        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, -UIUtil.getScreenWidthPixels(getContext()), 0, 300, new OvershootInterpolator());
         flyFromLtoR.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -351,9 +347,9 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     @Override
     public AnimatorSet endAnmation() {
         ObjectAnimator fadeAnimator = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 0, -100, 300, 0);
-        ObjectAnimator fadeAnimator2 = GiftAnimationUtil.createFadeAnimator(GiftFrameLayout.this, 100, 0, 0, 0);
+        ObjectAnimator fadeAnimator2 = GiftAnimationUtil.createEndAnimator(GiftFrameLayout.this, 0, -20, 300, 0);
 
-        AnimatorSet animatorSet = GiftAnimationUtil.startAnimation(fadeAnimator, fadeAnimator2);
+        AnimatorSet animatorSet = GiftAnimationUtil.startAnimationWith(fadeAnimator, fadeAnimator2);
         return animatorSet;
     }
 }

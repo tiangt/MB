@@ -7,6 +7,7 @@ import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -14,6 +15,8 @@ import org.greenrobot.eventbus.EventBus;
 public class AnimAction implements Actions {
     @Override
     public void performAction(String msgStr, final Context context) {
+        LogUtils.e("AnimAction  "+msgStr
+        );
         final AnimJson animJson = GsonUtils.GsonToBean(msgStr, AnimJson.class);
         if (animJson == null) {
             return;

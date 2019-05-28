@@ -66,12 +66,12 @@ public class GiftAnimationUtil {
      */
     public static ObjectAnimator scaleGiftNum(final TextView target) {
         PropertyValuesHolder anim4 = PropertyValuesHolder.ofFloat("scaleX",
-                1.5f, 0.8f, 1f);
+                1.39f, /*0.8f,*/ 1f);
         PropertyValuesHolder anim5 = PropertyValuesHolder.ofFloat("scaleY",
-                1.5f, 0.8f, 1f);
-        PropertyValuesHolder anim6 = PropertyValuesHolder.ofFloat("alpha",
-                1.0f, 0f, 1f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(target, anim4, anim5, anim6).setDuration(300);
+                1.39f, /*0.8f, */1f);
+//        PropertyValuesHolder anim6 = PropertyValuesHolder.ofFloat("alpha",
+//                1.0f, 0f, 1f);
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(target, anim4, anim5/*, anim6*/).setDuration(300);
         return animator;
 
     }
@@ -96,6 +96,24 @@ public class GiftAnimationUtil {
     }
 
     /**
+     * @param target
+     * @param star
+     * @param end
+     * @param duration
+     * @param startDelay
+     * @return 向上飞 淡出
+     */
+    public static ObjectAnimator createEndAnimator(final View target, float star, float end, int duration, int startDelay) {
+
+//        PropertyValuesHolder translationY = PropertyValuesHolder.ofFloat("translationY", star, end);
+        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("translationY", star,end);
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(target, alpha);
+        animator.setStartDelay(startDelay);
+        animator.setDuration(duration);
+        return animator;
+    }
+
+    /**
      * @param animator1
      * @param animator2
      * @return 按顺序播放动画
@@ -104,6 +122,19 @@ public class GiftAnimationUtil {
         AnimatorSet animSet = new AnimatorSet();
 //        animSet.playSequentially(animators);
         animSet.play(animator1).before(animator2);
+        animSet.start();
+        return animSet;
+    }
+
+    /**
+     * @param animator1
+     * @param animator2
+     * @return 按顺序播放动画
+     */
+    public static AnimatorSet startAnimationWith(ObjectAnimator animator1, ObjectAnimator animator2) {
+        AnimatorSet animSet = new AnimatorSet();
+//        animSet.playSequentially(animators);
+        animSet.play(animator1).with(animator2);
         animSet.start();
         return animSet;
     }

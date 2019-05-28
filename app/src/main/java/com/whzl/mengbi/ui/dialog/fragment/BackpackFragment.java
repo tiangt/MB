@@ -191,6 +191,7 @@ public class BackpackFragment extends BaseFragment {
             GiftInfo.GiftDetailInfoBean giftDetailInfoBean = new GiftInfo.GiftDetailInfoBean();
             giftDetailInfoBean.setGoodsId(goodsDetailBean.goodsId);
             giftDetailInfoBean.setGoodsTypeName(goodsDetailBean.goodsType);
+            giftDetailInfoBean.setRent(goodsDetailBean.rent);
             selectId = goodsDetailBean.goodsId;
             giftDetailInfoBean.setBackpack(true);
             flagOnMessageEvent = false;
