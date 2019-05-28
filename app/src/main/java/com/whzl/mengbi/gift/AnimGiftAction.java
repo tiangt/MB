@@ -11,9 +11,9 @@ interface AnimGiftAction {
 
     void setGiftViewEndVisibility(boolean hasGift);
 
-    String getAnimType();
+    int getAnimType();
 
-    void setAnimType(String mAnimType);
+    void setAnimType(int mAnimType);
 
     void setComboNum(int comboNum);
 

@@ -6,15 +6,13 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
-import android.text.SpannableString;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
-import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -72,7 +69,7 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
     private View rootView;
     private TextView tvComboTime;
     private ImageView ivBg;
-    private String mAnimType;
+    private int mAnimType;
 
     public ComboGiftFrameLayout(Context context) {
         this(context, null);
@@ -120,12 +117,12 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
     }
 
     @Override
-    public String getAnimType() {
+    public int getAnimType() {
         return mAnimType;
     }
 
     @Override
-    public void setAnimType(String animType) {
+    public void setAnimType(int animType) {
         mAnimType = animType;
     }
 
@@ -142,25 +139,25 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case RESTART_GIFT_ANIMATION_CODE:
-                tvComboTime.setText("x " + comboList.get(0));
+                tvComboTime.setText(String.valueOf(comboList.get(0)));
                 comboList.remove(0);
-                switch (mGift.getCount()) {
-                    case 66:
-                        ivBg.setImageResource(R.drawable.combo_gift_66_bg);
-                        break;
-                    case 99:
-                        ivBg.setImageResource(R.drawable.combo_gift_99_bg);
-                        break;
-                    case 188:
-                        ivBg.setImageResource(R.drawable.combo_gift_188_bg);
-                        break;
-                    case 520:
-                        ivBg.setImageResource(R.drawable.combo_gift_520_bg);
-                        break;
-                    case 1314:
-                        ivBg.setImageResource(R.drawable.combo_gift_1314_bg);
-                        break;
-                }
+//                switch (mGift.getCount()) {
+//                    case 66:
+//                        ivBg.setImageResource(R.drawable.combo_gift_66_bg);
+//                        break;
+//                    case 99:
+//                        ivBg.setImageResource(R.drawable.combo_gift_99_bg);
+//                        break;
+//                    case 188:
+//                        ivBg.setImageResource(R.drawable.combo_gift_188_bg);
+//                        break;
+//                    case 520:
+//                        ivBg.setImageResource(R.drawable.combo_gift_520_bg);
+//                        break;
+//                    case 1314:
+//                        ivBg.setImageResource(R.drawable.combo_gift_1314_bg);
+//                        break;
+//                }
                 comboAnimation(false);
                 removeDismissGiftCallback();
                 break;
@@ -296,30 +293,30 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
      */
     public void initLayoutState() {
         this.setVisibility(View.VISIBLE);
-        tvComboTime.setText("x" + mGift.getComboTimes());
+        tvComboTime.setText(String.valueOf(mGift.getComboTimes()));
         tvCount.setText("x" + mGift.getCount());
         tvFromNickName.setText(mGift.getNickname());
         tvGiftName.setText("送 " + mGift.getGoodsName());
         String avatarUrl = ImageUrl.getAvatarUrl(mGift.getUserId(), "jpg", mGift.getLastUpdateTime());
         GlideImageLoader.getInstace().displayImage(getContext(), avatarUrl, ivAvatar);
         GlideImageLoader.getInstace().displayImage(getContext(), mGift.getGiftUrl(), ivGift);
-        switch (mGift.getCount()) {
-            case 66:
-                ivBg.setImageResource(R.drawable.combo_gift_66_1_bg);
-                break;
-            case 99:
-                ivBg.setImageResource(R.drawable.combo_gift_99_1_bg);
-                break;
-            case 188:
-                ivBg.setImageResource(R.drawable.combo_gift_188_1_bg);
-                break;
-            case 520:
-                ivBg.setImageResource(R.drawable.combo_gift_520_1_bg);
-                break;
-            case 1314:
-                ivBg.setImageResource(R.drawable.combo_gift_1314_1_bg);
-                break;
-        }
+//        switch (mGift.getCount()) {
+//            case 66:
+//                ivBg.setImageResource(R.drawable.combo_gift_66_1_bg);
+//                break;
+//            case 99:
+//                ivBg.setImageResource(R.drawable.combo_gift_99_1_bg);
+//                break;
+//            case 188:
+//                ivBg.setImageResource(R.drawable.combo_gift_188_1_bg);
+//                break;
+//            case 520:
+//                ivBg.setImageResource(R.drawable.combo_gift_520_1_bg);
+//                break;
+//            case 1314:
+//                ivBg.setImageResource(R.drawable.combo_gift_1314_1_bg);
+//                break;
+//        }
     }
 
     public int getColor() {
@@ -350,7 +347,7 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
     public AnimatorSet startAnimation() {
         hideView();
 //            布局飞入
-        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, - UIUtil.getScreenWidthPixels(getContext()), 0, 300, new OvershootInterpolator());
+        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, -UIUtil.getScreenWidthPixels(getContext()), 0, 200, new LinearInterpolator());
         flyFromLtoR.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -399,9 +396,9 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
 
     public AnimatorSet endAnmation() {
         ObjectAnimator fadeAnimator = GiftAnimationUtil.createFadeAnimator(ComboGiftFrameLayout.this, 0, -100, 300, 0);
-        ObjectAnimator fadeAnimator2 = GiftAnimationUtil.createFadeAnimator(ComboGiftFrameLayout.this, 100, 0, 0, 0);
+        ObjectAnimator fadeAnimator2 = GiftAnimationUtil.createEndAnimator(ComboGiftFrameLayout.this, 0, -20, 300, 0);
 
-        AnimatorSet animatorSet = GiftAnimationUtil.startAnimation(fadeAnimator, fadeAnimator2);
+        AnimatorSet animatorSet = GiftAnimationUtil.startAnimationWith(fadeAnimator, fadeAnimator2);
         return animatorSet;
     }
 }

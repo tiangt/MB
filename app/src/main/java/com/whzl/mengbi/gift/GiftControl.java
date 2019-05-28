@@ -64,13 +64,13 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
             return;
         }
         AnimJson.ContextEntity contextEntity = gift.getContext();
-        if ("TOTAl".equals(gift.getAnimType())) {
+        if (contextEntity.getComboTimes() == 0) {
             if (mGiftLayoutParent.getChildCount() > 0) {
                 for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
                     FrameLayout childAt = (FrameLayout) mGiftLayoutParent.getChildAt(i);
                     if (childAt.getChildAt(0) != null) {
                         AnimGiftAction animGiftAction = (AnimGiftAction) childAt.getChildAt(0);
-                        if ("TOTAl".equals(animGiftAction.getAnimType())
+                        if ((animGiftAction.getAnimType() == 0)
                                 && animGiftAction.getCurrentSendUserId() == contextEntity.getUserId()
                                 && animGiftAction.getCurrentGiftId() == contextEntity.getGoodsId()) {
                             animGiftAction.setComboNum(contextEntity.getGiftTotalCount());
@@ -81,7 +81,7 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
             }
             for (int i = 0; i < mGiftQueue.size(); i++) {
                 AnimJson.ContextEntity context = mGiftQueue.get(i).getContext();
-                if ("TOTAl".equals(mGiftQueue.get(i).getAnimType())
+                if ((context.getComboTimes() == 0)
                         && context.getUserId() == contextEntity.getUserId()
                         && context.getGoodsId() == contextEntity.getGoodsId()
                         && context.getGiftTotalCount() < contextEntity.getGiftTotalCount()) {
@@ -89,22 +89,32 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
                     return;
                 }
             }
-        } else if ("DIV".equals(gift.getAnimType())) {
+        } else if (contextEntity.getComboTimes() > 0) {
             if (mGiftLayoutParent.getChildCount() > 0) {
                 for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
-                    AnimGiftAction animGiftAction = (AnimGiftAction) mGiftLayoutParent.getChildAt(i);
-                    if ("DIV".equals(animGiftAction.getAnimType())
-                            && animGiftAction.getCurrentSendUserId() == contextEntity.getUserId()
-                            && animGiftAction.getCurrentGiftId() == contextEntity.getGoodsId()
-                            && animGiftAction.getGiftCount() == contextEntity.getCount()) {
-                        animGiftAction.setComboNum(contextEntity.getComboTimes());
-                        return;
+//                    AnimGiftAction animGiftAction = (AnimGiftAction) mGiftLayoutParent.getChildAt(i);
+//                    if ("DIV".equals(animGiftAction.getAnimType())
+//                            && animGiftAction.getCurrentSendUserId() == contextEntity.getUserId()
+//                            && animGiftAction.getCurrentGiftId() == contextEntity.getGoodsId()
+//                            && animGiftAction.getGiftCount() == contextEntity.getCount()) {
+//                        animGiftAction.setComboNum(contextEntity.getComboTimes());
+//                        return;
+//                    }
+                    FrameLayout childAt = (FrameLayout) mGiftLayoutParent.getChildAt(i);
+                    if (childAt.getChildAt(0) != null) {
+                        AnimGiftAction animGiftAction = (AnimGiftAction) childAt.getChildAt(0);
+                        if ((animGiftAction.getAnimType() > 0)
+                                && animGiftAction.getCurrentSendUserId() == contextEntity.getUserId()
+                                && animGiftAction.getCurrentGiftId() == contextEntity.getGoodsId()) {
+                            animGiftAction.setComboNum(contextEntity.getComboTimes());
+                            return;
+                        }
                     }
                 }
             }
             for (int i = 0; i < mGiftQueue.size(); i++) {
                 AnimJson.ContextEntity context = mGiftQueue.get(i).getContext();
-                if ("DIV".equals(mGiftQueue.get(i).getAnimType())
+                if (context.getComboTimes() > 0
                         && context.getUserId() == contextEntity.getUserId()
                         && context.getGoodsId() == contextEntity.getGoodsId()
                         && context.getCount() == contextEntity.getCount()
@@ -137,15 +147,15 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
 //            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mGiftLayoutParent.getLayoutParams();
 //            //这个就是添加其他属性的，这个是在父元素的底部。
 //            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            if ("TOTAl".equals(mGiftQueue.get(0).getAnimType())) {
+            if ((mGiftQueue.get(0).getContext().getComboTimes() == 0)) {
                 GiftFrameLayout giftFrameLayout = new GiftFrameLayout(mContext);
                 giftFrameLayout.setGiftAnimationListener(this);
                 for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
                     FrameLayout childAt = (FrameLayout) mGiftLayoutParent.getChildAt(i);
                     if (childAt.getChildCount() == 0) {
-                        childAt.addView(giftFrameLayout, 0);
+                        childAt.addView(giftFrameLayout);
                         boolean hasGift = giftFrameLayout.setGift(getGift().getContext());
-                        giftFrameLayout.setAnimType("TOTAl");
+                        giftFrameLayout.setAnimType(0);
                         if (hasGift) {
                             giftFrameLayout.startAnimation();
                         }
@@ -158,15 +168,28 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
 //                if (hasGift) {
 //                    giftFrameLayout.startAnimation();
 //                }
-            } else if ("DIV".equals(mGiftQueue.get(0).getAnimType())) {
+            } else if ((mGiftQueue.get(0).getContext().getComboTimes()) > 0) {
                 ComboGiftFrameLayout comboGiftFrameLayout = new ComboGiftFrameLayout(mContext);
                 comboGiftFrameLayout.setGiftAnimationListener(this);
-                mGiftLayoutParent.addView(comboGiftFrameLayout, 0);
-                boolean hasGift = comboGiftFrameLayout.setGift(getGift().getContext());
-                comboGiftFrameLayout.setAnimType("DIV");
-                if (hasGift) {
-                    comboGiftFrameLayout.startAnimation();
+                for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
+                    FrameLayout childAt = (FrameLayout) mGiftLayoutParent.getChildAt(i);
+                    if (childAt.getChildCount() == 0) {
+                        AnimJson gift = getGift();
+                        childAt.addView(comboGiftFrameLayout);
+                        boolean hasGift = comboGiftFrameLayout.setGift(gift.getContext());
+                        comboGiftFrameLayout.setAnimType(gift.getContext().getComboTimes());
+                        if (hasGift) {
+                            comboGiftFrameLayout.startAnimation();
+                        }
+                        break;
+                    }
                 }
+//                mGiftLayoutParent.addView(comboGiftFrameLayout, 0);
+//                boolean hasGift = comboGiftFrameLayout.setGift(getGift().getContext());
+//                comboGiftFrameLayout.setAnimType(getGift().getContext().getComboTimes());
+//                if (hasGift) {
+//                    comboGiftFrameLayout.startAnimation();
+//                }
             }
             Log.d(TAG, "showGift: end->集合个数：" + mGiftQueue.size());
         }

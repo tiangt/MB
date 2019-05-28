@@ -41,16 +41,16 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     private ArrayList<Integer> comboList = new ArrayList<>();
 
     @Override
-    public String getAnimType() {
+    public int getAnimType() {
         return mAnimType;
     }
 
     @Override
-    public void setAnimType(String mAnimType) {
+    public void setAnimType(int mAnimType) {
         this.mAnimType = mAnimType;
     }
 
-    private String mAnimType;
+    private int mAnimType;
     /**
      * 实时监测礼物数量
      */
