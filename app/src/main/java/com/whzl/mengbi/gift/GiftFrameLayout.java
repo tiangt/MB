@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -297,7 +298,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     public AnimatorSet startAnimation() {
         hideView();
 //            布局飞入
-        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, -UIUtil.getScreenWidthPixels(getContext()), 0, 300, new OvershootInterpolator());
+        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, -UIUtil.getScreenWidthPixels(getContext()), 0, 200, new LinearInterpolator());
         flyFromLtoR.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {

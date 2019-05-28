@@ -7,6 +7,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -65,12 +67,15 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
         if ("TOTAl".equals(gift.getAnimType())) {
             if (mGiftLayoutParent.getChildCount() > 0) {
                 for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
-                    AnimGiftAction animGiftAction = (AnimGiftAction) mGiftLayoutParent.getChildAt(i);
-                    if ("TOTAl".equals(animGiftAction.getAnimType())
-                            && animGiftAction.getCurrentSendUserId() == contextEntity.getUserId()
-                            && animGiftAction.getCurrentGiftId() == contextEntity.getGoodsId()) {
-                        animGiftAction.setComboNum(contextEntity.getGiftTotalCount());
-                        return;
+                    FrameLayout childAt = (FrameLayout) mGiftLayoutParent.getChildAt(i);
+                    if (childAt.getChildAt(0) != null) {
+                        AnimGiftAction animGiftAction = (AnimGiftAction) childAt.getChildAt(0);
+                        if ("TOTAl".equals(animGiftAction.getAnimType())
+                                && animGiftAction.getCurrentSendUserId() == contextEntity.getUserId()
+                                && animGiftAction.getCurrentGiftId() == contextEntity.getGoodsId()) {
+                            animGiftAction.setComboNum(contextEntity.getGiftTotalCount());
+                            return;
+                        }
                     }
                 }
             }
@@ -118,23 +123,41 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
      * 显示礼物
      */
     public synchronized void showGift() {
-        int childCount = mGiftLayoutParent.getChildCount();
+        int childCount = 0;
+        for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
+            FrameLayout childAt = (FrameLayout) mGiftLayoutParent.getChildAt(i);
+            if (childAt.getChildCount() != 0) {
+                childCount += 1;
+            }
+        }
         Log.d(TAG, "showGift: 礼物布局的个数" + childCount);
         if (childCount < mGiftLayoutMaxNums) {
             //没有超过最大的礼物布局数量，可以继续添加礼物布局
             //两个参数分别是layout_width,layout_height
-            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mGiftLayoutParent.getLayoutParams();
-            //这个就是添加其他属性的，这个是在父元素的底部。
-            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//            RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams) mGiftLayoutParent.getLayoutParams();
+//            //这个就是添加其他属性的，这个是在父元素的底部。
+//            lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             if ("TOTAl".equals(mGiftQueue.get(0).getAnimType())) {
                 GiftFrameLayout giftFrameLayout = new GiftFrameLayout(mContext);
                 giftFrameLayout.setGiftAnimationListener(this);
-                mGiftLayoutParent.addView(giftFrameLayout, 0);
-                boolean hasGift = giftFrameLayout.setGift(getGift().getContext());
-                giftFrameLayout.setAnimType("TOTAl");
-                if (hasGift) {
-                    giftFrameLayout.startAnimation();
+                for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
+                    FrameLayout childAt = (FrameLayout) mGiftLayoutParent.getChildAt(i);
+                    if (childAt.getChildCount() == 0) {
+                        childAt.addView(giftFrameLayout, 0);
+                        boolean hasGift = giftFrameLayout.setGift(getGift().getContext());
+                        giftFrameLayout.setAnimType("TOTAl");
+                        if (hasGift) {
+                            giftFrameLayout.startAnimation();
+                        }
+                        break;
+                    }
                 }
+//                mGiftLayoutParent.addView(giftFrameLayout, 0);
+//                boolean hasGift = giftFrameLayout.setGift(getGift().getContext());
+//                giftFrameLayout.setAnimType("TOTAl");
+//                if (hasGift) {
+//                    giftFrameLayout.startAnimation();
+//                }
             } else if ("DIV".equals(mGiftQueue.get(0).getAnimType())) {
                 ComboGiftFrameLayout comboGiftFrameLayout = new ComboGiftFrameLayout(mContext);
                 comboGiftFrameLayout.setGiftAnimationListener(this);
@@ -179,7 +202,9 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
                 public void onAnimationEnd(Animator animation) {
                     animGiftAction.setGiftViewEndVisibility(isEmpty());
                     animGiftAction.clearHandler();
-                    mGiftLayoutParent.removeView(((View) animGiftAction));
+//                    mGiftLayoutParent.removeView(((View) animGiftAction));
+                    FrameLayout parent = (FrameLayout) ((View) animGiftAction).getParent();
+                    parent.removeAllViews();
                     if (!isEmpty()) {
                         showGift();
                     }
@@ -196,13 +221,17 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
             mGiftQueue.clear();
         }
         for (int i = 0; i < mGiftLayoutParent.getChildCount(); i++) {
-            AnimGiftAction animGiftAction = (AnimGiftAction) mGiftLayoutParent.getChildAt(i);
-            if (animGiftAction != null) {
-                animGiftAction.clearHandler();
-                animGiftAction.firstHideLayout();
+            FrameLayout childAt = (FrameLayout) mGiftLayoutParent.getChildAt(i);
+            if (childAt.getChildAt(0) != null) {
+                AnimGiftAction animGiftAction = (AnimGiftAction) childAt.getChildAt(0);
+                if (animGiftAction != null) {
+                    animGiftAction.clearHandler();
+                    animGiftAction.firstHideLayout();
+                }
             }
+            childAt.removeAllViews();
         }
-        mGiftLayoutParent.removeAllViews();
+//        mGiftLayoutParent.removeAllViews();
     }
 
     public boolean isEmpty() {

@@ -37,6 +37,10 @@
             android:id="@+id/tv_anim_gift_form"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="middle"
+            android:maxWidth="90dp"
+            android:minWidth="90dp"
+            android:singleLine="true"
             android:textColor="#fefefe"
             android:textSize="12sp" />
 
@@ -76,7 +80,6 @@
         android:layout_marginLeft="4dp"
         android:layout_toRightOf="@id/tv_x_gift_count"
         android:gravity="bottom"
-        android:text="111"
         android:textColor="#faf9f9"
         android:textSize="34sp"
         android:textStyle="italic|bold" />

@@ -464,15 +464,6 @@
                         android:scaleType="fitCenter"
                         app:autoPlay="true" />
 
-                    <LinearLayout
-                        android:id="@+id/ll_gift_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
 
                     <RelativeLayout
                         android:id="@+id/rl_weekstar"
@@ -720,6 +711,31 @@
                         android:src="@drawable/ic_live_display_gift" />
 
                 </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_gift_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp" />
+
+                    <FrameLayout
+                        android:layout_marginTop="14dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp" />
+
+                    <FrameLayout
+                        android:layout_marginTop="14dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp" />
+                </LinearLayout>
 
                 <com.youth.banner.Banner
                     android:id="@+id/banner"
