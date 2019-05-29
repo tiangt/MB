@@ -556,6 +556,10 @@ public class GiftDialog extends BaseAwesomeDialog {
 
     private void setCheckChange() {
         if (giftDetailInfoBean == null || giftDetailInfoBean.getRent() == 0) {
+            checkBox.setChecked(false);
+            tvAddSuperRun.setSelected(false);
+            tvTitleSuperRun.setText("是否上超跑");
+            tvContentSuperRun.setText(CAN_NOT_SUPER_RUN);
             return;
         }
         String countStr = tvCount.getText().toString().trim();
@@ -565,6 +569,7 @@ public class GiftDialog extends BaseAwesomeDialog {
             checkBox.setChecked(false);
             tvAddSuperRun.setSelected(false);
             tvTitleSuperRun.setText("是否上超跑");
+            tvContentSuperRun.setText(CAN_NOT_SUPER_RUN);
         } else {
             checkBox.setChecked(true);
             tvAddSuperRun.setSelected(true);
