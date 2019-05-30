@@ -34,7 +34,17 @@ public class FlopCardMessage implements FillHolderMessage {
         mholder.textView.append(" 恭喜 ");
         mholder.textView.append(LightSpanString.getLightString(flopCardJson.context.nickName, Color.rgb(255, 203, 0)));
         mholder.textView.append(" 翻到 ");
-        mholder.textView.append(LightSpanString.getLightString(flopCardJson.context.goodsName + " x " + flopCardJson.context.goodsCount, Color.rgb(255, 110, 35)));
+        if ("GOODS".equals(flopCardJson.context.prizeType)) {
+            mholder.textView.append(LightSpanString.getLightString(flopCardJson.context.goodsName + " x " + flopCardJson.context.goodsCount, Color.rgb(255, 110, 35)));
+        } else if ("EXP".equals(flopCardJson.context.prizeType)) {
+            mholder.textView.append(LightSpanString.getLightString("用户经验 x " + flopCardJson.context.expNumber, Color.rgb(255, 110, 35)));
+        } else if ("WEALTH".equals(flopCardJson.context.prizeType)) {
+            if ("MENG_DOU".equals(flopCardJson.context.wealthType)) {
+                mholder.textView.append(LightSpanString.getLightString("萌豆 x " + flopCardJson.context.wealthNumber, Color.rgb(255, 110, 35)));
+            } else if ("COIN".equals(flopCardJson.context.wealthType)) {
+                mholder.textView.append(LightSpanString.getLightString("萌币 x " + flopCardJson.context.wealthNumber, Color.rgb(255, 110, 35)));
+            }
+        }
     }
 
     @Override

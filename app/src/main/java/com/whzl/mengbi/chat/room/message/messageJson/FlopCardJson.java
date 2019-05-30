@@ -29,10 +29,12 @@ public class FlopCardJson {
         public int expNumber;
         public String nickName;
         public int price;
+        public int wealthNumber;
         public int goodsCount;
         public int userLuckyNumber;
         public String prizeType;
         public String expType;
         public String goodsName;
+        public String wealthType;
     }
 }
