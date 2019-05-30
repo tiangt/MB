@@ -15,6 +15,7 @@ import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.widget.view.BroadTextView;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.util.ArrayList;
@@ -180,22 +181,24 @@ public class RunWayBroadControl {
     }
 
     public void destroy() {
-        if (autoScrollView != null) {
-            autoScrollView.stopScroll();
-            clBottom.setVisibility(View.GONE);
-            autoScrollView.dispose();
-        }
-        runwayQueue.clear();
         if (showAnim != null) {
-            showAnim.cancel();
+//            showAnim.cancel();
             showAnim.end();
+            showAnim.removeAllUpdateListeners();
             showAnim = null;
         }
         if (hideAnim != null) {
-            hideAnim.cancel();
+//            hideAnim.cancel();
             hideAnim.end();
+            hideAnim.removeAllUpdateListeners();
             hideAnim = null;
         }
+        if (autoScrollView != null) {
+            clBottom.setVisibility(View.GONE);
+            autoScrollView.dispose();
+            autoScrollView.stopScroll();
+        }
+        runwayQueue.clear();
     }
 
     @Override

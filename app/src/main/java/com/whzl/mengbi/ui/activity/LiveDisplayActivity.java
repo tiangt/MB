@@ -2254,6 +2254,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //        if (tvHostName != null) {
 //            tvHostName.destyoy();
 //        }
+        if (null != mRunWayBroadControl) {
+            mRunWayBroadControl.destroy();
+            mRunWayBroadControl = null;
+        }
         if (gifSvgaControl != null) {
             gifSvgaControl.destroy();
             gifSvgaControl = null;
