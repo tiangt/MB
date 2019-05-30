@@ -6,9 +6,13 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/img_anchor_wish_note" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_anchor_wish_note"
+        app:layout_constraintDimensionRatio="h,742:459"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ImageView
         android:id="@+id/iv_close_anchor_wish_note"
