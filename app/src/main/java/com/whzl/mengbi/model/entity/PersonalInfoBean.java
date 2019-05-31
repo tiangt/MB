@@ -82,6 +82,34 @@ public class PersonalInfoBean {
         private List<LevelListBean> levelList;
         private List<GoodsListBean> goodsList;
 
+        protected DataBean(Parcel in) {
+            userId = in.readInt();
+            userType = in.readString();
+            nickname = in.readString();
+            avatar = in.readString();
+            introduce = in.readString();
+            birthday = in.readString();
+            province = in.readString();
+            city = in.readString();
+            rank = in.readInt();
+            isFollowed = in.readString();
+            liveStatus = in.readString();
+            fansNum = in.readInt();
+            myFollowNum = in.readInt();
+        }
+
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
+            @Override
+            public DataBean createFromParcel(Parcel in) {
+                return new DataBean(in);
+            }
+
+            @Override
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
+            }
+        };
+
         public int getUserId() {
             return userId;
         }
@@ -217,7 +245,19 @@ public class PersonalInfoBean {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-
+            dest.writeInt(userId);
+            dest.writeString(userType);
+            dest.writeString(nickname);
+            dest.writeString(avatar);
+            dest.writeString(introduce);
+            dest.writeString(birthday);
+            dest.writeString(province);
+            dest.writeString(city);
+            dest.writeInt(rank);
+            dest.writeString(isFollowed);
+            dest.writeString(liveStatus);
+            dest.writeInt(fansNum);
+            dest.writeInt(myFollowNum);
         }
 
         public static class WeathMapBean {
@@ -227,7 +267,7 @@ public class PersonalInfoBean {
              */
 
             private long coin;
-            private int point;
+            private long point;
 
             public long getCoin() {
                 return coin;
@@ -237,11 +277,11 @@ public class PersonalInfoBean {
                 this.coin = coin;
             }
 
-            public int getPoint() {
+            public long getPoint() {
                 return point;
             }
 
-            public void setPoint(int point) {
+            public void setPoint(long point) {
                 this.point = point;
             }
         }
