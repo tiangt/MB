@@ -1161,4 +1161,14 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<RedFundInfoBean>> redFundInfo(@FieldMap Map<String, String> params);
 
+    /**
+     * 关注主播
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/room/add-sub")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> addSub(@FieldMap Map<String, String> params);
+
 }

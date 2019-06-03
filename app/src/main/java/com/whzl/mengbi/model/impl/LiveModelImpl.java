@@ -16,6 +16,7 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
+import com.whzl.mengbi.model.entity.ModifyNameCardBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -32,6 +33,7 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -117,22 +119,32 @@ public class LiveModelImpl implements LiveModel {
         HashMap<String, String> paramsMap = new HashMap<>();
         paramsMap.put("programId", programId + "");
         paramsMap.put("userId", userId + "");
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.FELLOW_HOST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
-            @Override
-            public void onReqSuccess(Object result) {
-                ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
-                if (responseInfo.getCode() == 200) {
-                    listener.onFellowHostSuccess();
-                } else {
-                    listener.onError(responseInfo.getMsg());
-                }
-            }
-
-            @Override
-            public void onReqFailed(String errorMsg) {
-                listener.onError(errorMsg);
-            }
-        });
+        ApiFactory.getInstance().getApi(Api.class)
+                .addSub(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+                    @Override
+                    public void onSuccess(JsonElement jsonElement) {
+                        listener.onFellowHostSuccess();
+                    }
+                });
+//        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.FELLOW_HOST, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+//            @Override
+//            public void onReqSuccess(Object result) {
+//                ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
+//                if (responseInfo.getCode() == 200) {
+//                    listener.onFellowHostSuccess();
+//                } else {
+//                    listener.onError(responseInfo.getMsg());
+//                }
+//            }
+//
+//            @Override
+//            public void onReqFailed(String errorMsg) {
+//                listener.onError(errorMsg);
+//            }
+//        });
     }
 
     @Override
