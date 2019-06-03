@@ -326,7 +326,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @BindView(R.id.rl_guard_number)
     RelativeLayout rlGuardNumber;
     @BindView(R.id.rl_other_side_info)
-    RelativeLayout rlOtherSideInfo;
+    LinearLayout rlOtherSideInfo;
     @BindView(R.id.btn_share)
     ImageButton btnShare;
     @BindView(R.id.ll_pager_index)

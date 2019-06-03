@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.text.SpannableString;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,7 +26,7 @@ public class BroadCastBottomEvent implements BroadEvent {
     private BroadCastBottomJson broadCastBottomJson;
     private Context mContext;
     private int programId;
-    private RelativeLayout rlOtherSideInfo;
+    private LinearLayout rlOtherSideInfo;
     private KSYTextureView textureView;
     private PkLayout pkLayout;
     private ImageView ivCountDown;
@@ -40,7 +41,7 @@ public class BroadCastBottomEvent implements BroadEvent {
         this.mContext = mContext;
     }
 
-    public void setPkLayoutVisibility(RelativeLayout rlOtherSideInfo,
+    public void setPkLayoutVisibility(LinearLayout rlOtherSideInfo,
                                       KSYTextureView textureView, PkLayout pkLayout, ImageView ivCountDown) {
         this.rlOtherSideInfo = rlOtherSideInfo;
         this.textureView = textureView;

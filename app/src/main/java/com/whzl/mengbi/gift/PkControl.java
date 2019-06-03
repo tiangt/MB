@@ -101,7 +101,7 @@ public class PkControl {
     private ImageView ivClose;
     private RecyclerView rvPunishment;
     private Button btnPunishment;
-    private RelativeLayout rlOtherSideInfo;
+    private LinearLayout rlOtherSideInfo;
 
     private BaseListAdapter mvpAdapter;
     private int punishWayId;
@@ -186,7 +186,7 @@ public class PkControl {
         this.svgaImageView = svgaImageView;
     }
 
-    public void setOtherSideInfo(RelativeLayout otherPkInfo) {
+    public void setOtherSideInfo(LinearLayout otherPkInfo) {
         this.rlOtherSideInfo = otherPkInfo;
     }
 
