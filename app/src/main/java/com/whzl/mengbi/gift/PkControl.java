@@ -23,9 +23,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonElement;
 import com.opensource.svgaplayer.SVGADrawable;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -35,6 +35,8 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.IsSubProgramBean;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
@@ -49,6 +51,8 @@ import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.util.ClickUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.WeakHandler;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -133,6 +137,7 @@ public class PkControl {
 
     private int maxLaunchPkScroe;
     private int maxAcceptPkScroe;
+    private TextView btnOtherFollow;
 
     public void setBean(PkJson.ContextBean bean) {
         this.bean = bean;
@@ -158,9 +163,10 @@ public class PkControl {
         this.ivCountDown = ivCountDown;
     }
 
-    public void setRightInfo(CircleImageView ivRightHead, TextView tvRightName) {
+    public void setRightInfo(CircleImageView ivRightHead, TextView tvRightName, TextView btnOtherFollow) {
         this.ivRightHead = ivRightHead;
         this.tvRightName = tvRightName;
+        this.btnOtherFollow = btnOtherFollow;
     }
 
     public PkControl(PkLayout pkLayout, Activity context) {
@@ -206,6 +212,7 @@ public class PkControl {
                     tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
                     jumpNick = bean.pkUserInfo.nickname;
+                    isSubProgram((long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L), bean.pkUserProgramId);
                 } else if (bean.pkUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", System.currentTimeMillis());
                     rightAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
@@ -213,6 +220,7 @@ public class PkControl {
                     tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
                     jumpNick = bean.launchPkUserInfo.nickname;
+                    isSubProgram((long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L), bean.launchUserProgramId);
                 }
                 break;
             case "PK_SCORE"://PK分数
@@ -403,6 +411,44 @@ public class PkControl {
         });
     }
 
+    private void isSubProgram(long userId, int programId) {
+        HashMap map = new HashMap();
+        map.put("userId", userId);
+        map.put("programId", programId);
+        ApiFactory.getInstance().getApi(Api.class)
+                .isSubProgram(ParamsUtils.getSignPramsMap(map))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<IsSubProgramBean>() {
+                    @Override
+                    public void onSuccess(IsSubProgramBean isSubProgramBean) {
+                        if (!isSubProgramBean.isSubs) {
+                            btnOtherFollow.setVisibility(View.VISIBLE);
+                            btnOtherFollow.setOnClickListener(v -> {
+                                addSub(userId, programId);
+                            });
+                        }
+                    }
+                });
+    }
+
+    private void addSub(long userId, int programId) {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("programId", programId + "");
+        paramsMap.put("userId", userId + "");
+        ApiFactory.getInstance().getApi(Api.class)
+                .addSub(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
+                    @Override
+                    public void onSuccess(JsonElement jsonElement) {
+                        ToastUtils.showToastUnify(context, "订阅成功");
+                        btnOtherFollow.setVisibility(View.GONE);
+                    }
+                });
+    }
+
     public void initNet(PKResultBean bean) {
         LogUtils.e("ssssssss  pkStatus " + bean.pkStatus + "    punishStatus  " + bean.punishStatus + "   tieStatus " + bean.tieStatus);
         if ("T".equals(bean.pkStatus) || "T".equals(bean.punishStatus) || "T".equals(bean.tieStatus)) {
@@ -435,6 +481,7 @@ public class PkControl {
                         pkLayout.initializeProgress = (int) v;
                     }
                 }
+                isSubProgram((long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L), bean.pkUserProgramId);
             } else if (mProgramId == bean.pkUserProgramId) {
                 myPkInfo = bean.pkUserInfo;
                 otherPkInfo = bean.launchUserInfo;
@@ -462,6 +509,7 @@ public class PkControl {
                         pkLayout.initializeProgress = (int) v;
                     }
                 }
+                isSubProgram((long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L), bean.launchPkUserProgramId);
             }
 
             if ("T".equals(bean.pkStatus)) {
@@ -671,6 +719,9 @@ public class PkControl {
         }
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
+        }
+        if (btnOtherFollow != null) {
+            btnOtherFollow.setVisibility(View.GONE);
         }
     }
 

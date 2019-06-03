@@ -393,6 +393,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     RelativeLayout rlRedbagLive;
     @BindView(R.id.rl_product_redbag)
     RelativeLayout rlProductRedbag;
+    @BindView(R.id.btn_other_follow)
+    TextView btnOtherFollow;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -1152,7 +1154,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
-        pkControl.setRightInfo(ivOtherSide, tvOtherSide);
+        pkControl.setRightInfo(ivOtherSide, tvOtherSide,btnOtherFollow);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
         pkControl.setLeftExpCard(llLeftEffect, tvLeftAddEffect, tvLeftSecondEffect);
         pkControl.setRightExpCard(llRightEffect, tvRightAddEffect, tvRightSecondEffect);
@@ -1748,7 +1750,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
-        pkControl.setRightInfo(ivOtherSide, tvOtherSide);
+        pkControl.setRightInfo(ivOtherSide, tvOtherSide, btnOtherFollow);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
         pkControl.setLeftExpCard(llLeftEffect, tvLeftAddEffect, tvLeftSecondEffect);
         pkControl.setRightExpCard(llRightEffect, tvRightAddEffect, tvRightSecondEffect);

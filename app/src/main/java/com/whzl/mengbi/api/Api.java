@@ -37,6 +37,7 @@ import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.ImgUploadBean;
+import com.whzl.mengbi.model.entity.IsSubProgramBean;
 import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
 import com.whzl.mengbi.model.entity.ModifyNameCardBean;
 import com.whzl.mengbi.model.entity.MyCouponBean;
@@ -1170,5 +1171,15 @@ public interface Api {
     @POST("v1/room/add-sub")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> addSub(@FieldMap Map<String, String> params);
+
+    /**
+     * 查询用户是否订阅了直播间
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/user/is-sub-program")
+    @FormUrlEncoded
+    Observable<ApiResult<IsSubProgramBean>> isSubProgram(@FieldMap Map<String, String> params);
 
 }
