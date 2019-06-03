@@ -10,52 +10,61 @@
     <include layout="@layout/divider_shawdow_white" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="27dp"
+        android:layout_marginRight="27dp"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="290dp"
+            android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="25dp"
-            android:background="@drawable/login_edit_text_bg"
-            android:gravity="center_vertical"
+            android:gravity="bottom"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/ic_login_number" />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="23dp"
-                android:layout_marginLeft="9dp"
-                android:background="@color/colorCommNotActive" />
 
             <EditText
                 android:id="@+id/et_phone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="@string/phone_number_hint"
                 android:inputType="phone"
                 android:maxLength="11"
-                android:textColorHint="#B9B9B9"
-                android:textSize="16sp" />
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:textColorHint="#30000000"
+                android:textSize="15sp" />
 
+            <ImageButton
+                android:id="@+id/ib_clean_forget_psw"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ic_search_close"
+                android:visibility="gone" />
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f0f0f0" />
 
         <TextView
             android:id="@+id/tv_phone_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
             android:text="该手机号码不存在"
             android:textColor="#ff611b"
@@ -66,14 +75,17 @@
 
     <Button
         android:id="@+id/btn_next"
-        android:layout_width="290dp"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="27dp"
+        android:layout_marginRight="27dp"
         android:layout_marginTop="25dp"
         android:background="@drawable/selector_comm_btn_bg"
         android:enabled="false"
         android:text="@string/next"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textColor="@drawable/text_forget_psw"
+        android:textSize="17sp" />
 
 </LinearLayout>

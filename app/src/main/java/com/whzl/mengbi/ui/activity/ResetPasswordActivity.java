@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -51,6 +52,10 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
     EditText etVerifyCode;
     @BindView(R.id.btn_get_verify_code)
     Button btnVerifyCode;
+    @BindView(R.id.ib_new_psw)
+    ImageView ibNewPsw;
+    @BindView(R.id.ib_confirm_psw)
+    ImageView ibConfirmPsw;
 
     private CountDownTimer cdt;
     private String phone, verifyCode, mPassword, mPasswordAgain;
@@ -76,6 +81,32 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
     protected void setupView() {
         etPassword.addTextChangedListener(this);
         etPassWordAgain.addTextChangedListener(this);
+        ibNewPsw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etPassword.getInputType() == 128) {//如果现在是显示密码模式
+                    etPassword.setInputType(129);//设置为隐藏密码
+                    ibNewPsw.setSelected(false);
+                } else {
+                    etPassword.setInputType(128);//设置为显示密码
+                    ibNewPsw.setSelected(true);
+                }
+                etPassword.setSelection(etPassword.getText().length());
+            }
+        });
+        ibConfirmPsw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etPassWordAgain.getInputType() == 128) {//如果现在是显示密码模式
+                    etPassWordAgain.setInputType(129);//设置为隐藏密码
+                    ibConfirmPsw.setSelected(false);
+                } else {
+                    etPassWordAgain.setInputType(128);//设置为显示密码
+                    ibConfirmPsw.setSelected(true);
+                }
+                etPassWordAgain.setSelection(etPassWordAgain.getText().length());
+            }
+        });
     }
 
     @Override
@@ -101,6 +132,18 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
             btnConfirmReset.setEnabled(true);
         } else {
             btnConfirmReset.setEnabled(false);
+        }
+
+        if (!TextUtils.isEmpty(mPassword)) {
+            ibNewPsw.setVisibility(View.VISIBLE);
+        } else {
+            ibNewPsw.setVisibility(View.GONE);
+        }
+
+        if (!TextUtils.isEmpty(mPasswordAgain)) {
+            ibConfirmPsw.setVisibility(View.VISIBLE);
+        } else {
+            ibConfirmPsw.setVisibility(View.GONE);
         }
     }
 
@@ -164,7 +207,7 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
         cdt = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                btnVerifyCode.setText(millisUntilFinished / 1000 + "秒");
+                btnVerifyCode.setText(getString(R.string.again_code,millisUntilFinished / 1000 ));
             }
 
             @Override

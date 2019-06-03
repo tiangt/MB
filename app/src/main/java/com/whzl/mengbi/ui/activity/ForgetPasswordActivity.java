@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -43,6 +44,8 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
     TextView tvPhoneMsg;
     @BindView(R.id.btn_next)
     Button btnNext;
+    @BindView(R.id.ib_clean_forget_psw)
+    ImageButton ibClear;
     private String phone;
 
     @Override
@@ -66,6 +69,14 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
 //                getVerifyCode(phone);
 //            }
 //        });
+        ibClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etPhone != null) {
+                    etPhone.setText("");
+                }
+            }
+        });
     }
 
     @Override
@@ -107,6 +118,12 @@ public class ForgetPasswordActivity extends BaseActivity implements TextWatcher 
                 tvPhoneMsg.setText("请输入正确的手机号");
             }
             btnNext.setEnabled(false);
+        }
+
+        if (phone.length() > 0) {
+            ibClear.setVisibility(View.VISIBLE);
+        } else {
+            ibClear.setVisibility(View.GONE);
         }
     }
 
