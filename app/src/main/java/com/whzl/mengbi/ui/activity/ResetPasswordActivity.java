@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.eventbus.event.ActivityFinishEvent;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -65,11 +63,6 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
         super.initEnv();
         EventBus.getDefault().register(this);
         phone = getIntent().getStringExtra("mobile");
-    }
-
-    @Override
-    protected void setStatusBar() {
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#252525"));
     }
 
     @Override
@@ -207,7 +200,7 @@ public class ResetPasswordActivity extends BaseActivity implements TextWatcher {
         cdt = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                btnVerifyCode.setText(getString(R.string.again_code,millisUntilFinished / 1000 ));
+                btnVerifyCode.setText(getString(R.string.again_code, millisUntilFinished / 1000));
             }
 
             @Override

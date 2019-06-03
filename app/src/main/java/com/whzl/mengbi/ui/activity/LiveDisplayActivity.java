@@ -1460,8 +1460,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 initActivityPoints();
                 vpActivity.setCurrentItem(0, false);
             }
-        } catch (Exception e) {
-
+        } catch (IllegalStateException e) {
+            vpActivity.setVisibility(View.GONE);
         }
     }
 
@@ -1497,8 +1497,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
                 refreshBottomRightVp();
             }
-        } catch (Exception e) {
-
+        } catch (IllegalStateException e) {
+            vpActivity.setVisibility(View.GONE);
         }
     }
 
@@ -1517,7 +1517,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
                 refreshBottomRightVp();
             }
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
+            vpActivity.setVisibility(View.GONE);
         }
     }
 
@@ -2293,8 +2294,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mActivityGrands.clear();
                 mGrandAdaper.notifyDataSetChanged();
             }
-        } catch (Exception e) {
-
+        } catch (IllegalStateException e) {
+            vpActivity.setVisibility(View.GONE);
         }
 
         vpActivity.setScroll(false);
