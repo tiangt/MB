@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="该萌号不存在"
-                android:textColor="#ff2b3f"
+                android:textColor="@color/text_red"
                 android:textSize="11sp"
                 android:visibility="invisible" />
 

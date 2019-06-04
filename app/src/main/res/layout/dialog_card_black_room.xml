@@ -76,7 +76,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="确认拯救"
-                android:textColor="#ff2b3f"
+                android:textColor="@color/text_red"
                 android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>

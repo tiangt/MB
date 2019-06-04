@@ -3,6 +3,8 @@ package com.whzl.mengbi.ui.activity.me
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.text.TextUtils
 import com.whzl.mengbi.R
 import com.whzl.mengbi.config.SpConfig
@@ -71,9 +73,11 @@ class AccountSecurityActivity : BaseActivity<BasePresenter<BaseView>>() {
                     if (!TextUtils.isEmpty(mMobile)) {
                         val maskNum = mMobile.substring(0, 3) + "xxxx" + mMobile.substring(7, mMobile.length)
                         tv_bind_phone.text = "已绑定 $maskNum"
+                        tv_bind_phone.setTextColor(Color.parseColor("#000000"))
                     } else {
                         if (tv_bind_phone != null) {
                             tv_bind_phone.text = "未绑定"
+                            tv_bind_phone.setTextColor(ContextCompat.getColor(this@AccountSecurityActivity, R.color.text_red))
                         }
                     }
                 }

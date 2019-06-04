@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="蓝色妖姬双倍领取"
-                android:textColor="#ff2b3f"
+                android:textColor="@color/text_red"
                 android:textSize="12sp" />
 
             <TextView
@@ -136,7 +136,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="尊贵勋章"
-                android:textColor="#ff2b3f"
+                android:textColor="@color/text_red"
                 android:textSize="12sp" />
 
             <TextView

@@ -107,7 +107,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:text="为他人充值"
-                    android:textColor="#ff2b3f"
+                    android:textColor="@color/text_red"
                     android:textSize="13sp" />
 
             </RelativeLayout>
@@ -219,7 +219,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
                     android:text="使用返利券"
-                    android:textColor="#ff2b3f"
+                    android:textColor="@color/text_red"
                     android:textSize="13sp" />
 
                 <LinearLayout
@@ -236,7 +236,7 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="end"
                         android:singleLine="true"
-                        android:textColor="#ff2b3f"
+                        android:textColor="@color/text_red"
                         android:textSize="12sp" />
 
                     <TextView
@@ -246,7 +246,7 @@
                         android:layout_marginLeft="5dp"
                         android:gravity="end"
                         android:singleLine="true"
-                        android:textColor="#ff2b3f"
+                        android:textColor="@color/text_red"
                         android:textSize="12sp" />
                 </LinearLayout>
 

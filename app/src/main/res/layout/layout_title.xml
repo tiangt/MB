@@ -34,7 +34,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="17dp"
         android:gravity="center"
-        android:textColor="#ff2b3f"
+        android:textColor="@color/textcolor_white_toolbar_right"
         android:textSize="15sp" />
 
 </RelativeLayout>
