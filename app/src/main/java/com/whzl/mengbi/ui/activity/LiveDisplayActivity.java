@@ -1154,7 +1154,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
-        pkControl.setRightInfo(ivOtherSide, tvOtherSide,btnOtherFollow);
+        pkControl.setRightInfo(ivOtherSide, tvOtherSide, btnOtherFollow);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
         pkControl.setLeftExpCard(llLeftEffect, tvLeftAddEffect, tvLeftSecondEffect);
         pkControl.setRightExpCard(llRightEffect, tvRightAddEffect, tvRightSecondEffect);
@@ -2057,6 +2057,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(GuardOpenEvent event) {
         if (event.userId == mUserId) {
             mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+        }
+        if (TextUtils.isEmpty(event.avatar) || TextUtils.isEmpty(event.nickName)) {
+            return;
         }
         showOpenGuardAnim(event.avatar, event.nickName);
         mLivePresenter.getGuardTotal(mProgramId);
