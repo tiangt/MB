@@ -96,7 +96,6 @@ public class PkControl {
 
     private Activity context;
 
-    private CircleImageView ivRightHead;
     private TextView tvRightName;
     private PopupWindow pkResultPop;
     private SVGAImageView svgaImageView;
@@ -163,8 +162,7 @@ public class PkControl {
         this.ivCountDown = ivCountDown;
     }
 
-    public void setRightInfo(CircleImageView ivRightHead, TextView tvRightName, TextView btnOtherFollow) {
-        this.ivRightHead = ivRightHead;
+    public void setRightInfo(TextView tvRightName, TextView btnOtherFollow) {
         this.tvRightName = tvRightName;
         this.btnOtherFollow = btnOtherFollow;
     }
@@ -208,7 +206,6 @@ public class PkControl {
                 if (bean.launchUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
                     rightAvatar = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", System.currentTimeMillis());
-                    GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightHead);
                     tvRightName.setText(bean.pkUserInfo.nickname);
                     jumpProgramId = bean.pkUserProgramId;
                     jumpNick = bean.pkUserInfo.nickname;
@@ -216,7 +213,6 @@ public class PkControl {
                 } else if (bean.pkUserProgramId == mProgramId) {
                     leftAvatar = ImageUrl.getAvatarUrl(bean.pkUserInfo.userId, "jpg", System.currentTimeMillis());
                     rightAvatar = ImageUrl.getAvatarUrl(bean.launchPkUserInfo.userId, "jpg", System.currentTimeMillis());
-                    GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightHead);
                     tvRightName.setText(bean.launchPkUserInfo.nickname);
                     jumpProgramId = bean.launchUserProgramId;
                     jumpNick = bean.launchPkUserInfo.nickname;
@@ -412,6 +408,9 @@ public class PkControl {
     }
 
     private void isSubProgram(long userId, int programId) {
+        if (userId == 0L) {
+            return;
+        }
         HashMap map = new HashMap();
         map.put("userId", userId);
         map.put("programId", programId);
@@ -459,7 +458,6 @@ public class PkControl {
                 otherPkInfo = bean.pkUserInfo;
                 leftAvatar = bean.launchUserInfo.avatar;
                 rightAvatar = bean.pkUserInfo.avatar;
-                GlideImageLoader.getInstace().displayImage(context, bean.pkUserInfo.avatar, ivRightHead);
                 tvRightName.setText(bean.pkUserInfo.nickname);
                 pkLayout.setLeftScore(bean.launchPkUserScore);
                 pkLayout.setRightScore(bean.pkUserScore);
@@ -487,7 +485,6 @@ public class PkControl {
                 otherPkInfo = bean.launchUserInfo;
                 rightAvatar = bean.launchUserInfo.avatar;
                 leftAvatar = bean.pkUserInfo.avatar;
-                GlideImageLoader.getInstace().displayImage(context, bean.launchUserInfo.avatar, ivRightHead);
                 tvRightName.setText(bean.launchUserInfo.nickname);
                 pkLayout.setLeftScore(bean.pkUserScore);
                 pkLayout.setRightScore(bean.launchPkUserScore);
@@ -722,6 +719,9 @@ public class PkControl {
         }
         if (btnOtherFollow != null) {
             btnOtherFollow.setVisibility(View.GONE);
+        }
+        if (tvRightName != null) {
+            tvRightName.setText("");
         }
     }
 

@@ -319,8 +319,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ConstraintLayout clEnter;
     @BindView(R.id.iv_count_down)
     ImageView ivCountDown;
-    @BindView(R.id.circle_other_side)
-    CircleImageView ivOtherSide;
     @BindView(R.id.tv_other_side)
     TextView tvOtherSide;
     @BindView(R.id.rl_guard_number)
@@ -1154,7 +1152,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
-        pkControl.setRightInfo(ivOtherSide, tvOtherSide, btnOtherFollow);
+        pkControl.setRightInfo( tvOtherSide, btnOtherFollow);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
         pkControl.setLeftExpCard(llLeftEffect, tvLeftAddEffect, tvLeftSecondEffect);
         pkControl.setRightExpCard(llRightEffect, tvRightAddEffect, tvRightSecondEffect);
@@ -1750,7 +1748,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
-        pkControl.setRightInfo(ivOtherSide, tvOtherSide, btnOtherFollow);
+        pkControl.setRightInfo(tvOtherSide, btnOtherFollow);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
         pkControl.setLeftExpCard(llLeftEffect, tvLeftAddEffect, tvLeftSecondEffect);
         pkControl.setRightExpCard(llRightEffect, tvRightAddEffect, tvRightSecondEffect);
