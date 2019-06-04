@@ -93,10 +93,9 @@
         android:layout_toRightOf="@id/tv_combo_time_desc"
         android:gravity="bottom"
         android:paddingBottom="4dp"
-        android:text=" x"
+        android:text=" x "
         android:textColor="#faf9f9"
-        android:textSize="25sp"
-        android:textStyle="bold|italic" />
+        android:textSize="25sp"/>
 
     <com.whzl.mengbi.ui.widget.view.GiftTextView
         android:id="@+id/tv_combo_time"
@@ -106,8 +105,7 @@
         android:layout_toRightOf="@id/tv_x_gift_count"
         android:gravity="bottom"
         android:textColor="#faf9f9"
-        android:textSize="34sp"
-        android:textStyle="italic|bold" />
+        android:textSize="34sp"/>
 
 </RelativeLayout>
 

@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callback, AnimGiftAction {
 
     private static final String TAG = "GiftFrameLayout";
+    private final Context context;
     private LayoutInflater mInflater;
     private Handler mHandler = new Handler(this);//连击handler
     private Handler comboHandler = new Handler(this);//检查连击handler
@@ -78,6 +80,7 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
     public ComboGiftFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mInflater = LayoutInflater.from(context);
+        this.context = context;
         initView();
     }
 
@@ -90,6 +93,10 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
         tvFromNickName = rootView.findViewById(R.id.tv_anim_gift_form);
         tvCount = rootView.findViewById(R.id.tv_anim_gift_count);
         tvComboTime = rootView.findViewById(R.id.tv_combo_time);
+        TextView tvX = rootView.findViewById(R.id.tv_x_gift_count);
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "FZSZJW.TTF");
+        tvX.setTypeface(typeface, Typeface.ITALIC);
+        tvComboTime.setTypeface(typeface, Typeface.ITALIC);
     }
 
 
@@ -139,7 +146,9 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case RESTART_GIFT_ANIMATION_CODE:
-                tvComboTime.setText(String.valueOf(comboList.get(0)));
+                if (context != null) {
+                    tvComboTime.setText(context.getString(R.string.live_gift_text, comboList.get(0)," "));
+                }
                 comboList.remove(0);
 //                switch (mGift.getCount()) {
 //                    case 66:
@@ -293,7 +302,9 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
      */
     public void initLayoutState() {
         this.setVisibility(View.VISIBLE);
-        tvComboTime.setText(String.valueOf(mGift.getComboTimes()));
+        if (context != null) {
+            tvComboTime.setText(context.getString(R.string.live_gift_text, mGift.getComboTimes(), " "));
+        }
         tvCount.setText("x" + mGift.getCount());
         tvFromNickName.setText(mGift.getNickname());
         tvGiftName.setText("送 " + mGift.getGoodsName());

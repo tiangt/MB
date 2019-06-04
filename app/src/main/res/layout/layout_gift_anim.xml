@@ -3,8 +3,8 @@
     android:id="@+id/gift_anim_view"
     android:layout_width="match_parent"
     android:layout_height="51dp"
-    android:layout_marginBottom="19dp"
-    android:layout_marginLeft="3dp">
+    android:layout_marginLeft="3dp"
+    android:layout_marginBottom="19dp">
 
     <ImageView
         android:layout_width="255dp"
@@ -18,8 +18,8 @@
         android:layout_width="39dp"
         android:layout_height="39dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="1dp"
-        android:layout_marginLeft="1dp" />
+        android:layout_marginLeft="1dp"
+        android:layout_marginBottom="1dp" />
 
 
     <LinearLayout
@@ -68,10 +68,8 @@
         android:layout_toRightOf="@id/iv_anim_gift_icon"
         android:gravity="bottom"
         android:paddingBottom="4dp"
-        android:text=" x"
-        android:textColor="#faf9f9"
-        android:textSize="25sp"
-        android:textStyle="bold|italic" />
+        android:text=" x "
+        android:textSize="25sp" />
 
     <com.whzl.mengbi.ui.widget.view.GiftTextView
         android:id="@+id/tv_anim_gift_count"
@@ -80,8 +78,6 @@
         android:layout_marginLeft="4dp"
         android:layout_toRightOf="@id/tv_x_gift_count"
         android:gravity="bottom"
-        android:textColor="#faf9f9"
-        android:textSize="34sp"
-        android:textStyle="italic|bold" />
+        android:textSize="34sp" />
 
 </RelativeLayout>

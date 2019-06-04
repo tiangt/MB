@@ -28,9 +28,9 @@ public class RankListInfo {
             }
 
             public static class RankBean {
-                public int ranking;
-                public int score;
-                public int gap;
+                public long ranking;
+                public long score;
+                public long gap;
             }
 
             public static class ProgramBean {

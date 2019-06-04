@@ -5,7 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -69,6 +71,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     TextView tvFromNickName, tvCount, tvGiftName;
 
     private AnimJson.ContextEntity mGift;
+    private Context context;
     /**
      * item 显示位置
      */
@@ -88,6 +91,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     public GiftFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mInflater = LayoutInflater.from(context);
+        this.context = context;
         initView();
     }
 
@@ -98,6 +102,10 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
         tvGiftName = rootView.findViewById(R.id.tv_anim_gift_name);
         tvFromNickName = rootView.findViewById(R.id.tv_anim_gift_form);
         tvCount = rootView.findViewById(R.id.tv_anim_gift_count);
+        TextView tvX = rootView.findViewById(R.id.tv_x_gift_count);
+        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "FZSZJW.TTF");
+        tvX.setTypeface(typeface, Typeface.ITALIC);
+        tvCount.setTypeface(typeface, Typeface.ITALIC);
     }
 
 
@@ -133,11 +141,14 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
         return true;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case RESTART_GIFT_ANIMATION_CODE:
-                tvCount.setText(String.valueOf(comboList.get(0)));
+                if (context != null) {
+                    tvCount.setText(context.getString(R.string.live_gift_text, comboList.get(0)," "));
+                }
                 comboList.remove(0);
                 comboAnimation(false);
                 removeDismissGiftCallback();
@@ -268,9 +279,12 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     /**
      * 动画开始时回调，使用方法借鉴{@link #startAnimation}
      */
+    @SuppressLint("SetTextI18n")
     public void initLayoutState() {
         this.setVisibility(View.VISIBLE);
-        tvCount.setText(String.valueOf(mGift.getGiftTotalCount()));
+        if (context != null) {
+            tvCount.setText(context.getString(R.string.live_gift_text, mGift.getGiftTotalCount()," "));
+        }
         tvFromNickName.setText(mGift.getNickname());
         tvGiftName.setText("送 ");
 //        SpannableString spannableString = StringUtils.spannableStringColor(mGift.getGoodsName(), Color.parseColor("#fe4b21"));
