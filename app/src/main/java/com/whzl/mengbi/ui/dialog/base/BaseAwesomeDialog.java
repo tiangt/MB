@@ -191,7 +191,7 @@ public abstract class BaseAwesomeDialog extends DialogFragment {
     }
 
     public BaseAwesomeDialog show(FragmentManager manager) {
-        super.show(manager, String.valueOf(System.currentTimeMillis()));
+        show(manager, String.valueOf(System.currentTimeMillis()));
         return this;
     }
 

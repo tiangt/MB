@@ -1152,7 +1152,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setmAnchorId(mAnchorId);
         pkControl.setmProgramId(mProgramId);
         pkControl.setTvCountDown(tvCountDown);
-        pkControl.setRightInfo( tvOtherSide, btnOtherFollow);
+        pkControl.setRightInfo(tvOtherSide, btnOtherFollow);
         pkControl.setOtherSideInfo(rlOtherSideInfo);
         pkControl.setLeftExpCard(llLeftEffect, tvLeftAddEffect, tvLeftSecondEffect);
         pkControl.setRightExpCard(llRightEffect, tvRightAddEffect, tvRightSecondEffect);
@@ -1326,7 +1326,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             return;
         }
         liveStopDialog = LiveStopDialog.Companion.newInstance(mAnchorName, mAnchorAvatar, lastUpdateTime)
-                .setOutCancel(false).show(getSupportFragmentManager());
+                .show(getSupportFragmentManager());
     }
 
     /**

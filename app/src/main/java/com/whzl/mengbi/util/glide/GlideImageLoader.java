@@ -152,6 +152,16 @@ public class GlideImageLoader extends ImageLoader {
                         .transform(new RoundedCorners(UIUtil.dip2px(context, radius))));
     }
 
+    /**
+     * gift
+     */
+    public void displayGift(Context context, Object object, ImageView imageView) {
+        if (isValidContextForGlide(context)) {
+            RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_gift_replace);
+            Glide.with(context).load(object).apply(requestOptions).transition(withCrossFade()).into(imageView);
+        }
+    }
+
     @Override
     public ImageView createImageView(Context context) {
         return super.createImageView(context);
@@ -206,63 +216,6 @@ public class GlideImageLoader extends ImageLoader {
             RoundedCorners roundedCorners = new RoundedCorners(UIUtil.dip2px(context, radius));
             RequestOptions requestOptions = new RequestOptions().transform(roundedCorners);
             Glide.with(context).load(object).apply(requestOptions).into(imageView);
-        }
-    }
-
-    public class GlideRoundTransform extends BitmapTransformation {
-        private final int VERSION = 1;
-        private final String ID = BuildConfig.APPLICATION_ID + "GlideRoundedCornersTransform." + VERSION;
-        private final byte[] ID_BYTES = ID.getBytes(CHARSET);
-
-
-        private Context context;
-        private int radius;
-
-        public GlideRoundTransform(Context context, int radius) {
-            super();
-            this.context = context;
-            this.radius = radius;
-        }
-
-        @Override
-        protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-            return roundCrop(pool, toTransform);
-        }
-
-        private Bitmap roundCrop(BitmapPool pool, Bitmap source) {
-            if (source == null) {
-                return null;
-            }
-
-            Bitmap result = pool.get(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
-            if (result == null) {
-                result = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
-            }
-
-            Canvas canvas = new Canvas(result);
-            Paint paint = new Paint();
-            paint.setShader(new BitmapShader(source, BitmapShader.TileMode.CLAMP, BitmapShader.TileMode.CLAMP));
-            paint.setAntiAlias(true);
-            RectF rectF = new RectF(0f, 0f, source.getWidth(), source.getHeight());
-            canvas.drawRoundRect(rectF, UIUtil.dip2px(context, radius), UIUtil.dip2px(context, radius), paint);
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return o instanceof GlideRoundTransform;
-        }
-
-
-        @Override
-        public int hashCode() {
-            return ID.hashCode();
-        }
-
-
-        @Override
-        public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
-            messageDigest.update(ID_BYTES);
         }
     }
 
