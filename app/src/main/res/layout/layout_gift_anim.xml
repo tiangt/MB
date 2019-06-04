@@ -30,7 +30,6 @@
         android:layout_marginLeft="6dp"
         android:layout_toRightOf="@id/iv_anim_gift_avatar"
         android:gravity="center_vertical"
-        android:minWidth="54dp"
         android:orientation="vertical">
 
         <TextView

@@ -38,7 +38,7 @@ public class RoomRankBean {
             public String avatar;
             public int level;
             public int royalLevel;
-            public int value;
+            public long value;
 
         }
     }
