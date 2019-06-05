@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="51dp"
     android:layout_marginLeft="3dp"
-    android:layout_marginBottom="19dp">
+    android:layout_marginBottom="10dp">
 
     <ImageView
-        android:layout_width="255dp"
+        android:layout_width="225dp"
         android:layout_height="41dp"
         android:layout_alignParentBottom="true"
-        android:scaleType="fitStart"
+        android:scaleType="fitXY"
         android:src="@drawable/gift_anim_normal_bg" />
 
     <com.whzl.mengbi.ui.widget.view.CircleImageView
@@ -37,8 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="middle"
-            android:maxWidth="90dp"
-            android:minWidth="90dp"
+            android:maxWidth="60dp"
+            android:minWidth="60dp"
             android:singleLine="true"
             android:textColor="#fefefe"
             android:textSize="12sp" />

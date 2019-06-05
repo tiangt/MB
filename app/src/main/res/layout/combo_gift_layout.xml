@@ -3,16 +3,16 @@
     android:id="@+id/gift_anim_view"
     android:layout_width="match_parent"
     android:layout_height="51dp"
-    android:layout_marginBottom="19dp"
-    android:layout_marginLeft="3dp">
+    android:layout_marginLeft="3dp"
+    android:layout_marginBottom="10dp">
 
 
     <ImageView
         android:id="@+id/iv_anim_bg"
-        android:layout_width="255dp"
+        android:layout_width="225dp"
         android:layout_height="41dp"
         android:layout_alignParentBottom="true"
-        android:scaleType="fitStart"
+        android:scaleType="fitXY"
         android:src="@drawable/gift_anim_normal_bg" />
 
 
@@ -21,8 +21,8 @@
         android:layout_width="39dp"
         android:layout_height="39dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="1dp"
-        android:layout_marginLeft="1dp" />
+        android:layout_marginLeft="1dp"
+        android:layout_marginBottom="1dp" />
 
 
     <LinearLayout
@@ -41,8 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="middle"
-            android:maxWidth="90dp"
-            android:minWidth="90dp"
+            android:maxWidth="60dp"
+            android:minWidth="60dp"
             android:singleLine="true"
             android:textColor="#fefefe"
             android:textSize="12sp" />
@@ -67,8 +67,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="3dp"
         android:layout_marginLeft="2dp"
+        android:layout_marginBottom="3dp"
         android:layout_toRightOf="@id/iv_anim_gift_icon"
         android:text="连送"
         android:textSize="14sp" />
@@ -95,7 +95,7 @@
         android:paddingBottom="4dp"
         android:text=" x "
         android:textColor="#faf9f9"
-        android:textSize="25sp"/>
+        android:textSize="25sp" />
 
     <com.whzl.mengbi.ui.widget.view.GiftTextView
         android:id="@+id/tv_combo_time"
@@ -105,7 +105,7 @@
         android:layout_toRightOf="@id/tv_x_gift_count"
         android:gravity="bottom"
         android:textColor="#faf9f9"
-        android:textSize="34sp"/>
+        android:textSize="34sp" />
 
 </RelativeLayout>
 

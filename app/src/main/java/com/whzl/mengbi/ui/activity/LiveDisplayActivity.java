@@ -475,6 +475,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private NewRedPacketControl newRedPacketControl;
     private LiveNoMoneyDialog liveNoMoneyDialog;
     private AwesomeDialog offlineDialog;
+    private BaseAwesomeDialog playNotifyDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1217,7 +1218,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (!playNotify || contextBean.programId == mProgramId) {
             return;
         }
-        AwesomeDialog.init().setLayoutId(R.layout.dialog_play_notify)
+        if (playNotifyDialog != null && playNotifyDialog.isAdded()) {
+            return;
+        }
+        playNotifyDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_play_notify)
                 .setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
