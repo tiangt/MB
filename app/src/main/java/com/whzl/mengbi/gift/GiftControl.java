@@ -105,7 +105,8 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
                         AnimGiftAction animGiftAction = (AnimGiftAction) childAt.getChildAt(0);
                         if ((animGiftAction.getAnimType() > 0)
                                 && animGiftAction.getCurrentSendUserId() == contextEntity.getUserId()
-                                && animGiftAction.getCurrentGiftId() == contextEntity.getGoodsId()) {
+                                && animGiftAction.getCurrentGiftId() == contextEntity.getGoodsId()
+                                && animGiftAction.getGiftCount() == contextEntity.getCount()) {
                             animGiftAction.setComboNum(contextEntity.getComboTimes());
                             return;
                         }
