@@ -739,7 +739,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="@id/ratio_layout">
 
@@ -750,12 +750,12 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:layout_marginTop="14dp" />
+                        android:layout_marginTop="6dp" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
-                        android:layout_marginTop="14dp" />
+                        android:layout_marginTop="6dp" />
                 </LinearLayout>
 
                 <com.youth.banner.Banner

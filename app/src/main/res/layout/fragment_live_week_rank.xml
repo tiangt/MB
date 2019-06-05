@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:id="@+id/ll_week_rank"
-        android:layout_width="77dp"
+        android:layout_width="84dp"
         android:layout_height="85dp"
         android:background="@drawable/bg_week_rank_bottom"
         android:gravity="center"
@@ -152,11 +152,11 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="64dp"
+        android:layout_width="66dp"
         android:layout_height="31dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="80dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginRight="8dp"
         android:src="@drawable/bg_week_rank_top"
         app:layout_constraintBottom_toBottomOf="@id/ll_week_rank"
         app:layout_constraintRight_toRightOf="@id/ll_week_rank" />

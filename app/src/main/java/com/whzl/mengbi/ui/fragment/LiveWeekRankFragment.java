@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
