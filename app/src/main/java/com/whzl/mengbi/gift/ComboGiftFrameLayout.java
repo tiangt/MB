@@ -390,6 +390,7 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
         } else {
             //数量增加
             ObjectAnimator scaleGiftNum = GiftAnimationUtil.scaleGiftNum(tvComboTime);
+            scaleGiftNum.setInterpolator(new LinearInterpolator());
             scaleGiftNum.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {

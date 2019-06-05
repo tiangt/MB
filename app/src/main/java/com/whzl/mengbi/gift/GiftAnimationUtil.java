@@ -66,9 +66,9 @@ public class GiftAnimationUtil {
      */
     public static ObjectAnimator scaleGiftNum(final TextView target) {
         PropertyValuesHolder anim4 = PropertyValuesHolder.ofFloat("scaleX",
-                1.39f, /*0.8f,*/ 1f);
+                1f,1.39f, /*0.8f,*/ 1f);
         PropertyValuesHolder anim5 = PropertyValuesHolder.ofFloat("scaleY",
-                1.39f, /*0.8f, */1f);
+                1f,1.39f, /*0.8f, */1f);
 //        PropertyValuesHolder anim6 = PropertyValuesHolder.ofFloat("alpha",
 //                1.0f, 0f, 1f);
         ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(target, anim4, anim5/*, anim6*/).setDuration(300);

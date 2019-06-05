@@ -147,7 +147,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
         switch (msg.what) {
             case RESTART_GIFT_ANIMATION_CODE:
                 if (context != null) {
-                    tvCount.setText(context.getString(R.string.live_gift_text, comboList.get(0)," "));
+                    tvCount.setText(context.getString(R.string.live_gift_text, comboList.get(0), " "));
                 }
                 comboList.remove(0);
                 comboAnimation(false);
@@ -283,7 +283,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
     public void initLayoutState() {
         this.setVisibility(View.VISIBLE);
         if (context != null) {
-            tvCount.setText(context.getString(R.string.live_gift_text, mGift.getGiftTotalCount()," "));
+            tvCount.setText(context.getString(R.string.live_gift_text, mGift.getGiftTotalCount(), " "));
         }
         tvFromNickName.setText(mGift.getNickname());
         tvGiftName.setText("送 ");
@@ -344,6 +344,7 @@ public class GiftFrameLayout extends FrameLayout implements Handler.Callback, An
         } else {
             //数量增加
             ObjectAnimator scaleGiftNum = GiftAnimationUtil.scaleGiftNum(tvCount);
+            scaleGiftNum.setInterpolator(new LinearInterpolator());
             scaleGiftNum.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {

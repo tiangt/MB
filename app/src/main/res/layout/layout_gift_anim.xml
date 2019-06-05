@@ -66,7 +66,7 @@
         android:layout_toRightOf="@id/iv_anim_gift_icon"
         android:gravity="bottom"
         android:paddingBottom="4dp"
-        android:text=" x "
+        android:text=" × "
         android:textSize="25sp" />
 
     <com.whzl.mengbi.ui.widget.view.GiftTextView
