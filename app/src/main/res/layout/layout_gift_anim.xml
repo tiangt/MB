@@ -62,18 +62,16 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="4dp"
         android:layout_toRightOf="@id/iv_anim_gift_icon"
         android:gravity="bottom"
         android:paddingBottom="4dp"
-        android:text=" × "
+        android:text="× "
         android:textSize="25sp" />
 
     <com.whzl.mengbi.ui.widget.view.GiftTextView
         android:id="@+id/tv_anim_gift_count"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="4dp"
         android:layout_toRightOf="@id/tv_x_gift_count"
         android:gravity="bottom"
         android:textSize="34sp" />
