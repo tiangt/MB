@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -312,6 +313,7 @@ public class GiftDialog extends BaseAwesomeDialog {
         setCheckChange();
     }
 
+    @SuppressLint("SetTextI18n")
     @OnClick({R.id.tv_count, R.id.btn_send_gift, R.id.btn_count_confirm, R.id.tv_top_up, R.id.first_top_up, R.id.checkbox, R.id.tv_add_superrun})
     public void onClick(View view) {
         long mUserId = Long.parseLong(SPUtils.get(getActivity(), "userId", 0L).toString());

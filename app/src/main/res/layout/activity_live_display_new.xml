@@ -195,7 +195,7 @@
                         <FrameLayout
                             android:id="@+id/frame_supercar_track"
                             android:layout_width="match_parent"
-                            android:layout_height="20dp"
+                            android:layout_height="23dp"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="5dp"
                             android:layout_toRightOf="@id/rl_head"
@@ -203,7 +203,7 @@
 
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="23dp"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="5dp"
@@ -212,9 +212,8 @@
                             <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
                                 android:id="@+id/tv_run_way_gift"
                                 android:layout_width="1000dp"
-                                android:layout_height="20dp"
+                                android:layout_height="23dp"
                                 android:layout_marginLeft="5dp"
-                                android:layout_marginBottom="2dp"
                                 android:gravity="center_vertical"
                                 android:singleLine="true"
                                 android:textSize="12sp" />

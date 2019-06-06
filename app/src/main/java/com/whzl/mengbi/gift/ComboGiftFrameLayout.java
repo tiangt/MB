@@ -358,7 +358,7 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
     public AnimatorSet startAnimation() {
         hideView();
 //            布局飞入
-        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, -UIUtil.getScreenWidthPixels(getContext()), 0, 200, new LinearInterpolator());
+        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, -UIUtil.getScreenWidthPixels(getContext()), 0, 200, new DecelerateInterpolator());
         flyFromLtoR.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {

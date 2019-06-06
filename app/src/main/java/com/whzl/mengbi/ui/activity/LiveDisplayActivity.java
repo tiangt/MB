@@ -1044,6 +1044,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .setLoginSuccessListener(() -> {
                     mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
                     mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
+                    btnOtherFollow.setVisibility(View.GONE);
+                    mLivePresenter.getPkInfo(mProgramId);
                     getRoomToken();
                     isVip = true;
                 })

@@ -409,6 +409,10 @@ public class PkControl {
 
     private void isSubProgram(long userId, int programId) {
         if (userId == 0L) {
+            btnOtherFollow.setVisibility(View.VISIBLE);
+            btnOtherFollow.setOnClickListener(v -> {
+                ((LiveDisplayActivity)context).login();
+            });
             return;
         }
         HashMap map = new HashMap();
