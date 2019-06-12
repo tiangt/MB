@@ -472,4 +472,5 @@
     <string name="privacy">您在使用萌比直播产品和服务前，请认真阅读并充分理解相关法律条款、平台规则及隐私政策（可在设置>关于萌比>服务协议中查找并阅读）。当您点击同意，并开始使用产品或服务，即表示您已理解并同意该条款，我们可能会收集您的身份信息、交易信息、位置信息、设备信息等，我们会尽全力保护您的个人信息安全。</string>
     <string name="again_code">重新获取%1$ds</string>
     <string name="live_gift_text">%1$d%2$s</string>
+    <string name="tv_empty_guess">%1$d人正在竞猜</string>
 </resources>

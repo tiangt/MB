@@ -3,6 +3,7 @@ package com.whzl.mengbi.api;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
+import com.whzl.mengbi.model.entity.AllGuessBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AnchorWishBean;
@@ -20,6 +21,7 @@ import com.whzl.mengbi.model.entity.DailyTaskBean;
 import com.whzl.mengbi.model.entity.DemonCarBean;
 import com.whzl.mengbi.model.entity.FollowSortBean;
 import com.whzl.mengbi.model.entity.FreeGiftBean;
+import com.whzl.mengbi.model.entity.GameGuessBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetGoodMsgBean;
@@ -1181,5 +1183,25 @@ public interface Api {
     @POST("v1/user/is-sub-program")
     @FormUrlEncoded
     Observable<ApiResult<IsSubProgramBean>> isSubProgram(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取竞猜列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/guess/game-guess-list")
+    @FormUrlEncoded
+    Observable<ApiResult<GameGuessBean>> gameGuessList(@FieldMap Map<String, String> params);
+
+    /**
+     * 查询所有正在竞猜的接口
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/guess/all-guess-list")
+    @FormUrlEncoded
+    Observable<ApiResult<AllGuessBean>> allGuessList(@FieldMap Map<String, String> params);
 
 }

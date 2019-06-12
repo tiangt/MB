@@ -160,6 +160,7 @@ import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
 import com.whzl.mengbi.ui.dialog.GiftDialog;
 import com.whzl.mengbi.ui.dialog.GuardianListDialog;
+import com.whzl.mengbi.ui.dialog.GuessDialog;
 import com.whzl.mengbi.ui.dialog.HeadlineDialog;
 import com.whzl.mengbi.ui.dialog.LiveHouseChatDialog;
 import com.whzl.mengbi.ui.dialog.LiveNoMoneyDialog;
@@ -476,6 +477,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private LiveNoMoneyDialog liveNoMoneyDialog;
     private AwesomeDialog offlineDialog;
     private BaseAwesomeDialog playNotifyDialog;
+    private BaseAwesomeDialog guessDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1038,6 +1040,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
                 .show(getSupportFragmentManager());
     }
+
+    /**
+     * 趣味竞猜
+     */
+    public void showGuessDialog() {
+        if (mAnchorId == 0) {
+            return;
+        }
+        if (guessDialog != null && guessDialog.isAdded()) {
+            return;
+        }
+        guessDialog = GuessDialog.Companion.newInstance(mUserId, mProgramId, mAnchorId)
+                .setShowBottom(true)
+                .setDimAmount(0)
+                .show(getSupportFragmentManager());
+    }
+
 
     public void login() {
         LoginDialog.newInstance()

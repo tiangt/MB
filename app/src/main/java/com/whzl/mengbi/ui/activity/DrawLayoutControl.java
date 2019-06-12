@@ -240,6 +240,7 @@ public class DrawLayoutControl {
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             if (position == bannerInfoList.size() + 1) {
+                ((LiveDisplayActivity) activity).showGuessDialog();
                 return;
             }
             if (position == bannerInfoList.size()) {
