@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--背景-->
+    <item android:id="@android:id/background">
+       
+        <shape
+            android:shape="rectangle">
+            <corners android:radius="2dp" />
+            <gradient
+                android:angle="90"
+                android:centerColor="#503FDC"
+                android:centerY="0.42"
+                android:endColor="#817EE1"
+                android:startColor="#1E00B9" />
+        </shape>
+    </item>
+
+    <!--进度-->
+    <item android:id="@android:id/progress">
+        <scale
+            android:drawable="@drawable/progress_round_guess"
+            android:scaleWidth="100%" />
+    </item>
+</layer-list>

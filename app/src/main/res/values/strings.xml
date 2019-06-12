@@ -473,4 +473,5 @@
     <string name="again_code">重新获取%1$ds</string>
     <string name="live_gift_text">%1$d%2$s</string>
     <string name="tv_empty_guess">%1$d人正在竞猜</string>
+    <string name="tv_odd_guess">赔率 %1$.2f</string>
 </resources>
