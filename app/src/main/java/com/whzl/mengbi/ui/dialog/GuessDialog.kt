@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.chat.room.message.events.GuessEvent
+import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent
 import com.whzl.mengbi.model.entity.AllGuessBean
 import com.whzl.mengbi.model.entity.GameGuessBean
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
@@ -24,10 +26,14 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_guess.*
 import kotlinx.android.synthetic.main.item_empty_guess.view.*
 import kotlinx.android.synthetic.main.item_list_guess.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.concurrent.TimeUnit
 
 /**
@@ -46,6 +52,10 @@ class GuessDialog : BaseAwesomeDialog() {
     private var programId: Int = 0
     private var anchorId: Int = 0
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        EventBus.getDefault().register(this)
+    }
 
     override fun intLayoutId(): Int {
         return R.layout.dialog_guess
@@ -78,12 +88,16 @@ class GuessDialog : BaseAwesomeDialog() {
     }
 
     inner class GuessHolder(itemView: View) : BaseViewHolder(itemView) {
+        var disposable: Disposable? = null
+        var guessId: Int = 0
+
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(position: Int) {
             itemView.ll_square_select.isEnabled = false
             itemView.ll_counter_select.isEnabled = false
 
             val listBean = guessData[position]
+            guessId = listBean.guessId
             itemView.tv_theme_guess.text = listBean.guessTheme
 
             itemView.tv_square_argument.text = listBean.squareArgument
@@ -124,7 +138,7 @@ class GuessDialog : BaseAwesomeDialog() {
                 "BET" -> {
                     val dateStrToMillis = DateUtils.dateStrToMillis(listBean.closingTime, "yyyy-MM-dd HH:mm:ss")
                     val total = ((dateStrToMillis - System.currentTimeMillis()) / 1000).toInt()
-                    val disposable = Observable.interval(1, 1, TimeUnit.SECONDS)
+                    disposable = Observable.interval(1, 1, TimeUnit.SECONDS)
                             .take(total.toLong() + 1)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -138,7 +152,7 @@ class GuessDialog : BaseAwesomeDialog() {
                                     itemView.ll_counter_select.isEnabled = false
                                 }
                             }
-                    compositeDisposable.add(disposable)
+                    compositeDisposable.add(disposable!!)
 
                     itemView.ll_square_select.isEnabled = true
                     itemView.ll_counter_select.isEnabled = true
@@ -161,6 +175,7 @@ class GuessDialog : BaseAwesomeDialog() {
 
     override fun onDestroy() {
         compositeDisposable.clear()
+        EventBus.getDefault().unregister(this)
         super.onDestroy()
     }
 
@@ -229,6 +244,72 @@ class GuessDialog : BaseAwesomeDialog() {
                 })
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: GuessEvent) {
+        when (event.guessJson.context.busicode) {
+            "USER_GUESS" -> {
+                compositeDisposable.clear()
+                getGuessList(anchorId)
+            }
+            "USER_GUESS_BET" -> {
+                val listBean = event.guessJson.context.UGameGuessDto
+                val childAt = findItemView(event)
+                childAt?.tv_square_argument?.text = listBean.squareArgument
+                childAt?.tv_square_odds?.text = getString(R.string.tv_odd_guess, listBean.squareOdds)
+
+                childAt?.tv_counter_argument?.text = listBean.counterArgument
+                childAt?.tv_counter_odds?.text = getString(R.string.tv_odd_guess, listBean.counterOdds)
+
+                val totalFee = listBean.squareArgumentFee + listBean.counterArgumentFee
+                if (totalFee.toInt() == 0) {
+                    childAt?.progress_guess?.progress = 50
+                } else {
+                    val d = Math.ceil(listBean.squareArgumentFee / totalFee * 100)
+                    childAt?.progress_guess?.progress = d.toInt()
+                }
+            }
+            "USER_GUESS_SEALED_DISK" -> {
+//                val findItemView = findItemView(event)
+//                val guessHolder = recycler_data_guess.getChildViewHolder(findItemView) as GuessHolder
+//                if (guessHolder.disposable != null) {
+//                    guessHolder.disposable!!.dispose()
+//                }
+//                findItemView?.tv_status_guess?.text = "已封盘"
+//                findItemView?.ll_square_select?.isEnabled = false
+//                findItemView?.ll_counter_select?.isEnabled = false
+                compositeDisposable.clear()
+                getGuessList(anchorId)
+            }
+            "USER_GUESS_FLOW" -> {
+//                val findItemView = findItemView(event)
+//                val guessHolder = recycler_data_guess.getChildViewHolder(findItemView) as GuessHolder
+//                if (guessHolder.disposable != null) {
+//                    guessHolder.disposable!!.dispose()
+//                }
+//                findItemView?.tv_status_guess?.text = "流局"
+//                findItemView?.ll_square_select?.isEnabled = false
+//                findItemView?.ll_counter_select?.isEnabled = false
+                compositeDisposable.clear()
+                getGuessList(anchorId)
+            }
+            "USER_GUESS_SETTLEMENT", "FINISH" -> {
+                compositeDisposable.clear()
+                getGuessList(anchorId)
+            }
+        }
+    }
+
+    private fun findItemView(event: GuessEvent): View? {
+        val listBean = event.guessJson.context.UGameGuessDto
+        for (i in 0 until recycler_data_guess.childCount) {
+            val childAt = recycler_data_guess.getChildAt(i)
+            val guessHolder = recycler_data_guess.getChildViewHolder(childAt) as GuessHolder
+            if (guessHolder.guessId == listBean.guessId) {
+                return childAt
+            }
+        }
+        return null
+    }
 
     companion object {
         fun newInstance(mUserId: Long, mProgramId: Int, mAnchorId: Int): GuessDialog {
