@@ -96,7 +96,7 @@ class GuessDialog : BaseAwesomeDialog() {
             if (totalFee.toInt() == 0) {
                 itemView.progress_guess.progress = 50
             } else {
-                val d = listBean.squareArgumentFee / totalFee * 100
+                val d = Math.ceil(listBean.squareArgumentFee / totalFee * 100)
                 itemView.progress_guess.progress = d.toInt()
             }
 
@@ -146,13 +146,13 @@ class GuessDialog : BaseAwesomeDialog() {
             }
 
             itemView.ll_square_select.setOnClickListener {
-                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "SQUARE_ARGUMENT")
+                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "SQUARE_ARGUMENT", listBean.squareOdds)
                         .setShowBottom(true)
                         .show(fragmentManager)
             }
 
             itemView.ll_counter_select.setOnClickListener {
-                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "COUNTER_ARGUMENT")
+                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "COUNTER_ARGUMENT", listBean.counterOdds)
                         .setShowBottom(true)
                         .show(fragmentManager)
             }

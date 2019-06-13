@@ -1204,4 +1204,14 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<AllGuessBean>> allGuessList(@FieldMap Map<String, String> params);
 
+    /**
+     * 用户压竞猜
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/guess/user-game-guess")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> gameGuess(@FieldMap Map<String, String> params);
+
 }
