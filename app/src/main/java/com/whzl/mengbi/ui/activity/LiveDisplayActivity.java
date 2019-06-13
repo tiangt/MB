@@ -479,6 +479,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private AwesomeDialog offlineDialog;
     private BaseAwesomeDialog playNotifyDialog;
     private BaseAwesomeDialog guessDialog;
+    private BaseAwesomeDialog guessEndDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -2726,7 +2727,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GuessEvent event) {
         if ("USER_GUESS_SETTLEMENT".equals(event.guessJson.context.busicode)) {
-            AwesomeDialog.init().setLayoutId(R.layout.dialog_guess_end)
+            if (guessEndDialog != null && guessEndDialog.isAdded()) {
+                return;
+            }
+            guessEndDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_guess_end)
                     .setConvertListener(new ViewConvertListener() {
                         @Override
                         protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
@@ -2743,7 +2747,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         }
                     })
                     .show(getSupportFragmentManager());
-
         }
     }
 
