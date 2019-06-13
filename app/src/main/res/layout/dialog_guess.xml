@@ -6,12 +6,13 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="270dp"
+        android:layout_height="370dp"
         android:background="#1b1c2c">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scaleType="fitXY"
             android:src="@drawable/img_top_guess" />
 
         <LinearLayout

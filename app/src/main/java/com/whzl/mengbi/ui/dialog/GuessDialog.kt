@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,15 +15,21 @@ import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
+import com.whzl.mengbi.util.DateUtils
+import com.whzl.mengbi.util.LogUtils
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
+import com.whzl.mengbi.util.toast
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_guess.*
 import kotlinx.android.synthetic.main.item_empty_guess.view.*
 import kotlinx.android.synthetic.main.item_list_guess.view.*
+import java.util.concurrent.TimeUnit
 
 /**
  *
@@ -34,6 +41,8 @@ class GuessDialog : BaseAwesomeDialog() {
     private val guessData = ArrayList<GameGuessBean.ListBean>()
     private lateinit var emptyAdapter: BaseListAdapter
     private lateinit var guessAdapter: BaseListAdapter
+    private val compositeDisposable = CompositeDisposable()
+
 
     override fun intLayoutId(): Int {
         return R.layout.dialog_guess
@@ -51,6 +60,7 @@ class GuessDialog : BaseAwesomeDialog() {
 
     private fun initDataRv(recyclerView: RecyclerView?) {
         recyclerView?.layoutManager = LinearLayoutManager(activity)
+        recyclerView?.setItemViewCacheSize(10)
         guessAdapter = object : BaseListAdapter() {
             override fun getDataCount(): Int {
                 return guessData.size
@@ -65,7 +75,11 @@ class GuessDialog : BaseAwesomeDialog() {
     }
 
     inner class GuessHolder(itemView: View) : BaseViewHolder(itemView) {
+        @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(position: Int) {
+            itemView.ll_square_select.isEnabled = false
+            itemView.ll_counter_select.isEnabled = false
+
             val listBean = guessData[position]
             itemView.tv_theme_guess.text = listBean.guessTheme
 
@@ -101,11 +115,46 @@ class GuessDialog : BaseAwesomeDialog() {
                         }
                     }
                 }
+                "FLOW_BUREAU" -> {
+                    itemView.tv_status_guess.text = "流局"
+                }
                 "BET" -> {
-                    itemView.tv_status_guess.text = "${listBean.closingTime}封盘"
+                    val dateStrToMillis = DateUtils.dateStrToMillis(listBean.closingTime, "yyyy-MM-dd HH:mm:ss")
+                    val total = ((dateStrToMillis - System.currentTimeMillis()) / 1000).toInt()
+                    val disposable = Observable.interval(1, 1, TimeUnit.SECONDS)
+                            .take(total.toLong() + 1)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                LogUtils.e("ssssssssssssssss    $it")
+                                itemView.tv_status_guess.text =
+                                        "${DateUtils.translateLastSecond((total - it).toInt())}封盘"
+                                if (it == total.toLong()) {
+                                    itemView.tv_status_guess.text = "已封盘"
+                                    itemView.ll_square_select.isEnabled = false
+                                    itemView.ll_counter_select.isEnabled = false
+                                }
+                            }
+                    compositeDisposable.add(disposable)
+
+                    itemView.ll_square_select.isEnabled = true
+                    itemView.ll_counter_select.isEnabled = true
                 }
             }
+
+            itemView.ll_square_select.setOnClickListener {
+                toast(activity, "ll_square_select")
+            }
+
+            itemView.ll_counter_select.setOnClickListener {
+                toast(activity, "ll_counter_select")
+            }
         }
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
     }
 
     private fun initEmptyRv(recyclerView: RecyclerView) {

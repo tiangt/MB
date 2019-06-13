@@ -8,7 +8,7 @@
     android:paddingLeft="16.5dp"
     android:paddingTop="8dp"
     android:paddingRight="16.5dp"
-    android:paddingBottom="22dp">
+    android:paddingBottom="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -53,6 +53,7 @@
             android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/ll_square_select"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="3dp"
@@ -81,7 +82,7 @@
                 android:layout_width="21.5dp"
                 android:layout_height="17.5dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp" />
         </RelativeLayout>
 
         <ImageView
@@ -97,6 +98,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_counter_select"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:layout_marginTop="3dp"
@@ -125,7 +127,7 @@
                 android:layout_width="21.5dp"
                 android:layout_height="17.5dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -135,7 +137,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:max="100"
         android:progress="50"
         android:progressDrawable="@drawable/progressbar_guess" />
