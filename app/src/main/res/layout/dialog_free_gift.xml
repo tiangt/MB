@@ -216,7 +216,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="17dp"
-                        android:text="购买妖姬卡，获得双倍奖励"
+                        android:text="购买妖姬卡，获得双倍奖励 "
                         android:textColor="#ff3aea"
                         android:textSize="@dimen/text_content_free_gift"
                         android:textStyle="italic" />

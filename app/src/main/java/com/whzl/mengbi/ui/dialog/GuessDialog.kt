@@ -21,7 +21,6 @@ import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
-import com.whzl.mengbi.util.toast
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -43,15 +42,19 @@ class GuessDialog : BaseAwesomeDialog() {
     private lateinit var guessAdapter: BaseListAdapter
     private val compositeDisposable = CompositeDisposable()
 
+    private var userId: Long = 0
+    private var programId: Int = 0
+    private var anchorId: Int = 0
+
 
     override fun intLayoutId(): Int {
         return R.layout.dialog_guess
     }
 
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
-        val userId = arguments?.getLong("userId")
-        val programId = arguments?.getInt("programId")
-        val anchorId = arguments?.getInt("anchorId")
+        userId = arguments?.getLong("userId")!!
+        programId = arguments?.getInt("programId")!!
+        anchorId = arguments?.getInt("anchorId")!!
         initDataRv(recycler_data_guess)
         initEmptyRv(recycler_empty_guess)
         getEmptyData()
@@ -143,11 +146,15 @@ class GuessDialog : BaseAwesomeDialog() {
             }
 
             itemView.ll_square_select.setOnClickListener {
-                toast(activity, "ll_square_select")
+                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "SQUARE_ARGUMENT")
+                        .setShowBottom(true)
+                        .show(fragmentManager)
             }
 
             itemView.ll_counter_select.setOnClickListener {
-                toast(activity, "ll_counter_select")
+                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "COUNTER_ARGUMENT")
+                        .setShowBottom(true)
+                        .show(fragmentManager)
             }
         }
     }

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_guess_bet"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingTop="11dp"
+    android:paddingRight="16dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="猜对获得："
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="#FFF610"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（包含本金）"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前赔率："
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.10"
+            android:textColor="#FFF610"
+            android:textSize="11sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（最终收益以封盘时的赔率结算）"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:background="@drawable/edit_guess_bet"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="6"
+        android:paddingTop="9dp"
+        android:paddingBottom="9dp"
+        android:text="1000"
+        android:textColor="#fefefe"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8.5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6.5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_select_guess_bet"
+            android:gravity="center"
+            android:paddingTop="7dp"
+            android:paddingBottom="6.5dp"
+            android:text="1000"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6.5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_select_guess_bet"
+            android:gravity="center"
+            android:paddingTop="7dp"
+            android:paddingBottom="6.5dp"
+            android:text="10000"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="6.5dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_select_guess_bet"
+            android:gravity="center"
+            android:paddingTop="7dp"
+            android:paddingBottom="6.5dp"
+            android:text="50000"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/shape_select_guess_bet"
+            android:gravity="center"
+            android:paddingTop="7dp"
+            android:paddingBottom="6.5dp"
+            android:text="100000"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_guess_bet"
+            android:layout_width="96dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/shape_buttom_guess_bet"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_mengdou_guess_bet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@id/btn_guess_bet"
+            android:text="免费获得萌豆"
+            android:textColor="#e5e5e5"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</LinearLayout>
