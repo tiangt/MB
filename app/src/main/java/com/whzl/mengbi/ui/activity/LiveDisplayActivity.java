@@ -67,6 +67,7 @@ import com.whzl.mengbi.chat.room.message.events.ChatInputEvent;
 import com.whzl.mengbi.chat.room.message.events.EverydayEvent;
 import com.whzl.mengbi.chat.room.message.events.FirstPrizeUserEvent;
 import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
+import com.whzl.mengbi.chat.room.message.events.GuessEvent;
 import com.whzl.mengbi.chat.room.message.events.HeadLineEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
@@ -2720,6 +2721,30 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 });
             }
         }).setOutCancel(false).show(getSupportFragmentManager());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(GuessEvent event) {
+        if ("USER_GUESS_SETTLEMENT".equals(event.guessJson.context.busicode)) {
+            AwesomeDialog.init().setLayoutId(R.layout.dialog_guess_end)
+                    .setConvertListener(new ViewConvertListener() {
+                        @Override
+                        protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                            holder.setText(R.id.tv_theme_guess_end, event.guessJson.context.UGameGuessDto.guessTheme);
+
+                            if ("squareArgument".equals(event.guessJson.context.UGameGuessDto.successArgument)) {
+                                holder.setText(R.id.tv_odds_guess_end, "赔率 " + event.guessJson.context.UGameGuessDto.squareOdds);
+                                holder.setText(R.id.tv_argument_guess_end, event.guessJson.context.UGameGuessDto.squareArgument);
+                            } else {
+                                holder.setText(R.id.tv_odds_guess_end, "赔率 " + event.guessJson.context.UGameGuessDto.counterOdds);
+                                holder.setText(R.id.tv_argument_guess_end, event.guessJson.context.UGameGuessDto.counterArgument);
+                            }
+
+                        }
+                    })
+                    .show(getSupportFragmentManager());
+
+        }
     }
 
     public void removeAnchorWish() {
