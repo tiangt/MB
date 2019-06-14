@@ -18,7 +18,7 @@ class GuessRankDialog : BaseAwesomeDialog() {
     private lateinit var fragments: Array<Fragment>
 
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
-        fragments = arrayOf(GuessRankMotherFragment.newInstance("ASC"), GuessRankMotherFragment.newInstance("DSC"))
+        fragments = arrayOf(GuessRankMotherFragment.newInstance("DSC"), GuessRankMotherFragment.newInstance("ASC"))
         val fragmentTransaction = childFragmentManager?.beginTransaction()
         fragmentTransaction?.add(R.id.container_guess_rank, fragments[0])?.commit()
 

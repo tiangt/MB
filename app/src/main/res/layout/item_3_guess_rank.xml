@@ -5,38 +5,182 @@
     android:layout_height="142dp"
     android:orientation="horizontal">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/iv_color_guess_rank"
+        android:layout_width="match_parent"
+        android:layout_height="121dp"
+        android:background="@drawable/shape_ase_top_guess_rank"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/ll_left"
         android:layout_width="0dp"
         android:layout_height="121dp"
-        android:background="@drawable/shape_item_top_guess_rank"
         android:orientation="vertical"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/ll_center"></LinearLayout>
+        app:layout_constraintRight_toLeftOf="@id/ll_center">
 
-    <LinearLayout
+        <com.whzl.mengbi.ui.widget.view.CircleImageView
+            android:id="@+id/iv_2_guess_rank"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="14.5dp"
+            app:civ_border_color="#afb3be"
+            app:civ_border_width="1.5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_nick_2_guess_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#fff710"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_2_guess_rank" />
+
+        <TextView
+            android:id="@+id/tv_score_2_guess_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_nick_2_guess_rank" />
+
+        <ImageView
+            android:layout_width="25.5dp"
+            android:layout_height="23.5dp"
+            android:src="@drawable/ic_2_guess_rank"
+            app:layout_constraintLeft_toLeftOf="@id/iv_2_guess_rank"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/ll_center"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_item_top_guess_rank"
+        android:background="@drawable/shape_ase_top_guess_rank"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintLeft_toRightOf="@id/ll_left"
-        app:layout_constraintRight_toLeftOf="@id/ll_right"></LinearLayout>
+        app:layout_constraintRight_toLeftOf="@id/ll_right">
 
-    <LinearLayout
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ll_center_real"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+
+            <com.whzl.mengbi.ui.widget.view.CircleImageView
+                android:id="@+id/iv_1_guess_rank"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                app:civ_border_color="#fcd139"
+                app:civ_border_width="1.5dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_nick_1_guess_rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="#fff710"
+                android:textSize="15sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_1_guess_rank" />
+
+            <TextView
+                android:id="@+id/tv_score_1_guess_rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_nick_1_guess_rank" />
+
+            <ImageView
+                android:layout_width="25.5dp"
+                android:layout_height="23.5dp"
+                android:layout_marginTop="3dp"
+                android:src="@drawable/ic_1_guess_rank"
+                app:layout_constraintLeft_toLeftOf="@id/iv_1_guess_rank"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/ll_right"
         android:layout_width="0dp"
         android:layout_height="121dp"
-        android:background="@drawable/shape_item_top_guess_rank"
         android:orientation="vertical"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintLeft_toRightOf="@id/ll_center"
-        app:layout_constraintRight_toRightOf="parent"></LinearLayout>
+        app:layout_constraintRight_toRightOf="parent">
+
+        <com.whzl.mengbi.ui.widget.view.CircleImageView
+            android:id="@+id/iv_3_guess_rank"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="14.5dp"
+            app:civ_border_color="#c18f76"
+            app:civ_border_width="1.5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_nick_3_guess_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#fff710"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_3_guess_rank" />
+
+        <TextView
+            android:id="@+id/tv_score_3_guess_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_nick_3_guess_rank" />
+
+        <ImageView
+            android:layout_width="25.5dp"
+            android:layout_height="23.5dp"
+            android:src="@drawable/ic_3_guess_rank"
+            app:layout_constraintLeft_toLeftOf="@id/iv_3_guess_rank"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
     <ImageView
         android:layout_width="8dp"

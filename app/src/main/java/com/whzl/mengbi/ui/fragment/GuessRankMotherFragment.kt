@@ -26,11 +26,10 @@ class GuessRankMotherFragment : BaseFragment<BasePresenter<BaseView>>() {
         titles.add("周榜")
         titles.add("月榜")
         val fragments = ArrayList<Fragment>()
-        fragments.add(GuessRankFragment.newInstance(sortType))
-        fragments.add(GuessRankFragment.newInstance(sortType))
+        fragments.add(GuessRankFragment.newInstance(sortType, "WEEKRANK"))
+        fragments.add(GuessRankFragment.newInstance(sortType, "MONTHRANK"))
         vp_guess_rank.offscreenPageLimit = 2
         vp_guess_rank.adapter = FragmentPagerAdaper(childFragmentManager, fragments, titles)
-        tab_guess_rank.setupWithViewPager(vp_guess_rank)
         tab_guess_rank.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 vp_guess_rank.setCurrentItem(tab.position, false)
@@ -44,6 +43,9 @@ class GuessRankMotherFragment : BaseFragment<BasePresenter<BaseView>>() {
 
             }
         })
+        tab_guess_rank.setupWithViewPager(vp_guess_rank)
+
+
 
         tab_guess_rank?.selectedTabIndicatorWidth = UIUtil.dip2px(activity, 25f)
         tab_guess_rank?.isNeedSwitchAnimation = true

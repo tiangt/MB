@@ -8,25 +8,26 @@
 
     <com.whzl.mengbi.ui.widget.tablayout.TabLayout
         android:id="@+id/tab_guess_rank"
+        style="@style/GuessRankTab"
         android:layout_width="100dp"
         android:layout_height="21dp"
         android:layout_alignParentRight="true"
         android:layout_marginTop="7.5dp"
         android:layout_marginRight="9dp"
-        app:tabMode="fixed"
-        style="@style/GuessRankTab"
         app:tabIndicatorHeight="2.5dp"
-        app:tabSelectedTextColor="#fffefe"
-        app:tabTextColor="#757575"
         app:tabMaxWidth="200dp"
-        app:tabMinWidth="20dp" />
+        app:tabMinWidth="20dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="#fffefe"
+        app:tabTextColor="#757575" />
 
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_guess_rank"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tab_guess_rank" />
+        android:layout_below="@id/tab_guess_rank"
+        android:overScrollMode="never" />
 
 
 </RelativeLayout>

@@ -37,6 +37,7 @@ import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
 import com.whzl.mengbi.model.entity.GuardPriceBean;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
+import com.whzl.mengbi.model.entity.GuessRankBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.ImgUploadBean;
 import com.whzl.mengbi.model.entity.IsSubProgramBean;
@@ -1224,5 +1225,16 @@ public interface Api {
     @POST("v1/guess/user-guess-record-list")
     @FormUrlEncoded
     Observable<ApiResult<UserGuessListBean>> userGuessList(@FieldMap Map<String, String> params);
+
+
+    /**
+     * 查询竞猜榜单
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/guess/guess-rank")
+    @FormUrlEncoded
+    Observable<ApiResult<GuessRankBean>> guessRank(@FieldMap Map<String, String> params);
 
 }
