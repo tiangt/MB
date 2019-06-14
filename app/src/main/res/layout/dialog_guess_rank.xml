@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="468.5dp"
+        android:layout_marginLeft="@dimen/padding_12"
+        android:layout_marginRight="@dimen/padding_12"
+        android:background="@drawable/shape_guess_rank"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="147dp"
+                android:layout_height="38dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_title_guess_rank" />
+
+            <ImageButton
+                android:id="@+id/ib_guess_rank"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@null"
+                android:paddingTop="8dp"
+                android:paddingRight="11dp"
+                android:src="@drawable/close_p" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="13dp">
+
+            <FrameLayout
+                android:id="@+id/container_guess_rank"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <RadioGroup
+                android:id="@+id/radio_guess_rank"
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="27dp"
+                android:background="@drawable/shape_tab_guess_rank"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/btn_asc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_tab_guess_rank"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="收益榜"
+                    android:textColor="@drawable/selector_guess_rank_text_color"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/btn_dsc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_tab_guess_rank"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="天台榜"
+                    android:textColor="@drawable/selector_guess_rank_text_color"
+                    android:textSize="16sp" />
+            </RadioGroup>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

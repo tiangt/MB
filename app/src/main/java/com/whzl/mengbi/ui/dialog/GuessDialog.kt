@@ -67,8 +67,15 @@ class GuessDialog : BaseAwesomeDialog() {
         anchorId = arguments?.getInt("anchorId")!!
         initDataRv(recycler_data_guess)
         initEmptyRv(recycler_empty_guess)
+        initEvent()
         getEmptyData()
         getGuessList(anchorId)
+    }
+
+    private fun initEvent() {
+        iv_rank_guess.setOnClickListener {
+            GuessRankDialog.newInstance().show(fragmentManager)
+        }
     }
 
     private fun initDataRv(recyclerView: RecyclerView?) {
@@ -136,8 +143,13 @@ class GuessDialog : BaseAwesomeDialog() {
                     itemView.tv_status_guess.text = "流局"
                 }
                 "BET" -> {
+                    itemView.ll_square_select.isEnabled = true
+                    itemView.ll_counter_select.isEnabled = true
                     val dateStrToMillis = DateUtils.dateStrToMillis(listBean.closingTime, "yyyy-MM-dd HH:mm:ss")
                     val total = ((dateStrToMillis - System.currentTimeMillis()) / 1000).toInt()
+                    if (total <= 0) {
+                        return
+                    }
                     disposable = Observable.interval(1, 1, TimeUnit.SECONDS)
                             .take(total.toLong() + 1)
                             .subscribeOn(Schedulers.io())
@@ -153,9 +165,6 @@ class GuessDialog : BaseAwesomeDialog() {
                                 }
                             }
                     compositeDisposable.add(disposable!!)
-
-                    itemView.ll_square_select.isEnabled = true
-                    itemView.ll_counter_select.isEnabled = true
                 }
             }
 
