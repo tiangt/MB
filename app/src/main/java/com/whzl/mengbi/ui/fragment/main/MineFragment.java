@@ -35,6 +35,7 @@ import com.whzl.mengbi.ui.activity.me.MyWalletActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.ui.fragment.me.MyGuessFragment;
 import com.whzl.mengbi.ui.fragment.me.PackCarFragment;
 import com.whzl.mengbi.ui.fragment.me.PackDiscountFragment;
 import com.whzl.mengbi.ui.fragment.me.PackPrettyFragment;
@@ -221,7 +222,7 @@ public class MineFragment extends BaseFragment implements MeView {
     @OnClick({R.id.iv_switch, R.id.iv_setting, R.id.rl_info_edit, R.id.btn_recharge, R.id.rl_shop,
             R.id.tv_mine_tool, R.id.tv_mine_vip, R.id.tv_mine_pretty, R.id.tv_mine_car,
             R.id.tv_mine_coupon, R.id.rl_composite, R.id.rl_bill, R.id.rl_my_wallet, R.id.ll_my_level,
-            R.id.rl_my_guard})
+            R.id.rl_my_guard, R.id.tv_mine_guess})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_switch:
@@ -305,7 +306,9 @@ public class MineFragment extends BaseFragment implements MeView {
             case R.id.rl_my_guard:
                 jumpToMyGuardActivity();
                 break;
-
+            case R.id.tv_mine_guess:
+                jumpToGuessActivity();
+                break;
             default:
                 break;
         }
@@ -351,6 +354,12 @@ public class MineFragment extends BaseFragment implements MeView {
 
     private void jumpToMyGuardActivity() {
         Intent intent = new Intent(getContext(), MyGuardActivity.class);
+        startActivity(intent);
+    }
+
+    private void jumpToGuessActivity() {
+        Intent intent = new Intent(getContext(), FrgActivity.class)
+                .putExtra(FrgActivity.FRAGMENT_CLASS, MyGuessFragment.class);
         startActivity(intent);
     }
 

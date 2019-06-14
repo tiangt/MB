@@ -458,6 +458,7 @@
     <string name="mine_bill">我的账单</string>
     <string name="my_assets">我的资产</string>
     <string name="my_income">我的收益</string>
+    <string name="my_guess">我的竞猜</string>
 
     <string name="rank_regal">根据用户送出礼物的萌币进行排名</string>
     <string name="rank_star">根据主播收到礼物的经验进行排名</string>

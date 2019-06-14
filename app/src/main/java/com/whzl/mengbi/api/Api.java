@@ -71,6 +71,7 @@ import com.whzl.mengbi.model.entity.SignInfoBean;
 import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
+import com.whzl.mengbi.model.entity.UserGuessListBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
 import com.whzl.mengbi.model.entity.WeekRankBean;
@@ -1213,5 +1214,15 @@ public interface Api {
     @POST("v1/guess/user-game-guess")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> gameGuess(@FieldMap Map<String, String> params);
+
+    /**
+     * 查询竞猜榜单
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/guess/user-guess-record-list")
+    @FormUrlEncoded
+    Observable<ApiResult<UserGuessListBean>> userGuessList(@FieldMap Map<String, String> params);
 
 }

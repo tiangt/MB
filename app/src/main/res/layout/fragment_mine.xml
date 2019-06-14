@@ -44,8 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="88dp"
                 android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
                 android:layout_marginTop="51dp"
+                android:layout_marginRight="12dp"
                 android:background="@drawable/shape_radius_five"
                 android:orientation="horizontal">
 
@@ -124,8 +124,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -198,8 +198,8 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/shape_radius_five"
             android:orientation="vertical">
 
@@ -337,8 +337,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView
@@ -371,12 +371,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/shape_radius_five"
             android:orientation="vertical"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
 
             <TextView
                 android:id="@+id/tv_mine_tool"
@@ -434,6 +434,19 @@
                 android:background="@color/tran_black6" />
 
             <TextView
+                android:id="@+id/tv_mine_guess"
+                style="@style/mine_option_item"
+                android:drawableLeft="@drawable/ic_mine_guess"
+                android:text="@string/my_guess" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="45dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/tran_black6" />
+
+            <TextView
                 android:id="@+id/tv_mine_coupon"
                 style="@style/mine_option_item"
                 android:layout_marginTop="5dp"
@@ -447,8 +460,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView
@@ -482,8 +495,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView
