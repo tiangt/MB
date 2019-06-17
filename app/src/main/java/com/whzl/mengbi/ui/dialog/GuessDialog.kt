@@ -145,7 +145,8 @@ class GuessDialog : BaseAwesomeDialog() {
                             itemView.iv_counter_outcome.setImageResource(R.drawable.ic_win_guess)
                         }
                         else -> {
-
+                            itemView.iv_square_outcome.setImageDrawable(null)
+                            itemView.iv_counter_outcome.setImageDrawable(null)
                         }
                     }
                 }
@@ -158,6 +159,7 @@ class GuessDialog : BaseAwesomeDialog() {
                     val dateStrToMillis = DateUtils.dateStrToMillis(listBean.closingTime, "yyyy-MM-dd HH:mm:ss")
                     val total = ((dateStrToMillis - System.currentTimeMillis()) / 1000).toInt()
                     if (total <= 0) {
+                        itemView.tv_status_guess.text = "已封盘"
                         return
                     }
                     disposable = Observable.interval(1, 1, TimeUnit.SECONDS)
@@ -313,7 +315,7 @@ class GuessDialog : BaseAwesomeDialog() {
                 compositeDisposable.clear()
                 getGuessList(anchorId)
             }
-            "USER_GUESS_SETTLEMENT", "FINISH" -> {
+            "USER_GUESS_SETTLEMENT", "USER_GUESS_FINISH" -> {
                 compositeDisposable.clear()
                 getGuessList(anchorId)
             }

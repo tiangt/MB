@@ -111,4 +111,6 @@ class MyGuessSortFragment : BasePullListFragment<UserGuessListBean.ListBean, Bas
         }
 
     }
+
+    override fun setShouldLoadMore() = true
 }
