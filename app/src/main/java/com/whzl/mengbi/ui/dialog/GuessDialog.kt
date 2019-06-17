@@ -179,13 +179,15 @@ class GuessDialog : BaseAwesomeDialog() {
             }
 
             itemView.ll_square_select.setOnClickListener {
-                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "SQUARE_ARGUMENT", listBean.squareOdds)
+                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "SQUARE_ARGUMENT",
+                        itemView.tv_square_odds.text.toString().substring(3).toDouble())
                         .setShowBottom(true)
                         .show(fragmentManager)
             }
 
             itemView.ll_counter_select.setOnClickListener {
-                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "COUNTER_ARGUMENT", listBean.counterOdds)
+                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "COUNTER_ARGUMENT",
+                        itemView.tv_counter_odds.text.toString().substring(3).toDouble())
                         .setShowBottom(true)
                         .show(fragmentManager)
             }

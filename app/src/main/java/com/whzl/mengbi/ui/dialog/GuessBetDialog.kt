@@ -4,15 +4,18 @@ import android.annotation.SuppressLint
 import android.graphics.Paint
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import com.google.gson.JsonElement
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
+import com.whzl.mengbi.util.ToastUtils
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
+import com.whzl.mengbi.util.toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_guess_bet.*
@@ -43,7 +46,7 @@ class GuessBetDialog : BaseAwesomeDialog() {
         tv_mengdou_guess_bet.paint.flags = Paint.UNDERLINE_TEXT_FLAG
 
         tv_odd_guess_bet.text = odds.toString()
-        tv_get_guess_bet.text = (odds * 1000).toString()
+        tv_get_guess_bet.text = (tv_odd_guess_bet.text.toString().toDouble() * 1000).toString()
         et_guess_bet.setSelection(4)
 
         et_guess_bet.addTextChangedListener(object : TextWatcher {
@@ -55,36 +58,42 @@ class GuessBetDialog : BaseAwesomeDialog() {
 
             @SuppressLint("SetTextI18n")
             override fun afterTextChanged(s: Editable?) {
-                if (et_guess_bet.text.toString().toInt() < 100) {
-                    et_guess_bet.text = Editable.Factory.getInstance().newEditable("100")
-                    et_guess_bet.setSelection(3)
+                if (TextUtils.isEmpty(s)) {
+                    tv_get_guess_bet.text = "0"
+                    return
                 }
-                tv_get_guess_bet.text = (odds * et_guess_bet.text.toString().toInt()).toString()
+                val toDouble = tv_odd_guess_bet.text.toString().toDouble()
+                val toInt = et_guess_bet.text.toString().toInt()
+                tv_get_guess_bet.text = (toDouble * toInt).toString()
             }
         })
 
         tv_1000_guess_bet.setOnClickListener {
-            tv_get_guess_bet.text = (odds * 1000).toString()
+            tv_get_guess_bet.text = (tv_odd_guess_bet.text.toString().toDouble() * 1000).toString()
             et_guess_bet.text = Editable.Factory.getInstance().newEditable("1000")
             et_guess_bet.setSelection(4)
         }
         tv_10000_guess_bet.setOnClickListener {
-            tv_get_guess_bet.text = (odds * 10000).toString()
+            tv_get_guess_bet.text = (tv_odd_guess_bet.text.toString().toDouble() * 10000).toString()
             et_guess_bet.text = Editable.Factory.getInstance().newEditable("10000")
             et_guess_bet.setSelection(5)
         }
         tv_50000_guess_bet.setOnClickListener {
-            tv_get_guess_bet.text = (odds * 50000).toString()
+            tv_get_guess_bet.text = (tv_odd_guess_bet.text.toString().toDouble() * 50000).toString()
             et_guess_bet.text = Editable.Factory.getInstance().newEditable("50000")
             et_guess_bet.setSelection(5)
         }
         tv_100000_guess_bet.setOnClickListener {
-            tv_get_guess_bet.text = (odds * 100000).toString()
+            tv_get_guess_bet.text = (tv_odd_guess_bet.text.toString().toDouble() * 100000).toString()
             et_guess_bet.text = Editable.Factory.getInstance().newEditable("100000")
             et_guess_bet.setSelection(6)
         }
 
         btn_guess_bet.setOnClickListener {
+            if (et_guess_bet.text.toString().toInt() < 100) {
+                toast(activity, "最小数量为100")
+                return@setOnClickListener
+            }
             val hashMap = HashMap<String, String>()
             hashMap["userId"] = userId.toString()
             hashMap["guessId"] = guessId.toString()

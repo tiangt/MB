@@ -1,62 +1,40 @@
 package com.whzl.mengbi.ui.fragment.me
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v4.app.Fragment
 import com.whzl.mengbi.R
-import com.whzl.mengbi.api.Api
-import com.whzl.mengbi.config.NetConfig
-import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
-import com.whzl.mengbi.model.entity.UserGuessListBean
 import com.whzl.mengbi.ui.activity.base.FrgActivity
-import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
-import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
-import com.whzl.mengbi.util.SPUtils
-import com.whzl.mengbi.util.network.retrofit.ApiFactory
-import com.whzl.mengbi.util.network.retrofit.ApiObserver
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.dialog_guess_bet.*
+import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper
+import com.whzl.mengbi.ui.fragment.base.BaseFragment
+import com.whzl.mengbi.ui.widget.tablayout.TabLayout
+import kotlinx.android.synthetic.main.fragment_myguess.*
+import java.util.*
 
 /**
  *
  * @author nobody
- * @date 2019-06-14
+ * @date 2019-06-17
  */
-class MyGuessFragment : BasePullListFragment<UserGuessListBean.ListBean, BasePresenter<BaseView>>() {
+class MyGuessFragment : BaseFragment<BasePresenter<BaseView>>() {
+    override fun getLayoutId() = R.layout.fragment_myguess
+
     override fun init() {
-        super.init()
         (activity as FrgActivity).setTitle("我的竞猜")
-    }
 
-    override fun loadData(action: Int, mPage: Int) {
-        val hashMap = HashMap<String, String>()
-        hashMap["userId"] = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L).toString()
-        hashMap["page"] = mPage.toString()
-        hashMap["pageSize"] = NetConfig.DEFAULT_PAGER_SIZE.toString()
-        ApiFactory.getInstance().getApi(Api::class.java)
-                .userGuessList(ParamsUtils.getSignPramsMap(hashMap))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : ApiObserver<UserGuessListBean>() {
-                    override fun onSuccess(t: UserGuessListBean?) {
-                        loadSuccess(t?.list)
-                    }
-                })
-    }
-
-    override fun setViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
-        val inflate = LayoutInflater.from(activity).inflate(R.layout.item_my_guess, parent, false)
-        return GuessViewHolder(inflate)
-    }
-
-    inner class GuessViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        override fun onBindViewHolder(position: Int) {
-
-        }
-
+        val titles = ArrayList<String>()
+        titles.add("正在竞猜")
+        titles.add("历史竞猜")
+        val fragments = ArrayList<Fragment>()
+        fragments.add(MyGuessSortFragment.newInstance("ONGOING"))
+        fragments.add(MyGuessSortFragment.newInstance("HISTORY"))
+        val fragmentPagerAdaper = FragmentPagerAdaper(fragmentManager, fragments, titles)
+        vp_my_guess.adapter = fragmentPagerAdaper
+        vp_my_guess.offscreenPageLimit = 2
+        tab_my_guess.tabMode = TabLayout.MODE_FIXED
+        tab_my_guess.tabGravity = TabLayout.GRAVITY_FILL
+        tab_my_guess.isNeedSwitchAnimation = true
+        tab_my_guess.selectedTabIndicatorWidth = com.whzl.mengbi.util.UIUtil.dip2px(activity, 25f)
+        tab_my_guess.setupWithViewPager(vp_my_guess)
     }
 }

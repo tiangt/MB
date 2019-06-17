@@ -36,11 +36,11 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
+        android:id="@+id/tv_date_my_guess"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:layout_marginRight="17.5dp"
-        android:text="2019-09-10 14:22:22"
         android:textColor="#757575"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_id_my_guess"
@@ -81,9 +81,9 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/tv_theme_my_guess"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="本局是否能胜利"
                 android:textColor="#000000"
                 android:textSize="15sp" />
 
@@ -104,9 +104,9 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/tv_scheme_my_guess"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="本局是否能胜利"
                 android:textColor="#000000"
                 android:textSize="15sp" />
 
@@ -128,14 +128,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="主题："
+                    android:text="投注："
                     android:textColor="#757575"
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/tv_fee_my_guess"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10000"
                     android:textColor="#FF2B3F"
                     android:textSize="15sp" />
 
@@ -161,9 +161,9 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/tv_odds_my_guess"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10000"
                     android:textColor="#FF2B3F"
                     android:textSize="15sp" />
 
@@ -192,9 +192,9 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/tv_success_my_guess"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10000"
                     android:textColor="#FF2B3F"
                     android:textSize="15sp" />
 
@@ -214,9 +214,9 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/tv_produce_my_guess"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10000"
                     android:textColor="#FF2B3F"
                     android:textSize="15sp" />
 
@@ -227,6 +227,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_status_my_guess"
         android:layout_width="68dp"
         android:layout_height="22.5dp"
         android:layout_marginTop="5.5dp"
@@ -234,7 +235,6 @@
         android:gravity="center_vertical|end"
         android:paddingTop="1dp"
         android:paddingRight="17.5dp"
-        android:text="进行中"
         android:textColor="#000000"
         android:textSize="12sp"
         app:layout_constraintRight_toRightOf="parent"

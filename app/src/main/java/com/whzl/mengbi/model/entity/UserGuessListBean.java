@@ -40,15 +40,15 @@ public class UserGuessListBean {
              * isModified : F
              */
 
-            public int guessId;
+            public long guessId;
             public int userId;
             public String guessTheme;
             public String squareArgument;
             public String counterArgument;
-            public int squareArgumentFee;
-            public int counterArgumentFee;
-            public int squareOdds;
-            public int counterOdds;
+            public double squareArgumentFee;
+            public double counterArgumentFee;
+            public double squareOdds;
+            public double counterOdds;
             public String successArgument;
             public String status;
             public String closingTime;
