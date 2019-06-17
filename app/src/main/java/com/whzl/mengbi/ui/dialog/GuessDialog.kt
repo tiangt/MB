@@ -137,16 +137,16 @@ class GuessDialog : BaseAwesomeDialog() {
                     itemView.tv_status_guess.text = "已结束"
                     when {
                         listBean.successArgument == "squareArgument" -> {
-                            itemView.iv_square_outcome.setImageResource(R.drawable.ic_win_guess)
-                            itemView.iv_counter_outcome.setImageResource(R.drawable.ic_lose_guess)
+                            GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_win_guess, itemView.iv_square_outcome)
+                            GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_lose_guess, itemView.iv_counter_outcome)
                         }
                         listBean.successArgument == "counterArgument" -> {
-                            itemView.iv_square_outcome.setImageResource(R.drawable.ic_lose_guess)
-                            itemView.iv_counter_outcome.setImageResource(R.drawable.ic_win_guess)
+                            GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_lose_guess, itemView.iv_square_outcome)
+                            GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_win_guess, itemView.iv_counter_outcome)
                         }
                         else -> {
-                            itemView.iv_square_outcome.setImageDrawable(null)
-                            itemView.iv_counter_outcome.setImageDrawable(null)
+                            GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_square_outcome)
+                            GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_counter_outcome)
                         }
                     }
                 }
@@ -156,13 +156,17 @@ class GuessDialog : BaseAwesomeDialog() {
                 "BET" -> {
                     itemView.ll_square_select.isEnabled = true
                     itemView.ll_counter_select.isEnabled = true
+
+                    GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_square_outcome)
+                    GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_counter_outcome)
+
                     val dateStrToMillis = DateUtils.dateStrToMillis(listBean.closingTime, "yyyy-MM-dd HH:mm:ss")
                     val total = ((dateStrToMillis - System.currentTimeMillis()) / 1000).toInt()
                     if (total <= 0) {
                         itemView.tv_status_guess.text = "已封盘"
                         return
                     }
-                    disposable = Observable.interval(1, 1, TimeUnit.SECONDS)
+                    disposable = Observable.interval(0, 1, TimeUnit.SECONDS)
                             .take(total.toLong() + 1)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
