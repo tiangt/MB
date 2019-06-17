@@ -17,4 +17,5 @@ public interface AppConfig {
     String PROGRAM_TREASURE_SEND_REDPACKET = "PROGRAM_TREASURE_SEND_REDPACKET";
     String OPEN_REDPACKET = "OPEN_REDPACKET";
     String LUCK_ROB = "LUCK_ROB";
+    String GUESS = "GUESS";
 }

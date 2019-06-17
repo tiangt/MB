@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.dialog
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,15 +11,18 @@ import android.view.ViewGroup
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.chat.room.message.events.GuessEvent
-import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent
+import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.model.entity.AllGuessBean
 import com.whzl.mengbi.model.entity.GameGuessBean
+import com.whzl.mengbi.ui.activity.JsBridgeActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.util.DateUtils
 import com.whzl.mengbi.util.LogUtils
+import com.whzl.mengbi.util.SPUtils
+import com.whzl.mengbi.util.clickDelay
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -73,8 +77,14 @@ class GuessDialog : BaseAwesomeDialog() {
     }
 
     private fun initEvent() {
-        iv_rank_guess.setOnClickListener {
+        iv_rank_guess.clickDelay {
             GuessRankDialog.newInstance().show(fragmentManager)
+        }
+
+        tv_note_guess.clickDelay {
+            startActivity(Intent(activity, JsBridgeActivity::class.java)
+                    .putExtra("url", SPUtils.get(activity, SpConfig.GUESSHELP_URL, "")!!.toString())
+                    .putExtra("title", "竞猜说明"))
         }
     }
 

@@ -3,7 +3,9 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 import android.content.Context;
 
 import com.whzl.mengbi.chat.room.message.events.GuessEvent;
+import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.GuessJson;
+import com.whzl.mengbi.chat.room.message.messages.GuessMessage;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 
@@ -21,6 +23,9 @@ public class GuessAction implements Actions {
         if (guessJson == null || guessJson.context == null) {
             return;
         }
-        EventBus.getDefault().post(new GuessEvent(context,guessJson));
+        EventBus.getDefault().post(new GuessEvent(context, guessJson));
+        if ("USER_GUESS".equals(guessJson.context.busicode)) {
+            EventBus.getDefault().post(new UpdatePubChatEvent(new GuessMessage(context, guessJson)));
+        }
     }
 }

@@ -210,7 +210,8 @@ public class BaseApplication extends Application {
                         SPUtils.put(instance, SpConfig.USERGRADEURL, appDataBean.userGradeUrl);
                         SPUtils.put(instance, SpConfig.ANCHORGRADEURL, appDataBean.anchorGradeUrl);
                         SPUtils.put(instance, SpConfig.REDPACKETHELPURL, appDataBean.redpacketHelpUrl);
-                        if (appDataBean != null && appDataBean.newUserAward != null) {
+                        SPUtils.put(instance, SpConfig.GUESSHELP_URL, appDataBean.guessHelpUrl);
+                        if (appDataBean.newUserAward != null) {
                             if (!TextUtils.isEmpty(appDataBean.newUserAward.guestUserAward)) {
                                 SPUtils.put(instance, SpConfig.AWARD_SHOW_TIME, System.currentTimeMillis());
                             }

@@ -24,6 +24,7 @@ public abstract class ClickSpan extends ClickableSpan {
     @Override
     public void updateDrawState(TextPaint ds) {
         ds.setColor(color); //红色
+        ds.setUnderlineText(true);
         float textSize = UIUtil.sp2px(context, 14);
         ds.setTextSize(textSize);
     }

@@ -14,7 +14,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginTop="7.5dp"
         android:layout_marginRight="9dp"
-        app:tabIndicatorHeight="2.5dp"
+        app:tabIndicatorHeight="1.5dp"
         app:tabMaxWidth="200dp"
         app:tabMinWidth="20dp"
         app:tabMode="fixed"

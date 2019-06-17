@@ -14,6 +14,7 @@ public class AppDataBean {
     public String userGradeUrl;
     public String anchorGradeUrl;
     public String redpacketHelpUrl;
+    public String guessHelpUrl;
     public UserAwardBean newUserAward;
 
     public class UserAwardBean {

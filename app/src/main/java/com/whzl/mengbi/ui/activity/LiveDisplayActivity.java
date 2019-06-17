@@ -741,11 +741,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (mBannerInfoList != null && mBannerInfoList.size() > 0) {
                 GetActivityBean.ListBean listBean = mBannerInfoList.get(position);
                 if (listBean.flag != null && listBean.flag.equals(AppConfig.LUCK_ROB)) {
-                    if (mUserId == 0) {
-                        login();
-                        return;
-                    }
                     showSnatchDialog();
+                } else if (listBean.flag != null && listBean.flag.equals(AppConfig.GUESS)) {
+                    showGuessDialog();
                 } else {
                     jumpToBannerActivity(listBean);
                 }
@@ -1047,6 +1045,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 趣味竞猜
      */
     public void showGuessDialog() {
+        closeDrawLayoutNoAnimal();
+        if (mUserId == 0) {
+            login();
+            return;
+        }
         if (mAnchorId == 0) {
             return;
         }
