@@ -11,7 +11,6 @@ import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
-import com.whzl.mengbi.util.ToastUtils
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
@@ -45,8 +44,8 @@ class GuessBetDialog : BaseAwesomeDialog() {
 
         tv_mengdou_guess_bet.paint.flags = Paint.UNDERLINE_TEXT_FLAG
 
-        tv_odd_guess_bet.text = odds.toString()
-        tv_get_guess_bet.text = (tv_odd_guess_bet.text.toString().toDouble() * 1000).toString()
+        tv_odd_guess_bet.text = String.format("%.2f", odds)
+        tv_get_guess_bet.text = String.format("%.2f", tv_odd_guess_bet.text.toString().toDouble() * 1000)
         et_guess_bet.setSelection(4)
 
         et_guess_bet.addTextChangedListener(object : TextWatcher {
@@ -59,12 +58,11 @@ class GuessBetDialog : BaseAwesomeDialog() {
             @SuppressLint("SetTextI18n")
             override fun afterTextChanged(s: Editable?) {
                 if (TextUtils.isEmpty(s)) {
-                    tv_get_guess_bet.text = "0"
+                    tv_get_guess_bet.text = "0.00"
                     return
                 }
-                val toDouble = tv_odd_guess_bet.text.toString().toDouble()
-                val toInt = et_guess_bet.text.toString().toInt()
-                tv_get_guess_bet.text = (toDouble * toInt).toString()
+                tv_get_guess_bet.text = String.format("%.2f",
+                        (tv_odd_guess_bet.text.toString().toDouble() * et_guess_bet.text.toString().toDouble()))
             }
         })
 
@@ -107,6 +105,7 @@ class GuessBetDialog : BaseAwesomeDialog() {
                     .subscribe(object : ApiObserver<JsonElement>() {
                         override fun onSuccess(t: JsonElement?) {
                             dismissDialog()
+                            toast(activity, "下注成功")
                         }
                     })
         }

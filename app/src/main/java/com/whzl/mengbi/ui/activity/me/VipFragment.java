@@ -168,8 +168,10 @@ public class VipFragment extends BaseFragment {
                                 });
                     }
                 });
-                GlideImageLoader.getInstace().displayImage(getMyActivity(), currentUser.getAvatar()
-                        , holder.getView(R.id.iv_avatar));
+                if (!TextUtils.isEmpty(currentUser.getAvatar())) {
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), currentUser.getAvatar()
+                            , holder.getView(R.id.iv_avatar));
+                }
                 holder.setText(R.id.tv_nick, currentUser.getNickname());
                 holder.setOnClickListener(R.id.btn_buy, new View.OnClickListener() {
                     @Override

@@ -15,6 +15,7 @@ import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.model.entity.AllGuessBean
 import com.whzl.mengbi.model.entity.GameGuessBean
 import com.whzl.mengbi.ui.activity.JsBridgeActivity
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
@@ -113,6 +114,9 @@ class GuessDialog : BaseAwesomeDialog() {
             itemView.ll_square_select.isEnabled = false
             itemView.ll_counter_select.isEnabled = false
 
+            GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_square_outcome)
+            GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_counter_outcome)
+
             val listBean = guessData[position]
             guessId = listBean.guessId
             itemView.tv_theme_guess.text = listBean.guessTheme
@@ -156,10 +160,6 @@ class GuessDialog : BaseAwesomeDialog() {
                 "BET" -> {
                     itemView.ll_square_select.isEnabled = true
                     itemView.ll_counter_select.isEnabled = true
-
-                    GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_square_outcome)
-                    GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_counter_outcome)
-
                     val dateStrToMillis = DateUtils.dateStrToMillis(listBean.closingTime, "yyyy-MM-dd HH:mm:ss")
                     val total = ((dateStrToMillis - System.currentTimeMillis()) / 1000).toInt()
                     if (total <= 0) {
@@ -227,6 +227,12 @@ class GuessDialog : BaseAwesomeDialog() {
             GlideImageLoader.getInstace().displayCircleAvatar(context, allGuessBean.anchorAvatar, itemView.iv_avatar_item_empty_guess)
             itemView.tv_nick_item_empty_guess.text = allGuessBean.anchorNickname
             itemView.tv_people_item_empty_guess.text = getString(R.string.tv_empty_guess, allGuessBean.roomUserCount)
+        }
+
+        override fun onItemClick(view: View?, position: Int) {
+            super.onItemClick(view, position)
+            dismissDialog()
+            (activity as LiveDisplayActivity).jumpToLive(emptyData[position].programId)
         }
     }
 
