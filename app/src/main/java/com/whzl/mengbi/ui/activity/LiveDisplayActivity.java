@@ -1072,7 +1072,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             login();
             return;
         }
-        startActivity(new Intent(this, FlopActivity.class));
+        startActivity(new Intent(this, FlopActivity.class)
+                .putExtra("roomId", mProgramId));
     }
 
 

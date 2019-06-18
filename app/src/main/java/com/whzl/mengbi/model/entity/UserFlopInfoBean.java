@@ -40,6 +40,7 @@ public class UserFlopInfoBean {
          * index : 1
          */
 
+        public String flag;
         public String type;
         public String typeName;
         public String name;
@@ -47,5 +48,6 @@ public class UserFlopInfoBean {
         public int price;
         public String pic;
         public int index;
+        public int userLuckVal;
     }
 }

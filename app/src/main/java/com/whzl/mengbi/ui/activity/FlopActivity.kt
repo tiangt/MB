@@ -4,13 +4,14 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.widget.PopupWindow
 import com.whzl.mengbi.R
+import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.FlopContract
 import com.whzl.mengbi.model.entity.FlopAwardRecordBean
@@ -23,10 +24,16 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.UIUtil
 import com.whzl.mengbi.util.glide.GlideImageLoader
+import com.whzl.mengbi.util.network.retrofit.ApiFactory
+import com.whzl.mengbi.util.network.retrofit.ApiObserver
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_flop.*
 import kotlinx.android.synthetic.main.item_benlun.view.*
 import kotlinx.android.synthetic.main.item_flop.view.*
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * @author nobody
@@ -35,6 +42,7 @@ import java.util.*
 class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
     private lateinit var adapter: BaseListAdapter
+    private var roomId = 0
     private val mData = ArrayList<UserFlopInfoBean.ListBean>()
 
     init {
@@ -47,6 +55,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     }
 
     override fun setupView() {
+        roomId = intent.getIntExtra("roomId", 0)
         initRecyclerView(recycler_flop)
         btn_flop_card.setOnClickListener {
             transformAll()
@@ -151,7 +160,58 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
             if (itemView.rotateview.anim.isOpen) {
                 return
             }
-            itemView.rotateview.transform()
+            val params = HashMap<String, String>()
+            params["userId"] = SPUtils.get(this@FlopActivity, SpConfig.KEY_USER_ID, 0L).toString()
+            params["roomId"] = roomId.toString()
+            params["flopIndex"] = (position + 1).toString()
+
+            ApiFactory.getInstance()
+                    .getApi(Api::class.java)
+                    .flopCard(ParamsUtils.getSignPramsMap(params))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : ApiObserver<UserFlopInfoBean.ListBean>() {
+                        override fun onSuccess(t: UserFlopInfoBean.ListBean?) {
+                            itemView.rotateview.setIvPic(t?.pic)
+                            itemView.rotateview.setTvName("${t?.name} ×${t?.num}")
+                            itemView.rotateview.anim.setOpenAnimListener(object : Animation.AnimationListener {
+                                override fun onAnimationRepeat(animation: Animation?) {
+                                }
+
+                                override fun onAnimationStart(animation: Animation?) {
+                                }
+
+                                override fun onAnimationEnd(animation: Animation?) {
+//                                    for (i in 0 until mData.size) {
+//                                        if (mData[i].index == 0) {
+//                                            recycler_flop.getChildAt(i).rotateview.transform()
+//                                            Observable.timer(2,TimeUnit.SECONDS)
+//                                                    .subscribeOn(Schedulers.io())
+//                                                    .observeOn(AndroidSchedulers.mainThread())
+//                                                    .subscribe {
+//                                                        recycler_flop.getChildAt(i).rotateview.transform()
+//                                                    }
+//                                        }
+//                                    }
+                                }
+
+                            })
+
+                            for (i in 0 until mData.size) {
+                                if (mData[i].flag == t?.flag) {
+                                    val listBean = mData[i]
+                                    val listBean1 = mData[position]
+                                    listBean.index = position + 1
+                                    mData[position] = listBean
+                                    mData[i] = listBean1
+                                    break
+                                }
+                            }
+
+                            itemView.rotateview.transform()
+                        }
+                    })
+
         }
     }
 

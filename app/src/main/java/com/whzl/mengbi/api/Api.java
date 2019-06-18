@@ -1258,7 +1258,7 @@ public interface Api {
      */
     @POST("v1/flop/flop-card")
     @FormUrlEncoded
-    Observable<ApiResult<FlopCardBean>> flopCard(@FieldMap Map<String, String> params);
+    Observable<ApiResult<UserFlopInfoBean.ListBean>> flopCard(@FieldMap Map<String, String> params);
 
     /**
      * 用户洗牌或者获取牌面信息

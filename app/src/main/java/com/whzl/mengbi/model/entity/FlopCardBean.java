@@ -19,6 +19,7 @@ public class FlopCardBean {
      */
 
     public String type;
+    public String flag;
     public String typeName;
     public String name;
     public int num;
