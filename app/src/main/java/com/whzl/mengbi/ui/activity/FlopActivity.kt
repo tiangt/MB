@@ -27,12 +27,15 @@ import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_flop.*
 import kotlinx.android.synthetic.main.item_benlun.view.*
 import kotlinx.android.synthetic.main.item_flop.view.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.HashMap
 
 /**
@@ -41,6 +44,7 @@ import kotlin.collections.HashMap
  */
 class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
+    private var disposable: Disposable? = null
     private lateinit var adapter: BaseListAdapter
     private var roomId = 0
     private val mData = ArrayList<UserFlopInfoBean.ListBean>()
@@ -67,6 +71,10 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
         tv_benlun_flop.setOnClickListener {
             showBenlunPopwindow()
+        }
+
+        tv_start_flop.setOnClickListener {
+            mPresenter.startFlop(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
         }
     }
 
@@ -152,6 +160,8 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
             itemView.rotateview.setTvName("${listBean.name} ×${listBean.num}")
             if (listBean.index > 0) {
                 itemView.rotateview.setOpen(true)
+            } else {
+                itemView.rotateview.setOpen(false)
             }
         }
 
@@ -159,6 +169,11 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
             super.onItemClick(view, position)
             if (itemView.rotateview.anim.isOpen) {
                 return
+            }
+            for (i in 0 until recycler_flop.childCount) {
+                if (recycler_flop.getChildAt(i).rotateview.anim.isOpenPlay) {
+                    return
+                }
             }
             val params = HashMap<String, String>()
             params["userId"] = SPUtils.get(this@FlopActivity, SpConfig.KEY_USER_ID, 0L).toString()
@@ -182,19 +197,18 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                                 }
 
                                 override fun onAnimationEnd(animation: Animation?) {
-//                                    for (i in 0 until mData.size) {
-//                                        if (mData[i].index == 0) {
-//                                            recycler_flop.getChildAt(i).rotateview.transform()
-//                                            Observable.timer(2,TimeUnit.SECONDS)
-//                                                    .subscribeOn(Schedulers.io())
-//                                                    .observeOn(AndroidSchedulers.mainThread())
-//                                                    .subscribe {
-//                                                        recycler_flop.getChildAt(i).rotateview.transform()
-//                                                    }
-//                                        }
-//                                    }
+                                    for (i in 0 until mData.size) {
+                                        if (mData[i].index == 0) {
+                                            recycler_flop.getChildAt(i).rotateview.transform()
+                                            disposable = Observable.timer(2, TimeUnit.SECONDS)
+                                                    .subscribeOn(Schedulers.io())
+                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribe {
+                                                        recycler_flop.getChildAt(i).rotateview.transform()
+                                                    }
+                                        }
+                                    }
                                 }
-
                             })
 
                             for (i in 0 until mData.size) {
@@ -204,6 +218,8 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                                     listBean.index = position + 1
                                     mData[position] = listBean
                                     mData[i] = listBean1
+                                    recycler_flop.getChildAt(i).rotateview.setIvPic(listBean1?.pic)
+                                    recycler_flop.getChildAt(i).rotateview.setTvName("${listBean1?.name} ×${listBean1?.num}")
                                     break
                                 }
                             }
@@ -237,11 +253,18 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     }
 
     override fun onStartFlopSuccess(userFlopInfoBean: UserFlopInfoBean?) {
-
+        mData.clear()
+        mData.addAll(userFlopInfoBean?.list!!)
+        adapter.notifyDataSetChanged()
     }
 
     override fun onFlopAwardRecordSuccess(flopAwardRecordBean: FlopAwardRecordBean?) {
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 
 }

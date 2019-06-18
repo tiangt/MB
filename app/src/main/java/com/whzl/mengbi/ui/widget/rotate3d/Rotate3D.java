@@ -26,6 +26,7 @@ public class Rotate3D {
     private Rotate3dAnimation closeAnimation;
 
     private boolean isOpen = false;
+    public boolean isOpenPlay = false;
 
     public void setOpenAnimListener(Animation.AnimationListener listener) {
         this.listener = listener;
@@ -100,7 +101,7 @@ public class Rotate3D {
 
             @Override
             public void onAnimationStart(Animation animation) {
-
+                isOpenPlay = true;
             }
 
             @Override
@@ -119,6 +120,22 @@ public class Rotate3D {
                 rotateAnimation.setFillAfter(true);
                 rotateAnimation.setInterpolator(new DecelerateInterpolator());
                 rotateAnimation.setAnimationListener(listener);
+                rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        isOpenPlay = false;
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 parentView.startAnimation(rotateAnimation);
             }
         });
