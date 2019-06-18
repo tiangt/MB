@@ -352,5 +352,6 @@
         <activity android:name=".ui.activity.me.MsgPushActivity" />
         <activity android:name=".ui.activity.me.AccountSecurityActivity" />
         <activity android:name=".ui.activity.me.ModifyPswActivity" />
+        <activity android:name=".ui.activity.FlopActivity" />
     </application>
 </manifest>

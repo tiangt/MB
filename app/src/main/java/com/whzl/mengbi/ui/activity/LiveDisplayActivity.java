@@ -1063,6 +1063,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
 
+    /**
+     * 翻牌
+     */
+    public void jumpToFlopActivity() {
+        closeDrawLayoutNoAnimal();
+        if (mUserId == 0) {
+            login();
+            return;
+        }
+        startActivity(new Intent(this, FlopActivity.class));
+    }
+
+
     public void login() {
         LoginDialog.newInstance()
                 .setLoginSuccessListener(() -> {

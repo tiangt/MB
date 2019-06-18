@@ -19,6 +19,8 @@ import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.CheckMsgRemindBean;
 import com.whzl.mengbi.model.entity.DailyTaskBean;
 import com.whzl.mengbi.model.entity.DemonCarBean;
+import com.whzl.mengbi.model.entity.FlopAwardRecordBean;
+import com.whzl.mengbi.model.entity.FlopCardBean;
 import com.whzl.mengbi.model.entity.FollowSortBean;
 import com.whzl.mengbi.model.entity.FreeGiftBean;
 import com.whzl.mengbi.model.entity.GameGuessBean;
@@ -72,6 +74,7 @@ import com.whzl.mengbi.model.entity.SignInfoBean;
 import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
+import com.whzl.mengbi.model.entity.UserFlopInfoBean;
 import com.whzl.mengbi.model.entity.UserGuessListBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.model.entity.WatchHistoryListBean;
@@ -1237,4 +1240,43 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<GuessRankBean>> guessRank(@FieldMap Map<String, String> params);
 
+    /**
+     * 用户当前翻牌的信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/flop/user-flop-info")
+    @FormUrlEncoded
+    Observable<ApiResult<UserFlopInfoBean>> userFlopInfo(@FieldMap Map<String, String> params);
+
+    /**
+     * 用户翻牌
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/flop/flop-card")
+    @FormUrlEncoded
+    Observable<ApiResult<FlopCardBean>> flopCard(@FieldMap Map<String, String> params);
+
+    /**
+     * 用户洗牌或者获取牌面信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/flop/start-flop")
+    @FormUrlEncoded
+    Observable<ApiResult<UserFlopInfoBean>> startFlop(@FieldMap Map<String, String> params);
+
+    /**
+     * 用户洗牌或者获取牌面信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/flop/flop-award-record")
+    @FormUrlEncoded
+    Observable<ApiResult<FlopAwardRecordBean>> flopAwardRecord(@FieldMap Map<String, String> params);
 }
