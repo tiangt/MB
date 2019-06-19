@@ -148,6 +148,16 @@ public class Rotate3D {
         void onOpenAnimEndListenr();
     }
 
+    public void setCloseAnimEndListener(CloseAnimEndListener closeAnimEndListener) {
+        this.closeAnimEndListener = closeAnimEndListener;
+    }
+
+    private CloseAnimEndListener closeAnimEndListener;
+
+    interface CloseAnimEndListener {
+        void onCloseAnimEndListener();
+    }
+
     /**
      * 卡牌文本介绍关闭效果：旋转角度与打开时逆行即可
      */
@@ -185,7 +195,9 @@ public class Rotate3D {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-
+                        if (closeAnimEndListener != null) {
+                            closeAnimEndListener.onCloseAnimEndListener();
+                        }
                     }
 
                     @Override

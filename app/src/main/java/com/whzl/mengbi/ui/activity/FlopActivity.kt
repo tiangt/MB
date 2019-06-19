@@ -74,7 +74,25 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         }
 
         tv_start_flop.setOnClickListener {
-            mPresenter.startFlop(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
+            var count = 0
+            var index = 0
+            for (i in 0 until recycler_flop.childCount) {
+                if (recycler_flop.getChildAt(i).rotateview.anim.isOpen) {
+                    count += 1
+                }
+            }
+            for (i in 0 until recycler_flop.childCount) {
+                if (recycler_flop.getChildAt(i).rotateview.anim.isOpen) {
+                    recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener {
+                        index += 1
+                        recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener(null)
+                        if (index == count) {
+                            mPresenter.startFlop(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
+                        }
+                    }
+                    recycler_flop.getChildAt(i).rotateview.transform()
+                }
+            }
         }
     }
 
@@ -203,6 +221,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                                                 }
                                     }
                                 }
+                                itemView.rotateview.anim.setOpenAnimEndListener(null)
                             }
 
                             for (i in 0 until mData.size) {
@@ -251,6 +270,28 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         mData.clear()
         mData.addAll(userFlopInfoBean?.list!!)
         adapter.notifyDataSetChanged()
+        recycler_flop.post(Runnable {
+            var count = 0
+            for (i in 0 until recycler_flop.childCount) {
+                recycler_flop.getChildAt(i).rotateview.anim.setOpenAnimEndListener {
+                    //                    count += 1
+//                    if (count == recycler_flop.childCount) {
+                    recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener {
+                        recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener(null)
+                    }
+                    disposable = Observable.timer(2, TimeUnit.SECONDS)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe {
+                                recycler_flop.getChildAt(i).rotateview.transform()
+                            }
+//                    }
+                    recycler_flop.getChildAt(i).rotateview.anim.setOpenAnimEndListener(null)
+                }
+                recycler_flop.getChildAt(i).rotateview.transform()
+            }
+        })
+
     }
 
     override fun onFlopAwardRecordSuccess(flopAwardRecordBean: FlopAwardRecordBean?) {
