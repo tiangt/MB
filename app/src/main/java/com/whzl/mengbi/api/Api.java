@@ -1,6 +1,7 @@
 package com.whzl.mengbi.api;
 
 import com.google.gson.JsonElement;
+import com.whzl.mengbi.model.FlopPriceBean;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AllGuessBean;
@@ -1279,4 +1280,14 @@ public interface Api {
     @POST("v1/flop/flop-award-record")
     @FormUrlEncoded
     Observable<ApiResult<FlopAwardRecordBean>> flopAwardRecord(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取翻牌的价格列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/flop/flop-price-list")
+    @FormUrlEncoded
+    Observable<ApiResult<FlopPriceBean>> flopPrice(@FieldMap Map<String, String> params);
 }

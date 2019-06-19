@@ -46,4 +46,10 @@ public class FlopModel {
                 .flopAwardRecord(ParamsUtils.getSignPramsMap(paramsMap));
     }
 
+    public Observable<ApiResult<FlopPriceBean>> flopPrice() {
+        HashMap paramsMap = new HashMap();
+        return ApiFactory.getInstance().getApi(Api.class)
+                .flopPrice(ParamsUtils.getSignPramsMap(paramsMap));
+    }
+
 }

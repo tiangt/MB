@@ -1,5 +1,6 @@
 package com.whzl.mengbi.contract;
 
+import com.whzl.mengbi.model.FlopPriceBean;
 import com.whzl.mengbi.model.entity.FlopAwardRecordBean;
 import com.whzl.mengbi.model.entity.FlopCardBean;
 import com.whzl.mengbi.model.entity.UserFlopInfoBean;
@@ -17,6 +18,8 @@ public interface FlopContract {
         void onStartFlopSuccess(UserFlopInfoBean userFlopInfoBean);
 
         void onFlopAwardRecordSuccess(FlopAwardRecordBean flopAwardRecordBean);
+
+        void onFlopPriceSuccess(FlopPriceBean flopPriceBean);
     }
 
     interface Presenter {
@@ -27,5 +30,7 @@ public interface FlopContract {
         void startFlop(String userId);
 
         void flopAwardRecord();
+
+        void flopPrice();
     }
 }

@@ -177,7 +177,8 @@
                     android:id="@+id/btn_flop_card"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="翻牌" />
+                    android:text="翻牌"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

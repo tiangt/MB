@@ -3,6 +3,7 @@ package com.whzl.mengbi.presenter;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.contract.FlopContract;
 import com.whzl.mengbi.model.FlopModel;
+import com.whzl.mengbi.model.FlopPriceBean;
 import com.whzl.mengbi.model.entity.FlopAwardRecordBean;
 import com.whzl.mengbi.model.entity.FlopCardBean;
 import com.whzl.mengbi.model.entity.UserFlopInfoBean;
@@ -88,6 +89,23 @@ public class FlopPresenter extends BasePresenter<FlopContract.View> implements F
                     @Override
                     public void onSuccess(FlopAwardRecordBean flopAwardRecordBean) {
                         mView.onFlopAwardRecordSuccess(flopAwardRecordBean);
+                    }
+                });
+    }
+
+    @Override
+    public void flopPrice() {
+        if (!isViewAttached()) {
+            return;
+        }
+        flopModel.flopPrice()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .as(mView.bindAutoDispose())
+                .subscribe(new ApiObserver<FlopPriceBean>() {
+                    @Override
+                    public void onSuccess(FlopPriceBean flopPriceBean) {
+                        mView.onFlopPriceSuccess(flopPriceBean);
                     }
                 });
     }

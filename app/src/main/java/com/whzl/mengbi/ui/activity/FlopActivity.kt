@@ -14,6 +14,7 @@ import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.FlopContract
+import com.whzl.mengbi.model.FlopPriceBean
 import com.whzl.mengbi.model.entity.FlopAwardRecordBean
 import com.whzl.mengbi.model.entity.FlopCardBean
 import com.whzl.mengbi.model.entity.UserFlopInfoBean
@@ -44,6 +45,7 @@ import kotlin.collections.HashMap
  */
 class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
+    private var priceList: MutableList<FlopPriceBean.ListBean>? = null
     private var disposable: Disposable? = null
     private lateinit var adapter: BaseListAdapter
     private var roomId = 0
@@ -74,6 +76,9 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         }
 
         tv_start_flop.setOnClickListener {
+            if (recyclerIsAnim()) {
+                return@setOnClickListener
+            }
             var count = 0
             var index = 0
             for (i in 0 until recycler_flop.childCount) {
@@ -188,11 +193,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
             if (itemView.rotateview.anim.isOpen) {
                 return
             }
-            for (i in 0 until recycler_flop.childCount) {
-                if (recycler_flop.getChildAt(i).rotateview.anim.isOpenPlay) {
-                    return
-                }
-            }
+            if (recyclerIsAnim()) return
             val params = HashMap<String, String>()
             params["userId"] = SPUtils.get(this@FlopActivity, SpConfig.KEY_USER_ID, 0L).toString()
             params["roomId"] = roomId.toString()
@@ -244,6 +245,15 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         }
     }
 
+    private fun recyclerIsAnim(): Boolean {
+        for (i in 0 until recycler_flop.childCount) {
+            if (recycler_flop.getChildAt(i).rotateview.anim.isOpenPlay) {
+                return true
+            }
+        }
+        return false
+    }
+
     private fun transformAll() {
         for (i in 0 until recycler_flop.childCount) {
             recycler_flop.getChildAt(i).rotateview.transform()
@@ -251,7 +261,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     }
 
     override fun loadData() {
-        mPresenter.userFlopInfo(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
+        mPresenter.flopPrice()
         mPresenter.flopAwardRecord()
     }
 
@@ -260,6 +270,13 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         mData.addAll(userFlopInfoBean?.list!!)
         adapter.notifyDataSetChanged()
         tv_luck_flop.text = userFlopInfoBean.userLuckVal.toString()
+        var dex = 0
+        for (i in 0 until mData.size) {
+            if (mData[i].index > 0) {
+                dex += 1
+            }
+        }
+        tv_price_flop.text = priceList?.get(dex)?.number.toString()
     }
 
     override fun onFlopCardSuccess(flopCardBean: FlopCardBean?) {
@@ -291,11 +308,15 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                 recycler_flop.getChildAt(i).rotateview.transform()
             }
         })
-
     }
 
     override fun onFlopAwardRecordSuccess(flopAwardRecordBean: FlopAwardRecordBean?) {
 
+    }
+
+    override fun onFlopPriceSuccess(flopPriceBean: FlopPriceBean?) {
+        priceList = flopPriceBean?.list
+        mPresenter.userFlopInfo(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
     }
 
     override fun onDestroy() {
