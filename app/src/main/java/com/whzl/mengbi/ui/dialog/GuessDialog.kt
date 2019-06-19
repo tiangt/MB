@@ -91,7 +91,6 @@ class GuessDialog : BaseAwesomeDialog() {
 
     private fun initDataRv(recyclerView: RecyclerView?) {
         recyclerView?.layoutManager = LinearLayoutManager(activity)
-        recyclerView?.setItemViewCacheSize(10)
         guessAdapter = object : BaseListAdapter() {
             override fun getDataCount(): Int {
                 return guessData.size
@@ -131,8 +130,14 @@ class GuessDialog : BaseAwesomeDialog() {
             if (totalFee.toInt() == 0) {
                 itemView.progress_guess.progress = 50
             } else {
-                val d = Math.floor(listBean.squareArgumentFee / totalFee * 100)
-                itemView.progress_guess.progress = d.toInt()
+                val value = listBean.squareArgumentFee / totalFee
+                val num: Double
+                num = if (value < 0.1) {
+                    Math.ceil(value * 100)
+                } else {
+                    Math.floor(value * 100)
+                }
+                itemView.progress_guess.progress = num.toInt()
             }
 
             when (listBean.status) {
