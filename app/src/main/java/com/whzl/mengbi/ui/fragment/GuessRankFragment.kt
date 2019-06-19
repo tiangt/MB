@@ -65,7 +65,11 @@ class GuessRankFragment : BaseFragment<BasePresenter<BaseView>>() {
                         if (t?.list == null) {
                             return
                         }
-                        data.addAll(t.list!!)
+                        if (t.list.size > 10) {
+                            data.addAll(t.list.subList(0, 10))
+                        } else {
+                            data.addAll(t.list!!)
+                        }
                         adapter.notifyDataSetChanged()
                     }
                 })
@@ -129,15 +133,19 @@ class GuessRankFragment : BaseFragment<BasePresenter<BaseView>>() {
                 tvnicks[i].text = data[i].nickName
                 if ("DSC" == sortType) {
                     if ("WEEKRANK" == rankType) {
-                        tvScores[i].text = "周收益${data[i].score}"
+                        tvScores[i].text = "${data[i].score}"
+                        tvScores[i].setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_up_guess_rank, 0, 0, 0)
                     } else {
-                        tvScores[i].text = "月收益${data[i].score}"
+                        tvScores[i].text = "${data[i].score}"
+                        tvScores[i].setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_up_guess_rank, 0, 0, 0)
                     }
                 } else {
                     if ("WEEKRANK" == rankType) {
-                        tvScores[i].text = "周亏损${data[i].score}"
+                        tvScores[i].text = "${data[i].score}"
+                        tvScores[i].setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_down_guess_rank, 0, 0, 0)
                     } else {
-                        tvScores[i].text = "月亏损${data[i].score}"
+                        tvScores[i].text = "${data[i].score}"
+                        tvScores[i].setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_down_guess_rank, 0, 0, 0)
                     }
                 }
             }

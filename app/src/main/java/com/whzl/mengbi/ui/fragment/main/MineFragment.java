@@ -34,7 +34,6 @@ import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.fragment.me.MyGuessFragment;
-import com.whzl.mengbi.ui.fragment.me.MyGuessSortFragment;
 import com.whzl.mengbi.ui.fragment.me.PackCarFragment;
 import com.whzl.mengbi.ui.fragment.me.PackDiscountFragment;
 import com.whzl.mengbi.ui.fragment.me.PackPrettyFragment;

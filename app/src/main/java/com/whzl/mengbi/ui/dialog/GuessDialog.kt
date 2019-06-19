@@ -131,7 +131,7 @@ class GuessDialog : BaseAwesomeDialog() {
             if (totalFee.toInt() == 0) {
                 itemView.progress_guess.progress = 50
             } else {
-                val d = Math.ceil(listBean.squareArgumentFee / totalFee * 100)
+                val d = Math.floor(listBean.squareArgumentFee / totalFee * 100)
                 itemView.progress_guess.progress = d.toInt()
             }
 

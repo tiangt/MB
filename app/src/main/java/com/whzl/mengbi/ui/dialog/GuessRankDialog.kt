@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.dialog
 
+import android.graphics.Typeface
 import android.support.v4.app.Fragment
 import com.whzl.mengbi.R
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
@@ -28,10 +29,14 @@ class GuessRankDialog : BaseAwesomeDialog() {
 
         btn_asc.setOnClickListener {
             setTabChange(0)
+            btn_asc.typeface = Typeface.DEFAULT_BOLD
+            btn_dsc.typeface = Typeface.DEFAULT
         }
 
         btn_dsc.setOnClickListener {
             setTabChange(1)
+            btn_asc.typeface = Typeface.DEFAULT
+            btn_dsc.typeface = Typeface.DEFAULT_BOLD
         }
     }
 

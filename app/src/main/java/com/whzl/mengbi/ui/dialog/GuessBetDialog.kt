@@ -11,6 +11,7 @@ import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
+import com.whzl.mengbi.util.KeyBoardUtil
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
@@ -35,6 +36,7 @@ class GuessBetDialog : BaseAwesomeDialog() {
         return R.layout.dialog_guess_bet
     }
 
+    @SuppressLint("SetTextI18n")
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
         userId = arguments?.getLong("userId")!!
         guessId = arguments?.getInt("guessId")!!
@@ -90,6 +92,13 @@ class GuessBetDialog : BaseAwesomeDialog() {
         btn_guess_bet.setOnClickListener {
             if (et_guess_bet.text.toString().toInt() < 100) {
                 toast(activity, "最小数量为100")
+                et_guess_bet.text = Editable.Factory.getInstance().newEditable(((et_guess_bet.text.toString().toInt() / 100) + 1).toString())
+                et_guess_bet.setSelection(et_guess_bet.text.length)
+                return@setOnClickListener
+            }
+            if (et_guess_bet.text.toString().toInt() % 100 != 0) {
+                et_guess_bet.text = Editable.Factory.getInstance().newEditable((((et_guess_bet.text.toString().toInt() / 100) + 1) * 100).toString())
+                et_guess_bet.setSelection(et_guess_bet.text.length)
                 return@setOnClickListener
             }
             val hashMap = HashMap<String, String>()

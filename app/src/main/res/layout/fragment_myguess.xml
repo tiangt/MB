@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/divider_shawdow_white" />
+
     <com.whzl.mengbi.ui.widget.tablayout.TabLayout
         android:id="@+id/tab_my_guess"
         style="@style/MyGuessTab"

@@ -47,7 +47,7 @@
 
             <RadioGroup
                 android:id="@+id/radio_guess_rank"
-                android:layout_width="150dp"
+                android:layout_width="205dp"
                 android:layout_height="35dp"
                 android:layout_marginLeft="27dp"
                 android:background="@drawable/shape_tab_guess_rank"
@@ -64,7 +64,8 @@
                     android:gravity="center"
                     android:text="收益榜"
                     android:textColor="@drawable/selector_guess_rank_text_color"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <RadioButton
                     android:id="@+id/btn_dsc"

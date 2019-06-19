@@ -498,12 +498,6 @@
         <item name="android:textSize">13sp</item>
     </style>
 
-    <style name="GuessRankTab" parent="Widget.Design.TabLayout">
-        <item name="tabIndicatorHeight">2.5dp</item>
-        <item name="tabIndicatorColor">#fff710</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
     <style name="MyGuessTab" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">2.5dp</item>
         <item name="tabBackground">@color/white</item>
@@ -514,4 +508,10 @@
         <item name="tabSelectedTextColor">#323232</item>
     </style>
 
+    <style name="GuessTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#fefefe</item>
+        <!--<selectedItem name="android:textColor">@android:color/white</selectedItem>-->
+        <item name="textAllCaps">true</item>
+    </style>
 </resources>

@@ -47,7 +47,7 @@ class GuessRankMotherFragment : BaseFragment<BasePresenter<BaseView>>() {
 
 
 
-        tab_guess_rank?.selectedTabIndicatorWidth = UIUtil.dip2px(activity, 25f)
+        tab_guess_rank?.selectedTabIndicatorWidth = UIUtil.dip2px(activity, 32f)
         tab_guess_rank?.isNeedSwitchAnimation = true
     }
 

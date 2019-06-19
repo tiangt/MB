@@ -55,48 +55,88 @@ class MyGuessSortFragment : BasePullListFragment<UserGuessListBean.ListBean, Bas
     inner class GuessViewHolder(itemView: View) : BaseViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(position: Int) {
-            val listBean = mDatas.get(position)
+            val listBean = mDatas[position]
             itemView.tv_id_my_guess.text = "竞猜ID：${listBean.uGameGuess.guessId}"
-            itemView.tv_date_my_guess.text = listBean.uGameGuess.closingTime
+            itemView.tv_date_my_guess.text = listBean.uGameGuess.gmtCreated
             itemView.tv_theme_my_guess.text = listBean.uGameGuess.guessTheme
             itemView.tv_fee_my_guess.text = listBean.uGameGuessObject.fee.toString()
-            if ("SQUARE_ARGUMENT".equals(listBean.uGameGuessObject.guessBettingScheme)) {
+            if ("SQUARE_ARGUMENT" == listBean.uGameGuessObject.guessBettingScheme) {
                 itemView.tv_scheme_my_guess.text = listBean.uGameGuess.squareArgument
             } else {
                 itemView.tv_scheme_my_guess.text = listBean.uGameGuess.counterArgument
             }
-            if (listBean.uGameGuess.busiStatus == "FINISH") {
-                itemView.tv_odds_my_guess.setTextColor(Color.parseColor("#FF2B3F"))
-                itemView.tv_success_my_guess.setTextColor(Color.parseColor("#FF2B3F"))
-                itemView.tv_produce_my_guess.setTextColor(Color.parseColor("#FF2B3F"))
 
-                itemView.tv_status_my_guess.text = "已结束"
-                itemView.tv_status_my_guess.setTextColor(Color.parseColor("#757575"))
-                if ("SQUARE_ARGUMENT".equals(listBean.uGameGuessObject.guessBettingScheme)) {
-                    itemView.tv_odds_my_guess.text = listBean.uGameGuess.squareOdds.toString()
-                } else {
-                    itemView.tv_odds_my_guess.text = listBean.uGameGuess.counterOdds.toString()
-                }
-                if (listBean.uGameGuess.successArgument == "SQUARE_ARGUMENT") {
-                    itemView.tv_success_my_guess.text = listBean.uGameGuess.squareArgument
-                } else {
-                    itemView.tv_success_my_guess.text = listBean.uGameGuess.counterArgument
-                }
-                if (listBean.uGameGuessObject.produce > 0) {
-                    itemView.tv_produce_my_guess.text = "+${listBean.uGameGuessObject.produce}"
-                } else {
-                    itemView.tv_produce_my_guess.text = "${listBean.uGameGuessObject.produce}"
-                }
+            itemView.tv_odds_my_guess.setTextColor(Color.parseColor("#000000"))
+            itemView.tv_success_my_guess.setTextColor(Color.parseColor("#000000"))
+            itemView.tv_produce_my_guess.setTextColor(Color.parseColor("#000000"))
+
+
+            if ("SQUARE_ARGUMENT" == listBean.uGameGuessObject.guessBettingScheme) {
+                itemView.tv_odds_my_guess.text = listBean.uGameGuess.squareOdds.toString()
             } else {
-                itemView.tv_odds_my_guess.setTextColor(Color.parseColor("#000000"))
-                itemView.tv_success_my_guess.setTextColor(Color.parseColor("#000000"))
-                itemView.tv_produce_my_guess.setTextColor(Color.parseColor("#000000"))
+                itemView.tv_odds_my_guess.text = listBean.uGameGuess.counterOdds.toString()
+            }
+            when (listBean.uGameGuess.status) {
 
-                itemView.tv_status_my_guess.text = "进行中"
-                itemView.tv_status_my_guess.setTextColor(Color.parseColor("#000000"))
-                itemView.tv_odds_my_guess.text = "--"
-                itemView.tv_success_my_guess.text = "--"
-                itemView.tv_produce_my_guess.text = "--"
+                "FINISH" -> {
+                    itemView.tv_odds_my_guess.setTextColor(Color.parseColor("#FF2B3F"))
+                    itemView.tv_success_my_guess.setTextColor(Color.parseColor("#FF2B3F"))
+                    itemView.tv_produce_my_guess.setTextColor(Color.parseColor("#FF2B3F"))
+
+                    itemView.tv_status_my_guess.text = "已结束"
+                    itemView.tv_status_my_guess.setTextColor(Color.parseColor("#757575"))
+
+                    if (listBean.uGameGuess.successArgument == "SQUARE_ARGUMENT") {
+                        itemView.tv_success_my_guess.text = listBean.uGameGuess.squareArgument
+                    } else {
+                        itemView.tv_success_my_guess.text = listBean.uGameGuess.counterArgument
+                    }
+                    if (listBean.uGameGuessObject.produce > 0) {
+                        if (listBean.uGameGuessObject.produce - listBean.uGameGuessObject.fee == 0) {
+                            itemView.tv_produce_my_guess.text = "${listBean.uGameGuessObject.produce - listBean.uGameGuessObject.fee}"
+                        } else {
+                            itemView.tv_produce_my_guess.text = "+${listBean.uGameGuessObject.produce - listBean.uGameGuessObject.fee}"
+                        }
+                    } else {
+                        itemView.tv_produce_my_guess.text = "${listBean.uGameGuessObject.produce - listBean.uGameGuessObject.fee}"
+                    }
+                }
+                "FLOW_BUREAU" -> {
+                    itemView.tv_status_my_guess.text = "流局"
+                    itemView.tv_status_my_guess.setTextColor(Color.parseColor("#000000"))
+//                    itemView.tv_odds_my_guess.text = "--"
+                    itemView.tv_success_my_guess.text = "--"
+                    itemView.tv_produce_my_guess.text = "--"
+
+                }
+                "BET" -> {
+                    itemView.tv_status_my_guess.text = "进行中"
+                    itemView.tv_status_my_guess.setTextColor(Color.parseColor("#000000"))
+//                    itemView.tv_odds_my_guess.text = "--"
+                    itemView.tv_success_my_guess.text = "--"
+                    itemView.tv_produce_my_guess.text = "--"
+                }
+                "SEALED_DISK" -> {
+                    itemView.tv_status_my_guess.text = "已封盘"
+                    itemView.tv_status_my_guess.setTextColor(Color.parseColor("#000000"))
+//                    itemView.tv_odds_my_guess.text = "--"
+                    itemView.tv_success_my_guess.text = "--"
+                    itemView.tv_produce_my_guess.text = "--"
+                }
+                "SETTLEMENT" -> {
+                    itemView.tv_status_my_guess.text = "结算中"
+                    itemView.tv_status_my_guess.setTextColor(Color.parseColor("#000000"))
+//                    itemView.tv_odds_my_guess.text = "--"
+                    itemView.tv_success_my_guess.text = "--"
+                    itemView.tv_produce_my_guess.text = "--"
+                }
+                else -> {
+                    itemView.tv_status_my_guess.text = "进行中"
+                    itemView.tv_status_my_guess.setTextColor(Color.parseColor("#000000"))
+//                    itemView.tv_odds_my_guess.text = "--"
+                    itemView.tv_success_my_guess.text = "--"
+                    itemView.tv_produce_my_guess.text = "--"
+                }
             }
         }
     }
@@ -113,4 +153,9 @@ class MyGuessSortFragment : BasePullListFragment<UserGuessListBean.ListBean, Bas
     }
 
     override fun setShouldLoadMore() = true
+
+    override fun init() {
+        super.init()
+        hideDividerShawdow(null)
+    }
 }
