@@ -59,8 +59,11 @@
             android:textSize="17sp" />
     </LinearLayout>
 
-    <com.whzl.mengbi.ui.widget.view.BounceScrollView
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/scroll_search"
+        app:srlEnableOverScrollDrag="true"
+        app:srlEnableLoadMore="false"
+        app:srlEnableRefresh="false"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never"
@@ -154,7 +157,7 @@
 
             </LinearLayout>
         </LinearLayout>
-    </com.whzl.mengbi.ui.widget.view.BounceScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
     <!-- 搜索结果 -->
     <LinearLayout

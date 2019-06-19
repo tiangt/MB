@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.dialog
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.text.TextWatcher
 import com.google.gson.JsonElement
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.ui.activity.me.ShopActivity
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.util.KeyBoardUtil
@@ -45,6 +47,10 @@ class GuessBetDialog : BaseAwesomeDialog() {
         odds = arguments?.getDouble("odds")!!
 
         tv_mengdou_guess_bet.paint.flags = Paint.UNDERLINE_TEXT_FLAG
+
+        tv_mengdou_guess_bet.setOnClickListener {
+            startActivity(Intent(activity, ShopActivity::class.java))
+        }
 
         tv_odd_guess_bet.text = String.format("%.2f", odds)
         tv_get_guess_bet.text = String.format("%.2f", tv_odd_guess_bet.text.toString().toDouble() * 1000)
@@ -92,7 +98,7 @@ class GuessBetDialog : BaseAwesomeDialog() {
         btn_guess_bet.setOnClickListener {
             if (et_guess_bet.text.toString().toInt() < 100) {
                 toast(activity, "最小数量为100")
-                et_guess_bet.text = Editable.Factory.getInstance().newEditable(((et_guess_bet.text.toString().toInt() / 100) + 1).toString())
+                et_guess_bet.text = Editable.Factory.getInstance().newEditable((((et_guess_bet.text.toString().toInt() / 100) + 1) * 100).toString())
                 et_guess_bet.setSelection(et_guess_bet.text.length)
                 return@setOnClickListener
             }
