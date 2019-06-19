@@ -189,27 +189,21 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                         override fun onSuccess(t: UserFlopInfoBean.ListBean?) {
                             itemView.rotateview.setIvPic(t?.pic)
                             itemView.rotateview.setTvName("${t?.name} ×${t?.num}")
-                            itemView.rotateview.anim.setOpenAnimListener(object : Animation.AnimationListener {
-                                override fun onAnimationRepeat(animation: Animation?) {
-                                }
+                            tv_luck_flop.text = t?.userLuckVal.toString()
 
-                                override fun onAnimationStart(animation: Animation?) {
-                                }
-
-                                override fun onAnimationEnd(animation: Animation?) {
-                                    for (i in 0 until mData.size) {
-                                        if (mData[i].index == 0) {
-                                            recycler_flop.getChildAt(i).rotateview.transform()
-                                            disposable = Observable.timer(2, TimeUnit.SECONDS)
-                                                    .subscribeOn(Schedulers.io())
-                                                    .observeOn(AndroidSchedulers.mainThread())
-                                                    .subscribe {
-                                                        recycler_flop.getChildAt(i).rotateview.transform()
-                                                    }
-                                        }
+                            itemView.rotateview.anim.setOpenAnimEndListener {
+                                for (i in 0 until mData.size) {
+                                    if (mData[i].index == 0) {
+                                        recycler_flop.getChildAt(i).rotateview.transform()
+                                        disposable = Observable.timer(2, TimeUnit.SECONDS)
+                                                .subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                .subscribe {
+                                                    recycler_flop.getChildAt(i).rotateview.transform()
+                                                }
                                     }
                                 }
-                            })
+                            }
 
                             for (i in 0 until mData.size) {
                                 if (mData[i].flag == t?.flag) {
@@ -246,6 +240,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         mData.clear()
         mData.addAll(userFlopInfoBean?.list!!)
         adapter.notifyDataSetChanged()
+        tv_luck_flop.text = userFlopInfoBean.userLuckVal.toString()
     }
 
     override fun onFlopCardSuccess(flopCardBean: FlopCardBean?) {

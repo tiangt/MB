@@ -28,12 +28,6 @@ public class Rotate3D {
     private boolean isOpen = false;
     public boolean isOpenPlay = false;
 
-    public void setOpenAnimListener(Animation.AnimationListener listener) {
-        this.listener = listener;
-    }
-
-    private Animation.AnimationListener listener;
-
     private Rotate3D(Builder builder) {
         this.context = builder.context;
         this.parentView = builder.parentView;
@@ -119,7 +113,7 @@ public class Rotate3D {
                 rotateAnimation.setDuration(duration);
                 rotateAnimation.setFillAfter(true);
                 rotateAnimation.setInterpolator(new DecelerateInterpolator());
-                rotateAnimation.setAnimationListener(listener);
+//                rotateAnimation.setAnimationListener(listener);
                 rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -129,6 +123,9 @@ public class Rotate3D {
                     @Override
                     public void onAnimationEnd(Animation animation) {
                         isOpenPlay = false;
+                        if (openAnimEndListener != null) {
+                            openAnimEndListener.onOpenAnimEndListenr();
+                        }
                     }
 
                     @Override
@@ -139,6 +136,16 @@ public class Rotate3D {
                 parentView.startAnimation(rotateAnimation);
             }
         });
+    }
+
+    public void setOpenAnimEndListener(OpenAnimEndListener openAnimEndListener) {
+        this.openAnimEndListener = openAnimEndListener;
+    }
+
+    private OpenAnimEndListener openAnimEndListener;
+
+    interface OpenAnimEndListener {
+        void onOpenAnimEndListenr();
     }
 
     /**
