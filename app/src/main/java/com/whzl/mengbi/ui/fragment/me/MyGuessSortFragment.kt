@@ -86,7 +86,7 @@ class MyGuessSortFragment : BasePullListFragment<UserGuessListBean.ListBean, Bas
                     itemView.tv_status_my_guess.text = "已结束"
                     itemView.tv_status_my_guess.setTextColor(Color.parseColor("#757575"))
 
-                    if (listBean.uGameGuess.successArgument == "SQUARE_ARGUMENT") {
+                    if (listBean.uGameGuess.successArgument == "squareArgument") {
                         itemView.tv_success_my_guess.text = listBean.uGameGuess.squareArgument
                     } else {
                         itemView.tv_success_my_guess.text = listBean.uGameGuess.counterArgument
