@@ -95,6 +95,9 @@ class GuessBetDialog : BaseAwesomeDialog() {
         }
 
         btn_guess_bet.setOnClickListener {
+            if (TextUtils.isEmpty(et_guess_bet.text)) {
+                return@setOnClickListener
+            }
             if (et_guess_bet.text.toString().toInt() < 100) {
                 et_guess_bet.text = Editable.Factory.getInstance().newEditable((((et_guess_bet.text.toString().toInt() / 100) + 1) * 100).toString())
                 et_guess_bet.setSelection(et_guess_bet.text.length)
