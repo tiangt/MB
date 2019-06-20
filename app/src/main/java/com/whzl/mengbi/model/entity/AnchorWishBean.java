@@ -26,6 +26,7 @@ public class AnchorWishBean implements Parcelable {
     public int supportPeopleNum;
     public int finishedWishCard;
     public int giftPrice;
+    public long totalGiftWorth;
     public int sendGiftPrice;
     public int wishGiftNum;
     public String giftName;

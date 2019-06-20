@@ -40,7 +40,7 @@ class AnchorWishDialog : BaseAwesomeDialog() {
         val anchorWishBean = arguments?.get("bean") as AnchorWishBean
         tv_name_anchor_wish.text = "${anchorWishBean.giftName} ${anchorWishBean.wishGiftNum}个"
         tv_price_anchor_wish.text = "价格："
-        tv_price_anchor_wish.append(LightSpanString.getLightString((anchorWishBean.giftPrice * anchorWishBean.wishGiftNum).toString(), Color.rgb(255, 236, 144)))
+        tv_price_anchor_wish.append(LightSpanString.getLightString((anchorWishBean.totalGiftWorth).toString(), Color.rgb(255, 236, 144)))
         tv_price_anchor_wish.append(" 萌币")
 
         tv_need_anchor_wish.text = "需 "
