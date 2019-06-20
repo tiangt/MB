@@ -44,9 +44,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_flop.*
 import kotlinx.android.synthetic.main.item_benlun.view.*
 import kotlinx.android.synthetic.main.item_flop.view.*
-import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.HashMap
 
 /**
  * @author nobody
@@ -61,6 +59,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     private lateinit var adapter: BaseListAdapter
     private var roomId = 0
     private val mData = ArrayList<UserFlopInfoBean.ListBean>()
+    private var showShuffle = true
 
     init {
         mPresenter = FlopPresenter()
@@ -92,7 +91,11 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
             }
             val count = recyclerOpenNum()
             if (count < maxFlopTimes) {
-                showShuffleDialog(count)
+                if (showShuffle) {
+                    showShuffleDialog(count)
+                } else {
+                    startFlop()
+                }
             } else {
                 var index = 0
                 for (i in 0 until recycler_flop.childCount) {
@@ -101,7 +104,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                             index += 1
                             recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener(null)
                             if (index == count) {
-                                mPresenter.startFlop(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
+                                startFlop()
                             }
                         }
                         recycler_flop.getChildAt(i).rotateview.transform()
@@ -237,6 +240,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                             tv_luck_flop.text = t?.userLuckVal.toString()
 
                             itemView.rotateview.anim.setOpenAnimEndListener {
+
                                 var recyclerOpenNum = recyclerOpenNum()
 
                                 if (recyclerOpenNum == maxFlopTimes) {
@@ -247,19 +251,27 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                                 }
 
                                 tv_price_flop.text = priceList?.get(recyclerOpenNum)?.number.toString()
-                                for (i in 0 until mData.size) {
-                                    if (mData[i].index == 0) {
-                                        recycler_flop.getChildAt(i).rotateview.transform()
-                                        disposable = Observable.timer(2, TimeUnit.SECONDS)
-                                                .subscribeOn(Schedulers.io())
-                                                .observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe {
-                                                    recycler_flop.getChildAt(i).rotateview.transform()
-                                                }
+
+                                dealPosition(position)
+
+                                adapter.notifyDataSetChanged()
+                                recycler_flop.post {
+                                    for (i in 0 until recycler_flop.childCount) {
+                                        if (!recycler_flop.getChildAt(i).rotateview.anim.isOpen) {
+                                            recycler_flop.getChildAt(i).rotateview.transform()
+                                            disposable = Observable.timer(2, TimeUnit.SECONDS)
+                                                    .subscribeOn(Schedulers.io())
+                                                    .observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribe {
+                                                        recycler_flop.getChildAt(i).rotateview.transform()
+                                                    }
+                                        }
                                     }
                                 }
                                 itemView.rotateview.anim.setOpenAnimEndListener(null)
                             }
+
+                            itemView.rotateview.transform()
 
                             for (i in 0 until mData.size) {
                                 if (mData[i].flag == t?.flag) {
@@ -268,13 +280,12 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                                     listBean.index = position + 1
                                     mData[position] = listBean
                                     mData[i] = listBean1
-                                    recycler_flop.getChildAt(i).rotateview.setIvPic(listBean1?.pic)
-                                    recycler_flop.getChildAt(i).rotateview.setTvName("${listBean1?.name} ×${listBean1?.num}")
+//                                    recycler_flop.getChildAt(i).rotateview.setIvPic(listBean1?.pic)
+//                                    recycler_flop.getChildAt(i).rotateview.setTvName("${listBean1?.name} ×${listBean1?.num}")
+//                                    adapter.notifyDataSetChanged()
                                     break
                                 }
                             }
-
-                            itemView.rotateview.transform()
                         }
 
                         override fun onError(body: ApiResult<UserFlopInfoBean.ListBean>?) {
@@ -289,6 +300,40 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                         }
                     })
 
+        }
+    }
+
+    private fun dealPosition(position: Int) {
+        var positions = ArrayList<Int>()
+        when (position) {
+            0 -> positions = arrayListOf(1, 3, 4)
+            1 -> positions = arrayListOf(0, 2, 3, 4, 5)
+            2 -> positions = arrayListOf(1, 4, 5)
+            3 -> positions = arrayListOf(0, 1, 4, 6, 7)
+            4 -> positions = arrayListOf(0, 1, 2, 3, 5, 6, 7, 8)
+            5 -> positions = arrayListOf(1, 2, 4, 7, 8)
+            6 -> positions = arrayListOf(3, 4, 7)
+            7 -> positions = arrayListOf(3, 4, 5, 6, 8)
+            8 -> positions = arrayListOf(4, 5, 7)
+        }
+        val list = arrayListOf<UserFlopInfoBean.ListBean>()
+        for (i in 0 until mData.size) {
+            if (mData[i].index == 0) {
+                list.add(mData[i])
+            }
+        }
+        list.sortByDescending { it.price }
+        var index = 0
+        for (i in positions) {
+            if (i < 0 || i > 8 || mData[i].index > 0) {
+                continue
+            }
+            val listBean = mData[i]
+            val maxBean = list[index]
+            val indexOf = mData.indexOf(maxBean)
+            mData[indexOf] = listBean
+            mData[i] = maxBean
+            index += 1
         }
     }
 
@@ -348,7 +393,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                 holder?.setOnClickListener(R.id.btn_confirm_simple_dialog) {
                     dialog?.dismissDialog()
                     if (count == 0) {
-                        mPresenter.startFlop(SPUtils.get(this@FlopActivity, SpConfig.KEY_USER_ID, 0L).toString())
+                        startFlop()
                     } else {
                         var index = 0
                         for (i in 0 until recycler_flop.childCount) {
@@ -357,7 +402,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                                     index += 1
                                     recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener(null)
                                     if (index == count) {
-                                        mPresenter.startFlop(SPUtils.get(this@FlopActivity, SpConfig.KEY_USER_ID, 0L).toString())
+                                        startFlop()
                                     }
                                 }
                                 recycler_flop.getChildAt(i).rotateview.transform()
@@ -396,23 +441,32 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     override fun onUserFlopInfoSuccess(userFlopInfoBean: UserFlopInfoBean?) {
         shufflePrice = userFlopInfoBean?.shufflePrice!!
         maxFlopTimes = userFlopInfoBean.maxFlopTimes
-        mData.clear()
-        mData.addAll(userFlopInfoBean.list!!)
-        adapter.notifyDataSetChanged()
-        tv_luck_flop.text = userFlopInfoBean.userLuckVal.toString()
-        var dex = 0
-        for (i in 0 until mData.size) {
-            if (mData[i].index > 0) {
-                dex += 1
-            }
-        }
-        if (dex == maxFlopTimes) {
-            dex = 0
+        if (userFlopInfoBean.list == null || userFlopInfoBean.list.isEmpty()) {
             GlideImageLoader.getInstace().displayImage(this, R.drawable.ic_fanpai_flop, iv_state_flop)
+            showShuffle = false
         } else {
-            GlideImageLoader.getInstace().displayImage(this, R.drawable.ic_xipai_flop, iv_state_flop)
+            mData.clear()
+            mData.addAll(userFlopInfoBean.list!!)
+            adapter.notifyDataSetChanged()
+            tv_luck_flop.text = userFlopInfoBean.userLuckVal.toString()
+            var dex = 0
+            for (i in 0 until mData.size) {
+                if (mData[i].index > 0) {
+                    dex += 1
+                }
+            }
+            if (dex == maxFlopTimes) {
+                dex = 0
+                GlideImageLoader.getInstace().displayImage(this, R.drawable.ic_fanpai_flop, iv_state_flop)
+            } else {
+                GlideImageLoader.getInstace().displayImage(this, R.drawable.ic_xipai_flop, iv_state_flop)
+            }
+            tv_price_flop.text = priceList?.get(dex)?.number.toString()
         }
-        tv_price_flop.text = priceList?.get(dex)?.number.toString()
+    }
+
+    private fun startFlop() {
+        mPresenter.startFlop(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
     }
 
     override fun onFlopCardSuccess(flopCardBean: FlopCardBean?) {
@@ -420,6 +474,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     }
 
     override fun onStartFlopSuccess(userFlopInfoBean: UserFlopInfoBean?) {
+        showShuffle = true
         mData.clear()
         mData.addAll(userFlopInfoBean?.list!!)
         adapter.notifyDataSetChanged()
