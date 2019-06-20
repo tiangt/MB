@@ -16,6 +16,8 @@ public class UserFlopInfoBean {
      */
 
     public int userLuckVal;
+    public int maxFlopTimes;
+    public int shufflePrice;
     public GuessPriceBean guessPrice;
     public List<ListBean> list;
 

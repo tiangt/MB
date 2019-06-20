@@ -4,6 +4,7 @@ import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.contract.FlopContract;
 import com.whzl.mengbi.model.FlopModel;
 import com.whzl.mengbi.model.FlopPriceBean;
+import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.FlopAwardRecordBean;
 import com.whzl.mengbi.model.entity.FlopCardBean;
 import com.whzl.mengbi.model.entity.UserFlopInfoBean;
@@ -72,6 +73,11 @@ public class FlopPresenter extends BasePresenter<FlopContract.View> implements F
                     @Override
                     public void onSuccess(UserFlopInfoBean userFlopInfoBean) {
                         mView.onStartFlopSuccess(userFlopInfoBean);
+                    }
+
+                    @Override
+                    public void onError(ApiResult<UserFlopInfoBean> body) {
+                        mView.onStartFlopError(body.code);
                     }
                 });
     }

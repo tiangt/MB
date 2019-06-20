@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
@@ -8,20 +9,28 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.widget.PopupWindow
+import android.widget.TextView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.FlopContract
 import com.whzl.mengbi.model.FlopPriceBean
+import com.whzl.mengbi.model.entity.ApiResult
 import com.whzl.mengbi.model.entity.FlopAwardRecordBean
 import com.whzl.mengbi.model.entity.FlopCardBean
 import com.whzl.mengbi.model.entity.UserFlopInfoBean
 import com.whzl.mengbi.presenter.FlopPresenter
 import com.whzl.mengbi.ui.activity.base.BaseActivity
+import com.whzl.mengbi.ui.activity.me.ShopActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener
+import com.whzl.mengbi.ui.dialog.base.ViewHolder
+import com.whzl.mengbi.util.AmountConversionUitls
 import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.UIUtil
 import com.whzl.mengbi.util.glide.GlideImageLoader
@@ -45,6 +54,8 @@ import kotlin.collections.HashMap
  */
 class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
+    private var maxFlopTimes: Int = 0
+    private var shufflePrice = 0
     private var priceList: MutableList<FlopPriceBean.ListBean>? = null
     private var disposable: Disposable? = null
     private lateinit var adapter: BaseListAdapter
@@ -79,26 +90,35 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
             if (recyclerIsAnim()) {
                 return@setOnClickListener
             }
-            var count = 0
-            var index = 0
-            for (i in 0 until recycler_flop.childCount) {
-                if (recycler_flop.getChildAt(i).rotateview.anim.isOpen) {
-                    count += 1
-                }
-            }
-            for (i in 0 until recycler_flop.childCount) {
-                if (recycler_flop.getChildAt(i).rotateview.anim.isOpen) {
-                    recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener {
-                        index += 1
-                        recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener(null)
-                        if (index == count) {
-                            mPresenter.startFlop(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
+            val count = recyclerOpenNum()
+            if (count < maxFlopTimes) {
+                showShuffleDialog(count)
+            } else {
+                var index = 0
+                for (i in 0 until recycler_flop.childCount) {
+                    if (recycler_flop.getChildAt(i).rotateview.anim.isOpen) {
+                        recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener {
+                            index += 1
+                            recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener(null)
+                            if (index == count) {
+                                mPresenter.startFlop(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
+                            }
                         }
+                        recycler_flop.getChildAt(i).rotateview.transform()
                     }
-                    recycler_flop.getChildAt(i).rotateview.transform()
                 }
             }
         }
+    }
+
+    private fun recyclerOpenNum(): Int {
+        var count = 0
+        for (i in 0 until recycler_flop.childCount) {
+            if (recycler_flop.getChildAt(i).rotateview.anim.isOpen) {
+                count += 1
+            }
+        }
+        return count
     }
 
     private fun showBenlunPopwindow() {
@@ -165,7 +185,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
             }
         })
         adapter = object : BaseListAdapter() {
-            override fun getDataCount() = mData.size
+            override fun getDataCount() = 9
 
             override fun onCreateNormalViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
                 val inflate = LayoutInflater.from(parent?.context).inflate(R.layout.item_flop, parent, false)
@@ -178,6 +198,9 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
     internal inner class FlopHolder(itemView: View) : BaseViewHolder(itemView) {
         override fun onBindViewHolder(position: Int) {
+            if (position >= mData.size) {
+                return
+            }
             val listBean = mData[position]
             itemView.rotateview.setIvPic(listBean.pic)
             itemView.rotateview.setTvName("${listBean.name} ×${listBean.num}")
@@ -190,6 +213,9 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
+            if (position >= mData.size) {
+                return
+            }
             if (itemView.rotateview.anim.isOpen) {
                 return
             }
@@ -211,6 +237,16 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                             tv_luck_flop.text = t?.userLuckVal.toString()
 
                             itemView.rotateview.anim.setOpenAnimEndListener {
+                                var recyclerOpenNum = recyclerOpenNum()
+
+                                if (recyclerOpenNum == maxFlopTimes) {
+                                    recyclerOpenNum = 0
+                                    GlideImageLoader.getInstace().displayImage(this@FlopActivity, R.drawable.ic_fanpai_flop, iv_state_flop)
+                                } else {
+                                    GlideImageLoader.getInstace().displayImage(this@FlopActivity, R.drawable.ic_xipai_flop, iv_state_flop)
+                                }
+
+                                tv_price_flop.text = priceList?.get(recyclerOpenNum)?.number.toString()
                                 for (i in 0 until mData.size) {
                                     if (mData[i].index == 0) {
                                         recycler_flop.getChildAt(i).rotateview.transform()
@@ -240,9 +276,101 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
                             itemView.rotateview.transform()
                         }
+
+                        override fun onError(body: ApiResult<UserFlopInfoBean.ListBean>?) {
+                            when (body?.code) {
+                                -1281 -> {
+                                    showLimitDialog()
+                                }
+                                -1211 -> {
+                                    showEnoughDialog()
+                                }
+                            }
+                        }
                     })
 
         }
+    }
+
+    /**
+     * 翻牌次数超过限制dialog
+     */
+    private fun showLimitDialog() {
+        val awesomeDialog = AwesomeDialog.init()
+        awesomeDialog?.setLayoutId(R.layout.dialog_simple)?.setConvertListener(object : ViewConvertListener() {
+            override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                val textView = holder?.getView<TextView>(R.id.tv_content_simple_dialog)
+                textView?.text = "本轮翻牌次数已达上限"
+                holder?.setOnClickListener(R.id.btn_confirm_simple_dialog) {
+                    dialog?.dismissDialog()
+                }
+                holder?.setOnClickListener(R.id.btn_cancel_simple_dialog) {
+                    dialog?.dismissDialog()
+                }
+            }
+
+        })?.show(supportFragmentManager)
+    }
+
+    /**
+     * 余额不足dialog
+     */
+    private fun showEnoughDialog() {
+        val awesomeDialog = AwesomeDialog.init()
+        awesomeDialog?.setLayoutId(R.layout.dialog_simple)?.setConvertListener(object : ViewConvertListener() {
+            override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                val textView = holder?.getView<TextView>(R.id.tv_content_simple_dialog)
+                textView?.text = "萌豆不足，是否免费获得"
+                holder?.setOnClickListener(R.id.btn_confirm_simple_dialog) {
+                    dialog?.dismissDialog()
+                    startActivity(Intent(this@FlopActivity, ShopActivity::class.java))
+                }
+                holder?.setOnClickListener(R.id.btn_cancel_simple_dialog) {
+                    dialog?.dismissDialog()
+                }
+            }
+
+        })?.show(supportFragmentManager)
+    }
+
+    /**
+     * 洗牌dialog
+     */
+    private fun showShuffleDialog(count: Int) {
+        val awesomeDialog = AwesomeDialog.init()
+        awesomeDialog?.setLayoutId(R.layout.dialog_simple)?.setConvertListener(object : ViewConvertListener() {
+            override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                val textView = holder?.getView<TextView>(R.id.tv_content_simple_dialog)
+                textView?.text = "洗牌需要花费 "
+                textView?.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(shufflePrice.toLong()),
+                        Color.rgb(255, 43, 63)))
+                textView?.append(" 萌豆")
+                holder?.setOnClickListener(R.id.btn_confirm_simple_dialog) {
+                    dialog?.dismissDialog()
+                    if (count == 0) {
+                        mPresenter.startFlop(SPUtils.get(this@FlopActivity, SpConfig.KEY_USER_ID, 0L).toString())
+                    } else {
+                        var index = 0
+                        for (i in 0 until recycler_flop.childCount) {
+                            if (recycler_flop.getChildAt(i).rotateview.anim.isOpen) {
+                                recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener {
+                                    index += 1
+                                    recycler_flop.getChildAt(i).rotateview.anim.setCloseAnimEndListener(null)
+                                    if (index == count) {
+                                        mPresenter.startFlop(SPUtils.get(this@FlopActivity, SpConfig.KEY_USER_ID, 0L).toString())
+                                    }
+                                }
+                                recycler_flop.getChildAt(i).rotateview.transform()
+                            }
+                        }
+                    }
+                }
+                holder?.setOnClickListener(R.id.btn_cancel_simple_dialog) {
+                    dialog?.dismissDialog()
+                }
+            }
+
+        })?.show(supportFragmentManager)
     }
 
     private fun recyclerIsAnim(): Boolean {
@@ -262,12 +390,14 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
     override fun loadData() {
         mPresenter.flopPrice()
-        mPresenter.flopAwardRecord()
+//        mPresenter.flopAwardRecord()
     }
 
     override fun onUserFlopInfoSuccess(userFlopInfoBean: UserFlopInfoBean?) {
+        shufflePrice = userFlopInfoBean?.shufflePrice!!
+        maxFlopTimes = userFlopInfoBean.maxFlopTimes
         mData.clear()
-        mData.addAll(userFlopInfoBean?.list!!)
+        mData.addAll(userFlopInfoBean.list!!)
         adapter.notifyDataSetChanged()
         tv_luck_flop.text = userFlopInfoBean.userLuckVal.toString()
         var dex = 0
@@ -275,6 +405,12 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
             if (mData[i].index > 0) {
                 dex += 1
             }
+        }
+        if (dex == maxFlopTimes) {
+            dex = 0
+            GlideImageLoader.getInstace().displayImage(this, R.drawable.ic_fanpai_flop, iv_state_flop)
+        } else {
+            GlideImageLoader.getInstace().displayImage(this, R.drawable.ic_xipai_flop, iv_state_flop)
         }
         tv_price_flop.text = priceList?.get(dex)?.number.toString()
     }
@@ -287,6 +423,11 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         mData.clear()
         mData.addAll(userFlopInfoBean?.list!!)
         adapter.notifyDataSetChanged()
+
+        tv_price_flop.text = priceList?.get(0)?.number.toString()
+
+        GlideImageLoader.getInstace().displayImage(this, R.drawable.ic_xipai_flop, iv_state_flop)
+
         recycler_flop.post(Runnable {
             var count = 0
             for (i in 0 until recycler_flop.childCount) {
@@ -308,6 +449,12 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                 recycler_flop.getChildAt(i).rotateview.transform()
             }
         })
+    }
+
+    override fun onStartFlopError(code: Int) {
+        when (code) {
+            -1211 -> showEnoughDialog()
+        }
     }
 
     override fun onFlopAwardRecordSuccess(flopAwardRecordBean: FlopAwardRecordBean?) {

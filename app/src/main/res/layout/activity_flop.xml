@@ -10,6 +10,7 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         android:overScrollMode="never">
 
         <LinearLayout
@@ -111,7 +112,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="115dp"
-                    android:layout_marginTop="-20dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp">
 
@@ -151,11 +151,11 @@
                                 android:src="@drawable/ic_start_flop" />
 
                             <ImageView
+                                android:id="@+id/iv_state_flop"
                                 android:layout_width="33dp"
                                 android:layout_height="35dp"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginTop="57dp"
-                                android:src="@drawable/ic_xipai_flop" />
+                                android:layout_marginTop="57dp" />
                         </RelativeLayout>
 
                     </RelativeLayout>

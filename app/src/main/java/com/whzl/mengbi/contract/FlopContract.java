@@ -17,6 +17,8 @@ public interface FlopContract {
 
         void onStartFlopSuccess(UserFlopInfoBean userFlopInfoBean);
 
+        void onStartFlopError(int code);
+
         void onFlopAwardRecordSuccess(FlopAwardRecordBean flopAwardRecordBean);
 
         void onFlopPriceSuccess(FlopPriceBean flopPriceBean);

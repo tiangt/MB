@@ -13,7 +13,6 @@ import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.ui.activity.me.ShopActivity
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
-import com.whzl.mengbi.util.KeyBoardUtil
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils

@@ -43,8 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp">
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
 
         <TextView
             android:id="@+id/tv_rank_star"
@@ -94,8 +94,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="7dp"
-            android:layout_marginRight="7dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="7dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView
@@ -143,8 +143,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="7dp"
-            android:layout_marginRight="7dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="7dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView
@@ -192,8 +192,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="7dp"
-            android:layout_marginRight="7dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="7dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView
@@ -220,7 +220,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_prop"
                 android:layout_toRightOf="@id/iv_prop"
-                android:text="做任务赚萌币"
+                android:text="VIP、靓号售卖中心"
                 android:textColor="@color/tran_black5"
                 android:textSize="9sp" />
         </RelativeLayout>
@@ -241,8 +241,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="7dp"
-            android:layout_marginRight="7dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="7dp"
             android:background="@drawable/shape_radius_five">
 
             <ImageView
