@@ -93,7 +93,7 @@ public class SearchActivity extends BaseActivity implements TextWatcher {
     @BindView(R.id.rv_hot_anchor)
     RecyclerView rvHotAnchor;
     @BindView(R.id.scroll_search)
-    ScrollView scrollView;
+    SmartRefreshLayout scrollView;
     @BindView(R.id.ll_search)
     LinearLayout llSearch;
     @BindView(R.id.ll_hot_anchor)

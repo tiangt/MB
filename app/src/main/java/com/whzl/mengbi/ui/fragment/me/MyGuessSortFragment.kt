@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.fragment.me
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,13 +84,18 @@ class MyGuessSortFragment : BasePullListFragment<UserGuessListBean.ListBean, Bas
                     itemView.tv_success_my_guess.setTextColor(Color.parseColor("#FF2B3F"))
                     itemView.tv_produce_my_guess.setTextColor(Color.parseColor("#FF2B3F"))
 
-                    itemView.tv_status_my_guess.text = "已结束"
+                    if (TextUtils.isEmpty(listBean.uGameGuess.successArgument)) {
+                        itemView.tv_status_my_guess.text = "流局"
+                    } else {
+                        itemView.tv_status_my_guess.text = "已结束"
+                    }
+
                     itemView.tv_status_my_guess.setTextColor(Color.parseColor("#757575"))
 
-                    if (listBean.uGameGuess.successArgument == "squareArgument") {
-                        itemView.tv_success_my_guess.text = listBean.uGameGuess.squareArgument
-                    } else {
-                        itemView.tv_success_my_guess.text = listBean.uGameGuess.counterArgument
+                    when {
+                        listBean.uGameGuess.successArgument == "squareArgument" -> itemView.tv_success_my_guess.text = listBean.uGameGuess.squareArgument
+                        listBean.uGameGuess.successArgument == "counterArgument" -> itemView.tv_success_my_guess.text = listBean.uGameGuess.counterArgument
+                        else -> itemView.tv_success_my_guess.text = "--"
                     }
                     if (listBean.uGameGuessObject.produce > 0) {
                         if (listBean.uGameGuessObject.produce - listBean.uGameGuessObject.fee == 0) {

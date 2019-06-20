@@ -53,8 +53,7 @@ class GuessBetDialog : BaseAwesomeDialog() {
         }
 
         tv_odd_guess_bet.text = String.format("%.2f", odds)
-        tv_get_guess_bet.text = String.format("%.2f", tv_odd_guess_bet.text.toString().toDouble() * 1000)
-        et_guess_bet.setSelection(4)
+        tv_get_guess_bet.text = "0.00"
 
         et_guess_bet.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -97,13 +96,12 @@ class GuessBetDialog : BaseAwesomeDialog() {
 
         btn_guess_bet.setOnClickListener {
             if (et_guess_bet.text.toString().toInt() < 100) {
-                toast(activity, "最小数量为100")
                 et_guess_bet.text = Editable.Factory.getInstance().newEditable((((et_guess_bet.text.toString().toInt() / 100) + 1) * 100).toString())
                 et_guess_bet.setSelection(et_guess_bet.text.length)
                 return@setOnClickListener
             }
             if (et_guess_bet.text.toString().toInt() % 100 != 0) {
-                et_guess_bet.text = Editable.Factory.getInstance().newEditable((((et_guess_bet.text.toString().toInt() / 100) + 1) * 100).toString())
+                et_guess_bet.text = Editable.Factory.getInstance().newEditable((((et_guess_bet.text.toString().toInt() / 100)) * 100).toString())
                 et_guess_bet.setSelection(et_guess_bet.text.length)
                 return@setOnClickListener
             }

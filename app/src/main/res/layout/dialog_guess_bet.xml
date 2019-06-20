@@ -77,8 +77,8 @@
         android:maxLength="9"
         android:paddingTop="9dp"
         android:paddingBottom="9dp"
-        android:text="1000"
         android:textColor="#fefefe"
+        android:textColorHint="@color/text_hint"
         android:textSize="15sp" />
 
     <LinearLayout
