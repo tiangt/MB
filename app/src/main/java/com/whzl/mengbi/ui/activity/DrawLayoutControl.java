@@ -228,7 +228,7 @@ public class DrawLayoutControl {
                 return;
             }
             if (position == bannerInfoList.size()) {
-                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_redpacket_draw_layout_live, ivActivity);
+                GlideImageLoader.getInstace().displayImageNoCache(activity, R.drawable.ic_redpacket_draw_layout_live, ivActivity);
                 tvActivity.setText("红包");
                 return;
             }
