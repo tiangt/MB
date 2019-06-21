@@ -744,6 +744,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     showSnatchDialog();
                 } else if (listBean.flag != null && listBean.flag.equals(AppConfig.GUESS)) {
                     showGuessDialog();
+                } else if (listBean.flag != null && !listBean.flag.equals(AppConfig.GUESS) && !listBean.flag.equals(AppConfig.LUCK_ROB)) {
+                    ToastUtils.showToastUnify(this, "请升级版本");
                 } else {
                     jumpToBannerActivity(listBean);
                 }

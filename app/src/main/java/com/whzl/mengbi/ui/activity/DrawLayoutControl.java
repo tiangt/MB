@@ -24,6 +24,7 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.fragment.me.WelfareFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -258,6 +259,9 @@ public class DrawLayoutControl {
                 ((LiveDisplayActivity) activity).showSnatchDialog();
             } else if (bannerInfoList.get(position).flag != null && bannerInfoList.get(position).flag.equals(AppConfig.GUESS)) {
                 ((LiveDisplayActivity) activity).showGuessDialog();
+            } else if (bannerInfoList.get(position).flag != null && !bannerInfoList.get(position).flag.equals(AppConfig.GUESS)
+                    && !bannerInfoList.get(position).flag.equals(AppConfig.LUCK_ROB)) {
+                ToastUtils.showToastUnify(activity, "请升级版本");
             } else {
                 ((LiveDisplayActivity) activity).jumpToBannerActivity(bannerInfoList.get(position));
                 ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
