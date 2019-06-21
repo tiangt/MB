@@ -87,7 +87,7 @@ public class DrawLayoutControl {
                         String jsonStr = result.toString();
                         RecommendInfo recommendInfo = JSON.parseObject(jsonStr, RecommendInfo.class);
                         if (recommendInfo.getCode() == 200) {
-                            if (recommendInfo != null && recommendInfo.getData() != null) {
+                            if (recommendInfo.getData() != null) {
                                 mRecommendAnchorInfoList.clear();
                                 mRecommendAnchorInfoList.addAll(recommendInfo.getData().getList());
                                 recommendAdapter.notifyDataSetChanged();
@@ -240,7 +240,7 @@ public class DrawLayoutControl {
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             if (position == bannerInfoList.size() + 1) {
-                ((LiveDisplayActivity) activity).jumpToFlopActivity();
+//                ((LiveDisplayActivity) activity).jumpToFlopActivity();
                 return;
             }
             if (position == bannerInfoList.size()) {
