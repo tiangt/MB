@@ -244,6 +244,7 @@ public class DrawLayoutControl {
 //                ((LiveDisplayActivity) activity).jumpToFlopActivity();
                 return;
             }
+
             if (position == bannerInfoList.size()) {
                 if (((LiveDisplayActivity) activity).mUserId == 0) {
                     ((LiveDisplayActivity) activity).login();
