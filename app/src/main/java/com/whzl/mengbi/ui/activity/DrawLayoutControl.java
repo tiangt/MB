@@ -265,6 +265,7 @@ public class DrawLayoutControl {
             } else {
                 ((LiveDisplayActivity) activity).jumpToBannerActivity(bannerInfoList.get(position));
                 ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
+
             }
         }
     }
