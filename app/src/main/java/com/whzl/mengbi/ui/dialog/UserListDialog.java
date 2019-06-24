@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseFullScreenDialog;
@@ -15,22 +14,11 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.ManagerListFragment;
 import com.whzl.mengbi.ui.dialog.fragment.UserListFragment;
 import com.whzl.mengbi.ui.widget.tablayout.TabLayout;
-import com.whzl.mengbi.util.UserIdentity;
-import com.whzl.mengbi.util.network.retrofit.ApiFactory;
-import com.whzl.mengbi.util.network.retrofit.ApiObserver;
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 用户，房管列表
@@ -47,16 +35,13 @@ public class UserListDialog extends BaseFullScreenDialog {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
-    private int mProgramId;
-    private Disposable disposable;
     private ArrayList<String> titles;
     private ArrayList<Fragment> fragments;
-    private List<AudienceListBean.AudienceInfoBean> audienceInfoBeans = new ArrayList<>();
-    private int mIdentity;
+    private AudienceListBean.DataBean audienceBean;
 
-    public static BaseFullScreenDialog newInstance(int programId) {
+    public static BaseFullScreenDialog newInstance(AudienceListBean.DataBean audienceBean) {
         Bundle args = new Bundle();
-        args.putInt("programId", programId);
+        args.putParcelable("audienceBean", audienceBean);
         UserListDialog dialog = new UserListDialog();
         dialog.setArguments(args);
         return dialog;
@@ -69,13 +54,15 @@ public class UserListDialog extends BaseFullScreenDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseFullScreenDialog dialog) {
-        mProgramId = getArguments().getInt("programId");
+        if (getArguments() != null) {
+            audienceBean = getArguments().getParcelable("audienceBean");
+        }
         titles = new ArrayList<>();
         titles.add("玩家列表");
         titles.add("房管列表");
         fragments = new ArrayList<>();
-        fragments.add(UserListFragment.newInstance(mProgramId));
-        fragments.add(ManagerListFragment.newInstance(mProgramId));
+        fragments.add(UserListFragment.newInstance(audienceBean));
+        fragments.add(ManagerListFragment.newInstance(audienceBean));
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         viewpager.setCurrentItem(0);
 
@@ -85,7 +72,7 @@ public class UserListDialog extends BaseFullScreenDialog {
         tabLayout.setSelectedTabIndicatorWidth(20);
         tabLayout.setupWithViewPager(viewpager);
 
-        getManagerAmount();
+        getManagerAmount(audienceBean);
     }
 
     @OnClick({R.id.ib_back})
@@ -107,47 +94,17 @@ public class UserListDialog extends BaseFullScreenDialog {
         tabLayout.getTabAt(1).setText("房管列表（" + managerAmount + "）");
     }
 
-    private void getManagerAmount() {
-        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
-            mProgramId = getArguments().getInt("programId");
-            HashMap paramsMap = new HashMap();
-            paramsMap.put("programId", mProgramId);
-            HashMap signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
-            ApiFactory.getInstance().getApi(Api.class)
-                    .getAudienceList(signPramsMap)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
-                        @Override
-                        public void onSuccess(AudienceListBean.DataBean dataBean) {
-                            if (dataBean != null) {
-                                audienceInfoBeans.clear();
-                                for (int i = 0; i < dataBean.getList().size(); i++) {
-                                    mIdentity = dataBean.getList().get(i).getIdentity();
-                                    if (mIdentity == UserIdentity.OPTR_MANAGER || mIdentity == UserIdentity.ROOM_MANAGER) {
-                                        audienceInfoBeans.add(dataBean.getList().get(i));
-                                    }
-                                }
-                                if (audienceInfoBeans != null) {
-                                    setManagerTitle(audienceInfoBeans.size());
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onError(int code) {
-
-                        }
-                    });
-        });
+    private void getManagerAmount(AudienceListBean.DataBean audienceBean) {
+        if (audienceBean == null || audienceBean.getList() == null || audienceBean.getList().size() == 0) {
+            setUserTitle(0);
+        } else {
+            setUserTitle(audienceBean.total);
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (disposable != null) {
-            disposable.dispose();
-        }
         fragments.clear();
         fragments = null;
     }

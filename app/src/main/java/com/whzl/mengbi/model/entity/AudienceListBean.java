@@ -1,5 +1,6 @@
 package com.whzl.mengbi.model.entity;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -46,7 +47,8 @@ public class AudienceListBean {
         this.data = data;
     }
 
-    public class DataBean {
+    @SuppressLint("ParcelCreator")
+    public class DataBean implements Parcelable {
         public long total; //在线总人数
         private ArrayList<AudienceInfoBean> list;
 
@@ -56,6 +58,16 @@ public class AudienceListBean {
 
         public void setList(ArrayList<AudienceInfoBean> list) {
             this.list = list;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+
         }
     }
 
@@ -278,11 +290,11 @@ public class AudienceListBean {
             this.bindProgramId = bindProgramId;
         }
 
-        public String getGoodsColor(){
+        public String getGoodsColor() {
             return goodsColor;
         }
 
-        public void setGoodsColor(String goodsColor){
+        public void setGoodsColor(String goodsColor) {
             this.goodsColor = goodsColor;
         }
 

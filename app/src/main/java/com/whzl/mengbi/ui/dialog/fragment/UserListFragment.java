@@ -16,9 +16,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.contract.BasePresenter;
+import com.whzl.mengbi.eventbus.event.AudienceEvent;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -32,19 +32,13 @@ import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.util.network.retrofit.ApiFactory;
-import com.whzl.mengbi.util.network.retrofit.ApiObserver;
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
-import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author cliang
@@ -52,22 +46,31 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class UserListFragment extends BasePullListFragment<AudienceListBean.AudienceInfoBean, BasePresenter> {
 
-    private int mProgramId;
-    private Disposable disposable;
+    private AudienceListBean.DataBean audienceBean;
 
-    public static UserListFragment newInstance(int programId) {
+    public static UserListFragment newInstance(AudienceListBean.DataBean audienceBean) {
         UserListFragment fragment = new UserListFragment();
         Bundle args = new Bundle();
-        args.putInt("programId", programId);
+        args.putParcelable("audienceBean", audienceBean);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    protected void initEnv() {
+        super.initEnv();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected boolean setShouldRefresh() {
+        return false;
     }
 
     @Override
     public void init() {
         super.init();
         hideDividerShawdow(null);
-        getPullView().setShouldRefresh(false);
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_follow_sort, getPullView(), false);
         TextView content = view.findViewById(R.id.tv_content);
         content.setText("暂无玩家");
@@ -80,35 +83,29 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
         setFooterViewHolder(new LoadMoreFootViewHolder(foot));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(AudienceEvent event) {
+        if (event.bean != null) {
+            loadSuccess(event.bean.getList());
+            UserListDialog userListDialog = (UserListDialog) getParentFragment();
+            userListDialog.setUserTitle(event.bean.total);
+        } else {
+            loadSuccess(null);
+        }
+    }
+
     @Override
     protected void loadData(int action, int mPage) {
-        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
-            mProgramId = getArguments().getInt("programId");
-            HashMap paramsMap = new HashMap();
-            paramsMap.put("programId", mProgramId);
-            HashMap signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
-            ApiFactory.getInstance().getApi(Api.class)
-                    .getAudienceList(signPramsMap)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
-                        @Override
-                        public void onSuccess(AudienceListBean.DataBean dataBean) {
-                            if (dataBean != null) {
-                                loadSuccess(dataBean.getList());
-                                UserListDialog userListDialog = (UserListDialog) getParentFragment();
-                                userListDialog.setUserTitle(dataBean.total);
-                            } else {
-                                loadSuccess(null);
-                            }
-                        }
-
-                        @Override
-                        public void onError(int code) {
-
-                        }
-                    });
-        });
+        if (getArguments() != null) {
+            audienceBean = getArguments().getParcelable("audienceBean");
+        }
+        if (audienceBean != null) {
+            loadSuccess(audienceBean.getList());
+            UserListDialog userListDialog = (UserListDialog) getParentFragment();
+            userListDialog.setUserTitle(audienceBean.total);
+        } else {
+            loadSuccess(null);
+        }
     }
 
     @Override
@@ -263,8 +260,6 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (disposable != null) {
-            disposable.dispose();
-        }
+        EventBus.getDefault().unregister(this);
     }
 }

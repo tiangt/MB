@@ -104,6 +104,7 @@ import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.AudienceEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseCoinUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
@@ -480,6 +481,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog playNotifyDialog;
     private BaseAwesomeDialog guessDialog;
     private BaseAwesomeDialog guessEndDialog;
+    private AudienceListBean.DataBean audienceBean;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -905,7 +907,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     return;
                 }
 
-                mUserListDialog = UserListDialog.newInstance(mProgramId)
+                mUserListDialog = UserListDialog.newInstance(audienceBean)
                         .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
                         .show(getSupportFragmentManager());
                 break;
@@ -1807,6 +1809,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onGetAudienceListSuccess(AudienceListBean.DataBean bean) {
+        audienceBean = bean;
+        EventBus.getDefault().post(new AudienceEvent(bean));
         if (bean.getList() == null || bean.getList().size() == 0) {
             tvPopularity.setText(getString(R.string.audience, 0));
         } else {

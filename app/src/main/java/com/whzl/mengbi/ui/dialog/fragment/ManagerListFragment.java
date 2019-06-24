@@ -3,6 +3,7 @@ package com.whzl.mengbi.ui.dialog.fragment;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -19,11 +20,13 @@ import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.contract.BasePresenter;
+import com.whzl.mengbi.eventbus.event.AudienceEvent;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.dialog.UserListDialog;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.ClickUtil;
@@ -34,6 +37,10 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,24 +62,33 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class ManagerListFragment extends BasePullListFragment<AudienceListBean.AudienceInfoBean, BasePresenter> {
 
-    private int mProgramId;
-    private Disposable disposable;
     private int mIdentity;
     private List<AudienceListBean.AudienceInfoBean> audienceInfoBeans = new ArrayList<>();
+    private AudienceListBean.DataBean audienceBean;
 
-    public static ManagerListFragment newInstance(int programId) {
+    public static ManagerListFragment newInstance(AudienceListBean.DataBean audienceBean) {
         Bundle args = new Bundle();
-        args.putInt("programId", programId);
+        args.putParcelable("audienceBean", audienceBean);
         ManagerListFragment fragment = new ManagerListFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
+    protected void initEnv() {
+        super.initEnv();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected boolean setShouldRefresh() {
+        return false;
+    }
+
+    @Override
     public void init() {
         super.init();
         hideDividerShawdow(null);
-        getPullView().setShouldRefresh(false);
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_follow_sort, getPullView(), false);
         TextView content = view.findViewById(R.id.tv_content);
         content.setText("暂无房管");
@@ -85,46 +101,51 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
         setFooterViewHolder(new LoadMoreFootViewHolder(foot));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(AudienceEvent event) {
+        if (event.bean != null && event.bean.getList() != null) {
+            audienceInfoBeans.clear();
+            for (int i = 0; i < event.bean.getList().size(); i++) {
+                mIdentity = event.bean.getList().get(i).getIdentity();
+                if (mIdentity == UserIdentity.OPTR_MANAGER || mIdentity == UserIdentity.ROOM_MANAGER) {
+                    audienceInfoBeans.add(event.bean.getList().get(i));
+                }
+            }
+            if (audienceInfoBeans != null) {
+                loadSuccess(audienceInfoBeans);
+                UserListDialog userListDialog = (UserListDialog) getParentFragment();
+                userListDialog.setManagerTitle(audienceInfoBeans.size());
+            } else {
+                loadSuccess(null);
+            }
+        } else {
+            loadSuccess(null);
+        }
+    }
+
     @Override
     protected void loadData(int action, int mPage) {
-        disposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
-            mProgramId = getArguments().getInt("programId");
-            HashMap paramsMap = new HashMap();
-            paramsMap.put("programId", mProgramId);
-            HashMap signPramsMap = ParamsUtils.getSignPramsMap(paramsMap);
-            ApiFactory.getInstance().getApi(Api.class)
-                    .getAudienceList(signPramsMap)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new ApiObserver<AudienceListBean.DataBean>() {
-                        @Override
-                        public void onSuccess(AudienceListBean.DataBean dataBean) {
-                            if (dataBean != null) {
-                                audienceInfoBeans.clear();
-                                for (int i = 0; i < dataBean.getList().size(); i++) {
-                                    mIdentity = dataBean.getList().get(i).getIdentity();
-                                    if (mIdentity == UserIdentity.OPTR_MANAGER || mIdentity == UserIdentity.ROOM_MANAGER) {
-                                        audienceInfoBeans.add(dataBean.getList().get(i));
-                                    }
-                                }
-                                if (audienceInfoBeans != null) {
-                                    loadSuccess(audienceInfoBeans);
-//                                    UserListDialog userListDialog = (UserListDialog) getParentFragment();
-//                                    userListDialog.setManagerTitle(audienceInfoBeans.size());
-                                } else {
-                                    loadSuccess(null);
-                                }
-                            } else {
-                                loadSuccess(null);
-                            }
-                        }
-
-                        @Override
-                        public void onError(int code) {
-
-                        }
-                    });
-        });
+        if (getArguments() != null) {
+            audienceBean = getArguments().getParcelable("audienceBean");
+        }
+        if (audienceBean != null) {
+            audienceInfoBeans.clear();
+            for (int i = 0; i < audienceBean.getList().size(); i++) {
+                mIdentity = audienceBean.getList().get(i).getIdentity();
+                if (mIdentity == UserIdentity.OPTR_MANAGER || mIdentity == UserIdentity.ROOM_MANAGER) {
+                    audienceInfoBeans.add(audienceBean.getList().get(i));
+                }
+            }
+            if (audienceInfoBeans != null) {
+                loadSuccess(audienceInfoBeans);
+                UserListDialog userListDialog = (UserListDialog) getParentFragment();
+                userListDialog.setManagerTitle(audienceInfoBeans.size());
+            } else {
+                loadSuccess(null);
+            }
+        } else {
+            loadSuccess(null);
+        }
     }
 
     @Override
@@ -275,13 +296,12 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                 }
             }
         }
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (disposable != null) {
-            disposable.dispose();
-        }
+        EventBus.getDefault().unregister(this);
     }
 }
