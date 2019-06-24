@@ -97,7 +97,7 @@ public class TextureVideoActivity extends Activity implements View.OnClickListen
     private ImageView mPlayerScreen;
     private ImageView mPlayerRotate;
     private ImageView mPlayerScale;
-    private Button mute;
+//    private Button mute;
     private ImageView mirror;
     private ImageView mPlayerVolume;
     private boolean mMirror = false;
@@ -348,7 +348,7 @@ public class TextureVideoActivity extends Activity implements View.OnClickListen
         mPlayerRotate = (ImageView) findViewById(R.id.player_rotate);
         mPlayerScreen = (ImageView) findViewById(R.id.player_screen);
         mPlayerScale = (ImageView) findViewById(R.id.player_scale);
-        mute = (Button) findViewById(R.id.btn_mute_player);
+//        mute = (Button) findViewById(R.id.btn_mute_player);
         mirror = (ImageView) findViewById(R.id.player_mirror);
         mirror.setOnClickListener(this);
         mPlayerReload.setOnClickListener(this);
