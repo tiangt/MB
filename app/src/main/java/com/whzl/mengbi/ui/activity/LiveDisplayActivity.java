@@ -1807,7 +1807,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     public void onGetAudienceListSuccess(AudienceListBean.DataBean bean) {
-        if (bean.getList() == null && bean.getList().size() == 0) {
+        if (bean.getList() == null || bean.getList().size() == 0) {
             tvPopularity.setText(getString(R.string.audience, 0));
         } else {
             tvPopularity.setText(getString(R.string.audience, bean.total));
