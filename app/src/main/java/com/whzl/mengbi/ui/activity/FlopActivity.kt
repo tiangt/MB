@@ -13,6 +13,7 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.chat.room.message.events.FlopCardEvent
 import com.whzl.mengbi.chat.room.util.LightSpanString
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.FlopContract
@@ -42,8 +43,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_flop.*
+import kotlinx.android.synthetic.main.flipper_flop.view.*
 import kotlinx.android.synthetic.main.item_benlun.view.*
 import kotlinx.android.synthetic.main.item_flop.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.concurrent.TimeUnit
 
 /**
@@ -52,6 +57,8 @@ import java.util.concurrent.TimeUnit
  */
 class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
+    private lateinit var subList: MutableList<FlopAwardRecordBean.ListBean>
+    private var recordList = java.util.ArrayList<FlopAwardRecordBean.ListBean>()
     private var maxFlopTimes: Int = 0
     private var shufflePrice = 0
     private var priceList: MutableList<FlopPriceBean.ListBean>? = null
@@ -435,7 +442,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
     override fun loadData() {
         mPresenter.flopPrice()
-//        mPresenter.flopAwardRecord()
+        mPresenter.flopAwardRecord()
     }
 
     override fun onUserFlopInfoSuccess(userFlopInfoBean: UserFlopInfoBean?) {
@@ -513,7 +520,22 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     }
 
     override fun onFlopAwardRecordSuccess(flopAwardRecordBean: FlopAwardRecordBean?) {
-
+        recordList.addAll(flopAwardRecordBean?.list!!)
+        if (recordList.size > 30) {
+            subList = recordList.subList(0, 30)
+        } else {
+            subList = recordList
+        }
+        for (it in subList) {
+            val view = LayoutInflater.from(this).inflate(R.layout.flipper_flop, null)
+            view.tv_flipper_flop.text = "恭喜 "
+            view.tv_flipper_flop.append(LightSpanString.getLightString(it.nickName, Color.rgb(254, 255, 22)))
+            view.tv_flipper_flop.append(" 翻到 ")
+            view.tv_flipper_flop.append(LightSpanString.getLightString("${it.name} ×${it.num}", Color.rgb(252, 41, 255)))
+            flipper_flop.addView(view)
+        }
+        flipper_flop.setFlipInterval(4000)
+        flipper_flop.startFlipping()
     }
 
     override fun onFlopPriceSuccess(flopPriceBean: FlopPriceBean?) {
@@ -524,6 +546,38 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     override fun onDestroy() {
         super.onDestroy()
         disposable?.dispose()
+        EventBus.getDefault().unregister(this)
     }
 
+    override fun initEnv() {
+        super.initEnv()
+        EventBus.getDefault().register(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(flopCardEvent: FlopCardEvent) {
+        if (flipper_flop.childCount >= 30) {
+            val childAt = flipper_flop.getChildAt(0)
+            childAt.tv_flipper_flop.text = "恭喜 "
+            childAt.tv_flipper_flop.append(LightSpanString.getLightString(flopCardEvent.flopCardJson.context.nickName, Color.rgb(254, 255, 22)))
+            childAt.tv_flipper_flop.append(" 翻到 ")
+            when (flopCardEvent.flopCardJson.context.prizeType) {
+                "WEALTH" -> childAt.tv_flipper_flop.append(LightSpanString.getLightString("萌豆 ×${flopCardEvent.flopCardJson.context.wealthNumber}", Color.rgb(252, 41, 255)))
+                "EXP" -> childAt.tv_flipper_flop.append(LightSpanString.getLightString("经验 ×${flopCardEvent.flopCardJson.context.expNumber}", Color.rgb(252, 41, 255)))
+                "GOODS" -> childAt.tv_flipper_flop.append(LightSpanString.getLightString("${flopCardEvent.flopCardJson.context.goodsName} ×${flopCardEvent.flopCardJson.context.goodsCount}", Color.rgb(252, 41, 255)))
+            }
+        } else {
+            val view = LayoutInflater.from(this).inflate(R.layout.flipper_flop, null)
+            view.tv_flipper_flop.text = "恭喜 "
+            view.tv_flipper_flop.append(LightSpanString.getLightString(flopCardEvent.flopCardJson.context.nickName, Color.rgb(254, 255, 22)))
+            view.tv_flipper_flop.append(" 翻到 ")
+            when (flopCardEvent.flopCardJson.context.prizeType) {
+                "WEALTH" -> view.tv_flipper_flop.append(LightSpanString.getLightString("萌豆 ×${flopCardEvent.flopCardJson.context.wealthNumber}", Color.rgb(252, 41, 255)))
+                "EXP" -> view.tv_flipper_flop.append(LightSpanString.getLightString("经验 ×${flopCardEvent.flopCardJson.context.expNumber}", Color.rgb(252, 41, 255)))
+                "GOODS" -> view.tv_flipper_flop.append(LightSpanString.getLightString("${flopCardEvent.flopCardJson.context.goodsName} ×${flopCardEvent.flopCardJson.context.goodsCount}", Color.rgb(252, 41, 255)))
+            }
+            flipper_flop.addView(view)
+        }
+
+    }
 }

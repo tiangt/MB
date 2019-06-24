@@ -2,6 +2,7 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
 
+import com.whzl.mengbi.chat.room.message.events.FlopCardEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.FlopCardJson;
 import com.whzl.mengbi.chat.room.message.messages.FlopCardMessage;
@@ -22,6 +23,8 @@ public class FlopCardAction implements Actions {
         if (flopCardJson == null || flopCardJson.context == null) {
             return;
         }
-        EventBus.getDefault().post(new UpdatePubChatEvent(new FlopCardMessage(flopCardJson,context)));
+        EventBus.getDefault().post(new UpdatePubChatEvent(new FlopCardMessage(flopCardJson, context)));
+
+        EventBus.getDefault().post(new FlopCardEvent(flopCardJson, context));
     }
 }
