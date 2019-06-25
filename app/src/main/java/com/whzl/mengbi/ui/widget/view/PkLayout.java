@@ -57,7 +57,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private TextView tvRightScore;
     private ValueAnimator animator;
     private TimeDwonListener listener;
-    public PopupWindow popupWindow;
+    //    public PopupWindow popupWindow;
     private RecyclerView myFollow;
     private RecyclerView oppositeSide;
     private List<String> list;
@@ -88,8 +88,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PkProgressView);
         initializeProgress = typedArray.getInt(R.styleable.PkProgressView_defaultPercent, 50);
         init(context);
-        initPop(context);
     }
+
 
     private void init(Context context) {
         rxTimerUtil = new RxTimerUtil();
@@ -104,7 +104,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         rlPunishWay = inflate.findViewById(R.id.rl_punish_way);
         tvFansRank = inflate.findViewById(R.id.tv_fans_rank);
         rlPunishWay.setOnClickListener(this::onClick);
+        myFollow = inflate.findViewById(R.id.rv_my_follow);
+        oppositeSide = inflate.findViewById(R.id.rv_opposite_side);
         setProgress(initializeProgress);
+        initRv(context);
     }
 
     public void setPkFanRank(List<PKFansBean> pkUserFansBeans,
@@ -147,14 +150,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         this.mvpPopupWindow = popupWindow;
     }
 
-    private void initPop(Context context) {
-        // PopupWindow 显示PK排名
-        View popView = LayoutInflater.from(context).inflate(R.layout.pop_window_pk_rank, null);
-        popupWindow = new PopupWindow(popView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
+    private void initRv(Context context) {
+// PopupWindow 显示PK排名
         llPkProgress = inflate.findViewById(R.id.ll_pk_progress);
         llPkProgress.setOnClickListener(this::onClick);
-        myFollow = popView.findViewById(R.id.rv_my_follow);
-        oppositeSide = popView.findViewById(R.id.rv_opposite_side);
 
         LinearLayoutManager followManager = new LinearLayoutManager(context);
         followManager.setOrientation(HORIZONTAL);
@@ -213,16 +212,80 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         oppositeSide.setAdapter(oppositeAdapter);
     }
 
+//    private void initPop(Context context) {
+//        // PopupWindow 显示PK排名
+//        View popView = LayoutInflater.from(context).inflate(R.layout.pop_window_pk_rank, null);
+//        popupWindow = new PopupWindow(popView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
+//        llPkProgress = inflate.findViewById(R.id.ll_pk_progress);
+//        llPkProgress.setOnClickListener(this::onClick);
+//        myFollow = popView.findViewById(R.id.rv_my_follow);
+//        oppositeSide = popView.findViewById(R.id.rv_opposite_side);
+//
+//        LinearLayoutManager followManager = new LinearLayoutManager(context);
+//        followManager.setOrientation(HORIZONTAL);
+//        followManager.setStackFromEnd(true);
+//        followManager.setReverseLayout(true);
+//        myFollow.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+//        myFollow.setLayoutManager(followManager);
+//        LinearLayoutManager oppositeManager = new LinearLayoutManager(context);
+//        oppositeManager.setOrientation(HORIZONTAL);
+//        oppositeSide.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+//        oppositeSide.setLayoutManager(oppositeManager);
+//
+//        myFollowAdapter = new BaseListAdapter() {
+//            @Override
+//            protected int getDataCount() {
+//                int count = 0;
+//                if (pkUserFansBeans == null) {
+//                    count = 0;
+//                } else if (pkUserFansBeans.size() < 5) {
+//                    count = pkUserFansBeans.size();
+//                } else {
+//                    count = 5;
+//                }
+//                return count;
+//            }
+//
+//            @Override
+//            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+//                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_pk_follow, parent, false);
+//                return new PKViewHolder(itemView);
+//            }
+//        };
+//        myFollow.setAdapter(myFollowAdapter);
+//        myFollow.scrollToPosition(0);
+//
+//        oppositeAdapter = new BaseListAdapter() {
+//            @Override
+//            protected int getDataCount() {
+//                int count = 0;
+//                if (launchPkUserFansBeans == null) {
+//                    count = 0;
+//                } else if (launchPkUserFansBeans.size() < 5) {
+//                    count = launchPkUserFansBeans.size();
+//                } else {
+//                    count = 5;
+//                }
+//                return count;
+//            }
+//
+//            @Override
+//            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+//                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_pk_opposite, parent, false);
+//                return new PKOppoViewHolder(itemView);
+//            }
+//        };
+//        oppositeSide.setAdapter(oppositeAdapter);
+//    }
+
 
     class PKViewHolder extends BaseViewHolder {
         ImageView ivPkHead;
-        ImageView ivPkLevel;
         TextView tvPkCount;
 
         public PKViewHolder(View itemView) {
             super(itemView);
             ivPkHead = itemView.findViewById(R.id.iv_circle_head);
-            ivPkLevel = itemView.findViewById(R.id.iv_pk_level);
             tvPkCount = itemView.findViewById(R.id.tv_pk_count);
         }
 
@@ -241,7 +304,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                 tvPkCount.setText("");
                 GlideImageLoader.getInstace().displayImage(context, null, ivPkHead);
             }
-            showRanking(position, ivPkLevel);
+//            showRanking(position, ivPkLevel);
         }
 
         @Override
@@ -252,13 +315,11 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
     class PKOppoViewHolder extends BaseViewHolder {
         ImageView ivPkHead;
-        ImageView ivPkLevel;
         TextView tvPkCount;
 
         public PKOppoViewHolder(View itemView) {
             super(itemView);
             ivPkHead = itemView.findViewById(R.id.iv_circle_head);
-            ivPkLevel = itemView.findViewById(R.id.iv_pk_level);
             tvPkCount = itemView.findViewById(R.id.tv_pk_count);
         }
 
@@ -277,7 +338,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                 tvPkCount.setText("");
                 GlideImageLoader.getInstace().displayImage(context, null, ivPkHead);
             }
-            showRanking(position, ivPkLevel);
+//            showRanking(position, ivPkLevel);
         }
     }
 
@@ -355,7 +416,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                             if (1 == second - aLong - 1) {
                                 tvPkTitle.setText(state);
                                 tvTime.setText((second - aLong - 1) + "s");
-                                rxTimerUtil.timer( 1000, new RxTimerUtil.IRxNext() {
+                                rxTimerUtil.timer(1000, new RxTimerUtil.IRxNext() {
                                     @Override
                                     public void doNext(long number) {
                                         tvTime.setText(0 + "s");
@@ -419,9 +480,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
-        if (popupWindow != null) {
-            popupWindow.dismiss();
-        }
+//        if (popupWindow != null) {
+//            popupWindow.dismiss();
+//        }
     }
 
     public void setListener(TimeDwonListener listener) {
@@ -432,17 +493,17 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ll_pk_progress:
-                if (popupWindow != null) {
-                    if (popupWindow.isShowing()) {
-                        tvFansRank.setText("点击打开助力粉丝榜");
-                        popupWindow.dismiss();
-                    } else {
-                        tvFansRank.setText("点击关闭助力粉丝榜");
-                        showPopupWindow(v);
-                    }
-                }
-                break;
+//            case R.id.ll_pk_progress:
+//                if (popupWindow != null) {
+//                    if (popupWindow.isShowing()) {
+//                        tvFansRank.setText("点击打开助力粉丝榜");
+//                        popupWindow.dismiss();
+//                    } else {
+//                        tvFansRank.setText("点击关闭助力粉丝榜");
+//                        showPopupWindow(v);
+//                    }
+//                }
+//                break;
 
             case R.id.rl_punish_way:
                 if (clickLintener != null) {
@@ -457,7 +518,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void reset() {
-        hidePkWindow();
+//        hidePkWindow();
         setProgress(50);
         setLeftScore(0);
         setRightScore(0);
@@ -475,18 +536,18 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 //        ivRight.setOnClickListener(listener);
     }
 
-    private void showPopupWindow(View view) {
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(false);
-        popupWindow.setTouchInterceptor(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
-        popupWindow.showAsDropDown(view);
-        ((LiveDisplayActivity) context).closeDrawLayout();
-    }
+//    private void showPopupWindow(View view) {
+//        popupWindow.setOutsideTouchable(false);
+//        popupWindow.setFocusable(false);
+//        popupWindow.setTouchInterceptor(new OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return false;
+//            }
+//        });
+//        popupWindow.showAsDropDown(view);
+//        ((LiveDisplayActivity) context).closeDrawLayout();
+//    }
 
     private void showRanking(int ranking, ImageView imageView) {
         switch (ranking) {
@@ -505,11 +566,11 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         }
     }
 
-    public void hidePkWindow() {
-        if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
-        }
-    }
+//    public void hidePkWindow() {
+//        if (popupWindow != null && popupWindow.isShowing()) {
+//            popupWindow.dismiss();
+//        }
+//    }
 
     private PunishWayClick clickLintener;
 

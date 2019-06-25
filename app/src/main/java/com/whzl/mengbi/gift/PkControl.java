@@ -264,7 +264,7 @@ public class PkControl {
             case "PK_RESULT"://PK结果
                 maxLaunchPkScroe = 0;
                 maxAcceptPkScroe = 0;
-                pkLayout.hidePkWindow();
+//                pkLayout.hidePkWindow();
                 if (bean.launchPkUserId == mAnchorId) {
                     if (bean.launchPkUserScore == bean.pkUserScore) {
                         showPKResult(0);
@@ -282,7 +282,7 @@ public class PkControl {
                         showPKResult(2);
                     }
                 }
-                pkLayout.hidePkWindow();
+//                pkLayout.hidePkWindow();
 
                 expCardDestroy();
 
