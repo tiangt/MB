@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,6 +24,7 @@ import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.dialog.PkRankDialog;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -169,13 +169,13 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         myFollowAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                int count = 0;
+                int count;
                 if (pkUserFansBeans == null) {
                     count = 0;
-                } else if (pkUserFansBeans.size() < 5) {
+                } else if (pkUserFansBeans.size() < 3) {
                     count = pkUserFansBeans.size();
                 } else {
-                    count = 5;
+                    count = 3;
                 }
                 return count;
             }
@@ -192,13 +192,13 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         oppositeAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                int count = 0;
+                int count;
                 if (launchPkUserFansBeans == null) {
                     count = 0;
-                } else if (launchPkUserFansBeans.size() < 5) {
+                } else if (launchPkUserFansBeans.size() < 3) {
                     count = launchPkUserFansBeans.size();
                 } else {
-                    count = 5;
+                    count = 3;
                 }
                 return count;
             }
@@ -293,7 +293,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         public void onBindViewHolder(int position) {
             if (position < pkUserFansBeans.size()) {
                 PKFansBean pkFansBean = pkUserFansBeans.get(position);
-                tvPkCount.setText((int) pkFansBean.score + "");
+                tvPkCount.setText(String.valueOf(position + 1));
                 if (TextUtils.isEmpty(pkFansBean.avatar)) {
                     String jpg = ImageUrl.getAvatarUrl(pkFansBean.userId, "jpg", pkFansBean.lastUpdateTime);
                     GlideImageLoader.getInstace().displayImage(getContext(), jpg, ivPkHead);
@@ -301,7 +301,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                     GlideImageLoader.getInstace().displayImage(context, pkFansBean.avatar, ivPkHead);
                 }
             } else {
-                tvPkCount.setText("");
+//                tvPkCount.setText("");
                 GlideImageLoader.getInstace().displayImage(context, null, ivPkHead);
             }
 //            showRanking(position, ivPkLevel);
@@ -310,6 +310,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
+            PkRankDialog.Companion.newInstance(0)
+                    .show(((LiveDisplayActivity) context).getSupportFragmentManager());
         }
     }
 
@@ -327,7 +329,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         public void onBindViewHolder(int position) {
             if (position < launchPkUserFansBeans.size()) {
                 PKFansBean pkFansBean = launchPkUserFansBeans.get(position);
-                tvPkCount.setText((int) pkFansBean.score + "");
+                tvPkCount.setText(String.valueOf(position + 1));
                 if (TextUtils.isEmpty(pkFansBean.avatar)) {
                     String jpg = ImageUrl.getAvatarUrl(pkFansBean.userId, "jpg", pkFansBean.lastUpdateTime);
                     GlideImageLoader.getInstace().displayImage(getContext(), jpg, ivPkHead);
@@ -335,10 +337,17 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                     GlideImageLoader.getInstace().displayImage(context, pkFansBean.avatar, ivPkHead);
                 }
             } else {
-                tvPkCount.setText("");
+//                tvPkCount.setText("");
                 GlideImageLoader.getInstace().displayImage(context, null, ivPkHead);
             }
 //            showRanking(position, ivPkLevel);
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            PkRankDialog.Companion.newInstance(1)
+                    .show(((LiveDisplayActivity) context).getSupportFragmentManager());
         }
     }
 

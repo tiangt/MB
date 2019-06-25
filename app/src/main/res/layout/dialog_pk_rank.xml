@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="330dp"
+        android:layout_height="390dp"
+        android:background="@drawable/bg_pk_rank">
+
+        <ImageView
+            android:layout_width="114dp"
+            android:layout_height="17dp"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/ic_title_ok_rank"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="14dp"
+            android:paddingRight="14dp"
+            android:src="@drawable/ic_close_pk_rank"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/rg_pk_rank"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/rb_wofang"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_pk_rank"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="我方贡献富豪"
+                android:textColor="@drawable/selector_text_pk_rank"
+                android:textSize="15sp" />
+
+            <RadioButton
+                android:id="@+id/rb_duifang"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/selector_pk_rank"
+                android:button="@null"
+                android:gravity="center"
+                android:text="对方贡献富豪"
+                android:textColor="@drawable/selector_text_pk_rank"
+                android:textSize="15sp" />
+        </RadioGroup>
+
+        <FrameLayout
+            android:id="@+id/container_pk_rank"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_contain_pk_rank"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rg_pk_rank" />
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>
