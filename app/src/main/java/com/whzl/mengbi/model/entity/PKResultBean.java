@@ -1,5 +1,6 @@
 package com.whzl.mengbi.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,8 +45,10 @@ public class PKResultBean {
     public MvpUserBean mvpUser;
     public String punishWay;
     public OtherStreamBean otherStream;
-    public List<PKFansBean> launchPkUserFans;
-    public List<PKFansBean> pkUserFans;
+    public ArrayList<PKFansBean> launchPkUserFans;
+    public ArrayList<PKFansBean> pkUserFans;
+    public FirstBloodBean launchUserFirstBloodUser;
+    public FirstBloodBean pkUserFirstBloodUser;
     /**
      * pkEffect : {"addMultiple":120,"effSecond":248}
      * lanchPkEffect : {"addMultiple":120,"effSecond":279}
@@ -54,6 +57,14 @@ public class PKResultBean {
     public PkEffectBean pkEffect;
     public PkEffectBean lanchPkEffect;
 
+    //"userId":xxxxxxx,
+    //        "nickname":"萌友xxxxx",
+    //        "avatar":"http://xxxxxxxxxxxxxx"
+    public static class FirstBloodBean {
+        public int userId;
+        public String nickname;
+        public String avatar;
+    }
 
     public static class UserInfoBean {
         /**

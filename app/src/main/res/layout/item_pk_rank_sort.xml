@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_rank_pk_rank"
+        android:layout_width="24dp"
+        android:layout_height="26dp"
+        android:layout_marginLeft="16dp" />
+
+    <com.whzl.mengbi.ui.widget.view.CircleImageView
+        android:id="@+id/iv_avatar_pk_rank"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginLeft="19dp"
+        app:civ_border_color="#ffcc9e"
+        app:civ_border_width="1dp" />
+
+    <TextView
+        android:id="@+id/tv_nick_pk_rank"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_num_pk_rank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="15dp"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:singleLine="true"
+        android:textColor="#edff55"
+        android:textSize="14sp" />
+
+</LinearLayout>

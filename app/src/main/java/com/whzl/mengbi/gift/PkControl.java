@@ -45,6 +45,7 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.dialog.PkRankDialog;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
@@ -174,16 +175,16 @@ public class PkControl {
     }
 
     private void initEvent() {
-        pkLayout.setPunishWayOnClick(new PkLayout.PunishWayClick() {
-            @Override
-            public void onClick(View view) {
-                if (ClickUtil.isFastClick()) {
-                    if (needShow) {
-                        showPunishment(isMvp);
-                    }
+        pkLayout.setPunishWayOnClick(view -> {
+            if (ClickUtil.isFastClick()) {
+                if (needShow) {
+                    showPunishment(isMvp);
                 }
             }
         });
+
+        pkLayout.setOnclickRankListener(direction -> PkRankDialog.Companion.newInstance(direction, mProgramId)
+                .show(((LiveDisplayActivity) context).getSupportFragmentManager()));
     }
 
     public void setStartAnim(SVGAImageView svgaImageView) {
@@ -411,7 +412,7 @@ public class PkControl {
         if (userId == 0L) {
             btnOtherFollow.setVisibility(View.VISIBLE);
             btnOtherFollow.setOnClickListener(v -> {
-                ((LiveDisplayActivity)context).login();
+                ((LiveDisplayActivity) context).login();
             });
             return;
         }

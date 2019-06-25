@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/iv_close_pk_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="14dp"

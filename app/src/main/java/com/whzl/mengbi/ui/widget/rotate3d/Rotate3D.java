@@ -28,6 +28,9 @@ public class Rotate3D {
     private boolean isOpen = false;
     public boolean isOpenPlay = false;
 
+    private CloseAnimEndListener closeAnimEndListener;
+    private OpenAnimEndListener openAnimEndListener;
+
     private Rotate3D(Builder builder) {
         this.context = builder.context;
         this.parentView = builder.parentView;
@@ -142,20 +145,8 @@ public class Rotate3D {
         this.openAnimEndListener = openAnimEndListener;
     }
 
-    private OpenAnimEndListener openAnimEndListener;
-
-    interface OpenAnimEndListener {
-        void onOpenAnimEndListenr();
-    }
-
     public void setCloseAnimEndListener(CloseAnimEndListener closeAnimEndListener) {
         this.closeAnimEndListener = closeAnimEndListener;
-    }
-
-    private CloseAnimEndListener closeAnimEndListener;
-
-    interface CloseAnimEndListener {
-        void onCloseAnimEndListener();
     }
 
     /**

@@ -18,7 +18,11 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 public class Rotate3DView extends ConstraintLayout {
 
     private final Context context;
-    public Rotate3D anim;
+    private Rotate3D anim;
+
+    public Rotate3D getAnim() {
+        return anim;
+    }
 
     private ImageView ivPic;
     private TextView tvName;

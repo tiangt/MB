@@ -21,10 +21,8 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.dialog.PkRankDialog;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
@@ -62,8 +60,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private RecyclerView oppositeSide;
     private List<String> list;
     private TextView tvPkTitle;
-    private List<PKFansBean> pkUserFansBeans = new ArrayList<>();
-    private List<PKFansBean> launchPkUserFansBeans = new ArrayList<>();
+    private ArrayList<PKFansBean> pkUserFansBeans = new ArrayList<>();
+    private ArrayList<PKFansBean> launchPkUserFansBeans = new ArrayList<>();
     private String mvpPunishWay;
     private String punishWay;
     private BaseListAdapter myFollowAdapter;
@@ -310,8 +308,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            PkRankDialog.Companion.newInstance(0)
-                    .show(((LiveDisplayActivity) context).getSupportFragmentManager());
+            if (onclickRankListener != null) {
+                onclickRankListener.onClickRankListener(0);
+            }
         }
     }
 
@@ -346,9 +345,20 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            PkRankDialog.Companion.newInstance(1)
-                    .show(((LiveDisplayActivity) context).getSupportFragmentManager());
+            if (onclickRankListener != null) {
+                onclickRankListener.onClickRankListener(1);
+            }
         }
+    }
+
+    public void setOnclickRankListener(OnclickRankListener onclickRankListener) {
+        this.onclickRankListener = onclickRankListener;
+    }
+
+    private OnclickRankListener onclickRankListener;
+
+    public interface OnclickRankListener {
+        void onClickRankListener(int direction);
     }
 
     public void setLeftScore(int score) {
@@ -527,6 +537,14 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void reset() {
+        pkUserFansBeans.clear();
+        launchPkUserFansBeans.clear();
+        if (myFollowAdapter != null) {
+            myFollowAdapter.notifyDataSetChanged();
+        }
+        if (oppositeAdapter != null) {
+            oppositeAdapter.notifyDataSetChanged();
+        }
 //        hidePkWindow();
         setProgress(50);
         setLeftScore(0);
