@@ -14,7 +14,8 @@
             android:id="@+id/iv_personal_cover"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_personal" />
 
         <LinearLayout
             android:id="@+id/view_need_offset"
@@ -34,7 +35,7 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="30dp"
                     android:background="@null"
-                    android:src="@drawable/ic_login_return" />
+                    android:src="@drawable/ic_arrow_left" />
 
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
                     android:id="@+id/iv_avatar"
@@ -53,7 +54,7 @@
                     android:singleLine="true"
                     android:text="昵称"
                     android:textColor="@color/white"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -66,7 +67,7 @@
                     android:singleLine="true"
                     android:text="@string/no_motto_hint"
                     android:textColor="@color/text_sign"
-                    android:textSize="10sp" />
+                    android:textSize="11sp" />
 
                 <LinearLayout
                     android:id="@+id/ll_level_container"
@@ -79,31 +80,42 @@
 
                 <TextView
                     android:id="@+id/tv_live_state"
-                    android:layout_width="63dp"
-                    android:layout_height="25dp"
+                    android:layout_width="72dp"
+                    android:layout_height="33dp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginTop="100dp"
                     android:background="@drawable/shape_left_half_round"
                     android:gravity="center"
                     android:text="休息中"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="15sp"
                     android:visibility="gone" />
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/tv_follow_state"
-                    android:layout_width="63dp"
-                    android:layout_height="25dp"
+                    android:layout_width="77dp"
+                    android:layout_height="33dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="100dp"
                     android:background="@drawable/shape_right_half_round"
-                    android:drawableLeft="@drawable/ic_attention"
                     android:gravity="center"
-                    android:paddingLeft="12dp"
-                    android:text="关注"
-                    android:textColor="@color/text_yellow"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0.5dp"
+                        android:src="@drawable/ic_attention" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:text="关注"
+                        android:textColor="@color/text_yellow"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,7 +147,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center"
                                 android:textColor="@color/white"
-                                android:textSize="12sp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/tv_rank_name"
@@ -144,7 +156,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center"
                                 android:textColor="@color/tran_white1"
-                                android:textSize="10sp" />
+                                android:textSize="11sp" />
                         </LinearLayout>
 
 
@@ -168,7 +180,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center"
                                 android:textColor="@color/white"
-                                android:textSize="12sp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -177,7 +189,7 @@
                                 android:gravity="center"
                                 android:text="粉丝"
                                 android:textColor="@color/tran_white1"
-                                android:textSize="10sp" />
+                                android:textSize="11sp" />
                         </LinearLayout>
 
                         <View
@@ -200,7 +212,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:gravity="center"
                                 android:textColor="@color/white"
-                                android:textSize="12sp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -209,7 +221,7 @@
                                 android:gravity="center"
                                 android:text="关注"
                                 android:textColor="@color/tran_white1"
-                                android:textSize="10sp" />
+                                android:textSize="11sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -226,7 +238,7 @@
                 android:drawablePadding="10dp"
                 android:text="@string/basic_info"
                 android:textColor="@color/text_view"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <!-- 昵称 -->
@@ -237,13 +249,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="56dp"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
                     android:text="@string/page_nick_name"
                     android:textColor="@color/text_grey"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_personal_info" />
 
                 <TextView
                     android:id="@+id/tv_basic_nick_name"
@@ -251,7 +263,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:textColor="@color/text_view"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_personal_info" />
             </LinearLayout>
 
             <!-- 萌号 -->
@@ -262,14 +274,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="56dp"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="15dp"
                     android:text="@string/meng_num"
                     android:textColor="@color/text_grey"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_personal_info" />
 
                 <com.whzl.mengbi.ui.widget.view.PrettyNumText
                     android:id="@+id/tv_pretty_num"
@@ -285,7 +297,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/text_view"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_personal_info" />
 
                 <TextView
                     android:id="@+id/tv_copy_num"
@@ -307,13 +319,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="56dp"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
                     android:text="@string/address_age"
                     android:textColor="@color/text_grey"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_personal_info" />
 
                 <TextView
                     android:id="@+id/tv_address"
@@ -327,7 +339,7 @@
                     android:paddingRight="10dp"
                     android:singleLine="true"
                     android:textColor="@color/text_blue"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_personal_info"
                     android:visibility="gone" />
 
                 <TextView
@@ -340,7 +352,7 @@
                     android:maxLength="4"
                     android:singleLine="true"
                     android:textColor="@color/text_green"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_personal_info"
                     android:visibility="gone" />
 
                 <TextView
@@ -352,7 +364,7 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:textColor="@color/text_purple"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_personal_info"
                     android:visibility="gone" />
             </LinearLayout>
 
@@ -366,13 +378,13 @@
                 android:visibility="gone">
 
                 <TextView
-                    android:layout_width="56dp"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
                     android:text="@string/anchor_level"
                     android:textColor="@color/text_grey"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_personal_info" />
 
                 <com.whzl.mengbi.ui.widget.view.ExpValueLayout
                     android:id="@+id/evl_anchor_level"
@@ -399,13 +411,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="56dp"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
                     android:text="@string/user_level"
                     android:textColor="@color/text_grey"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_personal_info" />
 
                 <com.whzl.mengbi.ui.widget.view.ExpValueLayout
                     android:id="@+id/evl_user_level"
@@ -431,13 +443,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="56dp"
+                    android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
                     android:text="@string/royal_level"
                     android:textColor="@color/text_grey"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/text_personal_info" />
 
                 <com.whzl.mengbi.ui.widget.view.ExpValueLayout
                     android:id="@+id/evl_royal_level"
@@ -451,21 +463,21 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:paddingRight="@dimen/padding_12"
-                    android:visibility="invisible"
-                    android:src="@drawable/arrowright" />
+                    android:src="@drawable/arrowright"
+                    android:visibility="invisible" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="19dp"
+                android:layout_marginBottom="20dp"
                 android:drawableLeft="@drawable/ic_red_line"
                 android:drawablePadding="10dp"
                 android:text="@string/medal_wall"
                 android:textColor="@color/text_view"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <RelativeLayout

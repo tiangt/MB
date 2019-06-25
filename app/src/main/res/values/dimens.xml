@@ -69,4 +69,6 @@
     <dimen name="textsize_12">12sp</dimen>
     <dimen name="height_live_activity">130dp</dimen>
     <dimen name="widgh_live_activity">100dp</dimen>
+
+    <dimen name="text_personal_info">14sp</dimen>
 </resources>

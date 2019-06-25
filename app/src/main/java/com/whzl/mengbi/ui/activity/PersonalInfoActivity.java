@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jaeger.library.StatusBarUtil;
-import com.squareup.picasso.Picasso;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
@@ -30,7 +29,6 @@ import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.AppUtils;
-import com.whzl.mengbi.util.BlurTransformation;
 import com.whzl.mengbi.util.ClipboardUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
@@ -88,7 +86,7 @@ public class PersonalInfoActivity extends BaseActivity {
     @BindView(R.id.tv_live_state)
     TextView tvLiveState;
     @BindView(R.id.tv_follow_state)
-    TextView tvFollowState;
+    LinearLayout tvFollowState;
     @BindView(R.id.rv_medal_wall)
     RecyclerView rvMedalWall;
     @BindView(R.id.tv_copy_num)
@@ -228,7 +226,6 @@ public class PersonalInfoActivity extends BaseActivity {
 
     private void setView(PersonalInfoBean.DataBean userBean) {
         GlideImageLoader.getInstace().displayImage(this, userBean.getAvatar(), ivAvatar);
-        Picasso.with(this).load(userBean.getAvatar()).transform(new BlurTransformation(this)).into(ivPersonalCover);
         tvNickName.setText(userBean.getNickname());
         String introduce = userBean.getIntroduce();
         if (!TextUtils.isEmpty(introduce)) {
