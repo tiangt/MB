@@ -56,8 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:background="@drawable/shape_pk_progress">
+                    android:layout_marginRight="2dp">
 
                     <!--<ProgressBar-->
                     <!--android:id="@+id/pb_pk"-->

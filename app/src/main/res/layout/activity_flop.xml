@@ -31,7 +31,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <FrameLayout
-                    android:layout_width="192dp"
+                    android:layout_width="210dp"
                     android:layout_height="35dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/bg_flipper_flop"
@@ -41,7 +41,7 @@
 
                     <ViewFlipper
                         android:id="@+id/flipper_flop"
-                        android:layout_width="192dp"
+                        android:layout_width="210dp"
                         android:layout_height="25dp"
                         android:layout_marginTop="5dp"
                         android:inAnimation="@anim/flipper_in_flop"

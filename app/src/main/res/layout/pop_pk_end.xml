@@ -1,150 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="270dp"
+        android:layout_width="229dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_pk_result_bg"
+        android:background="@drawable/bg_pk_end"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="49.5dp"
+            android:layout_height="13.5dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="7dp"
-            android:text="PK结束"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:layout_marginTop="7.5dp"
+            android:src="@drawable/ic_title_pk_end" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="11dp"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_left_result"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginRight="35dp"/>
+                android:layout_height="58dp"
+                android:layout_weight="1">
 
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
                     android:id="@+id/iv_left_avatar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@color/white" />
-            </LinearLayout>
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    app:civ_border_width="1dp" />
+
+                <ImageView
+                    android:id="@+id/tv_left_result"
+                    android:layout_width="36.5dp"
+                    android:layout_height="25dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="32dp" />
+            </RelativeLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_pk_vs" />
+                android:src="@drawable/ic_vs_pk_end" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_right_result"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="22dp"
-                    android:textColor="@color/white"
-                    android:textSize="12sp" />
-
                 <com.whzl.mengbi.ui.widget.view.CircleImageView
                     android:id="@+id/iv_right_avatar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    app:civ_border_width="1dp" />
+
+                <ImageView
+                    android:id="@+id/tv_right_result"
+                    android:layout_width="36.5dp"
+                    android:layout_height="25dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
-                    android:src="@color/white" />
-            </LinearLayout>
+                    android:layout_marginTop="32dp"
+                    android:text="sdasad"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_mvp_title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="11dp"
-            android:text="本场最佳MVP"
-            android:textColor="#EDFF00"
-            android:textSize="12sp" />
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/tv_mvp_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp">
+                android:src="@drawable/ic_mvp_pk_end" />
 
-                <TextView
-                    android:id="@+id/tv_mvp_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:textSize="10sp"
-                    android:singleLine="true"
-                    android:textColor="#FF4676" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_mvp_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:ellipsize="end"
+                android:maxWidth="100dp"
+                android:singleLine="true"
+                android:textColor="#fdff2c"
+                android:textSize="15sp" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/ll_msg"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="11dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="6.5dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/shape_award_pk_end"
+            android:orientation="horizontal"
+            android:paddingRight="8.5dp">
 
-            <RelativeLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/iv_reward"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:background="@drawable/shape_little_round"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="奖励"
+                android:textColor="@color/white"
+                android:textSize="10dp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/iv_reward"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/shape_little_round"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:text="奖励"
-                    android:textColor="@color/white"
-                    android:textSize="10dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:singleLine="true"
-                    android:text="挑选一种惩罚败方主播的方式"
-                    android:textColor="@color/white"
-                    android:layout_marginLeft="6dp"
-                    android:textSize="10sp" />
-            </RelativeLayout>
+                android:layout_marginLeft="6dp"
+                android:singleLine="true"
+                android:text="挑选一种惩罚败方主播的方式"
+                android:textColor="@color/white"
+                android:textSize="10sp" />
         </LinearLayout>
 
     </LinearLayout>

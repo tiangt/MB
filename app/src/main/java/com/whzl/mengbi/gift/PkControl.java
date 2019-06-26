@@ -787,9 +787,9 @@ public class PkControl {
             }
         });
 
-        TextView leftResult = popView.findViewById(R.id.tv_left_result);
-        TextView rightResult = popView.findViewById(R.id.tv_right_result);
-        TextView mvpTitle = popView.findViewById(R.id.tv_mvp_title);
+        ImageView leftResult = popView.findViewById(R.id.tv_left_result);
+        ImageView rightResult = popView.findViewById(R.id.tv_right_result);
+        ImageView mvpTitle = popView.findViewById(R.id.tv_mvp_title);
         CircleImageView ivLeftAvatar = popView.findViewById(R.id.iv_left_avatar);
         CircleImageView ivRightAvatar = popView.findViewById(R.id.iv_right_avatar);
         LinearLayout llMsg = popView.findViewById(R.id.ll_msg);
@@ -815,22 +815,37 @@ public class PkControl {
             mvpUserId = bean.mvpUser.userId;
         }
         if (status == 0) {
-            leftResult.setText("平");
-            rightResult.setText("平");
+//            leftResult.setText("平");
+//            rightResult.setText("平");
+            GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_tie_pk_end, leftResult);
+            GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_tie_pk_end, rightResult);
+            ivLeftAvatar.setBorderColor(Color.parseColor("#979d8c"));
+            ivRightAvatar.setBorderColor(Color.parseColor("#979d8c"));
+
             mvpTitle.setVisibility(View.GONE);
             llMsg.setVisibility(View.GONE);
             GlideImageLoader.getInstace().displayImage(context, leftAvatar, ivLeftAvatar);
             GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightAvatar);
         } else if (status == 1) {
-            leftResult.setText("胜");
-            rightResult.setText("败");
-            rightResult.setTextColor(Color.argb(125, 255, 255, 255));
+//            leftResult.setText("胜");
+//            rightResult.setText("败");
+//            rightResult.setTextColor(Color.argb(125, 255, 255, 255));
+            GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_win_pk_end, leftResult);
+            GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_lose_pk_end, rightResult);
+            ivLeftAvatar.setBorderColor(Color.parseColor("#f7b927"));
+            ivRightAvatar.setBorderColor(Color.parseColor("#979d8c"));
+
             GlideImageLoader.getInstace().displayImage(context, leftAvatar, ivLeftAvatar);
             GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightAvatar);
         } else if (status == 2) {
-            leftResult.setText("败");
-            leftResult.setTextColor(Color.argb(125, 255, 255, 255));
-            rightResult.setText("胜");
+//            leftResult.setText("败");
+//            rightResult.setText("胜");
+//            leftResult.setTextColor(Color.argb(125, 255, 255, 255));
+            GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_lose_pk_end, leftResult);
+            GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_win_pk_end, rightResult);
+            ivLeftAvatar.setBorderColor(Color.parseColor("#979d8c"));
+            ivRightAvatar.setBorderColor(Color.parseColor("#f7b927"));
+
             GlideImageLoader.getInstace().displayImage(context, leftAvatar, ivLeftAvatar);
             GlideImageLoader.getInstace().displayImage(context, rightAvatar, ivRightAvatar);
         }
