@@ -34,6 +34,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.util.AmountConversionUitls
 import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.UIUtil
+import com.whzl.mengbi.util.clickDelay
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -67,6 +68,8 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     private var roomId = 0
     private val mData = ArrayList<UserFlopInfoBean.ListBean>()
     private var showShuffle = true
+    private var canClick = true
+
 
     init {
         mPresenter = FlopPresenter()
@@ -80,21 +83,21 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     override fun setupView() {
         roomId = intent.getIntExtra("roomId", 0)
         initRecyclerView(recycler_flop)
-        btn_flop_card.setOnClickListener {
+        btn_flop_card.clickDelay {
             transformAll()
         }
 
-        tv_note_flop.setOnClickListener {
+        tv_note_flop.clickDelay {
             showNotePopwindow()
         }
 
-        tv_benlun_flop.setOnClickListener {
+        tv_benlun_flop.clickDelay {
             showBenlunPopwindow()
         }
 
-        tv_start_flop.setOnClickListener {
+        tv_start_flop.clickDelay {
             if (recyclerIsAnim()) {
-                return@setOnClickListener
+                return@clickDelay
             }
             val count = recyclerOpenNum()
             if (count < maxFlopTimes) {
@@ -223,6 +226,9 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
+            if (!canClick) {
+                return
+            }
             if (position >= mData.size) {
                 return
             }
@@ -230,6 +236,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                 return
             }
             if (recyclerIsAnim()) return
+            canClick = false
             val params = HashMap<String, String>()
             params["userId"] = SPUtils.get(this@FlopActivity, SpConfig.KEY_USER_ID, 0L).toString()
             params["roomId"] = roomId.toString()
@@ -293,6 +300,8 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                                     break
                                 }
                             }
+
+                            canClick = true
                         }
 
                         override fun onError(body: ApiResult<UserFlopInfoBean.ListBean>?) {
@@ -304,6 +313,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                                     showEnoughDialog()
                                 }
                             }
+                            canClick = true
                         }
                     })
 
@@ -427,7 +437,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
     private fun recyclerIsAnim(): Boolean {
         for (i in 0 until recycler_flop.childCount) {
-            if (recycler_flop.getChildAt(i).rotateview.anim.isOpenPlay) {
+            if (recycler_flop.getChildAt(i).rotateview.anim.isOpenPlay || recycler_flop.getChildAt(i).rotateview.anim.isClosePlay) {
                 return true
             }
         }

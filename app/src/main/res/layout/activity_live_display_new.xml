@@ -9,13 +9,13 @@
     <RelativeLayout
         android:id="@+id/lrl_live"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#343a42">
+        android:layout_height="match_parent">
 
         <com.whzl.mengbi.ui.widget.view.UnclickLinearLayout
             android:id="@+id/rootView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#B3000000"
             android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout

@@ -27,6 +27,7 @@ public class Rotate3D {
 
     private boolean isOpen = false;
     public boolean isOpenPlay = false;
+    public boolean isClosePlay = false;
 
     private CloseAnimEndListener closeAnimEndListener;
     private OpenAnimEndListener openAnimEndListener;
@@ -39,6 +40,7 @@ public class Rotate3D {
         this.duration = builder.duration;
         this.depthZ = builder.depthZ;
     }
+
 
     public View getParentView() {
         return parentView;
@@ -161,7 +163,7 @@ public class Rotate3D {
 
             @Override
             public void onAnimationStart(Animation animation) {
-
+                isClosePlay = true;
             }
 
             @Override
@@ -186,6 +188,7 @@ public class Rotate3D {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
+                        isClosePlay = false;
                         if (closeAnimEndListener != null) {
                             closeAnimEndListener.onCloseAnimEndListener();
                         }

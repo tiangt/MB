@@ -6,5 +6,5 @@
         android:radius="20dp"/>
 
     <solid
-        android:color="#242b35"/>
+        android:color="@color/live_icon_color"/>
 </shape>
