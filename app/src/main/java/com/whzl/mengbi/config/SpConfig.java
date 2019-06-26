@@ -28,4 +28,5 @@ public interface SpConfig {
     String REDPACKETHELPURL = "redpackethelpurl";
     String KEY_BIND_MOBILE = "bind_mobile";
     String GUESSHELP_URL = "guessHelpUrl";
+    String GUIDE_TIME = "guide_time";
 }

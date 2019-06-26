@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,7 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -30,6 +30,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -43,9 +44,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -110,8 +109,8 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.AudienceEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseCoinUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
-import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.SendBackpackEvent;
+import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
@@ -213,6 +212,11 @@ import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
+import com.whzl.mengbi.util.guide.NewbieGuide;
+import com.whzl.mengbi.util.guide.core.Controller;
+import com.whzl.mengbi.util.guide.listener.OnGuideChangedListener;
+import com.whzl.mengbi.util.guide.listener.OnLayoutInflatedListener;
+import com.whzl.mengbi.util.guide.model.GuidePage;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -487,6 +491,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog guessDialog;
     private BaseAwesomeDialog guessEndDialog;
     private AudienceListBean.DataBean audienceBean;
+    private ObjectAnimator fingerAnimator;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -865,7 +870,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mLivePresenter.followHost(mUserId, mProgramId);
                 break;
             case R.id.btn_close:
-                finish();
+                int guideTime = (int) SPUtils.get(this, SpConfig.GUIDE_TIME, 0);
+                if (guideTime == 0) {
+                    showGuideView();
+                    SPUtils.put(this, SpConfig.GUIDE_TIME, 1);
+                } else {
+                    finish();
+                }
                 break;
             case R.id.btn_chat:
                 if (mUserId == 0 && ignoreChat) {
@@ -961,6 +972,56 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 break;
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        int guideTime = (int) SPUtils.get(this, SpConfig.GUIDE_TIME, 0);
+        if (guideTime == 0) {
+            showGuideView();
+            SPUtils.put(this, SpConfig.GUIDE_TIME, 1);
+        } else {
+            finish();
+        }
+    }
+
+    private void showGuideView() {
+        GuidePage guidePage = GuidePage.newInstance()
+//                                .addHighLight(new RectF(0, 800, 200, 1200))
+                .setLayoutRes(R.layout.view_guide_simple)
+                .setOnLayoutInflatedListener(new OnLayoutInflatedListener() {
+                    @Override
+                    public void onLayoutInflated(View view, Controller controller) {
+                        ImageView ivFinger = view.findViewById(R.id.iv_finger_guide);
+                        fingerAnimator = ObjectAnimator.ofFloat(ivFinger, "translationY", 0,
+                                UIUtil.dip2px(LiveDisplayActivity.this, 27), 0, -UIUtil.dip2px(LiveDisplayActivity.this, 27), 0)
+                                .setDuration(2000);
+                        fingerAnimator.setRepeatCount(ValueAnimator.INFINITE);
+                        fingerAnimator.setInterpolator(new LinearInterpolator());
+                    }
+                });
+        NewbieGuide.with(this)
+                .setLabel("guide1")
+                .alwaysShow(true)
+                .addGuidePage(guidePage)
+                .setOnGuideChangedListener(new OnGuideChangedListener() {
+                    @Override
+                    public void onShowed(Controller controller) {
+                        if (fingerAnimator != null) {
+                            fingerAnimator.start();
+                        }
+                    }
+
+                    @Override
+                    public void onRemoved(Controller controller) {
+                        if (fingerAnimator != null) {
+                            fingerAnimator.end();
+                            fingerAnimator = null;
+                        }
+                    }
+                })
+                .show();
     }
 
     public boolean getCanChatPrivate() {

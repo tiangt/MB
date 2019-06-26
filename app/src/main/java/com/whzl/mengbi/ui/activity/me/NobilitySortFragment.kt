@@ -32,6 +32,6 @@ class NobilitySortFragment : BaseFragment<BasePresenter<BaseView>>() {
 
     override fun init() {
         val img = arguments?.get("img")
-        GlideImageLoader.getInstace().displayImage(activity, img, iv_nobility_sort)
+        GlideImageLoader.getInstace().displayImageNoCache(activity, img, iv_nobility_sort)
     }
 }
