@@ -5,10 +5,9 @@
 
     <ImageView
         android:id="@+id/iv_avatar"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="9dp" />
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/tv_content"
@@ -16,8 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="7dp"
         android:layout_toRightOf="@id/iv_avatar"
-        android:background="@drawable/item_priavet_chat_left"
+        android:background="@drawable/shape_private_left"
         android:textColor="@color/text_color_private_chat"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 
 </RelativeLayout>

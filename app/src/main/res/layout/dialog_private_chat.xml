@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="9.5dp"
-                android:textColor="@color/text_color_private_chat" />
+                android:textColor="@color/text_color_private_chat"
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:id="@+id/ib_close"
@@ -56,6 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="#f8f8f8"
             android:paddingBottom="5dp" />
 
         <LinearLayout
