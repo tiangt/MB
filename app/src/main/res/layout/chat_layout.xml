@@ -3,9 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#f4f4f4"
     android:orientation="vertical"
     tools:showIn="@layout/dialog_live_house_chat">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_chat_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -46,8 +50,8 @@
                 android:paddingLeft="7dp"
                 android:paddingRight="7dp"
                 android:singleLine="true"
-                android:textColorHint="#cececf"
                 android:textColor="@color/text_view"
+                android:textColorHint="#cececf"
                 android:textSize="12sp" />
 
             <Button
@@ -67,6 +71,7 @@
         android:id="@+id/ll_emoji_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#f4f4f4"
         android:orientation="vertical"
         android:visibility="gone">
 
