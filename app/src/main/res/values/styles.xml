@@ -247,7 +247,7 @@
 
     <style name="setting_option_text_style">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">49dp</item>
+        <item name="android:layout_height">50dp</item>
         <item name="android:background">@color/comm_white</item>
         <item name="android:drawableRight">@drawable/arrowright</item>
         <item name="android:paddingRight">@dimen/padding_12</item>

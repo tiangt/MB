@@ -87,6 +87,7 @@
     <string name="user_settings_version_update">版本更新</string>
     <string name="user_settings_exit_login">退出登录</string>
     <string name="user_settings_push">消息推送</string>
+    <string name="user_settings_effect">直播特效设置</string>
     <string name="user_settings_rate">为我评分</string>
     <!--意见反馈-->
     <string name="user_feed_back_content">想要新功能？使用不方便？这里吐槽吧！</string>

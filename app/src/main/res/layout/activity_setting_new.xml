@@ -2,24 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#F5F5F5"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <include layout="@layout/white_toolbar" />
 
-    <include layout="@layout/divider_shawdow_white" />
 
     <RelativeLayout
         android:id="@+id/rl_binding_phone"
         android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:layout_height="50dp"
         android:layout_marginTop="18dp"
-        android:background="@drawable/bg_shawdow_deep">
+        android:background="@color/white">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/padding_12"
             android:text="账号与安全"
@@ -40,16 +39,24 @@
     <TextView
         android:id="@+id/tv_push_setting"
         style="@style/setting_option_text_style"
-        android:layout_height="54dp"
+        android:layout_height="50dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/bg_shawdow_deep"
+        android:background="@color/white"
         android:text="@string/user_settings_push" />
+
+    <TextView
+        android:id="@+id/tv_effect_setting"
+        style="@style/setting_option_text_style"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:text="@string/user_settings_effect" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:background="@drawable/bg_shawdow_deep"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <TextView
@@ -125,8 +132,8 @@
         android:id="@+id/btn_login_out"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="184dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="35dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="31.5dp"
         android:background="@drawable/shape_yellow_btn"
         android:text="@string/login_out"
         android:textColor="#010101"

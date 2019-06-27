@@ -29,4 +29,11 @@ public interface SpConfig {
     String KEY_BIND_MOBILE = "bind_mobile";
     String GUESSHELP_URL = "guessHelpUrl";
     String GUIDE_TIME = "guide_time";
+
+    //直播特效
+    String GIFT_EFFECT = "gift_effect";
+    String CAR_EFFECT = "car_effect";
+    String FLY_EFFECT = "fly_effect";
+    String COMBO_EFFECT = "combo_effect";
+    String CHAT_EFFECT = "chat_effect";
 }

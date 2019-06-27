@@ -20,6 +20,7 @@ import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.activity.me.AccountSecurityActivity;
+import com.whzl.mengbi.ui.activity.me.EffectActivity;
 import com.whzl.mengbi.ui.activity.me.MsgPushActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
@@ -75,7 +76,8 @@ public class SettingActivity extends BaseActivity {
 
 
     @OnClick({R.id.rl_version_container, R.id.btn_login_out, R.id.tv_feedback,
-            R.id.tv_custom, R.id.about_us, R.id.rl_binding_phone, R.id.tv_push_setting, R.id.tv_rate_setting})
+            R.id.tv_custom, R.id.about_us, R.id.rl_binding_phone,
+            R.id.tv_push_setting, R.id.tv_rate_setting,R.id.tv_effect_setting})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_version_container:
@@ -121,6 +123,9 @@ public class SettingActivity extends BaseActivity {
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                break;
+            case R.id.tv_effect_setting:
+                startActivity(new Intent(this, EffectActivity.class));
                 break;
         }
     }
