@@ -6,11 +6,6 @@
     android:orientation="vertical"
     tools:showIn="@layout/dialog_live_house_chat">
 
-    <!--<android.support.v7.widget.RecyclerView-->
-    <!--android:id="@+id/recycler_chat_layout"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content" />-->
-
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,6 +80,7 @@
         android:id="@+id/ll_emoji_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#f4f4f4"
         android:orientation="vertical"
         android:visibility="gone">
 
