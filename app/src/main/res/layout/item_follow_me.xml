@@ -32,7 +32,7 @@
                 <ImageView
                     android:id="@+id/iv_level_icon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="@dimen/anchor_lever_height" />
 
                 <TextView
                     android:id="@+id/tv_anchor_name"

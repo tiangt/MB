@@ -71,4 +71,5 @@
     <dimen name="widgh_live_activity">100dp</dimen>
 
     <dimen name="text_personal_info">14sp</dimen>
+    <dimen name="anchor_lever_height">14dp</dimen>
 </resources>

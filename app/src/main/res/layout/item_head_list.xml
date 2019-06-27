@@ -48,10 +48,11 @@
         <ImageView
             android:id="@+id/iv_level"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/anchor_lever_height"
             android:layout_below="@id/tv_nick_name"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
+            android:scaleType="fitStart"
             android:layout_toRightOf="@id/iv_avatar"
             android:src="@drawable/usergrade" />
 

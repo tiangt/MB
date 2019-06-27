@@ -10,8 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
         android:visibility="gone" />
 
     <RelativeLayout
@@ -55,11 +55,12 @@
         <ImageView
             android:id="@+id/iv_level"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/anchor_lever_height"
             android:layout_below="@id/tv_nick_name"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/iv_avatar" />
+            android:layout_toRightOf="@id/iv_avatar"
+            android:scaleType="fitStart" />
 
         <TextView
             android:id="@+id/tv_value"

@@ -163,7 +163,7 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
             } else {
                 imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(audienceInfoBean.getLevelMap().getUSER_LEVEL()));
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 38), UIUtil.dip2px(getMyActivity(), 16));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 36), UIUtil.dip2px(getMyActivity(), 14));
             params.leftMargin = UIUtil.dip2px(getContext(), 1);
             medalLayout.addView(imageView, params);
 
