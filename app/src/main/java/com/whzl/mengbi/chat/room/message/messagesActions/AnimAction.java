@@ -6,8 +6,10 @@ import android.util.Log;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
+import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -15,7 +17,11 @@ import org.greenrobot.eventbus.EventBus;
 public class AnimAction implements Actions {
     @Override
     public void performAction(String msgStr, final Context context) {
-        LogUtils.e("AnimAction  "+msgStr
+        Boolean giftEffect = (Boolean) SPUtils.get(context, SpConfig.GIFT_EFFECT, true);
+        Boolean carEffect = (Boolean) SPUtils.get(context, SpConfig.CAR_EFFECT, true);
+        Boolean comboEffect = (Boolean) SPUtils.get(context, SpConfig.COMBO_EFFECT, true);
+
+        LogUtils.e("AnimAction  " + msgStr
         );
         final AnimJson animJson = GsonUtils.GsonToBean(msgStr, AnimJson.class);
         if (animJson == null) {
@@ -28,6 +34,19 @@ public class AnimAction implements Actions {
         String imageType;
         int resourceId;
         String aniType = animJson.getAnimType();
+
+        if (("MOBILE_GIFT_GIF".equals(aniType) || "MOBILE_GIFT_SVGA".equals(aniType)) && !giftEffect) {
+            return;
+        }
+
+        if (("MOBILE_CAR_GIF".equals(aniType) || "MOBILE_CAR_SVGA".equals(aniType)) && !carEffect) {
+            return;
+        }
+
+        if (("TOTAl".equals(aniType) || "DIV".equals(aniType)) && !comboEffect) {
+            return;
+        }
+
         if (aniType.equals("MOBILE_GIFT_GIF") || aniType.equals("MOBILE_CAR_GIF")) {
             imageType = "gif";
             String strResId = "";

@@ -18,6 +18,7 @@ import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.RecommendAnchorInfoBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.ui.activity.base.FrgActivity;
+import com.whzl.mengbi.ui.activity.me.EffectActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -56,6 +57,7 @@ public class DrawLayoutControl {
             R.drawable.ic_welfare_draw_layout,
             R.drawable.ic_pk_draw_layout,
             R.drawable.ic_guard_draw_layout,
+            R.drawable.ic_effect_draw_layout,
             R.drawable.ic_set_draw_layout,
             R.drawable.ic_manage_draw_layout};
     private RecyclerView recommendRecycler;
@@ -337,9 +339,16 @@ public class DrawLayoutControl {
                         ((LiveDisplayActivity) activity).login();
                         return;
                     }
-                    activity.startActivity(new Intent(activity, SettingActivity.class).putExtra("from", "live"));
+                    EffectActivity.Companion.start(activity);
                     break;
                 case 6:
+                    if (((LiveDisplayActivity) activity).mUserId == 0) {
+                        ((LiveDisplayActivity) activity).login();
+                        return;
+                    }
+                    activity.startActivity(new Intent(activity, SettingActivity.class).putExtra("from", "live"));
+                    break;
+                case 7:
                     activity.startActivity(new Intent(activity, CustomServiceCenterActivity.class));
                     break;
             }

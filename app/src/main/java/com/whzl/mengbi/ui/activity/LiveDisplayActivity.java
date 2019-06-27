@@ -1359,10 +1359,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RedPackTreasureEvent redPackTreasureEvent) {
-        if (redPackRunWayControl == null) {
-            redPackRunWayControl = new RedPackRunWayControl(this, tvRedBagRunWay);
+        Boolean effect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (effect) {
+            if (redPackRunWayControl == null) {
+                redPackRunWayControl = new RedPackRunWayControl(this, tvRedBagRunWay);
+            }
+            redPackRunWayControl.load(redPackTreasureEvent);
         }
-        redPackRunWayControl.load(redPackTreasureEvent);
 
         if ((redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.USER_SEND_REDPACKET)
                 || redPackTreasureEvent.treasureNum.context.busiCodeName.equals(AppConfig.PROGRAM_TREASURE_SEND_REDPACKET) ||
@@ -2538,8 +2541,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
-
-        if (message instanceof WelcomeMsg) {
+        Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.CAR_EFFECT, true);
+        if (message instanceof WelcomeMsg && carEffect) {
             WelcomeJson welcomeJson = ((WelcomeMsg) message).getmWelcomeJson();
             int royalLevel = ((WelcomeMsg) message).getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
             if (royalLevel > 0) {
@@ -2553,11 +2556,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 royalEnterControl.showEnter((WelcomeMsg) message);
             }
         }
-//        else if (message instanceof PkMessage && ((PkMessage) message).pkJson.context.busiCode.equals("PK_RECORD")) {
-//            initRunWayBroad();
-//            PkEvent pkEvent = new PkEvent(((PkMessage) message).pkJson, this);
-//            mRunWayBroadControl.load(pkEvent);
-//        }
     }
 
 
@@ -2647,22 +2645,24 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(HeadLineEvent event) {
-        if (event.headLineJson.context.rank == 1) {
-            if (weekStarControl == null) {
-                weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
-                weekStarControl.setTvEnter(wsvWeekstar);
-                weekStarControl.setIvEnter(ivWeekstar);
-                weekStarControl.setRlEnter(rlWeekstar);
+        Boolean effect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (effect) {
+            if (event.headLineJson.context.rank == 1) {
+                if (weekStarControl == null) {
+                    weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
+                    weekStarControl.setTvEnter(wsvWeekstar);
+                    weekStarControl.setIvEnter(ivWeekstar);
+                    weekStarControl.setRlEnter(rlWeekstar);
+                }
+                weekStarControl.showEnter(event);
             }
-            weekStarControl.showEnter(event);
-        }
-        if (event.headLineJson.context.programId == mProgramId) {
-            if (headLineControl == null) {
-                headLineControl = new HeadLineControl(hlLayout);
+            if (event.headLineJson.context.programId == mProgramId) {
+                if (headLineControl == null) {
+                    headLineControl = new HeadLineControl(hlLayout);
+                }
+                headLineControl.load(event);
             }
-            headLineControl.load(event);
         }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -2784,10 +2784,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (mProgramId == anchorWishEndEvent.anchorWishJson.context.programId) {
             removeAnchorWish();
         }
-        if (anchorWishControl == null) {
-            anchorWishControl = new AnchorWishControl(tvAnchorWishLive);
+        Boolean effect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (effect) {
+            if (anchorWishControl == null) {
+                anchorWishControl = new AnchorWishControl(tvAnchorWishLive);
+            }
+            anchorWishControl.load(anchorWishEndEvent);
         }
-        anchorWishControl.load(anchorWishEndEvent);
     }
 
     /**
