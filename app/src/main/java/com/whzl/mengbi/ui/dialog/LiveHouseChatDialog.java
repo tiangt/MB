@@ -1,14 +1,20 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -17,6 +23,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
@@ -30,6 +37,8 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
+import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
+import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.GuardDetailDialog;
@@ -43,13 +52,16 @@ import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.SoftKeyboardStateHelper;
 import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -76,6 +88,10 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     RadioGroup rgEmojiSwitch;
     @BindView(R.id.btn_input_broad)
     Button btnInputBroad;
+    //    @BindView(R.id.recycler_chat_layout)
+//    RecyclerView recyclerView;
+    @BindView(R.id.container_hot_word)
+    LinearLayout containerHot;
     private boolean isShowSoftInput = true;
     private int height;
     private int currentSelectedIndex;
@@ -90,6 +106,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     private String mAt;
     private SoftKeyboardStateHelper softKeyboardStateHelper;
     private SoftKeyboardStateHelper.SoftKeyboardStateListener softKeyboardStateListener;
+    private List<String> hotList;
 
     public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
@@ -225,6 +242,83 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
             }
         });
         getBroadNum();
+
+        if (mChatToUser == null) {
+            initHotRv();
+        }
+    }
+
+    private void initHotRv() {
+        hotList = new ArrayList<>();
+        hotList.add("dsfksf");
+        hotList.add("32");
+        hotList.add("dsf543ksf");
+        hotList.add("fkdpok");
+        hotList.add("goprke");
+        hotList.add("gop");
+        hotList.add("gfdkp");
+        hotList.add("gopfdkk");
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+//        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+//            @Override
+//            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+//                super.getItemOffsets(outRect, view, parent, state);
+//                outRect.left = UIUtil.dip2px(getActivity(), 3);
+//                outRect.right = UIUtil.dip2px(getActivity(), 3);
+//                outRect.top = UIUtil.dip2px(getActivity(), 3);
+//                outRect.bottom = UIUtil.dip2px(getActivity(), 3);
+//            }
+//        });
+//        recyclerView.setAdapter(new BaseListAdapter() {
+//            @Override
+//            protected int getDataCount() {
+//                return hotList.size();
+//            }
+//
+//            @Override
+//            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
+//                View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hot_word, parent, false);
+//                return new HotWordHolder(inflate);
+//            }
+//        });
+
+        for (int i = 0; i < hotList.size(); i++) {
+            String s = hotList.get(i);
+            View inflate = LayoutInflater.from(getActivity()).inflate(R.layout.item_hot_word, null);
+            LinearLayout.LayoutParams layoutParams =
+                    new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.leftMargin = 3;
+            layoutParams.rightMargin = 3;
+            ((TextView) inflate.findViewById(R.id.tv_hot_word)).setText(s);
+            inflate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((LiveDisplayActivity) getActivity()).sendMessage(s, null);
+                }
+            });
+            containerHot.addView(inflate,layoutParams);
+        }
+    }
+
+    class HotWordHolder extends BaseViewHolder {
+
+        private final TextView text;
+
+        public HotWordHolder(View itemView) {
+            super(itemView);
+            text = itemView.findViewById(R.id.tv_hot_word);
+        }
+
+        @Override
+        public void onBindViewHolder(int position) {
+            text.setText(hotList.get(position));
+        }
+
+        @Override
+        public void onItemClick(View view, int position) {
+            super.onItemClick(view, position);
+            ((LiveDisplayActivity) getActivity()).sendMessage(hotList.get(position), null);
+        }
     }
 
 
