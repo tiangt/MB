@@ -14,6 +14,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.dialog.fragment.ManagerListFragment;
 import com.whzl.mengbi.ui.dialog.fragment.UserListFragment;
 import com.whzl.mengbi.ui.widget.tablayout.TabLayout;
+import com.whzl.mengbi.util.UserIdentity;
 
 import java.util.ArrayList;
 
@@ -99,6 +100,19 @@ public class UserListDialog extends BaseFullScreenDialog {
             setUserTitle(0);
         } else {
             setUserTitle(audienceBean.total);
+        }
+
+        if (audienceBean == null || audienceBean.getList() == null || audienceBean.getList().size() == 0) {
+            setManagerTitle(0);
+        } else {
+            int num = 0;
+            for (int i = 0; i < audienceBean.getList().size(); i++) {
+                int mIdentity = audienceBean.getList().get(i).getIdentity();
+                if (mIdentity == UserIdentity.OPTR_MANAGER || mIdentity == UserIdentity.ROOM_MANAGER) {
+                    num += 1;
+                }
+            }
+            setManagerTitle(num);
         }
     }
 
