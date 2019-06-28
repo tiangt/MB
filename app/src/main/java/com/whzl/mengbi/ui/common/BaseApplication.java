@@ -8,6 +8,9 @@ import android.net.http.HttpResponseCache;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.baidu.mobstat.StatService;
 import com.github.sahasbhop.apngview.ApngImageLoader;
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
@@ -112,6 +115,26 @@ public class BaseApplication extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        initCloudChannel(this);
+
+    }
+
+    private void initCloudChannel(Context applicationContext) {
+        PushServiceFactory.init(applicationContext);
+        CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        pushService.register(applicationContext, new CommonCallback() {
+            @Override
+            public void onSuccess(String response) {
+                LogUtils.d("init cloudchannel success");
+            }
+
+            @Override
+            public void onFailed(String errorCode, String errorMessage) {
+                LogUtils.d("init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+            }
+        });
+        String deviceId = pushService.getDeviceId();
+        LogUtils.e("ssssssssssssss    "+deviceId);
     }
 
     private DaoSession daoSession;

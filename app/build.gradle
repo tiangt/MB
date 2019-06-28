@@ -139,7 +139,7 @@ dependencies {
     implementation 'com.contrarywind:Android-PickerView:4.1.7'
     //友盟基础组件
     implementation 'com.umeng.sdk:common:1.5.3'
-    implementation 'com.umeng.sdk:utdid:1.1.5.3'
+//    implementation 'com.umeng.sdk:utdid:1.1.5.3'
     //金山云
     implementation files('libs/ksylive.jar')
     implementation files('libs/zxing.jar')
@@ -192,6 +192,7 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:4.0.1'
     implementation 'com.zhihu.android:matisse:0.5.2-beta4'
     implementation 'top.zibin:Luban:1.1.8'
+    implementation 'com.aliyun.ams:alicloud-android-push:3.1.4'
 }
 
 protobuf {
