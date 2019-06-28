@@ -9,6 +9,8 @@
         android:id="@+id/tv_flipper_flop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="12sp" />
 </LinearLayout>

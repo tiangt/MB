@@ -22,12 +22,13 @@ public class Rotate3D {
     private int centerY;
     private int depthZ;
     private int duration;
-    private Rotate3dAnimation openAnimation;
-    private Rotate3dAnimation closeAnimation;
+    public Rotate3dAnimation openAnimation;
+    public Rotate3dAnimation closeAnimation;
 
     private boolean isOpen = false;
     public boolean isOpenPlay = false;
     public boolean isClosePlay = false;
+    public boolean isWaitPlay = false;
 
     private CloseAnimEndListener closeAnimEndListener;
     private OpenAnimEndListener openAnimEndListener;

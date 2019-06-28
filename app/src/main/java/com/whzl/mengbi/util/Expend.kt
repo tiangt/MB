@@ -1,9 +1,7 @@
 package com.whzl.mengbi.util
 
 import android.app.Activity
-import android.content.Context
 import android.view.View
-import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.util.Expend.SPACE_TIME
 import com.whzl.mengbi.util.Expend.hash
 import com.whzl.mengbi.util.Expend.lastClickTime

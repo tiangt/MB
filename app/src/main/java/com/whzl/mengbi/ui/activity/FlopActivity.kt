@@ -31,10 +31,7 @@ import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewConvertListener
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
-import com.whzl.mengbi.util.AmountConversionUitls
-import com.whzl.mengbi.util.SPUtils
-import com.whzl.mengbi.util.UIUtil
-import com.whzl.mengbi.util.clickDelay
+import com.whzl.mengbi.util.*
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -58,6 +55,7 @@ import java.util.concurrent.TimeUnit
  */
 class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
+    private var awesomeDialog: AwesomeDialog? = null
     private lateinit var subList: MutableList<FlopAwardRecordBean.ListBean>
     private var recordList = java.util.ArrayList<FlopAwardRecordBean.ListBean>()
     private var maxFlopTimes: Int = 0
@@ -229,6 +227,10 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
             if (!canClick) {
                 return
             }
+            if (mData.size == 0) {
+                toast(this@FlopActivity, "请点击开始翻牌")
+                return
+            }
             if (position >= mData.size) {
                 return
             }
@@ -273,10 +275,12 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                                     for (i in 0 until recycler_flop.childCount) {
                                         if (!recycler_flop.getChildAt(i).rotateview.anim.isOpen) {
                                             recycler_flop.getChildAt(i).rotateview.transform()
+                                            recycler_flop.getChildAt(i).rotateview.anim.isWaitPlay = true
                                             disposable = Observable.timer(2, TimeUnit.SECONDS)
                                                     .subscribeOn(Schedulers.io())
                                                     .observeOn(AndroidSchedulers.mainThread())
                                                     .subscribe {
+                                                        recycler_flop.getChildAt(i).rotateview.anim.isWaitPlay = false
                                                         recycler_flop.getChildAt(i).rotateview.transform()
                                                     }
                                         }
@@ -399,8 +403,11 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
      * 洗牌dialog
      */
     private fun showShuffleDialog(count: Int) {
-        val awesomeDialog = AwesomeDialog.init()
-        awesomeDialog?.setLayoutId(R.layout.dialog_simple)?.setConvertListener(object : ViewConvertListener() {
+        if (awesomeDialog != null && awesomeDialog!!.isAdded) {
+            return
+        }
+        awesomeDialog = AwesomeDialog.init()
+        awesomeDialog!!.setLayoutId(R.layout.dialog_simple)?.setConvertListener(object : ViewConvertListener() {
             override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
                 val textView = holder?.getView<TextView>(R.id.tv_content_simple_dialog)
                 textView?.text = "洗牌需要花费 "
@@ -437,7 +444,8 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
     private fun recyclerIsAnim(): Boolean {
         for (i in 0 until recycler_flop.childCount) {
-            if (recycler_flop.getChildAt(i).rotateview.anim.isOpenPlay || recycler_flop.getChildAt(i).rotateview.anim.isClosePlay) {
+            if (recycler_flop.getChildAt(i).rotateview.anim.isWaitPlay ||
+                    recycler_flop.getChildAt(i).rotateview.anim.isOpenPlay || recycler_flop.getChildAt(i).rotateview.anim.isClosePlay) {
                 return true
             }
         }
@@ -458,14 +466,15 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     override fun onUserFlopInfoSuccess(userFlopInfoBean: UserFlopInfoBean?) {
         shufflePrice = userFlopInfoBean?.shufflePrice!!
         maxFlopTimes = userFlopInfoBean.maxFlopTimes
+        tv_luck_flop.text = userFlopInfoBean.userLuckVal.toString()
         if (userFlopInfoBean.list == null || userFlopInfoBean.list.isEmpty()) {
             GlideImageLoader.getInstace().displayImage(this, R.drawable.ic_fanpai_flop, iv_state_flop)
             showShuffle = false
+            tv_price_flop.text = priceList?.get(0)?.number.toString()
         } else {
             mData.clear()
             mData.addAll(userFlopInfoBean.list!!)
             adapter.notifyDataSetChanged()
-            tv_luck_flop.text = userFlopInfoBean.userLuckVal.toString()
             var dex = 0
             for (i in 0 until mData.size) {
                 if (mData[i].index > 0) {
@@ -513,12 +522,14 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe {
+                                recycler_flop.getChildAt(i).rotateview.anim.isWaitPlay = false
                                 recycler_flop.getChildAt(i).rotateview.transform()
                             }
 //                    }
                     recycler_flop.getChildAt(i).rotateview.anim.setOpenAnimEndListener(null)
                 }
                 recycler_flop.getChildAt(i).rotateview.transform()
+                recycler_flop.getChildAt(i).rotateview.anim.isWaitPlay = true
             }
         })
     }
