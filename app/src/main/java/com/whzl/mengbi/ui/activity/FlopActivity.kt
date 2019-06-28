@@ -492,6 +492,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     }
 
     private fun startFlop() {
+        tv_start_flop.isEnabled = false
         mPresenter.startFlop(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
     }
 
@@ -500,6 +501,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     }
 
     override fun onStartFlopSuccess(userFlopInfoBean: UserFlopInfoBean?) {
+        tv_start_flop.isEnabled = true
         showShuffle = true
         mData.clear()
         mData.addAll(userFlopInfoBean?.list!!)
@@ -535,6 +537,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     }
 
     override fun onStartFlopError(code: Int) {
+        tv_start_flop.isEnabled = true
         when (code) {
             -1211 -> showEnoughDialog()
         }
