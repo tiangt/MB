@@ -378,6 +378,7 @@
         <activity android:name=".ui.activity.me.ModifyPswActivity" />
         <activity android:name=".ui.activity.FlopActivity" />
         <activity android:name=".ui.activity.me.EffectActivity" />
+        <activity android:name=".ui.activity.FirstActivity" />
 
         <!-- Push SDK 相关组件，required-->
         <!-- 消息接收服务 -->

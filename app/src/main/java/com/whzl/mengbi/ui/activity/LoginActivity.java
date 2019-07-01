@@ -341,6 +341,8 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
             setResult(RESULT_OK);
         } else if ("logindialog".equals(activityFrom) || "account".equals(activityFrom)) {
             setResult(RESULT_OK);
+        } else if (FirstActivity.class.toString().equals(activityFrom)) {
+            setResult(RESULT_OK);
         }
         EventBus.getDefault().post(new LoginSuccussEvent());
         finish();

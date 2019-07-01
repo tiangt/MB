@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.text.TextUtils;
 
@@ -125,19 +126,43 @@ public class SplashActivity extends BaseActivity {
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_SESSION_ID, visitorUserInfo.getData().getSessionId());
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, visitorUserInfo.getData().getNickname());
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.KEY_HAS_RECHARGED, false);
-                            delayJumpToHomeActivity(false);
+                            delayJumpToFirstActivity();
                         } else {
-                            delayJumpToHomeActivity(false);
+                            delayJumpToFirstActivity();
                         }
                     }
 
                     @Override
                     public void onReqFailed(String errorMsg) {
-                        delayJumpToHomeActivity(false);
+                        delayJumpToFirstActivity();
                     }
                 });
     }
 
+    @SuppressLint("CheckResult")
+    private void delayJumpToFirstActivity() {
+//        Observable.just(isNormalLogin)
+//                .delay(1, TimeUnit.SECONDS)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe((Boolean s) -> {
+//                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+//                    intent.putExtra("isNormalLogin", isNormalLogin);
+//                    startActivity(intent);
+//                    finish();
+//                });
+
+        Observable.timer(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    Intent intent = new Intent(SplashActivity.this, FirstActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
+    }
+
+    @SuppressLint("CheckResult")
     private void delayJumpToHomeActivity(boolean isNormalLogin) {
         Observable.just(isNormalLogin)
                 .delay(1, TimeUnit.SECONDS)
