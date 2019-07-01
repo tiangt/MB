@@ -371,6 +371,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
             PersonalInfoBean.DataBean.GoodsListBean goodsListBean = userBean.getGoodsList().get(i);
             if ("PRETTY_NUM".equals(goodsListBean.getGoodsType())) {
                 tvPrettyNum.setVisibility(View.VISIBLE);
+                mTvAnchorId.setVisibility(View.GONE);
                 tvPrettyNum.setPrettyTextSize(10);
                 if ("A".equals(goodsListBean.getGoodsColor())) {
                     tvPrettyNum.setPrettyNum(goodsListBean.getGoodsName());
