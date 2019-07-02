@@ -48,4 +48,5 @@ public interface LivePresenter {
 
     void getUpdownAnchor();
 
+    void getRoyalCarList();
 }

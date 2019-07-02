@@ -23,6 +23,7 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
@@ -550,6 +551,27 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(ApiResult<UpdownAnchorBean> body) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getRoyalCarList(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .royalCarList(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<RoyalCarListBean>() {
+
+
+                    @Override
+                    public void onSuccess(RoyalCarListBean jsonElement) {
+                        listener.onRoyalCarListSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(ApiResult<RoyalCarListBean> body) {
 
                     }
                 });

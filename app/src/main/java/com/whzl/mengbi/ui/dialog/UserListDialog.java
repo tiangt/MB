@@ -1,6 +1,7 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageButton;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.AudienceListBean;
+import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper;
 import com.whzl.mengbi.ui.dialog.base.BaseFullScreenDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
@@ -39,10 +41,12 @@ public class UserListDialog extends BaseFullScreenDialog {
     private ArrayList<String> titles;
     private ArrayList<Fragment> fragments;
     private AudienceListBean.DataBean audienceBean;
+    private RoyalCarListBean royalCarListBean;
 
-    public static BaseFullScreenDialog newInstance(AudienceListBean.DataBean audienceBean) {
+    public static BaseFullScreenDialog newInstance(AudienceListBean.DataBean audienceBean, RoyalCarListBean royalCarListBean) {
         Bundle args = new Bundle();
         args.putParcelable("audienceBean", audienceBean);
+        args.putParcelable("royalCarListBean", royalCarListBean);
         UserListDialog dialog = new UserListDialog();
         dialog.setArguments(args);
         return dialog;
@@ -57,13 +61,15 @@ public class UserListDialog extends BaseFullScreenDialog {
     public void convertView(ViewHolder holder, BaseFullScreenDialog dialog) {
         if (getArguments() != null) {
             audienceBean = getArguments().getParcelable("audienceBean");
+            royalCarListBean = getArguments().getParcelable("royalCarListBean");
         }
+
+        fragments = new ArrayList<>();
         titles = new ArrayList<>();
         titles.add("玩家列表");
         titles.add("房管列表");
-        fragments = new ArrayList<>();
-        fragments.add(UserListFragment.newInstance(audienceBean));
-        fragments.add(ManagerListFragment.newInstance(audienceBean));
+        fragments.add(UserListFragment.newInstance(audienceBean, royalCarListBean));
+        fragments.add(ManagerListFragment.newInstance(audienceBean,royalCarListBean));
         viewpager.setAdapter(new FragmentPagerAdaper(getChildFragmentManager(), fragments, titles));
         viewpager.setCurrentItem(0);
 
@@ -72,7 +78,6 @@ public class UserListDialog extends BaseFullScreenDialog {
         tabLayout.setNeedSwitchAnimation(true);
         tabLayout.setSelectedTabIndicatorWidth(20);
         tabLayout.setupWithViewPager(viewpager);
-
         getManagerAmount(audienceBean);
     }
 

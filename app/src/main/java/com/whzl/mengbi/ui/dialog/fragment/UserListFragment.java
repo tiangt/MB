@@ -20,6 +20,7 @@ import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.eventbus.event.AudienceEvent;
 import com.whzl.mengbi.model.entity.AudienceListBean;
+import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
@@ -47,11 +48,13 @@ import butterknife.ButterKnife;
 public class UserListFragment extends BasePullListFragment<AudienceListBean.AudienceInfoBean, BasePresenter> {
 
     private AudienceListBean.DataBean audienceBean;
+    private RoyalCarListBean royalList;
 
-    public static UserListFragment newInstance(AudienceListBean.DataBean audienceBean) {
+    public static UserListFragment newInstance(AudienceListBean.DataBean audienceBean, RoyalCarListBean listBean) {
         UserListFragment fragment = new UserListFragment();
         Bundle args = new Bundle();
         args.putParcelable("audienceBean", audienceBean);
+        args.putParcelable("royalList", listBean);
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,6 +73,7 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
     @Override
     public void init() {
         super.init();
+        royalList = getArguments().getParcelable("royalList");
         hideDividerShawdow(null);
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_follow_sort, getPullView(), false);
         TextView content = view.findViewById(R.id.tv_content);
@@ -140,7 +144,6 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
             levelLayout.removeAllViews();
             medalLayout.removeAllViews();
             tvPrettyNum.setVisibility(View.GONE);
-            ivCar.setVisibility(View.GONE);
             tvName.setText(audienceInfoBean.getName());
             GlideImageLoader.getInstace().displayCircleAvatar(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
             int identity = audienceInfoBean.getIdentity();
@@ -241,6 +244,21 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
                 LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
                 mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 3);
                 medalLayout.addView(mgrView, mgrViewParams);
+            }
+
+            if (audienceInfoBean.getLevelMap() != null) {
+                if (royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1) != null) {
+                    GlideImageLoader.getInstace().displayImage(getContext()
+                            , royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1).getCarImageUrl(), ivCar);
+                } else {
+                    for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
+                        AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
+                        if ("CAR".equals(medalBean.getGoodsType())) {
+                            GlideImageLoader.getInstace().displayImage(getContext()
+                                    , medalBean.getGoodsIcon(), ivCar);
+                        }
+                    }
+                }
             }
 
         }

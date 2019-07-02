@@ -153,6 +153,7 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunwayBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
@@ -495,6 +496,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog guessEndDialog;
     private AudienceListBean.DataBean audienceBean;
     private ObjectAnimator fingerAnimator;
+    private RoyalCarListBean royalCarListBean;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -813,6 +815,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         mLivePresenter.getUserSet(mUserId);
         mLivePresenter.getRedPackList(mProgramId, mUserId);
+        mLivePresenter.getRoyalCarList();
     }
 
     private void getRoomToken() {
@@ -926,7 +929,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     return;
                 }
 
-                mUserListDialog = UserListDialog.newInstance(audienceBean)
+                mUserListDialog = UserListDialog.newInstance(audienceBean,royalCarListBean)
                         .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
                         .show(getSupportFragmentManager());
                 break;
@@ -1657,6 +1660,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
             refreshBottomRightVp();
         }
+    }
+
+    @Override
+    public void onGetRoyalCarListSuccess(RoyalCarListBean jsonElement) {
+        royalCarListBean = jsonElement;
     }
 
     private void setupPlayerSize(int height, int width) {

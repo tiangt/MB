@@ -1,6 +1,7 @@
 package com.whzl.mengbi.model;
 
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
+import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 
 import java.util.HashMap;
 
@@ -50,4 +51,6 @@ public interface LiveModel {
     void anchorWish(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void getUpdownAnchor(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void getRoyalCarList(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

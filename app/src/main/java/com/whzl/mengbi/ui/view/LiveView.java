@@ -18,6 +18,7 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 
@@ -76,4 +77,6 @@ public interface LiveView {
     void onUpdownAnchors(UpdownAnchorBean jsonElement);
 
     void onRightBottomActivityError();
+
+    void onGetRoyalCarListSuccess(RoyalCarListBean jsonElement);
 }

@@ -3,7 +3,6 @@ package com.whzl.mengbi.ui.dialog.fragment;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -17,11 +16,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.eventbus.event.AudienceEvent;
 import com.whzl.mengbi.model.entity.AudienceListBean;
+import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
@@ -34,25 +33,16 @@ import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.util.network.retrofit.ApiFactory;
-import com.whzl.mengbi.util.network.retrofit.ApiObserver;
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 房管列表
@@ -65,10 +55,12 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
     private int mIdentity;
     private List<AudienceListBean.AudienceInfoBean> audienceInfoBeans = new ArrayList<>();
     private AudienceListBean.DataBean audienceBean;
+    private RoyalCarListBean royalList;
 
-    public static ManagerListFragment newInstance(AudienceListBean.DataBean audienceBean) {
+    public static ManagerListFragment newInstance(AudienceListBean.DataBean audienceBean, RoyalCarListBean listBean) {
         Bundle args = new Bundle();
         args.putParcelable("audienceBean", audienceBean);
+        args.putParcelable("royalList", listBean);
         ManagerListFragment fragment = new ManagerListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -88,6 +80,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
     @Override
     public void init() {
         super.init();
+        royalList = getArguments().getParcelable("royalList");
         hideDividerShawdow(null);
         View view = LayoutInflater.from(getMyActivity()).inflate(R.layout.empty_follow_sort, getPullView(), false);
         TextView content = view.findViewById(R.id.tv_content);
@@ -182,7 +175,6 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                 levelLayout.removeAllViews();
                 managerLayout.removeAllViews();
                 tvPrettyNum.setVisibility(View.GONE);
-                ivCar.setVisibility(View.GONE);
                 tvName.setText(audienceInfoBean.getName());
                 GlideImageLoader.getInstace().displayCircleAvatar(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
                 if (audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
@@ -282,6 +274,21 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                     LinearLayout.LayoutParams mgrViewParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
                     mgrViewParams.leftMargin = UIUtil.dip2px(getContext(), 3);
                     levelLayout.addView(mgrView, mgrViewParams);
+                }
+
+                if (audienceInfoBean.getLevelMap() != null) {
+                    if (royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1) != null) {
+                        GlideImageLoader.getInstace().displayImage(getContext()
+                                , royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1).getCarImageUrl(), ivCar);
+                    } else {
+                        for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
+                            AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
+                            if ("CAR".equals(medalBean.getGoodsType())) {
+                                GlideImageLoader.getInstace().displayImage(getContext()
+                                        , medalBean.getGoodsIcon(), ivCar);
+                            }
+                        }
+                    }
                 }
             }
         }

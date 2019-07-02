@@ -18,6 +18,7 @@ import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.model.impl.LiveModelImpl;
@@ -140,6 +141,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     public void onRightBottomActivityError() {
         if (liveView != null) {
             liveView.onRightBottomActivityError();
+        }
+    }
+
+    @Override
+    public void onRoyalCarListSuccess(RoyalCarListBean jsonElement) {
+        if (liveView != null) {
+            liveView.onGetRoyalCarListSuccess(jsonElement);
         }
     }
 
@@ -389,6 +397,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         HashMap map = new HashMap();
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getUpdownAnchor(signPramsMap, this);
+    }
+
+    @Override
+    public void getRoyalCarList() {
+        HashMap map = new HashMap();
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getRoyalCarList(signPramsMap, this);
     }
 
     public void getRedPackList(int mProgramId, long mUserId) {

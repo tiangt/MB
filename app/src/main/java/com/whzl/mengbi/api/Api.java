@@ -3,6 +3,7 @@ package com.whzl.mengbi.api;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.FlopPriceBean;
 import com.whzl.mengbi.model.GuardListBean;
+import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AllGuessBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
@@ -21,7 +22,6 @@ import com.whzl.mengbi.model.entity.CheckMsgRemindBean;
 import com.whzl.mengbi.model.entity.DailyTaskBean;
 import com.whzl.mengbi.model.entity.DemonCarBean;
 import com.whzl.mengbi.model.entity.FlopAwardRecordBean;
-import com.whzl.mengbi.model.entity.FlopCardBean;
 import com.whzl.mengbi.model.entity.FollowSortBean;
 import com.whzl.mengbi.model.entity.FreeGiftBean;
 import com.whzl.mengbi.model.entity.GameGuessBean;
@@ -1290,4 +1290,14 @@ public interface Api {
     @POST("v1/flop/flop-price-list")
     @FormUrlEncoded
     Observable<ApiResult<FlopPriceBean>> flopPrice(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取贵族等级对应的座驾图标
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/goods/royal-car-list")
+    @FormUrlEncoded
+    Observable<ApiResult<RoyalCarListBean>> royalCarList(@FieldMap Map<String, String> params);
 }
