@@ -15,10 +15,12 @@ import android.text.TextUtils;
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.alibaba.sdk.android.push.register.HuaWeiRegister;
+import com.alibaba.sdk.android.push.register.MiPushRegister;
+import com.alibaba.sdk.android.push.register.OppoRegister;
 import com.baidu.mobstat.StatService;
 import com.github.sahasbhop.apngview.ApngImageLoader;
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
-import com.lht.paintview.util.LogUtil;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -30,7 +32,6 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.SDKConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.gen.DaoMaster;
@@ -140,6 +141,15 @@ public class BaseApplication extends Application {
         });
         String deviceId = pushService.getDeviceId();
         LogUtils.e("ssssssssssssss    " + deviceId);
+
+        // 注册方法会自动判断是否支持小米系统推送，如不支持会跳过注册。
+        MiPushRegister.register(applicationContext, "5591784198997", "ZjtN9Tu6dpOkrxHQpzerpw==");
+        // 注册方法会自动判断是否支持华为系统推送，如不支持会跳过注册。
+        HuaWeiRegister.register(applicationContext);
+        //GCM/FCM辅助通道注册
+//        GcmRegister.register(this, sendId, applicationId); //sendId/applicationId为步骤获得的参数
+        // OPPO通道注册
+        OppoRegister.register(applicationContext, "7c6984275e2d4fe1a96b74a34a261b25", "da4f97d2bba94079912eae24f295486c"); // appKey/appSecret在OPPO通道开发者平台获取
     }
 
     private void createNotificationChannel() {
