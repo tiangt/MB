@@ -241,6 +241,13 @@ public class MainActivity extends BaseActivity {
         if (Long.parseLong(SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, 0L).toString()) != 0) {
             getUserInfo();
         }
+
+        String pushId = (String) SPUtils.get(this, SpConfig.PUSH_PROGRAMID, "");
+        if (!TextUtils.isEmpty(pushId)) {
+            startActivity(new Intent(this, LiveDisplayActivity.class)
+                    .putExtra(LiveDisplayActivity.PROGRAMID, Integer.parseInt(pushId)));
+            SPUtils.put(this, SpConfig.PUSH_PROGRAMID, "");
+        }
     }
 
     private void getUserInfo() {
@@ -520,6 +527,7 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         awesomeDialog = null;
         EventBus.getDefault().unregister(this);
+        SPUtils.put(this, SpConfig.PUSH_PROGRAMID, "");
     }
 
     @Subscribe

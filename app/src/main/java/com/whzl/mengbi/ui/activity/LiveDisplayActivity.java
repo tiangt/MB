@@ -140,6 +140,7 @@ import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
+import com.whzl.mengbi.model.entity.ExtraMapBean;
 import com.whzl.mengbi.model.entity.GetActivityBean;
 import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetUserSetBean;
@@ -209,6 +210,7 @@ import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BitmapUtils;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.DateUtils;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
@@ -544,7 +546,13 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mLivePresenter = new LivePresenterImpl(this);
         if (getIntent() != null) {
-            mProgramId = getIntent().getIntExtra(BundleConfig.PROGRAM_ID, -1);
+            String extraMap = getIntent().getStringExtra("extraMap");
+            ExtraMapBean extraMapBean = GsonUtils.GsonToBean(extraMap, ExtraMapBean.class);
+            if (extraMapBean != null && extraMapBean.programId != null) {
+                mProgramId = Integer.parseInt(extraMapBean.programId);
+            } else {
+                mProgramId = getIntent().getIntExtra(BundleConfig.PROGRAM_ID, -1);
+            }
             SPUtils.put(this, "programId", mProgramId);
         }
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
@@ -929,7 +937,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     return;
                 }
 
-                mUserListDialog = UserListDialog.newInstance(audienceBean,royalCarListBean)
+                mUserListDialog = UserListDialog.newInstance(audienceBean, royalCarListBean)
                         .setAnimStyle(R.style.dialog_enter_from_right_out_from_right)
                         .show(getSupportFragmentManager());
                 break;
@@ -2862,16 +2870,21 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     public void removeAnchorWish() {
-        if (mActivityGrands != null && !mActivityGrands.isEmpty()) {
-            for (int i = 0; i < mActivityGrands.size(); i++) {
-                if (mActivityGrands.get(i) instanceof AnchorWishFragment) {
-                    mActivityGrands.remove(i);
+        try {
+            if (mActivityGrands != null && !mActivityGrands.isEmpty()) {
+                for (int i = 0; i < mActivityGrands.size(); i++) {
+                    if (mActivityGrands.get(i) instanceof AnchorWishFragment) {
+                        mActivityGrands.remove(i);
+                    }
                 }
+                mGrandAdaper.notifyDataSetChanged();
+                initActivityPoints();
+                vpActivity.setCurrentItem(0, false);
             }
-            mGrandAdaper.notifyDataSetChanged();
-            initActivityPoints();
-            vpActivity.setCurrentItem(0, false);
+        } catch (Exception e) {
+            vpActivity.setVisibility(View.GONE);
         }
+
     }
 
 

@@ -139,6 +139,22 @@ public class BaseApplication extends Application {
                 LogUtils.d("init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
             }
         });
+        Long userid = (Long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
+        if (userid != 0) {
+            pushService.bindAccount(String.valueOf(userid),
+                    new CommonCallback() {
+                        @Override
+                        public void onSuccess(String s) {
+                            LogUtils.e("bindAccount onSuccess" + s);
+                        }
+
+                        @Override
+                        public void onFailed(String s, String s1) {
+                            LogUtils.e("bindAccount onFailed" + s + "   " + s1);
+                        }
+                    });
+        }
+
         String deviceId = pushService.getDeviceId();
         LogUtils.e("ssssssssssssss    " + deviceId);
 

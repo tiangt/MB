@@ -36,4 +36,6 @@ public interface SpConfig {
     String FLY_EFFECT = "fly_effect";
     String COMBO_EFFECT = "combo_effect";
     String CHAT_EFFECT = "chat_effect";
+
+    String PUSH_PROGRAMID = "push_programid";
 }

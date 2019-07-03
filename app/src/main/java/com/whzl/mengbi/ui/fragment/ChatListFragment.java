@@ -154,6 +154,10 @@ public class ChatListFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
+        Boolean chat = (Boolean) SPUtils.get(getMyActivity(), SpConfig.CHAT_EFFECT, true);
+        if (chat && updatePubChatEvent.msgType.equals("notify")) {
+            return;
+        }
         FillHolderMessage message = updatePubChatEvent.getMessage();
         if (chatList.size() >= TOTAL_CHAT_MSG) {
             chatList.remove(0);

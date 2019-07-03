@@ -2,8 +2,10 @@ package com.whzl.mengbi.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.lht.paintview.util.LogUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
@@ -21,6 +23,7 @@ import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -31,14 +34,31 @@ import io.reactivex.schedulers.Schedulers;
  * @author shaw
  * @date 2018/7/17
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends AndroidPopupActivity {
 
 
     private String deviceId;
 
+//    @Override
+//    protected void initEnv() {
+//        super.initEnv();
+//        // 避免从桌面启动程序后，会重新实例化入口类的activity
+//        if (!this.isTaskRoot()) {
+//            Intent intent = getIntent();
+//            if (intent != null) {
+//                String action = intent.getAction();
+//                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN.equals(action)) {
+//                    finish();
+//                    return;
+//                }
+//            }
+//        }
+//    }
+
+
     @Override
-    protected void initEnv() {
-        super.initEnv();
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         // 避免从桌面启动程序后，会重新实例化入口类的activity
         if (!this.isTaskRoot()) {
             Intent intent = getIntent();
@@ -50,18 +70,20 @@ public class SplashActivity extends BaseActivity {
                 }
             }
         }
-    }
-
-    @Override
-    protected void setupContentView() {
         setContentView(R.layout.activity_splash);
+        loadData();
     }
 
-    @Override
-    protected void setupView() {
-    }
+//    @Override
+//    protected void setupContentView() {
+//        setContentView(R.layout.activity_splash);
+//    }
 
-    @Override
+//    @Override
+//    protected void setupView() {
+//    }
+
+    //    @Override
     protected void loadData() {
         getTimeDiff();
         HashMap<String, String> paramsMap = new HashMap<>();
@@ -194,5 +216,13 @@ public class SplashActivity extends BaseActivity {
                         delayJumpToHomeActivity(false);
                     }
                 });
+    }
+
+    @Override
+    protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
+        String proramId = map.get("programId");
+        startActivity(new Intent(this, MainActivity.class)
+                .putExtra("programId", proramId));
+        finish();
     }
 }

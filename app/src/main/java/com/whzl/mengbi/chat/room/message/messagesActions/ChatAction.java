@@ -38,7 +38,7 @@ public class ChatAction implements Actions {
             @Override
             public void finished(List<SpannableString> imageSpanList) {
                 ChatMessage chatMsg = new ChatMessage(chatJson, context, imageSpanList, false);
-                UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(chatMsg);
+                UpdatePubChatEvent chatEvent = new UpdatePubChatEvent(chatMsg, "chat");
                 EventBus.getDefault().post(chatEvent);
             }
         });

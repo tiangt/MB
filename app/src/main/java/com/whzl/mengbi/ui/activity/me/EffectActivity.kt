@@ -35,44 +35,18 @@ class EffectActivity : BaseActivity<BasePresenter<BaseView>>() {
 
         switch_gift.setOnCheckedChangeListener { _, isChecked ->
             SPUtils.put(this, SpConfig.GIFT_EFFECT, isChecked)
-            if (isChecked) {
-                SPUtils.put(this, SpConfig.CHAT_EFFECT, false)
-                switch_chat.isChecked = false
-            }
         }
         switch_car.setOnCheckedChangeListener { _, isChecked ->
             SPUtils.put(this, SpConfig.CAR_EFFECT, isChecked)
-            if (isChecked) {
-                SPUtils.put(this, SpConfig.CHAT_EFFECT, false)
-                switch_chat.isChecked = false
-            }
         }
         switch_fly.setOnCheckedChangeListener { _, isChecked ->
             SPUtils.put(this, SpConfig.FLY_EFFECT, isChecked)
-            if (isChecked) {
-                SPUtils.put(this, SpConfig.CHAT_EFFECT, false)
-                switch_chat.isChecked = false
-            }
         }
         switch_combo.setOnCheckedChangeListener { _, isChecked ->
             SPUtils.put(this, SpConfig.COMBO_EFFECT, isChecked)
-            if (isChecked) {
-                SPUtils.put(this, SpConfig.CHAT_EFFECT, false)
-                switch_chat.isChecked = false
-            }
         }
         switch_chat.setOnCheckedChangeListener { _, isChecked ->
             SPUtils.put(this, SpConfig.CHAT_EFFECT, isChecked)
-            if (isChecked) {
-                SPUtils.put(this, SpConfig.GIFT_EFFECT, false)
-                SPUtils.put(this, SpConfig.CAR_EFFECT, false)
-                SPUtils.put(this, SpConfig.FLY_EFFECT, false)
-                SPUtils.put(this, SpConfig.COMBO_EFFECT, false)
-                switch_gift.isChecked = false
-                switch_car.isChecked = false
-                switch_fly.isChecked = false
-                switch_combo.isChecked = false
-            }
         }
     }
 

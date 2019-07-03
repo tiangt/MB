@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.NetConfig;
@@ -215,6 +217,17 @@ public class SettingActivity extends BaseActivity {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(strJson, ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
                     showToast("已退出登录");
+                    PushServiceFactory.getCloudPushService().unbindAccount(new CommonCallback() {
+                        @Override
+                        public void onSuccess(String s) {
+
+                        }
+
+                        @Override
+                        public void onFailed(String s, String s1) {
+
+                        }
+                    });
                     setResult(RESULT_OK);
                     finish();
                     delete();

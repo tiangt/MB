@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.common;
 
 import android.app.Activity;
 import android.text.TextUtils;
+
 import com.whzl.mengbi.util.LogUtils;
 
 import java.util.Stack;
@@ -115,6 +116,14 @@ public class ActivityStackManager {
             activity.finish();
         }
         mActivityStack.clear();
+    }
+
+    public boolean empty() {
+        return mActivityStack.empty();
+    }
+
+    public int size() {
+        return mActivityStack.size();
     }
 
 }

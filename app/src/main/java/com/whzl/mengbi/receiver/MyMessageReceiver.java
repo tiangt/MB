@@ -1,10 +1,18 @@
 package com.whzl.mengbi.receiver;
 
 import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.alibaba.sdk.android.push.MessageReceiver;
 import com.alibaba.sdk.android.push.notification.CPushMessage;
+import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.model.entity.ExtraMapBean;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
+import com.whzl.mengbi.ui.common.ActivityStackManager;
+import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.SPUtils;
 
 import java.util.Map;
 
@@ -29,7 +37,19 @@ public class MyMessageReceiver extends MessageReceiver {
 
     @Override
     public void onNotificationOpened(Context context, String title, String summary, String extraMap) {
-        Log.e("MyMessageReceiver", "onNotificationOpened, title: " + title + ", summary: " + summary + ", extraMap:" + extraMap);
+//        if (ActivityStackManager.getInstance() == null) {
+//            Log.e("MyMessageReceiver", "onNotificationOpened, title: " + title + ", summary: " + summary + ", extraMap:" + extraMap);
+        ExtraMapBean extraMapBean = GsonUtils.GsonToBean(extraMap, ExtraMapBean.class);
+        if (ActivityStackManager.getInstance() != null && !ActivityStackManager.getInstance().empty()) {
+            Intent intent = new Intent(context, LiveDisplayActivity.class);
+            intent.putExtra(LiveDisplayActivity.PROGRAMID, Integer.parseInt(extraMapBean.programId));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+            return;
+        }
+        if (extraMapBean != null && extraMapBean.programId != null && !TextUtils.isEmpty(extraMapBean.programId)) {
+            SPUtils.put(context, SpConfig.PUSH_PROGRAMID, extraMapBean.programId);
+        }
     }
 
     @Override
