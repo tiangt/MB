@@ -1502,24 +1502,24 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     private void initBottomRightVp() {
         //周星榜
-//        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-//        weekRankFragment.setTag(4);
-//        mActivityGrands.add(weekRankFragment);
-//
-//        if (mActivityGrands == null || mActivityGrands.isEmpty()) {
-//            return;
-//        }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            mActivityGrands.sort(new Comparator<BaseFragment>() {
-//                @Override
-//                public int compare(BaseFragment o1, BaseFragment o2) {
-//                    return o1.getBaseTag() - o2.getBaseTag();
-//                }
-//            });
-//        }
+        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+        weekRankFragment.setTag(4);
+        mActivityGrands.add(weekRankFragment);
+
+        if (mActivityGrands == null || mActivityGrands.isEmpty()) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mActivityGrands.sort(new Comparator<BaseFragment>() {
+                @Override
+                public int compare(BaseFragment o1, BaseFragment o2) {
+                    return o1.getBaseTag() - o2.getBaseTag();
+                }
+            });
+        }
+        vpActivity.setOffscreenPageLimit(10);
         mGrandAdaper = new ActivityFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
         vpActivity.setAdapter(mGrandAdaper);
-//        vpActivity.setOffscreenPageLimit(mActivityGrands.size());
         vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -1541,7 +1541,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
             }
         });
-//        initActivityPoints();
+        initActivityPoints();
+        vpActivity.setScroll(true);
     }
 
     private void refreshBottomRightVp() {
@@ -1563,7 +1564,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 });
             }
             mGrandAdaper.notifyDataSetChanged();
-            vpActivity.setOffscreenPageLimit(mActivityGrands.size());
+            vpActivity.setOffscreenPageLimit(10);
             initActivityPoints();
             vpActivity.setScroll(true);
         } catch (Exception e) {
@@ -1573,7 +1574,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
 
     private void getRightBottomActivity(int mProgramId, int mAnchorId) {
-        initBottomRightVp();
+//        initBottomRightVp();
         mLivePresenter.getAnchorWish(mAnchorId);
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
         //主播任务
@@ -1593,7 +1594,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             anchorWishFragment.setTag(1);
             mActivityGrands.add(0, anchorWishFragment);
             if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-                refreshBottomRightVp();
+                initBottomRightVp();
             } else if (rightBottomActivityNum > RIGHT_BOTTOM_ACTIVITY) {
                 mGrandAdaper.notifyDataSetChanged();
                 initActivityPoints();
@@ -1634,7 +1635,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             }
             if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-                refreshBottomRightVp();
+                initBottomRightVp();
             }
         } catch (IllegalStateException e) {
             vpActivity.setVisibility(View.GONE);
@@ -1654,7 +1655,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mActivityGrands.add(anchorTaskFragment);
             }
             if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-                refreshBottomRightVp();
+                initBottomRightVp();
             }
         } catch (IllegalStateException e) {
             vpActivity.setVisibility(View.GONE);
@@ -1666,7 +1667,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onRightBottomActivityError() {
         rightBottomActivityNum += 1;
         if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            refreshBottomRightVp();
+            initBottomRightVp();
         }
     }
 
@@ -2439,9 +2440,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         rightBottomActivityNum = 0;
         try {
-            if (mGrandAdaper != null && mActivityGrands != null && mActivityGrands.size() > 0) {
+            if (mGrandAdaper != null) {
+                mGrandAdaper.notifyDataSetChanged();
                 mActivityGrands.clear();
                 mGrandAdaper.notifyDataSetChanged();
+                vpActivity.setScroll(false);
             }
         } catch (IllegalStateException e) {
             vpActivity.setVisibility(View.GONE);

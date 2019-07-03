@@ -38,7 +38,7 @@ public class MyMessageReceiver extends MessageReceiver {
     @Override
     public void onNotificationOpened(Context context, String title, String summary, String extraMap) {
 //        if (ActivityStackManager.getInstance() == null) {
-//            Log.e("MyMessageReceiver", "onNotificationOpened, title: " + title + ", summary: " + summary + ", extraMap:" + extraMap);
+        Log.e("MyMessageReceiver", "onNotificationOpened, title: " + title + ", summary: " + summary + ", extraMap:" + extraMap);
         ExtraMapBean extraMapBean = GsonUtils.GsonToBean(extraMap, ExtraMapBean.class);
         if (ActivityStackManager.getInstance() != null && !ActivityStackManager.getInstance().empty()) {
             Intent intent = new Intent(context, LiveDisplayActivity.class);
