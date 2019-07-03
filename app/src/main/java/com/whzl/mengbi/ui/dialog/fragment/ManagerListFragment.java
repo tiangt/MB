@@ -217,6 +217,13 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                             vip.leftMargin = UIUtil.dip2px(getContext(), 3);
                             managerLayout.addView(vipImage, vip);
                         }
+                        if ("DEMON_CARD".equals(medalBean.getGoodsType())) {
+                            ImageView vipImage = new ImageView(getContext());
+                            vipImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_succubus));
+                            LinearLayout.LayoutParams vip = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 15), UIUtil.dip2px(getMyActivity(), 15));
+                            vip.leftMargin = UIUtil.dip2px(getContext(), 3);
+                            levelLayout.addView(vipImage, vip);
+                        }
                         if ("BADGE".equals(medalBean.getGoodsType())) {
                             Glide.with(getContext())
                                     .load(medalBean.getGoodsIcon())

@@ -38,6 +38,7 @@ public class WelcomeMsg implements FillHolderMessage {
     private WelcomeJson mWelcomeJson;
     public int royalLevel;
     public boolean hasVip = false;
+    public boolean hasSuccubus = false;
     public String prettyNumberOrUserId;
 
     public WelcomeMsg(WelcomeJson welcomeJson, Context context, List<SpannableString> userSpanList) {
@@ -55,11 +56,29 @@ public class WelcomeMsg implements FillHolderMessage {
         }
         this.userLevel = getUserLevel(uid, welcomeJson.getContext().getInfo().getLevelList());
         this.userSpanList = userSpanList;
-        this.hasGuard = userHasGuard(welcomeJson.getContext().getInfo().getUserBagList());
         this.royalLevel = getRoyalLevel(welcomeJson.getContext().getInfo().getLevelList());
-        this.hasVip = userHasVip(welcomeJson.getContext().getInfo().getUserBagList());
         this.prettyNumColor = getPrettyNumColor(welcomeJson.getContext().getInfo().getUserBagList());
         this.prettyNum = getPrettyNumString(welcomeJson.getContext().getInfo().getUserBagList());
+
+        init(welcomeJson.getContext().getInfo().getUserBagList());
+    }
+
+    private void init(List<WelcomeJson.UserBagItem> goodsList) {
+        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
+            return;
+        }
+        int programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
+        for (WelcomeJson.UserBagItem bagItem : goodsList) {
+            if (bagItem.getGoodsType().equals("GUARD") && bagItem.getBindProgramId() == programId) {
+                hasGuard = true;
+            }
+            if (bagItem.getGoodsType().equals("VIP")) {
+                hasVip = true;
+            }
+            if (bagItem.getGoodsType().equals("DEMON_CARD")) {
+                hasSuccubus = true;
+            }
+        }
     }
 
     @Override
@@ -92,6 +111,10 @@ public class WelcomeMsg implements FillHolderMessage {
             }
             if (hasVip) {
                 mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip));
+                mHolder.textView.append(" ");
+            }
+            if (hasSuccubus) {
+                mHolder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_succubus));
                 mHolder.textView.append(" ");
             }
             if (null != userSpanList) {

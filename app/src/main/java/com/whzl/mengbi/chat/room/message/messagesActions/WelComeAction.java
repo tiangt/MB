@@ -22,7 +22,7 @@ import java.util.List;
 public class WelComeAction implements Actions {
     @Override
     public void performAction(String msgStr, final Context context) {
-        LogUtils.e2(msgStr);
+        LogUtils.e2("WelComeAction  " + msgStr);
         WelcomeJson welcomeJson = GsonUtils.GsonToBean(msgStr, WelcomeJson.class);
         if (null == welcomeJson || welcomeJson.getContext() == null || welcomeJson.getContext().getInfo() == null) {
             return;

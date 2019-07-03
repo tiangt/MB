@@ -156,6 +156,10 @@ public class RoyalEnterControl {
                 tvEnter.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_vip));
                 tvEnter.append(" ");
             }
+            if (welcomeMsg.hasSuccubus) {
+                tvEnter.append(LevelUtil.getImageResourceSpan(context, R.drawable.ic_succubus));
+                tvEnter.append(" ");
+            }
             if (null != welcomeMsg.userSpanList) {
                 for (SpannableString spanString : welcomeMsg.userSpanList) {
                     tvEnter.append(spanString);
