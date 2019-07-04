@@ -31,6 +31,7 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.recyclerview.SlideRecyclerView;
+import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -92,12 +93,9 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         initRecycler();
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isAdded()) {
-                    dismiss();
-                }
+        view.setOnClickListener(v -> {
+            if (isAdded()) {
+                dismiss();
             }
         });
     }
@@ -196,6 +194,8 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
         TextView tvTime;
         @BindView(R.id.ll_item_private_chat)
         LinearLayout linearLayout;
+        @BindView(R.id.tv_time_stamp)
+        TextView tvTimeStamp;
 
         public PrivateChatListHolder(View itemView) {
             super(itemView);
@@ -225,6 +225,9 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
                     delete(dataBean);
                 }
             });
+            Long timestamp = dataBean.getTimestamp();
+            String dateToString = DateUtils.getDateToString(timestamp, "HH:mm");
+            tvTimeStamp.setText(dateToString);
         }
 
         @Override
