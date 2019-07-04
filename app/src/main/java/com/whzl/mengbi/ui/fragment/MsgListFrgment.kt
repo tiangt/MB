@@ -142,4 +142,5 @@ class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPres
         loadSuccess(getGoodMsgBean.list)
     }
 
+    override fun setShouldLoadMore() = true
 }

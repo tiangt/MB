@@ -411,6 +411,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView btnOtherFollow;
     @BindView(R.id.lrl_live)
     RelativeLayout rlLive;
+    @BindView(R.id.iv_free_gift)
+    ImageView ivFreeGift;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -817,7 +819,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         });
         compositeDisposable.add(roomRankTotalDisposable);
         if (mUserId == 0) {
-            btnFreeGift.setImageResource(R.drawable.ic_live_free_gift);
+            ivFreeGift.setImageResource(R.drawable.ic_live_free_gift_text);
         } else {
             mLivePresenter.getDailyTaskState(mUserId);
         }
@@ -1932,9 +1934,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetDailyTaskStateSuccess(GetDailyTaskStateBean dailyTaskStateBean) {
         if ("T".equals(dailyTaskStateBean.receive)) {
-            btnFreeGift.setImageResource(R.drawable.ic_live_free_gift_receive);
+            ivFreeGift.setImageResource(R.drawable.ic_live_free_gift_receive);
         } else {
-            btnFreeGift.setImageResource(R.drawable.ic_live_free_gift);
+            ivFreeGift.setImageResource(R.drawable.ic_live_free_gift_text);
         }
     }
 

@@ -12,7 +12,6 @@ import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.CheckLoginResultBean;
 import com.whzl.mengbi.model.entity.TimeStampInfo;
 import com.whzl.mengbi.model.entity.VisitorUserInfo;
-import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.GsonUtils;
@@ -220,9 +219,9 @@ public class SplashActivity extends AndroidPopupActivity {
 
     @Override
     protected void onSysNoticeOpened(String s, String s1, Map<String, String> map) {
-        String proramId = map.get("programId");
-        startActivity(new Intent(this, MainActivity.class)
-                .putExtra("programId", proramId));
-        finish();
+//        String proramId = map.get("programId");
+//        startActivity(new Intent(this, MainActivity.class)
+//                .putExtra("programId", proramId));
+//        finish();
     }
 }
