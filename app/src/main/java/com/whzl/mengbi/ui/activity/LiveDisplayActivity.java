@@ -79,7 +79,6 @@ import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
 import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.OneKeyOfflineEvent;
 import com.whzl.mengbi.chat.room.message.events.PkEvent;
-import com.whzl.mengbi.chat.room.message.events.PlayNotifyEvent;
 import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
 import com.whzl.mengbi.chat.room.message.events.RedPackTreasureEvent;
 import com.whzl.mengbi.chat.room.message.events.RobPrizeEvent;
@@ -96,7 +95,6 @@ import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
-import com.whzl.mengbi.chat.room.message.messageJson.PlayNotifyJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
@@ -104,7 +102,6 @@ import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
-import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.BundleConfig;
@@ -1339,37 +1336,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 , updateProgramEvent.getmProgramJson().getContext().getProgram().getSubscriptionNum()));
     }
 
-    /**
-     * 开播提醒
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(PlayNotifyEvent playNotifyEvent) {
-        PlayNotifyJson.ContextBean contextBean = playNotifyEvent.playNotifyJson.context;
-        if (!playNotify || contextBean.programId == mProgramId) {
-            return;
-        }
-        if (playNotifyDialog != null && playNotifyDialog.isAdded()) {
-            return;
-        }
-        playNotifyDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_play_notify)
-                .setConvertListener(new ViewConvertListener() {
-                    @Override
-                    protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-                        holder.setText(R.id.tv_nick_play_notify, contextBean.nickname);
-                        String jpg = ImageUrl.getAvatarUrl(contextBean.userId, "jpg", contextBean.lastUpdateTime);
-                        GlideImageLoader.getInstace().displayCircleAvatar(
-                                LiveDisplayActivity.this, jpg, holder.getView(R.id.iv_avatar_play_notify));
-                        holder.setOnClickListener(R.id.tv_cancel, v -> dialog.dismiss());
-                        holder.setOnClickListener(R.id.tv_transfer, v -> {
-                            Intent intent = new Intent(LiveDisplayActivity.this, LiveDisplayActivity.class);
-                            intent.putExtra("programId", contextBean.programId);
-                            startActivity(intent);
-                            dialog.dismiss();
-                        });
-                    }
-                })
-                .show(getSupportFragmentManager());
-    }
 
     /**
      * 发送红包消息

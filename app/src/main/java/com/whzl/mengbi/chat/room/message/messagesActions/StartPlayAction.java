@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 public class StartPlayAction implements Actions {
 
     @Override
-    public void performAction(String msgStr,  Context context) {
+    public void performAction(String msgStr, Context context) {
         StartStopLiveJson startStopLiveJson = GsonUtils.GsonToBean(msgStr, StartStopLiveJson.class);
         if (null == startStopLiveJson) {
             return;
