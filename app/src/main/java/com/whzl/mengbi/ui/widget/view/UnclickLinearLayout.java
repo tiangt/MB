@@ -82,7 +82,7 @@ public class UnclickLinearLayout extends LinearLayout {
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         int[] screenSize = DeviceUtils.getScreenSize(context);
         screenWidth = screenSize[0];
-        screenHeight = screenSize[1] - DeviceUtils.getStatusBarHeight(context);
+        screenHeight = screenSize[1] /*- DeviceUtils.getStatusBarHeight(context)*/;
         moveHeight = screenHeight / 3;
         setCurrentState(STATE_NORMAL);
     }

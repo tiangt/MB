@@ -105,11 +105,15 @@ public class RunWayGiftControl {
     }
 
     public void destroy() {
-        if (autoScrollView != null && trackAnim != null) {
+        if (autoScrollView != null) {
             autoScrollView.stopScroll();
             autoScrollView.dispose();
-            trackAnim.stopAnim();
         }
+        if (trackAnim != null) {
+            trackAnim.stopAnim();
+            trackAnim = null;
+        }
+        imageView.setVisibility(View.GONE);
         rxTimerUtil.cancel();
         runwayQueue.clear();
     }

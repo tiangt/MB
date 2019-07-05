@@ -154,7 +154,7 @@ public class ChatListFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePubChatEvent updatePubChatEvent) {
-        Boolean chat = (Boolean) SPUtils.get(getMyActivity(), SpConfig.CHAT_EFFECT, true);
+        Boolean chat = (Boolean) SPUtils.get(getMyActivity(), SpConfig.CHAT_EFFECT, false);
         if (chat && updatePubChatEvent.msgType.equals("notify")) {
             return;
         }

@@ -210,6 +210,7 @@ import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.BitmapUtils;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.DateUtils;
+import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
 import com.whzl.mengbi.util.LogUtils;
@@ -571,7 +572,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     protected void setStatusBar() {
-        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
+//        StatusBarUtil.setColorNoTranslucent(this, Color.parseColor("#181818"));
+        StatusBarUtil.setTransparentForImageView(this, null);
     }
 
     private void initReceiver() {
@@ -641,6 +643,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         initProtectRecycler();
         initDrawLayout(this);
         initPageTouch();
+
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) llTopContainer.getLayoutParams();
+        layoutParams.topMargin = DeviceUtils.getStatusBarHeight(this);
+        llTopContainer.setLayoutParams(layoutParams);
     }
 
     private void initPageTouch() {
@@ -2893,7 +2899,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             return;
         }
         if (llTopDownAnima == null) {
-            llTopDownAnima = ObjectAnimator.ofFloat(llTopContainer, "translationY", -llTopContainer.getMeasuredHeight(), 0);
+            llTopDownAnima = ObjectAnimator.ofFloat(llTopContainer, "translationY", -llTopContainer.getMeasuredHeight() - DeviceUtils.getStatusBarHeight(this), 0);
             llTopDownAnima.setDuration(200);
         }
         if (llTopDownAnima.isRunning()) {
@@ -2908,7 +2914,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (llTopUpAnima == null) {
             llTopUpAnima = ObjectAnimator
-                    .ofFloat(llTopContainer, "translationY", 0, -llTopContainer.getMeasuredHeight());
+                    .ofFloat(llTopContainer, "translationY", 0, -llTopContainer.getMeasuredHeight() - DeviceUtils.getStatusBarHeight(this));
             llTopUpAnima.setDuration(200);
         }
         if (llTopUpAnima.isRunning()) {

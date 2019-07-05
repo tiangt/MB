@@ -25,7 +25,7 @@ class EffectActivity : BaseActivity<BasePresenter<BaseView>>() {
         val car = SPUtils.get(this, SpConfig.CAR_EFFECT, true) as Boolean
         val fly = SPUtils.get(this, SpConfig.FLY_EFFECT, true) as Boolean
         val combo = SPUtils.get(this, SpConfig.COMBO_EFFECT, true) as Boolean
-        val chat = SPUtils.get(this, SpConfig.CHAT_EFFECT, true) as Boolean
+        val chat = SPUtils.get(this, SpConfig.CHAT_EFFECT, false) as Boolean
 
         switch_gift.isChecked = gift
         switch_car.isChecked = car
