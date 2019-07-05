@@ -253,7 +253,7 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
                 medalLayout.addView(mgrView, mgrViewParams);
             }
 
-            if (audienceInfoBean.getLevelMap() != null) {
+            if (audienceInfoBean.getLevelMap() != null && royalList.getList() != null) {
                 if (royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1) != null) {
                     GlideImageLoader.getInstace().displayImage(getContext()
                             , royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1).getCarImageUrl(), ivCar);

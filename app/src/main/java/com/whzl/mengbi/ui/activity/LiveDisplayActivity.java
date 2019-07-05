@@ -454,8 +454,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog mFreeGiftDialog;
     private String mAnchorCover;
     private String mShareUrl;
-    private String mLiveState;
-    private String mIsFollowed;
     private WeekStarControl weekStarControl;
     private LiveWeekRankFragment weekRankFragment;
     private BaseFullScreenDialog mGuardianDialog;
@@ -854,7 +852,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 if (personalInfoDialog != null && personalInfoDialog.isAdded()) {
                     return;
                 }
-                personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId, mIsFollowed, mLiveState)
+                personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId)
                         .setListener((RoomUserInfo.DataBean mViewedUser) -> {
                             if (mUserListDialog != null && mUserListDialog.isAdded()) {
                                 mUserListDialog.dismiss();
@@ -1445,7 +1443,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
             mShareUrl = roomInfoBean.getData().getShareUrl();
 
-            mLiveState = roomInfoBean.getData().getProgramStatus();
             mAnchorCover = roomInfoBean.getData().getCover();
         }
 
@@ -1689,13 +1686,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onFollowHostSuccess() {
         btnFollow.setVisibility(View.GONE);
-        mIsFollowed = "T";
     }
 
     @Override
     public void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data) {
         btnFollow.setVisibility(data.isIsSubs() ? View.GONE : View.VISIBLE);
-        mIsFollowed = data.getIsFollowed();
         if (data != null) {
             mUserId = data.getUserId();
             mRoomUserInfo = data;

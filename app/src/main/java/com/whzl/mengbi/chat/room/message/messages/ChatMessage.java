@@ -42,6 +42,7 @@ public class ChatMessage implements FillHolderMessage {
     private boolean isAnchor = false;
     private boolean hasGuard = false;
     private boolean hasVip = false;
+    private boolean hasSuccubus = false;
     private int programId = 0;
     private SingleTextViewHolder mholder;
     private List<SpannableString> fromSpanList;
@@ -79,8 +80,8 @@ public class ChatMessage implements FillHolderMessage {
         }
         to_level = LevelUtil.getUserLevel(msgJson.getTo_json());
         if (msgJson.getFrom_json() != null && msgJson.getFrom_json().getGoodsList() != null) {
-            hasGuard = userHasGuard(msgJson.getFrom_json().getGoodsList());
-            hasVip = userHasVip(msgJson.getFrom_json().getGoodsList());
+            userHasGuard(msgJson.getFrom_json().getGoodsList());
+//            hasVip = userHasVip(msgJson.getFrom_json().getGoodsList());
         }
     }
 
@@ -157,6 +158,10 @@ public class ChatMessage implements FillHolderMessage {
         }
         if (hasVip) {
             mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_vip));
+            mholder.textView.append(" ");
+        }
+        if (hasSuccubus) {
+            mholder.textView.append(LevelUtil.getImageResourceSpan(mContext, R.drawable.ic_succubus));
             mholder.textView.append(" ");
         }
         if (fromSpanList != null) {
@@ -262,32 +267,22 @@ public class ChatMessage implements FillHolderMessage {
         return faceContentSpanString;
     }
 
-    private boolean userHasGuard(List<FromJson.Good> goodsList) {
+    private void userHasGuard(List<FromJson.Good> goodsList) {
         if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
-            return false;
+            return;
         }
-        boolean hasGuard = false;
         int programId = ChatRoomInfo.getInstance().getRoomInfoBean().getData().getProgramId();
         for (FromJson.Good good : goodsList) {
             if (good.getGoodsType().equals("GUARD") && good.getBindProgramId() == programId) {
                 hasGuard = true;
-                break;
             }
-        }
-        return hasGuard;
-    }
-
-    private boolean userHasVip(List<FromJson.Good> goodsList) {
-        if (ChatRoomInfo.getInstance().getRoomInfoBean() == null || goodsList == null) {
-            return false;
-        }
-        boolean hasVip = false;
-        for (FromJson.Good good : goodsList) {
             if (good.getGoodsType().equals("VIP")) {
                 hasVip = true;
-                break;
+            }
+            if (good.getGoodsType().equals("DEMON_CARD")) {
+                hasSuccubus = true;
             }
         }
-        return hasVip;
+
     }
 }

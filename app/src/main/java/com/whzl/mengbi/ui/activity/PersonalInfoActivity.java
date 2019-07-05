@@ -13,12 +13,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
-import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -34,11 +35,13 @@ import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +49,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author cliang
@@ -106,7 +111,6 @@ public class PersonalInfoActivity extends BaseActivity {
     private PersonalInfoBean.DataBean userBean;
     private int levelValue;
     private String levelType;
-    private String mLiveState;
     private BaseListAdapter medalAdapter;
     private int fansCount;
     private int mProgramId;
@@ -130,7 +134,6 @@ public class PersonalInfoActivity extends BaseActivity {
         Bundle bundle = intent.getExtras();
         mUserId = bundle.getLong("userId", 0); //被访者
 //        mVisitorId = bundle.getLong("visitorId", 0); //访问者
-        mLiveState = bundle.getString("liveState", "");
         mProgramId = bundle.getInt("programId", 0);
         mVisitorId = Long.parseLong(SPUtils.get(this, "userId", 0L).toString());
         getHomePageInfo(mUserId, mVisitorId);
@@ -158,7 +161,7 @@ public class PersonalInfoActivity extends BaseActivity {
                     login();
                     return;
                 }
-                follow(mVisitorId, mUserId);
+                follow(mProgramId, mVisitorId);
                 break;
             case R.id.tv_copy_num:
                 ClipboardUtils.putTextIntoClip(this, mUserId + "");
@@ -374,28 +377,20 @@ public class PersonalInfoActivity extends BaseActivity {
         }
     }
 
-    private void follow(long userId, long followingUserId) {
-        HashMap map = new HashMap();
-        map.put("userId", userId);
-        map.put("followingUserId", followingUserId);
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SOCIAL_FOLLOW, RequestManager.TYPE_POST_JSON, map,
-                new RequestManager.ReqCallBack<Object>() {
+    private void follow(long programId, long followingUserId) {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("programId", programId + "");
+        paramsMap.put("userId", followingUserId + "");
+        ApiFactory.getInstance().getApi(Api.class)
+                .addSub(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
                     @Override
-                    public void onReqSuccess(Object result) {
-                        String jsonStr = result.toString();
-                        ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
-                        if (responseInfo.getCode() == 200) {
-                            tvFollowState.setVisibility(View.GONE);
-                            showToast("关注成功");
-                            tvFansCount.setText(getString(R.string.fans_count, userBean.getFansNum() + 1));
-                        } else {
-                            showToast(responseInfo.getMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onReqFailed(String errorMsg) {
-                        ToastUtils.showToast(errorMsg);
+                    public void onSuccess(JsonElement jsonElement) {
+                        tvFollowState.setVisibility(View.GONE);
+                        showToast("关注成功");
+                        tvFansCount.setText(getString(R.string.fans_count, userBean.getFansNum() + 1));
                     }
                 });
     }

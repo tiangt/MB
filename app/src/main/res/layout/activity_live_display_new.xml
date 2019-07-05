@@ -97,7 +97,7 @@
                                 android:layout_toRightOf="@id/rl_host_info"
                                 android:background="@drawable/shape_live_follow_button"
                                 android:gravity="center"
-                                android:text="订阅"
+                                android:text="关注"
                                 android:textColor="#323232"
                                 android:textSize="13sp" />
 
@@ -292,7 +292,7 @@
                                     android:layout_marginBottom="1dp"
                                     android:background="@drawable/shape_live_follow_button_other"
                                     android:gravity="center"
-                                    android:text="订阅"
+                                    android:text="关注"
                                     android:textColor="#000000"
                                     android:textSize="9sp"
                                     android:visibility="gone" />

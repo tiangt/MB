@@ -123,27 +123,6 @@ public class MineFragment extends BaseFragment implements MeView {
 
     @Override
     public void init() {
-        try {
-            Field topMethod = null;
-            topMethod = ScrollView.class.getDeclaredField("mEdgeGlowTop");
-            topMethod.setAccessible(true);
-            EdgeEffect top = (EdgeEffect) topMethod.get(scrollView);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                top.setColor(Color.TRANSPARENT);
-            }
-
-            Field topMethod2 = null;
-            topMethod2 = ScrollView.class.getDeclaredField("mEdgeGlowBottom");
-            topMethod2.setAccessible(true);
-            EdgeEffect bottom = (EdgeEffect) topMethod2.get(scrollView);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                bottom.setColor(Color.TRANSPARENT);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         mPresent.getUserInfo();
     }
 

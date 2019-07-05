@@ -9,7 +9,7 @@
     <color name="tab_checked">#21D996</color>
     <color name="tab_unchecked">#B9B9B9</color>
 
-    <color name="live_icon_color">#2b2a28</color>
+    <color name="live_icon_color">#1A000000</color>
 
     <color name="text_view">#323232</color>
     <color name="text_color_chat">#ffffff</color>
@@ -176,8 +176,9 @@
     <color name="text_color_use_pack">#2cd996</color>
     <color name="text_color_wait_pack">#ff611b</color>
 
-    <color name="bg_welcome_hasguard">#601F1F1F</color>
-    <color name="bg_welcome_noguard">#601f1f1f</color>
+    <color name="bg_welcome_hasguard">#1A1F1F1F</color>
+    <color name="bg_welcome_noguard">#1A1F1F1F</color>
+
     <color name="text_color_nochat_bei">#f9f9f9</color>
     <color name="text_color_nochat_people">#f9f9f9</color>
     <color name="text_color_nochat">#ff709f</color>

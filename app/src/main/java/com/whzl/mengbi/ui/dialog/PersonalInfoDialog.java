@@ -13,13 +13,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
-import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
@@ -33,12 +33,14 @@ import com.whzl.mengbi.ui.widget.view.PrettyNumText;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.ResourceMap;
-import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
+import com.whzl.mengbi.util.network.retrofit.ApiObserver;
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +48,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -101,9 +105,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private List<RoomUserInfo.LevelMapBean> levelMapBeans;
     private int levelValue;
     private String levelType;
-    private String mIsFollowed;
     private long mVisitorId;
-    private String liveState;
     private PersonalInfoBean.DataBean userBean;
     private int mAnchorLevel;
     private BaseAwesomeDialog operateMoreDialog;
@@ -113,19 +115,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         args.putLong("userId", userId);
         args.putInt("programId", programId);
         args.putLong("visitorId", visitorId); //当前用户ID
-        args.putParcelable("user", user);
-        PersonalInfoDialog dialog = new PersonalInfoDialog();
-        dialog.setArguments(args);
-        return dialog;
-    }
-
-    public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId, String isFollowed, String liveState) {
-        Bundle args = new Bundle();
-        args.putLong("userId", userId); //被访者ID
-        args.putInt("programId", programId);
-        args.putLong("visitorId", visitorId); //当前用户ID
-        args.putString("isFollowed", isFollowed);
-        args.putString("liveState", liveState);
         args.putParcelable("user", user);
         PersonalInfoDialog dialog = new PersonalInfoDialog();
         dialog.setArguments(args);
@@ -154,9 +143,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
 
         mUserId = getArguments().getLong("userId");
         mProgramId = getArguments().getInt("programId");
-        mIsFollowed = getArguments().getString("isFollowed");
         mVisitorId = getArguments().getLong("visitorId");
-        liveState = getArguments().getString("liveState");
         mUser = getArguments().getParcelable("user");
         mAnchorLevel = getArguments().getInt("anchorLevel");
         mTvAnchorId.setText("ID " + mUserId);
@@ -174,7 +161,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 Bundle bundle = new Bundle();
                 bundle.putLong("userId", mUserId);
                 bundle.putLong("visitorId", mVisitorId);
-                bundle.putString("liveState", liveState);
                 bundle.putInt("programId", mProgramId);
                 intent.putExtras(bundle);
                 intent.setClass(getActivity(), PersonalInfoActivity.class);
@@ -194,8 +180,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     dismiss();
                     return;
                 }
-                follow(mVisitorId, mUserId);
-                mIsFollowed = "T";
+                follow(mProgramId, mVisitorId);
                 break;
             case R.id.tv_private_chat:
                 if (mVisitorId == 0) {
@@ -399,7 +384,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private void setupView(RoomUserInfo.DataBean user) {
         GlideImageLoader.getInstace().displayImage(getContext(), user.getAvatar(), mUserAvatar);
         mTvNickName.setText(user.getNickname());
-        mIsFollowed = user.getIsFollowed();
+        boolean isSubs = user.isIsSubs();
         int rank = user.getRank();
         if (rank < 0) {
             tVRank.setText("万名之外");
@@ -442,14 +427,14 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 levelValue = user.getLevelList().get(i).getLevelValue();
                 if (identityId == 10) {
                     rlFollow.setVisibility(View.VISIBLE);
-                    if ("T".equals(mIsFollowed)) {
+                    if (isSubs) {
                         tvFollow.setText(R.string.followed);
                         tvFollow.setTextColor(getResources().getColor(R.color.tran_black));
-                        mIsFollowed = "T";
+//                        mIsFollowed = "T";
                     } else {
                         tvFollow.setText(R.string.not_followed);
                         tvFollow.setTextColor(Color.RED);
-                        mIsFollowed = "F";
+//                        mIsFollowed = "F";
                     }
                     if ("ANCHOR_LEVEL".equals(levelType)) {
                         imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
@@ -560,27 +545,19 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     }
 
 
-    private void follow(long userId, long followingUserId) {
-        HashMap map = new HashMap();
-        map.put("userId", userId);
-        map.put("followingUserId", followingUserId);
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SOCIAL_FOLLOW, RequestManager.TYPE_POST_JSON, map,
-                new RequestManager.ReqCallBack<Object>() {
+    private void follow(long programId, long followingUserId) {
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("programId", programId + "");
+        paramsMap.put("userId", followingUserId + "");
+        ApiFactory.getInstance().getApi(Api.class)
+                .addSub(ParamsUtils.getSignPramsMap(paramsMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<JsonElement>() {
                     @Override
-                    public void onReqSuccess(Object result) {
-                        String jsonStr = result.toString();
-                        ResponseInfo responseInfo = GsonUtils.GsonToBean(jsonStr, ResponseInfo.class);
-                        if (responseInfo.getCode() == 200) {
-                            tvFollow.setText(R.string.followed);
-                            tvFollow.setTextColor(Color.GRAY);
-                        } else {
-                            Toast.makeText(getActivity(), responseInfo.getMsg(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onReqFailed(String errorMsg) {
-                        ToastUtils.showToast(errorMsg);
+                    public void onSuccess(JsonElement jsonElement) {
+                        tvFollow.setText(R.string.followed);
+                        tvFollow.setTextColor(Color.GRAY);
                     }
                 });
     }
