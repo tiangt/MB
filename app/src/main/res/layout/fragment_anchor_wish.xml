@@ -11,20 +11,20 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="2dp"
         android:src="@drawable/ic_text_anchor_wish" />
 
 
     <ImageView
         android:id="@+id/iv_gift"
-        android:layout_width="36dp"
-        android:layout_height="35.5dp"
-        android:layout_marginTop="4dp" />
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="1dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="1dp"
         android:background="@drawable/bg_anchor_wish_list"
         android:gravity="center_horizontal"
         android:orientation="vertical">

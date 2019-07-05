@@ -11,7 +11,8 @@
         android:layout_width="236.5dp"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="20dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_activity_draw_layout"
@@ -39,8 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:overScrollMode="never" />
 
     </LinearLayout>

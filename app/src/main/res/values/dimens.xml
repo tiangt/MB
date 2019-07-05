@@ -67,8 +67,8 @@
     <dimen name="text_content_free_gift">10sp</dimen>
     <dimen name="view_space">6.5dp</dimen>
     <dimen name="textsize_12">12sp</dimen>
-    <dimen name="height_live_activity">130dp</dimen>
-    <dimen name="widgh_live_activity">100dp</dimen>
+    <dimen name="height_live_activity">110dp</dimen>
+    <dimen name="widgh_live_activity">84dp</dimen>
 
     <dimen name="text_personal_info">14sp</dimen>
     <dimen name="anchor_lever_height">14dp</dimen>

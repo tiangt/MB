@@ -787,7 +787,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginRight="7dp"
+                    android:layout_marginRight="9dp"
                     android:layout_marginBottom="5dp"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
@@ -804,7 +804,7 @@
 
                     <LinearLayout
                         android:id="@+id/ll_pager_index"
-                        android:layout_width="100dp"
+                        android:layout_width="@dimen/widgh_live_activity"
                         android:layout_height="5dp"
                         android:layout_marginTop="5dp"
                         android:gravity="center"
