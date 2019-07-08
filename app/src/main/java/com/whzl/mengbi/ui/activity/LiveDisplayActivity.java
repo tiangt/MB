@@ -738,6 +738,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                             chatUser.setPrivateUserId(mViewedUser.getUserId());
                             chatUser.setAvatar(mViewedUser.getAvatar());
                             chatUser.setName(mViewedUser.getNickname());
+                            for (int i = 0; i < mViewedUser.getLevelList().size(); i++) {
+                                RoomUserInfo.LevelMapBean levelBean = mViewedUser.getLevelList().get(i);
+                                if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
+                                    chatUser.setIsAnchor(true);
+                                    chatUser.setAnchorLevel(levelBean.getLevelValue());
+                                    break;
+                                }
+                                if (levelBean.getLevelType().equals("USER_LEVEL")) {
+                                    chatUser.setIsAnchor(false);
+                                    chatUser.setUserLevel(levelBean.getLevelValue());
+                                }
+                            }
                             showPrivateChatDialog(chatUser);
                         }
                     })
@@ -869,6 +881,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                 chatUser.setPrivateUserId(mViewedUser.getUserId());
                                 chatUser.setAvatar(mViewedUser.getAvatar());
                                 chatUser.setName(mViewedUser.getNickname());
+                                for (int i = 0; i < mViewedUser.getLevelList().size(); i++) {
+                                    RoomUserInfo.LevelMapBean levelBean = mViewedUser.getLevelList().get(i);
+                                    if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
+                                        chatUser.setIsAnchor(true);
+                                        chatUser.setAnchorLevel(levelBean.getLevelValue());
+                                        break;
+                                    }
+                                    if (levelBean.getLevelType().equals("USER_LEVEL")) {
+                                        chatUser.setIsAnchor(false);
+                                        chatUser.setUserLevel(levelBean.getLevelValue());
+                                    }
+                                }
                                 showPrivateChatDialog(chatUser);
                             }
                         })
@@ -917,6 +941,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     user.setPrivateUserId(Long.valueOf(mAnchor.getId()));
                     user.setName(mAnchor.getName());
                     user.setAvatar(mAnchor.getAvatar());
+                    user.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
+                    for (int i = 0; i < mAnchor.getLevel().size(); i++) {
+                        RoomInfoBean.DataBean.AnchorBean.LevelBean levelBean = mAnchor.getLevel().get(i);
+                        if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
+                            user.setIsAnchor(true);
+                            user.setAnchorLevel(levelBean.getLevelValue());
+                            break;
+                        }
+                        if (levelBean.getLevelType().equals("USER_LEVEL")) {
+                            user.setIsAnchor(false);
+                            user.setUserLevel(levelBean.getLevelValue());
+                        }
+                    }
                     showPrivateChatListDialog(user);
                 }
                 break;
@@ -1086,11 +1123,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         awesomeDialog = PrivateChatDialog.newInstance(mProgramId)
                 .setShowBottom(true)
                 .setDimAmount(0);
-        RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
-        dataBean.setAvatar(user.getAvatar());
-        dataBean.setNickname(user.getName());
-        dataBean.setUserId(user.getPrivateUserId());
-        ((PrivateChatDialog) awesomeDialog).chatTo(dataBean);
+//        RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
+//        dataBean.setAvatar(user.getAvatar());
+//        dataBean.setNickname(user.getName());
+//        dataBean.setUserId(user.getPrivateUserId());
+        ((PrivateChatDialog) awesomeDialog).chatTo(user);
         ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
         awesomeDialog.show(getSupportFragmentManager());
     }
@@ -2040,11 +2077,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mGiftData = giftInfo;
     }
 
-    public void sendMessage(String message, RoomUserInfo.DataBean chatToUser) {
+    public void sendMessage(String message, PrivateChatUser chatToUser) {
         if (chatToUser == null) {
             chatRoomPresenter.sendMessage(message);
         } else {
-            chatRoomPresenter.sendPrivateMessage(chatToUser, message);
+            RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
+            dataBean.setUserId(chatToUser.getPrivateUserId());
+            dataBean.setNickname(chatToUser.getName());
+            chatRoomPresenter.sendPrivateMessage(dataBean, message);
             User user = new User();
             user.setAvatar(mRoomUserInfo.getAvatar());
             user.setUserId(mUserId);
@@ -2052,11 +2092,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
             PrivateChatUser chatUser = new PrivateChatUser();
             chatUser.setAvatar(chatToUser.getAvatar());
-            chatUser.setName(chatToUser.getNickname());
-            chatUser.setPrivateUserId(chatToUser.getUserId());
+            chatUser.setName(chatToUser.getName());
+            chatUser.setPrivateUserId(chatToUser.getPrivateUserId());
             chatUser.setUserId(mUserId);
             chatUser.setTimestamp(System.currentTimeMillis());
             chatUser.setLastMessage(message);
+            chatUser.setIsAnchor(chatToUser.getIsAnchor());
+            chatUser.setAnchorLevel(chatToUser.getAnchorLevel());
+            chatUser.setUserLevel(chatToUser.getUserLevel());
             ChatDbUtils.getInstance().updatePrivateChatUser(mUserId, chatUser);
             if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
                 ((PrivateChatListDialog) privateChatListDialog).update();
@@ -2065,7 +2108,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             PrivateChatContent chatContent = new PrivateChatContent();
             chatContent.setContent(message);
             chatContent.setTimestamp(System.currentTimeMillis());
-            chatContent.setPrivateUserId(chatToUser.getUserId());
+            chatContent.setPrivateUserId(chatToUser.getPrivateUserId());
             chatContent.setFromId(mUserId);
             chatContent.setUserId(mUserId);
             ChatDbUtils.getInstance().insertChatContent(chatContent);
@@ -2280,6 +2323,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         chatUser.setPrivateUserId(mViewedUser.getUserId());
                         chatUser.setAvatar(mViewedUser.getAvatar());
                         chatUser.setName(mViewedUser.getNickname());
+                        for (int i = 0; i < mViewedUser.getLevelList().size(); i++) {
+                            RoomUserInfo.LevelMapBean levelBean = mViewedUser.getLevelList().get(i);
+                            if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
+                                chatUser.setIsAnchor(true);
+                                chatUser.setAnchorLevel(levelBean.getLevelValue());
+                                break;
+                            }
+                            if (levelBean.getLevelType().equals("USER_LEVEL")) {
+                                chatUser.setIsAnchor(false);
+                                chatUser.setUserLevel(levelBean.getLevelValue());
+                            }
+                        }
                         showPrivateChatDialog(chatUser);
                     }
                 })

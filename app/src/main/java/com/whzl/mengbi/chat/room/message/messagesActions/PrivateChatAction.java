@@ -5,6 +5,7 @@ import android.content.Context;
 import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatUIEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
+import com.whzl.mengbi.chat.room.message.messageJson.FromJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.greendao.ChatDbUtils;
@@ -46,6 +47,18 @@ public class PrivateChatAction implements Actions {
         chatUser.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
         chatUser.setTimestamp(System.currentTimeMillis());
         chatUser.setLastMessage(json.getContent());
+        for (int i = 0; i < json.getFrom_json().getLevelList().size(); i++) {
+            FromJson.Level level = json.getFrom_json().getLevelList().get(i);
+            if (level.equals("USER_LEVEL")) {
+                chatUser.setIsAnchor(false);
+                chatUser.setUserLevel(level.getLevelValue());
+            }
+            if ("ANCHOR_LEVEL".equals(level)) {
+                chatUser.setIsAnchor(true);
+                chatUser.setAnchorLevel(level.getLevelValue());
+            }
+        }
+
         ChatDbUtils.getInstance().updatePrivateChatUser(
                 Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()), chatUser);
         EventBus.getDefault().post(new UpdatePrivateChatUIEvent());

@@ -28,6 +28,7 @@ import com.whzl.mengbi.chat.room.message.events.ChatInputEvent;
 import com.whzl.mengbi.chat.room.message.events.SendBroadEvent;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
+import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
@@ -92,7 +93,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     private boolean isVip;
     private RoomInfoBean.DataBean.AnchorBean mAnchorBean;
     private int mProgramId;
-    private RoomUserInfo.DataBean mChatToUser;
+    private PrivateChatUser mChatToUser;
     private int total;
     private Long userId;
     private String mAt;
@@ -113,7 +114,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         return liveHouseChatDialog;
     }
 
-    public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, RoomUserInfo.DataBean dateBean) {
+    public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean, PrivateChatUser dateBean) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
         Bundle args = new Bundle();
         args.putBoolean("isGuard", isGuard);
@@ -185,7 +186,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
             etContent.setSelection(mAt.length());
         }
         if (mChatToUser != null) {
-            etContent.setHint("对" + mChatToUser.getNickname() + "私聊");
+            etContent.setHint("对" + mChatToUser.getName() + "私聊");
             btnInputBroad.setVisibility(View.GONE);
         }
         etContent.setOnKeyListener((v, keyCode, event) -> {

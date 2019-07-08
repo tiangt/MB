@@ -61,7 +61,9 @@ public class ChatMessage implements FillHolderMessage {
         contentString = msgJson.getContent();
         try {
             from_uid = Integer.valueOf(msgJson.getFrom_uid());
-            to_uid = Integer.valueOf(msgJson.getTo_uid());
+            if (msgJson.getTo_uid() != null) {
+                to_uid = Integer.valueOf(msgJson.getTo_uid());
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

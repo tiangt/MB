@@ -121,20 +121,19 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
 
     public void setUpWithAnchor(PrivateChatUser anchor) {
         this.anchor = anchor;
-        PrivateChatUser roomUser = new PrivateChatUser();
-        roomUser.setPrivateUserId((long) anchor.getPrivateUserId());
-        roomUser.setName(anchor.getName());
-        roomUser.setAvatar(anchor.getAvatar());
-        roomUser.setTimestamp(System.currentTimeMillis());
-        roomUser.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
-
+//        PrivateChatUser roomUser = new PrivateChatUser();
+//        roomUser.setPrivateUserId((long) anchor.getPrivateUserId());
+//        roomUser.setName(anchor.getName());
+//        roomUser.setAvatar(anchor.getAvatar());
+        this.anchor.setTimestamp(System.currentTimeMillis());
+//        roomUser.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
         PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
         List<PrivateChatUser> privateChatUsers = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
                 eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()))).list();
-        if (checkContain(privateChatUsers, roomUser)) {
+        if (checkContain(privateChatUsers, this.anchor)) {
             PrivateChatUser user = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
                             eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
-                    PrivateChatUserDao.Properties.PrivateUserId.eq(roomUser.getPrivateUserId())).unique();
+                    PrivateChatUserDao.Properties.PrivateUserId.eq(this.anchor.getPrivateUserId())).unique();
             user.setTimestamp(System.currentTimeMillis());
             user.setId(user.getId());
             privateChatUserDao.update(user);
@@ -145,7 +144,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             roomUsers.addAll(privateChatUsers2);
         } else {
             roomUsers.addAll(privateChatUsers);
-            roomUsers.add(0, roomUser);
+            roomUsers.add(0, this.anchor);
         }
     }
 
@@ -197,6 +196,8 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
         TextView tvTimeStamp;
         @BindView(R.id.tv_last_message)
         TextView tvLastMsg;
+        @BindView(R.id.iv_anchor_tips)
+        ImageView ivAnchor;
 
         public PrivateChatListHolder(View itemView) {
             super(itemView);
@@ -230,6 +231,11 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             String dateToString = DateUtils.getDateToString(timestamp, "HH:mm");
             tvTimeStamp.setText(dateToString);
             tvLastMsg.setText(dataBean.getLastMessage());
+            if (dataBean.getIsAnchor()) {
+                ivAnchor.setVisibility(View.VISIBLE);
+            } else {
+                ivAnchor.setVisibility(View.GONE);
+            }
         }
 
         @Override
@@ -242,11 +248,11 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
                     .setShowBottom(true)
                     .setDimAmount(0);
             PrivateChatUser chatUser = roomUsers.get(position);
-            RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
-            dataBean.setAvatar(chatUser.getAvatar());
-            dataBean.setNickname(chatUser.getName());
-            dataBean.setUserId(chatUser.getPrivateUserId());
-            ((PrivateChatDialog) awesomeDialog).chatTo(dataBean);
+//            RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
+//            dataBean.setAvatar(chatUser.getAvatar());
+//            dataBean.setNickname(chatUser.getName());
+//            dataBean.setUserId(chatUser.getPrivateUserId());
+            ((PrivateChatDialog) awesomeDialog).chatTo(chatUser);
             ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
             ((PrivateChatDialog) awesomeDialog).setIsVip(isVip);
             awesomeDialog.show(getFragmentManager());

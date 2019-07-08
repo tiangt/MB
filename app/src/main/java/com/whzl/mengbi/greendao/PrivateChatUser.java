@@ -1,5 +1,8 @@
 package com.whzl.mengbi.greendao;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.whzl.mengbi.gen.DaoSession;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
@@ -17,7 +20,7 @@ import java.util.List;
  * @date 2019/2/13
  */
 @Entity
-public class PrivateChatUser {
+public class PrivateChatUser implements Parcelable {
     @Id(autoincrement = true)
     private Long id;
     private Long privateUserId;
@@ -27,6 +30,9 @@ public class PrivateChatUser {
     private Long timestamp;
     private Long uncheckTime = 0L;
     String lastMessage;
+    Boolean isAnchor = false;
+    Integer anchorLevel;
+    Integer userLevel;
 
     @ToMany(referencedJoinProperty = "privateUserId")
     private List<PrivateChatContent> privateChatContents;
@@ -43,9 +49,10 @@ public class PrivateChatUser {
     @Generated(hash = 1072743205)
     private transient PrivateChatUserDao myDao;
 
-    @Generated(hash = 835151444)
-    public PrivateChatUser(Long id, Long privateUserId, String name, String avatar,
-            Long timestamp, Long uncheckTime, String lastMessage, Long userId) {
+    @Generated(hash = 489578847)
+    public PrivateChatUser(Long id, Long privateUserId, String name, String avatar, Long timestamp,
+            Long uncheckTime, String lastMessage, Boolean isAnchor, Integer anchorLevel,
+            Integer userLevel, Long userId) {
         this.id = id;
         this.privateUserId = privateUserId;
         this.name = name;
@@ -53,6 +60,9 @@ public class PrivateChatUser {
         this.timestamp = timestamp;
         this.uncheckTime = uncheckTime;
         this.lastMessage = lastMessage;
+        this.isAnchor = isAnchor;
+        this.anchorLevel = anchorLevel;
+        this.userLevel = userLevel;
         this.userId = userId;
     }
 
@@ -200,4 +210,73 @@ public class PrivateChatUser {
         this.lastMessage = lastMessage;
     }
 
+    public Boolean getIsAnchor() {
+        return this.isAnchor;
+    }
+
+    public void setIsAnchor(Boolean isAnchor) {
+        this.isAnchor = isAnchor;
+    }
+
+    public Integer getAnchorLevel() {
+        return this.anchorLevel;
+    }
+
+    public void setAnchorLevel(Integer anchorLevel) {
+        this.anchorLevel = anchorLevel;
+    }
+
+    public Integer getUserLevel() {
+        return this.userLevel;
+    }
+
+    public void setUserLevel(Integer userLevel) {
+        this.userLevel = userLevel;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeValue(this.privateUserId);
+        dest.writeString(this.name);
+        dest.writeString(this.avatar);
+        dest.writeValue(this.timestamp);
+        dest.writeValue(this.uncheckTime);
+        dest.writeString(this.lastMessage);
+        dest.writeValue(this.isAnchor);
+        dest.writeValue(this.anchorLevel);
+        dest.writeValue(this.userLevel);
+        dest.writeValue(this.userId);
+    }
+
+    protected PrivateChatUser(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.privateUserId = (Long) in.readValue(Long.class.getClassLoader());
+        this.name = in.readString();
+        this.avatar = in.readString();
+        this.timestamp = (Long) in.readValue(Long.class.getClassLoader());
+        this.uncheckTime = (Long) in.readValue(Long.class.getClassLoader());
+        this.lastMessage = in.readString();
+        this.isAnchor = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.anchorLevel = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.userLevel = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.userId = (Long) in.readValue(Long.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<PrivateChatUser> CREATOR = new Parcelable.Creator<PrivateChatUser>() {
+        @Override
+        public PrivateChatUser createFromParcel(Parcel source) {
+            return new PrivateChatUser(source);
+        }
+
+        @Override
+        public PrivateChatUser[] newArray(int size) {
+            return new PrivateChatUser[size];
+        }
+    };
 }

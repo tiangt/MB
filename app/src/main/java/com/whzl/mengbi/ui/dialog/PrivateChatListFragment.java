@@ -193,10 +193,10 @@ public class PrivateChatListFragment extends BaseFragment {
                 if (mChatDialog != null && mChatDialog.isAdded()) {
                     return;
                 }
-                mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, mAnchor, mCurrentChatToUser)
-                        .setShowBottom(true)
-                        .setDimAmount(0)
-                        .show(getFragmentManager());
+//                mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, mAnchor, mCurrentChatToUser)
+//                        .setShowBottom(true)
+//                        .setDimAmount(0)
+//                        .show(getFragmentManager());
                 break;
             case R.id.tv_chat_to:
                 showPopWindow();

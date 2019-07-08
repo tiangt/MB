@@ -89,7 +89,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     private int mProgramId;
     private ArrayList<RoomUserInfo.DataBean> roomUsers = new ArrayList<>();
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
-    private RoomUserInfo.DataBean mCurrentChatToUser;
+    private PrivateChatUser mCurrentChatToUser;
     private boolean isHidden;
     private BaseAwesomeDialog mChatDialog;
     private long mUserId;
@@ -116,7 +116,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
 
     @Override
     public void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-        tvTitle.setText(mCurrentChatToUser.getNickname());
+        tvTitle.setText(mCurrentChatToUser.getName());
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         mProgramId = getArguments().getInt("programId");
         mUserId = (long) SPUtils.get(getActivity(), SpConfig.KEY_USER_ID, 0L);
@@ -141,7 +141,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     }
 
     private void initData() {
-        List<PrivateChatContent> list = ChatDbUtils.getInstance().queryChatContent(mCurrentChatToUser.getUserId());
+        List<PrivateChatContent> list = ChatDbUtils.getInstance().queryChatContent(mCurrentChatToUser.getPrivateUserId());
         for (int i = 0; i < list.size(); i++) {
             PrivateChatContent chatContent = list.get(i);
             ChatCommonJson chatCommonJson = new ChatCommonJson();
@@ -265,7 +265,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UpdatePrivateChatEvent updatePubChatEvent) {
         FillHolderMessage message = updatePubChatEvent.getMessage();
-        if (mCurrentChatToUser.getUserId() == ((ChatMessage) message).from_uid || mCurrentChatToUser.getUserId() == ((ChatMessage) message).to_uid) {
+        if (mCurrentChatToUser.getPrivateUserId() == ((ChatMessage) message).from_uid || mCurrentChatToUser.getPrivateUserId() == ((ChatMessage) message).to_uid) {
             if (chatList.size() >= TOTAL_CHAT_MSG) {
                 chatList.remove(0);
             }
@@ -301,7 +301,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
         PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
         PrivateChatUser unique = privateChatUserDao.queryBuilder().where(
                 PrivateChatUserDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
-                PrivateChatUserDao.Properties.PrivateUserId.eq(mCurrentChatToUser.getUserId())).unique();
+                PrivateChatUserDao.Properties.PrivateUserId.eq(mCurrentChatToUser.getPrivateUserId())).unique();
         if (unique != null) {
             unique.setUncheckTime(0L);
             privateChatUserDao.update(unique);
@@ -326,7 +326,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
 
     }
 
-    public void chatTo(RoomUserInfo.DataBean dataBean) {
+    public void chatTo(PrivateChatUser dataBean) {
         mCurrentChatToUser = dataBean;
     }
 
