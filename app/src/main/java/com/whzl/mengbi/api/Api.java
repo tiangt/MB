@@ -72,6 +72,7 @@ import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.SignAwardBean;
 import com.whzl.mengbi.model.entity.SignInfoBean;
+import com.whzl.mengbi.model.entity.StartPageBean;
 import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
@@ -1300,4 +1301,14 @@ public interface Api {
     @POST("v1/goods/royal-car-list")
     @FormUrlEncoded
     Observable<ApiResult<RoyalCarListBean>> royalCarList(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取启动页图片
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/common/start-page")
+    @FormUrlEncoded
+    Observable<ApiResult<StartPageBean>> startPage(@FieldMap Map<String, String> params);
 }

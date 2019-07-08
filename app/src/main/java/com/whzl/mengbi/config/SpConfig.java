@@ -38,4 +38,7 @@ public interface SpConfig {
     String CHAT_EFFECT = "chat_effect";
 
     String PUSH_PROGRAMID = "push_programid";
+    //启动页图片
+    String START_PAGE = "start_page";
+    String START_PAGE_FILE = "start_page_file";
 }

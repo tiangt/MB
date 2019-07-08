@@ -92,7 +92,11 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
         if (event.bean != null) {
             loadSuccess(event.bean.getList());
             UserListDialog userListDialog = (UserListDialog) getParentFragment();
-            userListDialog.setUserTitle(event.bean.total);
+            if (event.bean.getList() == null || event.bean.getList().isEmpty()) {
+                userListDialog.setUserTitle(0);
+            } else {
+                userListDialog.setUserTitle(event.bean.total);
+            }
         } else {
             loadSuccess(null);
         }
@@ -105,8 +109,8 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
         }
         if (audienceBean != null) {
             loadSuccess(audienceBean.getList());
-            UserListDialog userListDialog = (UserListDialog) getParentFragment();
-            userListDialog.setUserTitle(audienceBean.total);
+//            UserListDialog userListDialog = (UserListDialog) getParentFragment();
+//            userListDialog.setUserTitle(audienceBean.total);
         } else {
             loadSuccess(null);
         }
@@ -253,21 +257,29 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
                 medalLayout.addView(mgrView, mgrViewParams);
             }
 
+            GlideImageLoader.getInstace().displayImage(getContext(), null, ivCar);
             if (audienceInfoBean.getLevelMap() != null && royalList.getList() != null) {
-                if (royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1) != null) {
-                    GlideImageLoader.getInstace().displayImage(getContext()
-                            , royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1).getCarImageUrl(), ivCar);
-                } else {
-                    for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
-                        AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
-                        if ("CAR".equals(medalBean.getGoodsType())) {
-                            GlideImageLoader.getInstace().displayImage(getContext()
-                                    , medalBean.getGoodsIcon(), ivCar);
-                        }
+                boolean b = hasCar(audienceInfoBean);
+                if (!b) {
+                    if (royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1) != null) {
+                        GlideImageLoader.getInstace().displayImage(getContext()
+                                , royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1).getCarImageUrl(), ivCar);
                     }
                 }
             }
 
+        }
+
+        private boolean hasCar(AudienceListBean.AudienceInfoBean audienceInfoBean) {
+            for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
+                AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
+                if ("CAR".equals(medalBean.getGoodsType())) {
+                    GlideImageLoader.getInstace().displayImage(getContext()
+                            , medalBean.getGoodsIcon(), ivCar);
+                    return true;
+                }
+            }
+            return false;
         }
 
         @Override

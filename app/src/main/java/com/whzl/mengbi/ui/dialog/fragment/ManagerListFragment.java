@@ -274,6 +274,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                         }
                     }
                 }
+                GlideImageLoader.getInstace().displayImage(getContext(), null, ivCar);
 
                 if (identity == UserIdentity.ROOM_MANAGER) {
                     ImageView mgrView = new ImageView(getContext());
@@ -284,20 +285,27 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                 }
 
                 if (audienceInfoBean.getLevelMap() != null) {
-                    if (royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1) != null) {
-                        GlideImageLoader.getInstace().displayImage(getContext()
-                                , royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1).getCarImageUrl(), ivCar);
-                    } else {
-                        for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
-                            AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
-                            if ("CAR".equals(medalBean.getGoodsType())) {
-                                GlideImageLoader.getInstace().displayImage(getContext()
-                                        , medalBean.getGoodsIcon(), ivCar);
-                            }
+                    boolean b = hasCar(audienceInfoBean);
+                    if (!b) {
+                        if (royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1) != null) {
+                            GlideImageLoader.getInstace().displayImage(getContext()
+                                    , royalList.getList().get(audienceInfoBean.getLevelMap().getROYAL_LEVEL() - 1).getCarImageUrl(), ivCar);
                         }
                     }
                 }
             }
+        }
+
+        private boolean hasCar(AudienceListBean.AudienceInfoBean audienceInfoBean) {
+            for (int i = 0; i < audienceInfoBean.getMedal().size(); i++) {
+                AudienceListBean.MedalBean medalBean = audienceInfoBean.getMedal().get(i);
+                if ("CAR".equals(medalBean.getGoodsType())) {
+                    GlideImageLoader.getInstace().displayImage(getContext()
+                            , medalBean.getGoodsIcon(), ivCar);
+                    return true;
+                }
+            }
+            return false;
         }
 
         @Override

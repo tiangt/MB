@@ -1,9 +1,11 @@
 package com.whzl.mengbi.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -25,6 +28,7 @@ import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
 import com.whzl.mengbi.eventbus.event.MainMsgClickEvent;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.CheckMsgRemindBean;
+import com.whzl.mengbi.model.entity.StartPageBean;
 import com.whzl.mengbi.model.entity.UpdateInfoBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
@@ -50,6 +54,7 @@ import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.DownloadManagerUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.PictureUtil;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -62,10 +67,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -241,7 +249,64 @@ public class MainActivity extends BaseActivity {
         if (Long.parseLong(SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, 0L).toString()) != 0) {
             getUserInfo();
         }
+        alipushJump();
 
+        RxPermissions rxPermissions = new RxPermissions(MainActivity.this);
+        rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE
+                , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                , Manifest.permission.INTERNET)
+                .subscribe(granted -> {
+                    if (granted) {
+                        saveSplashImg();
+                    } else {
+                        SPUtils.put(MainActivity.this, SpConfig.START_PAGE, "");
+                    }
+                });
+    }
+
+    private void saveSplashImg() {
+        ApiFactory.getInstance().getApi(Api.class)
+                .startPage(ParamsUtils.getSignPramsMap(new HashMap<>()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<StartPageBean>() {
+                    @SuppressLint("CheckResult")
+                    @Override
+                    public void onSuccess(StartPageBean startPageBean) {
+                        String imgurl = (String) SPUtils.get(MainActivity.this, SpConfig.START_PAGE, "");
+                        if (imgurl != null && imgurl.equals(startPageBean.url)) {
+                            return;
+                        }
+                        SPUtils.put(MainActivity.this, SpConfig.START_PAGE, startPageBean.url);
+
+                        Observable.create((ObservableOnSubscribe<File>) e -> {
+                            e.onNext(Glide.with(MainActivity.this).asFile()
+                                    .load(startPageBean.url)
+                                    .submit()
+                                    .get());
+                            e.onComplete();
+                        }).subscribeOn(Schedulers.io())
+                                .observeOn(Schedulers.newThread())
+                                .subscribe(file -> {
+                                    //获取到下载得到的图片，进行本地保存
+                                    File pictureFolder = Environment.getExternalStorageDirectory();
+                                    //第二个参数为你想要保存的目录名称
+                                    File appDir = new File(pictureFolder, "splash");
+                                    if (!appDir.exists()) {
+                                        appDir.mkdirs();
+                                    }
+                                    String fileName = System.currentTimeMillis() + ".jpg";
+                                    File destFile = new File(appDir, fileName);
+                                    //把gilde下载得到图片复制到定义好的目录中去
+                                    PictureUtil.copy(file, destFile);
+                                    SPUtils.put(MainActivity.this, SpConfig.START_PAGE_FILE, destFile.getPath());
+                                });
+                    }
+                });
+    }
+
+    private void alipushJump() {
+        //通知跳转
         String pushId = (String) SPUtils.get(this, SpConfig.PUSH_PROGRAMID, "");
         if (!TextUtils.isEmpty(pushId)) {
             startActivity(new Intent(this, LiveDisplayActivity.class)
