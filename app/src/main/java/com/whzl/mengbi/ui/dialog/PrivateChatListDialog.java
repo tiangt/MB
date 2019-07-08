@@ -23,7 +23,6 @@ import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
 import com.whzl.mengbi.greendao.ChatDbUtils;
 import com.whzl.mengbi.greendao.PrivateChatUser;
-import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -31,7 +30,9 @@ import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.recyclerview.SlideRecyclerView;
 import com.whzl.mengbi.util.DateUtils;
+import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -198,6 +199,8 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
         TextView tvLastMsg;
         @BindView(R.id.iv_anchor_tips)
         ImageView ivAnchor;
+        @BindView(R.id.iv_level)
+        ImageView ivLevel;
 
         public PrivateChatListHolder(View itemView) {
             super(itemView);
@@ -233,8 +236,16 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             tvLastMsg.setText(dataBean.getLastMessage());
             if (dataBean.getIsAnchor()) {
                 ivAnchor.setVisibility(View.VISIBLE);
+                if (dataBean.getAnchorLevel() != null) {
+                    GlideImageLoader.getInstace().displayImage(getContext(),
+                            ResourceMap.getResourceMap().getAnchorLevelIcon(dataBean.getAnchorLevel()), ivLevel);
+                }
             } else {
                 ivAnchor.setVisibility(View.GONE);
+                if (dataBean.getUserLevel() != null) {
+                    GlideImageLoader.getInstace().displayImage(getContext(),
+                            ResourceMap.getResourceMap().getUserLevelIcon(dataBean.getUserLevel()), ivLevel);
+                }
             }
         }
 

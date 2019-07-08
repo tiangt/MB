@@ -85,6 +85,9 @@ public class LiveWeekRankFragment extends BaseFragment {
     }
 
     public void loaddata() {
+        if (isDetached()||isRemoving()||!isAdded()) {
+            return;
+        }
         HashMap map = new HashMap();
         map.put("userId", mAnchorId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);

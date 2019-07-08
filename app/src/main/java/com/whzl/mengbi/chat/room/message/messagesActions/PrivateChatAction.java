@@ -49,13 +49,14 @@ public class PrivateChatAction implements Actions {
         chatUser.setLastMessage(json.getContent());
         for (int i = 0; i < json.getFrom_json().getLevelList().size(); i++) {
             FromJson.Level level = json.getFrom_json().getLevelList().get(i);
-            if (level.equals("USER_LEVEL")) {
-                chatUser.setIsAnchor(false);
-                chatUser.setUserLevel(level.getLevelValue());
-            }
-            if ("ANCHOR_LEVEL".equals(level)) {
+            if ("ANCHOR_LEVEL".equals(level.getLevelType())) {
                 chatUser.setIsAnchor(true);
                 chatUser.setAnchorLevel(level.getLevelValue());
+                break;
+            }
+            if (level.getLevelType().equals("USER_LEVEL")) {
+                chatUser.setIsAnchor(false);
+                chatUser.setUserLevel(level.getLevelValue());
             }
         }
 
