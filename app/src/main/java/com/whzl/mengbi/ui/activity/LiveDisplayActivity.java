@@ -112,9 +112,6 @@ import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.eventbus.event.SendBackpackEvent;
 import com.whzl.mengbi.eventbus.event.SendGiftSuccessEvent;
 import com.whzl.mengbi.eventbus.event.UserInfoUpdateEvent;
-import com.whzl.mengbi.gen.PrivateChatContentDao;
-import com.whzl.mengbi.gen.PrivateChatUserDao;
-import com.whzl.mengbi.gen.UserDao;
 import com.whzl.mengbi.gen.UsualGiftDao;
 import com.whzl.mengbi.gift.AnchorWishControl;
 import com.whzl.mengbi.gift.GifSvgaControl;
@@ -127,6 +124,7 @@ import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
 import com.whzl.mengbi.gift.RunWayGiftControl;
 import com.whzl.mengbi.gift.WeekStarControl;
+import com.whzl.mengbi.greendao.ChatDbUtils;
 import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.greendao.User;
@@ -2047,47 +2045,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             chatRoomPresenter.sendMessage(message);
         } else {
             chatRoomPresenter.sendPrivateMessage(chatToUser, message);
-            UserDao userDao = BaseApplication.getInstance().getDaoSession().getUserDao();
-            PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
-            User unique = userDao.queryBuilder().where(UserDao.Properties.UserId.eq(mUserId)).unique();
-            if (unique == null) {
-                User user = new User();
-                user.setAvatar(mRoomUserInfo.getAvatar());
-                user.setUserId(mUserId);
-                userDao.insert(user);
+            User user = new User();
+            user.setAvatar(mRoomUserInfo.getAvatar());
+            user.setUserId(mUserId);
+            ChatDbUtils.getInstance().insertUser(mUserId, user);
+
+            PrivateChatUser chatUser = new PrivateChatUser();
+            chatUser.setAvatar(chatToUser.getAvatar());
+            chatUser.setName(chatToUser.getNickname());
+            chatUser.setPrivateUserId(chatToUser.getUserId());
+            chatUser.setUserId(mUserId);
+            chatUser.setTimestamp(System.currentTimeMillis());
+            ChatDbUtils.getInstance().updatePrivateChatUser(mUserId, chatUser);
+            if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
+                ((PrivateChatListDialog) privateChatListDialog).update();
             }
-            PrivateChatUser privateChatUser = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.eq(mUserId),
-                    PrivateChatUserDao.Properties.PrivateUserId.eq(chatToUser.getUserId())).unique();
-            if (privateChatUser == null) {
-                PrivateChatUser chatUser = new PrivateChatUser();
-                chatUser.setAvatar(chatToUser.getAvatar());
-                chatUser.setName(chatToUser.getNickname());
-                chatUser.setPrivateUserId(chatToUser.getUserId());
-                chatUser.setUserId(mUserId);
-                chatUser.setTimestamp(System.currentTimeMillis());
-                privateChatUserDao.insert(chatUser);
-            } else {
-                privateChatUser.setTimestamp(System.currentTimeMillis());
-                privateChatUser.setId(privateChatUser.getId());
-                privateChatUserDao.update(privateChatUser);
-                if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
-                    ((PrivateChatListDialog) privateChatListDialog).update();
-                }
-            }
-            PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
-            List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(
-                    PrivateChatContentDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
-                    PrivateChatContentDao.Properties.PrivateUserId.eq(chatToUser.getUserId())).list();
-            if (list != null && list.size() > AppUtils.PRIVATE_MAX_NUM) {
-                privateChatContentDao.deleteByKey(list.get(0).getId());
-            }
+
             PrivateChatContent chatContent = new PrivateChatContent();
             chatContent.setContent(message);
             chatContent.setTimestamp(System.currentTimeMillis());
             chatContent.setPrivateUserId(chatToUser.getUserId());
             chatContent.setFromId(mUserId);
             chatContent.setUserId(mUserId);
-            privateChatContentDao.insert(chatContent);
+            ChatDbUtils.getInstance().insertChatContent(chatContent);
         }
 
     }

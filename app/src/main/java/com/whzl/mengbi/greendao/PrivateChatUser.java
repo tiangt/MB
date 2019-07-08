@@ -1,17 +1,16 @@
 package com.whzl.mengbi.greendao;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.ToMany;
-
-import java.util.List;
-
-import org.greenrobot.greendao.DaoException;
-
 import com.whzl.mengbi.gen.DaoSession;
 import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
+
+import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.ToMany;
+
+import java.util.List;
 
 /**
  * @author nobody
@@ -32,16 +31,20 @@ public class PrivateChatUser {
     private List<PrivateChatContent> privateChatContents;
 
     private Long userId;
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 1072743205)
     private transient PrivateChatUserDao myDao;
 
     @Generated(hash = 1122182842)
     public PrivateChatUser(Long id, Long privateUserId, String name, String avatar,
-            Long timestamp, Long uncheckTime, Long userId) {
+                           Long timestamp, Long uncheckTime, Long userId) {
         this.id = id;
         this.privateUserId = privateUserId;
         this.name = name;
@@ -134,7 +137,9 @@ public class PrivateChatUser {
         return privateChatContents;
     }
 
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    /**
+     * Resets a to-many relationship, making the next get call to query for a fresh result.
+     */
     @Generated(hash = 875079116)
     public synchronized void resetPrivateChatContents() {
         privateChatContents = null;
@@ -176,7 +181,9 @@ public class PrivateChatUser {
         myDao.update(this);
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 181671466)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;

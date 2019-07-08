@@ -46,6 +46,7 @@ import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.SoftKeyboardStateHelper;
 import com.whzl.mengbi.util.ToastUtils;
+import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -241,22 +242,20 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
 
     private void initHotRv() {
         hotList = new ArrayList<>();
-        hotList.add("dsfksf");
-        hotList.add("32");
-        hotList.add("dsf543ksf");
-        hotList.add("fkdpok");
-        hotList.add("goprke");
-        hotList.add("gop");
-        hotList.add("gfdkp");
-        hotList.add("gopfdkk");
+        hotList.add("66666");
+        hotList.add("23333");
+        hotList.add("主播好漂亮");
+        hotList.add("请开始表演");
+        hotList.add("主播你飘了");
+        hotList.add("主播求看腿");
 
         for (int i = 0; i < hotList.size(); i++) {
             String s = hotList.get(i);
             View inflate = LayoutInflater.from(getActivity()).inflate(R.layout.item_hot_word, null);
             LinearLayout.LayoutParams layoutParams =
                     new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.leftMargin = 3;
-            layoutParams.rightMargin = 3;
+            layoutParams.leftMargin = UIUtil.dip2px(getActivity(), 3);
+            layoutParams.rightMargin = UIUtil.dip2px(getActivity(), 3);
             ((TextView) inflate.findViewById(R.id.tv_hot_word)).setText(s);
             inflate.setOnClickListener(new View.OnClickListener() {
                 @Override
