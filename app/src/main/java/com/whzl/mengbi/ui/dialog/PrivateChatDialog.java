@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,8 +30,8 @@ import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
-import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
+import com.whzl.mengbi.greendao.ChatDbUtils;
 import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -142,10 +141,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     }
 
     private void initData() {
-        PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
-        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(
-                PrivateChatContentDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
-                PrivateChatContentDao.Properties.PrivateUserId.eq(mCurrentChatToUser.getUserId())).list();
+        List<PrivateChatContent> list = ChatDbUtils.getInstance().queryChatContent(mCurrentChatToUser.getUserId());
         for (int i = 0; i < list.size(); i++) {
             PrivateChatContent chatContent = list.get(i);
             ChatCommonJson chatCommonJson = new ChatCommonJson();

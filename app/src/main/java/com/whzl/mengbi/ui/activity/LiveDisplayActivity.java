@@ -2056,6 +2056,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             chatUser.setPrivateUserId(chatToUser.getUserId());
             chatUser.setUserId(mUserId);
             chatUser.setTimestamp(System.currentTimeMillis());
+            chatUser.setLastMessage(message);
             ChatDbUtils.getInstance().updatePrivateChatUser(mUserId, chatUser);
             if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
                 ((PrivateChatListDialog) privateChatListDialog).update();

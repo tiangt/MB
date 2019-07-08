@@ -33,7 +33,8 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
         public final static Property Avatar = new Property(3, String.class, "avatar", false, "AVATAR");
         public final static Property Timestamp = new Property(4, Long.class, "timestamp", false, "TIMESTAMP");
         public final static Property UncheckTime = new Property(5, Long.class, "uncheckTime", false, "UNCHECK_TIME");
-        public final static Property UserId = new Property(6, Long.class, "userId", false, "USER_ID");
+        public final static Property LastMessage = new Property(6, String.class, "lastMessage", false, "LAST_MESSAGE");
+        public final static Property UserId = new Property(7, Long.class, "userId", false, "USER_ID");
     }
 
     private DaoSession daoSession;
@@ -59,7 +60,8 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
                 "\"AVATAR\" TEXT," + // 3: avatar
                 "\"TIMESTAMP\" INTEGER," + // 4: timestamp
                 "\"UNCHECK_TIME\" INTEGER," + // 5: uncheckTime
-                "\"USER_ID\" INTEGER);"); // 6: userId
+                "\"LAST_MESSAGE\" TEXT," + // 6: lastMessage
+                "\"USER_ID\" INTEGER);"); // 7: userId
     }
 
     /** Drops the underlying database table. */
@@ -102,9 +104,14 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
             stmt.bindLong(6, uncheckTime);
         }
  
+        String lastMessage = entity.getLastMessage();
+        if (lastMessage != null) {
+            stmt.bindString(7, lastMessage);
+        }
+ 
         Long userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindLong(7, userId);
+            stmt.bindLong(8, userId);
         }
     }
 
@@ -142,9 +149,14 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
             stmt.bindLong(6, uncheckTime);
         }
  
+        String lastMessage = entity.getLastMessage();
+        if (lastMessage != null) {
+            stmt.bindString(7, lastMessage);
+        }
+ 
         Long userId = entity.getUserId();
         if (userId != null) {
-            stmt.bindLong(7, userId);
+            stmt.bindLong(8, userId);
         }
     }
 
@@ -168,7 +180,8 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // avatar
             cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // timestamp
             cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // uncheckTime
-            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6) // userId
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // lastMessage
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7) // userId
         );
         return entity;
     }
@@ -181,7 +194,8 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
         entity.setAvatar(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setTimestamp(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
         entity.setUncheckTime(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
-        entity.setUserId(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
+        entity.setLastMessage(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setUserId(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
      }
     
     @Override

@@ -20,9 +20,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatUIEvent;
 import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
-import com.whzl.mengbi.gen.PrivateChatContentDao;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
-import com.whzl.mengbi.greendao.PrivateChatContent;
+import com.whzl.mengbi.greendao.ChatDbUtils;
 import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
@@ -196,6 +195,8 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
         LinearLayout linearLayout;
         @BindView(R.id.tv_time_stamp)
         TextView tvTimeStamp;
+        @BindView(R.id.tv_last_message)
+        TextView tvLastMsg;
 
         public PrivateChatListHolder(View itemView) {
             super(itemView);
@@ -228,6 +229,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             Long timestamp = dataBean.getTimestamp();
             String dateToString = DateUtils.getDateToString(timestamp, "HH:mm");
             tvTimeStamp.setText(dateToString);
+            tvLastMsg.setText(dataBean.getLastMessage());
         }
 
         @Override
@@ -248,27 +250,11 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
             ((PrivateChatDialog) awesomeDialog).setIsVip(isVip);
             awesomeDialog.show(getFragmentManager());
-            if (!chatUser.getUncheckTime().equals(0) && chatUser.getId() != null) {
-                PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
-                chatUser.setUncheckTime(0L);
-                chatUser.setTimestamp(System.currentTimeMillis());
-                chatUser.setId(chatUser.getId());
-                privateChatUserDao.update(chatUser);
-                update();
-            }
         }
     }
 
     private void delete(PrivateChatUser dataBean) {
-        PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
-        privateChatUserDao.deleteByKey(dataBean.getId());
-        PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
-        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(
-                PrivateChatContentDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
-                PrivateChatContentDao.Properties.PrivateUserId.eq(dataBean.getPrivateUserId())).list();
-        for (int i = 0; i < list.size(); i++) {
-            privateChatContentDao.deleteByKey(list.get(i).getId());
-        }
+        ChatDbUtils.getInstance().deleteChatUser(dataBean);
         roomUsers.remove(dataBean);
         srvPrivate.closeMenu();
         baseListAdapter.notifyDataSetChanged();

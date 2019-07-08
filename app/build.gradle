@@ -86,7 +86,7 @@ android {
     }
 
     greendao {
-        schemaVersion 3  //数据库版本号
+        schemaVersion 4  //数据库版本号
         daoPackage 'com.whzl.mengbi.gen'
         targetGenDir 'src/main/java'
     }

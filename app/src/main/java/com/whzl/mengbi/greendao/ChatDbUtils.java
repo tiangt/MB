@@ -16,9 +16,6 @@ import java.util.List;
 public class ChatDbUtils {
     private static ChatDbUtils dbUtils;
 
-    /**
-     * 获取单例
-     */
     public static ChatDbUtils getInstance() {
         if (dbUtils == null) {
             synchronized (ChatDbUtils.class) {
@@ -40,10 +37,42 @@ public class ChatDbUtils {
         if (privateChatUser == null) {
             privateChatUserDao.insert(user);
         } else {
-            privateChatUser.setTimestamp(user.getTimestamp());
-            privateChatUser.setId(privateChatUser.getId());
-            privateChatUserDao.update(privateChatUser);
+//            privateChatUser.setTimestamp(user.getTimestamp());
+//            privateChatUser = user;
+            user.setId(privateChatUser.getId());
+            long uncheckTime = user.getUncheckTime();
+            if (uncheckTime == 99) {
+                user.setUncheckTime((long) 99);
+            } else {
+                user.setUncheckTime(++uncheckTime);
+            }
+//            user.setId(privateChatUser.getId());
+//            privateChatUser.setLastMessage(user.getLastMessage());
+            privateChatUserDao.update(user);
         }
+    }
+
+
+    /**
+     * 删除聊天列表记录
+     */
+    public void deleteChatUser(PrivateChatUser privateChatUser) {
+        PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
+        privateChatUserDao.deleteByKey(privateChatUser.getId());
+        PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
+        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(
+                PrivateChatContentDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
+                PrivateChatContentDao.Properties.PrivateUserId.eq(privateChatUser.getPrivateUserId())).list();
+        for (int i = 0; i < list.size(); i++) {
+            privateChatContentDao.deleteByKey(list.get(i).getId());
+        }
+    }
+
+    public List<PrivateChatUser> queryChatUsetList() {
+        PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
+        List<PrivateChatUser> privateChatUsers = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
+                eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()))).list();
+        return privateChatUsers;
     }
 
     /**
@@ -70,4 +99,16 @@ public class ChatDbUtils {
         }
         privateChatContentDao.insert(chatContent);
     }
+
+    /**
+     * 查找聊天信息
+     */
+    public List<PrivateChatContent> queryChatContent(long privateUserId) {
+        PrivateChatContentDao privateChatContentDao = BaseApplication.getInstance().getDaoSession().getPrivateChatContentDao();
+        List<PrivateChatContent> list = privateChatContentDao.queryBuilder().where(
+                PrivateChatContentDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
+                PrivateChatContentDao.Properties.PrivateUserId.eq(privateUserId)).list();
+        return list;
+    }
+
 }

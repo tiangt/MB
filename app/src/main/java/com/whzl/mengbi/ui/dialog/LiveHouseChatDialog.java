@@ -241,13 +241,15 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     }
 
     private void initHotRv() {
+        //666      1     233      为主播打call      主播你飘了     求联系方式      主播哪里人
         hotList = new ArrayList<>();
-        hotList.add("66666");
-        hotList.add("23333");
-        hotList.add("主播好漂亮");
-        hotList.add("请开始表演");
+        hotList.add("666");
+        hotList.add("1");
+        hotList.add("233");
+        hotList.add("为主播打call");
         hotList.add("主播你飘了");
-        hotList.add("主播求看腿");
+        hotList.add("求联系方式");
+        hotList.add("主播哪里人");
 
         for (int i = 0; i < hotList.size(); i++) {
             String s = hotList.get(i);
