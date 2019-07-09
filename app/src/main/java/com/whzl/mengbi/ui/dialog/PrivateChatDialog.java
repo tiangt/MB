@@ -53,6 +53,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
@@ -121,39 +127,40 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
         mProgramId = getArguments().getInt("programId");
         mUserId = (long) SPUtils.get(getActivity(), SpConfig.KEY_USER_ID, 0L);
         initChatRecycler();
-        viewClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isAdded()) {
-                    dismiss();
-                }
+        viewClose.setOnClickListener(v -> {
+            if (isAdded()) {
+                dismiss();
             }
         });
-        ibClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isAdded()) {
-                    dismiss();
-                }
+        ibClose.setOnClickListener(v -> {
+            if (isAdded()) {
+                dismiss();
             }
         });
         initData();
     }
 
     private void initData() {
-        List<PrivateChatContent> list = ChatDbUtils.getInstance().queryChatContent(mCurrentChatToUser.getPrivateUserId());
-        for (int i = 0; i < list.size(); i++) {
-            PrivateChatContent chatContent = list.get(i);
-            ChatCommonJson chatCommonJson = new ChatCommonJson();
-            chatCommonJson.setContent(chatContent.getContent());
-            chatCommonJson.setFrom_uid(chatContent.getFromId().toString());
-            ChatMessage chatMessage = new ChatMessage(chatCommonJson, getActivity(), null, true);
-            chatList.add(chatMessage);
-        }
-        chatAdapter.notifyDataSetChanged();
-        if (chatList != null && !chatList.isEmpty()) {
-            recycler.smoothScrollToPosition(chatList.size() - 1);
-        }
+        Observable.create((ObservableOnSubscribe<List<PrivateChatContent>>) emitter -> {
+            List<PrivateChatContent> list = ChatDbUtils.getInstance().queryChatContent(mCurrentChatToUser.getPrivateUserId());
+            emitter.onNext(list);
+            emitter.onComplete();
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(list -> {
+                    for (int i = 0; i < list.size(); i++) {
+                        PrivateChatContent chatContent = list.get(i);
+                        ChatCommonJson chatCommonJson = new ChatCommonJson();
+                        chatCommonJson.setContent(chatContent.getContent());
+                        chatCommonJson.setFrom_uid(chatContent.getFromId().toString());
+                        ChatMessage chatMessage = new ChatMessage(chatCommonJson, getActivity(), null, true);
+                        chatList.add(chatMessage);
+                    }
+                    chatAdapter.notifyDataSetChanged();
+                    if (chatList != null && !chatList.isEmpty()) {
+                        recycler.smoothScrollToPosition(chatList.size() - 1);
+                    }
+                });
     }
 
     class SingleTextViewHolder extends RecyclerView.ViewHolder {

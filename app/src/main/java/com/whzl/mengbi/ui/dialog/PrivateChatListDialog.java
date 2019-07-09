@@ -43,6 +43,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author nobody
@@ -129,30 +135,44 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
         this.anchor.setTimestamp(System.currentTimeMillis());
 //        roomUser.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
         PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
-        List<PrivateChatUser> privateChatUsers = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
-                eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()))).list();
-        if (checkContain(privateChatUsers, this.anchor)) {
-            PrivateChatUser user = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
-                            eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
-                    PrivateChatUserDao.Properties.PrivateUserId.eq(this.anchor.getPrivateUserId())).unique();
-            user.setTimestamp(System.currentTimeMillis());
-            user.setId(user.getId());
-            privateChatUserDao.update(user);
-            roomUsers.clear();
-            List<PrivateChatUser> privateChatUsers2 = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
-                    eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()))).
-                    orderDesc(PrivateChatUserDao.Properties.Timestamp).list();
-            roomUsers.addAll(privateChatUsers2);
-        } else {
-            roomUsers.addAll(privateChatUsers);
-            roomUsers.add(0, this.anchor);
-        }
+        Observable.create(new ObservableOnSubscribe<List<PrivateChatUser>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<PrivateChatUser>> emitter) throws Exception {
+                List<PrivateChatUser> privateChatUsers = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
+                        eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())))
+                        .orderDesc(PrivateChatUserDao.Properties.Timestamp).list();
+                emitter.onNext(privateChatUsers);
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<PrivateChatUser>>() {
+            @Override
+            public void accept(List<PrivateChatUser> privateChatUsers) throws Exception {
+                if (checkContain(privateChatUsers, anchor)) {
+                    PrivateChatUser user = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
+                                    eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
+                            PrivateChatUserDao.Properties.PrivateUserId.eq(anchor.getPrivateUserId())).unique();
+                    user.setTimestamp(System.currentTimeMillis());
+                    user.setId(user.getId());
+                    privateChatUserDao.update(user);
+                    roomUsers.clear();
+                    List<PrivateChatUser> privateChatUsers2 = privateChatUserDao.queryBuilder().where(PrivateChatUserDao.Properties.UserId.
+                            eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()))).
+                            orderDesc(PrivateChatUserDao.Properties.Timestamp).list();
+                    roomUsers.addAll(privateChatUsers2);
+                } else {
+                    roomUsers.addAll(privateChatUsers);
+                    roomUsers.add(0, anchor);
+                }
+                baseListAdapter.notifyDataSetChanged();
+            }
+        });
+
+
     }
 
     public void update() {
         roomUsers.clear();
         setUpWithAnchor(anchor);
-        baseListAdapter.notifyDataSetChanged();
     }
 
     private boolean checkContain(List<PrivateChatUser> privateChatUsers, PrivateChatUser roomUser) {
