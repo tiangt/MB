@@ -39,7 +39,7 @@ public class ChatMessage implements FillHolderMessage {
     private int to_level;
     public int to_uid;
 
-    private boolean isAnchor = false;
+    public boolean isAnchor = false;
     private boolean hasGuard = false;
     private boolean hasVip = false;
     private boolean hasSuccubus = false;
@@ -49,6 +49,7 @@ public class ChatMessage implements FillHolderMessage {
     private boolean isPrivate = false;
     private String prettyNumColor;
     private String prettyNum;
+    public int isWarn = 0;
 
     public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList, boolean isPrivate) {
         this.chatJson = msgJson;
@@ -60,7 +61,9 @@ public class ChatMessage implements FillHolderMessage {
         to_nickName = msgJson.getTo_nickname();
         contentString = msgJson.getContent();
         try {
-            from_uid = Integer.valueOf(msgJson.getFrom_uid());
+            if (msgJson.getFrom_uid()!=null) {
+                from_uid = Integer.valueOf(msgJson.getFrom_uid());
+            }
             if (msgJson.getTo_uid() != null) {
                 to_uid = Integer.valueOf(msgJson.getTo_uid());
             }

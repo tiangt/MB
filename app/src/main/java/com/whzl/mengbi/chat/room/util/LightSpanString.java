@@ -96,8 +96,15 @@ public class LightSpanString {
      * click
      */
     public static SpannableString getClickSpan(Context context, String content, int color, View.OnClickListener listener) {
+        return getClickSpan(context, content, color, true, 14, listener);
+    }
+
+    /**
+     * click
+     */
+    public static SpannableString getClickSpan(Context context, String content, int color,boolean underLine,int textSize, View.OnClickListener listener) {
         SpannableString nickSpan = new SpannableString(content);
-        ClickSpan clickSpan = new ClickSpan(context, color) {
+        ClickSpan clickSpan = new ClickSpan(context, color,underLine,textSize) {
             @Override
             public void onClick(View widget) {
                 if (((LiveDisplayActivity) context).hideChatDialog()) {

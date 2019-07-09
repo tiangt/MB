@@ -1,12 +1,14 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.animation.Animator;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,7 @@ import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
 import com.whzl.mengbi.gen.PrivateChatUserDao;
@@ -36,6 +39,7 @@ import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.BaseAnimation;
 import com.whzl.mengbi.ui.adapter.ChatMsgAnimation;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -54,10 +58,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_DRAGGING;
@@ -71,6 +73,7 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_SETTLING;
 public class PrivateChatDialog extends BaseAwesomeDialog {
     private static final int RIGHT = 1;
     private static final int LEFT = 2;
+    private static final int WARN = 3;
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.tv_content)
@@ -137,7 +140,26 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 dismiss();
             }
         });
-        initData();
+        if (mUserId == 0) {
+            if (mCurrentChatToUser.getIsAnchor()) {
+                ChatCommonJson chatCommonJson = new ChatCommonJson();
+                chatCommonJson.setContent("无理取闹");
+                chatCommonJson.setFrom_uid(String.valueOf(mCurrentChatToUser.getPrivateUserId()));
+                ChatMessage chatMessage = new ChatMessage(chatCommonJson, getActivity(), null, true);
+                chatMessage.isAnchor = mCurrentChatToUser.getIsAnchor();
+                chatList.add(chatMessage);
+                chatList.add(chatMessage);
+
+                ChatCommonJson warn = new ChatCommonJson();
+                warn.setFrom_uid(String.valueOf(mCurrentChatToUser.getPrivateUserId()));
+                ChatMessage warnMsg = new ChatMessage(chatCommonJson, getActivity(), null, true);
+                warnMsg.isWarn = 1;
+                chatList.add(warnMsg);
+                chatAdapter.notifyDataSetChanged();
+            }
+        } else {
+            initData();
+        }
     }
 
     private void initData() {
@@ -154,6 +176,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                         chatCommonJson.setContent(chatContent.getContent());
                         chatCommonJson.setFrom_uid(chatContent.getFromId().toString());
                         ChatMessage chatMessage = new ChatMessage(chatCommonJson, getActivity(), null, true);
+                        chatMessage.isAnchor = chatContent.getIsAnchor();
                         chatList.add(chatMessage);
                     }
                     chatAdapter.notifyDataSetChanged();
@@ -163,19 +186,21 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 });
     }
 
-    class SingleTextViewHolder extends RecyclerView.ViewHolder {
+    class RightViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView ivAvatar;
+        private final ImageView ivWarn;
         private final TextView tvContent;
 
-        public SingleTextViewHolder(View itemView) {
+        public RightViewHolder(View itemView) {
             super(itemView);
             tvContent = itemView.findViewById(R.id.tv_content);
             ivAvatar = itemView.findViewById(R.id.iv_avatar);
+            ivWarn = itemView.findViewById(R.id.iv_warn);
         }
 
         public void bindData(ChatMessage chatMessage) {
-            Glide.with(BaseApplication.getInstance()).load(ImageUrl.getAvatarUrl(Long.parseLong(chatMessage.chatJson.getFrom_uid()), "jpg", current))
+            Glide.with(BaseApplication.getInstance()).load(ImageUrl.getAvatarUrl(Long.parseLong(String.valueOf(chatMessage.from_uid)), "jpg", current))
                     .apply(new RequestOptions().transform(new CircleCrop())).into(ivAvatar);
             tvContent.setText("");
             SpannableString spanString = new SpannableString(chatMessage.chatJson.getContent());
@@ -187,6 +212,68 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 FaceReplace.getInstance().vipFaceReplace(tvContent, spanString, BaseApplication.getInstance());
             }
             tvContent.append(spanString);
+            if (chatMessage.from_uid == 0) {
+                ivWarn.setVisibility(View.VISIBLE);
+            } else {
+                ivWarn.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    class SingleTextViewHolder extends RecyclerView.ViewHolder {
+
+        private final ImageView ivAvatar;
+        private final ImageView ivAnchor;
+        private final TextView tvContent;
+
+        public SingleTextViewHolder(View itemView) {
+            super(itemView);
+            tvContent = itemView.findViewById(R.id.tv_content);
+            ivAvatar = itemView.findViewById(R.id.iv_avatar);
+            ivAnchor = itemView.findViewById(R.id.iv_anchor_private);
+        }
+
+        public void bindData(ChatMessage chatMessage) {
+            Glide.with(BaseApplication.getInstance()).load(ImageUrl.getAvatarUrl(Long.parseLong(String.valueOf(chatMessage.from_uid)), "jpg", current))
+                    .apply(new RequestOptions().transform(new CircleCrop())).into(ivAvatar);
+            tvContent.setText("");
+            SpannableString spanString = new SpannableString(chatMessage.chatJson.getContent());
+            FaceReplace.getInstance().faceReplace(tvContent, spanString, BaseApplication.getInstance());
+            if (isGuard) {
+                FaceReplace.getInstance().guardFaceReplace(tvContent, spanString, BaseApplication.getInstance());
+            }
+            if (isVip) {
+                FaceReplace.getInstance().vipFaceReplace(tvContent, spanString, BaseApplication.getInstance());
+            }
+            tvContent.append(spanString);
+            if (chatMessage.isAnchor) {
+                ivAnchor.setVisibility(View.VISIBLE);
+            } else {
+                ivAnchor.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    class WarnViewHolder extends RecyclerView.ViewHolder {
+
+
+        private final TextView tvWarn;
+
+        public WarnViewHolder(View itemView) {
+            super(itemView);
+            tvWarn = itemView.findViewById(R.id.tv_warn);
+        }
+
+        public void bindData(ChatMessage chatMessage) {
+            tvWarn.setMovementMethod(LinkMovementMethod.getInstance());
+            tvWarn.setText("还未登录，无法发送私聊哦，现在");
+            tvWarn.append(LightSpanString.getClickSpan(getActivity(), "登录", Color.rgb(255, 43, 63),false,12, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismissDialog();
+                    ((LiveDisplayActivity) getActivity()).login();
+                }
+            }));
         }
     }
 
@@ -199,18 +286,28 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 if (viewType == RIGHT) {
-                    View item = LayoutInflater.from(getContext()).inflate(R.layout.item_priavet_chat_right, null);
+                    View item = LayoutInflater.from(getContext()).inflate(R.layout.item_priavet_chat_right, parent, false);
+                    return new RightViewHolder(item);
+                } else if (viewType == LEFT) {
+                    View item = LayoutInflater.from(getContext()).inflate(R.layout.item_priavet_chat_left, parent, false);
                     return new SingleTextViewHolder(item);
                 } else {
-                    View item = LayoutInflater.from(getContext()).inflate(R.layout.item_priavet_chat_left, null);
-                    return new SingleTextViewHolder(item);
+                    View item = LayoutInflater.from(getContext()).inflate(R.layout.item_priavet_chat_warn, parent, false);
+                    return new WarnViewHolder(item);
                 }
             }
+
 
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 ChatMessage chatMessage = (ChatMessage) chatList.get(position);
-                ((SingleTextViewHolder) holder).bindData(chatMessage);
+                if (holder.getItemViewType() == LEFT) {
+                    ((SingleTextViewHolder) holder).bindData(chatMessage);
+                } else if (holder.getItemViewType() == RIGHT) {
+                    ((RightViewHolder) holder).bindData(chatMessage);
+                } else {
+                    ((WarnViewHolder) holder).bindData(chatMessage);
+                }
                 addAnimation(holder, position);
             }
 
@@ -222,7 +319,15 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             @Override
             public int getItemViewType(int position) {
                 ChatMessage chatMessage = (ChatMessage) chatList.get(position);
-                return chatMessage.from_uid == mUserId ? RIGHT : LEFT;
+                if (chatMessage.from_uid == mUserId) {
+                    return RIGHT;
+                } else {
+                    if (chatMessage.isWarn == 1) {
+                        return WARN;
+                    } else {
+                        return LEFT;
+                    }
+                }
             }
         };
         recycler.addItemDecoration(new SpacesItemDecoration(10));

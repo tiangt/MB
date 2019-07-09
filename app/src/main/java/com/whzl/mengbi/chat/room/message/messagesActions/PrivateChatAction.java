@@ -27,6 +27,13 @@ public class PrivateChatAction implements Actions {
             return;
         }
         ChatMessage message = new ChatMessage(json, context, null, true);
+        for (int i = 0; i < json.getFrom_json().getLevelList().size(); i++) {
+            FromJson.Level level = json.getFrom_json().getLevelList().get(i);
+            if ("ANCHOR_LEVEL".equals(level.getLevelType())) {
+                message.isAnchor = true;
+                break;
+            }
+        }
         EventBus.getDefault().post(new UpdatePrivateChatEvent(message));
 
         PrivateChatContent chatContent = new PrivateChatContent();
@@ -35,6 +42,13 @@ public class PrivateChatAction implements Actions {
         chatContent.setFromId(Long.parseLong(json.getFrom_uid()));
         chatContent.setPrivateUserId(Long.parseLong(json.getFrom_uid()));
         chatContent.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
+        for (int i = 0; i < json.getFrom_json().getLevelList().size(); i++) {
+            FromJson.Level level = json.getFrom_json().getLevelList().get(i);
+            if ("ANCHOR_LEVEL".equals(level.getLevelType())) {
+                chatContent.setIsAnchor(true);
+                break;
+            }
+        }
         ChatDbUtils.getInstance().insertChatContent(chatContent);
 
         if (Long.parseLong(json.getFrom_uid()) == Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())) {

@@ -183,17 +183,17 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 follow(mProgramId, mVisitorId);
                 break;
             case R.id.tv_private_chat:
-                if (mVisitorId == 0) {
-                    ((LiveDisplayActivity) getActivity()).login();
-                    dismiss();
-                    return;
-                }
-                if (((LiveDisplayActivity) getActivity()).getCanChatPrivate()) {
+//                if (mVisitorId == 0) {
+//                    ((LiveDisplayActivity) getActivity()).login();
+//                    dismiss();
+//                    return;
+//                }
+//                if (((LiveDisplayActivity) getActivity()).getCanChatPrivate()) {
                     if (listener != null) {
                         listener.onPrivateChatClick(mViewedUser);
                     }
                     dismiss();
-                }
+//                }
 
                 break;
             case R.id.rl_more:

@@ -3,18 +3,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_avatar"
+    <RelativeLayout
+        android:id="@+id/rl_private_chat_left"
         android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentTop="true" />
+        android:layout_height="40dp">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true" />
+
+        <ImageView
+            android:id="@+id/iv_anchor_private"
+            android:layout_width="27.5dp"
+            android:layout_height="13dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_anchor_private_chat"
+            android:visibility="gone" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="7dp"
-        android:layout_toRightOf="@id/iv_avatar"
+        android:layout_toRightOf="@id/rl_private_chat_left"
         android:background="@drawable/shape_private_left"
         android:textColor="@color/text_color_private_chat"
         android:textSize="15sp" />

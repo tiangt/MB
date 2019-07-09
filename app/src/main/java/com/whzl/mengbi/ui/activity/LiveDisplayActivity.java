@@ -94,6 +94,7 @@ import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
 import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
+import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
@@ -246,6 +247,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import pl.droidsonroids.gif.GifImageView;
@@ -932,30 +934,34 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         .show(getSupportFragmentManager());
                 break;
             case R.id.btn_chat_private:
-                if (mUserId == 0) {
-                    login();
-                    return;
-                }
-                if (getCanChatPrivate()) {
-                    PrivateChatUser user = new PrivateChatUser();
-                    user.setPrivateUserId(Long.valueOf(mAnchor.getId()));
-                    user.setName(mAnchor.getName());
-                    user.setAvatar(mAnchor.getAvatar());
-                    user.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
-                    for (int i = 0; i < mAnchor.getLevel().size(); i++) {
-                        RoomInfoBean.DataBean.AnchorBean.LevelBean levelBean = mAnchor.getLevel().get(i);
-                        if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
-                            user.setIsAnchor(true);
-                            user.setAnchorLevel(levelBean.getLevelValue());
-                            break;
-                        }
-                        if (levelBean.getLevelType().equals("USER_LEVEL")) {
-                            user.setIsAnchor(false);
-                            user.setUserLevel(levelBean.getLevelValue());
-                        }
+//                if (mUserId == 0) {
+//                    login();
+//                    return;
+//                }
+//                if (getCanChatPrivate()) {
+                PrivateChatUser user = new PrivateChatUser();
+                user.setPrivateUserId(Long.valueOf(mAnchor.getId()));
+                user.setName(mAnchor.getName());
+                user.setAvatar(mAnchor.getAvatar());
+                user.setUserId(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString()));
+                for (int i = 0; i < mAnchor.getLevel().size(); i++) {
+                    RoomInfoBean.DataBean.AnchorBean.LevelBean levelBean = mAnchor.getLevel().get(i);
+                    if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
+                        user.setIsAnchor(true);
+                        user.setAnchorLevel(levelBean.getLevelValue());
+                        break;
                     }
+                    if (levelBean.getLevelType().equals("USER_LEVEL")) {
+                        user.setIsAnchor(false);
+                        user.setUserLevel(levelBean.getLevelValue());
+                    }
+                }
+                if (mUserId == 0) {
+                    showPrivateChatDialog(user);
+                } else {
                     showPrivateChatListDialog(user);
                 }
+//                }
                 break;
             case R.id.btn_send_gift:
                 if (mGiftData == null || mGiftData.getData() == null) {
@@ -1492,7 +1498,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 主播心愿 周星 主播任务 活动页面
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
-        getRightBottomActivity(mProgramId, mAnchorId);
+        Disposable subscribe = Observable.timer(1, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        getRightBottomActivity(mProgramId, mAnchorId);
+                    }
+                });
+        compositeDisposable.add(subscribe);
         //头条榜单
         mLivePresenter.getHeadlineRank(mAnchorId, "F");
         mLivePresenter.getBlackRoomTime(mAnchorId);
@@ -2081,37 +2096,48 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (chatToUser == null) {
             chatRoomPresenter.sendMessage(message);
         } else {
-            RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
-            dataBean.setUserId(chatToUser.getPrivateUserId());
-            dataBean.setNickname(chatToUser.getName());
-            chatRoomPresenter.sendPrivateMessage(dataBean, message);
-            User user = new User();
-            user.setAvatar(mRoomUserInfo.getAvatar());
-            user.setUserId(mUserId);
-            ChatDbUtils.getInstance().insertUser(mUserId, user);
+            if (mUserId == 0) {
+                ChatCommonJson json = new ChatCommonJson();
+                json.setContent(message);
+                json.setTo_uid(String.valueOf(chatToUser.getPrivateUserId()));
+                json.setFrom_uid("0");
+                ChatMessage chatMessage = new ChatMessage(json, this, null, true);
+                UpdatePrivateChatEvent event = new UpdatePrivateChatEvent(chatMessage);
+                EventBus.getDefault().post(event);
+            } else {
+                RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
+                dataBean.setUserId(chatToUser.getPrivateUserId());
+                dataBean.setNickname(chatToUser.getName());
+                chatRoomPresenter.sendPrivateMessage(dataBean, message);
+                User user = new User();
+                user.setAvatar(mRoomUserInfo.getAvatar());
+                user.setUserId(mUserId);
+                ChatDbUtils.getInstance().insertUser(mUserId, user);
 
-            PrivateChatUser chatUser = new PrivateChatUser();
-            chatUser.setAvatar(chatToUser.getAvatar());
-            chatUser.setName(chatToUser.getName());
-            chatUser.setPrivateUserId(chatToUser.getPrivateUserId());
-            chatUser.setUserId(mUserId);
-            chatUser.setTimestamp(System.currentTimeMillis());
-            chatUser.setLastMessage(message);
-            chatUser.setIsAnchor(chatToUser.getIsAnchor());
-            chatUser.setAnchorLevel(chatToUser.getAnchorLevel());
-            chatUser.setUserLevel(chatToUser.getUserLevel());
-            ChatDbUtils.getInstance().updatePrivateChatUser(mUserId, chatUser);
-            if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
-                ((PrivateChatListDialog) privateChatListDialog).update();
+                PrivateChatUser chatUser = new PrivateChatUser();
+                chatUser.setAvatar(chatToUser.getAvatar());
+                chatUser.setName(chatToUser.getName());
+                chatUser.setPrivateUserId(chatToUser.getPrivateUserId());
+                chatUser.setUserId(mUserId);
+                chatUser.setTimestamp(System.currentTimeMillis());
+                chatUser.setLastMessage(message);
+                chatUser.setIsAnchor(chatToUser.getIsAnchor());
+                chatUser.setAnchorLevel(chatToUser.getAnchorLevel());
+                chatUser.setUserLevel(chatToUser.getUserLevel());
+                ChatDbUtils.getInstance().updatePrivateChatUser(mUserId, chatUser);
+                if (privateChatListDialog != null && privateChatListDialog.isAdded()) {
+                    ((PrivateChatListDialog) privateChatListDialog).update();
+                }
+
+                PrivateChatContent chatContent = new PrivateChatContent();
+                chatContent.setContent(message);
+                chatContent.setTimestamp(System.currentTimeMillis());
+                chatContent.setPrivateUserId(chatToUser.getPrivateUserId());
+                chatContent.setFromId(mUserId);
+                chatContent.setUserId(mUserId);
+                chatContent.setIsAnchor(chatToUser.getIsAnchor());
+                ChatDbUtils.getInstance().insertChatContent(chatContent);
             }
-
-            PrivateChatContent chatContent = new PrivateChatContent();
-            chatContent.setContent(message);
-            chatContent.setTimestamp(System.currentTimeMillis());
-            chatContent.setPrivateUserId(chatToUser.getPrivateUserId());
-            chatContent.setFromId(mUserId);
-            chatContent.setUserId(mUserId);
-            ChatDbUtils.getInstance().insertChatContent(chatContent);
         }
 
     }

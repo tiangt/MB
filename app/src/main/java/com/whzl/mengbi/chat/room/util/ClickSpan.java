@@ -9,24 +9,24 @@ import com.whzl.mengbi.util.UIUtil;
 
 
 public abstract class ClickSpan extends ClickableSpan {
+    private boolean underLine = false;
+    private float textSize = 14;
     private Context context;
     private int color = -1;
 
-    public ClickSpan(Context mContext) {
+    public ClickSpan(Context mContext, int color, boolean underLine, int textSize) {
         this.context = mContext;
+        this.color = color;
+        this.underLine = underLine;
+        this.textSize = textSize;
     }
 
-    public ClickSpan(Context context, int color) {
-        this.context = context;
-        this.color = color;
-    }
 
     @Override
     public void updateDrawState(TextPaint ds) {
         ds.setColor(color); //红色
-        ds.setUnderlineText(true);
-        float textSize = UIUtil.sp2px(context, 14);
-        ds.setTextSize(textSize);
+        ds.setUnderlineText(underLine);
+        ds.setTextSize(UIUtil.sp2px(context, textSize));
     }
 }
 
