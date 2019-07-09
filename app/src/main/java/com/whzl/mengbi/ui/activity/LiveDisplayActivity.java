@@ -544,8 +544,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (getIntent() != null) {
             String extraMap = getIntent().getStringExtra("extraMap");
             ExtraMapBean extraMapBean = GsonUtils.GsonToBean(extraMap, ExtraMapBean.class);
-            if (extraMapBean != null && extraMapBean.programId != null) {
-                mProgramId = Integer.parseInt(extraMapBean.programId);
+            if (extraMapBean != null && extraMapBean.archives_id != null) {
+                mProgramId = Integer.parseInt(extraMapBean.archives_id);
             } else {
                 mProgramId = getIntent().getIntExtra(BundleConfig.PROGRAM_ID, -1);
             }

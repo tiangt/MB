@@ -426,16 +426,16 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 levelType = user.getLevelList().get(i).getLevelType();
                 levelValue = user.getLevelList().get(i).getLevelValue();
                 if (identityId == 10) {
-                    rlFollow.setVisibility(View.VISIBLE);
-                    if (isSubs) {
-                        tvFollow.setText(R.string.followed);
-                        tvFollow.setTextColor(getResources().getColor(R.color.tran_black));
-//                        mIsFollowed = "T";
-                    } else {
-                        tvFollow.setText(R.string.not_followed);
-                        tvFollow.setTextColor(Color.RED);
-//                        mIsFollowed = "F";
-                    }
+//                    rlFollow.setVisibility(View.VISIBLE);
+//                    if (isSubs) {
+//                        tvFollow.setText(R.string.followed);
+//                        tvFollow.setTextColor(getResources().getColor(R.color.tran_black));
+////                        mIsFollowed = "T";
+//                    } else {
+//                        tvFollow.setText(R.string.not_followed);
+//                        tvFollow.setTextColor(Color.RED);
+////                        mIsFollowed = "F";
+//                    }
                     if ("ANCHOR_LEVEL".equals(levelType)) {
                         imageView.setImageResource(ResourceMap.getResourceMap().getAnchorLevelIcon(levelValue));
                     }
@@ -556,8 +556,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 .subscribe(new ApiObserver<JsonElement>() {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
-                        tvFollow.setText(R.string.followed);
-                        tvFollow.setTextColor(Color.GRAY);
+//                        tvFollow.setText(R.string.followed);
+//                        tvFollow.setTextColor(Color.GRAY);
                     }
                 });
     }

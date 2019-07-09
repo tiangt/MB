@@ -304,7 +304,6 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         PrivateChatUserDao privateChatUserDao = BaseApplication.getInstance().getDaoSession().getPrivateChatUserDao();
         PrivateChatUser unique = privateChatUserDao.queryBuilder().where(
                 PrivateChatUserDao.Properties.UserId.eq(Long.parseLong(SPUtils.get(BaseApplication.getInstance(), "userId", 0L).toString())),
@@ -315,6 +314,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             EventBus.getDefault().post(new UpdatePrivateChatUIEvent());
         }
         EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @OnClick({R.id.tv_content})

@@ -42,13 +42,13 @@ public class MyMessageReceiver extends MessageReceiver {
         ExtraMapBean extraMapBean = GsonUtils.GsonToBean(extraMap, ExtraMapBean.class);
         if (ActivityStackManager.getInstance() != null && !ActivityStackManager.getInstance().empty()) {
             Intent intent = new Intent(context, LiveDisplayActivity.class);
-            intent.putExtra(LiveDisplayActivity.PROGRAMID, Integer.parseInt(extraMapBean.programId));
+            intent.putExtra(LiveDisplayActivity.PROGRAMID, Integer.parseInt(extraMapBean.archives_id));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
             return;
         }
-        if (extraMapBean != null && extraMapBean.programId != null && !TextUtils.isEmpty(extraMapBean.programId)) {
-            SPUtils.put(context, SpConfig.PUSH_PROGRAMID, extraMapBean.programId);
+        if (extraMapBean != null && extraMapBean.archives_id != null && !TextUtils.isEmpty(extraMapBean.archives_id)) {
+            SPUtils.put(context, SpConfig.PUSH_PROGRAMID, extraMapBean.archives_id);
         }
     }
 

@@ -196,7 +196,7 @@ public class PersonalInfoActivity extends BaseActivity {
                     @Override
                     public void onLoginSuccessListener() {
                         mVisitorId = (long) SPUtils.get(PersonalInfoActivity.this, "userId", 0L);
-                        tvFollowState.setVisibility(View.GONE);
+//                        tvFollowState.setVisibility(View.GONE);
                     }
                 })
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
@@ -314,7 +314,7 @@ public class PersonalInfoActivity extends BaseActivity {
                 levelValue = userBean.getLevelList().get(i).getLevelValue();
                 if ("ANCHOR".equals(userBean.getUserType())) {
                     if ("F".equals(userBean.getIsFollowed())) {
-                        tvFollowState.setVisibility(View.VISIBLE);
+//                        tvFollowState.setVisibility(View.VISIBLE);
                     }
                     tvLiveState.setVisibility(View.VISIBLE);
                     if ("T".equals(userBean.getLiveStatus())) {
@@ -388,7 +388,7 @@ public class PersonalInfoActivity extends BaseActivity {
                 .subscribe(new ApiObserver<JsonElement>() {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
-                        tvFollowState.setVisibility(View.GONE);
+//                        tvFollowState.setVisibility(View.GONE);
                         showToast("关注成功");
                         tvFansCount.setText(getString(R.string.fans_count, userBean.getFansNum() + 1));
                     }
@@ -466,7 +466,7 @@ public class PersonalInfoActivity extends BaseActivity {
         if (requestCode == AppUtils.REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
                 mVisitorId = (long) SPUtils.get(this, "userId", 0L);
-                tvFollowState.setVisibility(View.GONE);
+//                tvFollowState.setVisibility(View.GONE);
             }
         }
     }
