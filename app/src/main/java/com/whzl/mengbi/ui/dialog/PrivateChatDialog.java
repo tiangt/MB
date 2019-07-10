@@ -275,7 +275,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 FaceReplace.getInstance().vipFaceReplace(tvContent, spanString, BaseApplication.getInstance());
             }
             tvContent.append(spanString);
-            if (chatMessage.isAnchor) {
+            if (chatMessage.isAnchor && anchorId == chatMessage.from_uid) {
                 ivAnchor.setVisibility(View.VISIBLE);
             } else {
                 ivAnchor.setVisibility(View.GONE);
