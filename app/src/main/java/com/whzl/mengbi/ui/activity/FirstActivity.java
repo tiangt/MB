@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.jaeger.library.StatusBarUtil;
@@ -86,6 +87,9 @@ public class FirstActivity extends BaseActivity implements LoginView {
                 hashMap.put("openid", openid);
             }
             hashMap.put("channelId", BaseApplication.getInstance().getChannel());
+            if (PushServiceFactory.getCloudPushService().getDeviceId()!=null) {
+                hashMap.put("deviceNumber",PushServiceFactory.getCloudPushService().getDeviceId() );
+            }
             mLoginPresent.openLogin(hashMap);
         }
 

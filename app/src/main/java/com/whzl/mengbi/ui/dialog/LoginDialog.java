@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -117,6 +118,9 @@ public class LoginDialog extends BaseAwesomeDialog implements LoginView {
                 hashMap.put("openid", openid);
             }
             hashMap.put("channelId", BaseApplication.getInstance().getChannel());
+            if (PushServiceFactory.getCloudPushService().getDeviceId()!=null) {
+                hashMap.put("deviceNumber",PushServiceFactory.getCloudPushService().getDeviceId() );
+            }
             mLoginPresent.openLogin(hashMap);
         }
 

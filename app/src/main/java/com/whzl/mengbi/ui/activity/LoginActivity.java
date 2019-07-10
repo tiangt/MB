@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -114,6 +115,9 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
                 hashMap.put("openid", openid);
             }
             hashMap.put("channelId", BaseApplication.getInstance().getChannel());
+            if (PushServiceFactory.getCloudPushService().getDeviceId()!=null) {
+                hashMap.put("deviceNumber",PushServiceFactory.getCloudPushService().getDeviceId() );
+            }
             mLoginPresent.openLogin(hashMap);
         }
 
@@ -306,6 +310,9 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
                 paramsMap.put("password", EncryptUtils.md5Hex(password));
                 paramsMap.put("platform", "ANDROID");
                 paramsMap.put("channelId", BaseApplication.getInstance().getChannel());
+                if (PushServiceFactory.getCloudPushService().getDeviceId()!=null) {
+                    paramsMap.put("deviceNumber",PushServiceFactory.getCloudPushService().getDeviceId() );
+                }
                 mLoginPresent.login(paramsMap);
                 break;
             case R.id.tv_xieyi_login:

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent;
@@ -218,6 +219,9 @@ public class AccountSwitchActivity extends BaseActivity {
         }
         HashMap paramsMap = new HashMap();
         paramsMap.put("userId", user.getUserId());
+        if (PushServiceFactory.getCloudPushService().getDeviceId()!=null) {
+            paramsMap.put("deviceNumber",PushServiceFactory.getCloudPushService().getDeviceId() );
+        }
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override

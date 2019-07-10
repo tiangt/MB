@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.alibaba.sdk.android.push.AndroidPopupActivity;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.lht.paintview.util.LogUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
@@ -92,6 +93,9 @@ public class SplashActivity extends AndroidPopupActivity {
             return;
         }
         paramsMap.put("userId", userId + "");
+        if (PushServiceFactory.getCloudPushService().getDeviceId()!=null) {
+            paramsMap.put("deviceNumber",PushServiceFactory.getCloudPushService().getDeviceId() );
+        }
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override
