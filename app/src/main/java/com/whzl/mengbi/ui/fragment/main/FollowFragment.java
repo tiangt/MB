@@ -108,7 +108,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     }
 
     private void initTitle() {
-        tvToolbarTitle.setText("订阅");
+        tvToolbarTitle.setText("关注");
         tvToolbarMenuText.setText("开播提醒");
         tvToolbarMenuText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -415,7 +415,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     private void setFollowState(TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean) {
         tvFollowState.setBackground(null);
         tvFollowState.setTextColor(Color.parseColor("#20000000"));
-        tvFollowState.setText("已订阅");
+        tvFollowState.setText("已关注");
         tvFollowState.setOnClickListener(v -> {
 //            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
 //            dialog.setTitle("提示");
@@ -441,7 +441,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
                         if (responseInfo.getCode() == 200) {
 //                            mCurrentPager = 1;
 //                            getAnchorList(mCurrentPager++);
-                            ToastUtils.showToast("取消订阅成功");
+                            ToastUtils.showToast("取消关注成功");
                             setUnFollowState(tvFollowState, anchorInfoBean);
                         }
                     }
@@ -456,7 +456,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
     private void setUnFollowState(TextView tvFollowState, AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean) {
         tvFollowState.setBackgroundResource(R.drawable.bg_state_no_follow_follow);
         tvFollowState.setTextColor(Color.parseColor("#000000"));
-        tvFollowState.setText("订阅");
+        tvFollowState.setText("关注");
         tvFollowState.setOnClickListener(v -> follow(tvFollowState, anchorInfoBean));
     }
 
@@ -469,7 +469,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
             public void onReqSuccess(Object result) {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(result.toString(), ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
-                    ToastUtils.showToast("订阅成功");
+                    ToastUtils.showToast("关注成功");
                     setFollowState(tvFollowState, infoBean);
                 }
             }

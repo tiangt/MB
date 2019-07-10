@@ -106,6 +106,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     private long mUserId;
     private long current = System.currentTimeMillis();
     private String[] tips = new String[]{"小哥哥，怎么不理我呀！", "小哥哥哪里人？", "小哥哥，在吗？", "HI，这里可以跟我私聊哦！"};
+    private long anchorId;
 
     public static BaseAwesomeDialog newInstance(int programId) {
         PrivateChatDialog privateChatDialog = new PrivateChatDialog();
@@ -144,7 +145,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             }
         });
         if (mUserId == 0) {
-            if (mCurrentChatToUser.getIsAnchor()) {
+            if (mCurrentChatToUser.getIsAnchor() && anchorId == mCurrentChatToUser.getPrivateUserId()) {
                 ChatCommonJson chatCommonJson = new ChatCommonJson();
                 Random random = new Random();
                 chatCommonJson.setContent(tips[random.nextInt(tips.length)]);
@@ -154,12 +155,12 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 chatMessage.isAnchor = mCurrentChatToUser.getIsAnchor();
                 chatList.add(chatMessage);
 
-                ChatCommonJson warn = new ChatCommonJson();
-                warn.setFrom_uid(String.valueOf(mCurrentChatToUser.getPrivateUserId()));
-                ChatMessage warnMsg = new ChatMessage(chatCommonJson, getActivity(), null, true);
-                warnMsg.timeStamp = System.currentTimeMillis();
-                warnMsg.isWarn = 1;
-                chatList.add(warnMsg);
+//                ChatCommonJson warn = new ChatCommonJson();
+//                warn.setFrom_uid(String.valueOf(mCurrentChatToUser.getPrivateUserId()));
+//                ChatMessage warnMsg = new ChatMessage(chatCommonJson, getActivity(), null, true);
+//                warnMsg.timeStamp = System.currentTimeMillis();
+//                warnMsg.isWarn = 1;
+//                chatList.add(warnMsg);
                 chatAdapter.notifyDataSetChanged();
             }
         } else {
@@ -191,6 +192,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                     }
                 });
     }
+
 
     class RightViewHolder extends RecyclerView.ViewHolder {
 
@@ -449,6 +451,10 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
 
     public void setIsVip(boolean isVip) {
         this.isVip = isVip;
+    }
+
+    public void setAnchorId(long mAnchorId) {
+        this.anchorId = mAnchorId;
     }
 
     @Override

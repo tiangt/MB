@@ -229,13 +229,14 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
 
         @Override
         public void onBindViewHolder(int position) {
-            if (position == 0) {
-                linearLayout.setBackgroundColor(Color.parseColor("#FFF7F1DA"));
-            } else {
-                linearLayout.setBackgroundColor(Color.parseColor("#ffffff"));
-            }
+//            if (position == 0) {
+//                linearLayout.setBackgroundColor(Color.parseColor("#FFF7F1DA"));
+//            } else {
+//                linearLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+//            }
             PrivateChatUser dataBean = roomUsers.get(position);
-            RequestOptions requestOptions = new RequestOptions().transform(new CircleCrop());
+//            GlideImageLoader.getInstace().displayCircleAvatar(getActivity(), dataBean.getAvatar(), ivAvatar);
+            RequestOptions requestOptions = new RequestOptions().circleCrop().dontAnimate().placeholder(ivAvatar.getDrawable());
             Glide.with(getActivity()).load(dataBean.getAvatar()).apply(requestOptions).into(ivAvatar);
             tvNick.setText(dataBean.getName());
             long time = dataBean.getUncheckTime();
@@ -254,7 +255,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             String dateToString = DateUtils.getDateToString(timestamp, "HH:mm");
             tvTimeStamp.setText(dateToString);
             tvLastMsg.setText(dataBean.getLastMessage());
-            if (dataBean.getIsAnchor()) {
+            if (dataBean.getIsAnchor() && dataBean.getPrivateUserId().longValue() == anchor.getPrivateUserId().longValue()) {
                 ivAnchor.setVisibility(View.VISIBLE);
                 if (dataBean.getAnchorLevel() != null) {
                     GlideImageLoader.getInstace().displayImage(getContext(),
@@ -286,6 +287,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             ((PrivateChatDialog) awesomeDialog).chatTo(chatUser);
             ((PrivateChatDialog) awesomeDialog).setIsGuard(isGuard);
             ((PrivateChatDialog) awesomeDialog).setIsVip(isVip);
+            ((PrivateChatDialog) awesomeDialog).setAnchorId(anchor.getPrivateUserId());
             awesomeDialog.show(getFragmentManager());
         }
     }

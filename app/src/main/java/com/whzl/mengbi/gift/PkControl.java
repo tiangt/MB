@@ -447,7 +447,7 @@ public class PkControl {
                 .subscribe(new ApiObserver<JsonElement>() {
                     @Override
                     public void onSuccess(JsonElement jsonElement) {
-                        ToastUtils.showToastUnify(context, "订阅成功");
+                        ToastUtils.showToastUnify(context, "关注成功");
                         btnOtherFollow.setVisibility(View.GONE);
                     }
                 });

@@ -67,10 +67,8 @@ public class PrivateChatAction implements Actions {
             if ("ANCHOR_LEVEL".equals(level.getLevelType())) {
                 chatUser.setIsAnchor(true);
                 chatUser.setAnchorLevel(level.getLevelValue());
-                break;
             }
             if (level.getLevelType().equals("USER_LEVEL")) {
-                chatUser.setIsAnchor(false);
                 chatUser.setUserLevel(level.getLevelValue());
             }
         }

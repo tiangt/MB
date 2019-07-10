@@ -45,7 +45,7 @@
         android:paddingBottom="6dp"
         android:paddingLeft="12dp"
         android:paddingTop="6dp"
-        android:text="已订阅主播列表"
+        android:text="已关注主播列表"
         android:textColor="#70000000"
         android:textSize="13sp" />
 

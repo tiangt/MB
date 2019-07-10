@@ -40,7 +40,7 @@ public class ChatDbUtils {
 //            privateChatUser.setTimestamp(user.getTimestamp());
 //            privateChatUser = user;
             user.setId(privateChatUser.getId());
-            long uncheckTime = user.getUncheckTime();
+            long uncheckTime = privateChatUser.getUncheckTime();
             if (uncheckTime == 99) {
                 user.setUncheckTime((long) 99);
             } else {

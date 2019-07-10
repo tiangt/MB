@@ -245,7 +245,7 @@
     <string name="password_hint">请输入密码</string>
     <string name="nothing" />
     <string name="rank_title">榜单</string>
-    <string name="follow_title">订阅</string>
+    <string name="follow_title">关注</string>
     <string name="message_title">消息</string>
     <string name="find_title">发现</string>
     <string name="me_title">我的</string>
@@ -281,7 +281,7 @@
     <string name="empty_guard_list">当前主播还没有守护用户\n快给心爱的主播开一个吧</string>
     <string name="guard_priority">1.尊贵标识\n2.排位靠前\n3.尊贵坐席\n4.私聊\n5.防禁言\n6.聊天文字\n7.守护专属表情\n8.守护专属礼物\n9.守护进场特效</string>
     <string name="feedback">意见反馈</string>
-    <string name="subscriptions">订阅:%1$s</string>
+    <string name="subscriptions">关注:%1$s</string>
     <string name="audience">在线\n%1$d</string>
     <string name="alert">提示</string>
     <string name="cancel">取消</string>
@@ -439,7 +439,7 @@
     <string name="guard_follow_days">剩余%1$d天</string>
 
     <string name="play_notify_off">开播通知已关闭，开启后可收到主播的开播提醒</string>
-    <string name="play_notify_on">已订阅主播列表</string>
+    <string name="play_notify_on">已关注主播列表</string>
     <string name="empty_commom">暂无常送礼物</string>
     <string name="red_pack_full">本房间红包个数超过5个，不能再发送，请稍后再发</string>
     <string name="red_pack_unplay">直播间未开播</string>

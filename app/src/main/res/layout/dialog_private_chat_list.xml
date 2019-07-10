@@ -28,7 +28,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="#05000000" />
+            android:background="#1A000000" />
 
         <com.whzl.mengbi.ui.widget.recyclerview.SlideRecyclerView
             android:id="@+id/srv_private"
