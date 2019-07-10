@@ -34,6 +34,7 @@ public class PrivateChatAction implements Actions {
                 break;
             }
         }
+        message.timeStamp = System.currentTimeMillis();
         EventBus.getDefault().post(new UpdatePrivateChatEvent(message));
 
         PrivateChatContent chatContent = new PrivateChatContent();

@@ -1123,6 +1123,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
 
     private void showPrivateChatDialog(PrivateChatUser user) {
+        if (user.getPrivateUserId() == mUserId) {
+            return;
+        }
         if (awesomeDialog != null && awesomeDialog.isAdded()) {
             return;
         }
@@ -2102,6 +2105,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 json.setTo_uid(String.valueOf(chatToUser.getPrivateUserId()));
                 json.setFrom_uid("0");
                 ChatMessage chatMessage = new ChatMessage(json, this, null, true);
+                chatMessage.timeStamp = System.currentTimeMillis();
                 UpdatePrivateChatEvent event = new UpdatePrivateChatEvent(chatMessage);
                 EventBus.getDefault().post(event);
             } else {

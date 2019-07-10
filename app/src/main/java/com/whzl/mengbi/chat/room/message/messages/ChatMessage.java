@@ -50,6 +50,7 @@ public class ChatMessage implements FillHolderMessage {
     private String prettyNumColor;
     private String prettyNum;
     public int isWarn = 0;
+    public long timeStamp = 0;
 
     public ChatMessage(ChatCommonJson msgJson, Context context, List<SpannableString> fromSpanList, boolean isPrivate) {
         this.chatJson = msgJson;

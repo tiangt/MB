@@ -46,6 +46,7 @@ import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
+import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -54,6 +55,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -103,6 +105,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
     private BaseAwesomeDialog mChatDialog;
     private long mUserId;
     private long current = System.currentTimeMillis();
+    private String[] tips = new String[]{"小哥哥，怎么不理我呀！", "小哥哥哪里人？", "小哥哥，在吗？", "HI，这里可以跟我私聊哦！"};
 
     public static BaseAwesomeDialog newInstance(int programId) {
         PrivateChatDialog privateChatDialog = new PrivateChatDialog();
@@ -143,16 +146,18 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
         if (mUserId == 0) {
             if (mCurrentChatToUser.getIsAnchor()) {
                 ChatCommonJson chatCommonJson = new ChatCommonJson();
-                chatCommonJson.setContent("无理取闹");
+                Random random = new Random();
+                chatCommonJson.setContent(tips[random.nextInt(tips.length)]);
                 chatCommonJson.setFrom_uid(String.valueOf(mCurrentChatToUser.getPrivateUserId()));
                 ChatMessage chatMessage = new ChatMessage(chatCommonJson, getActivity(), null, true);
+                chatMessage.timeStamp = System.currentTimeMillis();
                 chatMessage.isAnchor = mCurrentChatToUser.getIsAnchor();
-                chatList.add(chatMessage);
                 chatList.add(chatMessage);
 
                 ChatCommonJson warn = new ChatCommonJson();
                 warn.setFrom_uid(String.valueOf(mCurrentChatToUser.getPrivateUserId()));
                 ChatMessage warnMsg = new ChatMessage(chatCommonJson, getActivity(), null, true);
+                warnMsg.timeStamp = System.currentTimeMillis();
                 warnMsg.isWarn = 1;
                 chatList.add(warnMsg);
                 chatAdapter.notifyDataSetChanged();
@@ -177,6 +182,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                         chatCommonJson.setFrom_uid(chatContent.getFromId().toString());
                         ChatMessage chatMessage = new ChatMessage(chatCommonJson, getActivity(), null, true);
                         chatMessage.isAnchor = chatContent.getIsAnchor();
+                        chatMessage.timeStamp = chatContent.getTimestamp();
                         chatList.add(chatMessage);
                     }
                     chatAdapter.notifyDataSetChanged();
@@ -191,15 +197,17 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
         private final ImageView ivAvatar;
         private final ImageView ivWarn;
         private final TextView tvContent;
+        private final TextView tvTime;
 
         public RightViewHolder(View itemView) {
             super(itemView);
             tvContent = itemView.findViewById(R.id.tv_content);
             ivAvatar = itemView.findViewById(R.id.iv_avatar);
             ivWarn = itemView.findViewById(R.id.iv_warn);
+            tvTime = itemView.findViewById(R.id.tv_time_private_chat);
         }
 
-        public void bindData(ChatMessage chatMessage) {
+        public void bindData(ChatMessage chatMessage, int position) {
             Glide.with(BaseApplication.getInstance()).load(ImageUrl.getAvatarUrl(Long.parseLong(String.valueOf(chatMessage.from_uid)), "jpg", current))
                     .apply(new RequestOptions().transform(new CircleCrop())).into(ivAvatar);
             tvContent.setText("");
@@ -217,6 +225,23 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             } else {
                 ivWarn.setVisibility(View.GONE);
             }
+
+            if (position == 0) {
+                tvTime.setVisibility(View.VISIBLE);
+                tvTime.setText(DateUtils.getDateToString(chatMessage.timeStamp, "HH:mm"));
+            } else {
+                tvTime.setVisibility(View.GONE);
+            }
+
+            if (position - 1 >= 0) {
+                ChatMessage lastChatMessage = (ChatMessage) chatList.get(position - 1);
+                if ((chatMessage.timeStamp - lastChatMessage.timeStamp) / 1000 > 600) {
+                    tvTime.setVisibility(View.VISIBLE);
+                    tvTime.setText(DateUtils.getDateToString(chatMessage.timeStamp, "HH:mm"));
+                } else {
+                    tvTime.setVisibility(View.GONE);
+                }
+            }
         }
     }
 
@@ -225,15 +250,17 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
         private final ImageView ivAvatar;
         private final ImageView ivAnchor;
         private final TextView tvContent;
+        private final TextView tvTime;
 
         public SingleTextViewHolder(View itemView) {
             super(itemView);
             tvContent = itemView.findViewById(R.id.tv_content);
             ivAvatar = itemView.findViewById(R.id.iv_avatar);
             ivAnchor = itemView.findViewById(R.id.iv_anchor_private);
+            tvTime = itemView.findViewById(R.id.tv_time_private_chat);
         }
 
-        public void bindData(ChatMessage chatMessage) {
+        public void bindData(ChatMessage chatMessage, int position) {
             Glide.with(BaseApplication.getInstance()).load(ImageUrl.getAvatarUrl(Long.parseLong(String.valueOf(chatMessage.from_uid)), "jpg", current))
                     .apply(new RequestOptions().transform(new CircleCrop())).into(ivAvatar);
             tvContent.setText("");
@@ -251,6 +278,23 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             } else {
                 ivAnchor.setVisibility(View.GONE);
             }
+
+            if (position == 0) {
+                tvTime.setVisibility(View.VISIBLE);
+                tvTime.setText(DateUtils.getDateToString(chatMessage.timeStamp, "HH:mm"));
+            } else {
+                tvTime.setVisibility(View.GONE);
+            }
+
+            if (position - 1 >= 0) {
+                ChatMessage lastChatMessage = (ChatMessage) chatList.get(position - 1);
+                if ((chatMessage.timeStamp - lastChatMessage.timeStamp) / 1000 > 600) {
+                    tvTime.setVisibility(View.VISIBLE);
+                    tvTime.setText(DateUtils.getDateToString(chatMessage.timeStamp, "HH:mm"));
+                } else {
+                    tvTime.setVisibility(View.GONE);
+                }
+            }
         }
     }
 
@@ -264,10 +308,10 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             tvWarn = itemView.findViewById(R.id.tv_warn);
         }
 
-        public void bindData(ChatMessage chatMessage) {
+        public void bindData(ChatMessage chatMessage, int position) {
             tvWarn.setMovementMethod(LinkMovementMethod.getInstance());
             tvWarn.setText("还未登录，无法发送私聊哦，现在");
-            tvWarn.append(LightSpanString.getClickSpan(getActivity(), "登录", Color.rgb(255, 43, 63),false,12, new View.OnClickListener() {
+            tvWarn.append(LightSpanString.getClickSpan(getActivity(), "登录", Color.rgb(255, 43, 63), false, 12, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dismissDialog();
@@ -302,11 +346,11 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
                 ChatMessage chatMessage = (ChatMessage) chatList.get(position);
                 if (holder.getItemViewType() == LEFT) {
-                    ((SingleTextViewHolder) holder).bindData(chatMessage);
+                    ((SingleTextViewHolder) holder).bindData(chatMessage, position);
                 } else if (holder.getItemViewType() == RIGHT) {
-                    ((RightViewHolder) holder).bindData(chatMessage);
+                    ((RightViewHolder) holder).bindData(chatMessage, position);
                 } else {
-                    ((WarnViewHolder) holder).bindData(chatMessage);
+                    ((WarnViewHolder) holder).bindData(chatMessage, position);
                 }
                 addAnimation(holder, position);
             }
