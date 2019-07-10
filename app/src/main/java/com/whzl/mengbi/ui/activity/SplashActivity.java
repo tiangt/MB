@@ -51,6 +51,7 @@ public class SplashActivity extends AndroidPopupActivity {
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+        LogUtils.e("MyMessageReceiver  SplashActivity onCreate");
         // 避免从桌面启动程序后，会重新实例化入口类的activity
         if (!this.isTaskRoot()) {
             Intent intent = getIntent();
@@ -93,8 +94,8 @@ public class SplashActivity extends AndroidPopupActivity {
             return;
         }
         paramsMap.put("userId", userId + "");
-        if (PushServiceFactory.getCloudPushService().getDeviceId()!=null) {
-            paramsMap.put("deviceNumber",PushServiceFactory.getCloudPushService().getDeviceId() );
+        if (PushServiceFactory.getCloudPushService().getDeviceId() != null) {
+            paramsMap.put("deviceNumber", PushServiceFactory.getCloudPushService().getDeviceId());
         }
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.CHECK_LOGIN, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack<Object>() {
@@ -226,5 +227,6 @@ public class SplashActivity extends AndroidPopupActivity {
 //        startActivity(new Intent(this, MainActivity.class)
 //                .putExtra("programId", proramId));
 //        finish();
+        LogUtils.e("MyMessageReceiver  onSysNoticeOpened");
     }
 }

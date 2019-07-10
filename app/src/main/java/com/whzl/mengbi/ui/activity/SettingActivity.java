@@ -217,17 +217,6 @@ public class SettingActivity extends BaseActivity {
                 ResponseInfo responseInfo = GsonUtils.GsonToBean(strJson, ResponseInfo.class);
                 if (responseInfo.getCode() == 200) {
                     showToast("已退出登录");
-                    PushServiceFactory.getCloudPushService().unbindAccount(new CommonCallback() {
-                        @Override
-                        public void onSuccess(String s) {
-
-                        }
-
-                        @Override
-                        public void onFailed(String s, String s1) {
-
-                        }
-                    });
                     setResult(RESULT_OK);
                     finish();
                     delete();

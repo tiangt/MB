@@ -139,27 +139,12 @@ public class BaseApplication extends Application {
                 LogUtils.d("init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
             }
         });
-        Long userid = (Long) SPUtils.get(this, SpConfig.KEY_USER_ID, 0L);
-        if (userid != 0) {
-            pushService.bindAccount(String.valueOf(userid),
-                    new CommonCallback() {
-                        @Override
-                        public void onSuccess(String s) {
-                            LogUtils.e("bindAccount onSuccess" + s);
-                        }
-
-                        @Override
-                        public void onFailed(String s, String s1) {
-                            LogUtils.e("bindAccount onFailed" + s + "   " + s1);
-                        }
-                    });
-        }
 
         String deviceId = pushService.getDeviceId();
         LogUtils.e("ssssssssssssss    " + deviceId);
 
         // 注册方法会自动判断是否支持小米系统推送，如不支持会跳过注册。
-        MiPushRegister.register(applicationContext, "5591784198997", "ZjtN9Tu6dpOkrxHQpzerpw==");
+        MiPushRegister.register(applicationContext, "2882303761517841997", "5591784198997");
         // 注册方法会自动判断是否支持华为系统推送，如不支持会跳过注册。
         HuaWeiRegister.register(applicationContext);
         //GCM/FCM辅助通道注册

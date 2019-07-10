@@ -1,5 +1,6 @@
 package com.whzl.mengbi.receiver;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -12,8 +13,10 @@ import com.whzl.mengbi.model.entity.ExtraMapBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.common.ActivityStackManager;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,16 +43,32 @@ public class MyMessageReceiver extends MessageReceiver {
 //        if (ActivityStackManager.getInstance() == null) {
         Log.e("MyMessageReceiver", "onNotificationOpened, title: " + title + ", summary: " + summary + ", extraMap:" + extraMap);
         ExtraMapBean extraMapBean = GsonUtils.GsonToBean(extraMap, ExtraMapBean.class);
-        if (ActivityStackManager.getInstance() != null && !ActivityStackManager.getInstance().empty()) {
+        if (ActivityStackManager.getInstance()!=null&&ActivityStackManager.getInstance().getTopActivity()!=null) {
+            LogUtils.e("MyMessageReceiver   isProessRunning");
             Intent intent = new Intent(context, LiveDisplayActivity.class);
             intent.putExtra(LiveDisplayActivity.PROGRAMID, Integer.parseInt(extraMapBean.archives_id));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
-            return;
+
+        } else {
+            LogUtils.e("MyMessageReceiver   isProessRunning else");
+            if (extraMapBean != null && extraMapBean.archives_id != null && !TextUtils.isEmpty(extraMapBean.archives_id)) {
+                SPUtils.put(context, SpConfig.PUSH_PROGRAMID, extraMapBean.archives_id);
+            }
         }
-        if (extraMapBean != null && extraMapBean.archives_id != null && !TextUtils.isEmpty(extraMapBean.archives_id)) {
-            SPUtils.put(context, SpConfig.PUSH_PROGRAMID, extraMapBean.archives_id);
+    }
+
+    public boolean isProessRunning(Context context, String proessName) {
+
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> lists = am.getRunningAppProcesses();
+
+        for (ActivityManager.RunningAppProcessInfo info : lists) {
+            if (info.processName.equals(proessName)) {
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
