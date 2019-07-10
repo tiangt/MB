@@ -226,7 +226,8 @@ public class SplashActivity extends AndroidPopupActivity {
 //        String proramId = map.get("programId");
 //        startActivity(new Intent(this, MainActivity.class)
 //                .putExtra("programId", proramId));
-//        finish();
-        LogUtils.e("MyMessageReceiver  onSysNoticeOpened");
+        if (map != null && map.get("archives_id") != null && !TextUtils.isEmpty(map.get("archives_id"))) {
+            SPUtils.put(this, SpConfig.PUSH_PROGRAMID, map.get("archives_id"));
+        }
     }
 }

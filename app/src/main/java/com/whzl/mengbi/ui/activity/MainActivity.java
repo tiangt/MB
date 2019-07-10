@@ -69,6 +69,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -77,6 +78,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -249,7 +251,15 @@ public class MainActivity extends BaseActivity {
         if (Long.parseLong(SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, 0L).toString()) != 0) {
             getUserInfo();
         }
-        alipushJump();
+        Observable.timer(300, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        alipushJump();
+                    }
+                });
 
         RxPermissions rxPermissions = new RxPermissions(MainActivity.this);
         rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE
