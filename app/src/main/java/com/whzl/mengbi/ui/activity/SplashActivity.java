@@ -177,7 +177,7 @@ public class SplashActivity extends AndroidPopupActivity {
 //                    finish();
 //                });
 
-        Observable.timer(1, TimeUnit.SECONDS)
+        Observable.timer(3, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
@@ -190,7 +190,7 @@ public class SplashActivity extends AndroidPopupActivity {
     @SuppressLint("CheckResult")
     private void delayJumpToHomeActivity(boolean isNormalLogin) {
         Observable.just(isNormalLogin)
-                .delay(1, TimeUnit.SECONDS)
+                .delay(3, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((Boolean s) -> {

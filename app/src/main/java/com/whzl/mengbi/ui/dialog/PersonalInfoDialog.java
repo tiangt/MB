@@ -1,13 +1,10 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,16 +39,12 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 /**
  * @author cliang
@@ -102,20 +95,19 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
     private int mProgramId;
     private RoomUserInfo.DataBean mViewedUser;
     private RoomUserInfo.DataBean mUser;
-    private List<RoomUserInfo.LevelMapBean> levelMapBeans;
     private int levelValue;
     private String levelType;
     private long mVisitorId;
     private PersonalInfoBean.DataBean userBean;
-    private int mAnchorLevel;
     private BaseAwesomeDialog operateMoreDialog;
 
-    public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId) {
+    public static PersonalInfoDialog newInstance(RoomUserInfo.DataBean user, long userId, int programId, long visitorId, RoomUserInfo.DataBean viewedUser) {
         Bundle args = new Bundle();
         args.putLong("userId", userId);
         args.putInt("programId", programId);
         args.putLong("visitorId", visitorId); //当前用户ID
         args.putParcelable("user", user);
+        args.putParcelable("viewedUser", viewedUser);
         PersonalInfoDialog dialog = new PersonalInfoDialog();
         dialog.setArguments(args);
         return dialog;
@@ -145,10 +137,16 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         mProgramId = getArguments().getInt("programId");
         mVisitorId = getArguments().getLong("visitorId");
         mUser = getArguments().getParcelable("user");
-        mAnchorLevel = getArguments().getInt("anchorLevel");
+        mViewedUser = getArguments().getParcelable("viewedUser");
         mTvAnchorId.setText("ID " + mUserId);
         tvAt.setText("@Ta");
-        getUserInfo(mUserId, mProgramId, mVisitorId);
+
+        setupView(mViewedUser);
+        if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mViewedUser.getUserId()) {
+            return;
+        }
+        setupOperations();
+//        getUserInfo(mUserId, mProgramId, mVisitorId);
         getHomePageInfo(mUserId, mVisitorId);
     }
 
@@ -189,10 +187,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
 //                    return;
 //                }
 //                if (((LiveDisplayActivity) getActivity()).getCanChatPrivate()) {
-                    if (listener != null) {
-                        listener.onPrivateChatClick(mViewedUser);
-                    }
-                    dismiss();
+                if (listener != null) {
+                    listener.onPrivateChatClick(mViewedUser);
+                }
+                dismiss();
 //                }
 
                 break;
@@ -398,7 +396,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         int identityId = user.getIdentityId();
         linearLayout.removeAllViews();
         ImageView imageView = new ImageView(getContext());
-        levelMapBeans = new ArrayList<>();
 
         //贵族等级
         if (user.getLevelList() != null) {
@@ -539,8 +536,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         if (getActivity() == null || getActivity().isFinishing()) {
             return;
         }
-        RequestOptions options = new RequestOptions().placeholder(R.drawable.bg_civilian);
-        Glide.with(getActivity()).load(bg_civilian).apply(options).transition(withCrossFade()).into(ivBgPersonal);
+        RequestOptions options = new RequestOptions().override(UIUtil.dip2px(getContext(), 185), UIUtil.dip2px(getContext(), 165));
+        Glide.with(getActivity()).load(bg_civilian).apply(options).into(ivBgPersonal);
 //        GlideImageLoader.getInstace().displayImage(getActivity(), bg_civilian, ivBgPersonal);
     }
 
@@ -560,15 +557,6 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
 //                        tvFollow.setTextColor(Color.GRAY);
                     }
                 });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Window window = getDialog().getWindow();
-        WindowManager.LayoutParams windowParams = window.getAttributes();
-        windowParams.dimAmount = 0f;
-        window.setAttributes(windowParams);
     }
 
     private void isRoyal() {

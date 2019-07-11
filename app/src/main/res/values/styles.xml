@@ -69,7 +69,7 @@
     </style>
 
     <style name="dialog_enter_from_bottom_out_from_top" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/slide_in_top</item>
+        <!--<item name="android:windowEnterAnimation">@anim/slide_in_top</item>-->
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 

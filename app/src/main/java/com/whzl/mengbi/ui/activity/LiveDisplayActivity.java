@@ -220,6 +220,8 @@ import com.whzl.mengbi.util.guide.core.Controller;
 import com.whzl.mengbi.util.guide.listener.OnGuideChangedListener;
 import com.whzl.mengbi.util.guide.listener.OnLayoutInflatedListener;
 import com.whzl.mengbi.util.guide.model.GuidePage;
+import com.whzl.mengbi.util.network.RequestManager;
+import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -703,10 +705,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-//                if (pkLayout.popupWindow != null && pkLayout.popupWindow.isShowing()) {
-//                    pkLayout.popupWindow.dismiss();
-//                    pkLayout.tvFansRank.setText("点击打开助力粉丝榜");
-//                }
                 if (mChatDialog != null && mChatDialog.isAdded()) {
                     ((LiveHouseChatDialog) mChatDialog).hide();
                 }
@@ -721,42 +719,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pollAdapter.setListerner(position -> {
             AudienceListBean.AudienceInfoBean audienceInfoBean = mAudienceList.get(position + 1);
             long userId = audienceInfoBean.getUserid();
-            if (personalInfoDialog != null && personalInfoDialog.isAdded()) {
-                return;
-            }
-            personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, userId, mProgramId, mUserId)
-                    .setListener((RoomUserInfo.DataBean mViewedUser) -> {
-                        if (mUserListDialog != null && mUserListDialog.isAdded()) {
-                            mUserListDialog.dismiss();
-                        }
-                        if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
-                            mGuardianDialog.dismiss();
-                        }
-                        if (headlineDialog != null && headlineDialog.isAdded()) {
-                            headlineDialog.dismiss();
-                        }
-                        if (mViewedUser != null) {
-                            PrivateChatUser chatUser = new PrivateChatUser();
-                            chatUser.setPrivateUserId(mViewedUser.getUserId());
-                            chatUser.setAvatar(mViewedUser.getAvatar());
-                            chatUser.setName(mViewedUser.getNickname());
-                            for (int i = 0; i < mViewedUser.getLevelList().size(); i++) {
-                                RoomUserInfo.LevelMapBean levelBean = mViewedUser.getLevelList().get(i);
-                                if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
-                                    chatUser.setIsAnchor(true);
-                                    chatUser.setAnchorLevel(levelBean.getLevelValue());
-                                }
-                                if (levelBean.getLevelType().equals("USER_LEVEL")) {
-                                    chatUser.setUserLevel(levelBean.getLevelValue());
-                                }
-                            }
-                            showPrivateChatDialog(chatUser);
-                        }
-                    })
-//                    .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
-                    .setDimAmount(0)
-                    .show(getSupportFragmentManager());
-
+            showAudienceInfoDialog(userId, false);
         });
         mAudienceRecycler.setAdapter(pollAdapter);
     }
@@ -814,6 +777,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Override
     protected void loadData() {
+        if (mUserId == 0) {
+            viewMessageNotify.setVisibility(View.VISIBLE);
+        }
         mLivePresenter.getProgramFirst(mProgramId);
         getRoomToken();
         mLivePresenter.getRoomInfo(mProgramId);
@@ -862,42 +828,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
-                if (personalInfoDialog != null && personalInfoDialog.isAdded()) {
-                    return;
-                }
-                personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, mAnchorId, mProgramId, mUserId)
-                        .setListener((RoomUserInfo.DataBean mViewedUser) -> {
-                            if (mUserListDialog != null && mUserListDialog.isAdded()) {
-                                mUserListDialog.dismiss();
-                            }
-                            if (mGuardianDialog != null && mGuardianDialog.isAdded()) {
-                                mGuardianDialog.dismiss();
-                            }
-                            if (headlineDialog != null && headlineDialog.isAdded()) {
-                                headlineDialog.dismiss();
-                            }
-                            if (mViewedUser != null) {
-                                PrivateChatUser chatUser = new PrivateChatUser();
-                                chatUser.setPrivateUserId(mViewedUser.getUserId());
-                                chatUser.setAvatar(mViewedUser.getAvatar());
-                                chatUser.setName(mViewedUser.getNickname());
-                                for (int i = 0; i < mViewedUser.getLevelList().size(); i++) {
-                                    RoomUserInfo.LevelMapBean levelBean = mViewedUser.getLevelList().get(i);
-                                    if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
-                                        chatUser.setIsAnchor(true);
-                                        chatUser.setAnchorLevel(levelBean.getLevelValue());
-                                    }
-                                    if (levelBean.getLevelType().equals("USER_LEVEL")) {
-                                        chatUser.setUserLevel(levelBean.getLevelValue());
-                                    }
-                                }
-                                showPrivateChatDialog(chatUser);
-                            }
-                        })
-//                        .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
-                        .setDimAmount(0)
-                        .show(getSupportFragmentManager());
-                //主播信息
+                showAudienceInfoDialog(mAnchorId, false);
                 break;
             case R.id.btn_follow:
                 if (mUserId == 0) {
@@ -2336,11 +2267,42 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
 
+    /**
+     * 头像弹窗
+     */
     public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
         if (personalInfoDialog != null && personalInfoDialog.isAdded()) {
             return;
         }
-        personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId)
+
+
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("programId", mProgramId + "");
+        paramsMap.put("userId", viewedUserID + "");
+        paramsMap.put("visitorId", mUserId + "");
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                RoomUserInfo roomUserInfoData = GsonUtils.GsonToBean(result.toString(), RoomUserInfo.class);
+                if (roomUserInfoData.getCode() == 200) {
+                    if (roomUserInfoData.getData() != null) {
+                        RoomUserInfo.DataBean data = roomUserInfoData.getData();
+                        showPersonalInfoDialog(viewedUserID, data);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+
+    }
+
+    private void showPersonalInfoDialog(long viewedUserID, RoomUserInfo.DataBean viewedUser) {
+        personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId, viewedUser)
                 .setListener((RoomUserInfo.DataBean mViewedUser) -> {
                     if (mUserListDialog != null && mUserListDialog.isAdded()) {
                         mUserListDialog.dismiss();
@@ -2369,8 +2331,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         showPrivateChatDialog(chatUser);
                     }
                 })
-//                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
-                .setDimAmount(0)
+                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+                .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .show(getSupportFragmentManager());
     }
 
@@ -2745,6 +2707,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (line == null || line.length == 0) {
             return;
         }
+        headLineView.stopFlipping();
         int images[] = {R.drawable.live_display_cup, R.drawable.ic_head_line};
         List<View> views = new ArrayList<>();
         for (int i = 0; i < line.length; i++) {
