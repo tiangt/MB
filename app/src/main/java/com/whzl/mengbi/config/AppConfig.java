@@ -18,4 +18,5 @@ public interface AppConfig {
     String OPEN_REDPACKET = "OPEN_REDPACKET";
     String LUCK_ROB = "LUCK_ROB";
     String GUESS = "GUESS";
+    String CARDGAME = "cardGame";
 }

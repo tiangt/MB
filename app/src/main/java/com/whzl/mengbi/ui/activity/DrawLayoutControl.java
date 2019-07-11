@@ -243,7 +243,6 @@ public class DrawLayoutControl {
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
             if (position == bannerInfoList.size() + 1) {
-                ((LiveDisplayActivity) activity).jumpToFlopActivity();
                 return;
             }
 
@@ -262,6 +261,8 @@ public class DrawLayoutControl {
                 ((LiveDisplayActivity) activity).showSnatchDialog();
             } else if (bannerInfoList.get(position).flag != null && bannerInfoList.get(position).flag.equals(AppConfig.GUESS)) {
                 ((LiveDisplayActivity) activity).showGuessDialog();
+            } else if (bannerInfoList.get(position).flag != null && bannerInfoList.get(position).flag.equals(AppConfig.CARDGAME)) {
+                ((LiveDisplayActivity) activity).jumpToFlopActivity();
             } else if (bannerInfoList.get(position).flag != null && !bannerInfoList.get(position).flag.equals(AppConfig.GUESS)
                     && !bannerInfoList.get(position).flag.equals(AppConfig.LUCK_ROB)) {
                 ToastUtils.showToastUnify(activity, "请升级版本");
