@@ -15,6 +15,7 @@ public class AnimEvent {
     }
 
     private double seconds;
+    public int times;
 
     public AnimEvent(AnimJson animJson, String animUrl) {
         this.animJson = animJson;

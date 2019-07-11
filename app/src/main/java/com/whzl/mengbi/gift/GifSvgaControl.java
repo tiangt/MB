@@ -52,6 +52,7 @@ public class GifSvgaControl {
             return;
         }
         double seconds = 0;
+        int count = event.getAnimJson().getContext().getCount();
         List<AnimJson.ResourcesEntity> resources = event.getAnimJson().getResources();
         for (int i = 0; i < resources.size(); i++) {
             AnimJson.ResourcesEntity resourcesEntity = resources.get(i);
@@ -66,10 +67,11 @@ public class GifSvgaControl {
 
             }
         }
-        if (seconds == 0) {
-            return;
-        }
+//        if (seconds == 0) {
+//            return;
+//        }
         event.setSeconds(seconds);
+        event.times = count;
         if (!isShowSvga && !isShowGif) {
             if ("MOBILE_GIFT_GIF".equals(event.getAnimJson().getAnimType())
                     || "MOBILE_CAR_GIF".equals(event.getAnimJson().getAnimType()))
@@ -141,6 +143,7 @@ public class GifSvgaControl {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     svgaImageView.setVideoItem(videoItem);
+                    svgaImageView.setLoops(event.times);
                     svgaImageView.startAnimation();
                 }
 

@@ -2331,7 +2331,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         showPrivateChatDialog(chatUser);
                     }
                 })
-                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
+//                .setAnimStyle(R.style.dialog_enter_from_bottom_out_from_top)
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .show(getSupportFragmentManager());
     }
