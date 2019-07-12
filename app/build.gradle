@@ -46,7 +46,7 @@ android {
 
         debug {
             buildConfigField("boolean", "API_DEBUG_ENT", "true")
-            manifestPlaceholders = [appName: "萌比直播dev"]
+            manifestPlaceholders = [appName: "萌比直播"]
             minifyEnabled false
             shrinkResources false
             zipAlignEnabled false
