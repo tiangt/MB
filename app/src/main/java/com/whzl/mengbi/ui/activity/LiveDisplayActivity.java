@@ -2491,7 +2491,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
                 isVip = true;
-                LogUtils.e("sssssssss   onActivityResult");
+                viewMessageNotify.setVisibility(View.GONE);
             }
         }
         if (requestCode == AppUtils.REQUEST_LOGIN) {
@@ -2500,7 +2500,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
                 isVip = true;
-                LogUtils.e("sssssssss   onActivityResult");
+                viewMessageNotify.setVisibility(View.GONE);
             }
         }
         if (requestCode == AppUtils.OPEN_VIP) {

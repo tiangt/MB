@@ -52,7 +52,10 @@ public class GifSvgaControl {
             return;
         }
         double seconds = 0;
-        int count = event.getAnimJson().getContext().getCount();
+        int count = 1;
+        if (event.getAnimJson().getContext() != null) {
+            count = event.getAnimJson().getContext().getCount();
+        }
         List<AnimJson.ResourcesEntity> resources = event.getAnimJson().getResources();
         for (int i = 0; i < resources.size(); i++) {
             AnimJson.ResourcesEntity resourcesEntity = resources.get(i);
