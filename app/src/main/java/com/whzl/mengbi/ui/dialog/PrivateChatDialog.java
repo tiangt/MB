@@ -222,7 +222,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 FaceReplace.getInstance().vipFaceReplace(tvContent, spanString, BaseApplication.getInstance());
             }
             tvContent.append(spanString);
-            if (chatMessage.from_uid == 0) {
+            if (chatMessage.isWarn == 1 || chatMessage.isWarn == 2) {
                 ivWarn.setVisibility(View.VISIBLE);
             } else {
                 ivWarn.setVisibility(View.GONE);
@@ -311,15 +311,19 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
         }
 
         public void bindData(ChatMessage chatMessage, int position) {
-            tvWarn.setMovementMethod(LinkMovementMethod.getInstance());
-            tvWarn.setText("还未登录，无法发送私聊哦，现在");
-            tvWarn.append(LightSpanString.getClickSpan(getActivity(), "登录", Color.rgb(255, 43, 63), false, 12, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dismissDialog();
-                    ((LiveDisplayActivity) getActivity()).login();
-                }
-            }));
+            if (chatMessage.isWarn == 1) {
+                tvWarn.setMovementMethod(LinkMovementMethod.getInstance());
+                tvWarn.setText("还未登录，无法发送私聊哦，现在");
+                tvWarn.append(LightSpanString.getClickSpan(getActivity(), "登录", Color.rgb(255, 43, 63), false, 12, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismissDialog();
+                        ((LiveDisplayActivity) getActivity()).login();
+                    }
+                }));
+            } else {
+                tvWarn.setText("VIP、守护、贵族或富豪6及以上玩家才能私聊哦！");
+            }
         }
     }
 
@@ -368,7 +372,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                 if (chatMessage.from_uid == mUserId) {
                     return RIGHT;
                 } else {
-                    if (chatMessage.isWarn == 1) {
+                    if (chatMessage.isWarn == 1 || chatMessage.isWarn == 2) {
                         return WARN;
                     } else {
                         return LEFT;

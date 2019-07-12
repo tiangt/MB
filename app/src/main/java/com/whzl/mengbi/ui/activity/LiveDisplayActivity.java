@@ -1009,7 +1009,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     public boolean getCanChatPrivate() {
         if (!UserIdentity.getCanChatPaivate(mRoomUserInfo)) {
-            showToast(R.string.private_chat_permission_deny);
+//            showToast(R.string.private_chat_permission_deny);
             return false;
         }
         return true;
@@ -2032,6 +2032,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 json.setFrom_uid("0");
                 ChatMessage chatMessage = new ChatMessage(json, this, null, true);
                 chatMessage.timeStamp = System.currentTimeMillis();
+                chatMessage.isWarn = 1;
                 UpdatePrivateChatEvent event = new UpdatePrivateChatEvent(chatMessage);
                 EventBus.getDefault().post(event);
 
@@ -2043,6 +2044,26 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 UpdatePrivateChatEvent warnEvent = new UpdatePrivateChatEvent(warnMsg);
                 EventBus.getDefault().post(warnEvent);
             } else {
+                if (!getCanChatPrivate()) {
+                    ChatCommonJson json = new ChatCommonJson();
+                    json.setContent(message);
+                    json.setTo_uid(String.valueOf(chatToUser.getPrivateUserId().longValue()));
+                    json.setFrom_uid(String.valueOf(mUserId));
+                    ChatMessage chatMessage = new ChatMessage(json, this, null, true);
+                    chatMessage.timeStamp = System.currentTimeMillis();
+                    chatMessage.isWarn = 2;
+                    UpdatePrivateChatEvent event = new UpdatePrivateChatEvent(chatMessage);
+                    EventBus.getDefault().post(event);
+
+                    ChatCommonJson warn = new ChatCommonJson();
+                    warn.setFrom_uid(String.valueOf(chatToUser.getPrivateUserId().longValue()));
+                    ChatMessage warnMsg = new ChatMessage(warn, this, null, true);
+                    warnMsg.timeStamp = System.currentTimeMillis();
+                    warnMsg.isWarn = 2;
+                    UpdatePrivateChatEvent warnEvent = new UpdatePrivateChatEvent(warnMsg);
+                    EventBus.getDefault().post(warnEvent);
+                    return;
+                }
                 RoomUserInfo.DataBean dataBean = new RoomUserInfo.DataBean();
                 dataBean.setUserId(chatToUser.getPrivateUserId());
                 dataBean.setNickname(chatToUser.getName());
