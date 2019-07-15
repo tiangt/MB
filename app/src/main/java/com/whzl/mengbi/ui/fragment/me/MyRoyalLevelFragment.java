@@ -89,6 +89,19 @@ public class MyRoyalLevelFragment extends BaseFragment {
         }
     };
 
+    private List<Integer> royal = new ArrayList<Integer>() {
+        {
+            add(R.drawable.ic_royal_user_1);
+            add(R.drawable.ic_royal_user_2);
+            add(R.drawable.ic_royal_user_3);
+            add(R.drawable.ic_royal_user_4);
+            add(R.drawable.ic_royal_user_5);
+            add(R.drawable.ic_royal_user_6);
+            add(R.drawable.ic_royal_user_7);
+            add(R.drawable.ic_royal_user_8);
+        }
+    };
+
 
     public static MyRoyalLevelFragment newInstance(PersonalInfoBean.DataBean dataBean) {
         Bundle args = new Bundle();
@@ -119,8 +132,10 @@ public class MyRoyalLevelFragment extends BaseFragment {
                     evlRoyalLevel.initView();
 
                     if ("ROYAL_LEVEL".equals(levelType)) {
-                        GlideImageLoader.getInstace()
-                                .displayGift(getMyActivity(), ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue), ivRoyalLevel);
+                        if (levelValue!=0) {
+                            GlideImageLoader.getInstace()
+                                    .displayImage(getMyActivity(), royal.get(levelValue - 1), ivRoyalLevel);
+                        }
                         expListBeans = listBeans.get(i).getExpList();
                         for (int j = 0; j < expListBeans.size(); j++) {
                             sjExpvalue = expListBeans.get(j).getSjExpvalue();

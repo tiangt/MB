@@ -170,8 +170,9 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
             } else {
                 imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(audienceInfoBean.getLevelMap().getUSER_LEVEL()));
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 36), UIUtil.dip2px(getMyActivity(), 14));
-            params.leftMargin = UIUtil.dip2px(getContext(), 1);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 39), UIUtil.dip2px(getMyActivity(), 15));
+//            params.leftMargin = UIUtil.dip2px(getContext(), 1);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             medalLayout.addView(imageView, params);
 
             if (audienceInfoBean.getMedal() != null) {
@@ -211,7 +212,7 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
                                         int intrinsicWidth = resource.getIntrinsicWidth();
                                         ImageView imageView = new ImageView(getContext());
                                         imageView.setImageDrawable(resource);
-                                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 18), UIUtil.dip2px(getMyActivity(), 16));
+                                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 18), UIUtil.dip2px(getMyActivity(), 15));
                                         params.leftMargin = UIUtil.dip2px(getContext(), 3);
                                         medalLayout.addView(imageView, params);
                                     }

@@ -179,14 +179,16 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                 GlideImageLoader.getInstace().displayCircleAvatar(getContext(), audienceInfoBean.getAvatar(), ivAvatar);
                 if (audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
                     ImageView royalImg = new ImageView(getContext());
-                    if (BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
-                        Glide.with(getMyActivity()).asGif().load(ResourceMap.getResourceMap().
-                                getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
-                    } else {
-                        Glide.with(getMyActivity()).asBitmap().load(ResourceMap.getResourceMap().
-                                getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
-                    }
-                    LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 40), UIUtil.dip2px(getMyActivity(), 16));
+//                    if (BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
+//                        Glide.with(getMyActivity()).asGif().load(ResourceMap.getResourceMap().
+//                                getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
+//                    } else {
+//                        Glide.with(getMyActivity()).asBitmap().load(ResourceMap.getResourceMap().
+//                                getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
+//                    }
+                    GlideImageLoader.getInstace().displayGift(getMyActivity(), ResourceMap.getResourceMap().
+                            getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL()), royalImg);
+                    LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 48), UIUtil.dip2px(getMyActivity(), 16));
                     managerLayout.addView(royalImg, rparams);
                 }
 
@@ -196,8 +198,8 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                 } else {
                     imageView.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(audienceInfoBean.getLevelMap().getUSER_LEVEL()));
                 }
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 38), UIUtil.dip2px(getMyActivity(), 16));
-                params.leftMargin = UIUtil.dip2px(getContext(), 1);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 39), UIUtil.dip2px(getMyActivity(), 15));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 levelLayout.addView(imageView, params);
 
                 if (audienceInfoBean.getMedal() != null) {
@@ -237,7 +239,7 @@ public class ManagerListFragment extends BasePullListFragment<AudienceListBean.A
                                             int intrinsicWidth = resource.getIntrinsicWidth();
                                             ImageView imageView = new ImageView(getContext());
                                             imageView.setImageDrawable(resource);
-                                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 18), UIUtil.dip2px(getMyActivity(), 16));
+                                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 18), UIUtil.dip2px(getMyActivity(), 15));
                                             params.leftMargin = UIUtil.dip2px(getContext(), 3);
                                             levelLayout.addView(imageView, params);
                                         }
