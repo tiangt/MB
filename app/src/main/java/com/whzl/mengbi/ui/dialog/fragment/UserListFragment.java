@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.eventbus.event.AudienceEvent;
 import com.whzl.mengbi.model.entity.AudienceListBean;
@@ -24,7 +23,6 @@ import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.adapter.base.LoadMoreFootViewHolder;
-import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.UserListDialog;
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment;
 import com.whzl.mengbi.ui.widget.view.PrettyNumText;
@@ -153,14 +151,16 @@ public class UserListFragment extends BasePullListFragment<AudienceListBean.Audi
             int identity = audienceInfoBean.getIdentity();
             if (audienceInfoBean.getLevelMap().getROYAL_LEVEL() > 0) {
                 ImageView royalImg = new ImageView(getContext());
-                if (BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
-                    Glide.with(getMyActivity()).asGif().load(ResourceMap.getResourceMap().
-                            getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
-                } else {
-                    Glide.with(getMyActivity()).asBitmap().load(ResourceMap.getResourceMap().
-                            getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
-                }
-                LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 40), UIUtil.dip2px(getMyActivity(), 16));
+//                if (BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
+//                    Glide.with(getMyActivity()).asGif().load(ResourceMap.getResourceMap().
+//                            getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
+                GlideImageLoader.getInstace().displayGift(getMyActivity(), ResourceMap.getResourceMap().
+                        getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL()), royalImg);
+//                } else {
+//                    Glide.with(getMyActivity()).asBitmap().load(ResourceMap.getResourceMap().
+//                            getRoyalLevelIcon(audienceInfoBean.getLevelMap().getROYAL_LEVEL())).into(royalImg);
+//                }
+                LinearLayout.LayoutParams rparams = new LinearLayout.LayoutParams(UIUtil.dip2px(getMyActivity(), 48), UIUtil.dip2px(getMyActivity(), 16));
                 levelLayout.addView(royalImg, rparams);
             }
 

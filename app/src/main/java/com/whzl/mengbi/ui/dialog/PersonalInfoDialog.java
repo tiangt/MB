@@ -409,8 +409,10 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     } else {
                         btnBuyRoyal.setVisibility(View.VISIBLE);
                         ImageView royalImage = new ImageView(getContext());
-                        royalImage.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
-                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 36), UIUtil.dip2px(getContext(), 16));
+                        GlideImageLoader.getInstace().displayGift(getContext(),
+                                ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue), royalImage);
+//                        royalImage.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
+                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 46), UIUtil.dip2px(getContext(), 16));
                         royalParams.leftMargin = UIUtil.dip2px(getContext(), 3);
                         linearLayout.addView(royalImage, royalParams);
                     }
@@ -442,8 +444,8 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                     }
                 }
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 38), UIUtil.dip2px(getContext(), 16));
-            params.leftMargin = UIUtil.dip2px(getContext(), 1);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(getContext(), 41.78f), UIUtil.dip2px(getContext(), 16));
+            params.leftMargin = UIUtil.dip2px(getContext(), 3);
             linearLayout.addView(imageView, params);
         }
 
