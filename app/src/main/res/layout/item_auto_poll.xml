@@ -3,19 +3,20 @@
     android:id="@+id/circle_head"
     android:layout_width="31dp"
     android:layout_height="31dp"
-    android:layout_margin="3dp"
-    android:background="@drawable/shape_online_head_royal">
+    android:layout_margin="3dp">
 
     <ImageView
         android:id="@+id/iv_circle_head"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="1dp"/>
+        android:layout_margin="1dp" />
 
     <ImageView
         android:id="@+id/iv_royal_level"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitEnd" />
 
 </RelativeLayout>

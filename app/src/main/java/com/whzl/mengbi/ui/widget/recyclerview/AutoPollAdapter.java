@@ -7,14 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.RoyalLevel;
-import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
-import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
@@ -80,14 +77,9 @@ public class AutoPollAdapter extends BaseListAdapter {
         public void onBindViewHolder(int position) {
             int mUserRoyalLevel = mAudienceList.get(position + 1).getLevelMap().getROYAL_LEVEL();
             if (mUserRoyalLevel > 0) {
-                rl.setBackgroundResource(R.drawable.shape_online_head_royal);
-                if (BaseApplication.heapSize >= AppConfig.MAX_HEAP_SIZE) {
-                    setRoyalTag(mUserRoyalLevel, ivRoyal);
-                } else {
-                    setRoyalTagNoGif(mUserRoyalLevel, ivRoyal);
-                }
+                setRoyalTagNoGif(mUserRoyalLevel, ivRoyal, rl);
             } else {
-                rl.setBackgroundResource(R.drawable.shape_online_head_civilian);
+                rl.setBackground(null);
                 GlideImageLoader.getInstace().displayImage(context, null, ivRoyal);
             }
             GlideImageLoader.getInstace().displayCircleAvatar(context, mAudienceList.get(position + 1).getAvatar(), ivHead);
@@ -109,72 +101,47 @@ public class AutoPollAdapter extends BaseListAdapter {
         void onClick(int position);
     }
 
-    /**
-     * 用户贵族等级
-     *
-     * @param level
-     * @param mRoyalLevel
-     */
-    private void setRoyalTag(int level, ImageView mRoyalLevel) {
-        switch (level) {
-            case RoyalLevel.ROYAL_BRONZE:
-                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_1, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_SILVER:
-                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_2, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_GOLD:
-                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_3, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_PLATINUM:
-                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_4, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_DIAMOND:
-                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_5, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_STAR:
-                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_6, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_KING:
-                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_7, mRoyalLevel);
-                break;
-            case RoyalLevel.ROYAL_LEGENT:
-                GlideImageLoader.getInstace().displayImage(context, R.drawable.royal_8, mRoyalLevel);
-                break;
-        }
-    }
 
     /**
      * 用户贵族等级
      *
      * @param level
      * @param mRoyalLevel
+     * @param rl
      */
-    private void setRoyalTagNoGif(int level, ImageView mRoyalLevel) {
+    private void setRoyalTagNoGif(int level, ImageView mRoyalLevel, RelativeLayout rl) {
         switch (level) {
             case RoyalLevel.ROYAL_BRONZE:
-                Glide.with(context).asBitmap().load(R.drawable.royal_1).into(mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_royal_user_1, mRoyalLevel);
+                rl.setBackgroundResource(R.drawable.shape_online_royal_1);
                 break;
             case RoyalLevel.ROYAL_SILVER:
-                Glide.with(context).asBitmap().load(R.drawable.royal_2).into(mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_royal_user_2, mRoyalLevel);
+                rl.setBackgroundResource(R.drawable.shape_online_royal_2);
                 break;
             case RoyalLevel.ROYAL_GOLD:
-                Glide.with(context).asBitmap().load(R.drawable.royal_3).into(mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_royal_user_3, mRoyalLevel);
+                rl.setBackgroundResource(R.drawable.shape_online_royal_3);
                 break;
             case RoyalLevel.ROYAL_PLATINUM:
-                Glide.with(context).asBitmap().load(R.drawable.royal_4).into(mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_royal_user_4, mRoyalLevel);
+                rl.setBackgroundResource(R.drawable.shape_online_royal_4);
                 break;
             case RoyalLevel.ROYAL_DIAMOND:
-                Glide.with(context).asBitmap().load(R.drawable.royal_5).into(mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_royal_user_5, mRoyalLevel);
+                rl.setBackgroundResource(R.drawable.shape_online_royal_5);
                 break;
             case RoyalLevel.ROYAL_STAR:
-                Glide.with(context).asBitmap().load(R.drawable.royal_6).into(mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_royal_user_6, mRoyalLevel);
+                rl.setBackgroundResource(R.drawable.shape_online_royal_6);
                 break;
             case RoyalLevel.ROYAL_KING:
-                Glide.with(context).asBitmap().load(R.drawable.royal_7).into(mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_royal_user_7, mRoyalLevel);
+                rl.setBackgroundResource(R.drawable.shape_online_royal_7);
                 break;
             case RoyalLevel.ROYAL_LEGENT:
-                Glide.with(context).asBitmap().load(R.drawable.royal_8).into(mRoyalLevel);
+                GlideImageLoader.getInstace().displayImage(context, R.drawable.ic_royal_user_8, mRoyalLevel);
+                rl.setBackgroundResource(R.drawable.shape_online_royal_8);
                 break;
 
         }
