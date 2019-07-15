@@ -1048,7 +1048,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
 
     private void showPrivateChatDialog(PrivateChatUser user) {
-        if (user.getPrivateUserId().longValue() == mUserId) {
+        if (mUserId == user.getPrivateUserId()) {
+            ToastUtils.showToastUnify(this, "不能跟自己私聊");
             return;
         }
         if (awesomeDialog != null && awesomeDialog.isAdded()) {
@@ -2712,6 +2713,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void showAtChat(String at) {
         if (mChatDialog != null && mChatDialog.isAdded()) {
             return;
+        }
+        if (mUserListDialog != null && mUserListDialog.isAdded()) {
+            mUserListDialog.dismiss();
         }
         mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, at, mAnchor)
                 .setDimAmount(0)
