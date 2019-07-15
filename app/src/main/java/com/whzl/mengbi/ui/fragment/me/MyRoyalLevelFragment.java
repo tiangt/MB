@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.fragment.me;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,15 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.github.sahasbhop.apngview.ApngImageLoader;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
-import com.whzl.mengbi.ui.widget.view.ExpValueLayout;
 import com.whzl.mengbi.ui.widget.view.MyLevelProgressLayout;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.StringUtils;
@@ -29,9 +24,7 @@ import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -126,9 +119,8 @@ public class MyRoyalLevelFragment extends BaseFragment {
                     evlRoyalLevel.initView();
 
                     if ("ROYAL_LEVEL".equals(levelType)) {
-//                        Glide.with(this).asGif().load(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue)).into(ivRoyalLevel);
-                        ApngImageLoader.getInstance()
-                                .displayApng(LevelUtil.getRoyalBigApng(levelValue), ivRoyalLevel, new ApngImageLoader.ApngConfig(0, true));
+                        GlideImageLoader.getInstace()
+                                .displayGift(getMyActivity(), ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue), ivRoyalLevel);
                         expListBeans = listBeans.get(i).getExpList();
                         for (int j = 0; j < expListBeans.size(); j++) {
                             sjExpvalue = expListBeans.get(j).getSjExpvalue();
@@ -203,8 +195,8 @@ public class MyRoyalLevelFragment extends BaseFragment {
 
     class Holder extends BaseViewHolder {
 
-        private  ImageView image;
-        private  TextView textView;
+        private ImageView image;
+        private TextView textView;
 
         public Holder(View itemView) {
             super(itemView);

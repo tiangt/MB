@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifDrawable;
+
 
 public class LevelUtil {
     public static int getUserLevel(FromJson fromJson) {
@@ -150,8 +152,14 @@ public class LevelUtil {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
             drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
         } else {
-            drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
-            drawable.setCallback(new DrawableCallback(textView));
+            if (resourceId >= 6) {
+                drawable = new GifDrawable(context.getResources(),ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
+                drawable.setCallback(new DrawableCallback(textView));
+            } else {
+                drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
+                drawable.setCallback(new DrawableCallback(textView));
+            }
+
         }
         if (drawable != null) {
             int originWidth = drawable.getIntrinsicWidth();

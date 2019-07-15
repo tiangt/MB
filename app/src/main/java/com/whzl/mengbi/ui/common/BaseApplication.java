@@ -19,7 +19,6 @@ import com.alibaba.sdk.android.push.register.HuaWeiRegister;
 import com.alibaba.sdk.android.push.register.MiPushRegister;
 import com.alibaba.sdk.android.push.register.OppoRegister;
 import com.baidu.mobstat.StatService;
-import com.github.sahasbhop.apngview.ApngImageLoader;
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -95,7 +94,6 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        ApngImageLoader.getInstance().init(getApplicationContext());
         channel = WalleChannelReader.getChannel(getApplicationContext());
         if (channel == null) {
             channel = "";

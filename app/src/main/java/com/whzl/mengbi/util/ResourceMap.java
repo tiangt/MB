@@ -166,7 +166,7 @@ public class ResourceMap {
             if(level > 7){
                 levelIcon = R.drawable.royal_8;
             }else{
-                levelIcon = R.drawable.ic_qingtong;
+                levelIcon = R.drawable.royal_1;
             }
         }
         return levelIcon;
