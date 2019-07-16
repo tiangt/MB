@@ -444,7 +444,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 抽奖活动
      */
     private List<GetActivityBean.ListBean> mBannerInfoList;
-    private ArrayList<BaseFragment> mActivityGrands = new ArrayList<>();
+    private ArrayList<BaseFragment> mActivityGrands;
     private ActivityFragmentPagerAdaper mGrandAdaper;
     private AutoPollAdapter pollAdapter;
     private ArrayList<AudienceListBean.AudienceInfoBean> mAudienceList = new ArrayList<>();
@@ -1526,6 +1526,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void getRightBottomActivity(int mProgramId, int mAnchorId) {
 //        initBottomRightVp();
+        mActivityGrands = new ArrayList<>();
         mLivePresenter.getAnchorWish(mAnchorId);
         mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
         //主播任务

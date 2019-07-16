@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.util.ResourceMap;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,12 +97,14 @@ public class ExpValueLayout extends LinearLayout {
             if (levelValue == 0) {
                 ivLevelNow.setVisibility(INVISIBLE);
             } else {
-                ivLevelNow.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
+                GlideImageLoader.getInstace().displayGift(context, ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue), ivLevelNow);
+//                ivLevelNow.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
             }
             if (levelValue == 8) {
                 ivLevelNext.setVisibility(INVISIBLE);
             } else {
-                ivLevelNext.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue + 1));
+                GlideImageLoader.getInstace().displayGift(context, ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue + 1), ivLevelNext);
+//                ivLevelNext.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue + 1));
             }
         } else if ("USER_LEVEL".equals(levelType)) {
             ivLevelNow.setImageResource(ResourceMap.getResourceMap().getUserLevelIcon(levelValue));
@@ -134,8 +137,8 @@ public class ExpValueLayout extends LinearLayout {
                 sjExpvalue1 = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue1 = listBeans.get(j).getSjNeedExpValue();
                 if (levelValue == 8) {
-                    tpAnchorLevel.setMax(100);
-                    tpAnchorLevel.setProgress(100);
+                    tpRoyalLevel.setMax(100);
+                    tpRoyalLevel.setProgress(100);
                     tvPb.setText("您已达到最高贵族等级");
                 } else {
                     tpRoyalLevel.setMax((int) (sjNeedExpValue1));
@@ -149,8 +152,8 @@ public class ExpValueLayout extends LinearLayout {
                 sjExpvalue2 = listBeans.get(j).getSjExpvalue();
                 sjNeedExpValue2 = listBeans.get(j).getSjNeedExpValue();
                 if (levelValue == 37) {
-                    tpAnchorLevel.setMax(100);
-                    tpAnchorLevel.setProgress(100);
+                    tpUserLevel.setMax(100);
+                    tpUserLevel.setProgress(100);
                     tvPb.setText("您已达到最高富豪等级");
                 } else {
                     tpUserLevel.setMax((int) (sjNeedExpValue2));

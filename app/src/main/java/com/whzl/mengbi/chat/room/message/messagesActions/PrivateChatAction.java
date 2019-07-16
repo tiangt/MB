@@ -13,6 +13,7 @@ import com.whzl.mengbi.greendao.PrivateChatContent;
 import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -22,6 +23,7 @@ public class PrivateChatAction implements Actions {
 
     @Override
     public void performAction(String msgStr, Context context) {
+        LogUtils.e("PrivateChatAction  " + msgStr);
         ChatCommonJson json = GsonUtils.GsonToBean(msgStr, ChatCommonJson.class);
         if (json == null) {
             return;

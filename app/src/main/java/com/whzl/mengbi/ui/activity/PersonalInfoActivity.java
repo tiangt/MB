@@ -299,7 +299,7 @@ public class PersonalInfoActivity extends BaseActivity {
                     } else {
                         ImageView royalImage = new ImageView(PersonalInfoActivity.this);
                         royalImage.setImageResource(ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue));
-                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 35), UIUtil.dip2px(PersonalInfoActivity.this, 16));
+                        LinearLayout.LayoutParams royalParams = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 45), UIUtil.dip2px(PersonalInfoActivity.this, 15));
                         royalParams.leftMargin = UIUtil.dip2px(PersonalInfoActivity.this, 6);
                         linearLayout.addView(royalImage, royalParams);
                     }
@@ -332,7 +332,7 @@ public class PersonalInfoActivity extends BaseActivity {
                     break;
                 }
             }
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 38), UIUtil.dip2px(PersonalInfoActivity.this, 16));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtil.dip2px(PersonalInfoActivity.this, 39.17f), UIUtil.dip2px(PersonalInfoActivity.this, 15));
             params.leftMargin = UIUtil.dip2px(PersonalInfoActivity.this, 3);
             linearLayout.addView(imageView, params);
         }

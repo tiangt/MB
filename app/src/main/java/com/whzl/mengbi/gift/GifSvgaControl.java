@@ -10,11 +10,12 @@ import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
+import com.whzl.mengbi.model.entity.AnimResouseBean;
+import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -53,17 +54,20 @@ public class GifSvgaControl {
         }
         double seconds = 0;
         int count = 1;
-        if (event.getAnimJson().getContext() != null) {
-            count = event.getAnimJson().getContext().getCount();
-        }
+
         List<AnimJson.ResourcesEntity> resources = event.getAnimJson().getResources();
         for (int i = 0; i < resources.size(); i++) {
             AnimJson.ResourcesEntity resourcesEntity = resources.get(i);
             if ("PARAMS".equals(resourcesEntity.getResType())) {
                 String resValue = resourcesEntity.getResValue();
                 try {
-                    JSONObject jsonObject = new JSONObject(resValue);
-                    seconds = jsonObject.getDouble("playSeconds");
+                    AnimResouseBean animResouseBean = GsonUtils.GsonToBean(resValue, AnimResouseBean.class);
+                    seconds = animResouseBean.playSeconds;
+                    if (animResouseBean.loopCount == 0) {
+                        count = 1;
+                    } else {
+                        count = animResouseBean.loopCount;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -90,7 +94,6 @@ public class GifSvgaControl {
 
 
     private void init() {
-        svgaImageView.setLoops(1);
         parser = new SVGAParser(mContext);
 
         svgaImageView.setCallback(new SVGACallback() {
@@ -129,7 +132,7 @@ public class GifSvgaControl {
             @Override
             public void onRepeat() {
                 LogUtils.e("sssssssss    onRepeat");
-                stopAnim();
+//                stopAnim();
             }
 
             @Override
@@ -141,12 +144,12 @@ public class GifSvgaControl {
     public void showSVGA(AnimEvent event) {
         isShowSvga = true;
         svgaImageView.setVisibility(View.VISIBLE);
+        svgaImageView.setLoops(event.times);
         try {
             parser.decodeFromURL(new URL(event.getAnimUrl()), new SVGAParser.ParseCompletion() {
                 @Override
                 public void onComplete(@NotNull SVGAVideoEntity videoItem) {
                     svgaImageView.setVideoItem(videoItem);
-                    svgaImageView.setLoops(event.times);
                     svgaImageView.startAnimation();
                 }
 

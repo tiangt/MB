@@ -645,6 +645,9 @@ public class MainActivity extends BaseActivity {
     private void isFirstLogin() {
         HashMap paramsMap = new HashMap();
         long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+        if (userId == 0) {
+            return;
+        }
         paramsMap.put("userId", userId);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack() {

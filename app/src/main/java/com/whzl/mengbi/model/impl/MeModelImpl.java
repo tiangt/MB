@@ -28,6 +28,9 @@ public class MeModelImpl implements MeModel {
     public void doUserInfo(final OnMeFinishedListener listener) {
         HashMap paramsMap = new HashMap();
         long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+        if (userId == 0) {
+            return;
+        }
         paramsMap.put("userId", userId);
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.GET_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap,
                 new RequestManager.ReqCallBack() {
@@ -50,6 +53,9 @@ public class MeModelImpl implements MeModel {
     public void doNewTask(OnMeFinishedListener listener) {
         HashMap paramsMap = new HashMap();
         long userId = Long.parseLong(SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString());
+        if (userId == 0) {
+            return;
+        }
         paramsMap.put("userId", userId);
         ApiFactory.getInstance().getApi(Api.class)
                 .getNewTask(ParamsUtils.getSignPramsMap(paramsMap))
