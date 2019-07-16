@@ -154,7 +154,6 @@ public class FirstActivity extends BaseActivity implements LoginView {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
-                    LogUtils.e("sssssssssssss  " + aLong);
                     RequestOptions requestOptions = new RequestOptions().dontAnimate().placeholder(ivFirst.getDrawable());
 
                     Glide.with(this).load(imgs[(int) (aLong % 5)]).apply(requestOptions).into(ivFirst);

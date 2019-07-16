@@ -11,7 +11,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="290dp"
+            android:layout_height="330dp"
             android:background="#f6f6f6"
             android:paddingBottom="10dp">
 
@@ -23,7 +23,7 @@
 
             <RelativeLayout
                 android:id="@+id/rl_royal_level"
-                android:layout_width="91dp"
+                android:layout_width="88dp"
                 android:layout_height="93.5dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="54dp">
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_royal_level"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="7.5dp"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="13sp" />
@@ -65,7 +65,7 @@
             <com.whzl.mengbi.ui.widget.view.MyLevelProgressLayout
                 android:id="@+id/evl_royal_level"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="12.5dp"
                 android:layout_below="@id/tv_keep_level"
                 android:layout_marginTop="12dp" />
 

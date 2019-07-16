@@ -288,6 +288,10 @@ public class MainActivity extends BaseActivity {
                             return;
                         }
                         SPUtils.put(MainActivity.this, SpConfig.START_PAGE, startPageBean.url);
+                        if (TextUtils.isEmpty(startPageBean.url)) {
+                            SPUtils.put(MainActivity.this, SpConfig.START_PAGE_FILE, "");
+                            return;
+                        }
 
                         Observable.create((ObservableOnSubscribe<File>) e -> {
                             e.onNext(Glide.with(MainActivity.this).asFile()

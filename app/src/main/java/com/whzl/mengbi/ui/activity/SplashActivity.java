@@ -67,7 +67,9 @@ public class SplashActivity extends AndroidPopupActivity {
         ButterKnife.bind(this);
 
         String file = (String) SPUtils.get(this, SpConfig.START_PAGE_FILE, "");
-        if (!TextUtils.isEmpty(file)) {
+        if (TextUtils.isEmpty(file)) {
+            GlideImageLoader.getInstace().displayImage(this, null, ivSplash);
+        } else {
             GlideImageLoader.getInstace().displayImage(this, Uri.fromFile(new File(file)), ivSplash);
         }
 

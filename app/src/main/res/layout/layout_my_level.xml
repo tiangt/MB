@@ -13,7 +13,7 @@
         android:gravity="center|right"
         android:paddingRight="10dp"
         android:textColor="@color/white"
-        android:textSize="15dp" />
+        android:textSize="11sp" />
 
     <com.whzl.mengbi.ui.widget.view.rc.RCRelativeLayout
         android:layout_width="0dp"
@@ -36,6 +36,6 @@
         android:gravity="center|left"
         android:paddingLeft="10dp"
         android:textColor="@color/white"
-        android:textSize="15dp" />
+        android:textSize="11sp" />
 
 </LinearLayout>
