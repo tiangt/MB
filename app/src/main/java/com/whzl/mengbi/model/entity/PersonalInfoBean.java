@@ -79,6 +79,8 @@ public class PersonalInfoBean {
         private String liveStatus;
         private int fansNum;
         private int myFollowNum;
+        public int programSubUserCount;
+        public int userSubProgramCount;
         private List<LevelListBean> levelList;
         private List<GoodsListBean> goodsList;
 

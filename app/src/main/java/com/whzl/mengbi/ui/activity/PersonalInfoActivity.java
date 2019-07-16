@@ -253,8 +253,8 @@ public class PersonalInfoActivity extends BaseActivity {
                 tvRankName.setText("富豪排名");
             }
         }
-        tvFansCount.setText(userBean.getFansNum() + "");
-        tvFollow.setText(userBean.getMyFollowNum() + "");
+        tvFansCount.setText(userBean.programSubUserCount + "");
+        tvFollow.setText(userBean.userSubProgramCount + "");
 
         tvUserName.setText(userBean.getNickname());
         tvUserId.setText(userBean.getUserId() + "");

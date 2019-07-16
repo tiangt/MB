@@ -1468,9 +1468,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             });
         }
-        vpActivity.setOffscreenPageLimit(10);
         mGrandAdaper = new ActivityFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
         vpActivity.setAdapter(mGrandAdaper);
+        vpActivity.setOffscreenPageLimit(10);
         vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -2466,6 +2466,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 mActivityGrands.clear();
                 mGrandAdaper.notifyDataSetChanged();
                 vpActivity.setScroll(false);
+                mGrandAdaper = null;
             }
         } catch (IllegalStateException e) {
             vpActivity.setVisibility(View.GONE);
