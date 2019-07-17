@@ -11,6 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/bg_live"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+
         <com.whzl.mengbi.ui.widget.view.UnclickLinearLayout
             android:id="@+id/rootView"
             android:layout_width="match_parent"
@@ -935,7 +941,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
-
 
     </RelativeLayout>
 

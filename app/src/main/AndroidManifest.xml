@@ -66,6 +66,12 @@
         android:theme="@style/AppTheme"
         tools:replace="label">
         <meta-data
+            android:name="design_width_in_dp"
+            android:value="375"/>
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="650"/>
+        <meta-data
             android:name="com.alibaba.app.appkey"
             android:value="27628685" />
         <meta-data
