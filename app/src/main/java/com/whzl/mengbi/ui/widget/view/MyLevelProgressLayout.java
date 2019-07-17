@@ -19,6 +19,7 @@ import com.whzl.mengbi.util.UIUtil;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -99,8 +100,12 @@ public class MyLevelProgressLayout extends LinearLayout {
                 tvLevelNext.setVisibility(VISIBLE);
 //                tvLevelNow.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue));
                 tvLevelNow.setText("");
-                tvLevelNow.append(LevelUtil.getImageResourceSpanByHeight(context,
-                        ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue), 14));
+                try {
+                    tvLevelNow.append(LevelUtil.getRoyalImageResourceSpan(context,
+                            levelValue, tvLevelNow));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             if (levelValue == 8) {
                 tvLevelNext.setVisibility(INVISIBLE);
@@ -108,8 +113,12 @@ public class MyLevelProgressLayout extends LinearLayout {
                 tvLevelNext.setVisibility(VISIBLE);
 //                tvLevelNext.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue + 1));
                 tvLevelNext.setText("");
-                tvLevelNext.append(LevelUtil.getImageResourceSpanByHeight(context,
-                        ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue + 1), 14));
+                try {
+                    tvLevelNext.append(LevelUtil.getRoyalImageResourceSpan(context,
+                            levelValue + 1, tvLevelNext));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } else if ("USER_LEVEL".equals(levelType)) {
             tvLevelNow.setText(LevelMap.getLevelMap().getUserLevel(levelValue));
