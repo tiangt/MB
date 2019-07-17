@@ -209,7 +209,6 @@ import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -1494,6 +1493,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         });
         initActivityPoints();
         vpActivity.setScroll(true);
+        if (null != unclickLinearLayout) {
+            unclickLinearLayout.setCanScroll(true);
+        }
     }
 
     private void refreshBottomRightVp() {
@@ -1736,9 +1738,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
             @Override
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                if (null != unclickLinearLayout) {
-                    unclickLinearLayout.setCanScroll(true);
-                }
                 return false;
             }
         }).apply(RequestOptions.bitmapTransform(new BlurTransformation()).override(600).placeholder(R.drawable.img_switch_live)).into(iv);

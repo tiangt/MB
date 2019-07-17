@@ -91,14 +91,14 @@ public class MyRoyalLevelFragment extends BaseFragment {
 
     private List<Integer> royal = new ArrayList<Integer>() {
         {
-            add(R.drawable.ic_royal_user_1);
-            add(R.drawable.ic_royal_user_2);
-            add(R.drawable.ic_royal_user_3);
-            add(R.drawable.ic_royal_user_4);
-            add(R.drawable.ic_royal_user_5);
-            add(R.drawable.ic_royal_user_6);
-            add(R.drawable.ic_royal_user_7);
-            add(R.drawable.ic_royal_user_8);
+            add(R.drawable.ic_royal_user_big_1);
+            add(R.drawable.ic_royal_user_big_2);
+            add(R.drawable.ic_royal_user_big_3);
+            add(R.drawable.ic_royal_user_big_4);
+            add(R.drawable.ic_royal_user_big_5);
+            add(R.drawable.ic_royal_user_big_6);
+            add(R.drawable.ic_royal_user_big_7);
+            add(R.drawable.ic_royal_user_big_8);
         }
     };
 
@@ -132,7 +132,7 @@ public class MyRoyalLevelFragment extends BaseFragment {
                     evlRoyalLevel.initView();
 
                     if ("ROYAL_LEVEL".equals(levelType)) {
-                        if (levelValue!=0) {
+                        if (levelValue != 0) {
                             GlideImageLoader.getInstace()
                                     .displayImage(getMyActivity(), royal.get(levelValue - 1), ivRoyalLevel);
                         }

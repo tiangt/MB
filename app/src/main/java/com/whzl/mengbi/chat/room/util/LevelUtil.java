@@ -153,7 +153,7 @@ public class LevelUtil {
             drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
         } else {
             if (resourceId >= 6) {
-                drawable = new GifDrawable(context.getResources(),ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
+                drawable = new GifDrawable(context.getResources(), ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));
                 drawable.setCallback(new DrawableCallback(textView));
             } else {
                 drawable = ContextCompat.getDrawable(context, ResourceMap.getResourceMap().getRoyalLevelIcon(resourceId));

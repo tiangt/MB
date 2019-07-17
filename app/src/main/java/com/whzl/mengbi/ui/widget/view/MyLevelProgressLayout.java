@@ -10,9 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.util.LevelUtil;
+import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.model.entity.PersonalInfoBean;
 import com.whzl.mengbi.util.LevelMap;
 import com.whzl.mengbi.util.ResourceMap;
+import com.whzl.mengbi.util.UIUtil;
 
 import org.w3c.dom.Text;
 
@@ -94,13 +97,19 @@ public class MyLevelProgressLayout extends LinearLayout {
                 tvLevelNow.setText("无等级");
             } else {
                 tvLevelNext.setVisibility(VISIBLE);
-                tvLevelNow.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue));
+//                tvLevelNow.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue));
+                tvLevelNow.setText("");
+                tvLevelNow.append(LevelUtil.getImageResourceSpanByHeight(context,
+                        ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue), 14));
             }
             if (levelValue == 8) {
                 tvLevelNext.setVisibility(INVISIBLE);
             } else {
                 tvLevelNext.setVisibility(VISIBLE);
-                tvLevelNext.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue + 1));
+//                tvLevelNext.setText(LevelMap.getLevelMap().getRoyalLevel(levelValue + 1));
+                tvLevelNext.setText("");
+                tvLevelNext.append(LevelUtil.getImageResourceSpanByHeight(context,
+                        ResourceMap.getResourceMap().getRoyalLevelIcon(levelValue + 1), 14));
             }
         } else if ("USER_LEVEL".equals(levelType)) {
             tvLevelNow.setText(LevelMap.getLevelMap().getUserLevel(levelValue));

@@ -20,11 +20,21 @@ public class CenterAlignImageSpan extends ImageSpan {
     public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom,
                      @NonNull Paint paint) {
 
+//        Drawable b = getDrawable();
+//        Paint.FontMetricsInt fm = paint.getFontMetricsInt();
+//        int transY = (y + fm.descent + y + fm.ascent) / 2 - b.getBounds().bottom / 2;//计算y方向的位移
+//        canvas.save();
+//        canvas.translate(x, transY);//绘制图片位移一段距离
+//        b.draw(canvas);
+//        canvas.restore();
+
         Drawable b = getDrawable();
-        Paint.FontMetricsInt fm = paint.getFontMetricsInt();
-        int transY = (y + fm.descent + y + fm.ascent) / 2 - b.getBounds().bottom / 2;//计算y方向的位移
         canvas.save();
-        canvas.translate(x, transY);//绘制图片位移一段距离
+        int transY;
+        //要显示的文本高度-图片高度除2等居中位置+top(换行情况)
+        transY = ((bottom - top) - b.getBounds().bottom) / 2 + top;
+        //偏移画布后开始绘制
+        canvas.translate(x, transY);
         b.draw(canvas);
         canvas.restore();
     }

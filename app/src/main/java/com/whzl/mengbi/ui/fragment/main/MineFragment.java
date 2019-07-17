@@ -184,7 +184,9 @@ public class MineFragment extends BaseFragment implements MeView {
         //贵族等级
         for (UserInfo.DataBean.LevelListBean levelListBean : levelList) {
             if ("ROYAL_LEVEL".equals(levelListBean.getLevelType())) {
-                Glide.with(this).asGif().load(ResourceMap.getResourceMap().getRoyalLevelIcon(levelListBean.getLevelValue())).into(ivMineNoble);
+//                Glide.with(this).asGif().load(ResourceMap.getResourceMap().getRoyalLevelIcon(levelListBean.getLevelValue())).into(ivMineNoble);
+                GlideImageLoader.getInstace().displayGift(getMyActivity(),
+                        ResourceMap.getResourceMap().getRoyalLevelIcon(levelListBean.getLevelValue()), ivMineNoble);
                 break;
             }
         }
