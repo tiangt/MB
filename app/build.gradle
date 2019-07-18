@@ -183,7 +183,7 @@ dependencies {
     implementation 'com.uber.autodispose:autodispose-android:0.7.0'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.7.0'
     //SVGA动画
-    implementation 'com.github.yyued:SVGAPlayer-Android:2.4.3'
+    implementation 'com.github.yyued:SVGAPlayer-Android:2.4.6'
     implementation 'org.greenrobot:greendao:3.2.2'
     implementation 'com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.1.0'
 

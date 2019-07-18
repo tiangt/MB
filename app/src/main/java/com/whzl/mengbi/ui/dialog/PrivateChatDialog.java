@@ -48,6 +48,7 @@ import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -263,8 +264,11 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
         }
 
         public void bindData(ChatMessage chatMessage, int position) {
-            Glide.with(BaseApplication.getInstance()).load(ImageUrl.getAvatarUrl(Long.parseLong(String.valueOf(chatMessage.from_uid)), "jpg", current))
-                    .apply(new RequestOptions().transform(new CircleCrop())).into(ivAvatar);
+//            Glide.with(BaseApplication.getInstance()).load(ImageUrl.getAvatarUrl(Long.parseLong(String.valueOf(chatMessage.from_uid)), "jpg", current))
+//                    .apply().into(ivAvatar);
+            RequestOptions transform = new RequestOptions().transform(new CircleCrop());
+            GlideImageLoader.getInstace().displayImageOption(getActivity(), ImageUrl.getAvatarUrl(Long.parseLong(String.valueOf(chatMessage.from_uid)), "jpg", current)
+                    , ivAvatar, transform);
             tvContent.setText("");
             SpannableString spanString = new SpannableString(chatMessage.chatJson.getContent());
             FaceReplace.getInstance().faceReplace(tvContent, spanString, BaseApplication.getInstance());
