@@ -8,19 +8,33 @@ import java.util.List;
  */
 public class ActivityGrandBean {
 
-    public List<ListBean> list;
+    /**
+     * code : 200
+     * data : {"list":[{"id":857,"name":"清凉一夏","linkUrl":"https://test-case.mengbitv.com/h5/activity0715/approom.html?today=2019-07-20","jumpUrl":"https://test-case.mengbitv.com/h5/activity0715/index.html?today=2019-07-21"}]}
+     * msg : success
+     * success : false
+     */
 
-    public static class ListBean {
-        /**
-         * id : 838
-         * name : 非诚勿扰
-         * linkUrl : https://test-case.mengbitv.com/h5/payinfobox/index.html
-         * jumpUrl : https://test-case.mengbitv.com/h5/payinfobox/index.html
-         */
+    public int code;
+    public DataBean data;
+    public String msg;
+    public boolean success;
 
-        public int id;
-        public String name;
-        public String linkUrl;
-        public String jumpUrl;
+    public static class DataBean {
+        public List<ListBean> list;
+
+        public static class ListBean {
+            /**
+             * id : 857
+             * name : 清凉一夏
+             * linkUrl : https://test-case.mengbitv.com/h5/activity0715/approom.html?today=2019-07-20
+             * jumpUrl : https://test-case.mengbitv.com/h5/activity0715/index.html?today=2019-07-21
+             */
+
+            public int id;
+            public String name;
+            public String linkUrl;
+            public String jumpUrl;
+        }
     }
 }

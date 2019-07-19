@@ -523,7 +523,7 @@ public interface Api {
      */
     @POST("v1/room/activity-grand")
     @FormUrlEncoded
-    Observable<ApiResult<ActivityGrandBean>> activityGrand(@FieldMap Map<String, String> params);
+    Observable<ActivityGrandBean> activityGrand(@FieldMap Map<String, String> params);
 
     /**
      * 有效返利券查找
@@ -593,7 +593,7 @@ public interface Api {
      */
     @POST("v1/activity/anchor-task")
     @FormUrlEncoded
-    Observable<ApiResult<AnchorTaskBean>> getAnchorTask(@FieldMap Map<String, String> params);
+    Observable<AnchorTaskBean> getAnchorTask(@FieldMap Map<String, String> params);
 
     /**
      * 获取用户广播数量
@@ -966,7 +966,7 @@ public interface Api {
      */
     @POST("v1/room/anchor-wish-gift")
     @FormUrlEncoded
-    Observable<ApiResult<AnchorWishBean>> anchorWishGift(@FieldMap Map<String, String> params);
+    Observable<AnchorWishBean> anchorWishGift(@FieldMap Map<String, String> params);
 
     /**
      * 获取主播心愿榜单

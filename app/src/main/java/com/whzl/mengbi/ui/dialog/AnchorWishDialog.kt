@@ -22,7 +22,7 @@ class AnchorWishDialog : BaseAwesomeDialog() {
     private var listDialog: BaseAwesomeDialog? = null
 
     companion object {
-        fun newInstance(mAnchorId: Int, bean: AnchorWishBean): AnchorWishDialog {
+        fun newInstance(mAnchorId: Int, bean: AnchorWishBean.DataBean): AnchorWishDialog {
             val anchorWishDialog = AnchorWishDialog()
             val bundle = Bundle()
             bundle.putParcelable("bean", bean)
@@ -37,7 +37,7 @@ class AnchorWishDialog : BaseAwesomeDialog() {
     }
 
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
-        val anchorWishBean = arguments?.get("bean") as AnchorWishBean
+        val anchorWishBean = arguments?.get("bean") as AnchorWishBean.DataBean
         tv_name_anchor_wish.text = "${anchorWishBean.giftName} ${anchorWishBean.wishGiftNum}个"
         tv_price_anchor_wish.text = "价格："
         tv_price_anchor_wish.append(LightSpanString.getLightString((anchorWishBean.totalGiftWorth).toString(), Color.rgb(255, 236, 144)))

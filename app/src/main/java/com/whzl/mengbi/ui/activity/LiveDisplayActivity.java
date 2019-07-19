@@ -2,6 +2,7 @@ package com.whzl.mengbi.ui.activity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -45,6 +46,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -204,8 +206,10 @@ import com.whzl.mengbi.util.BitmapUtils;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.DeviceUtils;
+import com.whzl.mengbi.util.GenericUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -232,6 +236,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -1526,13 +1531,87 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
 
+    @SuppressLint("CheckResult")
     private void getRightBottomActivity(int mProgramId, int mAnchorId) {
 //        initBottomRightVp();
         mActivityGrands = new ArrayList<>();
-        mLivePresenter.getAnchorWish(mAnchorId);
-        mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
-        //主播任务
-        mLivePresenter.getAnchorTask(mAnchorId);
+
+//        mLivePresenter.getAnchorWish(mAnchorId);
+//        mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
+//        //主播任务
+//        mLivePresenter.getAnchorTask(mAnchorId);
+
+        HashMap map = new HashMap();
+        map.put("userId", mAnchorId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        Observable<AnchorWishBean> observable = ApiFactory.getInstance().getApi(Api.class)
+                .anchorWishGift(signPramsMap);
+
+        HashMap map1 = new HashMap();
+        map1.put("programId", mProgramId);
+        map1.put("anchorId", mAnchorId);
+        HashMap signPramsMap1 = ParamsUtils.getSignPramsMap(map1);
+        Observable<ActivityGrandBean> observable1 = ApiFactory.getInstance().getApi(Api.class)
+                .activityGrand(signPramsMap1);
+
+        HashMap map2 = new HashMap();
+        map2.put("userId", mAnchorId);
+        HashMap signPramsMap2 = ParamsUtils.getSignPramsMap(map2);
+        Observable<AnchorTaskBean> observable2 = ApiFactory.getInstance().getApi(Api.class)
+                .getAnchorTask(signPramsMap2);
+
+        Observable merge = Observable.merge(observable, observable1, observable2);
+        merge.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        rightBottomActivityNum += 1;
+
+                        if (o instanceof ActivityGrandBean) {
+                            ActivityGrandBean activityGrandBean = (ActivityGrandBean) o;
+                            ActivityGrandBean.DataBean bean = activityGrandBean.data;
+                            if (bean.list != null && bean.list.size() != 0) {
+                                for (int i = 0; i < bean.list.size(); i++) {
+                                    ActivityGrandBean.DataBean.ListBean listBean = bean.list.get(i);
+                                    LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
+                                    liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
+                                        @Override
+                                        public void clickListener() {
+                                            if (TextUtils.isEmpty(listBean.jumpUrl)) {
+                                                return;
+                                            }
+                                            startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                                                    .putExtra("anchorId", mAnchorId + "")
+                                                    .putExtra("programId", mProgramId + "")
+                                                    .putExtra("title", listBean.name)
+                                                    .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
+                                        }
+                                    });
+                                    liveWebFragment.setTag(2);
+                                    mActivityGrands.add(liveWebFragment);
+                                }
+                            }
+                        } else if (o instanceof AnchorTaskBean) {
+                            AnchorTaskBean dataBean = (AnchorTaskBean) o;
+                            if (dataBean != null) {
+                                AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean.data);
+                                anchorTaskFragment.setTag(3);
+                                mActivityGrands.add(anchorTaskFragment);
+                            }
+                        } else if (o instanceof AnchorWishBean) {
+                            AnchorWishBean bean = (AnchorWishBean) o;
+                            AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean.data);
+                            anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
+                            anchorWishFragment.setTag(1);
+                            mActivityGrands.add(0, anchorWishFragment);
+                        }
+
+                        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+                            initBottomRightVp();
+                        }
+                    }
+                });
     }
 
 
@@ -1543,7 +1622,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onAnchorWishSuccess(AnchorWishBean bean) {
         rightBottomActivityNum += 1;
         try {
-            AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean);
+            AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean.data);
             anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
             anchorWishFragment.setTag(1);
             mActivityGrands.add(0, anchorWishFragment);
@@ -1565,11 +1644,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 直播间的活动（常规活动）
      */
     @Override
-    public void onActivityGrandSuccess(ActivityGrandBean bean) {
+    public void onActivityGrandSuccess(ActivityGrandBean activityGrandBean) {
         rightBottomActivityNum += 1;
+        ActivityGrandBean.DataBean bean = activityGrandBean.data;
         if (bean.list != null && bean.list.size() != 0) {
             for (int i = 0; i < bean.list.size(); i++) {
-                ActivityGrandBean.ListBean listBean = bean.list.get(i);
+                ActivityGrandBean.DataBean.ListBean listBean = bean.list.get(i);
                 LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
                 liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
                     @Override
@@ -1601,7 +1681,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         rightBottomActivityNum += 1;
         try {
             if (dataBean != null) {
-                AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean);
+                AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean.data);
                 anchorTaskFragment.setTag(3);
                 mActivityGrands.add(anchorTaskFragment);
             }
@@ -2779,7 +2859,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * @param bean
      */
     public void showAnchorWishDialog(AnchorWishBean bean) {
-        AnchorWishDialog.Companion.newInstance(mAnchorId, bean).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
+        AnchorWishDialog.Companion.newInstance(mAnchorId, bean.data).setShowBottom(true).setDimAmount(0).show(getSupportFragmentManager());
     }
 
     /**

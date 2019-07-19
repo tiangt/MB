@@ -34,10 +34,10 @@ public class AnchorTaskFragment extends BaseFragment {
     ImageView iv;
     @BindView(R.id.tv)
     TextView tv;
-    private AnchorTaskBean bean;
+    private AnchorTaskBean.DataBean bean;
     private PopupWindow popupWindow;
 
-    public static AnchorTaskFragment newInstance(AnchorTaskBean dataBean) {
+    public static AnchorTaskFragment newInstance(AnchorTaskBean.DataBean dataBean) {
         AnchorTaskFragment anchorTaskFragment = new AnchorTaskFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("bean", dataBean);

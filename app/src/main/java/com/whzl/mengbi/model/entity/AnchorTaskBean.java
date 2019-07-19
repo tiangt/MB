@@ -12,6 +12,10 @@ import java.util.List;
  */
 public class AnchorTaskBean implements Parcelable {
 
+    public int code;
+    public DataBean data;
+    public String msg;
+    public boolean success;
 
     /**
      * taskId : 23090
@@ -25,27 +29,30 @@ public class AnchorTaskBean implements Parcelable {
      * time : 每周一00:00:00-23:59:59
      * awardList : [{"awardPic":"http://localtest-img.mengbitv.com/default/000/00/05/92_144x144.jpg","awardNum":2},{"awardPic":"http://localtest-img.mengbitv.com/default/000/00/05/91_144x144.jpg","awardNum":2}]
      */
+    public static class DataBean implements Parcelable {
+        public int taskId;
+        public int completion;
+        public int needCompletion;
+        public String operation;
+        public int number;
+        public String unit;
+        public String pic;
+        public String detailPic;
+        public String time;
+        public String name;
+        public List<AwardListBean> awardList;
 
-    public int taskId;
-    public int completion;
-    public int needCompletion;
-    public String operation;
-    public int number;
-    public String unit;
-    public String pic;
-    public String detailPic;
-    public String time;
-    public String name;
-    public List<AwardListBean> awardList;
+        public static class AwardListBean {
+            /**
+             * awardPic : http://localtest-img.mengbitv.com/default/000/00/05/92_144x144.jpg
+             * awardNum : 2
+             */
 
-    public static class AwardListBean implements Parcelable {
-        /**
-         * awardPic : http://localtest-img.mengbitv.com/default/000/00/05/92_144x144.jpg
-         * awardNum : 2
-         */
+            public String awardPic;
+            public int awardNum;
 
-        public String awardPic;
-        public int awardNum;
+
+        }
 
         @Override
         public int describeContents() {
@@ -54,27 +61,46 @@ public class AnchorTaskBean implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeString(this.awardPic);
-            dest.writeInt(this.awardNum);
+            dest.writeInt(this.taskId);
+            dest.writeInt(this.completion);
+            dest.writeInt(this.needCompletion);
+            dest.writeString(this.operation);
+            dest.writeInt(this.number);
+            dest.writeString(this.unit);
+            dest.writeString(this.pic);
+            dest.writeString(this.detailPic);
+            dest.writeString(this.time);
+            dest.writeString(this.name);
+            dest.writeList(this.awardList);
         }
 
-        public AwardListBean() {
+        public DataBean() {
         }
 
-        protected AwardListBean(Parcel in) {
-            this.awardPic = in.readString();
-            this.awardNum = in.readInt();
+        protected DataBean(Parcel in) {
+            this.taskId = in.readInt();
+            this.completion = in.readInt();
+            this.needCompletion = in.readInt();
+            this.operation = in.readString();
+            this.number = in.readInt();
+            this.unit = in.readString();
+            this.pic = in.readString();
+            this.detailPic = in.readString();
+            this.time = in.readString();
+            this.name = in.readString();
+            this.awardList = new ArrayList<AwardListBean>();
+            in.readList(this.awardList, AwardListBean.class.getClassLoader());
         }
 
-        public static final Creator<AwardListBean> CREATOR = new Creator<AwardListBean>() {
+        public static final Creator<DataBean> CREATOR = new Creator<DataBean>() {
             @Override
-            public AwardListBean createFromParcel(Parcel source) {
-                return new AwardListBean(source);
+            public DataBean createFromParcel(Parcel source) {
+                return new DataBean(source);
             }
 
             @Override
-            public AwardListBean[] newArray(int size) {
-                return new AwardListBean[size];
+            public DataBean[] newArray(int size) {
+                return new DataBean[size];
             }
         };
     }
@@ -86,33 +112,20 @@ public class AnchorTaskBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.taskId);
-        dest.writeInt(this.completion);
-        dest.writeInt(this.needCompletion);
-        dest.writeString(this.operation);
-        dest.writeInt(this.number);
-        dest.writeString(this.unit);
-        dest.writeString(this.pic);
-        dest.writeString(this.detailPic);
-        dest.writeString(this.time);
-        dest.writeList(this.awardList);
+        dest.writeInt(this.code);
+        dest.writeParcelable(this.data, flags);
+        dest.writeString(this.msg);
+        dest.writeByte(this.success ? (byte) 1 : (byte) 0);
     }
 
     public AnchorTaskBean() {
     }
 
     protected AnchorTaskBean(Parcel in) {
-        this.taskId = in.readInt();
-        this.completion = in.readInt();
-        this.needCompletion = in.readInt();
-        this.operation = in.readString();
-        this.number = in.readInt();
-        this.unit = in.readString();
-        this.pic = in.readString();
-        this.detailPic = in.readString();
-        this.time = in.readString();
-        this.awardList = new ArrayList<AwardListBean>();
-        in.readList(this.awardList, AwardListBean.class.getClassLoader());
+        this.code = in.readInt();
+        this.data = in.readParcelable(DataBean.class.getClassLoader());
+        this.msg = in.readString();
+        this.success = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<AnchorTaskBean> CREATOR = new Parcelable.Creator<AnchorTaskBean>() {

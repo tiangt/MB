@@ -36,7 +36,7 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
     private var totalWishCard: Int = 0
 
     companion object {
-        fun newInstance(bean: AnchorWishBean): AnchorWishFragment {
+        fun newInstance(bean: AnchorWishBean.DataBean): AnchorWishFragment {
             val anchorWishFragment = AnchorWishFragment()
             val bundle = Bundle()
             bundle.putParcelable("bean", bean)
@@ -57,7 +57,7 @@ class AnchorWishFragment : BaseFragment<BasePresenter<BaseView>>() {
     private var disposable: Disposable? = null
 
     override fun init() {
-        val bean: AnchorWishBean = arguments?.get("bean") as AnchorWishBean
+        val bean = arguments?.get("bean") as AnchorWishBean.DataBean
         sendGiftPrice = bean.sendGiftPrice
         totalWishCard = bean.totalWishCard
         ll_anchor_wish.clickDelay {
