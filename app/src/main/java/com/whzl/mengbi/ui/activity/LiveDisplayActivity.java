@@ -1445,24 +1445,25 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 活动viewpager
      */
     private void initBottomRightVp() {
-        //周星榜
-        weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-        weekRankFragment.setTag(4);
-        mActivityGrands.add(weekRankFragment);
-
-        if (mActivityGrands == null || mActivityGrands.isEmpty()) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            mActivityGrands.sort(new Comparator<BaseFragment>() {
-                @Override
-                public int compare(BaseFragment o1, BaseFragment o2) {
-                    return o1.getBaseTag() - o2.getBaseTag();
-                }
-            });
-        }
-        try {
-
+        try {//周星榜
+            weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
+            weekRankFragment.setTag(4);
+            mActivityGrands.add(weekRankFragment);
+            initActivityPoints();
+            if (mActivityGrands == null || mActivityGrands.isEmpty()) {
+                return;
+            }
+            if (mGrandAdaper != null) {
+                mGrandAdaper.notifyDataSetChanged();
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                mActivityGrands.sort(new Comparator<BaseFragment>() {
+                    @Override
+                    public int compare(BaseFragment o1, BaseFragment o2) {
+                        return o1.getBaseTag() - o2.getBaseTag();
+                    }
+                });
+            }
             mGrandAdaper = new ActivityFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
             vpActivity.setOffscreenPageLimit(10);
             vpActivity.setAdapter(mGrandAdaper);
@@ -1490,7 +1491,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } catch (Exception e) {
             vpActivity.setVisibility(View.GONE);
         }
-        initActivityPoints();
         vpActivity.setScroll(true);
         if (null != unclickLinearLayout) {
             unclickLinearLayout.setCanScroll(true);
