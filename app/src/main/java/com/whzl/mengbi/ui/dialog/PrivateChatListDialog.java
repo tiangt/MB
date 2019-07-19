@@ -255,7 +255,7 @@ public class PrivateChatListDialog extends BaseAwesomeDialog {
             String dateToString = DateUtils.getDateToString(timestamp, "HH:mm");
             tvTimeStamp.setText(dateToString);
             tvLastMsg.setText(dataBean.getLastMessage());
-            if (dataBean.getIsAnchor() && dataBean.getPrivateUserId().longValue() == anchor.getPrivateUserId().longValue()) {
+            if (Boolean.valueOf(dataBean.getIsAnchor()) && dataBean.getPrivateUserId().longValue() == anchor.getPrivateUserId().longValue()) {
                 ivAnchor.setVisibility(View.VISIBLE);
                 if (dataBean.getAnchorLevel() != null) {
                     GlideImageLoader.getInstace().displayImage(getContext(),

@@ -146,14 +146,14 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
             }
         });
         if (mUserId == 0) {
-            if (mCurrentChatToUser.getIsAnchor() && anchorId == mCurrentChatToUser.getPrivateUserId()) {
+            if (Boolean.valueOf(mCurrentChatToUser.getIsAnchor()) && anchorId == mCurrentChatToUser.getPrivateUserId()) {
                 ChatCommonJson chatCommonJson = new ChatCommonJson();
                 Random random = new Random();
                 chatCommonJson.setContent(tips[random.nextInt(tips.length)]);
                 chatCommonJson.setFrom_uid(String.valueOf(mCurrentChatToUser.getPrivateUserId()));
                 ChatMessage chatMessage = new ChatMessage(chatCommonJson, getActivity(), null, true);
                 chatMessage.timeStamp = System.currentTimeMillis();
-                chatMessage.isAnchor = mCurrentChatToUser.getIsAnchor();
+                chatMessage.isAnchor = Boolean.valueOf(mCurrentChatToUser.getIsAnchor());
                 chatList.add(chatMessage);
 
 //                ChatCommonJson warn = new ChatCommonJson();
@@ -183,7 +183,7 @@ public class PrivateChatDialog extends BaseAwesomeDialog {
                         chatCommonJson.setContent(chatContent.getContent());
                         chatCommonJson.setFrom_uid(chatContent.getFromId().toString());
                         ChatMessage chatMessage = new ChatMessage(chatCommonJson, getActivity(), null, true);
-                        chatMessage.isAnchor = chatContent.getIsAnchor();
+                        chatMessage.isAnchor = Boolean.valueOf(chatContent.getIsAnchor());
                         chatMessage.timeStamp = chatContent.getTimestamp();
                         chatList.add(chatMessage);
                     }

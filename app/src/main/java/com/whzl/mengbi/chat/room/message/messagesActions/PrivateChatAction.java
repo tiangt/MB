@@ -48,7 +48,7 @@ public class PrivateChatAction implements Actions {
         for (int i = 0; i < json.getFrom_json().getLevelList().size(); i++) {
             FromJson.Level level = json.getFrom_json().getLevelList().get(i);
             if ("ANCHOR_LEVEL".equals(level.getLevelType())) {
-                chatContent.setIsAnchor(true);
+                chatContent.setIsAnchor("true");
                 break;
             }
         }
@@ -67,7 +67,7 @@ public class PrivateChatAction implements Actions {
         for (int i = 0; i < json.getFrom_json().getLevelList().size(); i++) {
             FromJson.Level level = json.getFrom_json().getLevelList().get(i);
             if ("ANCHOR_LEVEL".equals(level.getLevelType())) {
-                chatUser.setIsAnchor(true);
+                chatUser.setIsAnchor("true");
                 chatUser.setAnchorLevel(level.getLevelValue());
             }
             if (level.getLevelType().equals("USER_LEVEL")) {

@@ -30,7 +30,7 @@ public class PrivateChatUser implements Parcelable {
     private Long timestamp;
     private Long uncheckTime = 0L;
     String lastMessage;
-    Boolean isAnchor = false;
+    String isAnchor = "false";
     Integer anchorLevel;
     Integer userLevel;
 
@@ -38,21 +38,53 @@ public class PrivateChatUser implements Parcelable {
     private List<PrivateChatContent> privateChatContents;
 
     private Long userId;
-    /**
-     * Used to resolve relations
-     */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-    /**
-     * Used for active entity operations.
-     */
-    @Generated(hash = 1072743205)
-    private transient PrivateChatUserDao myDao;
 
-    @Generated(hash = 489578847)
-    public PrivateChatUser(Long id, Long privateUserId, String name, String avatar, Long timestamp,
-            Long uncheckTime, String lastMessage, Boolean isAnchor, Integer anchorLevel,
-            Integer userLevel, Long userId) {
+    protected PrivateChatUser(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            privateUserId = null;
+        } else {
+            privateUserId = in.readLong();
+        }
+        name = in.readString();
+        avatar = in.readString();
+        if (in.readByte() == 0) {
+            timestamp = null;
+        } else {
+            timestamp = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            uncheckTime = null;
+        } else {
+            uncheckTime = in.readLong();
+        }
+        lastMessage = in.readString();
+        isAnchor = in.readString();
+        if (in.readByte() == 0) {
+            anchorLevel = null;
+        } else {
+            anchorLevel = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            userLevel = null;
+        } else {
+            userLevel = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            userId = null;
+        } else {
+            userId = in.readLong();
+        }
+    }
+
+    @Generated(hash = 263456502)
+    public PrivateChatUser(Long id, Long privateUserId, String name, String avatar,
+            Long timestamp, Long uncheckTime, String lastMessage, String isAnchor,
+            Integer anchorLevel, Integer userLevel, Long userId) {
         this.id = id;
         this.privateUserId = privateUserId;
         this.name = name;
@@ -68,6 +100,79 @@ public class PrivateChatUser implements Parcelable {
 
     @Generated(hash = 747997055)
     public PrivateChatUser() {
+    }
+
+    public static final Creator<PrivateChatUser> CREATOR = new Creator<PrivateChatUser>() {
+        @Override
+        public PrivateChatUser createFromParcel(Parcel in) {
+            return new PrivateChatUser(in);
+        }
+
+        @Override
+        public PrivateChatUser[] newArray(int size) {
+            return new PrivateChatUser[size];
+        }
+    };
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+    /** Used for active entity operations. */
+    @Generated(hash = 1072743205)
+    private transient PrivateChatUserDao myDao;
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
+        if (privateUserId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(privateUserId);
+        }
+        dest.writeString(name);
+        dest.writeString(avatar);
+        if (timestamp == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(timestamp);
+        }
+        if (uncheckTime == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(uncheckTime);
+        }
+        dest.writeString(lastMessage);
+        dest.writeString(isAnchor);
+        if (anchorLevel == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(anchorLevel);
+        }
+        if (userLevel == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(userLevel);
+        }
+        if (userId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(userId);
+        }
     }
 
     public Long getId() {
@@ -118,6 +223,38 @@ public class PrivateChatUser implements Parcelable {
         this.uncheckTime = uncheckTime;
     }
 
+    public String getLastMessage() {
+        return this.lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    public String getIsAnchor() {
+        return this.isAnchor;
+    }
+
+    public void setIsAnchor(String isAnchor) {
+        this.isAnchor = isAnchor;
+    }
+
+    public Integer getAnchorLevel() {
+        return this.anchorLevel;
+    }
+
+    public void setAnchorLevel(Integer anchorLevel) {
+        this.anchorLevel = anchorLevel;
+    }
+
+    public Integer getUserLevel() {
+        return this.userLevel;
+    }
+
+    public void setUserLevel(Integer userLevel) {
+        this.userLevel = userLevel;
+    }
+
     public Long getUserId() {
         return this.userId;
     }
@@ -149,9 +286,7 @@ public class PrivateChatUser implements Parcelable {
         return privateChatContents;
     }
 
-    /**
-     * Resets a to-many relationship, making the next get call to query for a fresh result.
-     */
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     @Generated(hash = 875079116)
     public synchronized void resetPrivateChatContents() {
         privateChatContents = null;
@@ -193,90 +328,10 @@ public class PrivateChatUser implements Parcelable {
         myDao.update(this);
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 181671466)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getPrivateChatUserDao() : null;
     }
-
-    public String getLastMessage() {
-        return this.lastMessage;
-    }
-
-    public void setLastMessage(String lastMessage) {
-        this.lastMessage = lastMessage;
-    }
-
-    public Boolean getIsAnchor() {
-        return this.isAnchor;
-    }
-
-    public void setIsAnchor(Boolean isAnchor) {
-        this.isAnchor = isAnchor;
-    }
-
-    public Integer getAnchorLevel() {
-        return this.anchorLevel;
-    }
-
-    public void setAnchorLevel(Integer anchorLevel) {
-        this.anchorLevel = anchorLevel;
-    }
-
-    public Integer getUserLevel() {
-        return this.userLevel;
-    }
-
-    public void setUserLevel(Integer userLevel) {
-        this.userLevel = userLevel;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
-        dest.writeValue(this.privateUserId);
-        dest.writeString(this.name);
-        dest.writeString(this.avatar);
-        dest.writeValue(this.timestamp);
-        dest.writeValue(this.uncheckTime);
-        dest.writeString(this.lastMessage);
-        dest.writeValue(this.isAnchor);
-        dest.writeValue(this.anchorLevel);
-        dest.writeValue(this.userLevel);
-        dest.writeValue(this.userId);
-    }
-
-    protected PrivateChatUser(Parcel in) {
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
-        this.privateUserId = (Long) in.readValue(Long.class.getClassLoader());
-        this.name = in.readString();
-        this.avatar = in.readString();
-        this.timestamp = (Long) in.readValue(Long.class.getClassLoader());
-        this.uncheckTime = (Long) in.readValue(Long.class.getClassLoader());
-        this.lastMessage = in.readString();
-        this.isAnchor = (Boolean) in.readValue(Boolean.class.getClassLoader());
-        this.anchorLevel = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.userLevel = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.userId = (Long) in.readValue(Long.class.getClassLoader());
-    }
-
-    public static final Parcelable.Creator<PrivateChatUser> CREATOR = new Parcelable.Creator<PrivateChatUser>() {
-        @Override
-        public PrivateChatUser createFromParcel(Parcel source) {
-            return new PrivateChatUser(source);
-        }
-
-        @Override
-        public PrivateChatUser[] newArray(int size) {
-            return new PrivateChatUser[size];
-        }
-    };
 }

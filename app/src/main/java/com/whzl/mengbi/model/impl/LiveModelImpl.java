@@ -16,7 +16,6 @@ import com.whzl.mengbi.model.entity.GiftInfo;
 import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
-import com.whzl.mengbi.model.entity.ModifyNameCardBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -287,27 +286,6 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void activityGrand(HashMap paramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .activityGrand(paramsMap)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<ActivityGrandBean>() {
-
-
-                    @Override
-                    public void onSuccess(ActivityGrandBean jsonElement) {
-                        listener.onActivityGrandSuccess(jsonElement);
-                    }
-
-                    @Override
-                    public void onError(int code) {
-                        listener.onRightBottomActivityError();
-                    }
-                });
-    }
-
-    @Override
     public void getAudienceList(HashMap paramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .getAudienceList(paramsMap)
@@ -366,28 +344,6 @@ public class LiveModelImpl implements LiveModel {
                     @Override
                     public void onError(int code) {
 
-                    }
-                });
-    }
-
-    @Override
-    public void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .getAnchorTask(signPramsMap)
-                .delay(200, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<AnchorTaskBean>() {
-                    @Override
-                    public void onSuccess(AnchorTaskBean dataBean) {
-                        if (dataBean != null) {
-                            listener.onGetAnchorTaskSuccess(dataBean);
-                        }
-                    }
-
-                    @Override
-                    public void onError(ApiResult<AnchorTaskBean> body) {
-                        listener.onRightBottomActivityError();
                     }
                 });
     }
@@ -513,29 +469,6 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void anchorWish(HashMap signPramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .anchorWishGift(signPramsMap)
-                .debounce(1500, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<AnchorWishBean>() {
-
-
-                    @Override
-                    public void onSuccess(AnchorWishBean jsonElement) {
-                        listener.onAnchorWishSuccess(jsonElement);
-                    }
-
-                    @Override
-                    public void onError(ApiResult<AnchorWishBean> body) {
-                        listener.onRightBottomActivityError();
-
-                    }
-                });
-    }
-
-    @Override
     public void getUpdownAnchor(HashMap signPramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .updownAnchor(signPramsMap)
@@ -577,4 +510,69 @@ public class LiveModelImpl implements LiveModel {
                 });
     }
 
+    @Override
+    public void activityGrand(HashMap paramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .activityGrand(paramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<ActivityGrandBean>() {
+
+
+                    @Override
+                    public void onSuccess(ActivityGrandBean jsonElement) {
+                        listener.onActivityGrandSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(int code) {
+                        listener.onRightBottomActivityError();
+                    }
+                });
+    }
+
+    @Override
+    public void anchorWish(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .anchorWishGift(signPramsMap)
+                .debounce(1500, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<AnchorWishBean>() {
+
+
+                    @Override
+                    public void onSuccess(AnchorWishBean jsonElement) {
+                        listener.onAnchorWishSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(ApiResult<AnchorWishBean> body) {
+                        listener.onRightBottomActivityError();
+
+                    }
+                });
+    }
+
+    @Override
+    public void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .getAnchorTask(signPramsMap)
+                .delay(200, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<AnchorTaskBean>() {
+                    @Override
+                    public void onSuccess(AnchorTaskBean dataBean) {
+                        if (dataBean != null) {
+                            listener.onGetAnchorTaskSuccess(dataBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResult<AnchorTaskBean> body) {
+                        listener.onRightBottomActivityError();
+                    }
+                });
+    }
 }

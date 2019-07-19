@@ -34,7 +34,7 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
         public final static Property Timestamp = new Property(4, Long.class, "timestamp", false, "TIMESTAMP");
         public final static Property UncheckTime = new Property(5, Long.class, "uncheckTime", false, "UNCHECK_TIME");
         public final static Property LastMessage = new Property(6, String.class, "lastMessage", false, "LAST_MESSAGE");
-        public final static Property IsAnchor = new Property(7, Boolean.class, "isAnchor", false, "IS_ANCHOR");
+        public final static Property IsAnchor = new Property(7, String.class, "isAnchor", false, "IS_ANCHOR");
         public final static Property AnchorLevel = new Property(8, Integer.class, "anchorLevel", false, "ANCHOR_LEVEL");
         public final static Property UserLevel = new Property(9, Integer.class, "userLevel", false, "USER_LEVEL");
         public final static Property UserId = new Property(10, Long.class, "userId", false, "USER_ID");
@@ -64,7 +64,7 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
                 "\"TIMESTAMP\" INTEGER," + // 4: timestamp
                 "\"UNCHECK_TIME\" INTEGER," + // 5: uncheckTime
                 "\"LAST_MESSAGE\" TEXT," + // 6: lastMessage
-                "\"IS_ANCHOR\" INTEGER," + // 7: isAnchor
+                "\"IS_ANCHOR\" TEXT," + // 7: isAnchor
                 "\"ANCHOR_LEVEL\" INTEGER," + // 8: anchorLevel
                 "\"USER_LEVEL\" INTEGER," + // 9: userLevel
                 "\"USER_ID\" INTEGER);"); // 10: userId
@@ -115,9 +115,9 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
             stmt.bindString(7, lastMessage);
         }
  
-        Boolean isAnchor = entity.getIsAnchor();
+        String isAnchor = entity.getIsAnchor();
         if (isAnchor != null) {
-            stmt.bindLong(8, isAnchor ? 1L: 0L);
+            stmt.bindString(8, isAnchor);
         }
  
         Integer anchorLevel = entity.getAnchorLevel();
@@ -175,9 +175,9 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
             stmt.bindString(7, lastMessage);
         }
  
-        Boolean isAnchor = entity.getIsAnchor();
+        String isAnchor = entity.getIsAnchor();
         if (isAnchor != null) {
-            stmt.bindLong(8, isAnchor ? 1L: 0L);
+            stmt.bindString(8, isAnchor);
         }
  
         Integer anchorLevel = entity.getAnchorLevel();
@@ -217,7 +217,7 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // timestamp
             cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // uncheckTime
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // lastMessage
-            cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0, // isAnchor
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // isAnchor
             cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // anchorLevel
             cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // userLevel
             cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10) // userId
@@ -234,7 +234,7 @@ public class PrivateChatUserDao extends AbstractDao<PrivateChatUser, Long> {
         entity.setTimestamp(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
         entity.setUncheckTime(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
         entity.setLastMessage(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setIsAnchor(cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0);
+        entity.setIsAnchor(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setAnchorLevel(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
         entity.setUserLevel(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
         entity.setUserId(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));

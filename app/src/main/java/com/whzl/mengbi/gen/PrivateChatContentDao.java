@@ -33,7 +33,7 @@ public class PrivateChatContentDao extends AbstractDao<PrivateChatContent, Long>
         public final static Property FromId = new Property(3, Long.class, "fromId", false, "FROM_ID");
         public final static Property PrivateUserId = new Property(4, Long.class, "privateUserId", false, "PRIVATE_USER_ID");
         public final static Property UserId = new Property(5, Long.class, "userId", false, "USER_ID");
-        public final static Property IsAnchor = new Property(6, Boolean.class, "isAnchor", false, "IS_ANCHOR");
+        public final static Property IsAnchor = new Property(6, String.class, "isAnchor", false, "IS_ANCHOR");
     }
 
     private Query<PrivateChatContent> privateChatUser_PrivateChatContentsQuery;
@@ -56,7 +56,7 @@ public class PrivateChatContentDao extends AbstractDao<PrivateChatContent, Long>
                 "\"FROM_ID\" INTEGER," + // 3: fromId
                 "\"PRIVATE_USER_ID\" INTEGER," + // 4: privateUserId
                 "\"USER_ID\" INTEGER," + // 5: userId
-                "\"IS_ANCHOR\" INTEGER);"); // 6: isAnchor
+                "\"IS_ANCHOR\" TEXT);"); // 6: isAnchor
     }
 
     /** Drops the underlying database table. */
@@ -99,9 +99,9 @@ public class PrivateChatContentDao extends AbstractDao<PrivateChatContent, Long>
             stmt.bindLong(6, userId);
         }
  
-        Boolean isAnchor = entity.getIsAnchor();
+        String isAnchor = entity.getIsAnchor();
         if (isAnchor != null) {
-            stmt.bindLong(7, isAnchor ? 1L: 0L);
+            stmt.bindString(7, isAnchor);
         }
     }
 
@@ -139,9 +139,9 @@ public class PrivateChatContentDao extends AbstractDao<PrivateChatContent, Long>
             stmt.bindLong(6, userId);
         }
  
-        Boolean isAnchor = entity.getIsAnchor();
+        String isAnchor = entity.getIsAnchor();
         if (isAnchor != null) {
-            stmt.bindLong(7, isAnchor ? 1L: 0L);
+            stmt.bindString(7, isAnchor);
         }
     }
 
@@ -159,7 +159,7 @@ public class PrivateChatContentDao extends AbstractDao<PrivateChatContent, Long>
             cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // fromId
             cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // privateUserId
             cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // userId
-            cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0 // isAnchor
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6) // isAnchor
         );
         return entity;
     }
@@ -172,7 +172,7 @@ public class PrivateChatContentDao extends AbstractDao<PrivateChatContent, Long>
         entity.setFromId(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
         entity.setPrivateUserId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
         entity.setUserId(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
-        entity.setIsAnchor(cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0);
+        entity.setIsAnchor(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
      }
     
     @Override

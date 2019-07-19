@@ -871,7 +871,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 for (int i = 0; i < mAnchor.getLevel().size(); i++) {
                     RoomInfoBean.DataBean.AnchorBean.LevelBean levelBean = mAnchor.getLevel().get(i);
                     if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
-                        user.setIsAnchor(true);
+                        user.setIsAnchor("true");
                         user.setAnchorLevel(levelBean.getLevelValue());
                     }
                     if (levelBean.getLevelType().equals("USER_LEVEL")) {
@@ -1461,30 +1461,35 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             });
         }
-        mGrandAdaper = new ActivityFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
-        vpActivity.setAdapter(mGrandAdaper);
-        vpActivity.setOffscreenPageLimit(10);
-        vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        try {
 
-            }
+            mGrandAdaper = new ActivityFragmentPagerAdaper(getSupportFragmentManager(), mActivityGrands);
+            vpActivity.setOffscreenPageLimit(10);
+            vpActivity.setAdapter(mGrandAdaper);
+            vpActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            @Override
-            public void onPageSelected(int position) {
-                if (mActivityGrands.size() < 2) {
-                    return;
                 }
-                for (int i = 0; i < mActivityGrands.size(); i++) {
-                    llPagerIndex.getChildAt(i).setSelected(i == position);
+
+                @Override
+                public void onPageSelected(int position) {
+                    if (mActivityGrands.size() < 2) {
+                        return;
+                    }
+                    for (int i = 0; i < mActivityGrands.size(); i++) {
+                        llPagerIndex.getChildAt(i).setSelected(i == position);
+                    }
                 }
-            }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-            }
-        });
+                }
+            });
+        } catch (Exception e) {
+            vpActivity.setVisibility(View.GONE);
+        }
         initActivityPoints();
         vpActivity.setScroll(true);
         if (null != unclickLinearLayout) {
@@ -1510,7 +1515,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     }
                 });
             }
-            mGrandAdaper.notifyDataSetChanged();
+//            mGrandAdaper.notifyDataSetChanged();
+            vpActivity.getAdapter().notifyDataSetChanged();
             vpActivity.setOffscreenPageLimit(10);
             initActivityPoints();
             vpActivity.setScroll(true);
@@ -1544,7 +1550,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
                 initBottomRightVp();
             } else if (rightBottomActivityNum > RIGHT_BOTTOM_ACTIVITY) {
-                mGrandAdaper.notifyDataSetChanged();
+//                mGrandAdaper.notifyDataSetChanged();
+                vpActivity.getAdapter().notifyDataSetChanged();
                 initActivityPoints();
                 vpActivity.setCurrentItem(0, false);
             }
@@ -1560,33 +1567,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onActivityGrandSuccess(ActivityGrandBean bean) {
         rightBottomActivityNum += 1;
-        try {
-            if (bean.list != null && bean.list.size() != 0) {
-                for (int i = 0; i < bean.list.size(); i++) {
-                    ActivityGrandBean.ListBean listBean = bean.list.get(i);
-                    LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
-                    liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
-                        @Override
-                        public void clickListener() {
-                            if (TextUtils.isEmpty(listBean.jumpUrl)) {
-                                return;
-                            }
-                            startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
-                                    .putExtra("anchorId", mAnchorId + "")
-                                    .putExtra("programId", mProgramId + "")
-                                    .putExtra("title", listBean.name)
-                                    .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
+        if (bean.list != null && bean.list.size() != 0) {
+            for (int i = 0; i < bean.list.size(); i++) {
+                ActivityGrandBean.ListBean listBean = bean.list.get(i);
+                LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
+                liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
+                    @Override
+                    public void clickListener() {
+                        if (TextUtils.isEmpty(listBean.jumpUrl)) {
+                            return;
                         }
-                    });
-                    liveWebFragment.setTag(2);
-                    mActivityGrands.add(liveWebFragment);
-                }
+                        startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
+                                .putExtra("anchorId", mAnchorId + "")
+                                .putExtra("programId", mProgramId + "")
+                                .putExtra("title", listBean.name)
+                                .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
+                    }
+                });
+                liveWebFragment.setTag(2);
+                mActivityGrands.add(liveWebFragment);
             }
-            if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-                initBottomRightVp();
-            }
-        } catch (IllegalStateException e) {
-            vpActivity.setVisibility(View.GONE);
+        }
+        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+            initBottomRightVp();
         }
     }
 
@@ -2337,7 +2340,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         for (int i = 0; i < mViewedUser.getLevelList().size(); i++) {
                             RoomUserInfo.LevelMapBean levelBean = mViewedUser.getLevelList().get(i);
                             if ("ANCHOR_LEVEL".equals(levelBean.getLevelType())) {
-                                chatUser.setIsAnchor(true);
+                                chatUser.setIsAnchor("true");
                                 chatUser.setAnchorLevel(levelBean.getLevelValue());
                             }
                             if (levelBean.getLevelType().equals("USER_LEVEL")) {
@@ -2455,9 +2458,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         rightBottomActivityNum = 0;
         try {
             if (mGrandAdaper != null) {
-                mGrandAdaper.notifyDataSetChanged();
+//                mGrandAdaper.notifyDataSetChanged();
+//                vpActivity.getAdapter().notifyDataSetChanged();
                 mActivityGrands.clear();
-                mGrandAdaper.notifyDataSetChanged();
+//                mGrandAdaper.notifyDataSetChanged();
+                vpActivity.getAdapter().notifyDataSetChanged();
                 vpActivity.setScroll(false);
                 mGrandAdaper = null;
             }
@@ -2899,7 +2904,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         mActivityGrands.remove(i);
                     }
                 }
-                mGrandAdaper.notifyDataSetChanged();
+//                mGrandAdaper.notifyDataSetChanged();
+                vpActivity.getAdapter().notifyDataSetChanged();
                 initActivityPoints();
                 vpActivity.setCurrentItem(0, false);
             }
