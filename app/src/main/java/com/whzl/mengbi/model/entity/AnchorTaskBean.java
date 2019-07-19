@@ -42,17 +42,6 @@ public class AnchorTaskBean implements Parcelable {
         public String name;
         public List<AwardListBean> awardList;
 
-        public static class AwardListBean {
-            /**
-             * awardPic : http://localtest-img.mengbitv.com/default/000/00/05/92_144x144.jpg
-             * awardNum : 2
-             */
-
-            public String awardPic;
-            public int awardNum;
-
-
-        }
 
         @Override
         public int describeContents() {
@@ -101,6 +90,48 @@ public class AnchorTaskBean implements Parcelable {
             @Override
             public DataBean[] newArray(int size) {
                 return new DataBean[size];
+            }
+        };
+    }
+
+    public static class AwardListBean implements Parcelable {
+        /**
+         * awardPic : http://localtest-img.mengbitv.com/default/000/00/05/92_144x144.jpg
+         * awardNum : 2
+         */
+
+        public String awardPic;
+        public int awardNum;
+
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(this.awardPic);
+            dest.writeInt(this.awardNum);
+        }
+
+        public AwardListBean() {
+        }
+
+        protected AwardListBean(Parcel in) {
+            this.awardPic = in.readString();
+            this.awardNum = in.readInt();
+        }
+
+        public static final Creator<AwardListBean> CREATOR = new Creator<AwardListBean>() {
+            @Override
+            public AwardListBean createFromParcel(Parcel source) {
+                return new AwardListBean(source);
+            }
+
+            @Override
+            public AwardListBean[] newArray(int size) {
+                return new AwardListBean[size];
             }
         };
     }

@@ -46,7 +46,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.jaeger.library.StatusBarUtil;
 import com.ksyun.media.player.IMediaPlayer;
@@ -206,10 +205,8 @@ import com.whzl.mengbi.util.BitmapUtils;
 import com.whzl.mengbi.util.BusinessUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.DeviceUtils;
-import com.whzl.mengbi.util.GenericUtil;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
-import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -236,7 +233,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -1426,16 +1422,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      * 主播心愿 周星 主播任务 活动页面
      */
     private void initAboutAnchor(int mProgramId, int mAnchorId) {
-        Disposable subscribe = Observable.timer(1, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        getRightBottomActivity(mProgramId, mAnchorId);
-                    }
-                });
-        compositeDisposable.add(subscribe);
+        getRightBottomActivity(mProgramId, mAnchorId);
         //头条榜单
         mLivePresenter.getHeadlineRank(mAnchorId, "F");
         mLivePresenter.getBlackRoomTime(mAnchorId);
@@ -1457,9 +1444,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             initActivityPoints();
             if (mActivityGrands == null || mActivityGrands.isEmpty()) {
                 return;
-            }
-            if (mGrandAdaper != null) {
-                mGrandAdaper.notifyDataSetChanged();
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 mActivityGrands.sort(new Comparator<BaseFragment>() {
@@ -1502,158 +1486,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-    private void refreshBottomRightVp() {
-        try {
-            //周星榜
-            weekRankFragment = LiveWeekRankFragment.newInstance(mProgramId, mAnchorId);
-            weekRankFragment.setTag(4);
-            mActivityGrands.add(weekRankFragment);
-
-            if (mActivityGrands == null || mActivityGrands.isEmpty()) {
-                return;
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                mActivityGrands.sort(new Comparator<BaseFragment>() {
-                    @Override
-                    public int compare(BaseFragment o1, BaseFragment o2) {
-                        return o1.getBaseTag() - o2.getBaseTag();
-                    }
-                });
-            }
-//            mGrandAdaper.notifyDataSetChanged();
-            vpActivity.getAdapter().notifyDataSetChanged();
-            vpActivity.setOffscreenPageLimit(10);
-            initActivityPoints();
-            vpActivity.setScroll(true);
-        } catch (Exception e) {
-            vpActivity.setVisibility(View.GONE);
-        }
-    }
-
-
-    @SuppressLint("CheckResult")
-    private void getRightBottomActivity(int mProgramId, int mAnchorId) {
-//        initBottomRightVp();
-        mActivityGrands = new ArrayList<>();
-
-//        mLivePresenter.getAnchorWish(mAnchorId);
-//        mLivePresenter.getActivityGrand(mProgramId, mAnchorId);
-//        //主播任务
-//        mLivePresenter.getAnchorTask(mAnchorId);
-
-        HashMap map = new HashMap();
-        map.put("userId", mAnchorId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        Observable<AnchorWishBean> observable = ApiFactory.getInstance().getApi(Api.class)
-                .anchorWishGift(signPramsMap);
-
-        HashMap map1 = new HashMap();
-        map1.put("programId", mProgramId);
-        map1.put("anchorId", mAnchorId);
-        HashMap signPramsMap1 = ParamsUtils.getSignPramsMap(map1);
-        Observable<ActivityGrandBean> observable1 = ApiFactory.getInstance().getApi(Api.class)
-                .activityGrand(signPramsMap1);
-
-        HashMap map2 = new HashMap();
-        map2.put("userId", mAnchorId);
-        HashMap signPramsMap2 = ParamsUtils.getSignPramsMap(map2);
-        Observable<AnchorTaskBean> observable2 = ApiFactory.getInstance().getApi(Api.class)
-                .getAnchorTask(signPramsMap2);
-
-        Observable merge = Observable.merge(observable, observable1, observable2);
-        merge.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object o) throws Exception {
-                        rightBottomActivityNum += 1;
-
-                        if (o instanceof ActivityGrandBean) {
-                            ActivityGrandBean activityGrandBean = (ActivityGrandBean) o;
-                            ActivityGrandBean.DataBean bean = activityGrandBean.data;
-                            if (bean.list != null && bean.list.size() != 0) {
-                                for (int i = 0; i < bean.list.size(); i++) {
-                                    ActivityGrandBean.DataBean.ListBean listBean = bean.list.get(i);
-                                    LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
-                                    liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
-                                        @Override
-                                        public void clickListener() {
-                                            if (TextUtils.isEmpty(listBean.jumpUrl)) {
-                                                return;
-                                            }
-                                            startActivityForResult(new Intent(getBaseActivity(), JsBridgeActivity.class)
-                                                    .putExtra("anchorId", mAnchorId + "")
-                                                    .putExtra("programId", mProgramId + "")
-                                                    .putExtra("title", listBean.name)
-                                                    .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
-                                        }
-                                    });
-                                    liveWebFragment.setTag(2);
-                                    mActivityGrands.add(liveWebFragment);
-                                }
-                            }
-                        } else if (o instanceof AnchorTaskBean) {
-                            AnchorTaskBean dataBean = (AnchorTaskBean) o;
-                            if (dataBean != null) {
-                                AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean.data);
-                                anchorTaskFragment.setTag(3);
-                                mActivityGrands.add(anchorTaskFragment);
-                            }
-                        } else if (o instanceof AnchorWishBean) {
-                            AnchorWishBean bean = (AnchorWishBean) o;
-                            AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean.data);
-                            anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
-                            anchorWishFragment.setTag(1);
-                            mActivityGrands.add(0, anchorWishFragment);
-                        }
-
-                        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-                            initBottomRightVp();
-                        }
-                    }
-                });
-    }
-
-
-    /**
-     * 主播心愿
-     */
     @Override
-    public void onAnchorWishSuccess(AnchorWishBean bean) {
+    public void onRightBottomActivitySuccess(Object o) {
         rightBottomActivityNum += 1;
-        try {
-            AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean.data);
-            anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
-            anchorWishFragment.setTag(1);
-            mActivityGrands.add(0, anchorWishFragment);
-            if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-                initBottomRightVp();
-            } else if (rightBottomActivityNum > RIGHT_BOTTOM_ACTIVITY) {
-//                mGrandAdaper.notifyDataSetChanged();
-                vpActivity.getAdapter().notifyDataSetChanged();
-                initActivityPoints();
-                vpActivity.setCurrentItem(0, false);
-            }
-        } catch (IllegalStateException e) {
-            vpActivity.setVisibility(View.GONE);
-        }
-    }
 
-
-    /**
-     * 直播间的活动（常规活动）
-     */
-    @Override
-    public void onActivityGrandSuccess(ActivityGrandBean activityGrandBean) {
-        rightBottomActivityNum += 1;
-        ActivityGrandBean.DataBean bean = activityGrandBean.data;
-        if (bean.list != null && bean.list.size() != 0) {
-            for (int i = 0; i < bean.list.size(); i++) {
-                ActivityGrandBean.DataBean.ListBean listBean = bean.list.get(i);
-                LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
-                liveWebFragment.setOnclickListener(new LiveWebFragment.ClickListener() {
-                    @Override
-                    public void clickListener() {
+        if (o instanceof ActivityGrandBean) {
+            ActivityGrandBean activityGrandBean = (ActivityGrandBean) o;
+            ActivityGrandBean.DataBean bean = activityGrandBean.data;
+            if (activityGrandBean.code == 200 && bean.list != null && bean.list.size() != 0) {
+                for (int i = 0; i < bean.list.size(); i++) {
+                    ActivityGrandBean.DataBean.ListBean listBean = bean.list.get(i);
+                    LiveWebFragment liveWebFragment = LiveWebFragment.newInstance(listBean.linkUrl, mAnchorId + "", mProgramId + "");
+                    liveWebFragment.setOnclickListener(() -> {
                         if (TextUtils.isEmpty(listBean.jumpUrl)) {
                             return;
                         }
@@ -1662,44 +1506,37 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                 .putExtra("programId", mProgramId + "")
                                 .putExtra("title", listBean.name)
                                 .putExtra("url", listBean.jumpUrl), REQUEST_LOGIN);
-                    }
-                });
-                liveWebFragment.setTag(2);
-                mActivityGrands.add(liveWebFragment);
+                    });
+                    liveWebFragment.setTag(2);
+                    mActivityGrands.add(liveWebFragment);
+                }
             }
-        }
-        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            initBottomRightVp();
-        }
-    }
-
-    /**
-     * 主播任务成功
-     */
-    @Override
-    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
-        rightBottomActivityNum += 1;
-        try {
-            if (dataBean != null) {
+        } else if (o instanceof AnchorTaskBean) {
+            AnchorTaskBean dataBean = (AnchorTaskBean) o;
+            if (dataBean != null && dataBean.code == 200) {
                 AnchorTaskFragment anchorTaskFragment = AnchorTaskFragment.newInstance(dataBean.data);
                 anchorTaskFragment.setTag(3);
                 mActivityGrands.add(anchorTaskFragment);
             }
-            if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-                initBottomRightVp();
+        } else if (o instanceof AnchorWishBean) {
+            AnchorWishBean bean = (AnchorWishBean) o;
+            if (bean != null && bean.code == 200 && bean.data != null) {
+                AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean.data);
+                anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
+                anchorWishFragment.setTag(1);
+                mActivityGrands.add(0, anchorWishFragment);
             }
-        } catch (IllegalStateException e) {
-            vpActivity.setVisibility(View.GONE);
+        }
+
+        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+            initBottomRightVp();
         }
     }
 
 
-    @Override
-    public void onRightBottomActivityError() {
-        rightBottomActivityNum += 1;
-        if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
-            initBottomRightVp();
-        }
+    private void getRightBottomActivity(int mProgramId, int mAnchorId) {
+        mActivityGrands = new ArrayList<>();
+        mLivePresenter.getRightBottomActivity(mProgramId, mAnchorId);
     }
 
     @Override
@@ -2917,6 +2754,30 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     /**
+     * 主播心愿
+     */
+    @Override
+    public void onAnchorWishSuccess(AnchorWishBean bean) {
+        rightBottomActivityNum += 1;
+        try {
+            AnchorWishFragment anchorWishFragment = AnchorWishFragment.Companion.newInstance(bean.data);
+            anchorWishFragment.setMOnclick(() -> showAnchorWishDialog(bean));
+            anchorWishFragment.setTag(1);
+            mActivityGrands.add(0, anchorWishFragment);
+            if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
+                initBottomRightVp();
+            } else if (rightBottomActivityNum > RIGHT_BOTTOM_ACTIVITY) {
+//                mGrandAdaper.notifyDataSetChanged();
+                initActivityPoints();
+                vpActivity.getAdapter().notifyDataSetChanged();
+                vpActivity.setCurrentItem(0, false);
+            }
+        } catch (IllegalStateException e) {
+            vpActivity.setVisibility(View.GONE);
+        }
+    }
+
+    /**
      * 一键下线
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -2985,8 +2846,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     }
                 }
 //                mGrandAdaper.notifyDataSetChanged();
-                vpActivity.getAdapter().notifyDataSetChanged();
                 initActivityPoints();
+                vpActivity.getAdapter().notifyDataSetChanged();
                 vpActivity.setCurrentItem(0, false);
             }
         } catch (Exception e) {

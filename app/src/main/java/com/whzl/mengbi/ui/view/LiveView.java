@@ -1,7 +1,5 @@
 package com.whzl.mengbi.ui.view;
 
-import com.whzl.mengbi.model.entity.ActivityGrandBean;
-import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
@@ -45,8 +43,6 @@ public interface LiveView {
 
     void onPkInfoSuccess(PKResultBean bean);
 
-    void onActivityGrandSuccess(ActivityGrandBean bean);
-
     void onGetAudienceListSuccess(AudienceListBean.DataBean audienceListBean);
 
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean guardTotalBean);
@@ -55,8 +51,6 @@ public interface LiveView {
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
 
     void onGetPunishWaysSuccess(PunishWaysBean bean);
-
-    void onGetAnchorTaskSuccess(AnchorTaskBean dataBean);
 
     void onGetDailyTaskStateSuccess(GetDailyTaskStateBean dailyTaskStateBean);
 
@@ -76,7 +70,7 @@ public interface LiveView {
 
     void onUpdownAnchors(UpdownAnchorBean jsonElement);
 
-    void onRightBottomActivityError();
-
     void onGetRoyalCarListSuccess(RoyalCarListBean jsonElement);
+
+    void onRightBottomActivitySuccess(Object o);
 }

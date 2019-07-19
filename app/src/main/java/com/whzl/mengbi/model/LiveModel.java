@@ -1,9 +1,10 @@
 package com.whzl.mengbi.model;
 
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
-import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 
 import java.util.HashMap;
+
+import io.reactivex.Observable;
 
 public interface LiveModel {
     void doLiveRoomToken(HashMap hashMap, OnLiveFinishedListener listener);
@@ -14,7 +15,7 @@ public interface LiveModel {
 
     void doFollowHost(long userId, int programId, OnLiveFinishedListener listener);
 
-    void doRoomUserInfo(long visitorId,int programId, OnLiveFinishedListener listener);
+    void doRoomUserInfo(long visitorId, int programId, OnLiveFinishedListener listener);
 
     void doSendGift(HashMap paramsMap, boolean useBag, OnLiveFinishedListener listener);
 
@@ -26,15 +27,11 @@ public interface LiveModel {
 
     void pkInfo(HashMap paramsMap, OnLiveFinishedListener listener);
 
-    void activityGrand(HashMap paramsMap, OnLiveFinishedListener listener);
-
     void getAudienceList(HashMap paramsMap, OnLiveFinishedListener listener);
 
     void getTotalGuard(HashMap paramsMap, OnLiveFinishedListener listener);
 
     void getRoomRankTotal(HashMap signPramsMap, OnLiveFinishedListener listener);
-
-    void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void getDailyTaskState(HashMap signPramsMap, OnLiveFinishedListener listener);
 
@@ -53,4 +50,6 @@ public interface LiveModel {
     void getUpdownAnchor(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void getRoyalCarList(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void getRightBottomActivity(Observable merge, OnLiveFinishedListener listener);
 }

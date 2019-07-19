@@ -26,8 +26,6 @@ public interface LivePresenter {
 
     void getPkInfo(int programId);
 
-    void getActivityGrand(int programId, int anchorId);
-
     void getAudienceList(int programId);
 
     void getGuardTotal(int programId);
@@ -49,4 +47,6 @@ public interface LivePresenter {
     void getUpdownAnchor();
 
     void getRoyalCarList();
+
+    void getRightBottomActivity(int mProgramId, int mAnchorId);
 }

@@ -1,7 +1,5 @@
 package com.whzl.mengbi.presenter;
 
-import com.whzl.mengbi.model.entity.ActivityGrandBean;
-import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
@@ -46,15 +44,11 @@ public interface OnLiveFinishedListener {
 
     void onPkInfoSuccess(PKResultBean bean);
 
-    void onActivityGrandSuccess(ActivityGrandBean bean);
-
     void onGetAudienceListSuccess(AudienceListBean.DataBean audienceListBean);
 
     void onGetTotalGuardSuccess(GuardTotalBean.DataBean bean);
 
     void onGetRoomRankTotalSuccess(RoomRankTotalBean bean);
-
-    void onGetAnchorTaskSuccess(AnchorTaskBean dataBean);
 
     void onGetDailyTaskStateSuccuss(GetDailyTaskStateBean dailyTaskStateBean);
 
@@ -74,7 +68,7 @@ public interface OnLiveFinishedListener {
 
     void onUpdownAnchors(UpdownAnchorBean jsonElement);
 
-    void onRightBottomActivityError();
-
     void onRoyalCarListSuccess(RoyalCarListBean jsonElement);
+
+    void onRightBottomActivitySuccuss(Object o);
 }

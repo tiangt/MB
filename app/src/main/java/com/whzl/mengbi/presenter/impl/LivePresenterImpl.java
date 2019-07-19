@@ -1,8 +1,7 @@
 package com.whzl.mengbi.presenter.impl;
 
+import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.LiveModel;
-import com.whzl.mengbi.model.entity.ActivityGrandBean;
-import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.AudienceListBean;
 import com.whzl.mengbi.model.entity.BlackRoomTimeBean;
@@ -25,9 +24,12 @@ import com.whzl.mengbi.model.impl.LiveModelImpl;
 import com.whzl.mengbi.presenter.LivePresenter;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
 import com.whzl.mengbi.ui.view.LiveView;
+import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.HashMap;
+
+import io.reactivex.Observable;
 
 public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener {
     private LiveView liveView;
@@ -137,17 +139,18 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
-    @Override
-    public void onRightBottomActivityError() {
-        if (liveView != null) {
-            liveView.onRightBottomActivityError();
-        }
-    }
 
     @Override
     public void onRoyalCarListSuccess(RoyalCarListBean jsonElement) {
         if (liveView != null) {
             liveView.onGetRoyalCarListSuccess(jsonElement);
+        }
+    }
+
+    @Override
+    public void onRightBottomActivitySuccuss(Object o) {
+        if (liveView != null) {
+            liveView.onRightBottomActivitySuccess(o);
         }
     }
 
@@ -181,12 +184,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         }
     }
 
-    @Override
-    public void onActivityGrandSuccess(ActivityGrandBean bean) {
-        if (liveView != null) {
-            liveView.onActivityGrandSuccess(bean);
-        }
-    }
 
     @Override
     public void onGetAudienceListSuccess(AudienceListBean.DataBean bean) {
@@ -206,13 +203,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
         if (liveView != null) {
             liveView.onGetRoomRankTotalSuccess(bean);
-        }
-    }
-
-    @Override
-    public void onGetAnchorTaskSuccess(AnchorTaskBean dataBean) {
-        if (liveView != null) {
-            liveView.onGetAnchorTaskSuccess(dataBean);
         }
     }
 
@@ -302,15 +292,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
-    public void getActivityGrand(int programId, int anchorId) {
-        HashMap map = new HashMap();
-        map.put("programId", programId);
-        map.put("anchorId", anchorId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        liveModel.activityGrand(signPramsMap, this);
-    }
-
-    @Override
     public void getAudienceList(int programId) {
         HashMap map = new HashMap();
         map.put("programId", programId);
@@ -361,12 +342,6 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         liveModel.getBlackRoomTime(signPramsMap, this);
     }
 
-    public void getAnchorTask(int mAnchorId) {
-        HashMap map = new HashMap();
-        map.put("userId", mAnchorId);
-        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
-        liveModel.getAnchorTask(signPramsMap, this);
-    }
 
     public void getUserSet(long mUserId) {
         HashMap map = new HashMap();
@@ -404,6 +379,31 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         HashMap map = new HashMap();
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getRoyalCarList(signPramsMap, this);
+    }
+
+    @Override
+    public void getRightBottomActivity(int mProgramId, int mAnchorId) {
+        HashMap map = new HashMap();
+        map.put("userId", mAnchorId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        Observable observable = ApiFactory.getInstance().getApi(Api.class)
+                .anchorWishGift(signPramsMap);
+
+        HashMap map1 = new HashMap();
+        map1.put("programId", mProgramId);
+        map1.put("anchorId", mAnchorId);
+        HashMap signPramsMap1 = ParamsUtils.getSignPramsMap(map1);
+        Observable observable1 = ApiFactory.getInstance().getApi(Api.class)
+                .activityGrand(signPramsMap1);
+
+        HashMap map2 = new HashMap();
+        map2.put("userId", mAnchorId);
+        HashMap signPramsMap2 = ParamsUtils.getSignPramsMap(map2);
+        Observable observable2 = ApiFactory.getInstance().getApi(Api.class)
+                .getAnchorTask(signPramsMap2);
+
+        Observable merge = Observable.merge(observable, observable1, observable2);
+        liveModel.getRightBottomActivity(merge,this);
     }
 
     public void getRedPackList(int mProgramId, long mUserId) {

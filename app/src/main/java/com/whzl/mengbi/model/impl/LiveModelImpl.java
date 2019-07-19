@@ -1,6 +1,12 @@
 package com.whzl.mengbi.model.impl;
 
+import android.content.Intent;
+import android.net.ParseException;
+import android.text.TextUtils;
+
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.LiveModel;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
@@ -26,9 +32,14 @@ import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
+import com.whzl.mengbi.ui.activity.JsBridgeActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
+import com.whzl.mengbi.ui.fragment.AnchorWishFragment;
+import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
@@ -38,10 +49,17 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class LiveModelImpl implements LiveModel {
@@ -476,7 +494,6 @@ public class LiveModelImpl implements LiveModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new ApiObserver<UpdownAnchorBean>() {
 
-
                     @Override
                     public void onSuccess(UpdownAnchorBean jsonElement) {
                         listener.onUpdownAnchors(jsonElement);
@@ -511,34 +528,84 @@ public class LiveModelImpl implements LiveModel {
     }
 
     @Override
-    public void activityGrand(HashMap paramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .activityGrand(paramsMap)
-                .subscribeOn(Schedulers.io())
+    public void getRightBottomActivity(Observable merge, OnLiveFinishedListener listener) {
+        merge.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<ActivityGrandBean>() {
-
-
-                    @Override
-                    public void onSuccess(ActivityGrandBean jsonElement) {
-                        listener.onActivityGrandSuccess(jsonElement);
-                    }
-
-                    @Override
-                    public void onError(int code) {
-                        listener.onRightBottomActivityError();
-                    }
+                .subscribe((Consumer<Object>) o -> {
+                    listener.onRightBottomActivitySuccuss(o);
                 });
     }
+
 
     @Override
     public void anchorWish(HashMap signPramsMap, OnLiveFinishedListener listener) {
         ApiFactory.getInstance().getApi(Api.class)
                 .anchorWishGift(signPramsMap)
-                .debounce(1500, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<AnchorWishBean>() {
+                .subscribe(new Observer() {
+                               @Override
+                               public void onSubscribe(Disposable d) {
+
+                               }
+
+                               @Override
+                               public void onNext(Object o) {
+                                   listener.onAnchorWishSuccess((AnchorWishBean) o);
+                               }
+
+                               @Override
+                               public void onError(Throwable e) {
+                                   e.printStackTrace();
+                                   Throwable throwable = e;
+                                   //获取最根源的异常
+                                   while (throwable.getCause() != null) {
+                                       e = throwable;
+                                       throwable = throwable.getCause();
+                                   }
+                                   //HTTP错误
+                                   if (e instanceof HttpException) {
+                                       HttpException httpException = (HttpException) e;
+                                       switch (httpException.code()) {
+
+                                           case 504:
+                                           case 500:
+                                           case 502:
+                                           case 503:
+                                               ToastUtils.showToast("服务端开小差了，请稍后再试");
+                                               break;
+                                           case 401:
+                                           case 403:
+                                           case 404:
+                                           case 408:
+                                           default:
+                                               ToastUtils.showToast("网络连接失败，请检查网络设置");
+                                               break;
+                                       }
+                                   } else if (e instanceof JsonParseException
+                                           || e instanceof JSONException
+                                           || e instanceof ParseException) {
+
+                                       //均视为解析错误
+                                       ToastUtils.showToast("数据异常，请稍后再试");
+                                   } else if (e instanceof ConnectException) {
+                                       //均视为网络错误
+                                       ToastUtils.showToast("网络连接失败，请稍后再试");
+                                   } else if (e instanceof UnknownHostException
+                                           || e instanceof SocketTimeoutException) {
+                                       ToastUtils.showToast("网络连接失败，请检查网络设置");
+                                   } else {
+                                       //未知错误
+                                       ToastUtils.showToast("网络连接失败，请检查网络设置");
+                                   }
+                               }
+
+                               @Override
+                               public void onComplete() {
+
+                               }
+                           }
+                        /*new ApiObserver<AnchorWishBean>() {
 
 
                     @Override
@@ -548,31 +615,9 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(ApiResult<AnchorWishBean> body) {
-                        listener.onRightBottomActivityError();
 
                     }
-                });
+                }*/);
     }
 
-    @Override
-    public void getAnchorTask(HashMap signPramsMap, OnLiveFinishedListener listener) {
-        ApiFactory.getInstance().getApi(Api.class)
-                .getAnchorTask(signPramsMap)
-                .delay(200, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ApiObserver<AnchorTaskBean>() {
-                    @Override
-                    public void onSuccess(AnchorTaskBean dataBean) {
-                        if (dataBean != null) {
-                            listener.onGetAnchorTaskSuccess(dataBean);
-                        }
-                    }
-
-                    @Override
-                    public void onError(ApiResult<AnchorTaskBean> body) {
-                        listener.onRightBottomActivityError();
-                    }
-                });
-    }
 }
