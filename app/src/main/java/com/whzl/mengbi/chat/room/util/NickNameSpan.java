@@ -12,7 +12,7 @@ import com.whzl.mengbi.util.UIUtil;
 
 public abstract class NickNameSpan extends ClickableSpan {
     private Context context;
-    private int color = -1;
+    private int color = Color.parseColor("#75bbfb");
 
     //TODO:add color
     public NickNameSpan(Context mContext) {
@@ -27,11 +27,11 @@ public abstract class NickNameSpan extends ClickableSpan {
     public void updateDrawState(TextPaint ds) {
         //TODO:修改color
         //ds.setColor(context.getResources().getColor(0));
-        int dsColor = Color.parseColor("#75bbfb");
-        if (this.color != -1) {
-            dsColor = this.color;
-        }
-        ds.setColor(dsColor); //红色
+//        int dsColor = Color.parseColor("#75bbfb");
+//        if (this.color != -1) {
+//            dsColor = this.color;
+//        }
+        ds.setColor(color); //红色
         ds.setUnderlineText(false);
 //        float textSize = DensityUtil.dp2px(15);
         float textSize = UIUtil.sp2px(context, 14);

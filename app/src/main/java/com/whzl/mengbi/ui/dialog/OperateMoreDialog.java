@@ -1,29 +1,19 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.config.SpConfig;
-import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
-import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
-import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
 import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UserIdentity;
 import com.whzl.mengbi.util.network.RequestManager;
@@ -32,11 +22,7 @@ import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -67,18 +53,22 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
     TextView tvReport;
     @BindView(R.id.ll_offline)
     LinearLayout llOffline;
+    @BindView(R.id.view_manage)
+    View viewManage;
 
     private long visitorId;
     private long mUserId;
     private int mProgramId;
     private RoomUserInfo.DataBean mUser;
     private RoomUserInfo.DataBean mViewedUser;
+    private String nickName;
 
-    public static OperateMoreDialog newInstance(long userId, long visitorId, int programId, RoomUserInfo.DataBean user) {
+    public static OperateMoreDialog newInstance(long userId, long visitorId, int programId, RoomUserInfo.DataBean user, String nickName) {
         Bundle args = new Bundle();
         args.putLong("visitorId", visitorId);
         args.putLong("userId", userId);
         args.putInt("programId", programId);
+        args.putString("nickName", nickName);
         args.putParcelable("user", user);
         OperateMoreDialog dialog = new OperateMoreDialog();
         dialog.setArguments(args);
@@ -96,7 +86,13 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
         visitorId = getArguments().getLong("visitorId");
         mUserId = getArguments().getLong("userId");
         mProgramId = getArguments().getInt("programId");
-        getUserInfo(mUserId, mProgramId, visitorId);
+        nickName = getArguments().getString("nickName");
+        if (mUserId == 0) {
+            tvManager.setVisibility(View.GONE);
+            viewManage.setVisibility(View.GONE);
+        } else {
+            getUserInfo(mUserId, mProgramId, visitorId);
+        }
         if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == visitorId) {
             llOptionContainer.setVisibility(View.GONE);
         }
@@ -284,9 +280,9 @@ public class OperateMoreDialog extends BaseAwesomeDialog {
         paramsMap.put("serviceCode", operate);
         paramsMap.put("programId", mProgramId);
         paramsMap.put("userId", mUserId);
-        if (!TextUtils.isEmpty(mUser.getNickname())) {
-            paramsMap.put("nickname", mUser.getNickname());
-        }
+//        if (!TextUtils.isEmpty(mUser.getNickname())) {
+        paramsMap.put("nickname", nickName);
+//        }
         ApiFactory.getInstance().getApi(Api.class)
                 .serverOprate(ParamsUtils.getSignPramsMap(paramsMap))
                 .subscribeOn(Schedulers.io())

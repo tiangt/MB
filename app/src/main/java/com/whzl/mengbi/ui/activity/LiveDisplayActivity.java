@@ -2203,40 +2203,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
 
-    /**
-     * 头像弹窗
-     */
-    public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
-        if (personalInfoDialog != null && personalInfoDialog.isAdded()) {
-            return;
-        }
-
-
-        HashMap<String, String> paramsMap = new HashMap<>();
-        paramsMap.put("programId", mProgramId + "");
-        paramsMap.put("userId", viewedUserID + "");
-        paramsMap.put("visitorId", mUserId + "");
-        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
-            @Override
-            public void onReqSuccess(Object result) {
-                RoomUserInfo roomUserInfoData = GsonUtils.GsonToBean(result.toString(), RoomUserInfo.class);
-                if (roomUserInfoData.getCode() == 200) {
-                    if (roomUserInfoData.getData() != null) {
-                        RoomUserInfo.DataBean data = roomUserInfoData.getData();
-                        showPersonalInfoDialog(viewedUserID, data);
-                    }
-
-                }
-            }
-
-            @Override
-            public void onReqFailed(String errorMsg) {
-
-            }
-        });
-
-    }
-
     private void showPersonalInfoDialog(long viewedUserID, RoomUserInfo.DataBean viewedUser) {
         personalInfoDialog = PersonalInfoDialog.newInstance(mRoomUserInfo, viewedUserID, mProgramId, mUserId, viewedUser)
                 .setListener((RoomUserInfo.DataBean mViewedUser) -> {
@@ -2272,16 +2238,46 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .show(getSupportFragmentManager());
     }
 
+    /**
+     * 游客弹窗
+     */
     public void showAudienceInfoDialog(String nickName) {
         AudienceInfoDialog.newInstance(nickName, mProgramId, mRoomUserInfo)
-                .setListener(() -> {
-                    if (mUserListDialog != null && mUserListDialog.isAdded()) {
-                        mUserListDialog.dismiss();
-                    }
-                })
                 .setAnimStyle(R.style.Theme_AppCompat_Dialog)
                 .setDimAmount(0)
                 .show(getSupportFragmentManager());
+    }
+
+    /**
+     * 头像弹窗
+     */
+    public void showAudienceInfoDialog(long viewedUserID, boolean isShowBottom) {
+        if (personalInfoDialog != null && personalInfoDialog.isAdded()) {
+            return;
+        }
+        HashMap<String, String> paramsMap = new HashMap<>();
+        paramsMap.put("programId", mProgramId + "");
+        paramsMap.put("userId", viewedUserID + "");
+        paramsMap.put("visitorId", mUserId + "");
+        RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.ROOM_USER_INFO, RequestManager.TYPE_POST_JSON, paramsMap, new RequestManager.ReqCallBack<Object>() {
+            @Override
+            public void onReqSuccess(Object result) {
+                RoomUserInfo roomUserInfoData = GsonUtils.GsonToBean(result.toString(), RoomUserInfo.class);
+                if (roomUserInfoData.getCode() == 200) {
+                    if (roomUserInfoData.getData() != null) {
+                        RoomUserInfo.DataBean data = roomUserInfoData.getData();
+                        showPersonalInfoDialog(viewedUserID, data);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onReqFailed(String errorMsg) {
+
+            }
+        });
+
     }
 
 

@@ -151,6 +151,11 @@ public class TipOffDialog extends BaseAwesomeDialog {
     }
 
     private void setReport(String reason) {
+        if (mUserId == 0) {
+            Toast.makeText(getActivity(), "操作成功", Toast.LENGTH_SHORT).show();
+            dismiss();
+            return;
+        }
         HashMap paramsMap = new HashMap<>();
         paramsMap.put("userId", mVisitorId);
         paramsMap.put("targetId", mUserId);

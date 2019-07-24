@@ -203,7 +203,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 if (operateMoreDialog != null && operateMoreDialog.isAdded()) {
                     return;
                 }
-                operateMoreDialog = OperateMoreDialog.newInstance(mUserId, mVisitorId, mProgramId, mUser)
+                operateMoreDialog = OperateMoreDialog.newInstance(mUserId, mVisitorId, mProgramId, mUser,"")
                         .setShowBottom(true)
                         .setOutCancel(false)
                         .show(getActivity().getSupportFragmentManager());

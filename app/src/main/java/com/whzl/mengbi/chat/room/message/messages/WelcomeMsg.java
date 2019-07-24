@@ -147,7 +147,7 @@ public class WelcomeMsg implements FillHolderMessage {
             }
         } else {
             mHolder.textView.append(LightSpanString.getLightString("欢迎 ", Color.parseColor("#ffffff")));
-            mHolder.textView.append(LightSpanString.getLightString(nickName, Color.parseColor("#ffffff")));
+            mHolder.textView.append(LightSpanString.getNickNameSpan(mContext, nickName, uid, programId, Color.parseColor("#ffffff")));
             mHolder.textView.append(LightSpanString.getLightString(" 入场", Color.parseColor("#ffffff")));
         }
 
