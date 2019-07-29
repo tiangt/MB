@@ -94,6 +94,8 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private BaseListAdapter topThreeAdapter;
     private ArrayList<HeadlineTopInfo.DataBean.ListBean> mHeadlineList = new ArrayList<>();
     private boolean needAnimal = false;
+    private LinearLayout llComposite, llAnchor, llRoom, llLastest, llRandom;
+    private View viewComposite, viewAnchor, viewRoom, viewLastest, viewRandom;
 
     @Override
     protected void initEnv() {
@@ -198,9 +200,55 @@ public class HomeFragment extends BaseFragment implements HomeView {
         recommendRecycler = view.findViewById(R.id.recommend_recycler);
         rlTopThree = view.findViewById(R.id.rl_top_three);
         topThreeRecycler = view.findViewById(R.id.rv_top_three);
+
+        llComposite = view.findViewById(R.id.ll_composite);
+        llAnchor = view.findViewById(R.id.ll_anchor);
+        llRoom = view.findViewById(R.id.ll_room);
+        llLastest = view.findViewById(R.id.ll_lastest);
+        llRandom = view.findViewById(R.id.ll_random);
+
+        viewComposite = view.findViewById(R.id.view_composite);
+        viewAnchor = view.findViewById(R.id.view_anchor);
+        viewRoom = view.findViewById(R.id.view_room);
+        viewLastest = view.findViewById(R.id.view_lastest);
+        viewRandom = view.findViewById(R.id.view_random);
+
+        initEvent();
+
         initRecommendRecycler();
         initBanner();
         initTopThreeRecycler();
+    }
+
+    private void initEvent() {
+        llComposite.setOnClickListener(v -> {
+            hideAllSort();
+            viewComposite.setVisibility(View.VISIBLE);
+        });
+        llAnchor.setOnClickListener(v -> {
+            hideAllSort();
+            viewAnchor.setVisibility(View.VISIBLE);
+        });
+        llRoom.setOnClickListener(v -> {
+            hideAllSort();
+            viewRoom.setVisibility(View.VISIBLE);
+        });
+        llLastest.setOnClickListener(v -> {
+            hideAllSort();
+            viewLastest.setVisibility(View.VISIBLE);
+        });
+        llRandom.setOnClickListener(v -> {
+            hideAllSort();
+            viewRandom.setVisibility(View.VISIBLE);
+        });
+    }
+
+    private void hideAllSort() {
+        viewComposite.setVisibility(View.INVISIBLE);
+        viewAnchor.setVisibility(View.INVISIBLE);
+        viewRoom.setVisibility(View.INVISIBLE);
+        viewLastest.setVisibility(View.INVISIBLE);
+        viewRandom.setVisibility(View.INVISIBLE);
     }
 
 
