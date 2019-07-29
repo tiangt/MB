@@ -104,7 +104,7 @@ public class BaseApplication extends Application {
             return;
         }
 //        _refWatcher = LeakCanary.install(this);
-        CrashHandler.getInstance().init(this);
+//        CrashHandler.getInstance().init(this);
         initUM();
         initApi();
         initBaiduStatistic();

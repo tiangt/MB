@@ -142,7 +142,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
         tvAt.setText("@Ta");
 
         setupView(mViewedUser);
-        if (mUser == null || mUser.getUserId() <= 0 || mUser.getUserId() == mViewedUser.getUserId()) {
+        if (mUser == null || mUser.getUserId() <= 0) {
             return;
         }
         setupOperations();
@@ -203,7 +203,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 if (operateMoreDialog != null && operateMoreDialog.isAdded()) {
                     return;
                 }
-                operateMoreDialog = OperateMoreDialog.newInstance(mUserId, mVisitorId, mProgramId, mUser,"")
+                operateMoreDialog = OperateMoreDialog.newInstance(mUserId, mVisitorId, mProgramId, mUser, "")
                         .setShowBottom(true)
                         .setOutCancel(false)
                         .show(getActivity().getSupportFragmentManager());

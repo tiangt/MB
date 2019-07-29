@@ -864,6 +864,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 //                    return;
 //                }
 //                if (getCanChatPrivate()) {
+                if (mAnchor == null) {
+                    return;
+                }
                 PrivateChatUser user = new PrivateChatUser();
                 user.setPrivateUserId(Long.valueOf(mAnchor.getId()));
                 user.setName(mAnchor.getName());

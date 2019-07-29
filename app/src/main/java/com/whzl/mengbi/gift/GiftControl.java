@@ -228,7 +228,9 @@ public class GiftControl implements LeftGiftAnimationStatusListener {
                     animGiftAction.clearHandler();
 //                    mGiftLayoutParent.removeView(((View) animGiftAction));
                     FrameLayout parent = (FrameLayout) ((View) animGiftAction).getParent();
-                    parent.removeAllViews();
+                    if (parent != null) {
+                        parent.removeAllViews();
+                    }
                     if (!isEmpty()) {
                         showGift();
                     }
