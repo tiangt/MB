@@ -123,7 +123,7 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
             tvPrice.setText(LightSpanString.getLightString
                     (AmountConversionUitls.amountConversionFormat(listBean.rent), Color.parseColor("#f4545a")));
             tvPrice.append(LightSpanString.getLightString(" 萌币/个", Color.parseColor("#70505050")));
-            tvWelfare.setText(getString(R.string.welfare_item_prop_shop, listBean.givingMengDou));
+//            tvWelfare.setText(getString(R.string.welfare_item_prop_shop, listBean.givingMengDou));
             tvUse.setText(listBean.remark);
             btnBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -235,9 +235,9 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
         view.setText("");
         view.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(totalRent),
                 Color.parseColor("#f4545a")));
-        view.append(LightSpanString.getLightString(" 萌币 （赠送 ", Color.parseColor("#646464")));
-        view.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(totalMengdou),
-                Color.parseColor("#f4545a")));
-        view.append(LightSpanString.getLightString(" 萌豆 ）", Color.parseColor("#646464")));
+        view.append(LightSpanString.getLightString(" 萌币", Color.parseColor("#646464")));
+//        view.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(totalMengdou),
+//                Color.parseColor("#f4545a")));
+//        view.append(LightSpanString.getLightString(" 萌豆 ）", Color.parseColor("#646464")));
     }
 }

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
@@ -25,6 +33,8 @@ import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 
 /**
@@ -147,7 +157,7 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
         switch (msg.what) {
             case RESTART_GIFT_ANIMATION_CODE:
                 if (context != null) {
-                    tvComboTime.setText(context.getString(R.string.live_gift_text, comboList.get(0)," "));
+                    tvComboTime.setText(context.getString(R.string.live_gift_text, comboList.get(0), " "));
                 }
                 comboList.remove(0);
 //                switch (mGift.getCount()) {
@@ -355,24 +365,15 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
         }
     }
 
-    public AnimatorSet startAnimation() {
+    public void startAnimation() {
         hideView();
-//            布局飞入
-        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, -UIUtil.getScreenWidthPixels(getContext()), 0, 200, new DecelerateInterpolator());
-        flyFromLtoR.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                initLayoutState();
-            }
-        });
 
         //礼物飞入
-        ObjectAnimator flyFromLtoR2 = GiftAnimationUtil.createFlyFromLtoR(ivGift, 0, 0, 0, new DecelerateInterpolator());
+        ObjectAnimator flyFromLtoR2 = GiftAnimationUtil.createFlyFromLtoR(ivGift, -UIUtil.getScreenWidthPixels(getContext()), 0, 100, new DecelerateInterpolator());
         flyFromLtoR2.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-//                    ivGift.setVisibility(View.VISIBLE);
+                ivGift.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -380,8 +381,44 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
                 comboAnimation(true);
             }
         });
-        AnimatorSet animatorSet = GiftAnimationUtil.startAnimation(flyFromLtoR, flyFromLtoR2);
-        return animatorSet;
+//        AnimatorSet animatorSet = GiftAnimationUtil.startAnimation(flyFromLtoR, flyFromLtoR2);
+
+        //            布局飞入
+        ObjectAnimator flyFromLtoR = GiftAnimationUtil.createFlyFromLtoR(rootView, -UIUtil.getScreenWidthPixels(getContext()), 0, 200, new DecelerateInterpolator());
+        flyFromLtoR.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                initLayoutState();
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                flyFromLtoR2.start();
+//                RequestOptions options = new RequestOptions().skipMemoryCache(true);//配置
+//                Glide.with(context).asGif()
+//                        .apply(options)//应用配置
+//                        .load(R.drawable.combo_gift_66)
+//                        .listener(new RequestListener<GifDrawable>() {//添加监听，设置播放次数
+//                            @Override
+//                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
+//                                return false;
+//                            }
+//
+//                            @Override
+//                            public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
+//                                if (resource instanceof GifDrawable) {
+//                                    resource.setLoopCount(1);//只播放一次
+//                                }
+//                                return false;
+//                            }
+//                        })
+//                        .into(ivBg);
+            }
+        });
+//        return animatorSet;
+        flyFromLtoR.start();
     }
 
     public void comboAnimation(boolean isFirst) {

@@ -3,7 +3,6 @@ package com.whzl.mengbi.model.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.UserInfoModel;
 import com.whzl.mengbi.presenter.OnUserInfoFInishedListener;

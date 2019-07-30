@@ -44,13 +44,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="6dp"
                     android:layout_marginTop="11dp"
+                    android:layout_marginRight="6dp"
                     android:background="@drawable/bg_tab_shop"
                     android:gravity="center"
                     android:text="送萌豆"
                     android:textColor="#fffefe"
-                    android:textSize="8sp" />
+                    android:textSize="8sp"
+                    android:visibility="gone" />
             </RelativeLayout>
 
 

@@ -59,7 +59,8 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginLeft="9dp"
-        android:layout_toRightOf="@id/ll_info_container" />
+        android:layout_toRightOf="@id/ll_info_container"
+        android:visibility="invisible" />
 
     <com.whzl.mengbi.ui.widget.view.GiftTextView
         android:id="@+id/tv_combo_time_desc"
