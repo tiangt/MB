@@ -560,6 +560,46 @@
                         android:textSize="8.5sp"
                         android:visibility="gone" />
 
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/container_qixi"
+                        android:layout_width="374.5dp"
+                        android:layout_height="57dp"
+                        android:layout_marginTop="7dp"
+                        android:background="@drawable/bg_qixi"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/iv_anchor_qixi"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_marginLeft="36dp"
+                            android:layout_marginBottom="11dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/iv_user_qixi"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_marginLeft="84dp"
+                            android:layout_marginBottom="15dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_qixi"
+                            android:layout_width="201.5dp"
+                            android:layout_height="12dp"
+                            android:layout_marginLeft="129.5dp"
+                            android:layout_marginBottom="11.5dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textColor="#323232"
+                            android:textSize="10sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+                    </android.support.constraint.ConstraintLayout>
+
                     <com.whzl.mengbi.ui.widget.view.PkLayout
                         android:id="@+id/pk_layout"
                         android:layout_width="match_parent"

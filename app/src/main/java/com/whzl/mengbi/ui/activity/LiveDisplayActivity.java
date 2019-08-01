@@ -78,6 +78,7 @@ import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.OneKeyOfflineEvent;
 import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
+import com.whzl.mengbi.chat.room.message.events.RankSuccessEvent;
 import com.whzl.mengbi.chat.room.message.events.RedPackTreasureEvent;
 import com.whzl.mengbi.chat.room.message.events.RobPrizeEvent;
 import com.whzl.mengbi.chat.room.message.events.RobRemindEvent;
@@ -118,6 +119,7 @@ import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.HeadLineControl;
 import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.PkControl;
+import com.whzl.mengbi.gift.QixiControl;
 import com.whzl.mengbi.gift.RedPackRunWayControl;
 import com.whzl.mengbi.gift.RoyalEnterControl;
 import com.whzl.mengbi.gift.RunWayBroadControl;
@@ -257,7 +259,7 @@ import pl.droidsonroids.gif.GifImageView;
  * @date 2018/7/6
  */
 public class LiveDisplayActivity extends BaseActivity implements LiveView {
-    public static final String PROGRAMID = "programId";
+    public static final String PROGRAMID = "programId" ;
     public static final int RIGHT_BOTTOM_ACTIVITY = 3;
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
@@ -411,6 +413,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageView bgLive;
     @BindView(R.id.iv_free_gift)
     ImageView ivFreeGift;
+    @BindView(R.id.container_qixi)
+    ConstraintLayout containerQixi;
+    @BindView(R.id.iv_anchor_qixi)
+    ImageView ivAnchorQixi;
+    @BindView(R.id.iv_user_qixi)
+    ImageView ivUserQixi;
+    @BindView(R.id.tv_qixi)
+    TextView tvQixi;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -497,6 +507,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private AudienceListBean.DataBean audienceBean;
     private ObjectAnimator fingerAnimator;
     private RoyalCarListBean royalCarListBean;
+    private QixiControl qixiControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1342,6 +1353,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
+    /**
+     * 七夕消息
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RankSuccessEvent rankSuccessEvent) {
+        if (qixiControl == null) {
+            qixiControl = new QixiControl(this,containerQixi,ivAnchorQixi,ivUserQixi,tvQixi);
+        }
+        qixiControl.load(rankSuccessEvent);
+    }
+
     @Override
     public void onRoomInfoSuccess(RoomInfoBean roomInfoBean) {
         RequestOptions options = RequestOptions.bitmapTransform(new SupportRSBlurTransformation()).override(200);
@@ -1808,7 +1830,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onGetHeadlineRankSuccess(HeadlineRankBean dataBean) {
         if (dataBean != null) {
             if (dataBean.rank < 0) {
-                mHeadlineRank = "未上榜";
+                mHeadlineRank = "未上榜" ;
             } else {
                 mHeadlineRank = getString(R.string.headline_rank, dataBean.rank);
             }
@@ -1926,10 +1948,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
         if (bean.total.compareTo(new BigDecimal(10000)) < 0) {
-            mRanking = bean.total + "";
+            mRanking = bean.total + "" ;
         } else {
             BigDecimal divide = bean.total.divide(new BigDecimal(10000), 1, BigDecimal.ROUND_DOWN);
-            mRanking = divide + "万";
+            mRanking = divide + "万" ;
         }
     }
 

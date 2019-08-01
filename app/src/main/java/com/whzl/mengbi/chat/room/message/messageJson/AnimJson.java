@@ -107,7 +107,7 @@ public class AnimJson {
         return animId;
     }
 
-    public class ResourcesEntity {
+    public static class ResourcesEntity {
         /**
          * animationResId : 141
          * resValue : 2293

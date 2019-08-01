@@ -241,7 +241,7 @@
     <string name="no_motto_hint">这家伙很懒，还没有签名~</string>
     <string name="login">登录</string>
     <string name="register">注册</string>
-    <string name="phone_number_hint">请输入您的手机号码</string>
+    <string name="phone_number_hint">请输入您的手机号码或普通账号</string>
     <string name="password_hint">请输入密码</string>
     <string name="nothing" />
     <string name="rank_title">榜单</string>

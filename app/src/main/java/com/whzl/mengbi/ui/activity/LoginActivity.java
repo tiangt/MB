@@ -40,7 +40,6 @@ import com.whzl.mengbi.util.KeyBoardUtil;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.OnMultiClickListener;
 import com.whzl.mengbi.util.SPUtils;
-import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
 
@@ -209,59 +208,59 @@ public class LoginActivity extends BaseActivity implements LoginView, TextWatche
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        String text = etPhone.getText().toString();
-        if (text == null || text.length() == 0) return;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < text.length(); i++) {
-            if (i != 3 && i != 8 && text.charAt(i) == ' ') {
-                continue;
-            } else {
-                sb.append(text.charAt(i));
-                if ((sb.length() == 4 || sb.length() == 9) && sb.charAt(sb.length() - 1) != ' ') {
-                    sb.insert(sb.length() - 1, ' ');
-                }
-            }
-        }
-        if (!sb.toString().equals(text.toString())) {
-            int index = start + 1;
-            if (sb.charAt(start) == ' ') {
-                if (before == 0) {
-                    index++;
-                } else {
-                    index--;
-                }
-            } else {
-                if (before == 1) {
-                    index--;
-                }
-            }
-            etPhone.setText(sb.toString());
-            etPhone.setSelection(index);
-        }
+//        String text = etPhone.getText().toString();
+//        if (text == null || text.length() == 0) return;
+//        StringBuilder sb = new StringBuilder();
+//        for (int i = 0; i < text.length(); i++) {
+//            if (i != 3 && i != 8 && text.charAt(i) == ' ') {
+//                continue;
+//            } else {
+//                sb.append(text.charAt(i));
+//                if ((sb.length() == 4 || sb.length() == 9) && sb.charAt(sb.length() - 1) != ' ') {
+//                    sb.insert(sb.length() - 1, ' ');
+//                }
+//            }
+//        }
+//        if (!sb.toString().equals(text.toString())) {
+//            int index = start + 1;
+//            if (sb.charAt(start) == ' ') {
+//                if (before == 0) {
+//                    index++;
+//                } else {
+//                    index--;
+//                }
+//            } else {
+//                if (before == 1) {
+//                    index--;
+//                }
+//            }
+//            etPhone.setText(sb.toString());
+//            etPhone.setSelection(index);
+//        }
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        String phone = etPhone.getText().toString().trim().replaceAll(" ", "");
-        boolean isPhone = StringUtils.isPhone(phone);
+//        String phone = etPhone.getText().toString().trim().replaceAll(" ", "");
+//        boolean isPhone = StringUtils.isPhone(phone);
         String password = etPassword.getText().toString().trim();
 
-        if (!isPhone && !TextUtils.isEmpty(phone) && phone.length() == 11) {
-            showToast("请输入正确的手机号");
-            return;
-        }
+//        if (!isPhone && !TextUtils.isEmpty(phone) && phone.length() == 11) {
+//            showToast("请输入正确的手机号");
+//            return;
+//        }
 
-        if (phone.length() == 11) {
-//            getVerifyCode(phone);
-        }
+//        if (phone.length() == 11) {
+////            getVerifyCode(phone);
+//        }
 
-        if (isPhone && !TextUtils.isEmpty(password) && password.length() >= 6) {
+        if (!TextUtils.isEmpty(etPhone.getText()) && !TextUtils.isEmpty(password) && password.length() >= 6) {
             btnLogin.setEnabled(true);
         } else {
             btnLogin.setEnabled(false);
         }
 
-        if (!TextUtils.isEmpty(phone)) {
+        if (!TextUtils.isEmpty(etPhone.getText())) {
             ibCleanPhone.setVisibility(View.VISIBLE);
             ibCleanPhone.setOnClickListener((v) -> etPhone.setText(""));
         } else {

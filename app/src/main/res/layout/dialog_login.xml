@@ -53,8 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_title"
             android:layout_marginLeft="21dp"
-            android:layout_marginRight="21dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="21dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -126,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="7dp"
-                android:text="手机号码登录"
+                android:text="账号登录"
                 android:textColor="#70000000"
                 android:textSize="12sp" />
         </LinearLayout>
