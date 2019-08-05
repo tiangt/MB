@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.activity
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
@@ -24,7 +23,6 @@ import com.whzl.mengbi.model.entity.FlopCardBean
 import com.whzl.mengbi.model.entity.UserFlopInfoBean
 import com.whzl.mengbi.presenter.FlopPresenter
 import com.whzl.mengbi.ui.activity.base.BaseActivity
-import com.whzl.mengbi.ui.activity.me.ShopActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
@@ -389,7 +387,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                 textView?.text = "萌豆不足"
                 holder?.setOnClickListener(R.id.btn_confirm_simple_dialog) {
                     dialog?.dismissDialog()
-                    startActivity(Intent(this@FlopActivity, ShopActivity::class.java))
+//                    startActivity(Intent(this@FlopActivity, ShopActivity::class.java))
                 }
                 holder?.setOnClickListener(R.id.btn_cancel_simple_dialog) {
                     dialog?.dismissDialog()

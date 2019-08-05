@@ -257,15 +257,16 @@ public class DrawLayoutControl {
                 ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
                 return;
             }
-            if (bannerInfoList.get(position).flag != null && bannerInfoList.get(position).flag.equals(AppConfig.LUCK_ROB)) {
-                ((LiveDisplayActivity) activity).showSnatchDialog();
-            } else if (bannerInfoList.get(position).flag != null && bannerInfoList.get(position).flag.equals(AppConfig.GUESS)) {
-                ((LiveDisplayActivity) activity).showGuessDialog();
-            } else if (bannerInfoList.get(position).flag != null && bannerInfoList.get(position).flag.equals(AppConfig.CARDGAME)) {
-                ((LiveDisplayActivity) activity).jumpToFlopActivity();
-            } else if (bannerInfoList.get(position).flag != null && !bannerInfoList.get(position).flag.equals(AppConfig.GUESS)
-                    && !bannerInfoList.get(position).flag.equals(AppConfig.LUCK_ROB)) {
-                ToastUtils.showToastUnify(activity, "请升级版本");
+            if (bannerInfoList.get(position).flag != null) {
+                if (bannerInfoList.get(position).flag.equals(AppConfig.LUCK_ROB)) {
+                    ((LiveDisplayActivity) activity).showSnatchDialog();
+                } else if (bannerInfoList.get(position).flag.equals(AppConfig.GUESS)) {
+                    ((LiveDisplayActivity) activity).showGuessDialog();
+                } else if (bannerInfoList.get(position).flag.equals(AppConfig.CARDGAME)) {
+                    ((LiveDisplayActivity) activity).jumpToFlopActivity();
+                } else {
+                    ToastUtils.showToastUnify(activity, "请升级版本");
+                }
             } else {
                 ((LiveDisplayActivity) activity).jumpToBannerActivity(bannerInfoList.get(position));
                 ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();

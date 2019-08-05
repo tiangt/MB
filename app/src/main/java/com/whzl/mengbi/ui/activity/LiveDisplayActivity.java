@@ -2,7 +2,6 @@ package com.whzl.mengbi.ui.activity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -248,7 +247,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.SupportRSBlurTransformation;
@@ -259,7 +257,7 @@ import pl.droidsonroids.gif.GifImageView;
  * @date 2018/7/6
  */
 public class LiveDisplayActivity extends BaseActivity implements LiveView {
-    public static final String PROGRAMID = "programId" ;
+    public static final String PROGRAMID = "programId";
     public static final int RIGHT_BOTTOM_ACTIVITY = 3;
     @BindView(R.id.iv_host_avatar)
     CircleImageView ivHostAvatar;
@@ -750,12 +748,16 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         banner.setOnBannerListener(position -> {
             if (mBannerInfoList != null && mBannerInfoList.size() > 0) {
                 GetActivityBean.ListBean listBean = mBannerInfoList.get(position);
-                if (listBean.flag != null && listBean.flag.equals(AppConfig.LUCK_ROB)) {
-                    showSnatchDialog();
-                } else if (listBean.flag != null && listBean.flag.equals(AppConfig.GUESS)) {
-                    showGuessDialog();
-                } else if (listBean.flag != null && !listBean.flag.equals(AppConfig.GUESS) && !listBean.flag.equals(AppConfig.LUCK_ROB)) {
-                    ToastUtils.showToastUnify(this, "请升级版本");
+                if (listBean.flag != null) {
+                    if (listBean.flag.equals(AppConfig.LUCK_ROB)) {
+                        showSnatchDialog();
+                    } else if (listBean.flag.equals(AppConfig.GUESS)) {
+                        showGuessDialog();
+                    } else if (listBean.flag.equals(AppConfig.CARDGAME)) {
+                        jumpToFlopActivity();
+                    } else {
+                        ToastUtils.showToastUnify(this, "请升级版本");
+                    }
                 } else {
                     jumpToBannerActivity(listBean);
                 }
@@ -1359,7 +1361,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RankSuccessEvent rankSuccessEvent) {
         if (qixiControl == null) {
-            qixiControl = new QixiControl(this,containerQixi,ivAnchorQixi,ivUserQixi,tvQixi);
+            qixiControl = new QixiControl(this, containerQixi, ivAnchorQixi, ivUserQixi, tvQixi);
         }
         qixiControl.load(rankSuccessEvent);
     }
@@ -1830,7 +1832,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onGetHeadlineRankSuccess(HeadlineRankBean dataBean) {
         if (dataBean != null) {
             if (dataBean.rank < 0) {
-                mHeadlineRank = "未上榜" ;
+                mHeadlineRank = "未上榜";
             } else {
                 mHeadlineRank = getString(R.string.headline_rank, dataBean.rank);
             }
@@ -1948,10 +1950,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onGetRoomRankTotalSuccess(RoomRankTotalBean bean) {
         if (bean.total.compareTo(new BigDecimal(10000)) < 0) {
-            mRanking = bean.total + "" ;
+            mRanking = bean.total + "";
         } else {
             BigDecimal divide = bean.total.divide(new BigDecimal(10000), 1, BigDecimal.ROUND_DOWN);
-            mRanking = divide + "万" ;
+            mRanking = divide + "万";
         }
     }
 

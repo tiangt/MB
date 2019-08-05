@@ -11,6 +11,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.entity.WeekRankBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
+import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
@@ -85,7 +86,7 @@ public class LiveWeekRankFragment extends BaseFragment {
     }
 
     public void loaddata() {
-        if (isDetached()||isRemoving()||!isAdded()) {
+        if (isDetached() || isRemoving() || !isAdded()) {
             return;
         }
         HashMap map = new HashMap();
@@ -114,10 +115,10 @@ public class LiveWeekRankFragment extends BaseFragment {
 //                            tvRank3.setTextColor(bean.list.get(2).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
 //                            tvRank4.setTextColor(bean.list.get(3).rankValue < 0 ? Color.parseColor("#505050") : Color.parseColor("#ec5b03"));
 
-                            Glide.with(LiveWeekRankFragment.this).load(bean.list.get(0).goodsPic).into(iv1);
-                            Glide.with(LiveWeekRankFragment.this).load(bean.list.get(1).goodsPic).into(iv2);
-                            Glide.with(LiveWeekRankFragment.this).load(bean.list.get(2).goodsPic).into(iv3);
-                            Glide.with(LiveWeekRankFragment.this).load(bean.list.get(3).goodsPic).into(iv4);
+                            GlideImageLoader.getInstace().displayImageNoCache(getMyActivity(), bean.list.get(0).goodsPic, iv1);
+                            GlideImageLoader.getInstace().displayImageNoCache(getMyActivity(), bean.list.get(1).goodsPic, iv2);
+                            GlideImageLoader.getInstace().displayImageNoCache(getMyActivity(), bean.list.get(2).goodsPic, iv3);
+                            GlideImageLoader.getInstace().displayImageNoCache(getMyActivity(), bean.list.get(3).goodsPic, iv4);
                         }
                     }
 
