@@ -76,7 +76,7 @@ public class QixiControl {
         containerQixi.setVisibility(View.VISIBLE);
         showAnim = ValueAnimator.ofFloat(screenWidthPixels, 0);
         showAnim.setInterpolator(new DecelerateInterpolator());
-        showAnim.setDuration(1000);
+        showAnim.setDuration(2000);
         showAnim.addUpdateListener(animation -> {
             float animatedValue = ((float) animation.getAnimatedValue());
             containerQixi.setTranslationX(animatedValue);
@@ -90,7 +90,7 @@ public class QixiControl {
     private void hideTranslateAnim() {
         hideAnim = ValueAnimator.ofFloat(0, -screenWidthPixels);
         hideAnim.setInterpolator(new AccelerateInterpolator());
-        hideAnim.setDuration(1000);
+        hideAnim.setDuration(2000);
         hideAnim.addUpdateListener(animation -> {
             float animatedValue = ((float) animation.getAnimatedValue());
             containerQixi.setTranslationX(animatedValue);
@@ -104,7 +104,7 @@ public class QixiControl {
                 }
             }
         });
-        hideAnim.setStartDelay(3000);
+        hideAnim.setStartDelay(6000);
         hideAnim.start();
     }
 

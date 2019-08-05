@@ -386,7 +386,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         awesomeDialog?.setLayoutId(R.layout.dialog_simple)?.setConvertListener(object : ViewConvertListener() {
             override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
                 val textView = holder?.getView<TextView>(R.id.tv_content_simple_dialog)
-                textView?.text = "萌豆不足，是否免费获得"
+                textView?.text = "萌豆不足"
                 holder?.setOnClickListener(R.id.btn_confirm_simple_dialog) {
                     dialog?.dismissDialog()
                     startActivity(Intent(this@FlopActivity, ShopActivity::class.java))

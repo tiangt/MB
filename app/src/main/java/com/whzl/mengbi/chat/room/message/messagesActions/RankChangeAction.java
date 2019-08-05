@@ -30,7 +30,7 @@ public class RankChangeAction implements Actions {
             List<String> imageUrlList = new ArrayList<>();
             for (int i = 0; i < rankChangeJson.context.msgInfoList.size(); i++) {
                 RankChangeJson.ContextBean.MsgInfoListBean msgInfoListBean = rankChangeJson.context.msgInfoList.get(i);
-                if (msgInfoListBean.msgType.equals("IMG")) {
+                if (msgInfoListBean.msgType != null && msgInfoListBean.msgType.equals("IMG")) {
                     imageUrlList.add(msgInfoListBean.msgValue);
                 }
             }

@@ -35,7 +35,7 @@ public class RankSuccessAction implements Actions {
             resourcesEntity.setResValue("{'loopCount':" + 1 + "}");
             for (int i = 0; i < rankSuccessJson.context.animation.params.size(); i++) {
                 RankSuccessJson.ContextBean.AnimationBean.ParamsBean paramsBean = rankSuccessJson.context.animation.params.get(i);
-                if ("loopcount".equals(paramsBean.paramsKey)) {
+                if (paramsBean.paramsKey != null && "loopcount".equals(paramsBean.paramsKey)) {
                     resourcesEntity.setResValue("{'loopCount':" + paramsBean.paramsValue + "}");
                 }
             }
@@ -45,7 +45,7 @@ public class RankSuccessAction implements Actions {
             animJson.setAnimType("MOBILE_GIFT_SVGA");
             for (int i = 0; i < rankSuccessJson.context.animation.res.size(); i++) {
                 RankSuccessJson.ContextBean.AnimationBean.ResBean resBean = rankSuccessJson.context.animation.res.get(i);
-                if ("SVGA".equals(resBean.resType)) {
+                if (resBean.resType != null && "SVGA".equals(resBean.resType)) {
                     AnimEvent animEvent = new AnimEvent(animJson, resBean.resUrl);
                     EventBus.getDefault().post(animEvent);
                     EventBus.getDefault().post(new RankSuccessEvent(context, rankSuccessJson));
