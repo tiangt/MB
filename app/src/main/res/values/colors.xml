@@ -6,59 +6,36 @@
     <color name="colorLine">#F0F0F0</color>
     <color name="bgGray">#FFF5F5F5</color>
 
-    <color name="tab_checked">#21D996</color>
-    <color name="tab_unchecked">#B9B9B9</color>
-
     <color name="live_icon_color">#1A000000</color>
 
     <color name="text_view">#323232</color>
     <color name="text_color_chat">#ffffff</color>
     <color name="text_color_70">#70000000</color>
-    <color name="text_color_30">#30000000</color>
     <color name="text_color_chat_yellow">#FFFFCB00</color>
     <color name="text_color_chat_orange">#ff6e23</color>
     <color name="textcolor_white_toolbar">#70000000</color>
     <color name="textcolor_white_toolbar_right">#ff2b3f</color>
-    <color name="status_white_toolbar">#181818</color>
     //主页精彩直播
-    <color name="rv_item_nickname">#FFFFFF</color>
     <color name="textview">#FFFFFF</color>
-    <color name="register_user_service_agreement">#FF611B</color>
 
 
     <color name="bg_color_2">#ffe8e8e8</color>
     <color name="recorder_bg_new">#00000000</color>
     <color name="transparent">#00ffffff</color><!--透明白色 -->
 
-    <color name="TextColorComLike">#668a3d</color>
-    <color name="TextColorUserAccount">#006a92</color>
-    <color name="follow_fans_num">#616060</color>
-    <color name="gridView_bg">#F5F5F5</color>
-
-
-    <color name="common_background">#f5f5f5</color>
-    <color name="link_color">#006a92</color>
     <color name="sendbtn_allowclike_color">#ffffff</color>
-    <color name="sendbtn_color">#999999</color>
 
     <color name="orange">#ffa500</color><!--橙色 -->
 
 
     <color name="transparent1">#7fffffff</color><!--透明白色 -->
-    <color name="g_more_dlg_bg">#e5353942</color>
     <color name="addMore_bg_color">#F0F0F0</color>
-    <color name="load_more_button_blue">#336666</color>
     <color name="divider_color">#77AFB6B5</color>
 
     <!-- 背景色 -->
-    <color name="at_message_unread">#f7f3ec</color>
     <color name="at_message_readed">#f8f8f7</color>
-    <color name="recommand_guide_head">#99000000</color>
 
     <!-- 文字颜色 -->
-    <color name="font_color_white">#ffffff</color>
-    <color name="font_color_3">#333333</color>
-    <color name="font_color_blue">#336666</color>
     <color name="font_color_1">#2589c3</color>
     <color name="font_color_2">#666666</color>
     <color name="font_color_4">#0f0f0f</color>
@@ -131,30 +108,14 @@
     <color name="bg_color">#EDEDED</color>
     <color name="contents_text">#ff000000</color>
     <color name="encode_view">#ffffffff</color>
-    <color name="help_button_view">#ffcccccc</color>
-    <color name="help_view">#ff404040</color>
     <color name="possible_result_points">#c0ffff00</color>
-    <color name="result_image_border">#ffffffff</color>
-    <color name="result_minor_text">#ffc0c0c0</color>
-    <color name="result_points">#c000ff00</color>
-    <color name="result_text">#ffffffff</color>
     <color name="result_view">#b0000000</color>
-    <color name="sbc_header_text">#ff808080</color>
-    <color name="sbc_header_view">#ffffffff</color>
-    <color name="sbc_list_item">#fffff0e0</color>
-    <color name="sbc_layout_view">#ffffffff</color>
-    <color name="sbc_page_number_text">#ff000000</color>
-    <color name="sbc_snippet_text">#ff4b4b4b</color>
     <color name="share_text">#ff000000</color>
-    <color name="share_view">#ffffffff</color>
-    <color name="status_view">#50000000</color>
-    <color name="status_text">#ffffffff</color>
     <color name="viewfinder_frame">#ff000000</color>
     <color name="viewfinder_laser">#ffff0000</color>
     <color name="viewfinder_mask">#60000000</color>
     <color name="header">#58567D</color>
     <color name="appBg">#EBEAEA</color>
-    <color name="btn_not_enable">#ffcccccc</color>
     <color name="comm_white">#ffffff</color>
     <color name="white">#FFFFFF</color>
     <color name="emoji_bg">#f4f4f4</color>
@@ -167,13 +128,10 @@
 
     <color name="orange_shop">#ff9806</color>
     <color name="lever_nobility">#ebeffc</color>
-    <color name="lever_nobility_white">#e5e5e5</color>
     <color name="text_hint">#909090</color>
     <color name="text_pk_count_down">#fbcf03</color>
-    <color name="bg_broadcast_bottom">#702d2933</color>
     <color name="toast_shop">#d9d9d9</color>
     <color name="divider_color_pack">#e5e5e5</color>
-    <color name="text_color_use_pack">#2cd996</color>
     <color name="text_color_wait_pack">#ff611b</color>
 
     <color name="bg_welcome_hasguard">#1A1F1F1F</color>
@@ -185,7 +143,6 @@
     <color name="text_color_focus_nick">#fdfcfa</color>
     <color name="text_color_focus">#ffeca8</color>
     <color name="text_color_open_guard">#dd6eff</color>
-    <color name="text_color_lottery">#fe3f7e</color>
     <color name="text_color_system">#acd3ff</color>
     <color name="text_color_sendgif">#FFFE3F7E</color>
     <color name="bg_dialog_gift_live">#000000</color>
@@ -194,14 +151,12 @@
     <color name="text_color_kickout_people">#f9f9f9</color>
     <color name="text_color_kickout_text">#ff709f</color>
 
-    <color name="text_color_chat_list">#ffffff</color>
     <color name="translucent">#aaffffff</color>
     <color name="text_host_name">#010101</color>
     <color name="line">#EDEDED</color>
 
     <color name="main_tab_color">#f9f9f9</color>
     <color name="text_red">#ff2b3f</color>
-    <color name="translucent_black">#aa252525</color>
     <color name="text_sign">#fefefe</color>
     <color name="light_grey">#30ffffff</color>
     <color name="text_yellow">#fff700</color>
@@ -239,7 +194,6 @@
     <color name="text_color_no_add_super_run">#90ffffff</color>
     <color name="text_color_ok_add_super_run">#ffeb00</color>
 
-    <color name="week_star_blue">#4295ff</color>
     <color name="text_color_draw_layout">#ffffff</color>
     <color name="statusbar_black">#181818</color>
     <color name="red_bag">#ff2626</color>

@@ -52,6 +52,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -103,6 +105,10 @@ public class BaseApplication extends Application {
             // You should not init your app in this process.
             return;
         }
+        RxJavaPlugins.setErrorHandler(throwable -> {
+            //异常处理
+
+        });
 //        _refWatcher = LeakCanary.install(this);
 //        CrashHandler.getInstance().init(this);
         initUM();
@@ -193,7 +199,7 @@ public class BaseApplication extends Application {
     private void initBaiduStatistic() {
         StatService.setDebugOn(true);
         StatService.setAppChannel(this, channel, true);
-        StatService.autoTrace(this, true, false);
+//        StatService.autoTrace(this, true, false);
 //        StatService.start(this);
     }
 

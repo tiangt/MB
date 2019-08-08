@@ -142,21 +142,6 @@
         <!--<item name="android:textStyle">bold</item>-->
     </style>
 
-    <style name="audience_info_option_divider">
-        <item name="android:layout_width">0.5dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">#d9d9d9</item>
-        <item name="android:layout_marginTop">2.5dp</item>
-        <item name="android:layout_marginBottom">2.5dp</item>
-    </style>
-
-    <style name="style_audience_info_option_text">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:gravity">center</item>
-    </style>
     <!--全屏不要状态栏-->
     <style name="AppTheme.NoTitle_FullScreen" parent="AppTheme">
         <item name="android:windowNoTitle">true</item>
@@ -175,13 +160,6 @@
         <item name="android:drawablePadding">2dp</item>
     </style>
 
-    <style name="recharge_divider_style">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0.5dp</item>
-        <item name="android:background">#e5e5e5</item>
-        <item name="android:layout_marginLeft">15dp</item>
-        <item name="android:layout_marginRight">15dp</item>
-    </style>
 
     <style name="fragmentTitleText">
         <item name="android:layout_width">match_parent</item>
@@ -193,27 +171,6 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="me_horizontal_divider">
-        <item name="android:layout_width">0.5dp</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:background">#b9b9b9</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_centerVertical">true</item>
-    </style>
-
-    <style name="me_option_item">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">45dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">18dp</item>
-        <item name="android:paddingRight">20dp</item>
-        <item name="android:drawableRight">@drawable/arrowright</item>
-        <item name="android:background">#f9f9f9</item>
-        <item name="android:drawablePadding">10dp</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">#323232</item>
     </style>
 
     <style name="user_info_option_left_text">
@@ -257,37 +214,6 @@
         <item name="android:textSize">13sp</item>
     </style>
 
-    <style name="me_tab">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@drawable/selector_me_text_color</item>
-        <item name="android:textSize">13sp</item>
-    </style>
-
-    <style name="shop_tab">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:button">@null</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@drawable/selector_shop_tab_text_color</item>
-        <item name="android:drawablePadding">2dp</item>
-        <item name="android:paddingTop">11dp</item>
-        <item name="android:paddingBottom">7dp</item>
-        <item name="android:background">@drawable/selector_shop_tab_backgroud_color</item>
-    </style>
-
-    <style name="text_note_vip">
-        <item name="android:textSize">13sp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">15dp</item>
-        <item name="android:textColor">#646464</item>
-    </style>
 
     <style name="StyleProgressBarMini" parent="Widget.AppCompat.ProgressBar.Horizontal">
 
@@ -314,10 +240,6 @@
         <item name="android:windowAnimationStyle">@style/DefaultAnimation</item>
     </style>
 
-    <style name="dialogWindowAnim" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/dialog_show_anim</item>
-        <item name="android:windowExitAnimation">@anim/dialog_exit_anim</item>
-    </style>
 
     <style name="UserTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">2dp</item>
