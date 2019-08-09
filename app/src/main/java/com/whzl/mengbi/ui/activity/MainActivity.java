@@ -56,6 +56,7 @@ import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.PictureUtil;
 import com.whzl.mengbi.util.SPUtils;
+import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
@@ -498,8 +499,7 @@ public class MainActivity extends BaseActivity {
                                     @Override
                                     public void onNext(Boolean aBoolean) {
                                         if (aBoolean) {
-                                            dialog.dismiss();
-                                            downLoad(phone.appUrl);
+                                            downLoad(phone.appUrl, dialog, holder);
                                         } else {
                                             showToast(R.string.permission_storage_denid);
                                         }
@@ -524,7 +524,7 @@ public class MainActivity extends BaseActivity {
                 .show(getSupportFragmentManager());
     }
 
-    private void downLoad(String appUrl) {
+    private void downLoad(String appUrl, BaseAwesomeDialog dialog, ViewHolder holder) {
         DownloadManagerUtil.getInstance().download(this,
                 appUrl,
                 "/mengbi.apk", new DownloadManagerUtil.DownLoadListener() {
@@ -548,13 +548,21 @@ public class MainActivity extends BaseActivity {
                             if (progressDialog != null) {
                                 progressDialog.dismiss();
                             }
+                            dialog.dismiss();
                             AppUtils.install(filePath, MainActivity.this);
                         });
                     }
 
                     @Override
                     public void onFailed() {
-
+                        AsyncRun.run(() -> {
+                            if (progressDialog != null) {
+                                progressDialog.dismiss();
+                            }
+                            ToastUtils.showToastUnify(MainActivity.this, "下载失败");
+                            holder.getConvertView().findViewById(R.id.btn_upgrade).setEnabled(false);
+                            holder.setText(R.id.btn_upgrade, "重新下载");
+                        });
                     }
                 });
     }

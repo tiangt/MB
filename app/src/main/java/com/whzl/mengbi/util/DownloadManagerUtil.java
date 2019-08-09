@@ -1,7 +1,6 @@
 package com.whzl.mengbi.util;
 
 import android.content.Context;
-import android.webkit.DownloadListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,11 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -75,13 +69,14 @@ public class DownloadManagerUtil {
                     while ((len = inputStream.read(buf)) != -1) {
                         fos.write(buf, 0, len);
                         currSize += len;
-                        listener.onProgress ((int) (currSize / (float) totalLength * 100 + 0.5));
+                        listener.onProgress((int) (currSize / (float) totalLength * 100 + 0.5));
 
                     }
                     fos.flush();
                     listener.onSucceed(file.getAbsolutePath());
                 } catch (Exception e) {
                     e.printStackTrace();
+                    listener.onFailed();
                 } finally {
                     try {
                         if (inputStream != null) {
