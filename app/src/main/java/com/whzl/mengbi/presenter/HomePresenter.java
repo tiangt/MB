@@ -6,7 +6,7 @@ public interface HomePresenter {
 
     void getRecommend();
 
-    void getAnchorList(int pager);
+    void getAnchorList(int pager,String sortProperty);
 
     void getHeadlineTop();
 

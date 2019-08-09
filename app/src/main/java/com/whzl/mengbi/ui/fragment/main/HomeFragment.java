@@ -41,6 +41,7 @@ import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
+import com.whzl.mengbi.ui.widget.view.HomeSortTab;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.glide.RoundImageLoader;
@@ -94,8 +95,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private BaseListAdapter topThreeAdapter;
     private ArrayList<HeadlineTopInfo.DataBean.ListBean> mHeadlineList = new ArrayList<>();
     private boolean needAnimal = false;
-    private LinearLayout llComposite, llAnchor, llRoom, llLastest, llRandom;
-    private View viewComposite, viewAnchor, viewRoom, viewLastest, viewRandom;
+    private HomeSortTab llComposite, llAnchor, llRoom, llLastest, llRandom;
+
+    private String sortProperty = "HEAT_DEGREE";
 
     @Override
     protected void initEnv() {
@@ -123,9 +125,9 @@ public class HomeFragment extends BaseFragment implements HomeView {
             mHomePresenter.getBanner();
             mHomePresenter.getHeadlineTop();
             mHomePresenter.getRecommend();
-            mHomePresenter.getAnchorList(mCurrentPager++);
+            mHomePresenter.getAnchorList(mCurrentPager++, sortProperty);
         });
-        refreshLayout.setOnLoadMoreListener(refreshLayout -> mHomePresenter.getAnchorList(mCurrentPager++));
+        refreshLayout.setOnLoadMoreListener(refreshLayout -> mHomePresenter.getAnchorList(mCurrentPager++, sortProperty));
         loadData();
     }
 
@@ -207,12 +209,6 @@ public class HomeFragment extends BaseFragment implements HomeView {
         llLastest = view.findViewById(R.id.ll_lastest);
         llRandom = view.findViewById(R.id.ll_random);
 
-        viewComposite = view.findViewById(R.id.view_composite);
-        viewAnchor = view.findViewById(R.id.view_anchor);
-        viewRoom = view.findViewById(R.id.view_room);
-        viewLastest = view.findViewById(R.id.view_lastest);
-        viewRandom = view.findViewById(R.id.view_random);
-
         initEvent();
 
         initRecommendRecycler();
@@ -223,32 +219,47 @@ public class HomeFragment extends BaseFragment implements HomeView {
     private void initEvent() {
         llComposite.setOnClickListener(v -> {
             hideAllSort();
-            viewComposite.setVisibility(View.VISIBLE);
+            llComposite.setSelect(true);
+            mCurrentPager = 1;
+            sortProperty = "HEAT_DEGREE";
+            mHomePresenter.getAnchorList(mCurrentPager++, sortProperty);
         });
         llAnchor.setOnClickListener(v -> {
             hideAllSort();
-            viewAnchor.setVisibility(View.VISIBLE);
+            llAnchor.setSelect(true);
+            mCurrentPager = 1;
+            sortProperty = "RANK";
+            mHomePresenter.getAnchorList(mCurrentPager++, sortProperty);
         });
         llRoom.setOnClickListener(v -> {
             hideAllSort();
-            viewRoom.setVisibility(View.VISIBLE);
+            llRoom.setSelect(true);
+            mCurrentPager = 1;
+            sortProperty = "ONLINE_USER";
+            mHomePresenter.getAnchorList(mCurrentPager++, sortProperty);
         });
         llLastest.setOnClickListener(v -> {
             hideAllSort();
-            viewLastest.setVisibility(View.VISIBLE);
+            llLastest.setSelect(true);
+            mCurrentPager = 1;
+            sortProperty = "SHOW_TIME";
+            mHomePresenter.getAnchorList(mCurrentPager++, sortProperty);
         });
         llRandom.setOnClickListener(v -> {
             hideAllSort();
-            viewRandom.setVisibility(View.VISIBLE);
+            llRandom.setSelect(true);
+            mCurrentPager = 1;
+            sortProperty = "RANDOM";
+            mHomePresenter.getAnchorList(mCurrentPager++, sortProperty);
         });
     }
 
     private void hideAllSort() {
-        viewComposite.setVisibility(View.INVISIBLE);
-        viewAnchor.setVisibility(View.INVISIBLE);
-        viewRoom.setVisibility(View.INVISIBLE);
-        viewLastest.setVisibility(View.INVISIBLE);
-        viewRandom.setVisibility(View.INVISIBLE);
+        llComposite.setSelect(false);
+        llAnchor.setSelect(false);
+        llRandom.setSelect(false);
+        llRoom.setSelect(false);
+        llLastest.setSelect(false);
     }
 
 
@@ -440,7 +451,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         mHomePresenter.getBanner();
         mHomePresenter.getHeadlineTop();
         mHomePresenter.getRecommend();
-        mHomePresenter.getAnchorList(mCurrentPager++);
+        mHomePresenter.getAnchorList(mCurrentPager++, sortProperty);
     }
 
     @Override

@@ -11,7 +11,7 @@ public interface HomeModel {
 
     void doRecommend(OnHomeFinishedListener listenter);
 
-    void doAnchorList(int pager, OnHomeFinishedListener listenter);
+    void doAnchorList(int pager, String sortProperty, OnHomeFinishedListener listenter);
 
     void doHeadlineTop(OnHomeFinishedListener listenter);
 }

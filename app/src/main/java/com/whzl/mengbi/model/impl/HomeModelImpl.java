@@ -1,14 +1,10 @@
 package com.whzl.mengbi.model.impl;
 
-import android.util.Log;
-
 import com.alibaba.fastjson.JSON;
-import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.HomeModel;
 import com.whzl.mengbi.model.entity.BannerInfo;
 import com.whzl.mengbi.model.entity.HeadlineTopInfo;
 import com.whzl.mengbi.model.entity.LiveShowInfo;
-import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RecommendInfo;
 import com.whzl.mengbi.presenter.OnHomeFinishedListener;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -16,15 +12,8 @@ import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.network.RequestManager;
 import com.whzl.mengbi.util.network.URLContentUtils;
-import com.whzl.mengbi.util.network.retrofit.ApiFactory;
-import com.whzl.mengbi.util.network.retrofit.ApiObserver;
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Class Note:首页
@@ -81,10 +70,12 @@ public class HomeModelImpl implements HomeModel {
     }
 
     @Override
-    public void doAnchorList(int pager, final OnHomeFinishedListener listenter) {
+    public void doAnchorList(int pager, String sortProperty, final OnHomeFinishedListener listenter) {
         HashMap liveMap = new HashMap();
         liveMap.put("page", pager);
         liveMap.put("pageSize", 50);
+        liveMap.put("sortProperty", sortProperty);
+        liveMap.put("sortType", "ASC");
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SHOW_ANCHOR, RequestManager.TYPE_POST_JSON, liveMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override

@@ -83,122 +83,60 @@
         android:text="精彩直播"
         android:textColor="#323232"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
-        <LinearLayout
+        <com.whzl.mengbi.ui.widget.view.HomeSortTab
             android:id="@+id/ll_composite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            app:image="@drawable/selector_composite_home"
+            app:select="true" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_composite_home" />
 
-            <View
-                android:id="@+id/view_composite"
-                android:layout_width="15dp"
-                android:layout_height="3dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/shape_yellow_btn" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.whzl.mengbi.ui.widget.view.HomeSortTab
             android:id="@+id/ll_anchor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            app:image="@drawable/selector_anchor_home"
+            app:select="false" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_anchor_home" />
 
-            <View
-                android:id="@+id/view_anchor"
-                android:layout_width="15dp"
-                android:layout_height="3dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/shape_yellow_btn"
-                android:visibility="invisible" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.whzl.mengbi.ui.widget.view.HomeSortTab
             android:id="@+id/ll_room"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            app:image="@drawable/selector_room_home"
+            app:select="false" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_room_home" />
 
-            <View
-                android:id="@+id/view_room"
-                android:layout_width="15dp"
-                android:layout_height="3dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/shape_yellow_btn"
-                android:visibility="invisible" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.whzl.mengbi.ui.widget.view.HomeSortTab
             android:id="@+id/ll_lastest"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            app:image="@drawable/selector_last_home"
+            app:select="false" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_lastest_home" />
-
-            <View
-                android:id="@+id/view_lastest"
-                android:layout_width="15dp"
-                android:layout_height="3dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/shape_yellow_btn"
-                android:visibility="invisible" />
-        </LinearLayout>
-
-        <LinearLayout
+        <com.whzl.mengbi.ui.widget.view.HomeSortTab
             android:id="@+id/ll_random"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            app:image="@drawable/selector_random_home"
+            app:select="false" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_random_home" />
 
-            <View
-                android:id="@+id/view_random"
-                android:layout_width="15dp"
-                android:layout_height="3dp"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/shape_yellow_btn"
-                android:visibility="invisible" />
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

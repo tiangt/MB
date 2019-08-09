@@ -32,8 +32,8 @@ public class HomePresenterImpl implements HomePresenter, OnHomeFinishedListener 
     }
 
     @Override
-    public void getAnchorList(int pager) {
-        homeModel.doAnchorList(pager, this);
+    public void getAnchorList(int pager,String sortProperty) {
+        homeModel.doAnchorList(pager,sortProperty, this);
     }
 
     @Override
