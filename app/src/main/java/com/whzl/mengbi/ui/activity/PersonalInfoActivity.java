@@ -33,6 +33,7 @@ import com.whzl.mengbi.util.AppUtils;
 import com.whzl.mengbi.util.ClipboardUtils;
 import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.OnMultiClickListener;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -106,6 +107,8 @@ public class PersonalInfoActivity extends BaseActivity {
     ExpValueLayout evlRoyalLevel;
     @BindView(R.id.tv_rank_name)
     TextView tvRankName;
+    @BindView(R.id.ll_rank)
+    LinearLayout llRank;
 
     private long mUserId, mVisitorId;
     private PersonalInfoBean.DataBean userBean;
@@ -235,24 +238,46 @@ public class PersonalInfoActivity extends BaseActivity {
             tvSign.setText(introduce);
         }
 
-        if (userBean.getRank() < 0) {
-            if ("ANCHOR".equals(userBean.getUserType())) {
+//        if (userBean.getRank() < 0) {
+//            if ("ANCHOR".equals(userBean.getUserType())) {
+//                tvRank.setText("万名之外");
+//                tvRankName.setText("主播排名");
+//            } else {
+//                tvRank.setText("万名之外");
+//                tvRankName.setText("富豪排名");
+//            }
+//        } else {
+//            if ("ANCHOR".equals(userBean.getUserType())) {
+//                fansCount = userBean.getRank();
+//                tvRank.setText(fansCount + "");
+//                tvRankName.setText("主播排名");
+//            } else {
+//                tvRank.setText(userBean.getRank() + "");
+//                tvRankName.setText("富豪排名");
+//            }
+//        }
+
+        if ("ANCHOR".equals(userBean.getUserType())) {
+            tvRankName.setText("主播排名");
+            llRank.setOnClickListener(v -> startActivity(new Intent(PersonalInfoActivity.this, PeakRankActivity.class)
+                    .putExtra("type", PeakRankActivity.ANCHOR)));
+            if (userBean.getRank() < 0) {
                 tvRank.setText("万名之外");
-                tvRankName.setText("主播排名");
             } else {
-                tvRank.setText("万名之外");
-                tvRankName.setText("富豪排名");
-            }
-        } else {
-            if ("ANCHOR".equals(userBean.getUserType())) {
                 fansCount = userBean.getRank();
                 tvRank.setText(fansCount + "");
-                tvRankName.setText("主播排名");
+            }
+        } else {
+            tvRankName.setText("富豪排名");
+            llRank.setOnClickListener(v -> startActivity(new Intent(PersonalInfoActivity.this, PeakRankActivity.class)
+                    .putExtra("type", PeakRankActivity.RICH)));
+            if (userBean.getRank() < 0) {
+                tvRank.setText("万名之外");
             } else {
                 tvRank.setText(userBean.getRank() + "");
-                tvRankName.setText("富豪排名");
             }
         }
+
         tvFansCount.setText(userBean.programSubUserCount + "");
         tvFollow.setText(userBean.userSubProgramCount + "");
 

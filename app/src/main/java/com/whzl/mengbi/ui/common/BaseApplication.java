@@ -49,6 +49,7 @@ import org.greenrobot.greendao.identityscope.IdentityScopeType;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -95,6 +96,17 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        String arch = "";//cpu类型
+        try {
+            Class<?> clazz = Class.forName("android.os.SystemProperties");
+            Method get = clazz.getDeclaredMethod("get", new Class[] {String.class});
+            arch = (String)get.invoke(clazz, new Object[] {"ro.product.cpu.abi"});
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        LogUtils.e("arch  "+arch);
+
         instance = this;
         channel = WalleChannelReader.getChannel(getApplicationContext());
         if (channel == null) {

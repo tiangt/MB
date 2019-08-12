@@ -3,6 +3,7 @@ package com.whzl.mengbi.api;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.FlopPriceBean;
 import com.whzl.mengbi.model.GuardListBean;
+import com.whzl.mengbi.model.entity.AnchorTopBean;
 import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AllGuessBean;
@@ -1311,4 +1312,14 @@ public interface Api {
     @POST("v1/common/start-page")
     @FormUrlEncoded
     Observable<ApiResult<StartPageBean>> startPage(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取主播排行榜的榜单
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/rank/anchor-top-rank")
+    @FormUrlEncoded
+    Observable<ApiResult<AnchorTopBean>> anchorTopRank(@FieldMap Map<String, String> params);
 }

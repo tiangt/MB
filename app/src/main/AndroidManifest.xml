@@ -67,10 +67,10 @@
         tools:replace="label">
         <meta-data
             android:name="design_width_in_dp"
-            android:value="375"/>
+            android:value="375" />
         <meta-data
             android:name="design_height_in_dp"
-            android:value="650"/>
+            android:value="650" />
         <meta-data
             android:name="com.alibaba.app.appkey"
             android:value="27628685" />
@@ -386,6 +386,7 @@
         <activity android:name=".ui.activity.FlopActivity" />
         <activity android:name=".ui.activity.me.EffectActivity" />
         <activity android:name=".ui.activity.FirstActivity" />
+        <activity android:name=".ui.activity.PeakRankActivity" />
 
         <!-- Push SDK 相关组件，required-->
         <!-- 消息接收服务 -->

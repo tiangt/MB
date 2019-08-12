@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="14dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="22dp"
+    android:paddingRight="12dp">
+
+    <TextView
+        android:id="@+id/tv_num_peak"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="@drawable/shape_anchor_peak"
+        android:gravity="center"
+        android:textColor="#fef0f0"
+        android:textSize="9sp" />
+
+    <ImageView
+        android:id="@+id/iv_level_peak"
+        android:layout_width="35.5dp"
+        android:layout_height="13.5dp"
+        android:layout_marginLeft="14dp" />
+
+    <TextView
+        android:id="@+id/tv_nick_peak"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6.5dp"
+        android:layout_weight="1"
+        android:textColor="#323232"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/iv_up_down"
+        android:layout_width="12.5dp"
+        android:layout_height="13.5dp" />
+
+    <TextView
+        android:id="@+id/tv_up_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="3.5dp"
+        android:gravity="end"
+        android:minWidth="15dp"
+        android:textColor="#6ba2ce"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+</LinearLayout>
