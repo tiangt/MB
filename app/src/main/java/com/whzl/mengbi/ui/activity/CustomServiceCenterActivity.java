@@ -45,10 +45,10 @@ public class CustomServiceCenterActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.user_custom_official_service_qq_text:
-                startQQChat(NetConfig.CUSTOM_OFFICIAL_SERVICE_QQ);
+                startWpaQQChat(NetConfig.CUSTOM_OFFICIAL_SERVICE_QQ);
                 break;
             case R.id.user_custom_guild_entered_qq:
-                startQQChat("1530675255");
+                startQQChat(NetConfig.CUSTOM_UNION_SERVICE_QQ);
                 break;
         }
     }
@@ -59,6 +59,15 @@ public class CustomServiceCenterActivity extends BaseActivity {
             return;
         }
         final String qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=" + qq + "&version=1";
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
+    }
+
+    private void startWpaQQChat(String qq) {
+        if (!isQQClientAvailable()) {
+            showToast("QQ未安装");
+            return;
+        }
+        final String qqUrl = "mqqwpa://im/chat?chat_type=crm&uin=" + qq + "&version=1";
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)));
     }
 
