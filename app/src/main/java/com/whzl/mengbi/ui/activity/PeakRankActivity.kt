@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity
 
+import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.chat.room.util.ImageUrl
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.AnchorTopBean
@@ -15,6 +17,7 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.widget.view.CircleImageView
+import com.whzl.mengbi.util.DateUtils
 import com.whzl.mengbi.util.ResourceMap
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
@@ -79,11 +82,15 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
 
     inner class NormalViewHolder(itemView: View) : BaseViewHolder(itemView) {
         override fun onBindViewHolder(position: Int) {
+            if (type == ANCHOR) {
+                itemView.tv_num_peak.setBackgroundResource(R.drawable.shape_anchor_peak)
+            } else {
+                itemView.tv_num_peak.setBackgroundResource(R.drawable.shape_anchor_peak_rich)
+            }
             val listBean = datas[position + 2]
             itemView.tv_num_peak.text = "${position + 3}"
-            GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
-                    ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue), itemView.iv_level_peak)
-            itemView.tv_nick_peak.text = listBean.anchorNickname
+
+
             when {
                 listBean.upAndDownNumber == 0L -> {
                     itemView.tv_up_down.text = ""
@@ -101,6 +108,17 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                             R.drawable.ic_down_peak, itemView.iv_up_down)
                 }
             }
+
+            if (type == ANCHOR) {
+                GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
+                        ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue), itemView.iv_level_peak)
+                itemView.tv_nick_peak.text = listBean.anchorNickname
+            } else {
+                GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
+                        ResourceMap.getResourceMap().getUserLevelIcon(listBean.userLevel), itemView.iv_level_peak)
+                itemView.tv_nick_peak.text = listBean.nickname
+            }
+
         }
 
     }
@@ -109,25 +127,72 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
         private val ivAvatars = arrayOf<CircleImageView>(itemView.iv_avatar_1_peak, itemView.iv_avatar_2_peak, itemView.iv_avatar_3_peak)
         private val tvNicks = arrayOf<TextView>(itemView.tv_nick_1_peak, itemView.tv_nick_2_peak, itemView.tv_nick_3_peak)
         private val ivLevels = arrayOf<ImageView>(itemView.iv_level_1_peak, itemView.iv_level_2_peak, itemView.iv_level_3_peak)
+
         override fun onBindViewHolder(position: Int) {
+            if (type == ANCHOR) {
+                GlideImageLoader.getInstace().displayImage(this@PeakRankActivity, R.drawable.bg_top_peak, itemView.iv_top_peak)
+                itemView.tv_nick_1_peak.setTextColor(Color.parseColor("#ff3a5a"))
+                itemView.tv_nick_2_peak.setTextColor(Color.parseColor("#ff3a5a"))
+                itemView.tv_nick_3_peak.setTextColor(Color.parseColor("#ff3a5a"))
+            } else {
+                GlideImageLoader.getInstace().displayImage(this@PeakRankActivity, R.drawable.bg_top_peak2, itemView.iv_top_peak)
+                itemView.tv_nick_1_peak.setTextColor(Color.parseColor("#ffffff"))
+                itemView.tv_nick_2_peak.setTextColor(Color.parseColor("#ffffff"))
+                itemView.tv_nick_3_peak.setTextColor(Color.parseColor("#ffffff"))
+            }
             for (i in 0 until datas.size) {
                 if (i > 2) {
                     break
                 }
                 val listBean = datas[i]
-                GlideImageLoader.getInstace().displayImage(this@PeakRankActivity, listBean.anchorAvatar, ivAvatars[i])
-                tvNicks[i].text = listBean.anchorNickname
-                GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
-                        ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue), ivLevels[i])
+                if (type == ANCHOR) {
+                    GlideImageLoader.getInstace().displayImage(this@PeakRankActivity, listBean.anchorAvatar, ivAvatars[i])
+                    tvNicks[i].text = listBean.anchorNickname
+                    GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
+                            ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue), ivLevels[i])
+                } else {
+                    GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
+                            ImageUrl.getAvatarUrl(listBean.userId, "jpg", DateUtils.dateStrToMillis(listBean.lastUpdateTime, "yyyy-MM-dd HH:mm:ss")), ivAvatars[i])
+                    tvNicks[i].text = listBean.nickname
+                    GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
+                            ResourceMap.getResourceMap().getUserLevelIcon(listBean.userLevel), ivLevels[i])
+                }
+
             }
         }
 
     }
 
     override fun loadData() {
+        if (type == ANCHOR) {
+            getAnchorTop()
+        } else {
+            getRichTop()
+        }
+    }
+
+    private fun getAnchorTop() {
         ApiFactory.getInstance()
                 .getApi(Api::class.java)
                 .anchorTopRank(ParamsUtils.getSignPramsMap(HashMap<String, String>()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<AnchorTopBean>() {
+                    override fun onSuccess(t: AnchorTopBean?) {
+                        datas.clear()
+                        if (t?.list == null) {
+                            return
+                        }
+                        datas.addAll(t.list)
+                        adapter.notifyDataSetChanged()
+                    }
+                })
+    }
+
+    private fun getRichTop() {
+        ApiFactory.getInstance()
+                .getApi(Api::class.java)
+                .userTopRank(ParamsUtils.getSignPramsMap(HashMap<String, String>()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : ApiObserver<AnchorTopBean>() {

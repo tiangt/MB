@@ -28,12 +28,16 @@ public class AnchorTopBean {
         public int programId;
         public String programName;
         public String status;
+        public String lastUpdateTime;
         public int roomUserCount;
         public String cover;
         public int anchorId;
+        public long userId;
         public String anchorNickname;
+        public String nickname;
         public String anchorLevelName;
         public int anchorLevelValue;
+        public int userLevel;
         public long upAndDownNumber;
         public String anchorAvatar;
 

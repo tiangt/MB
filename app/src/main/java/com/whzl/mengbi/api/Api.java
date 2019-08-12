@@ -1322,4 +1322,14 @@ public interface Api {
     @POST("v1/rank/anchor-top-rank")
     @FormUrlEncoded
     Observable<ApiResult<AnchorTopBean>> anchorTopRank(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取主播排行榜的榜单
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/rank/user-top-rank")
+    @FormUrlEncoded
+    Observable<ApiResult<AnchorTopBean>> userTopRank(@FieldMap Map<String, String> params);
 }

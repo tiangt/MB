@@ -12,7 +12,6 @@
         android:id="@+id/tv_num_peak"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:background="@drawable/shape_anchor_peak"
         android:gravity="center"
         android:textColor="#fef0f0"
         android:textSize="9sp" />
