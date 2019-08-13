@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.chat.room.util.ImageUrl
+import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.AnchorTopBean
@@ -17,8 +18,10 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.widget.view.CircleImageView
+import com.whzl.mengbi.util.AmountConversionUitls
 import com.whzl.mengbi.util.DateUtils
 import com.whzl.mengbi.util.ResourceMap
+import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -38,10 +41,12 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
 
     private lateinit var adapter: BaseListAdapter
     private var type: Int = ANCHOR
+    private var anchorId: Long = 0L
     private var datas = ArrayList<AnchorTopBean.ListBean>()
 
     override fun setupContentView() {
         type = intent.getIntExtra("type", ANCHOR)
+        anchorId = intent.getLongExtra("anchorId", 0L)
         if (type == ANCHOR)
             setContentView(R.layout.activity_peak_rank, "主播巅峰榜", true)
         else
@@ -49,6 +54,12 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
     }
 
     override fun setupView() {
+        if (type == ANCHOR)
+            ll_bottom_peak.setBackgroundResource(R.drawable.bg_bottom_peak)
+        else {
+            ll_bottom_peak.setBackgroundResource(R.drawable.bg_bottom_peak2)
+        }
+
         recycler_peak.layoutManager = LinearLayoutManager(this)
         adapter = object : BaseListAdapter() {
             override fun getDataCount(): Int {
@@ -172,9 +183,11 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
     }
 
     private fun getAnchorTop() {
+        val hashMap = HashMap<String, String>()
+        hashMap["userId"] = anchorId.toString()
         ApiFactory.getInstance()
                 .getApi(Api::class.java)
-                .anchorTopRank(ParamsUtils.getSignPramsMap(HashMap<String, String>()))
+                .anchorTopRank(ParamsUtils.getSignPramsMap(hashMap))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : ApiObserver<AnchorTopBean>() {
@@ -185,14 +198,26 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                         }
                         datas.addAll(t.list)
                         adapter.notifyDataSetChanged()
+                        if (t.userRankInfo.rankIndex < 0) {
+                            tv_num_peak.text = "9999+"
+                        } else {
+                            tv_num_peak.text = t.userRankInfo.rankIndex.toString()
+                        }
+
+                        GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
+                                ResourceMap.getResourceMap().getAnchorLevelIcon(t.userRankInfo.level), iv_level_peak)
+                        tv_contribute_peak.text = AmountConversionUitls.amountConversionFormat(t.userRankInfo.preCharmGap)
+                        tv_nick_peak.text = t.userRankInfo.nickname
                     }
                 })
     }
 
     private fun getRichTop() {
+        val hashMap = HashMap<String, String>()
+        hashMap["userId"] = SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString()
         ApiFactory.getInstance()
                 .getApi(Api::class.java)
-                .userTopRank(ParamsUtils.getSignPramsMap(HashMap<String, String>()))
+                .userTopRank(ParamsUtils.getSignPramsMap(hashMap))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : ApiObserver<AnchorTopBean>() {
@@ -203,6 +228,15 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                         }
                         datas.addAll(t.list)
                         adapter.notifyDataSetChanged()
+                        if (t.userRankInfo.rankIndex < 0) {
+                            tv_num_peak.text = "9999+"
+                        } else {
+                            tv_num_peak.text = t.userRankInfo.rankIndex.toString()
+                        }
+                        GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
+                                ResourceMap.getResourceMap().getUserLevelIcon(t.userRankInfo.level), iv_level_peak)
+                        tv_contribute_peak.text = AmountConversionUitls.amountConversionFormat(t.userRankInfo.preCharmGap)
+                        tv_nick_peak.text = t.userRankInfo.nickname
                     }
                 })
     }

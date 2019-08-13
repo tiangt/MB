@@ -9,6 +9,11 @@ import java.util.ArrayList;
 public class AnchorTopBean {
 
     public ArrayList<ListBean> list;
+    /**
+     * userRankInfo : {"rankIndex":263,"preCharmGap":0}
+     */
+
+    public UserRankInfoBean userRankInfo;
 
     public static class ListBean {
         /**
@@ -41,6 +46,18 @@ public class AnchorTopBean {
         public long upAndDownNumber;
         public String anchorAvatar;
 
+    }
 
+
+    public static class UserRankInfoBean {
+        /**
+         * rankIndex : 263
+         * preCharmGap : 0
+         */
+
+        public long rankIndex;
+        public long preCharmGap;
+        public String nickname;
+        public int level;
     }
 }

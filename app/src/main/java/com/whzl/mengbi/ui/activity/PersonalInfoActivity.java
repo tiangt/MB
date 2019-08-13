@@ -260,7 +260,8 @@ public class PersonalInfoActivity extends BaseActivity {
         if ("ANCHOR".equals(userBean.getUserType())) {
             tvRankName.setText("主播排名");
             llRank.setOnClickListener(v -> startActivity(new Intent(PersonalInfoActivity.this, PeakRankActivity.class)
-                    .putExtra("type", PeakRankActivity.ANCHOR)));
+                    .putExtra("type", PeakRankActivity.ANCHOR)
+                    .putExtra("anchorId", mUserId)));
             if (userBean.getRank() < 0) {
                 tvRank.setText("万名之外");
             } else {
@@ -270,7 +271,8 @@ public class PersonalInfoActivity extends BaseActivity {
         } else {
             tvRankName.setText("富豪排名");
             llRank.setOnClickListener(v -> startActivity(new Intent(PersonalInfoActivity.this, PeakRankActivity.class)
-                    .putExtra("type", PeakRankActivity.RICH)));
+                    .putExtra("type", PeakRankActivity.RICH)
+                    .putExtra("anchorId", mUserId)));
             if (userBean.getRank() < 0) {
                 tvRank.setText("万名之外");
             } else {
