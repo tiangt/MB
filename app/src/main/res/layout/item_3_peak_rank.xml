@@ -12,6 +12,7 @@
         android:scaleType="fitXY" />
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/container_1_peak"
         android:layout_width="112dp"
         android:layout_height="112dp"
         android:layout_marginTop="51.5dp"
@@ -63,6 +64,7 @@
 
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/container_2_peak"
         android:layout_width="112dp"
         android:layout_height="103dp"
         android:layout_marginLeft="8dp"
@@ -104,6 +106,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/container_3_peak"
         android:layout_width="112dp"
         android:layout_height="103dp"
         android:layout_marginTop="114dp"

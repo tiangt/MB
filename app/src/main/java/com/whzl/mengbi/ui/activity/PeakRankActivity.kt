@@ -1,6 +1,8 @@
 package com.whzl.mengbi.ui.activity
 
+import android.content.Intent
 import android.graphics.Color
+import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -18,10 +20,7 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.widget.view.CircleImageView
-import com.whzl.mengbi.util.AmountConversionUitls
-import com.whzl.mengbi.util.DateUtils
-import com.whzl.mengbi.util.ResourceMap
-import com.whzl.mengbi.util.SPUtils
+import com.whzl.mengbi.util.*
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -132,12 +131,23 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
 
         }
 
+        override fun onItemClick(view: View?, position: Int) {
+            super.onItemClick(view, position)
+            if (type != ANCHOR) {
+                return
+            }
+            val listBean = datas[position + 2]
+            startActivity(Intent(this@PeakRankActivity, LiveDisplayActivity::class.java)
+                    .putExtra(LiveDisplayActivity.PROGRAMID, listBean.programId))
+        }
+
     }
 
     inner class TopViewHolder(itemView: View) : BaseViewHolder(itemView) {
         private val ivAvatars = arrayOf<CircleImageView>(itemView.iv_avatar_1_peak, itemView.iv_avatar_2_peak, itemView.iv_avatar_3_peak)
         private val tvNicks = arrayOf<TextView>(itemView.tv_nick_1_peak, itemView.tv_nick_2_peak, itemView.tv_nick_3_peak)
         private val ivLevels = arrayOf<ImageView>(itemView.iv_level_1_peak, itemView.iv_level_2_peak, itemView.iv_level_3_peak)
+        private val containers = arrayOf<ConstraintLayout>(itemView.container_1_peak, itemView.container_2_peak, itemView.container_3_peak)
 
         override fun onBindViewHolder(position: Int) {
             if (type == ANCHOR) {
@@ -161,6 +171,10 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                     tvNicks[i].text = listBean.anchorNickname
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
                             ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue), ivLevels[i])
+                    containers[i].clickDelay {
+                        startActivity(Intent(this@PeakRankActivity, LiveDisplayActivity::class.java)
+                                .putExtra(LiveDisplayActivity.PROGRAMID, listBean.programId))
+                    }
                 } else {
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
                             ImageUrl.getAvatarUrl(listBean.userId, "jpg", DateUtils.dateStrToMillis(listBean.lastUpdateTime, "yyyy-MM-dd HH:mm:ss")), ivAvatars[i])
@@ -168,7 +182,6 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
                             ResourceMap.getResourceMap().getUserLevelIcon(listBean.userLevel), ivLevels[i])
                 }
-
             }
         }
 
