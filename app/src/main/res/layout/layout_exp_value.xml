@@ -12,13 +12,6 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="10dp" />
 
-    <!--<com.whzl.mengbi.ui.widget.view.TextProgressBar-->
-    <!--android:id="@+id/tp_user_level"-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="20dp"-->
-    <!--android:layout_gravity="center_vertical"-->
-    <!--android:layout_weight="1" />-->
-
     <com.whzl.mengbi.ui.widget.view.rc.RCRelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"

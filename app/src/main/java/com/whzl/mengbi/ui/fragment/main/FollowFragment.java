@@ -376,11 +376,7 @@ public class FollowFragment extends BaseFragment implements OnRefreshListener, O
         @Override
         public void onBindViewHolder(int position) {
             AnchorFollowedDataBean.AnchorInfoBean anchorInfoBean = mAnchorList.get(position);
-//            GlideImageLoader.getInstace().displayImage(getContext(), anchorInfoBean.avatar, ivAvatar);
-//            RequestOptions requestOptions = new RequestOptions().transform(new GlideRoundTransform(5));
-//            Glide.with(FollowActivity.this).load(anchorInfoBean.avatar).apply(requestOptions).into(ivAvatar);
             GlideImageLoader.getInstace().displayRoundAvatar(getActivity(), anchorInfoBean.avatar, ivAvatar, 5);
-//            tvStatus.setVisibility("T".equals(anchorInfoBean.status) ? View.VISIBLE : View.GONE);
             if ("T".equals(anchorInfoBean.status)) {
                 tvStatus.setVisibility(View.VISIBLE);
                 tvLastTime.setVisibility(View.GONE);
