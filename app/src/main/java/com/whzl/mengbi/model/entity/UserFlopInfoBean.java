@@ -16,6 +16,7 @@ public class UserFlopInfoBean {
      */
 
     public int userLuckVal;
+    public double userLuckRatio;
     public int maxFlopTimes;
     public int shufflePrice;
     public GuessPriceBean guessPrice;
@@ -51,5 +52,6 @@ public class UserFlopInfoBean {
         public String pic;
         public int index;
         public int userLuckVal;
+        public double userLuckRatio;
     }
 }

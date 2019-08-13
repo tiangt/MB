@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
@@ -77,6 +78,8 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     }
 
     override fun setupView() {
+        GlideImageLoader.getInstace().loadGif(this, R.drawable.ic_gift_gif_luck_flop, iv_luck_man_flop, null)
+        GlideImageLoader.getInstace().loadGif(this, R.drawable.ic_luck_num_flop, progress_luck, null)
         roomId = intent.getIntExtra("roomId", 0)
         initRecyclerView(recycler_flop)
         btn_flop_card.clickDelay {
@@ -251,7 +254,8 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
                         override fun onSuccess(t: UserFlopInfoBean.ListBean?) {
                             itemView.rotateview.setIvPic(t?.pic)
                             itemView.rotateview.setTvName("${t?.name} ×${t?.num}")
-                            tv_luck_flop.text = t?.userLuckVal.toString()
+//                            tv_luck_flop.text = t?.userLuckVal.toString()
+                            updatePercent(t?.userLuckRatio!!)
 
                             itemView.rotateview.anim.setOpenAnimEndListener {
 
@@ -464,7 +468,8 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     override fun onUserFlopInfoSuccess(userFlopInfoBean: UserFlopInfoBean?) {
         shufflePrice = userFlopInfoBean?.shufflePrice!!
         maxFlopTimes = userFlopInfoBean.maxFlopTimes
-        tv_luck_flop.text = userFlopInfoBean.userLuckVal.toString()
+//        tv_luck_flop.text = userFlopInfoBean.userLuckVal.toString()
+        updatePercent(userFlopInfoBean.userLuckRatio)
         if (userFlopInfoBean.list == null || userFlopInfoBean.list.isEmpty()) {
             GlideImageLoader.getInstace().displayImage(this, R.drawable.ic_fanpai_flop, iv_state_flop)
             showShuffle = false
@@ -563,6 +568,25 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     override fun onFlopPriceSuccess(flopPriceBean: FlopPriceBean?) {
         priceList = flopPriceBean?.list
         mPresenter.userFlopInfo(SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString())
+    }
+
+    fun updatePercent(percent: Double) {
+        val ivWidth = progress_layout.width
+        val lp = progress_luck.layoutParams as (RelativeLayout.LayoutParams)
+        val marginEnd = ((1 - percent) * ivWidth).toInt()
+        lp.width = ivWidth - marginEnd
+        progress_luck.layoutParams = lp
+        progress_luck.postInvalidate()
+
+        if (percent >= 1) {
+            iv_luck_man_flop.visibility = View.VISIBLE
+            iv_luck_normal_flop.visibility = View.GONE
+            tv_note_luck_flop.text = "您的幸运值已经爆棚啦"
+        } else {
+            iv_luck_man_flop.visibility = View.GONE
+            iv_luck_normal_flop.visibility = View.VISIBLE
+            tv_note_luck_flop.text = "幸运值越高，大奖概率越高"
+        }
     }
 
     override fun onDestroy() {
