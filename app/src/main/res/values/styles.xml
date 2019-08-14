@@ -15,7 +15,6 @@
     </style>
 
 
-
     <style name="Theme.NoTitleBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowAnimationStyle">@style/DefaultAnimation</item>
@@ -417,5 +416,27 @@
         <item name="android:textColor">#fefefe</item>
         <!--<selectedItem name="android:textColor">@android:color/white</selectedItem>-->
         <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="QualifyingTab" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@android:color/transparent</item>
+        <item name="tabGravity">center</item>
+        <item name="tabIndicatorColor">#ffd634</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabSelectedTextColor">#ffffff</item>
+        <item name="tabTextColor">#40ffffff</item>
+    </style>
+
+    <style name="QualifyingProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+
+        <item name="android:maxHeight">12dp</item>
+        <item name="android:minHeight">12dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">
+            @android:drawable/progress_indeterminate_horizontal
+        </item>
+        <item name="android:progressDrawable">@drawable/shape_progressbar_qualifying</item>
+
     </style>
 </resources>

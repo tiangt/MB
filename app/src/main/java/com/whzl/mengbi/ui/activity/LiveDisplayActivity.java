@@ -172,6 +172,7 @@ import com.whzl.mengbi.ui.dialog.LiveNoMoneyDialog;
 import com.whzl.mengbi.ui.dialog.LiveStopDialog;
 import com.whzl.mengbi.ui.dialog.LoginDialog;
 import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
+import com.whzl.mengbi.ui.dialog.PkQualifyingDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListDialog;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
@@ -510,6 +511,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private ObjectAnimator fingerAnimator;
     private RoyalCarListBean royalCarListBean;
     private QixiControl qixiControl;
+    private PkQualifyingBean qualifyingBean;
+    private BaseAwesomeDialog pkQualifyingDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -839,7 +842,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
             , R.id.tv_popularity, R.id.btn_chat, R.id.btn_chat_private, R.id.fragment_container, R.id.rl_guard_number
-            , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more, R.id.ll_black_room})
+            , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more, R.id.ll_black_room, R.id.iv_qualifying})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_host_avatar:
@@ -969,10 +972,26 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             case R.id.ll_black_room:
                 jumpToBlackRoomActivity();
                 break;
+            case R.id.iv_qualifying:
+                showQualifyingDialog();
+                break;
             default:
                 break;
         }
 
+    }
+
+    private void showQualifyingDialog() {
+        if (qualifyingBean == null) {
+            return;
+        }
+        if (pkQualifyingDialog != null && pkQualifyingDialog.isAdded()) {
+            return;
+        }
+        pkQualifyingDialog = PkQualifyingDialog.Companion.newInstance()
+                .setShowBottom(true)
+                .setOutCancel(true)
+                .show(getSupportFragmentManager());
     }
 
     @Override
@@ -1570,7 +1589,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onQualifyingSuccess(PkQualifyingBean anchorInfoBean) {
-
+        this.qualifyingBean = anchorInfoBean;
         if (anchorInfoBean.rankAnchorInfo != null) {
             int userLevelIcon = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(anchorInfoBean.rankAnchorInfo.rankId);
             GlideImageLoader.getInstace().displayImage(this, userLevelIcon, ivQualifying);

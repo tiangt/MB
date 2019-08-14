@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="400dp">
 
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="120dp">
+        android:layout_height="400dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -15,7 +14,66 @@
             android:background="@drawable/bg_qualifying"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="148dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingTop="19dp"
+                    android:paddingRight="25dp"
+                    android:src="@drawable/ic_note_red_bag" />
+
+                <ImageView
+                    android:layout_width="223dp"
+                    android:layout_height="135dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="-26dp"
+                    android:src="@drawable/ic_season" />
+
+                <TextView
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="75dp"
+                    android:gravity="center"
+                    android:text="S1"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="183dp"
+                    android:layout_height="22dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="110dp"
+                    android:background="@drawable/shape_season"
+                    android:gravity="center"
+                    android:text="距本赛季结束剩 5天12小时"
+                    android:textColor="#ffd634"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="440dp">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewpager_qualifying"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never" />
+
+                <com.whzl.mengbi.ui.widget.tablayout.TabLayout
+                    android:id="@+id/tab_layout_qualifying"
+                    style="@style/QualifyingTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp" />
+
+            </FrameLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
 </LinearLayout>
