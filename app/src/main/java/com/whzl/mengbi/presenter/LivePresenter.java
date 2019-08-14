@@ -49,4 +49,6 @@ public interface LivePresenter {
     void getRoyalCarList();
 
     void getRightBottomActivity(int mProgramId, int mAnchorId);
+
+    void getQualifying(int mAnchorId);
 }

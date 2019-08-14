@@ -143,4 +143,16 @@ public class AmountConversionUitls {
 
         return m.matches();
     }
+
+    // 传入阿拉伯数字返回罗马数字，等于0直接返回0
+    public static String intToRoman(int num) {
+        if (num == 0) {
+            return "0";
+        }
+        String M[] = {"", "M", "MM", "MMM"};
+        String C[] = {"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
+        String X[] = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
+        String I[] = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"};
+        return M[num / 1000] + C[(num % 1000) / 100] + X[(num % 100) / 10] + I[(num % 10)];
+    }
 }

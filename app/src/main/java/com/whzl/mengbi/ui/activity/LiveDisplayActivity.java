@@ -145,6 +145,7 @@ import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
+import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
@@ -208,6 +209,7 @@ import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.DeviceUtils;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.HttpCallBackListener;
+import com.whzl.mengbi.util.PkQualifyingLevelUtils;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.ToastUtils;
 import com.whzl.mengbi.util.UIUtil;
@@ -419,6 +421,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageView ivUserQixi;
     @BindView(R.id.tv_qixi)
     TextView tvQixi;
+    @BindView(R.id.iv_qualifying)
+    ImageView ivQualifying;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -1458,6 +1462,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         });
         compositeDisposable.add(headlineDisposable);
         mLivePresenter.getPkInfo(mProgramId);
+        mLivePresenter.getQualifying(mAnchorId);
     }
 
     /**
@@ -1557,6 +1562,18 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         if (rightBottomActivityNum == RIGHT_BOTTOM_ACTIVITY) {
             initBottomRightVp();
+        }
+    }
+
+    /**
+     * 获取PK排位赛段位信息
+     */
+    @Override
+    public void onQualifyingSuccess(PkQualifyingBean anchorInfoBean) {
+
+        if (anchorInfoBean.rankAnchorInfo != null) {
+            int userLevelIcon = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(anchorInfoBean.rankAnchorInfo.rankId);
+            GlideImageLoader.getInstace().displayImage(this, userLevelIcon, ivQualifying);
         }
     }
 

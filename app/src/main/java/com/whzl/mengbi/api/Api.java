@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.FlopPriceBean;
 import com.whzl.mengbi.model.GuardListBean;
 import com.whzl.mengbi.model.entity.AnchorTopBean;
+import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AllGuessBean;
@@ -1332,4 +1333,14 @@ public interface Api {
     @POST("v1/rank/user-top-rank")
     @FormUrlEncoded
     Observable<ApiResult<AnchorTopBean>> userTopRank(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取PK排位赛段位信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/rank-anchor-info")
+    @FormUrlEncoded
+    Observable<ApiResult<PkQualifyingBean>> rankAnchorInfo(@FieldMap Map<String, String> params);
 }

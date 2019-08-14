@@ -11,6 +11,7 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
@@ -71,4 +72,6 @@ public interface OnLiveFinishedListener {
     void onRoyalCarListSuccess(RoyalCarListBean jsonElement);
 
     void onRightBottomActivitySuccuss(Object o);
+
+    void onQualifyingSuccess(PkQualifyingBean anchorInfoBean);
 }

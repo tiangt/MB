@@ -196,6 +196,14 @@
                                 android:src="@drawable/live_display_arrow" />
                         </RelativeLayout>
 
+                        <ImageView
+                            android:id="@+id/iv_qualifying"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_toRightOf="@id/rl_head"
+                            android:scaleType="fitXY" />
 
                         <FrameLayout
                             android:id="@+id/frame_supercar_track"
@@ -203,7 +211,7 @@
                             android:layout_height="23dp"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/rl_head"
+                            android:layout_toRightOf="@id/iv_qualifying"
                             android:visibility="gone" />
 
                         <android.support.constraint.ConstraintLayout
@@ -212,7 +220,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="5dp"
-                            android:layout_toRightOf="@id/rl_head">
+                            android:layout_toRightOf="@id/iv_qualifying">
 
                             <com.whzl.mengbi.ui.widget.view.AutoScrollTextView
                                 android:id="@+id/tv_run_way_gift"

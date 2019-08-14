@@ -1,16 +1,12 @@
 package com.whzl.mengbi.model.impl;
 
-import android.content.Intent;
 import android.net.ParseException;
-import android.text.TextUtils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.model.LiveModel;
-import com.whzl.mengbi.model.entity.ActivityGrandBean;
-import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AudienceListBean;
@@ -23,6 +19,7 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
@@ -32,11 +29,7 @@ import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
-import com.whzl.mengbi.ui.activity.JsBridgeActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.ui.fragment.AnchorTaskFragment;
-import com.whzl.mengbi.ui.fragment.AnchorWishFragment;
-import com.whzl.mengbi.ui.fragment.LiveWebFragment;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ToastUtils;
@@ -53,7 +46,6 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -533,6 +525,27 @@ public class LiveModelImpl implements LiveModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((Consumer<Object>) o -> {
                     listener.onRightBottomActivitySuccuss(o);
+                });
+    }
+
+    @Override
+    public void getQualifying(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .rankAnchorInfo(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<PkQualifyingBean>() {
+
+
+                    @Override
+                    public void onSuccess(PkQualifyingBean jsonElement) {
+                        listener.onQualifyingSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(ApiResult<PkQualifyingBean> body) {
+
+                    }
                 });
     }
 

@@ -13,6 +13,7 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
@@ -63,7 +64,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
 
     @Override
     public void sendGift(HashMap paramsMap, boolean useBag) {
-        liveModel.doSendGift(paramsMap,useBag, this);
+        liveModel.doSendGift(paramsMap, useBag, this);
     }
 
     @Override
@@ -155,6 +156,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
     @Override
+    public void onQualifyingSuccess(PkQualifyingBean anchorInfoBean) {
+        if (liveView != null) {
+            liveView.onQualifyingSuccess(anchorInfoBean);
+        }
+    }
+
+    @Override
     public void onGetRunWayListSuccess(RunWayListBean runWayListBean) {
         if (liveView != null) {
             liveView.onGetRunWayListSuccess(runWayListBean);
@@ -215,42 +223,42 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
 
     @Override
     public void onGetHeadlineRankSuccess(HeadlineRankBean dataBean) {
-        if(liveView != null){
+        if (liveView != null) {
             liveView.onGetHeadlineRankSuccess(dataBean);
         }
     }
 
     @Override
     public void onGetBlackRoomTime(BlackRoomTimeBean dataBean) {
-        if(liveView != null){
+        if (liveView != null) {
             liveView.onGetBlackRoomTimeSuccess(dataBean);
         }
     }
 
     @Override
     public void onGetUserSet(GetUserSetBean dataBean) {
-        if(liveView != null){
+        if (liveView != null) {
             liveView.onGetUsetSetSuccesd(dataBean);
         }
     }
 
     @Override
     public void onGetRoomRedList(RoomRedpackList dataBean) {
-        if(liveView != null){
+        if (liveView != null) {
             liveView.onGetRoomRedListSuccess(dataBean);
         }
     }
 
     @Override
     public void onActivityNativeSuccess(GetActivityBean bean) {
-        if(liveView != null){
+        if (liveView != null) {
             liveView.onActivityNativeSuccess(bean);
         }
     }
 
     @Override
     public void onAnchorWishSuccess(AnchorWishBean jsonElement) {
-        if(liveView != null){
+        if (liveView != null) {
             liveView.onAnchorWishSuccess(jsonElement);
         }
     }
@@ -403,7 +411,15 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
                 .getAnchorTask(signPramsMap2);
 
         Observable merge = Observable.merge(observable, observable1, observable2);
-        liveModel.getRightBottomActivity(merge,this);
+        liveModel.getRightBottomActivity(merge, this);
+    }
+
+    @Override
+    public void getQualifying(int mAnchorId) {
+        HashMap map = new HashMap();
+        map.put("userId", mAnchorId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.getQualifying(signPramsMap, this);
     }
 
     public void getRedPackList(int mProgramId, long mUserId) {
