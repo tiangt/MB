@@ -6,7 +6,6 @@ import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper
 import com.whzl.mengbi.ui.fragment.base.BaseFragment
-import com.whzl.mengbi.ui.fragment.base.TestFragment
 import com.whzl.mengbi.ui.widget.tablayout.TabLayout
 import com.whzl.mengbi.util.UIUtil
 import kotlinx.android.synthetic.main.fragment_anchor_rank.*
@@ -27,8 +26,8 @@ class AnchorRankFragment : BaseFragment<BasePresenter<BaseView>>() {
         titles.add("最佳队友")
         titles.add("最近排位")
         val fragments = ArrayList<Fragment>()
-        fragments.add(TestFragment())
-        fragments.add(TestFragment())
+        fragments.add(BestTeamFragment())
+        fragments.add(LastPkRecordFragment())
         val fragmentPagerAdaper = FragmentPagerAdaper(childFragmentManager, fragments, titles)
         vp_anchor_rank.adapter = fragmentPagerAdaper
         vp_anchor_rank.offscreenPageLimit = 2
