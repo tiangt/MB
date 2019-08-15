@@ -144,8 +144,8 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
-import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.PkQualifyingBean;
+import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
@@ -424,6 +424,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     TextView tvQixi;
     @BindView(R.id.iv_qualifying)
     ImageView ivQualifying;
+    @BindView(R.id.container_rank)
+    LinearLayout containRank;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -1593,6 +1595,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (anchorInfoBean.rankAnchorInfo != null) {
             int userLevelIcon = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(anchorInfoBean.rankAnchorInfo.rankId);
             GlideImageLoader.getInstace().displayImage(this, userLevelIcon, ivQualifying);
+            PkQualifyingLevelUtils.getInstance().measureImage(ivQualifying, anchorInfoBean.rankAnchorInfo.rankId, containRank, 30);
         }
     }
 

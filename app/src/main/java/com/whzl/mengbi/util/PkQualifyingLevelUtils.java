@@ -68,20 +68,21 @@ public class PkQualifyingLevelUtils {
         return levelIcon;
     }
 
-    public void measureImage(ImageView imageView, int id, LinearLayout linearLayout) {
+    public void measureImage(ImageView imageView, int id, LinearLayout linearLayout, float maxWidth) {
         linearLayout.removeAllViews();
+        float a = maxWidth / 57;
 
         ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
         if (id > 25) {
-            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 57f);
-            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 47f);
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), maxWidth);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 47f * a);
             imageView.setLayoutParams(layoutParams);
 
             String s = String.valueOf(id - 25);
             char[] chars = s.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 ImageView sumImg = new ImageView(linearLayout.getContext());
-                ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, UIUtil.dip2px(BaseApplication.getInstance(), 11f));
+                ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, UIUtil.dip2px(BaseApplication.getInstance(), 11 * a));
                 sumImg.setLayoutParams(layoutParams1);
                 char aChar = chars[i];
                 if (aChar == '0') {
@@ -119,32 +120,32 @@ public class PkQualifyingLevelUtils {
             return;
         }
         if (id > 20) {
-            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 54f);
-            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 41f);
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 54 * a);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 41 * a);
             imageView.setLayoutParams(layoutParams);
             return;
         }
         if (id > 15) {
-            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 47f);
-            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36f);
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 47 * a);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36 * a);
             imageView.setLayoutParams(layoutParams);
             return;
         }
         if (id > 10) {
-            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 47f);
-            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36f);
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 47 * a);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36 * a);
             imageView.setLayoutParams(layoutParams);
             return;
         }
         if (id > 5) {
-            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 44f);
-            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36f);
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 44 * a);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36 * a);
             imageView.setLayoutParams(layoutParams);
             return;
         }
         if (id > 0) {
-            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 32f);
-            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36f);
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 32 * a);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36 * a);
             imageView.setLayoutParams(layoutParams);
             return;
         }

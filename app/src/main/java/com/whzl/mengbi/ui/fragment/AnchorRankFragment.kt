@@ -50,7 +50,7 @@ class AnchorRankFragment : BaseFragment<BasePresenter<BaseView>>() {
         val rankAnchorInfo = qualifyingBean?.rankAnchorInfo
         GlideImageLoader.getInstace().displayImage(activity,
                 rankAnchorInfo?.rankId?.let { PkQualifyingLevelUtils.getInstance().getUserLevelIcon(it) }, iv_level_anchor_rank)
-        rankAnchorInfo?.rankId?.let { PkQualifyingLevelUtils.getInstance().measureImage(iv_level_anchor_rank, it, container_rank) }
+        rankAnchorInfo?.rankId?.let { PkQualifyingLevelUtils.getInstance().measureImage(iv_level_anchor_rank, it, container_rank,57f) }
         tv_level_anchor_rank.text = rankAnchorInfo?.rankName
         tv_current_rank.text = rankAnchorInfo?.currentRank.toString()
         tv_rank_pk_time.text = rankAnchorInfo?.rankPkTime.toString()

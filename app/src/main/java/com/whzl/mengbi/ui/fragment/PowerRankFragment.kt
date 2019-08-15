@@ -84,7 +84,7 @@ class PowerRankFragment : BasePullListFragment<PkComatRankListBean.ListBean, Bas
             itemView.tv_name_win_rate.text = listBean.anchorNickname
             GlideImageLoader.getInstace().displayImage(activity,
                     PkQualifyingLevelUtils.getInstance().getUserLevelIcon(listBean.rankInfo.rankId), itemView.iv_level_win_rate)
-            PkQualifyingLevelUtils.getInstance().measureImage(itemView.iv_level_win_rate, listBean.rankInfo.rankId, itemView.container_rank)
+            PkQualifyingLevelUtils.getInstance().measureImage(itemView.iv_level_win_rate, listBean.rankInfo.rankId, itemView.container_rank,57f)
             itemView.tv_level_win_rate.text = listBean.rankInfo.rankName
             itemView.tv_rate_win_rate.text = listBean.rankInfo.combatValue.toString()
         }
