@@ -27,6 +27,7 @@ public interface SpConfig {
     String ANCHORGRADEURL = "anchorgradeurl";
     String REDPACKETHELPURL = "redpackethelpurl";
     String KEY_BIND_MOBILE = "bind_mobile";
+    String PKQUALIFYINGHELPURL = "pkQualifyingHelpUrl";
     String GUESSHELP_URL = "guessHelpUrl";
     String GUIDE_TIME = "guide_time";
 

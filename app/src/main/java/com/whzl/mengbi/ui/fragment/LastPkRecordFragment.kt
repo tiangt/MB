@@ -1,11 +1,13 @@
 package com.whzl.mengbi.ui.fragment
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.whzl.mengbi.R
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
+import com.whzl.mengbi.model.entity.PkQualifyingBean
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
 
@@ -18,6 +20,10 @@ class LastPkRecordFragment : BasePullListFragment<Any, BasePresenter<BaseView>>(
     override fun init() {
         super.init()
         hideDividerShawdow(null)
+    }
+
+    override fun setLoadMoreEndShow(): Boolean {
+        return false
     }
 
     override fun loadData(action: Int, mPage: Int) {
@@ -34,5 +40,15 @@ class LastPkRecordFragment : BasePullListFragment<Any, BasePresenter<BaseView>>(
 
         }
 
+    }
+
+    companion object {
+        fun newInstance(bean: PkQualifyingBean?): AnchorRankFragment {
+            val anchorRankFragment = AnchorRankFragment()
+            val bundle = Bundle()
+            bundle.putParcelable("bean", bean)
+            anchorRankFragment.arguments = bundle
+            return anchorRankFragment
+        }
     }
 }

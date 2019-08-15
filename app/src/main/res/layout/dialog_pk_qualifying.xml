@@ -19,6 +19,7 @@
                 android:layout_height="148dp">
 
                 <ImageView
+                    android:id="@+id/iv_note_qualifying"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -34,24 +35,25 @@
                     android:src="@drawable/ic_season" />
 
                 <TextView
+                    android:id="@+id/tv_season_name"
                     android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="75dp"
                     android:gravity="center"
-                    android:text="S1"
+                    android:textAllCaps="true"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tv_season_time"
                     android:layout_width="183dp"
                     android:layout_height="22dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="110dp"
                     android:background="@drawable/shape_season"
                     android:gravity="center"
-                    android:text="距本赛季结束剩 5天12小时"
                     android:textColor="#ffd634"
                     android:textSize="12sp"
                     android:textStyle="bold" />

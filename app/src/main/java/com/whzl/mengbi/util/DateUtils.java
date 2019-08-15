@@ -387,4 +387,19 @@ public class DateUtils {
         }
         return hour + ":" + minute + ":" + second;
     }
+
+    /**
+     * 倒计时样式
+     */
+    public static String translateLastSecond2(long second) {
+        if (second < 3600) {
+            return "1小时";
+        }
+        int hour = (int) (second / 3600);
+        int day = hour / 24;
+        if (day > 0) {
+            return day + "天" + (hour - day * 24) + "小时";
+        }
+        return hour + "小时";
+    }
 }

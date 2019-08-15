@@ -100,12 +100,12 @@ public class BaseApplication extends Application {
         String arch = "";//cpu类型
         try {
             Class<?> clazz = Class.forName("android.os.SystemProperties");
-            Method get = clazz.getDeclaredMethod("get", new Class[] {String.class});
-            arch = (String)get.invoke(clazz, new Object[] {"ro.product.cpu.abi"});
-        } catch(Exception e) {
+            Method get = clazz.getDeclaredMethod("get", new Class[]{String.class});
+            arch = (String) get.invoke(clazz, new Object[]{"ro.product.cpu.abi"});
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        LogUtils.e("arch  "+arch);
+        LogUtils.e("arch  " + arch);
 
         instance = this;
         channel = WalleChannelReader.getChannel(getApplicationContext());
@@ -290,6 +290,7 @@ public class BaseApplication extends Application {
                         SPUtils.put(instance, SpConfig.ANCHORGRADEURL, appDataBean.anchorGradeUrl);
                         SPUtils.put(instance, SpConfig.REDPACKETHELPURL, appDataBean.redpacketHelpUrl);
                         SPUtils.put(instance, SpConfig.GUESSHELP_URL, appDataBean.guessHelpUrl);
+                        SPUtils.put(instance, SpConfig.PKQUALIFYINGHELPURL, appDataBean.pkQualifyingHelpUrl);
                         if (appDataBean.newUserAward != null) {
                             if (!TextUtils.isEmpty(appDataBean.newUserAward.guestUserAward)) {
                                 SPUtils.put(instance, SpConfig.AWARD_SHOW_TIME, System.currentTimeMillis());

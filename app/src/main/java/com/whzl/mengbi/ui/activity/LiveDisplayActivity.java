@@ -988,7 +988,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (pkQualifyingDialog != null && pkQualifyingDialog.isAdded()) {
             return;
         }
-        pkQualifyingDialog = PkQualifyingDialog.Companion.newInstance()
+        pkQualifyingDialog = PkQualifyingDialog.Companion.newInstance(qualifyingBean)
                 .setShowBottom(true)
                 .setOutCancel(true)
                 .show(getSupportFragmentManager());

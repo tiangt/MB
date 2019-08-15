@@ -3,6 +3,7 @@ package com.whzl.mengbi.model.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class PkQualifyingBean implements Parcelable {
         public int continueVictoryTime;
         public String rankName;
         public int rankId;
-        public List<BestTeamBean> bestTeam;
+        public ArrayList<BestTeamBean> bestTeam;
 
         public static class BestTeamBean implements Parcelable {
             /**
@@ -149,7 +150,7 @@ public class PkQualifyingBean implements Parcelable {
          * seasonName : S8
          */
 
-        public int seasonLeftSec;
+        public long seasonLeftSec;
         public String seasonName;
 
         @Override
@@ -159,7 +160,7 @@ public class PkQualifyingBean implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(this.seasonLeftSec);
+            dest.writeLong(this.seasonLeftSec);
             dest.writeString(this.seasonName);
         }
 
