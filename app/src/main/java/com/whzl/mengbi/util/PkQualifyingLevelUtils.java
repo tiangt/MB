@@ -1,6 +1,10 @@
 package com.whzl.mengbi.util;
 
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.ui.common.BaseApplication;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +65,47 @@ public class PkQualifyingLevelUtils {
             }
         }
         return levelIcon;
+    }
+
+    public void measureImage(ImageView imageView, int id) {
+        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+        if (id > 25) {
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 57f);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 47f);
+            imageView.setLayoutParams(layoutParams);
+            return;
+        }
+        if (id > 20) {
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 54f);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 41f);
+            imageView.setLayoutParams(layoutParams);
+            return;
+        }
+        if (id > 15) {
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 47f);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36f);
+            imageView.setLayoutParams(layoutParams);
+            return;
+        }
+        if (id > 10) {
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 47f);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36f);
+            imageView.setLayoutParams(layoutParams);
+            return;
+        }
+        if (id > 5) {
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 44f);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36f);
+            imageView.setLayoutParams(layoutParams);
+            return;
+        }
+        if (id > 0) {
+            layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 32f);
+            layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 36f);
+            imageView.setLayoutParams(layoutParams);
+            return;
+        }
+
     }
 
 }

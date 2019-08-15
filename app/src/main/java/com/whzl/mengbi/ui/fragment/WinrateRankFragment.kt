@@ -12,6 +12,7 @@ import com.whzl.mengbi.model.entity.PkVictoryRankListBean
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
 import com.whzl.mengbi.util.PkQualifyingLevelUtils
+import com.whzl.mengbi.util.UIUtil
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -81,6 +82,8 @@ class WinrateRankFragment : BasePullListFragment<PkVictoryRankListBean.ListBean,
             itemView.tv_name_win_rate.text = listBean.anchorNickname
             GlideImageLoader.getInstace().displayImage(activity,
                     PkQualifyingLevelUtils.getInstance().getUserLevelIcon(listBean.rankInfo.rankId), itemView.iv_level_win_rate)
+            PkQualifyingLevelUtils.getInstance().measureImage(itemView.iv_level_win_rate,listBean.rankInfo.rankId)
+
             itemView.tv_level_win_rate.text = listBean.rankInfo.rankName
             itemView.tv_rate_win_rate.text = "${String.format("%.2f", listBean.rankInfo.anchorVictoryRatio)}%"
         }
