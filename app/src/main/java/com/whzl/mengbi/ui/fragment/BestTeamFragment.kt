@@ -15,7 +15,7 @@ import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
 import com.whzl.mengbi.util.DateUtils
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import kotlinx.android.synthetic.main.item_best_team.view.*
-import java.util.ArrayList
+import java.util.*
 
 /**
  *
@@ -30,6 +30,10 @@ class BestTeamFragment : BasePullListFragment<PkQualifyingBean.RankAnchorInfoBea
     }
 
     override fun setLoadMoreEndShow(): Boolean {
+        return false
+    }
+
+    override fun setShouldRefresh(): Boolean {
         return false
     }
 
@@ -64,14 +68,14 @@ class BestTeamFragment : BasePullListFragment<PkQualifyingBean.RankAnchorInfoBea
             }
             val bestTeamBean = mDatas[position]
             if (bestTeamBean == null) {
-                GlideImageLoader.getInstace().displayCircleAvatar(activity, R.drawable.ic_empty_qualifying, itemView.iv_avatar_best_team)
+                GlideImageLoader.getInstace().circleCropImage(activity, R.drawable.ic_empty_qualifying, itemView.iv_avatar_best_team)
                 itemView.tv_name_best_team.setTextColor(Color.parseColor("#B3FFFFFF"))
                 itemView.tv_name_best_team.text = "虚位以待"
                 itemView.tv_tips_best_team.visibility = View.GONE
                 itemView.tv_score_best_team.visibility = View.GONE
             } else {
-                GlideImageLoader.getInstace().displayCircleAvatar(activity,
-                        ImageUrl.getAvatarUrl(bestTeamBean.userId.toLong(), "jpg", DateUtils.dateStrToMillis(bestTeamBean.lastUpdateTime,"yyyy-MM-dd HH:mm:ss")), itemView.iv_avatar_best_team)
+                GlideImageLoader.getInstace().circleCropImage(activity,
+                        ImageUrl.getAvatarUrl(bestTeamBean.userId.toLong(), "jpg", DateUtils.dateStrToMillis(bestTeamBean.lastUpdateTime, "yyyy-MM-dd HH:mm:ss")), itemView.iv_avatar_best_team)
                 itemView.tv_name_best_team.setTextColor(Color.parseColor("#FFFFFF"))
                 itemView.tv_name_best_team.text = bestTeamBean.nickname
                 itemView.tv_tips_best_team.visibility = View.VISIBLE

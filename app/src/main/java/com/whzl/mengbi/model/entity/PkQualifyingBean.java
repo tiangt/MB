@@ -20,7 +20,7 @@ public class PkQualifyingBean implements Parcelable {
 
     public RankAnchorInfoBean rankAnchorInfo;
     public SeasonInfoBean seasonInfo;
-    public List<LastestPkRecordBean> lastestPkRecord;
+    public ArrayList<LastestPkRecordBean> lastestPkRecord;
 
     public static class RankAnchorInfoBean implements Parcelable {
         /**

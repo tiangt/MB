@@ -33,7 +33,7 @@ class AnchorRankFragment : BaseFragment<BasePresenter<BaseView>>() {
         titles.add("最近排位")
         val fragments = ArrayList<Fragment>()
         fragments.add(BestTeamFragment.newInstance(qualifyingBean?.rankAnchorInfo?.bestTeam))
-        fragments.add(LastPkRecordFragment())
+        fragments.add(LastPkRecordFragment.newInstance(qualifyingBean?.lastestPkRecord))
         val fragmentPagerAdaper = FragmentPagerAdaper(childFragmentManager, fragments, titles)
         vp_anchor_rank.adapter = fragmentPagerAdaper
         vp_anchor_rank.offscreenPageLimit = 2
