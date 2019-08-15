@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="31dp"
         android:gravity="center"
-        android:text="战力值"
+        android:text="胜率"
         android:textColor="#B3FFFFFF"
         android:textSize="10sp" />
 

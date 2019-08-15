@@ -11,8 +11,9 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/tv_rank_win_rate"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textColor="#B3FFFFFF"
@@ -20,31 +21,58 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <TextView
+
+    <LinearLayout
         android:layout_width="143dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="17dp"
-        android:gravity="center"
-        android:text="主播"
-        android:textColor="#B3FFFFFF"
-        android:textSize="10sp" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <TextView
+        <ImageView
+            android:id="@+id/iv_avatar_win_rate"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <TextView
+            android:id="@+id/tv_name_win_rate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="54dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="17dp"
         android:gravity="center"
-        android:text="段位"
-        android:textColor="#B3FFFFFF"
-        android:textSize="10sp" />
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_level_win_rate"
+            android:layout_width="54dp"
+            android:layout_height="41dp" />
+
+        <TextView
+            android:id="@+id/tv_level_win_rate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="10sp" />
+    </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_rate_win_rate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="31dp"
         android:gravity="center"
-        android:text="战力值"
-        android:textColor="#B3FFFFFF"
-        android:textSize="10sp" />
+        android:textColor="#ffd634"
+        android:textSize="14sp" />
 
 </LinearLayout>

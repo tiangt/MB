@@ -3,13 +3,13 @@ package com.whzl.mengbi.api;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.FlopPriceBean;
 import com.whzl.mengbi.model.GuardListBean;
-import com.whzl.mengbi.model.entity.AnchorTopBean;
-import com.whzl.mengbi.model.entity.PkQualifyingBean;
-import com.whzl.mengbi.model.entity.RoyalCarListBean;
+import com.whzl.mengbi.model.entity.PkComatRankListBean;
+import com.whzl.mengbi.model.entity.PkVictoryRankListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AllGuessBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
+import com.whzl.mengbi.model.entity.AnchorTopBean;
 import com.whzl.mengbi.model.entity.AnchorWishBean;
 import com.whzl.mengbi.model.entity.AnchorWishRank;
 import com.whzl.mengbi.model.entity.ApiResult;
@@ -54,6 +54,7 @@ import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
+import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.PkRecordListBean;
 import com.whzl.mengbi.model.entity.PkTimeBean;
 import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
@@ -69,6 +70,7 @@ import com.whzl.mengbi.model.entity.RoomAnnouceBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
 import com.whzl.mengbi.model.entity.RoomUserBean;
+import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
 import com.whzl.mengbi.model.entity.RunWayValueBean;
 import com.whzl.mengbi.model.entity.SearchAnchorBean;
@@ -1343,4 +1345,24 @@ public interface Api {
     @POST("v1/pk/rank-anchor-info")
     @FormUrlEncoded
     Observable<ApiResult<PkQualifyingBean>> rankAnchorInfo(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取PK排位赛胜率排行榜
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/pk-victory-rank-list")
+    @FormUrlEncoded
+    Observable<ApiResult<PkVictoryRankListBean>> pkVictoryRankList(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取PK排位赛战力排行榜
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/pk/pk-combat-rank-list")
+    @FormUrlEncoded
+    Observable<ApiResult<PkComatRankListBean>> pkComatRankList(@FieldMap Map<String, String> params);
 }
