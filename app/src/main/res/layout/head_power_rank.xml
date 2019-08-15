@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="34dp"
     android:layout_marginTop="30dp"
+    android:background="@drawable/head_power_rank"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
     <TextView
-        android:layout_width="32dp"
+        android:layout_width="34dp"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:text="排名"
@@ -15,7 +16,7 @@
         android:textSize="10sp" />
 
     <TextView
-        android:layout_width="143dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
         android:gravity="center"
@@ -26,7 +27,7 @@
     <TextView
         android:layout_width="54dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="17dp"
+        android:layout_marginLeft="10dp"
         android:gravity="center"
         android:text="段位"
         android:textColor="#B3FFFFFF"

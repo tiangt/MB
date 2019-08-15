@@ -67,6 +67,8 @@
                     android:id="@+id/viewpager_qualifying"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/padding_12"
+                    android:layout_marginRight="@dimen/padding_12"
                     android:overScrollMode="never" />
 
                 <com.whzl.mengbi.ui.widget.tablayout.TabLayout

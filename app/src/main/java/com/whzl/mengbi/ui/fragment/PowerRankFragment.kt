@@ -39,6 +39,10 @@ class PowerRankFragment : BasePullListFragment<PkComatRankListBean.ListBean, Bas
         return false
     }
 
+    override fun setShouldRefresh(): Boolean {
+        return false
+    }
+
     override fun loadData(action: Int, mPage: Int) {
         ApiFactory.getInstance().getApi(Api::class.java)
                 .pkComatRankList(ParamsUtils.getSignPramsMap(HashMap()))
@@ -80,7 +84,7 @@ class PowerRankFragment : BasePullListFragment<PkComatRankListBean.ListBean, Bas
             itemView.tv_name_win_rate.text = listBean.anchorNickname
             GlideImageLoader.getInstace().displayImage(activity,
                     PkQualifyingLevelUtils.getInstance().getUserLevelIcon(listBean.rankInfo.rankId), itemView.iv_level_win_rate)
-            PkQualifyingLevelUtils.getInstance().measureImage(itemView.iv_level_win_rate,listBean.rankInfo.rankId)
+            PkQualifyingLevelUtils.getInstance().measureImage(itemView.iv_level_win_rate, listBean.rankInfo.rankId, itemView.container_rank)
             itemView.tv_level_win_rate.text = listBean.rankInfo.rankName
             itemView.tv_rate_win_rate.text = listBean.rankInfo.combatValue.toString()
         }

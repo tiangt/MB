@@ -2,6 +2,7 @@ package com.whzl.mengbi.util;
 
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -67,12 +68,54 @@ public class PkQualifyingLevelUtils {
         return levelIcon;
     }
 
-    public void measureImage(ImageView imageView, int id) {
+    public void measureImage(ImageView imageView, int id, LinearLayout linearLayout) {
+        linearLayout.removeAllViews();
+
         ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
         if (id > 25) {
             layoutParams.width = UIUtil.dip2px(BaseApplication.getInstance(), 57f);
             layoutParams.height = UIUtil.dip2px(BaseApplication.getInstance(), 47f);
             imageView.setLayoutParams(layoutParams);
+
+            String s = String.valueOf(id - 25);
+            char[] chars = s.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                ImageView sumImg = new ImageView(linearLayout.getContext());
+                ViewGroup.LayoutParams layoutParams1 = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, UIUtil.dip2px(BaseApplication.getInstance(), 11f));
+                sumImg.setLayoutParams(layoutParams1);
+                char aChar = chars[i];
+                if (aChar == '0') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_0);
+                }
+                if (aChar == '1') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_1);
+                }
+                if (aChar == '2') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_2);
+                }
+                if (aChar == '3') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_3);
+                }
+                if (aChar == '4') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_4);
+                }
+                if (aChar == '5') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_5);
+                }
+                if (aChar == '6') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_6);
+                }
+                if (aChar == '7') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_7);
+                }
+                if (aChar == '8') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_8);
+                }
+                if (aChar == '9') {
+                    sumImg.setImageResource(R.drawable.num_qualifying_9);
+                }
+                linearLayout.addView(sumImg);
+            }
             return;
         }
         if (id > 20) {
