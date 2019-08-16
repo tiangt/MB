@@ -2,17 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/gift_anim_view"
     android:layout_width="match_parent"
-    android:layout_height="51dp"
+    android:layout_height="54dp"
     android:layout_marginStart="3dp">
 
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/iv_anim_bg"
-        android:layout_width="225dp"
+        android:layout_width="255dp"
         android:layout_height="41dp"
         android:layout_alignParentBottom="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/gift_anim_normal_bg" />
+        android:layout_marginBottom="3dp"
+        android:scaleType="fitXY" />
 
 
     <com.whzl.mengbi.ui.widget.view.CircleImageView
@@ -21,7 +21,7 @@
         android:layout_height="39dp"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="1dp"
-        android:layout_marginBottom="1dp" />
+        android:layout_marginBottom="4dp" />
 
 
     <LinearLayout
@@ -30,6 +30,7 @@
         android:layout_height="41dp"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="6dp"
+        android:layout_marginBottom="3dp"
         android:layout_toRightOf="@id/iv_anim_gift_avatar"
         android:gravity="center_vertical"
         android:minWidth="54dp"
@@ -58,7 +59,8 @@
         android:id="@+id/iv_anim_gift_icon"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginLeft="9dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginBottom="3dp"
         android:layout_toRightOf="@id/ll_info_container"
         android:visibility="invisible" />
 
@@ -68,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="2dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="6dp"
         android:layout_toRightOf="@id/iv_anim_gift_icon"
         android:text="连送"
         android:textSize="14sp" />
@@ -79,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/tv_combo_time_desc"
         android:layout_marginLeft="4dp"
+        android:layout_marginBottom="3dp"
         android:layout_toRightOf="@id/iv_anim_gift_icon"
         android:textColor="#f8da36"
         android:textSize="12sp"
@@ -91,10 +94,10 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/tv_combo_time_desc"
         android:gravity="bottom"
-        android:paddingBottom="4dp"
         android:text="× "
         android:textColor="#faf9f9"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:textStyle="italic" />
 
     <com.whzl.mengbi.ui.widget.view.GiftTextView
         android:id="@+id/tv_combo_time"
@@ -102,8 +105,10 @@
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/tv_x_gift_count"
         android:gravity="bottom"
+        android:text="1"
         android:textColor="#faf9f9"
-        android:textSize="34sp" />
+        android:textSize="30sp"
+        android:textStyle="italic" />
 
 </RelativeLayout>
 

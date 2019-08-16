@@ -6,10 +6,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,21 +17,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.gif.GifDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import pl.droidsonroids.gif.AnimationListener;
+import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
 
@@ -64,7 +58,8 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
      */
     private Runnable mCurrentAnimRunnable;
 
-    ImageView ivGift, ivAvatar;
+    ImageView ivGift;
+    ImageView ivAvatar;
     TextView tvFromNickName, tvCount, tvGiftName;
 
     private AnimJson.ContextEntity mGift;
@@ -80,8 +75,9 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
     private LeftGiftAnimationStatusListener mGiftAnimationListener;
     private View rootView;
     private TextView tvComboTime;
-    private ImageView ivBg;
+    private GifImageView ivBg;
     private int mAnimType;
+    private GifDrawable gifDrawable;
 
     public ComboGiftFrameLayout(Context context) {
         this(context, null);
@@ -104,9 +100,9 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
         tvCount = rootView.findViewById(R.id.tv_anim_gift_count);
         tvComboTime = rootView.findViewById(R.id.tv_combo_time);
         TextView tvX = rootView.findViewById(R.id.tv_x_gift_count);
-        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "FZSZJW.TTF");
-        tvX.setTypeface(typeface, Typeface.ITALIC);
-        tvComboTime.setTypeface(typeface, Typeface.ITALIC);
+//        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "FZSZJW.TTF");
+//        tvX.setTypeface(typeface, Typeface.ITALIC);
+//        tvComboTime.setTypeface(typeface, Typeface.ITALIC);
     }
 
 
@@ -321,23 +317,23 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
         String avatarUrl = ImageUrl.getAvatarUrl(mGift.getUserId(), "jpg", mGift.getLastUpdateTime());
         GlideImageLoader.getInstace().displayImage(getContext(), avatarUrl, ivAvatar);
         GlideImageLoader.getInstace().displayImage(getContext(), mGift.getGiftUrl(), ivGift);
-//        switch (mGift.getCount()) {
-//            case 66:
-//                ivBg.setImageResource(R.drawable.combo_gift_66_1_bg);
-//                break;
-//            case 99:
-//                ivBg.setImageResource(R.drawable.combo_gift_99_1_bg);
-//                break;
-//            case 188:
-//                ivBg.setImageResource(R.drawable.combo_gift_188_1_bg);
-//                break;
-//            case 520:
-//                ivBg.setImageResource(R.drawable.combo_gift_520_1_bg);
-//                break;
-//            case 1314:
-//                ivBg.setImageResource(R.drawable.combo_gift_1314_1_bg);
-//                break;
-//        }
+        switch (mGift.getCount()) {
+            case 66:
+                ivBg.setBackgroundResource(R.drawable.shape_combo_66);
+                break;
+            case 99:
+                ivBg.setImageResource(R.drawable.shape_combo_99);
+                break;
+            case 188:
+                ivBg.setImageResource(R.drawable.shape_combo_188);
+                break;
+            case 520:
+                ivBg.setImageResource(R.drawable.shape_combo_520);
+                break;
+            case 1314:
+                ivBg.setImageResource(R.drawable.shape_combo_1314);
+                break;
+        }
     }
 
     public int getColor() {
@@ -369,7 +365,7 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
         hideView();
 
         //礼物飞入
-        ObjectAnimator flyFromLtoR2 = GiftAnimationUtil.createFlyFromLtoR(ivGift, -UIUtil.getScreenWidthPixels(getContext()), 0, 100, new DecelerateInterpolator());
+        ObjectAnimator flyFromLtoR2 = GiftAnimationUtil.createFlyFromLtoR(ivGift, -UIUtil.getScreenWidthPixels(getContext()), 0, 300, new DecelerateInterpolator());
         flyFromLtoR2.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -378,6 +374,36 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
 
             @Override
             public void onAnimationEnd(Animator animation) {
+
+            }
+        });
+
+        try {
+            switch (mGift.getCount()) {
+                case 66:
+                    gifDrawable = new GifDrawable(context.getResources(), R.drawable.gif_combo_66);
+                    break;
+                case 99:
+                    gifDrawable = new GifDrawable(context.getResources(), R.drawable.gif_combo_99);
+                    break;
+                case 188:
+                    gifDrawable = new GifDrawable(context.getResources(), R.drawable.gif_combo_188);
+                    break;
+                case 520:
+                    gifDrawable = new GifDrawable(context.getResources(), R.drawable.gif_combo_520);
+                    break;
+                case 1314:
+                    gifDrawable = new GifDrawable(context.getResources(), R.drawable.gif_combo_1314);
+                    break;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        gifDrawable.setLoopCount(1);
+        gifDrawable.addAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationCompleted(int loopNumber) {
                 comboAnimation(true);
             }
         });
@@ -396,25 +422,7 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 flyFromLtoR2.start();
-//                RequestOptions options = new RequestOptions().skipMemoryCache(true);//配置
-//                Glide.with(context).asGif()
-//                        .apply(options)//应用配置
-//                        .load(R.drawable.combo_gift_66)
-//                        .listener(new RequestListener<GifDrawable>() {//添加监听，设置播放次数
-//                            @Override
-//                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
-//                                return false;
-//                            }
-//
-//                            @Override
-//                            public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
-//                                if (resource instanceof GifDrawable) {
-//                                    resource.setLoopCount(1);//只播放一次
-//                                }
-//                                return false;
-//                            }
-//                        })
-//                        .into(ivBg);
+                ivBg.setImageDrawable(gifDrawable);
             }
         });
 //        return animatorSet;
