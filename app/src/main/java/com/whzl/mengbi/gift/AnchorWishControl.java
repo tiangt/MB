@@ -9,10 +9,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 import com.whzl.mengbi.chat.room.message.events.AnchorWishEndEvent;
-import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.common.BaseApplication;
-import com.whzl.mengbi.util.StringUtils;
 import com.whzl.mengbi.util.UIUtil;
 
 import java.util.ArrayList;
