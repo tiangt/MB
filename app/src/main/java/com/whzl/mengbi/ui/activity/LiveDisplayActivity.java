@@ -72,7 +72,7 @@ import com.whzl.mengbi.chat.room.message.events.GuardOpenEvent;
 import com.whzl.mengbi.chat.room.message.events.GuessEvent;
 import com.whzl.mengbi.chat.room.message.events.HeadLineEvent;
 import com.whzl.mengbi.chat.room.message.events.KickoutEvent;
-import com.whzl.mengbi.chat.room.message.events.LuckGiftBigEvent;
+import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.OneKeyOfflineEvent;
 import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
@@ -115,6 +115,7 @@ import com.whzl.mengbi.gift.AnchorWishControl;
 import com.whzl.mengbi.gift.GifSvgaControl;
 import com.whzl.mengbi.gift.GiftControl;
 import com.whzl.mengbi.gift.HeadLineControl;
+import com.whzl.mengbi.gift.LuckGiftControl;
 import com.whzl.mengbi.gift.PkControl;
 import com.whzl.mengbi.gift.QixiControl;
 import com.whzl.mengbi.gift.RedPackRunWayControl;
@@ -294,6 +295,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ProgressBar progressBar;
     @BindView(R.id.tv_run_way_gift)
     AutoScrollTextView runWayText;
+    @BindView(R.id.tv_lucky_gift)
+    TextView tvLuckyGift;
     @BindView(R.id.audience_recycler)
     RecyclerView mAudienceRecycler;
     @BindView(R.id.view_message_notify)
@@ -436,6 +439,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private GiftControl giftControl;
     private String mStream;
     private RunWayGiftControl mRunWayGiftControl;
+    private LuckGiftControl mLuckyGiftControl;
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
     public boolean isGuard;
     private boolean isVip;
@@ -1198,6 +1202,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(LuckGiftEvent luckGiftEvent) {
+        if (mLuckyGiftControl == null) {
+            mLuckyGiftControl = new LuckGiftControl(tvLuckyGift);
+        }
+        mLuckyGiftControl.load(luckGiftEvent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(AnimEvent animEvent) {
         if ("TOTAl".equals(animEvent.getAnimJson().getAnimType())
                 || "DIV".equals(animEvent.getAnimJson().getAnimType())) {
@@ -1242,12 +1254,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(AnchorLevelChangeEvent anchorLevelChangeEvent) {
         initRunWayBroad();
         mRunWayBroadControl.load(anchorLevelChangeEvent);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(LuckGiftBigEvent luckGiftBigEvent) {
-        initRunWayBroad();
-        mRunWayBroadControl.load(luckGiftBigEvent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -2401,6 +2407,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         if (mRunWayGiftControl != null) {
             mRunWayGiftControl.destroy();
+        }
+        if (mLuckyGiftControl != null) {
+            mLuckyGiftControl.destroy();
         }
         if (showGuardAnim != null) {
             showGuardAnim.cancel();

@@ -53,10 +53,12 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
     }
 
     override fun setupView() {
-        if (type == ANCHOR)
+        if (type == ANCHOR) {
             ll_bottom_peak.setBackgroundResource(R.drawable.bg_bottom_peak)
-        else {
+            tv_tips_peak.text = "魅力"
+        } else {
             ll_bottom_peak.setBackgroundResource(R.drawable.bg_bottom_peak2)
+            tv_tips_peak.text = "贡献"
         }
 
         recycler_peak.layoutManager = LinearLayoutManager(this)
@@ -109,11 +111,13 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                 }
                 listBean.upAndDownNumber > 0L -> {
                     itemView.tv_up_down.text = "${Math.abs(listBean.upAndDownNumber)}"
+                    itemView.tv_up_down.setTextColor(Color.parseColor("#6ba2ce"))
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
                             R.drawable.ic_up_peak, itemView.iv_up_down)
                 }
                 listBean.upAndDownNumber < 0L -> {
                     itemView.tv_up_down.text = "${Math.abs(listBean.upAndDownNumber)}"
+                    itemView.tv_up_down.setTextColor(Color.parseColor("#ff2c5f"))
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
                             R.drawable.ic_down_peak, itemView.iv_up_down)
                 }
@@ -121,8 +125,8 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
 
             if (type == ANCHOR) {
                 GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
-                        ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue), itemView.iv_level_peak)
-                itemView.tv_nick_peak.text = listBean.anchorNickname
+                        ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevel), itemView.iv_level_peak)
+                itemView.tv_nick_peak.text = listBean.nickname
             } else {
                 GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
                         ResourceMap.getResourceMap().getUserLevelIcon(listBean.userLevel), itemView.iv_level_peak)
@@ -167,10 +171,11 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                 }
                 val listBean = datas[i]
                 if (type == ANCHOR) {
-                    GlideImageLoader.getInstace().displayImage(this@PeakRankActivity, listBean.anchorAvatar, ivAvatars[i])
-                    tvNicks[i].text = listBean.anchorNickname
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
-                            ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevelValue), ivLevels[i])
+                            ImageUrl.getAvatarUrl(listBean.anchorId,"jpg",DateUtils.dateStrToMillis(listBean.lastUpdateTime,"yyyy-MM-dd HH:mm:ss")), ivAvatars[i])
+                    tvNicks[i].text = listBean.nickname
+                    GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
+                            ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevel), ivLevels[i])
                     containers[i].clickDelay {
                         startActivity(Intent(this@PeakRankActivity, LiveDisplayActivity::class.java)
                                 .putExtra(LiveDisplayActivity.PROGRAMID, listBean.programId))

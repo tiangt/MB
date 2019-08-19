@@ -75,10 +75,10 @@
                     android:textSize="10sp" />
 
                 <TextView
+                    android:id="@+id/tv_tips_peak"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="end"
-                    android:text="贡献"
                     android:textColor="#fff7f7"
                     android:textSize="10sp" />
             </LinearLayout>

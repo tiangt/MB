@@ -50,12 +50,12 @@ class AnchorRankFragment : BaseFragment<BasePresenter<BaseView>>() {
         val rankAnchorInfo = qualifyingBean?.rankAnchorInfo
         GlideImageLoader.getInstace().displayImage(activity,
                 rankAnchorInfo?.rankId?.let { PkQualifyingLevelUtils.getInstance().getUserLevelIcon(it) }, iv_level_anchor_rank)
-        rankAnchorInfo?.rankId?.let { PkQualifyingLevelUtils.getInstance().measureImage(iv_level_anchor_rank, it, container_rank,57f) }
+        rankAnchorInfo?.rankId?.let { PkQualifyingLevelUtils.getInstance().measureImage(iv_level_anchor_rank, it, container_rank, 57f) }
         tv_level_anchor_rank.text = rankAnchorInfo?.rankName
         tv_current_rank.text = rankAnchorInfo?.currentRank.toString()
         tv_rank_pk_time.text = rankAnchorInfo?.rankPkTime.toString()
         tv_victory_time_anchor_rank.text = rankAnchorInfo?.victoryTime.toString()
-        tv_victory_ratio.text = String.format("%.2f", rankAnchorInfo?.victoryRatio?.times(100))
+        tv_victory_ratio.text = "${String.format("%.1f", rankAnchorInfo?.victoryRatio?.times(100))}%"
         tv_continue_victory_time.text = rankAnchorInfo?.continueVictoryTime.toString()
         val plus = rankAnchorInfo?.haveValue?.plus(rankAnchorInfo.nextRankNeedValue)
         tv_progress_anchor_rank.text = "${rankAnchorInfo?.haveValue}/$plus"

@@ -36,15 +36,13 @@ public class AnchorTopBean {
         public String lastUpdateTime;
         public int roomUserCount;
         public String cover;
-        public int anchorId;
+        public long anchorId;
         public long userId;
-        public String anchorNickname;
         public String nickname;
         public String anchorLevelName;
-        public int anchorLevelValue;
+        public int anchorLevel;
         public int userLevel;
         public long upAndDownNumber;
-        public String anchorAvatar;
 
     }
 

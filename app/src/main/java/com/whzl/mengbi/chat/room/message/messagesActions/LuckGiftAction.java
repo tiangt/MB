@@ -2,6 +2,7 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
 
+import com.whzl.mengbi.chat.room.message.events.LuckGiftEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.LuckGiftJson;
 import com.whzl.mengbi.chat.room.message.messages.LuckGiftMessage;
@@ -17,7 +18,7 @@ public class LuckGiftAction implements Actions {
         if (null == luckGiftJson) {
             return;
         }
-
-        EventBus.getDefault().post(new UpdatePubChatEvent(new LuckGiftMessage(luckGiftJson,context)));
+        EventBus.getDefault().post(new LuckGiftEvent(luckGiftJson));
+        EventBus.getDefault().post(new UpdatePubChatEvent(new LuckGiftMessage(luckGiftJson, context)));
     }
 }

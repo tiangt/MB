@@ -22,7 +22,7 @@
         android:id="@+id/tv_name_best_team"
         android:layout_width="112dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
+        android:layout_marginLeft="4dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/white"
