@@ -75,7 +75,7 @@ public class HomeModelImpl implements HomeModel {
         liveMap.put("page", pager);
         liveMap.put("pageSize", 50);
         liveMap.put("sortProperty", sortProperty);
-        liveMap.put("sortType", "ASC");
+        liveMap.put("sortType", "DESC");
         RequestManager.getInstance(BaseApplication.getInstance()).requestAsyn(URLContentUtils.SHOW_ANCHOR, RequestManager.TYPE_POST_JSON, liveMap,
                 new RequestManager.ReqCallBack<Object>() {
                     @Override

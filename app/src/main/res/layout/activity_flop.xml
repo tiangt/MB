@@ -177,7 +177,7 @@
                         android:id="@+id/tv_note_luck_flop"
                         android:layout_width="108dp"
                         android:layout_height="wrap_content"
-                        android:gravity="bottom"
+                        android:gravity="bottom|center_horizontal"
                         android:textColor="@color/white"
                         android:textSize="8sp"
                         app:layout_constraintLeft_toLeftOf="parent"

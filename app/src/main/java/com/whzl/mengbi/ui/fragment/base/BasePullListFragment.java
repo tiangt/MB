@@ -11,6 +11,7 @@ import com.whzl.mengbi.contract.BasePresenter;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.widget.view.PullRecycler;
+import com.whzl.mengbi.util.UIUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -206,5 +207,9 @@ public abstract class BasePullListFragment<K, T extends BasePresenter> extends B
         }
         flContain.setVisibility(View.VISIBLE);
         flContain.addView(view);
+    }
+
+    protected void setTopMargin(float topMargin) {
+        getView().setPadding(0, UIUtil.dip2px(getMyActivity(),topMargin),0,0);
     }
 }

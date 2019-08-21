@@ -172,7 +172,7 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                 val listBean = datas[i]
                 if (type == ANCHOR) {
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
-                            ImageUrl.getAvatarUrl(listBean.anchorId,"jpg",DateUtils.dateStrToMillis(listBean.lastUpdateTime,"yyyy-MM-dd HH:mm:ss")), ivAvatars[i])
+                            ImageUrl.getAvatarUrl(listBean.anchorId, "jpg", DateUtils.dateStrToMillis(listBean.lastUpdateTime, "yyyy-MM-dd HH:mm:ss")), ivAvatars[i])
                     tvNicks[i].text = listBean.nickname
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
                             ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevel), ivLevels[i])
@@ -232,7 +232,7 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
 
     private fun getRichTop() {
         val hashMap = HashMap<String, String>()
-        hashMap["userId"] = SPUtils.get(this, SpConfig.KEY_USER_ID, 0L).toString()
+        hashMap["userId"] = anchorId.toString()
         ApiFactory.getInstance()
                 .getApi(Api::class.java)
                 .userTopRank(ParamsUtils.getSignPramsMap(hashMap))

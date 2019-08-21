@@ -322,16 +322,16 @@ public class ComboGiftFrameLayout extends FrameLayout implements Handler.Callbac
                 ivBg.setBackgroundResource(R.drawable.shape_combo_66);
                 break;
             case 99:
-                ivBg.setImageResource(R.drawable.shape_combo_99);
+                ivBg.setBackgroundResource(R.drawable.shape_combo_99);
                 break;
             case 188:
-                ivBg.setImageResource(R.drawable.shape_combo_188);
+                ivBg.setBackgroundResource(R.drawable.shape_combo_188);
                 break;
             case 520:
-                ivBg.setImageResource(R.drawable.shape_combo_520);
+                ivBg.setBackgroundResource(R.drawable.shape_combo_520);
                 break;
             case 1314:
-                ivBg.setImageResource(R.drawable.shape_combo_1314);
+                ivBg.setBackgroundResource(R.drawable.shape_combo_1314);
                 break;
         }
     }

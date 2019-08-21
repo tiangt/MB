@@ -35,6 +35,7 @@ class WinrateRankFragment : BasePullListFragment<PkVictoryRankListBean.ListBean,
         val titleView = LayoutInflater.from(activity).inflate(R.layout.head_win_rate, pullView, false)
         addHeadTips(titleView)
         pullView.setBackgroundResource(R.drawable.bg_power_rank)
+        setTopMargin(42f)
     }
 
     override fun setLoadMoreEndShow(): Boolean {
@@ -89,7 +90,7 @@ class WinrateRankFragment : BasePullListFragment<PkVictoryRankListBean.ListBean,
             PkQualifyingLevelUtils.getInstance().measureImage(itemView.iv_level_win_rate, listBean.rankInfo.rankId, itemView.container_rank, 57f)
 
             itemView.tv_level_win_rate.text = listBean.rankInfo.rankName
-            itemView.tv_rate_win_rate.text = "${String.format("%.2f", listBean.rankInfo.anchorVictoryRatio * 100)}%"
+            itemView.tv_rate_win_rate.text = "${String.format("%.1f", listBean.rankInfo.anchorVictoryRatio * 100)}%"
         }
 
     }

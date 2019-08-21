@@ -21,14 +21,13 @@
         android:layout_height="45dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="22dp"
         android:paddingRight="12dp">
 
         <TextView
             android:id="@+id/tv_num_peak"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:gravity="center"
+            android:layout_width="36.5dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
             android:textColor="#fefefe"
             android:textSize="10sp" />
 
@@ -36,7 +35,7 @@
             android:id="@+id/iv_level_peak"
             android:layout_width="35.5dp"
             android:layout_height="13.5dp"
-            android:layout_marginLeft="14dp" />
+            android:layout_marginLeft="15dp" />
 
         <TextView
             android:id="@+id/tv_nick_peak"
@@ -49,7 +48,8 @@
 
         <LinearLayout
             android:layout_width="88.5dp"
-            android:layout_height="24.5dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -62,7 +62,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="end"
                 android:orientation="horizontal">
 

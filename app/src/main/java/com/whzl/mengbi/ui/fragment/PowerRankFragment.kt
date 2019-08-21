@@ -33,6 +33,7 @@ class PowerRankFragment : BasePullListFragment<PkComatRankListBean.ListBean, Bas
         val titleView = LayoutInflater.from(activity).inflate(R.layout.head_power_rank, pullView, false)
         addHeadTips(titleView)
         pullView.setBackgroundResource(R.drawable.bg_power_rank)
+        setTopMargin(42f)
     }
 
     override fun setLoadMoreEndShow(): Boolean {

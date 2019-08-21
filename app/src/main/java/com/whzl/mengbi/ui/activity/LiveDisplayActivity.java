@@ -547,8 +547,12 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(fragments[0]);
 //        fragmentTransaction.remove(fragments[1]);
+        ChatListFragment chatListFragment = ChatListFragment.newInstance(mProgramId);
+        fragments = new Fragment[]{chatListFragment};
+        fragmentTransaction.add(R.id.fragment_container, fragments[0]);
         fragmentTransaction.commitNow();
-        initFragment();
+//        fragmentTransaction.commitNow();
+//        initFragment();
         loadData();
 
         if (!findIndexAnchor(updownAnchors)) {
@@ -842,7 +846,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
     @OnClick({R.id.iv_host_avatar, R.id.btn_follow, R.id.btn_close, R.id.btn_send_gift
-            , R.id.tv_popularity, R.id.btn_chat, R.id.btn_chat_private, R.id.fragment_container, R.id.rl_guard_number
+            , R.id.tv_popularity, R.id.btn_chat, R.id.btn_chat_private, R.id.rl_guard_number
             , R.id.btn_share, R.id.btn_free_gift, R.id.btn_more, R.id.ll_black_room, R.id.iv_qualifying})
     public void onClick(View view) {
         switch (view.getId()) {
