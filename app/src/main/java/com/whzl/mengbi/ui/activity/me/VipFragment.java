@@ -37,7 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * @author niko
+ * @author nobody
  * @date 2018/9/18
  */
 public class VipFragment extends BaseFragment {

@@ -2,9 +2,6 @@ package com.whzl.mengbi.ui.activity.me;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
@@ -21,7 +18,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 
 /**
- * @author niko
+ * @author nobody
  * @date 2018/9/18
  */
 public class ShopActivity extends BaseActivity {
@@ -31,8 +28,6 @@ public class ShopActivity extends BaseActivity {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
 
-    //    private Fragment[] fragments;
-    private int[] ids;
     private int currentSelectedIndex = 0;
     private ArrayList<String> titles;
     private ArrayList<Fragment> fragments;
@@ -78,15 +73,6 @@ public class ShopActivity extends BaseActivity {
         viewpager.setAdapter(fragmentPagerAdaper);
         viewpager.setOffscreenPageLimit(4);
         tabShop.setupWithViewPager(viewpager);
-//        for (int i = 0; i < tabShop.getTabCount(); i++) {
-//            View view = LayoutInflater.from(ShopActivity.this).inflate(R.layout.tab_shop, null);
-//            TextView tvTitle = view.findViewById(R.id.tv_title);
-//            tvTitle.setText(titles.get(i));
-//            tabShop.getTabAt(i).setCustomView(view);
-//            if (i == 0) {
-//                view.findViewById(R.id.tv_tips).setVisibility(View.VISIBLE);
-//            }
-//        }
         viewpager.postDelayed(() -> viewpager.setCurrentItem(currentSelectedIndex), 300);
     }
 

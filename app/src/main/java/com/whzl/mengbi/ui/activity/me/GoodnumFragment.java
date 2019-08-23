@@ -63,7 +63,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.whzl.mengbi.util.ToastUtils.showToast;
 
 /**
- * @author niko
+ * @author nobody
  * @date 2018/9/19
  */
 public class GoodnumFragment extends BaseFragment {

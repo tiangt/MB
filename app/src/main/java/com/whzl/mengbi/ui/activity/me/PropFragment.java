@@ -45,7 +45,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 /**
- * @author niko
+ * @author nobody
  * @date 2018/9/18
  */
 public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean, BasePresenter> {
@@ -123,7 +123,7 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
             tvPrice.setText(LightSpanString.getLightString
                     (AmountConversionUitls.amountConversionFormat(listBean.rent), Color.parseColor("#f4545a")));
             tvPrice.append(LightSpanString.getLightString(" 萌币/个", Color.parseColor("#70505050")));
-//            tvWelfare.setText(getString(R.string.welfare_item_prop_shop, listBean.givingMengDou));
+            tvWelfare.setText(getString(R.string.welfare_item_prop_shop, listBean.givingMengDou));
             tvUse.setText(listBean.remark);
             btnBuy.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -151,11 +151,6 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
                 holder.setOnClickListener(R.id.tv_reduce_diaolog_prop_shop, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        num -= 1;
-//                        if (num < 1) {
-//                            num = 1;
-//                        }
-//                        holder.setText(R.id.tv_num_diaolog_prop_shop, String.valueOf(num));
                         if (Integer.parseInt(tvNum.getText().toString()) <= 1) {
                             return;
                         }
@@ -166,10 +161,6 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
                 holder.setOnClickListener(R.id.tv_add_diaolog_prop_shop, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        num += 1;
-//                        if (num > 9999) {
-//                        }
-//                        holder.setText(R.id.tv_num_diaolog_prop_shop, String.valueOf(num));
                         if (Integer.parseInt(tvNum.getText().toString()) >= 9999) {
                             return;
                         }
@@ -235,9 +226,9 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
         view.setText("");
         view.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(totalRent),
                 Color.parseColor("#f4545a")));
-        view.append(LightSpanString.getLightString(" 萌币", Color.parseColor("#646464")));
-//        view.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(totalMengdou),
-//                Color.parseColor("#f4545a")));
-//        view.append(LightSpanString.getLightString(" 萌豆 ）", Color.parseColor("#646464")));
+        view.append(LightSpanString.getLightString(" 萌币（ 赠送", Color.parseColor("#646464")));
+        view.append(LightSpanString.getLightString(AmountConversionUitls.amountConversionFormat(totalMengdou),
+                Color.parseColor("#f4545a")));
+        view.append(LightSpanString.getLightString(" 萌豆 ）", Color.parseColor("#646464")));
     }
 }

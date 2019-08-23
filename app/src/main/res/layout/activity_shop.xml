@@ -51,7 +51,7 @@
                     android:text="送萌豆"
                     android:textColor="#fffefe"
                     android:textSize="8sp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </RelativeLayout>
 
 
