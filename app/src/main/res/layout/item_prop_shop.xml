@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/iv_item_prop_shop"
-        android:layout_width="128dp"
+        android:layout_width="80dp"
         android:layout_height="80dp"
         android:scaleType="fitXY" />
 

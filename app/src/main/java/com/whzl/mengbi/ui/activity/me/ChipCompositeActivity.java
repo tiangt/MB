@@ -61,9 +61,7 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
     RelativeLayout rlEmpty;
 
     private ArrayList<CompositionListInfo.DataBean.ListBean> mParentList = new ArrayList<>();
-    private ArrayList<CompositionListInfo.DataBean.ListBean.DetailDtosBean> mChildList = new ArrayList<>();
     private BaseListAdapter adapter;
-    private BaseListAdapter childAdapter;
     private int mCurrentPager = 1;
 
     @Override
@@ -79,11 +77,11 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
         initRecycler();
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setOnLoadMoreListener(this);
-        getCompositeList(mCurrentPager++);
     }
 
     @Override
     protected void loadData() {
+        getCompositeList(mCurrentPager++);
     }
 
     @OnClick({R.id.tv_menu_text})
@@ -165,7 +163,7 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
         @Override
         public void onBindViewHolder(int position) {
             if (mParentList != null && mParentList.get(position).goodsDetails != null) {
-                mChildList.clear();
+                ArrayList<CompositionListInfo.DataBean.ListBean.DetailDtosBean> mChildList = new ArrayList<>();
                 for (int i = 0; i < mParentList.get(position).goodsDetails.size(); i++) {
                     chipName.setText(mParentList.get(position).goodsDetails.get(i).goodsName);
                     String chipPic = mParentList.get(position).goodsDetails.get(i).goodsPic;
@@ -176,10 +174,11 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
                         btnComposite.setEnabled(true);
                     }
                     mChildList.addAll(mParentList.get(position).detailDtos);
+                    initChildRecycler(rvChipList,mChildList);
+                    compositeChip(btnComposite, mParentList.get(position).compositionId);
                 }
 
-                initChildRecycler(rvChipList);
-                compositeChip(btnComposite, mParentList.get(position).compositionId);
+
             }
         }
     }
@@ -290,12 +289,13 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
      * 物品碎片列表
      *
      * @param childRecycler
+     * @param mChildList
      */
-    private void initChildRecycler(RecyclerView childRecycler) {
+    private void initChildRecycler(RecyclerView childRecycler, ArrayList<CompositionListInfo.DataBean.ListBean.DetailDtosBean> mChildList) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         childRecycler.setLayoutManager(layoutManager);
-        childAdapter = new BaseListAdapter() {
+        BaseListAdapter childAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
                 return mChildList == null ? 0 : mChildList.size();
@@ -304,7 +304,7 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
             @Override
             protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
                 View itemView = LayoutInflater.from(ChipCompositeActivity.this).inflate(R.layout.item_child_chip, parent, false);
-                return new ChildListViewHolder(itemView);
+                return new ChildListViewHolder(itemView,mChildList);
             }
         };
         childRecycler.setAdapter(childAdapter);
@@ -316,10 +316,12 @@ public class ChipCompositeActivity extends BaseActivity implements OnRefreshList
         ImageView ivChildChip;
         @BindView(R.id.tv_good_count)
         TextView tvGoodCount;
+        private ArrayList<CompositionListInfo.DataBean.ListBean.DetailDtosBean> mChildList;
 
-        public ChildListViewHolder(View itemView) {
+        public ChildListViewHolder(View itemView, ArrayList<CompositionListInfo.DataBean.ListBean.DetailDtosBean> mChildList) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            this.mChildList = mChildList;
         }
 
         @Override

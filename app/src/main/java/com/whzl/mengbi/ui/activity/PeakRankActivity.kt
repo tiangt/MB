@@ -12,15 +12,19 @@ import android.widget.TextView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.chat.room.util.ImageUrl
-import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.AnchorTopBean
+import com.whzl.mengbi.model.entity.ApiResult
+import com.whzl.mengbi.model.entity.GetProgramIdBean
 import com.whzl.mengbi.ui.activity.base.BaseActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.widget.view.CircleImageView
-import com.whzl.mengbi.util.*
+import com.whzl.mengbi.util.AmountConversionUitls
+import com.whzl.mengbi.util.DateUtils
+import com.whzl.mengbi.util.ResourceMap
+import com.whzl.mengbi.util.clickDelay
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -141,8 +145,7 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                 return
             }
             val listBean = datas[position + 2]
-            startActivity(Intent(this@PeakRankActivity, LiveDisplayActivity::class.java)
-                    .putExtra(LiveDisplayActivity.PROGRAMID, listBean.programId))
+            jumpLiveActivity(listBean.anchorId)
         }
 
     }
@@ -177,8 +180,7 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
                             ResourceMap.getResourceMap().getAnchorLevelIcon(listBean.anchorLevel), ivLevels[i])
                     containers[i].clickDelay {
-                        startActivity(Intent(this@PeakRankActivity, LiveDisplayActivity::class.java)
-                                .putExtra(LiveDisplayActivity.PROGRAMID, listBean.programId))
+                        jumpLiveActivity(listBean.anchorId)
                     }
                 } else {
                     GlideImageLoader.getInstace().displayImage(this@PeakRankActivity,
@@ -190,6 +192,26 @@ class PeakRankActivity : BaseActivity<BasePresenter<BaseView>>() {
             }
         }
 
+    }
+
+    fun jumpLiveActivity(anchorId: Long) {
+        val hashMap = HashMap<String, String>()
+        hashMap["anchorId"] = anchorId.toString()
+        ApiFactory.getInstance()
+                .getApi(Api::class.java)
+                .getProgramId(ParamsUtils.getSignPramsMap(hashMap))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<GetProgramIdBean>() {
+                    override fun onSuccess(t: GetProgramIdBean?) {
+                        startActivity(Intent(this@PeakRankActivity, LiveDisplayActivity::class.java)
+                                .putExtra(LiveDisplayActivity.PROGRAMID, t?.programId))
+                    }
+
+                    override fun onError(body: ApiResult<GetProgramIdBean>?) {
+                        super.onError(body)
+                    }
+                })
     }
 
     override fun loadData() {

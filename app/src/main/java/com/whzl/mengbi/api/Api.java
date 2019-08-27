@@ -3,8 +3,6 @@ package com.whzl.mengbi.api;
 import com.google.gson.JsonElement;
 import com.whzl.mengbi.model.FlopPriceBean;
 import com.whzl.mengbi.model.GuardListBean;
-import com.whzl.mengbi.model.entity.PkComatRankListBean;
-import com.whzl.mengbi.model.entity.PkVictoryRankListBean;
 import com.whzl.mengbi.model.entity.ActivityGrandBean;
 import com.whzl.mengbi.model.entity.AllGuessBean;
 import com.whzl.mengbi.model.entity.AnchorInfo;
@@ -32,6 +30,7 @@ import com.whzl.mengbi.model.entity.GetDailyTaskStateBean;
 import com.whzl.mengbi.model.entity.GetGoodMsgBean;
 import com.whzl.mengbi.model.entity.GetNewTaskBean;
 import com.whzl.mengbi.model.entity.GetPrettyBean;
+import com.whzl.mengbi.model.entity.GetProgramIdBean;
 import com.whzl.mengbi.model.entity.GetProsListBean;
 import com.whzl.mengbi.model.entity.GetUnReadMsgBean;
 import com.whzl.mengbi.model.entity.GetUserSetBean;
@@ -54,9 +53,11 @@ import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
+import com.whzl.mengbi.model.entity.PkComatRankListBean;
 import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.PkRecordListBean;
 import com.whzl.mengbi.model.entity.PkTimeBean;
+import com.whzl.mengbi.model.entity.PkVictoryRankListBean;
 import com.whzl.mengbi.model.entity.ProgramInfoByAnchorBean;
 import com.whzl.mengbi.model.entity.PropBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
@@ -1365,4 +1366,14 @@ public interface Api {
     @POST("v1/pk/pk-combat-rank-list")
     @FormUrlEncoded
     Observable<ApiResult<PkComatRankListBean>> pkComatRankList(@FieldMap Map<String, String> params);
+
+    /**
+     * 根据主播id获取节目id
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/anchor/get-program-id")
+    @FormUrlEncoded
+    Observable<ApiResult<GetProgramIdBean>> getProgramId(@FieldMap Map<String, String> params);
 }

@@ -560,7 +560,7 @@ public class MainActivity extends BaseActivity {
                                 progressDialog.dismiss();
                             }
                             ToastUtils.showToastUnify(MainActivity.this, "下载失败");
-                            holder.getConvertView().findViewById(R.id.btn_upgrade).setEnabled(false);
+                            holder.getConvertView().findViewById(R.id.btn_upgrade).setEnabled(true);
                             holder.setText(R.id.btn_upgrade, "重新下载");
                         });
                     }
