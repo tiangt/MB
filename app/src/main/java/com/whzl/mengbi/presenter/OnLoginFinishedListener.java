@@ -3,7 +3,7 @@ package com.whzl.mengbi.presenter;
 import com.whzl.mengbi.model.entity.UserInfo;
 
 /**
- * Class Note:登陆事件监听
+ * Class Note:登录事件监听
  */
 public interface OnLoginFinishedListener {
 

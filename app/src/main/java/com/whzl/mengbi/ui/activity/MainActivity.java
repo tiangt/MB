@@ -648,7 +648,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * 判断用户是否首次登陆
+     * 判断用户是否首次登录
      */
     private void isFirstLogin() {
         HashMap paramsMap = new HashMap();

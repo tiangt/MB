@@ -27,8 +27,8 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:layout_marginTop="3dp"
+                android:layout_marginBottom="5dp"
                 android:src="@drawable/ic_login_number" />
 
             <EditText
@@ -42,8 +42,9 @@
                 android:hint="@string/phone_number_hint"
                 android:inputType="phone"
                 android:maxLength="11"
-                android:paddingBottom="8dp"
                 android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:singleLine="true"
                 android:textColorHint="#30000000"
                 android:textSize="15sp" />
 
@@ -80,8 +81,8 @@
         android:layout_height="44dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="27dp"
-        android:layout_marginRight="27dp"
         android:layout_marginTop="25dp"
+        android:layout_marginRight="27dp"
         android:background="@drawable/selector_comm_btn_bg"
         android:enabled="false"
         android:text="@string/next"

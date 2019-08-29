@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 
 /**
- * Class Note:登陆，如果名字或者密码为空则登陆失败，否则登陆成功
+ * Class Note:登录，如果名字或者密码为空则登录失败，否则登录成功
  */
 public class LoginModelImpl implements LoginModel {
 
