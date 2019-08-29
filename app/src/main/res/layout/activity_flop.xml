@@ -148,16 +148,30 @@
                     app:layout_constraintRight_toRightOf="@id/view_luck"
                     app:layout_constraintTop_toTopOf="@id/view_luck" />
 
-                <ImageView
-                    android:id="@+id/iv_luck_man_flop"
-                    android:layout_width="37dp"
-                    android:layout_height="37dp"
-                    android:scaleType="fitXY"
+                <FrameLayout
+                    android:id="@+id/container_luck_man_flop"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/view_luck"
                     app:layout_constraintLeft_toLeftOf="@id/view_luck"
                     app:layout_constraintRight_toRightOf="@id/view_luck"
-                    app:layout_constraintTop_toTopOf="@id/view_luck" />
+                    app:layout_constraintTop_toTopOf="@id/view_luck">
+
+                    <ImageView
+                        android:id="@+id/bg_luck_man_flop"
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_gift_gif_luck_flop1" />
+
+                    <ImageView
+                        android:id="@+id/iv_luck_man_flop"
+                        android:layout_width="27dp"
+                        android:layout_height="27dp"
+                        android:scaleType="fitXY" />
+
+                </FrameLayout>
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="117.5dp"

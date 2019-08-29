@@ -1,5 +1,6 @@
 package com.whzl.mengbi.ui.activity
 
+import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
 import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import android.widget.TextView
@@ -54,6 +56,7 @@ import java.util.concurrent.TimeUnit
  */
 class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
+    private lateinit var rotateAnimation: ObjectAnimator
     private var awesomeDialog: AwesomeDialog? = null
     private lateinit var subList: MutableList<FlopAwardRecordBean.ListBean>
     private var recordList = java.util.ArrayList<FlopAwardRecordBean.ListBean>()
@@ -80,6 +83,12 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     override fun setupView() {
         GlideImageLoader.getInstace().loadGif(this, R.drawable.ic_gift_gif_luck_flop, iv_luck_man_flop, null)
         GlideImageLoader.getInstace().loadGif(this, R.drawable.ic_luck_num_flop, progress_luck, null)
+
+        rotateAnimation = ObjectAnimator.ofFloat(bg_luck_man_flop, "rotation", 360f)
+        rotateAnimation.repeatCount = -1
+        rotateAnimation.interpolator = LinearInterpolator()
+        rotateAnimation.duration = 2000
+
         roomId = intent.getIntExtra("roomId", 0)
         initRecyclerView(recycler_flop)
         btn_flop_card.clickDelay {
@@ -580,10 +589,14 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
 
         if (percent >= 1) {
             iv_luck_man_flop.visibility = View.VISIBLE
+            rotateAnimation.start()
+            container_luck_man_flop.visibility = View.VISIBLE
             iv_luck_normal_flop.visibility = View.GONE
             tv_note_luck_flop.text = "您的幸运值已经爆棚啦"
         } else {
             iv_luck_man_flop.visibility = View.GONE
+            rotateAnimation.end()
+            container_luck_man_flop.visibility = View.GONE
             iv_luck_normal_flop.visibility = View.VISIBLE
             tv_note_luck_flop.text = "幸运值越高，大奖概率越高"
         }
@@ -593,6 +606,7 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         super.onDestroy()
         disposable?.dispose()
         EventBus.getDefault().unregister(this)
+        rotateAnimation.end()
     }
 
     override fun initEnv() {

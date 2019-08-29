@@ -79,6 +79,9 @@ class PowerRankFragment : BasePullListFragment<PkComatRankListBean.ListBean, Bas
                     itemView.tv_rank_win_rate.text = ""
                     itemView.tv_rank_win_rate.setBackgroundResource(R.drawable.ic_third_qualifying)
                 }
+                else->{
+                    itemView.tv_rank_win_rate.background=null
+                }
             }
 
             GlideImageLoader.getInstace().displayCircleAvatar(activity, listBean.anchorAvatar, itemView.iv_avatar_win_rate)
