@@ -454,8 +454,10 @@ public class GoodnumFragment extends BaseFragment {
         buyDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_preety_shop).setConvertListener(new ViewConvertListener() {
             @Override
             protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-                GlideImageLoader.getInstace().displayImage(getMyActivity(), currentUser.getAvatar()
-                        , holder.getView(R.id.iv_avatar));
+                if (currentUser.getAvatar()!=null) {
+                    GlideImageLoader.getInstace().displayImage(getMyActivity(), currentUser.getAvatar()
+                            , holder.getView(R.id.iv_avatar));
+                }
                 holder.setText(R.id.tv_nick, currentUser.getNickname());
                 holder.setText(R.id.tv_pretty_num, digitsBean.goodsName);
                 holder.setText(R.id.tv_pretty_price, AmountConversionUitls.amountConversionFormat(digitsBean.rent));
