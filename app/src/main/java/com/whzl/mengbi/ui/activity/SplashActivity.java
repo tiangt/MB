@@ -9,7 +9,6 @@ import android.widget.ImageView;
 
 import com.alibaba.sdk.android.push.AndroidPopupActivity;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
-import com.lht.paintview.util.LogUtil;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.CheckLoginResultBean;
@@ -212,7 +211,7 @@ public class SplashActivity extends AndroidPopupActivity {
                         if (timeStampInfo.code == 200) {
                             long time = timeStampInfo.data.time;
                             SPUtils.put(BaseApplication.getInstance(), SpConfig.TIME_DIFF, time - System.currentTimeMillis() / 1000);
-                            LogUtil.d(time - System.currentTimeMillis() / 1000 + "==============================");
+                            LogUtils.d(time - System.currentTimeMillis() / 1000 + "==============================");
                         }
                     }
 

@@ -1,11 +1,9 @@
 package com.whzl.mengbi.util.glide;
 
 import android.content.Context;
-import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 import com.whzl.mengbi.ui.widget.view.RoundImageView;
 import com.youth.banner.loader.ImageLoader;
 
