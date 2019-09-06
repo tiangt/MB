@@ -513,7 +513,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RoyalCarListBean royalCarListBean;
     private QixiControl qixiControl;
     private PkQualifyingBean qualifyingBean;
-    private BaseAwesomeDialog pkQualifyingDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -990,13 +989,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (qualifyingBean == null) {
             return;
         }
-        if (pkQualifyingDialog != null && pkQualifyingDialog.isAdded()) {
-            return;
-        }
-        pkQualifyingDialog = PkQualifyingDialog.Companion.newInstance(qualifyingBean)
-                .setShowBottom(true)
-                .setOutCancel(true)
-                .show(getSupportFragmentManager());
+        startActivity(new Intent(this, PkQualifyingDialog.class)
+                .putExtra("bean", qualifyingBean));
     }
 
     @Override

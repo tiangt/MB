@@ -315,6 +315,7 @@
         <activity android:name=".ui.activity.me.EffectActivity" />
         <activity android:name=".ui.activity.FirstActivity" />
         <activity android:name=".ui.activity.PeakRankActivity" />
+        <activity android:name=".ui.dialog.PkQualifyingDialog" />
 
         <!-- Push SDK 相关组件，required-->
         <!-- 消息接收服务 -->

@@ -68,7 +68,7 @@ class BestTeamFragment : BasePullListFragment<PkQualifyingBean.RankAnchorInfoBea
             }
             val bestTeamBean = mDatas[position]
             if (bestTeamBean == null) {
-                GlideImageLoader.getInstace().circleCropImage(activity, R.drawable.ic_empty_qualifying, itemView.iv_avatar_best_team)
+                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_empty_qualifying, itemView.iv_avatar_best_team)
                 itemView.tv_name_best_team.setTextColor(Color.parseColor("#B3FFFFFF"))
                 itemView.tv_name_best_team.text = "虚位以待"
                 itemView.tv_tips_best_team.visibility = View.GONE
