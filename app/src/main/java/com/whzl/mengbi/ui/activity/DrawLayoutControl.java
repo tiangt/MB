@@ -23,6 +23,7 @@ import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.common.BaseApplication;
+import com.whzl.mengbi.ui.dialog.RedpackDialog;
 import com.whzl.mengbi.ui.fragment.me.WelfareFragment;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
 import com.whzl.mengbi.util.ToastUtils;
@@ -165,6 +166,9 @@ public class DrawLayoutControl {
         }
     }
 
+    /**
+     * 中间快捷
+     */
     private void initTipsRV() {
         titles = activity.getResources().getStringArray(R.array.tips_title_draw_layout);
         rvTips.setLayoutManager(new GridLayoutManager(activity, 4));
@@ -183,6 +187,9 @@ public class DrawLayoutControl {
     }
 
 
+    /**
+     * 上方活动
+     */
     private void initActivityRV() {
         rvActivity.setLayoutManager(new GridLayoutManager(activity, 3));
         baseListAdapter = new BaseListAdapter() {
@@ -247,13 +254,16 @@ public class DrawLayoutControl {
             }
 
             if (position == bannerInfoList.size()) {
+                //红包
                 if (((LiveDisplayActivity) activity).mUserId == 0) {
                     ((LiveDisplayActivity) activity).login();
                     ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
                     return;
                 }
-                activity.startActivity(new Intent(activity, RedbagActivity.class).
-                        putExtra("programId", ((LiveDisplayActivity) activity).mProgramId));
+//                activity.startActivity(new Intent(activity, RedbagActivity.class).
+//                        putExtra("programId", ((LiveDisplayActivity) activity).mProgramId));
+                RedpackDialog.newInstance()
+                        .show(((LiveDisplayActivity) activity).getSupportFragmentManager());
                 ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
                 return;
             }
