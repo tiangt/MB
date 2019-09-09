@@ -12,7 +12,7 @@ import com.whzl.mengbi.ui.fragment.base.BaseFragment
  */
 class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
     override fun getLayoutId(): Int {
-        return R.layout.fragment_test
+        return R.layout.fragment_mengbi_redpack
     }
 
     override fun init() {

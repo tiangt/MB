@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/container_condotion_gift"
         android:layout_width="match_parent"
         android:layout_height="46.5dp"
         android:background="@color/white"
@@ -17,25 +16,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6.5dp"
-            android:text="选择礼物"
+            android:text="萌币数量"
             android:textColor="#323232"
             android:textSize="11sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="6.5dp"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="亲一亲（50000萌币）"
+            android:text="5000"
             android:textColor="#757575"
             android:textSize="12sp" />
 
-        <ImageView
-            android:layout_width="9.5dp"
-            android:layout_height="5.5dp"
-            android:layout_marginRight="6dp"
-            android:src="@drawable/ic_arrow_down_redpack" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6.5dp"
+            android:layout_marginRight="5.5dp"
+            android:text="萌币"
+            android:textColor="#757575"
+            android:textSize="12sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -45,44 +47,10 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="140dp"
-            android:layout_height="46.5dp"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6.5dp"
-                android:text="礼物数量"
-                android:textColor="#323232"
-                android:textSize="11sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="100"
-                android:textColor="#757575"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5.5dp"
-                android:layout_marginRight="5.5dp"
-                android:text="个"
-                android:textColor="#757575"
-                android:textSize="12sp" />
-        </LinearLayout>
 
         <LinearLayout
-            android:layout_width="140dp"
+            android:layout_width="match_parent"
             android:layout_height="46.5dp"
-            android:layout_marginLeft="10dp"
             android:background="@color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -142,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="100"
+                android:text="萌币"
                 android:textColor="#757575"
                 android:textSize="12sp" />
 
