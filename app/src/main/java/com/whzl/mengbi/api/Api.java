@@ -66,6 +66,7 @@ import com.whzl.mengbi.model.entity.QuickChannelBean;
 import com.whzl.mengbi.model.entity.RebateBean;
 import com.whzl.mengbi.model.entity.RechargeOrderBean;
 import com.whzl.mengbi.model.entity.RedFundInfoBean;
+import com.whzl.mengbi.model.entity.RedpackGoodInfoBean;
 import com.whzl.mengbi.model.entity.RetroInfoBean;
 import com.whzl.mengbi.model.entity.RoomAnnouceBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
@@ -1376,4 +1377,14 @@ public interface Api {
     @POST("v1/anchor/get-program-id")
     @FormUrlEncoded
     Observable<ApiResult<GetProgramIdBean>> getProgramId(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取抽奖红包物品配置信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/redpacket/game-redpacket-goods-info")
+    @FormUrlEncoded
+    Observable<ApiResult<RedpackGoodInfoBean>> redpackGoodsInfo(@FieldMap Map<String, String> params);
 }

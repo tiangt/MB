@@ -27,7 +27,6 @@
             android:layout_marginRight="6.5dp"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="亲一亲（50000萌币）"
             android:textColor="#757575"
             android:textSize="12sp" />
 
@@ -60,12 +59,14 @@
                 android:textColor="#323232"
                 android:textSize="11sp" />
 
-            <TextView
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@null"
                 android:gravity="end"
-                android:text="100"
+                android:inputType="number"
+                android:singleLine="true"
                 android:textColor="#757575"
                 android:textSize="15sp" />
 
@@ -95,12 +96,16 @@
                 android:textColor="#323232"
                 android:textSize="11sp" />
 
-            <TextView
+            <EditText
+                android:id="@+id/et_gift"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@null"
                 android:gravity="end"
-                android:text="100"
+                android:inputType="number"
+                android:singleLine="true"
+                android:text="1"
                 android:textColor="#757575"
                 android:textSize="15sp" />
 
@@ -142,7 +147,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="100"
                 android:textColor="#757575"
                 android:textSize="12sp" />
 
@@ -169,11 +173,14 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@null"
                 android:gravity="center"
-                android:text="12"
+                android:inputType="number"
+                android:singleLine="true"
+                android:text="1"
                 android:textColor="#757575"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -195,7 +202,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4.5dp"
             android:gravity="center"
-            android:text="999999"
             android:textColor="#fb3c22"
             android:textSize="12sp"
             android:textStyle="bold" />

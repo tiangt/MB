@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.widget.TextView
 import com.whzl.mengbi.R
+import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.model.entity.RedpackGoodInfoBean
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
@@ -12,8 +14,14 @@ import com.whzl.mengbi.ui.fragment.GiftRedpackFragment
 import com.whzl.mengbi.ui.fragment.MengbiRedpackFragment
 import com.whzl.mengbi.ui.widget.tablayout.TabLayout
 import com.whzl.mengbi.util.UIUtil
+import com.whzl.mengbi.util.network.retrofit.ApiFactory
+import com.whzl.mengbi.util.network.retrofit.ApiObserver
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_redpack.*
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  *
@@ -64,6 +72,20 @@ class RedpackDialog : BaseAwesomeDialog() {
         tab_redpack.setupWithViewPager(viewpager_redpack)
         tab_redpack?.selectedTabIndicatorWidth = UIUtil.dip2px(activity, 28f)
         tab_redpack.isNeedSwitchAnimation = true
+
+        getRedpackGoodsInfo()
+    }
+
+    private fun getRedpackGoodsInfo() {
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .redpackGoodsInfo(ParamsUtils.getSignPramsMap(HashMap()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<RedpackGoodInfoBean>() {
+                    override fun onSuccess(t: RedpackGoodInfoBean?) {
+
+                    }
+                })
     }
 
     companion object {
