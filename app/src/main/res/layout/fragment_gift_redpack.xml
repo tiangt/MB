@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/container_condotion_gift"
+        android:id="@+id/container_good_gift"
         android:layout_width="match_parent"
         android:layout_height="46.5dp"
         android:background="@color/white"
@@ -22,6 +22,7 @@
             android:textSize="11sp" />
 
         <TextView
+            android:id="@+id/tv_prize_good_gift"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="6.5dp"
@@ -60,6 +61,7 @@
                 android:textSize="11sp" />
 
             <EditText
+                android:id="@+id/et_goods_num_gift"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -128,6 +130,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/container_condition_gift"
             android:layout_width="206dp"
             android:layout_height="46.5dp"
             android:background="@color/white"
@@ -143,6 +146,7 @@
                 android:textSize="11sp" />
 
             <TextView
+                android:id="@+id/tv_condition_gift"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -198,6 +202,7 @@
             android:src="@drawable/ic_mengbi_redpack" />
 
         <TextView
+            android:id="@+id/tv_amount_gift"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4.5dp"

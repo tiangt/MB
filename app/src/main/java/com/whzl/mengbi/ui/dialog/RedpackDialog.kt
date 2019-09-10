@@ -32,11 +32,15 @@ class RedpackDialog : BaseAwesomeDialog() {
     override fun intLayoutId() = R.layout.dialog_redpack
 
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+        getRedpackGoodsInfo()
+    }
+
+    private fun initVp(t: RedpackGoodInfoBean) {
         val titles = ArrayList<String>()
         titles.add("礼物红包")
         titles.add("萌币红包")
-        val giftRedpackFragment = GiftRedpackFragment()
-        val mengbiRedpackFragment = MengbiRedpackFragment()
+        val giftRedpackFragment = GiftRedpackFragment.newInstance(t)
+        val mengbiRedpackFragment = MengbiRedpackFragment.newInstance(t)
         val fragments = ArrayList<Fragment>()
         fragments.add(giftRedpackFragment)
         fragments.add(mengbiRedpackFragment)
@@ -72,8 +76,6 @@ class RedpackDialog : BaseAwesomeDialog() {
         tab_redpack.setupWithViewPager(viewpager_redpack)
         tab_redpack?.selectedTabIndicatorWidth = UIUtil.dip2px(activity, 28f)
         tab_redpack.isNeedSwitchAnimation = true
-
-        getRedpackGoodsInfo()
     }
 
     private fun getRedpackGoodsInfo() {
@@ -83,7 +85,10 @@ class RedpackDialog : BaseAwesomeDialog() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : ApiObserver<RedpackGoodInfoBean>() {
                     override fun onSuccess(t: RedpackGoodInfoBean?) {
-
+                        if (t?.conditionGoodList == null || t.prizeGoodsList == null) {
+                            return
+                        }
+                        initVp(t)
                     }
                 })
     }
