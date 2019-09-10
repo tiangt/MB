@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
+import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.whzl.mengbi.R
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
@@ -19,11 +20,13 @@ import com.whzl.mengbi.ui.fragment.base.BaseFragment
 import com.whzl.mengbi.util.AmountConversionUitls
 import com.whzl.mengbi.util.UIUtil
 import com.whzl.mengbi.util.clickDelay
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_gift_redpack.*
 import kotlinx.android.synthetic.main.item_condition_redpack.view.*
 import kotlinx.android.synthetic.main.item_goods_redpack.view.*
 import kotlinx.android.synthetic.main.pop_condition_gift_reapack.view.*
 import kotlinx.android.synthetic.main.pop_good_gift_reapack.view.*
+import java.util.concurrent.TimeUnit
 
 /**
  *
@@ -31,6 +34,7 @@ import kotlinx.android.synthetic.main.pop_good_gift_reapack.view.*
  * @date 2019-09-09
  */
 class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
+    private var currentGood: RedpackGoodInfoBean.PrizeGoodsListBean? = null
     //参与条件
     private var conditionGoodList = ArrayList<RedpackGoodInfoBean.ConditionGoodListBean>()
     //礼物配置
@@ -43,13 +47,14 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
         return R.layout.fragment_gift_redpack
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "CheckResult")
     override fun init() {
         val goodInfoBean = arguments?.getParcelable<RedpackGoodInfoBean>("data")
         prizeGoodsList.addAll(goodInfoBean?.prizeGoodsList!!)
         conditionGoodList.addAll(goodInfoBean.conditionGoodList)
 
-        if (prizeGoodsList[0] != null) {
+        if (prizeGoodsList.isNotEmpty()) {
+            currentGood = prizeGoodsList[0]
             tv_prize_good_gift.text = "${prizeGoodsList[0].goodsName}（${prizeGoodsList[0].goodsPrice}萌币）"
             et_goods_num_gift.setText(prizeGoodsList[0].minNum.toString(), TextView.BufferType.NORMAL)
             tv_amount_gift.text = AmountConversionUitls.amountConversionFormat(
@@ -57,7 +62,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             )
         }
 
-        if (conditionGoodList[0] != null) {
+        if (conditionGoodList.isNotEmpty()) {
             tv_condition_gift.text = conditionGoodList[0].goodsName
         }
 
@@ -67,6 +72,39 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
 
         container_condition_gift.clickDelay {
             showConditionPopWindow()
+        }
+
+        et_goods_num_gift.afterTextChangeEvents().debounce(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+            if (et_goods_num_gift.text.isEmpty() || et_goods_num_gift.text.toString().toInt() < currentGood?.minNum!!) {
+                et_goods_num_gift.setText(currentGood?.minNum.toString(), TextView.BufferType.NORMAL)
+            }
+            if (et_goods_num_gift.text.toString().toInt() % currentGood?.multipleNum!! != 0) {
+                val i = et_goods_num_gift.text.toString().toInt() / currentGood?.multipleNum!!
+                et_goods_num_gift.setText((i * currentGood?.multipleNum!!).toString(), TextView.BufferType.NORMAL)
+            } else {
+                tv_amount_gift.text = AmountConversionUitls.amountConversionFormat(
+                        currentGood?.goodsPrice!!.times(et_goods_num_gift.text.toString().toInt()))
+            }
+
+            if (et_people_gift.text.toString().toInt() > et_goods_num_gift.text.toString().toInt()) {
+                et_people_gift.setText(et_goods_num_gift.text.toString(), TextView.BufferType.NORMAL)
+            }
+        }
+
+        et_people_gift.afterTextChangeEvents().debounce(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+            if (et_people_gift.text.isEmpty() || et_people_gift.text.toString().toInt() < 1) {
+                et_people_gift.setText("1", TextView.BufferType.NORMAL)
+            }
+            if (et_people_gift.text.toString().toInt() > et_goods_num_gift.text.toString().toInt()) {
+                et_people_gift.setText(et_goods_num_gift.text.toString(), TextView.BufferType.NORMAL)
+            }
+        }
+
+        et_condition_num_gift.afterTextChangeEvents().debounce(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+            if (et_condition_num_gift.text.isEmpty() || et_condition_num_gift.text.toString().toInt() < 1) {
+                et_condition_num_gift.setText("1", TextView.BufferType.NORMAL)
+            }
+
         }
     }
 
@@ -135,6 +173,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
 
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
+            currentGood = prizeGoodsList[position]
             goodsPop.dismiss()
             tv_prize_good_gift.text = "${prizeGoodsList[position].goodsName}（${prizeGoodsList[position].goodsPrice}萌币）"
             et_goods_num_gift.setText(prizeGoodsList[position].minNum.toString(), TextView.BufferType.NORMAL)

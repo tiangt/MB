@@ -21,6 +21,7 @@
             android:textSize="11sp" />
 
         <EditText
+            android:id="@+id/et_mengbi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -66,6 +67,7 @@
                 android:textSize="11sp" />
 
             <EditText
+                android:id="@+id/et_people_mengbi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -144,6 +146,7 @@
             android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/et_condition_num_mengbi"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@null"
@@ -167,11 +170,11 @@
             android:src="@drawable/ic_mengbi_redpack" />
 
         <TextView
+            android:id="@+id/tv_amount_mengbi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4.5dp"
             android:gravity="center"
-            android:text="999999"
             android:textColor="#fb3c22"
             android:textSize="12sp"
             android:textStyle="bold" />

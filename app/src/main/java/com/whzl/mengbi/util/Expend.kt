@@ -1,36 +1,23 @@
 package com.whzl.mengbi.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.View
-import com.whzl.mengbi.util.Expend.SPACE_TIME
-import com.whzl.mengbi.util.Expend.hash
-import com.whzl.mengbi.util.Expend.lastClickTime
+import com.jakewharton.rxbinding3.view.clicks
+import java.util.concurrent.TimeUnit
+
 
 /**
  *
  * @author nobody
  * @date 2019/3/14
  */
-object Expend {
-    var hash: Int = 0
-    var lastClickTime: Long = 0
-    var SPACE_TIME: Long = 300
-}
 
+@SuppressLint("CheckResult")
 infix fun View.clickDelay(clickAction: () -> Unit) {
-    this.setOnClickListener {
-        if (this.hashCode() != hash) {
-            hash = this.hashCode()
-            lastClickTime = System.currentTimeMillis()
-            clickAction()
-        } else {
-            val currentTime = System.currentTimeMillis()
-            if (currentTime - lastClickTime > SPACE_TIME) {
-                lastClickTime = System.currentTimeMillis()
-                clickAction()
-            }
-        }
-    }
+    this.clicks()
+            .throttleFirst(1000, TimeUnit.MILLISECONDS)
+            .subscribe { clickAction() }
 }
 
 fun toast(activity: Activity?, content: String?) {
