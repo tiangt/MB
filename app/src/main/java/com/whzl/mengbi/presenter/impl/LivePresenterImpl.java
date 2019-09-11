@@ -17,6 +17,7 @@ import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
+import com.whzl.mengbi.model.entity.RoomRedpacketBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -159,6 +160,13 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     public void onQualifyingSuccess(PkQualifyingBean anchorInfoBean) {
         if (liveView != null) {
             liveView.onQualifyingSuccess(anchorInfoBean);
+        }
+    }
+
+    @Override
+    public void onRoomGameRedpacketSuccess(RoomRedpacketBean jsonElement) {
+        if (liveView != null) {
+            liveView.onRoomGameRedpacketSuccess(jsonElement);
         }
     }
 
@@ -351,6 +359,7 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
     }
 
 
+    @Override
     public void getUserSet(long mUserId) {
         HashMap map = new HashMap();
         map.put("userId", mUserId);
@@ -420,6 +429,15 @@ public class LivePresenterImpl implements LivePresenter, OnLiveFinishedListener 
         map.put("userId", mAnchorId);
         HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
         liveModel.getQualifying(signPramsMap, this);
+    }
+
+    @Override
+    public void roomGameRedpacket(long mUserId, int mProgramId) {
+        HashMap map = new HashMap(16);
+        map.put("userId", mUserId);
+        map.put("programId", mProgramId);
+        HashMap signPramsMap = ParamsUtils.getSignPramsMap(map);
+        liveModel.roomGameRedpacket(signPramsMap, this);
     }
 
     public void getRedPackList(int mProgramId, long mUserId) {

@@ -1,7 +1,6 @@
 package com.whzl.mengbi.model;
 
 import com.whzl.mengbi.presenter.OnLiveFinishedListener;
-import com.whzl.mengbi.presenter.impl.LivePresenterImpl;
 
 import java.util.HashMap;
 
@@ -55,4 +54,6 @@ public interface LiveModel {
     void getRightBottomActivity(Observable merge, OnLiveFinishedListener listener);
 
     void getQualifying(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void roomGameRedpacket(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

@@ -71,6 +71,7 @@ import com.whzl.mengbi.model.entity.RetroInfoBean;
 import com.whzl.mengbi.model.entity.RoomAnnouceBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
+import com.whzl.mengbi.model.entity.RoomRedpacketBean;
 import com.whzl.mengbi.model.entity.RoomUserBean;
 import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -1397,4 +1398,14 @@ public interface Api {
     @POST("v1/redpacket/send-game-redpacket")
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> sendGameRedpack(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取直播间抽奖红包信息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/redpacket/room-game-redpacket")
+    @FormUrlEncoded
+    Observable<ApiResult<RoomRedpacketBean>> roomGameRedpacket(@FieldMap Map<String, String> params);
 }

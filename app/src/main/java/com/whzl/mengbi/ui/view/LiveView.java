@@ -16,6 +16,7 @@ import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
+import com.whzl.mengbi.model.entity.RoomRedpacketBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -76,4 +77,6 @@ public interface LiveView {
     void onRightBottomActivitySuccess(Object o);
 
     void onQualifyingSuccess(PkQualifyingBean anchorInfoBean);
+
+    void onRoomGameRedpacketSuccess(RoomRedpacketBean jsonElement);
 }

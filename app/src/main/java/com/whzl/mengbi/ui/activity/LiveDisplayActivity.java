@@ -148,6 +148,7 @@ import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
 import com.whzl.mengbi.model.entity.RoomRedpackList;
+import com.whzl.mengbi.model.entity.RoomRedpacketBean;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.model.entity.RoyalCarListBean;
 import com.whzl.mengbi.model.entity.RunWayListBean;
@@ -174,6 +175,7 @@ import com.whzl.mengbi.ui.dialog.PersonalInfoDialog;
 import com.whzl.mengbi.ui.dialog.PkQualifyingDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatDialog;
 import com.whzl.mengbi.ui.dialog.PrivateChatListDialog;
+import com.whzl.mengbi.ui.dialog.RoomRedpacketDialog;
 import com.whzl.mengbi.ui.dialog.ShareDialog;
 import com.whzl.mengbi.ui.dialog.UserListDialog;
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog;
@@ -425,6 +427,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     ImageView ivQualifying;
     @BindView(R.id.container_rank)
     LinearLayout containRank;
+    @BindView(R.id.container_room_redpacket)
+    LinearLayout containerRoomRedpacket;
+    @BindView(R.id.tv_room_redpacket)
+    TextView tvRoomRedpacket;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -513,6 +519,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RoyalCarListBean royalCarListBean;
     private QixiControl qixiControl;
     private PkQualifyingBean qualifyingBean;
+    private Disposable roomGameRedpackDispose;
+    private RoomRedpacketDialog roomRedpacketDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -825,6 +833,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getUserSet(mUserId);
         mLivePresenter.getRedPackList(mProgramId, mUserId);
         mLivePresenter.getRoyalCarList();
+        mLivePresenter.roomGameRedpacket(mUserId, mProgramId);
     }
 
     private void getRoomToken() {
@@ -1588,6 +1597,48 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             GlideImageLoader.getInstace().displayImage(this, userLevelIcon, ivQualifying);
             PkQualifyingLevelUtils.getInstance().measureImage(ivQualifying, anchorInfoBean.rankAnchorInfo.rankId, containRank, 30);
         }
+    }
+
+    /**
+     * 获取直播间抽奖红包信息
+     */
+    @Override
+    public void onRoomGameRedpacketSuccess(RoomRedpacketBean jsonElement) {
+//        if (jsonElement != null && jsonElement.list != null) {
+            containerRoomRedpacket.setVisibility(View.VISIBLE);
+            long time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
+            long interval = (DateUtils.dateStrToMillis(jsonElement.list.closeTime, "yyyy-MM-dd HH:mm:ss") -
+                    DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
+            roomGameRedpackDispose = Observable.interval(0, 1, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((Long aLong) -> {
+                        if (aLong > interval - time) {
+                            tvRoomRedpacket.setText("");
+                            containerRoomRedpacket.setVisibility(View.GONE);
+                            return;
+                        }
+                        tvRoomRedpacket.setText(String.format("%ds", interval - time - aLong));
+                    });
+            compositeDisposable.add(roomGameRedpackDispose);
+
+            containerRoomRedpacket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showRoomRedpacketDialog(jsonElement);
+                }
+            });
+//        }
+    }
+
+    /**
+     * 红包抽奖弹窗
+     */
+    private void showRoomRedpacketDialog(RoomRedpacketBean jsonElement) {
+        if (roomRedpacketDialog != null && roomRedpacketDialog.isAdded()) {
+            return;
+        }
+        roomRedpacketDialog = RoomRedpacketDialog.Companion.newInstance(jsonElement);
+        roomRedpacketDialog.show(getSupportFragmentManager());
     }
 
 
@@ -2472,6 +2523,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             llTopDownAnima.end();
             llTopDownAnima = null;
         }
+        tvRoomRedpacket.setText("");
+        containerRoomRedpacket.setVisibility(View.GONE);
     }
 
     @Override

@@ -51,4 +51,6 @@ public interface LivePresenter {
     void getRightBottomActivity(int mProgramId, int mAnchorId);
 
     void getQualifying(int mAnchorId);
+
+    void roomGameRedpacket(long mUserId, int mProgramId);
 }
