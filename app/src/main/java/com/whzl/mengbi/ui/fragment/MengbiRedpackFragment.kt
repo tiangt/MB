@@ -44,6 +44,7 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
     @SuppressLint("CheckResult")
     override fun init() {
         val goodInfoBean = arguments?.getParcelable<RedpackGoodInfoBean>("data")
+        val programId = arguments?.getInt("programId")
         conditionGoodList.addAll(goodInfoBean?.conditionGoodList!!)
         if (conditionGoodList.isNotEmpty()) {
             tv_condition_mengbi.text = conditionGoodList[0].goodsName
@@ -116,10 +117,11 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
     }
 
     companion object {
-        fun newInstance(t: RedpackGoodInfoBean): MengbiRedpackFragment {
+        fun newInstance(t: RedpackGoodInfoBean, programId: Int): MengbiRedpackFragment {
             val mengbiRedpackFragment = MengbiRedpackFragment()
             val bundle = Bundle()
             bundle.putParcelable("data", t)
+            bundle.putInt("programId",programId)
             mengbiRedpackFragment.arguments = bundle
             return mengbiRedpackFragment
         }

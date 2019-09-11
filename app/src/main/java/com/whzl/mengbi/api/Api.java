@@ -1387,4 +1387,14 @@ public interface Api {
     @POST("v1/redpacket/game-redpacket-goods-info")
     @FormUrlEncoded
     Observable<ApiResult<RedpackGoodInfoBean>> redpackGoodsInfo(@FieldMap Map<String, String> params);
+
+    /**
+     * 发起抽奖红包
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/redpacket/send-game-redpacket")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> sendGameRedpack(@FieldMap Map<String, String> params);
 }

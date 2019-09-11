@@ -1,19 +1,24 @@
 package com.whzl.mengbi.ui.dialog
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.widget.TextView
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.model.entity.RedpackGoodInfoBean
+import com.whzl.mengbi.ui.activity.JsBridgeActivity
 import com.whzl.mengbi.ui.adapter.FragmentPagerAdaper
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.ui.fragment.GiftRedpackFragment
 import com.whzl.mengbi.ui.fragment.MengbiRedpackFragment
 import com.whzl.mengbi.ui.widget.tablayout.TabLayout
+import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.UIUtil
+import com.whzl.mengbi.util.clickDelay
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
@@ -29,18 +34,30 @@ import kotlin.collections.HashMap
  * @date 2019-09-09
  */
 class RedpackDialog : BaseAwesomeDialog() {
+    private var programId: Int = 0
+
     override fun intLayoutId() = R.layout.dialog_redpack
 
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+        programId = arguments?.getInt("programId")!!
         getRedpackGoodsInfo()
+        iv_close_redpack.clickDelay {
+            dismissDialog()
+        }
+
+        iv_note_redpack.clickDelay {
+            startActivity(Intent(activity, JsBridgeActivity::class.java)
+                    .putExtra("title", "红包说明")
+                    .putExtra("url", SPUtils.get(activity, SpConfig.REDPACKETHELPURL, "")!!.toString()))
+        }
     }
 
     private fun initVp(t: RedpackGoodInfoBean) {
         val titles = ArrayList<String>()
         titles.add("礼物红包")
         titles.add("萌币红包")
-        val giftRedpackFragment = GiftRedpackFragment.newInstance(t)
-        val mengbiRedpackFragment = MengbiRedpackFragment.newInstance(t)
+        val giftRedpackFragment = GiftRedpackFragment.newInstance(t, programId)
+        val mengbiRedpackFragment = MengbiRedpackFragment.newInstance(t, programId)
         val fragments = ArrayList<Fragment>()
         fragments.add(giftRedpackFragment)
         fragments.add(mengbiRedpackFragment)
@@ -95,9 +112,10 @@ class RedpackDialog : BaseAwesomeDialog() {
 
     companion object {
         @JvmStatic
-        fun newInstance(): RedpackDialog {
+        fun newInstance(mProgramId: Int): RedpackDialog {
             val redpackDialog = RedpackDialog()
             val bundle = Bundle()
+            bundle.putInt("programId", mProgramId)
             redpackDialog.arguments = bundle
             return redpackDialog
         }

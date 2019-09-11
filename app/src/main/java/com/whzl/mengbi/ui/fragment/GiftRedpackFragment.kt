@@ -9,18 +9,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
+import com.google.gson.JsonElement
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.whzl.mengbi.R
+import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.RedpackGoodInfoBean
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.fragment.base.BaseFragment
-import com.whzl.mengbi.util.AmountConversionUitls
-import com.whzl.mengbi.util.UIUtil
-import com.whzl.mengbi.util.clickDelay
+import com.whzl.mengbi.util.*
+import com.whzl.mengbi.util.network.retrofit.ApiFactory
+import com.whzl.mengbi.util.network.retrofit.ApiObserver
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_gift_redpack.*
 import kotlinx.android.synthetic.main.item_condition_redpack.view.*
 import kotlinx.android.synthetic.main.item_goods_redpack.view.*
@@ -34,6 +39,7 @@ import java.util.concurrent.TimeUnit
  * @date 2019-09-09
  */
 class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
+    private var currentCondition: RedpackGoodInfoBean.ConditionGoodListBean? = null
     private var currentGood: RedpackGoodInfoBean.PrizeGoodsListBean? = null
     //参与条件
     private var conditionGoodList = ArrayList<RedpackGoodInfoBean.ConditionGoodListBean>()
@@ -50,6 +56,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
     @SuppressLint("SetTextI18n", "CheckResult")
     override fun init() {
         val goodInfoBean = arguments?.getParcelable<RedpackGoodInfoBean>("data")
+        val programId = arguments?.getInt("programId")
         prizeGoodsList.addAll(goodInfoBean?.prizeGoodsList!!)
         conditionGoodList.addAll(goodInfoBean.conditionGoodList)
 
@@ -63,6 +70,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
         }
 
         if (conditionGoodList.isNotEmpty()) {
+            currentCondition = conditionGoodList[0]
             tv_condition_gift.text = conditionGoodList[0].goodsName
         }
 
@@ -106,6 +114,43 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             }
 
         }
+
+        btn_gift.clickDelay {
+            val userId = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L) as Long
+            if (currentCondition?.goodsType == "GOODS") {
+                sendRedpack(userId, programId, "GOODS", currentGood?.prizeGoodsCfgId, currentCondition?.conditionGoodsCfgId,
+                        et_goods_num_gift.text.toString().toInt(), et_condition_num_gift.text.toString().toInt(),
+                        0, et_people_gift.text.toString().toInt())
+            } else {
+                sendRedpack(userId, programId, "GOODS", currentGood?.prizeGoodsCfgId, currentCondition?.conditionGoodsCfgId,
+                        et_goods_num_gift.text.toString().toInt(), 0,
+                        et_condition_num_gift.text.toString().toInt(), et_people_gift.text.toString().toInt())
+            }
+
+        }
+    }
+
+    private fun sendRedpack(userId: Long, programId: Int?, type: String, prizeGoodsCfgId: Int?, conditionGoodsCfgId: Int?, prizeGoodsNum: Int, conditionGoodsNum: Int, conditionPrize: Int, awardPeopleNum: Int) {
+        val params = HashMap<String, String>()
+        params.put("userId", userId.toString())
+        params.put("programId", programId.toString())
+        params.put("prizeGoodsType", type)
+        params.put("prizeGoodsCfgId", prizeGoodsCfgId.toString())
+        params.put("conditionGoodsCfgId", conditionGoodsCfgId.toString())
+        params.put("prizeGoodsNum", prizeGoodsNum.toString())
+        params.put("conditionGoodsNum", conditionGoodsNum.toString())
+        params.put("conditionPrize", conditionPrize.toString())
+        params.put("awardPeopleNum", awardPeopleNum.toString())
+        ApiFactory.getInstance()
+                .getApi(Api::class.java)
+                .sendGameRedpack(ParamsUtils.getSignPramsMap(params))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<JsonElement>() {
+                    override fun onSuccess(t: JsonElement?) {
+                        toast(activity, "发起成功")
+                    }
+                })
     }
 
     @SuppressLint("InflateParams")
@@ -138,6 +183,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
 
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
+            currentCondition = conditionGoodList[position]
             conditionPop.dismiss()
             tv_condition_gift.text = conditionGoodList[position].goodsName
         }
@@ -184,10 +230,11 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
     }
 
     companion object {
-        fun newInstance(t: RedpackGoodInfoBean): GiftRedpackFragment {
+        fun newInstance(t: RedpackGoodInfoBean, programId: Int): GiftRedpackFragment {
             val giftRedpackFragment = GiftRedpackFragment()
             val bundle = Bundle()
             bundle.putParcelable("data", t)
+            bundle.putInt("programId", programId)
             giftRedpackFragment.arguments = bundle
             return giftRedpackFragment
         }

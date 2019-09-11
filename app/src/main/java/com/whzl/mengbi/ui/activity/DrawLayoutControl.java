@@ -262,7 +262,7 @@ public class DrawLayoutControl {
                 }
 //                activity.startActivity(new Intent(activity, RedbagActivity.class).
 //                        putExtra("programId", ((LiveDisplayActivity) activity).mProgramId));
-                RedpackDialog.newInstance()
+                RedpackDialog.newInstance(((LiveDisplayActivity) activity).mProgramId)
                         .show(((LiveDisplayActivity) activity).getSupportFragmentManager());
                 ((LiveDisplayActivity) activity).closeDrawLayoutNoAnimal();
                 return;
