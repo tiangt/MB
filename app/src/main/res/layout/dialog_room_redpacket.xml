@@ -6,16 +6,154 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/ll_room_redpacket"
         android:layout_width="192.5dp"
         android:layout_height="248dp"
         android:background="@drawable/bg_room_redpacket"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="127dp"
+            android:layout_height="16.5dp"
+            android:layout_marginTop="33dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="31.5dp"
+                android:layout_height="16.5dp"
+                android:background="@drawable/shape_jinzhu_room_redpacket"
+                android:gravity="center"
+                android:text="金主"
+                android:textColor="#fefefe"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2.5dp"
+                android:text="用户昵称用户昵称"
+                android:textColor="#ec3b33"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="29dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/icon_prize_room_redpacket"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="111.5dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="85dp"
+            android:gravity="center"
+            android:text="dsa"
+            android:textColor="#ec3b33"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="105dp"
+            android:gravity="center"
+            android:text="dsa"
+            android:textColor="#ef8239"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="136dp"
+            android:gravity="center"
+            android:text="参与条件"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="185dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="157dp"
+            android:gravity="center"
+            android:text="单笔送礼 ≥9999999萌币"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="167dp"
+            android:layout_height="40.5dp"
+            android:layout_marginTop="183dp"
+            android:background="@drawable/bg_open_room_redpacket"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="108dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="03:00 后开奖"
+                android:textColor="#e42410"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="2dp"
+                android:gravity="center"
+                android:text="共33人参与"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:text="您还未满足抽奖条件"
+            android:textColor="#B3EBEBEB"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
 
     <ImageView
