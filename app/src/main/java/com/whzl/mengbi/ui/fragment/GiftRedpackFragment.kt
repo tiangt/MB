@@ -126,7 +126,6 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
                         et_goods_num_gift.text.toString().toInt(), 0,
                         et_condition_num_gift.text.toString().toInt(), et_people_gift.text.toString().toInt())
             }
-
         }
     }
 

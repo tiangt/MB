@@ -9,18 +9,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
+import com.google.gson.JsonElement
 import com.jakewharton.rxbinding3.widget.afterTextChangeEvents
 import com.whzl.mengbi.R
+import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.RedpackGoodInfoBean
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.fragment.base.BaseFragment
-import com.whzl.mengbi.util.AmountConversionUitls
-import com.whzl.mengbi.util.UIUtil
-import com.whzl.mengbi.util.clickDelay
+import com.whzl.mengbi.util.*
+import com.whzl.mengbi.util.network.retrofit.ApiFactory
+import com.whzl.mengbi.util.network.retrofit.ApiObserver
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_gift_redpack.*
 import kotlinx.android.synthetic.main.fragment_mengbi_redpack.*
 import kotlinx.android.synthetic.main.item_condition_redpack.view.*
 import kotlinx.android.synthetic.main.pop_condition_gift_reapack.view.*
@@ -32,6 +38,7 @@ import java.util.concurrent.TimeUnit
  * @date 2019-09-09
  */
 class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
+    private var currentCondition: RedpackGoodInfoBean.ConditionGoodListBean? = null
     //参与条件
     private var conditionGoodList = ArrayList<RedpackGoodInfoBean.ConditionGoodListBean>()
 
@@ -47,6 +54,7 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
         val programId = arguments?.getInt("programId")
         conditionGoodList.addAll(goodInfoBean?.conditionGoodList!!)
         if (conditionGoodList.isNotEmpty()) {
+            currentCondition = conditionGoodList[0]
             tv_condition_mengbi.text = conditionGoodList[0].goodsName
         }
 
@@ -59,7 +67,7 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
                 return@subscribe
             }
             tv_amount_mengbi.text = AmountConversionUitls.amountConversionFormat(
-                    et_mengbi.text.toString().toLong().times(et_people_mengbi.text.toString().toInt()))
+                    et_mengbi.text.toString().toLong())
         }
 
         et_people_mengbi.afterTextChangeEvents().debounce(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
@@ -69,8 +77,8 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             if (et_mengbi.text.isEmpty() || et_people_mengbi.text.isEmpty()) {
                 return@subscribe
             }
-            tv_amount_mengbi.text = AmountConversionUitls.amountConversionFormat(
-                    et_mengbi.text.toString().toLong().times(et_people_mengbi.text.toString().toInt()))
+//            tv_amount_mengbi.text = AmountConversionUitls.amountConversionFormat(
+//                    et_mengbi.text.toString().toLong().times(et_people_mengbi.text.toString().toInt()))
         }
 
         et_condition_num_mengbi.afterTextChangeEvents().debounce(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
@@ -78,6 +86,41 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
                 et_condition_num_mengbi.setText("1", TextView.BufferType.NORMAL)
             }
         }
+
+        btn_mengbi.clickDelay {
+            val userId = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L) as Long
+            if (currentCondition?.goodsType == "GOODS") {
+                sendRedpack(userId, programId, "COIN", currentCondition?.conditionGoodsCfgId, et_mengbi.text.toString(),
+                        et_condition_num_mengbi.text.toString().toInt(),
+                        0, et_people_mengbi.text.toString().toInt())
+            } else {
+                sendRedpack(userId, programId, "COIN", currentCondition?.conditionGoodsCfgId, et_mengbi.text.toString(),
+                        0,
+                        et_condition_num_mengbi.text.toString().toInt(), et_people_mengbi.text.toString().toInt())
+            }
+        }
+    }
+
+    private fun sendRedpack(userId: Long, programId: Int?, type: String, conditionGoodsCfgId: Int?, prizeTotalPrize: String, conditionGoodsNum: Int, conditionPrize: Int, awardPeopleNum: Int) {
+        val params = HashMap<String, String>()
+        params.put("userId", userId.toString())
+        params.put("programId", programId.toString())
+        params.put("prizeGoodsType", type)
+        params.put("conditionGoodsCfgId", conditionGoodsCfgId.toString())
+        params.put("prizeTotalPrize", prizeTotalPrize)
+        params.put("conditionGoodsNum", conditionGoodsNum.toString())
+        params.put("conditionPrize", conditionPrize.toString())
+        params.put("awardPeopleNum", awardPeopleNum.toString())
+        ApiFactory.getInstance()
+                .getApi(Api::class.java)
+                .sendGameRedpack(ParamsUtils.getSignPramsMap(params))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<JsonElement>() {
+                    override fun onSuccess(t: JsonElement?) {
+                        toast(activity, "发起成功")
+                    }
+                })
     }
 
 
@@ -111,6 +154,7 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
 
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
+            currentCondition = conditionGoodList[position]
             conditionPop.dismiss()
             tv_condition_mengbi.text = conditionGoodList[position].goodsName
         }
@@ -121,7 +165,7 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             val mengbiRedpackFragment = MengbiRedpackFragment()
             val bundle = Bundle()
             bundle.putParcelable("data", t)
-            bundle.putInt("programId",programId)
+            bundle.putInt("programId", programId)
             mengbiRedpackFragment.arguments = bundle
             return mengbiRedpackFragment
         }
