@@ -22,6 +22,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/shape_pk_opposite"
+        android:includeFontPadding="false"
         android:paddingLeft="4.5dp"
         android:paddingRight="4.5dp"
         android:singleLine="true"

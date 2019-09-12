@@ -1605,28 +1605,28 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Override
     public void onRoomGameRedpacketSuccess(RoomRedpacketBean jsonElement) {
 //        if (jsonElement != null && jsonElement.list != null) {
-            containerRoomRedpacket.setVisibility(View.VISIBLE);
-            long time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
-            long interval = (DateUtils.dateStrToMillis(jsonElement.list.closeTime, "yyyy-MM-dd HH:mm:ss") -
-                    DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
-            roomGameRedpackDispose = Observable.interval(0, 1, TimeUnit.SECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe((Long aLong) -> {
-                        if (aLong > interval - time) {
-                            tvRoomRedpacket.setText("");
-                            containerRoomRedpacket.setVisibility(View.GONE);
-                            return;
-                        }
-                        tvRoomRedpacket.setText(String.format("%ds", interval - time - aLong));
-                    });
-            compositeDisposable.add(roomGameRedpackDispose);
+        containerRoomRedpacket.setVisibility(View.VISIBLE);
+        long time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
+        long interval = (DateUtils.dateStrToMillis(jsonElement.list.closeTime, "yyyy-MM-dd HH:mm:ss") -
+                DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
+        roomGameRedpackDispose = Observable.interval(0, 1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((Long aLong) -> {
+                    if (aLong > interval - time) {
+                        tvRoomRedpacket.setText("");
+                        containerRoomRedpacket.setVisibility(View.GONE);
+                        return;
+                    }
+                    tvRoomRedpacket.setText(String.format("%ds", interval - time - aLong));
+                });
+        compositeDisposable.add(roomGameRedpackDispose);
 
-            containerRoomRedpacket.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showRoomRedpacketDialog(jsonElement);
-                }
-            });
+        containerRoomRedpacket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRoomRedpacketDialog(jsonElement);
+            }
+        });
 //        }
     }
 

@@ -10,10 +10,8 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.ProgressBar;
 
 import com.whzl.mengbi.R;
@@ -25,6 +23,7 @@ import com.whzl.mengbi.R;
  */
 public class PkProgressView extends ProgressBar {
 
+    private final Context context;
     private String mText;
     private int mDefaultPercent;
     private int mBackColorDefault;
@@ -35,6 +34,7 @@ public class PkProgressView extends ProgressBar {
     private int mTextAlignLeft;
     private Paint backPaint;
     private Paint barPaint;
+    private Paint shadowPaint;
     private int width;
     private int height;
     private RectF rectF;
@@ -49,6 +49,7 @@ public class PkProgressView extends ProgressBar {
 
     public PkProgressView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context;
         initView(context, attrs, defStyleAttr);
     }
 
@@ -155,6 +156,11 @@ public class PkProgressView extends ProgressBar {
         barPaint.setColor(mBackColor);
         barPaint.setStyle(Paint.Style.FILL);
         barPaint.setAntiAlias(true);
+
+        shadowPaint = new Paint();
+        shadowPaint.setColor(Color.parseColor("#26000000"));
+        shadowPaint.setStyle(Paint.Style.FILL);
+        shadowPaint.setAntiAlias(true);
     }
 
     @Override
@@ -169,15 +175,15 @@ public class PkProgressView extends ProgressBar {
     protected void onDraw(Canvas canvas) {
         // 绘制背景
         rectF = new RectF(0, 0, width, height);
-        canvas.drawRoundRect(rectF, 18, 18, backPaint);
+        canvas.drawRoundRect(rectF, 50, 50, backPaint);
         // 测量字体
         mBound = new Rect();
         backPaint.getTextBounds(mText, 0, mText.length(), mBound);
         // 绘制已完成的进度
         Path path = new Path();
-        path.moveTo(18, 0);
+        path.moveTo(24, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            path.addArc(0, 0, 36, 36, 180, 90);
+            path.addArc(0, 0, 48, 48, 180, 90);
         }
         if (mDefaultPercent < 0) {
             mDefaultPercent = 8;
@@ -187,32 +193,39 @@ public class PkProgressView extends ProgressBar {
         }
         if (mDefaultPercent >= 2 && mDefaultPercent <= 98) {
             // point2
-            int p1_width = (mDefaultPercent - 2) * getWidth() / 100;
+            int p1_width = (mDefaultPercent - 1) * getWidth() / 100;
             path.lineTo(p1_width, 0);
             // point3
-            int p3_width = (mDefaultPercent + 2) * getWidth() / 100;
+            int p3_width = (mDefaultPercent + 1) * getWidth() / 100;
             path.lineTo(p3_width, getHeight());
         } else if (mDefaultPercent < 10) {
             // point2
             int p1_width = (4) * getWidth() / 100;
             path.lineTo(p1_width, 0);
             // point3
-            int p3_width = (8) * getWidth() / 100;
+            int p3_width = (6) * getWidth() / 100;
             path.lineTo(p3_width, getHeight());
         } else if (mDefaultPercent > 90) {
             // point2
-            int p1_width = (92) * getWidth() / 100;
+            int p1_width = (94) * getWidth() / 100;
             path.lineTo(p1_width, 0);
             // point3
             int p3_width = (96) * getWidth() / 100;
             path.lineTo(p3_width, getHeight());
         }
         // point4
-        path.lineTo(18, getHeight());
+        path.lineTo(24, getHeight());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            path.addArc(0, getHeight() - 36, 36, getHeight(), 90, 90);
+            path.addArc(0, getHeight() - 48, 48, getHeight(), 90, 90);
         }
-        path.lineTo(0, 18);
+        path.lineTo(0, 24);
         canvas.drawPath(path, barPaint);
+
+        Path shadow = new Path();
+        shadow.lineTo(0, height / 2);
+        shadow.lineTo(width, height / 2);
+        shadow.lineTo(width, height);
+        shadow.lineTo(0, height);
+        canvas.drawPath(shadow, shadowPaint);
     }
 }
