@@ -223,7 +223,7 @@ public class PersonalInfoDialog extends BaseAwesomeDialog {
                 if (mViewedUser == null || mViewedUser.getNickname() == null) {
                     return;
                 }
-                ((LiveDisplayActivity) getActivity()).showAtChat("@" + mViewedUser.getNickname() + " ");
+                ((LiveDisplayActivity) getActivity()).showAtChat( mViewedUser.getNickname() + " ",mUserId);
                 dismiss();
                 break;
             case R.id.btn_close:

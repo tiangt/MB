@@ -2045,6 +2045,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mGiftData = giftInfo;
     }
 
+    public void sendMessage(String message, long toUserId,String toNickname){
+        chatRoomPresenter.sendMessage(message,toUserId,toNickname);
+    }
+
     public void sendMessage(String message, PrivateChatUser chatToUser) {
         if (chatToUser == null) {
             chatRoomPresenter.sendMessage(message);
@@ -2734,14 +2738,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
 
-    public void showAtChat(String at) {
+    public void showAtChat(String at, long toUserId) {
         if (mChatDialog != null && mChatDialog.isAdded()) {
             return;
         }
         if (mUserListDialog != null && mUserListDialog.isAdded()) {
             mUserListDialog.dismiss();
         }
-        mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, at, mAnchor)
+        mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, at, mAnchor,toUserId)
                 .setDimAmount(0)
                 .setShowBottom(true)
                 .show(getSupportFragmentManager());

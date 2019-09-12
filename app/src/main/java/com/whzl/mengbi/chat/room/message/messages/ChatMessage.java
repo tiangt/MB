@@ -62,7 +62,7 @@ public class ChatMessage implements FillHolderMessage {
         to_nickName = msgJson.getTo_nickname();
         contentString = msgJson.getContent();
         try {
-            if (msgJson.getFrom_uid()!=null) {
+            if (msgJson.getFrom_uid() != null) {
                 from_uid = Integer.valueOf(msgJson.getFrom_uid());
             }
             if (msgJson.getTo_uid() != null) {
@@ -98,10 +98,12 @@ public class ChatMessage implements FillHolderMessage {
         mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         if (isPrivate) {
             parsePrivateMessage();
-        } else if (to_uid == 0) {
-            parseNoRecieverMessage();
         } else {
-            parseHasRecieverMessage();
+//            if (to_uid == 0) {
+            parseNoRecieverMessage();
+//        } else {
+//            parseHasRecieverMessage();
+//        }
         }
     }
 
@@ -208,13 +210,19 @@ public class ChatMessage implements FillHolderMessage {
             }
         }
 
+        String replaceFirst = contentString;
+        if (!TextUtils.isEmpty(to_nickName) && contentString.contains(to_nickName)) {
+            replaceFirst = contentString.replaceFirst("@" + to_nickName, "");
+            mholder.textView.append(LightSpanString.getLightString("@"+to_nickName, Color.parseColor("#72e6ff")));
+        }
+
         SpannableString spanString;
         if (from_uid > 0 && from_uid == ChatRoomInfo.getInstance().getProgramFirstId()) {
-            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#fc8f7a"));
+            spanString = LightSpanString.getLightString(replaceFirst, Color.parseColor("#fc8f7a"));
         } else {
-//            spanString = LightSpanString.getLightString(contentString, Color.parseColor("#ffffff"));
-            spanString = new SpannableString(contentString);
+            spanString = new SpannableString(replaceFirst);
         }
+
         FaceReplace.getInstance().faceReplace(mholder.textView, spanString, mContext);
         if (hasGuard) {
             FaceReplace.getInstance().guardFaceReplace(mholder.textView, spanString, mContext);

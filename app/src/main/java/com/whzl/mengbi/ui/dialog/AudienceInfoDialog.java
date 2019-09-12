@@ -1,48 +1,15 @@
 package com.whzl.mengbi.ui.dialog;
 
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.google.gson.JsonElement;
 import com.whzl.mengbi.R;
-import com.whzl.mengbi.api.Api;
-import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
 import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
-import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog;
 import com.whzl.mengbi.ui.dialog.base.ViewHolder;
-import com.whzl.mengbi.ui.widget.view.CircleImageView;
-import com.whzl.mengbi.util.DateUtils;
-import com.whzl.mengbi.util.GsonUtils;
-import com.whzl.mengbi.util.ResourceMap;
-import com.whzl.mengbi.util.ToastUtils;
-import com.whzl.mengbi.util.UserIdentity;
-import com.whzl.mengbi.util.glide.GlideImageLoader;
-import com.whzl.mengbi.util.network.RequestManager;
-import com.whzl.mengbi.util.network.URLContentUtils;
-import com.whzl.mengbi.util.network.retrofit.ApiFactory;
-import com.whzl.mengbi.util.network.retrofit.ApiObserver;
-import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
 
-import org.greenrobot.eventbus.EventBus;
-
-import java.util.HashMap;
-import java.util.List;
-
-import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
-import static com.whzl.mengbi.util.UserIdentity.ROOM_MANAGER;
-import static com.whzl.mengbi.util.UserIdentity.getCanChatPaivate;
 
 /**
  * @author shaw
@@ -91,7 +58,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
                     dismiss();
                     return;
                 }
-                ((LiveDisplayActivity) getActivity()).showAtChat("@" + nickName + " ");
+                ((LiveDisplayActivity) getActivity()).showAtChat(nickName, user.getUserId());
                 dismiss();
                 break;
             case R.id.rl_more:
@@ -103,7 +70,7 @@ public class AudienceInfoDialog extends BaseAwesomeDialog {
                 if (operateMoreDialog != null && operateMoreDialog.isAdded()) {
                     return;
                 }
-                operateMoreDialog = OperateMoreDialog.newInstance(0, user.getUserId(), programId, user,nickName)
+                operateMoreDialog = OperateMoreDialog.newInstance(0, user.getUserId(), programId, user, nickName)
                         .setShowBottom(true)
                         .setOutCancel(false)
                         .show(getActivity().getSupportFragmentManager());

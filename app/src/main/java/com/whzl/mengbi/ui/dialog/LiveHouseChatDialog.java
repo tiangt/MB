@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +33,6 @@ import com.whzl.mengbi.eventbus.event.CLickGuardOrVipEvent;
 import com.whzl.mengbi.greendao.PrivateChatUser;
 import com.whzl.mengbi.model.entity.BroadCastNumBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
-import com.whzl.mengbi.model.entity.RoomUserInfo;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.ui.common.BaseApplication;
@@ -100,6 +101,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
     private SoftKeyboardStateHelper softKeyboardStateHelper;
     private SoftKeyboardStateHelper.SoftKeyboardStateListener softKeyboardStateListener;
     private List<String> hotList;
+    private long toUserId = -1;
 
     public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, RoomInfoBean.DataBean.AnchorBean anchorBean) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
@@ -126,7 +128,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         return liveHouseChatDialog;
     }
 
-    public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, String at, RoomInfoBean.DataBean.AnchorBean anchorBean) {
+    public static BaseAwesomeDialog newInstance(boolean isGuard, boolean isVip, int programId, String at, RoomInfoBean.DataBean.AnchorBean anchorBean, long toUserId) {
         LiveHouseChatDialog liveHouseChatDialog = new LiveHouseChatDialog();
         Bundle args = new Bundle();
         args.putBoolean("isGuard", isGuard);
@@ -134,6 +136,7 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         args.putInt("programId", programId);
         args.putString("at", at);
         args.putParcelable("anchor", anchorBean);
+        args.putLong("toUserId", toUserId);
         liveHouseChatDialog.setArguments(args);
         return liveHouseChatDialog;
     }
@@ -181,14 +184,39 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
         mAnchorBean = getArguments().getParcelable("anchor");
         mChatToUser = getArguments().getParcelable("chatToUser");
         mAt = getArguments().getString("at");
+        toUserId = getArguments().getLong("toUserId", -1);
         if (!TextUtils.isEmpty(mAt)) {
-            etContent.setText(mAt);
-            etContent.setSelection(mAt.length());
+            etContent.setText("@" + mAt);
+            etContent.setSelection(mAt.length() + 1);
         }
         if (mChatToUser != null) {
             etContent.setHint("对" + mChatToUser.getName() + "私聊");
             btnInputBroad.setVisibility(View.GONE);
         }
+        etContent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (toUserId != -1) {
+
+                    if (!(s.toString().contains(mAt))) {
+                        etContent.getText().clear();
+                        toUserId = -1;
+
+                    }
+
+                }
+            }
+        });
         etContent.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_DPAD_DOWN && event.getAction() == 1) {
                 hide();
@@ -210,7 +238,15 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     sendBroadCast(message);
                     etContent.getText().clear();
                 } else {
-                    ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
+                    if (toUserId == -1) {
+                        //无@
+                        ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
+                    } else {
+                        //有@
+                        ((LiveDisplayActivity) getActivity()).sendMessage(message, toUserId, mAt);
+                        toUserId = -1;
+                    }
+
                     etContent.getText().clear();
                 }
                 return true;
@@ -395,7 +431,14 @@ public class LiveHouseChatDialog extends BaseAwesomeDialog implements ViewTreeOb
                     sendBroadCast(message);
                     etContent.getText().clear();
                 } else {
-                    ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
+                    if (toUserId == -1) {
+                        //无@
+                        ((LiveDisplayActivity) getActivity()).sendMessage(message, mChatToUser);
+                    } else {
+                        //有@
+                        ((LiveDisplayActivity) getActivity()).sendMessage(message, toUserId, mAt);
+                        toUserId = -1;
+                    }
                     etContent.getText().clear();
                 }
                 break;

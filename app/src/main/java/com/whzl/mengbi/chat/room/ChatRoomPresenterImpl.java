@@ -85,7 +85,7 @@ public class ChatRoomPresenterImpl {
         }
         messageCallback = new MessageRouter(context);
 
-        client = new MbChatClient(socketFactory,connectCallback);
+        client = new MbChatClient(socketFactory, connectCallback);
         client.setErrorCallback(errorCallback);
 //        if (connectCallback == null) {
 //            connectCallback = new IConnectCallback() {
@@ -178,6 +178,22 @@ public class ChatRoomPresenterImpl {
         String nickname = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, "0").toString();
         msg = new ChatOutMsg(message, programId, client.getCurrentDomain(), userId, nickname
                 , "0", "0", "common");//private
+        client.send(msg);
+    }
+
+    public void sendMessage(String message, long toUserId, String toNickname) {
+        if (client == null) {
+            sendFailMsg.add(message);
+            if (sendFailMsg.size() >= 5) {
+                sendFailMsg.remove(0);
+            }
+            return;
+        }
+        ChatOutMsg msg;
+        String userId = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, (long) 0).toString();
+        String nickname = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_NAME, "0").toString();
+        msg = new ChatOutMsg(message, programId, client.getCurrentDomain(), userId, nickname
+                , String.valueOf(toUserId), toNickname, "common");//private
         client.send(msg);
     }
 
