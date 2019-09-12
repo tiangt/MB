@@ -33,6 +33,7 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
     }
 
     private fun initView(redpacketBean: RoomRedpacketBean?) {
+        tv_name_game_packet.text = redpacketBean?.list?.nickname
         if (redpacketBean?.list?.userIsSatisfied == "T") {
             tv_is_satisfied.visibility = View.VISIBLE
         } else {

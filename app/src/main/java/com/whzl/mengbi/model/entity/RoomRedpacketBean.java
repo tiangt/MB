@@ -51,6 +51,8 @@ public class RoomRedpacketBean implements Parcelable {
         public String closeTime;
         public int totalValidPeople;
         public String userIsSatisfied;
+        public String nickname;
+
 
         @Override
         public int describeContents() {
@@ -75,6 +77,7 @@ public class RoomRedpacketBean implements Parcelable {
             dest.writeString(this.closeTime);
             dest.writeInt(this.totalValidPeople);
             dest.writeString(this.userIsSatisfied);
+            dest.writeString(this.nickname);
         }
 
         public ListBean() {
@@ -87,7 +90,7 @@ public class RoomRedpacketBean implements Parcelable {
             this.awardGoodsId = in.readInt();
             this.awardGoodsName = in.readString();
             this.awardGoodsNum = in.readInt();
-            this.awardTotalPrice = in.readInt();
+            this.awardTotalPrice = in.readLong();
             this.conditionGoodsId = in.readInt();
             this.conditionGoodsName = in.readString();
             this.conditionGoodsNum = in.readInt();
@@ -97,9 +100,10 @@ public class RoomRedpacketBean implements Parcelable {
             this.closeTime = in.readString();
             this.totalValidPeople = in.readInt();
             this.userIsSatisfied = in.readString();
+            this.nickname = in.readString();
         }
 
-        public static final Parcelable.Creator<ListBean> CREATOR = new Parcelable.Creator<ListBean>() {
+        public static final Creator<ListBean> CREATOR = new Creator<ListBean>() {
             @Override
             public ListBean createFromParcel(Parcel source) {
                 return new ListBean(source);
