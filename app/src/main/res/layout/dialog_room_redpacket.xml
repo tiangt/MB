@@ -39,6 +39,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2.5dp"
@@ -58,11 +59,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_goods_name"
             android:layout_width="111.5dp"
             android:layout_height="16dp"
             android:layout_marginTop="85dp"
             android:gravity="center"
-            android:text="dsa"
+            android:includeFontPadding="false"
             android:textColor="#ec3b33"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -71,11 +73,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_award_people_num"
             android:layout_width="100dp"
             android:layout_height="16dp"
             android:layout_marginTop="105dp"
             android:gravity="center"
-            android:text="dsa"
             android:textColor="#ef8239"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -97,11 +99,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_condition_good"
             android:layout_width="185dp"
             android:layout_height="21dp"
             android:layout_marginTop="157dp"
             android:gravity="center"
-            android:text="单笔送礼 ≥9999999萌币"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -120,6 +122,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/tv_close_time"
                 android:layout_width="108dp"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -129,6 +132,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tv_total_valid_people"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
@@ -136,12 +140,12 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="2dp"
                 android:gravity="center"
-                android:text="共33人参与"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_is_satisfied"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
@@ -150,6 +154,7 @@
             android:textColor="#B3EBEBEB"
             android:textSize="12sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

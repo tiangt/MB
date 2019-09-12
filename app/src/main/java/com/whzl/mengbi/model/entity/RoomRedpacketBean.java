@@ -41,7 +41,7 @@ public class RoomRedpacketBean implements Parcelable {
         public int awardGoodsId;
         public String awardGoodsName;
         public int awardGoodsNum;
-        public int awardTotalPrice;
+        public long awardTotalPrice;
         public int conditionGoodsId;
         public String conditionGoodsName;
         public int conditionGoodsNum;
@@ -65,7 +65,7 @@ public class RoomRedpacketBean implements Parcelable {
             dest.writeInt(this.awardGoodsId);
             dest.writeString(this.awardGoodsName);
             dest.writeInt(this.awardGoodsNum);
-            dest.writeInt(this.awardTotalPrice);
+            dest.writeLong(this.awardTotalPrice);
             dest.writeInt(this.conditionGoodsId);
             dest.writeString(this.conditionGoodsName);
             dest.writeInt(this.conditionGoodsNum);

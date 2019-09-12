@@ -1613,6 +1613,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((Long aLong) -> {
                     if (aLong > interval - time) {
+                        roomGameRedpackDispose.dispose();
                         tvRoomRedpacket.setText("");
                         containerRoomRedpacket.setVisibility(View.GONE);
                         return;
