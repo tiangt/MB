@@ -28,7 +28,7 @@ import java.util.*
  */
 class PkQualifyingDialog : BaseActivity<BasePresenter<BaseView>>() {
     override fun setupContentView() {
-        setContentView(R.layout.dialog_pk_qualifying)
+        setContentView(R.layout.dialog_pk_qualifying, "PK排位赛", true)
     }
 
     override fun setupView() {

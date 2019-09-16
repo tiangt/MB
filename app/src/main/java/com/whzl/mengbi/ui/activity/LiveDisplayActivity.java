@@ -520,7 +520,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private QixiControl qixiControl;
     private PkQualifyingBean qualifyingBean;
     private Disposable roomGameRedpackDispose;
-    private RoomRedpacketDialog roomRedpacketDialog;
+    private BaseAwesomeDialog roomRedpacketDialog;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1638,7 +1638,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (roomRedpacketDialog != null && roomRedpacketDialog.isAdded()) {
             return;
         }
-        roomRedpacketDialog = RoomRedpacketDialog.Companion.newInstance(jsonElement);
+        roomRedpacketDialog = RoomRedpacketDialog.Companion.newInstance(jsonElement)
+                .setAnimStyle(R.style.dialog_scale_animation);
         roomRedpacketDialog.show(getSupportFragmentManager());
     }
 

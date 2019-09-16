@@ -240,6 +240,7 @@
                                 android:layout_width="1000dp"
                                 android:layout_height="23dp"
                                 android:layout_marginLeft="5dp"
+                                android:includeFontPadding="false"
                                 android:gravity="center_vertical"
                                 android:singleLine="true"
                                 android:textSize="12sp" />

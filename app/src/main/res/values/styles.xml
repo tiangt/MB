@@ -77,6 +77,11 @@
         <item name="android:windowExitAnimation">@anim/slide_right_out</item>
     </style>
 
+    <style name="dialog_scale_animation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_scale_show</item>
+        <item name="android:windowExitAnimation">@anim/dialog_scale_exit</item>
+    </style>
+
     <!--tab-->
     <style name="LiveHouseDialogTab" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">#fff800</item>
