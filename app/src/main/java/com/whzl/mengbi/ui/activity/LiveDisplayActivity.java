@@ -1604,31 +1604,31 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onRoomGameRedpacketSuccess(RoomRedpacketBean jsonElement) {
-//        if (jsonElement != null && jsonElement.list != null) {
-        containerRoomRedpacket.setVisibility(View.VISIBLE);
-        long time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
-        long interval = (DateUtils.dateStrToMillis(jsonElement.list.closeTime, "yyyy-MM-dd HH:mm:ss") -
-                DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
-        roomGameRedpackDispose = Observable.interval(0, 1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((Long aLong) -> {
-                    if (aLong > interval - time) {
-                        roomGameRedpackDispose.dispose();
-                        tvRoomRedpacket.setText("");
-                        containerRoomRedpacket.setVisibility(View.GONE);
-                        return;
-                    }
-                    tvRoomRedpacket.setText(String.format("%ds", interval - time - aLong));
-                });
-        compositeDisposable.add(roomGameRedpackDispose);
+        if (jsonElement != null && jsonElement.list != null) {
+            containerRoomRedpacket.setVisibility(View.VISIBLE);
+            long time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
+            long interval = (DateUtils.dateStrToMillis(jsonElement.list.closeTime, "yyyy-MM-dd HH:mm:ss") -
+                    DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
+            roomGameRedpackDispose = Observable.interval(0, 1, TimeUnit.SECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((Long aLong) -> {
+                        if (aLong > interval - time) {
+                            roomGameRedpackDispose.dispose();
+                            tvRoomRedpacket.setText("");
+                            containerRoomRedpacket.setVisibility(View.GONE);
+                            return;
+                        }
+                        tvRoomRedpacket.setText(String.format("%ds", interval - time - aLong));
+                    });
+            compositeDisposable.add(roomGameRedpackDispose);
 
-        containerRoomRedpacket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRoomRedpacketDialog(jsonElement);
-            }
-        });
-//        }
+            containerRoomRedpacket.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showRoomRedpacketDialog(jsonElement);
+                }
+            });
+        }
     }
 
     /**
@@ -2045,8 +2045,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mGiftData = giftInfo;
     }
 
-    public void sendMessage(String message, long toUserId,String toNickname){
-        chatRoomPresenter.sendMessage(message,toUserId,toNickname);
+    public void sendMessage(String message, long toUserId, String toNickname) {
+        chatRoomPresenter.sendMessage(message, toUserId, toNickname);
     }
 
     public void sendMessage(String message, PrivateChatUser chatToUser) {
@@ -2745,7 +2745,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (mUserListDialog != null && mUserListDialog.isAdded()) {
             mUserListDialog.dismiss();
         }
-        mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, at, mAnchor,toUserId)
+        mChatDialog = LiveHouseChatDialog.newInstance(isGuard, isVip, mProgramId, at, mAnchor, toUserId)
                 .setDimAmount(0)
                 .setShowBottom(true)
                 .show(getSupportFragmentManager());

@@ -14,6 +14,7 @@ public class RedpackGoodInfoBean implements Parcelable {
 
     public ArrayList<ConditionGoodListBean> conditionGoodList;
     public ArrayList<PrizeGoodsListBean> prizeGoodsList;
+    public long minCoinNum;
 
     public static class ConditionGoodListBean implements Parcelable {
         /**
@@ -116,6 +117,9 @@ public class RedpackGoodInfoBean implements Parcelable {
         };
     }
 
+    public RedpackGoodInfoBean() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -125,17 +129,16 @@ public class RedpackGoodInfoBean implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeTypedList(this.conditionGoodList);
         dest.writeTypedList(this.prizeGoodsList);
-    }
-
-    public RedpackGoodInfoBean() {
+        dest.writeLong(this.minCoinNum);
     }
 
     protected RedpackGoodInfoBean(Parcel in) {
         this.conditionGoodList = in.createTypedArrayList(ConditionGoodListBean.CREATOR);
         this.prizeGoodsList = in.createTypedArrayList(PrizeGoodsListBean.CREATOR);
+        this.minCoinNum = in.readLong();
     }
 
-    public static final Parcelable.Creator<RedpackGoodInfoBean> CREATOR = new Parcelable.Creator<RedpackGoodInfoBean>() {
+    public static final Creator<RedpackGoodInfoBean> CREATOR = new Creator<RedpackGoodInfoBean>() {
         @Override
         public RedpackGoodInfoBean createFromParcel(Parcel source) {
             return new RedpackGoodInfoBean(source);

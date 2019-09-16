@@ -57,7 +57,10 @@ class RedpackDialog : BaseAwesomeDialog() {
         titles.add("礼物红包")
         titles.add("萌币红包")
         val giftRedpackFragment = GiftRedpackFragment.newInstance(t, programId)
+        giftRedpackFragment.setListener(SendRedpacketListener { dismissDialog() })
+
         val mengbiRedpackFragment = MengbiRedpackFragment.newInstance(t, programId)
+        mengbiRedpackFragment.setListener(SendRedpacketListener { dismissDialog() })
         val fragments = ArrayList<Fragment>()
         fragments.add(giftRedpackFragment)
         fragments.add(mengbiRedpackFragment)

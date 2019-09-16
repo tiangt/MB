@@ -63,7 +63,7 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
         } else {
             tv_condition_good.text = String.format("单笔送礼 ≥%d萌币", redpacketBean?.list?.conditionPrice)
         }
-        if ("awardType" == redpacketBean?.list?.awardType) {
+        if ("COIN" == redpacketBean?.list?.awardType) {
             tv_goods_name.text = String.format("萌币 %d", redpacketBean.list?.awardTotalPrice)
         } else {
             tv_goods_name.text = String.format("%s %d", redpacketBean?.list?.awardGoodsName, redpacketBean?.list?.awardGoodsNum)

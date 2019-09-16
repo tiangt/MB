@@ -933,7 +933,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
                         android:gravity="bottom"
-                        android:text="ss"
                         android:textColor="#ffed4e"
                         android:textSize="9sp"
                         android:textStyle="bold" />

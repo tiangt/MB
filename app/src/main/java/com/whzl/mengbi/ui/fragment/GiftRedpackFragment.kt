@@ -19,6 +19,7 @@ import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.RedpackGoodInfoBean
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
+import com.whzl.mengbi.ui.dialog.SendRedpacketListener
 import com.whzl.mengbi.ui.fragment.base.BaseFragment
 import com.whzl.mengbi.util.*
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
@@ -39,6 +40,7 @@ import java.util.concurrent.TimeUnit
  * @date 2019-09-09
  */
 class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
+    private lateinit var giftListener: SendRedpacketListener
     private var currentCondition: RedpackGoodInfoBean.ConditionGoodListBean? = null
     private var currentGood: RedpackGoodInfoBean.PrizeGoodsListBean? = null
     //参与条件
@@ -48,6 +50,8 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
 
     private lateinit var goodsPop: PopupWindow
     private lateinit var conditionPop: PopupWindow
+
+    private var interval = 800L
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_gift_redpack
@@ -82,7 +86,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             showConditionPopWindow()
         }
 
-        et_goods_num_gift.afterTextChangeEvents().debounce(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+        et_goods_num_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
             if (et_goods_num_gift.text.isEmpty() || et_goods_num_gift.text.toString().toInt() < currentGood?.minNum!!) {
                 et_goods_num_gift.setText(currentGood?.minNum.toString(), TextView.BufferType.NORMAL)
             }
@@ -99,7 +103,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             }
         }
 
-        et_people_gift.afterTextChangeEvents().debounce(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+        et_people_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
             if (et_people_gift.text.isEmpty() || et_people_gift.text.toString().toInt() < 1) {
                 et_people_gift.setText("1", TextView.BufferType.NORMAL)
             }
@@ -108,7 +112,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             }
         }
 
-        et_condition_num_gift.afterTextChangeEvents().debounce(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+        et_condition_num_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
             if (et_condition_num_gift.text.isEmpty() || et_condition_num_gift.text.toString().toInt() < 1) {
                 et_condition_num_gift.setText("1", TextView.BufferType.NORMAL)
             }
@@ -148,6 +152,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
                 .subscribe(object : ApiObserver<JsonElement>() {
                     override fun onSuccess(t: JsonElement?) {
                         toast(activity, "发起成功")
+                        giftListener.sendRedpacketSuccess()
                     }
                 })
     }
@@ -209,6 +214,10 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
         goodsPop.isOutsideTouchable = true
         goodsPop.isFocusable = true
         goodsPop.showAsDropDown(container_good_gift, 0, 8)
+    }
+
+    fun setListener(listener: SendRedpacketListener) {
+        giftListener = listener
     }
 
     inner class GoodsHolder(itemView: View) : BaseViewHolder(itemView) {
