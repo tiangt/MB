@@ -3,15 +3,22 @@ package com.whzl.mengbi.ui.dialog
 import android.os.Bundle
 import android.view.View
 import com.whzl.mengbi.R
+import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.model.entity.ApiResult
 import com.whzl.mengbi.model.entity.RoomRedpacketBean
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.util.DateUtils
 import com.whzl.mengbi.util.clickDelay
+import com.whzl.mengbi.util.network.retrofit.ApiFactory
+import com.whzl.mengbi.util.network.retrofit.ApiObserver
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_room_redpacket.*
+import java.util.HashMap
 import java.util.concurrent.TimeUnit
 
 /**
@@ -28,8 +35,29 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
 
     override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
         iv_close.clickDelay { dismissDialog() }
-        val redpacketBean = arguments?.getParcelable<RoomRedpacketBean>("json")
-        initView(redpacketBean)
+        val userId = arguments?.getLong("userid")
+        val programId = arguments?.getInt("programid")
+        loadData(userId, programId)
+    }
+
+    private fun loadData(id: Long?, programId: Int?) {
+        val map = HashMap<String, String>()
+        map["userId"] = id.toString()
+        map["programId"] = programId.toString()
+        val signPramsMap = ParamsUtils.getSignPramsMap(map)
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .roomGameRedpacket(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<RoomRedpacketBean>() {
+                    override fun onSuccess(jsonElement: RoomRedpacketBean) {
+                        initView(jsonElement)
+                    }
+
+                    override fun onError(body: ApiResult<RoomRedpacketBean>) {
+
+                    }
+                })
     }
 
     private fun initView(redpacketBean: RoomRedpacketBean?) {
@@ -78,10 +106,11 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
     }
 
     companion object {
-        fun newInstance(jsonElement: RoomRedpacketBean): RoomRedpacketDialog {
+        fun newInstance(mUserId: Long, mProgramId: Int): RoomRedpacketDialog {
             val roomRedpacketDialog = RoomRedpacketDialog()
             val bundle = Bundle()
-            bundle.putParcelable("json", jsonElement)
+            bundle.putLong("userid", mUserId)
+            bundle.putInt("programid", mProgramId)
             roomRedpacketDialog.arguments = bundle
             return roomRedpacketDialog
         }

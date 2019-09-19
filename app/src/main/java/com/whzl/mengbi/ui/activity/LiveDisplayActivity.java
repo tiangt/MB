@@ -89,6 +89,7 @@ import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
+import com.whzl.mengbi.chat.room.message.events.UserRedpacketEvent;
 import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
 import com.whzl.mengbi.chat.room.message.messageJson.ChatCommonJson;
@@ -1625,7 +1626,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             containerRoomRedpacket.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showRoomRedpacketDialog(jsonElement);
+                    showRoomRedpacketDialog();
                 }
             });
         }
@@ -1634,11 +1635,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     /**
      * 红包抽奖弹窗
      */
-    private void showRoomRedpacketDialog(RoomRedpacketBean jsonElement) {
+    private void showRoomRedpacketDialog() {
         if (roomRedpacketDialog != null && roomRedpacketDialog.isAdded()) {
             return;
         }
-        roomRedpacketDialog = RoomRedpacketDialog.Companion.newInstance(jsonElement)
+        roomRedpacketDialog = RoomRedpacketDialog.Companion.newInstance(mUserId,mProgramId)
                 .setAnimStyle(R.style.dialog_scale_animation);
         roomRedpacketDialog.show(getSupportFragmentManager());
     }
@@ -2947,6 +2948,14 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     })
                     .show(getSupportFragmentManager());
         }
+    }
+
+    /**
+     * 发起红包
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UserRedpacketEvent event) {
+        mLivePresenter.roomGameRedpacket(mUserId, mProgramId);
     }
 
     public void removeAnchorWish() {

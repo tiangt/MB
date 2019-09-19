@@ -21,6 +21,7 @@ import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
+import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.ResourceMap;
 import com.whzl.mengbi.util.UIUtil;
 
@@ -37,6 +38,7 @@ public class RoyalEnterControl {
     RoyalEnterView tvEnter;
     ConstraintLayout clEnter;
     private final int screenWidthPixels;
+    private final int enterWidth = UIUtil.dip2px(BaseApplication.getInstance(), 255);
     private ObjectAnimator translationX;
     private ObjectAnimator translationXOut;
     private ValueAnimator showAnim;
@@ -84,13 +86,14 @@ public class RoyalEnterControl {
         initTv(list.get(0));
         tvEnter.init();
 
-        showAnim = ValueAnimator.ofFloat(screenWidthPixels, screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2);
+        showAnim = ValueAnimator.ofFloat(screenWidthPixels, screenWidthPixels / 2 - enterWidth / 2);
         showAnim.setInterpolator(new DecelerateInterpolator());
         showAnim.setDuration(1000);
         showAnim.addUpdateListener(animation -> {
+            LogUtils.e("royalenteranimator   255  " + UIUtil.dip2px(context, 255));
             float animatedValue = ((float) animation.getAnimatedValue());
             llEnter.setTranslationX(animatedValue);
-            if (animatedValue == screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2) {
+            if (animatedValue == screenWidthPixels / 2 - enterWidth / 2) {
                 tvEnter.startScroll();
                 hideTranslateAnim();
             }
@@ -192,13 +195,13 @@ public class RoyalEnterControl {
     }
 
     private void hideTranslateAnim() {
-        hideAnim = ValueAnimator.ofFloat(screenWidthPixels / 2 - UIUtil.dip2px(context, 255) / 2, -UIUtil.dip2px(context, 255));
+        hideAnim = ValueAnimator.ofFloat(screenWidthPixels / 2 - enterWidth / 2, -enterWidth);
         hideAnim.setInterpolator(new AccelerateInterpolator());
         hideAnim.setDuration(1000);
         hideAnim.addUpdateListener(animation -> {
             float animatedValue = ((float) animation.getAnimatedValue());
             llEnter.setTranslationX(animatedValue);
-            if (animatedValue == -UIUtil.dip2px(context, 255)) {
+            if (animatedValue == -enterWidth) {
                 llEnter.setVisibility(View.GONE);
                 list.remove(0);
                 tvEnter.stopScroll();
