@@ -89,6 +89,8 @@ import com.whzl.mengbi.chat.room.message.events.UpdatePrivateChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdateProgramEvent;
 import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserLevelChangeEvent;
+import com.whzl.mengbi.chat.room.message.events.UserRedpacketAwardEvent;
+import com.whzl.mengbi.chat.room.message.events.UserRedpacketBroadEvent;
 import com.whzl.mengbi.chat.room.message.events.UserRedpacketEvent;
 import com.whzl.mengbi.chat.room.message.events.WeekStarEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
@@ -161,6 +163,7 @@ import com.whzl.mengbi.ui.activity.base.BaseActivity;
 import com.whzl.mengbi.ui.adapter.ActivityFragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.control.NewRedPacketControl;
+import com.whzl.mengbi.ui.control.RedpacketEnterControl;
 import com.whzl.mengbi.ui.dialog.AnchorWishDialog;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
@@ -202,6 +205,7 @@ import com.whzl.mengbi.ui.widget.view.HeadlineLayout;
 import com.whzl.mengbi.ui.widget.view.NoScrollViewPager;
 import com.whzl.mengbi.ui.widget.view.PkLayout;
 import com.whzl.mengbi.ui.widget.view.RatioRelativeLayout;
+import com.whzl.mengbi.ui.widget.view.RedpacketEnterView;
 import com.whzl.mengbi.ui.widget.view.RoyalEnterView;
 import com.whzl.mengbi.ui.widget.view.UnclickLinearLayout;
 import com.whzl.mengbi.ui.widget.view.WeekStarView;
@@ -432,6 +436,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout containerRoomRedpacket;
     @BindView(R.id.tv_room_redpacket)
     TextView tvRoomRedpacket;
+    @BindView(R.id.ll_room_redpacket)
+    LinearLayout llRoomRedpacket;
+    @BindView(R.id.redpacket_enter_view)
+    RedpacketEnterView redpacketEnterView;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -522,6 +530,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private PkQualifyingBean qualifyingBean;
     private Disposable roomGameRedpackDispose;
     private BaseAwesomeDialog roomRedpacketDialog;
+    private RedpacketEnterControl redpacketEnterControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1605,11 +1614,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onRoomGameRedpacketSuccess(RoomRedpacketBean jsonElement) {
-        if (jsonElement != null && jsonElement.list != null) {
+        if (jsonElement != null && jsonElement.list != null && !jsonElement.list.isEmpty()) {
             containerRoomRedpacket.setVisibility(View.VISIBLE);
-            long time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
-            long interval = (DateUtils.dateStrToMillis(jsonElement.list.closeTime, "yyyy-MM-dd HH:mm:ss") -
-                    DateUtils.dateStrToMillis(jsonElement.list.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
+            long time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(jsonElement.list.get(0).startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
+            long interval = (DateUtils.dateStrToMillis(jsonElement.list.get(0).closeTime, "yyyy-MM-dd HH:mm:ss") -
+                    DateUtils.dateStrToMillis(jsonElement.list.get(0).startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
             roomGameRedpackDispose = Observable.interval(0, 1, TimeUnit.SECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe((Long aLong) -> {
@@ -1639,7 +1648,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (roomRedpacketDialog != null && roomRedpacketDialog.isAdded()) {
             return;
         }
-        roomRedpacketDialog = RoomRedpacketDialog.Companion.newInstance(mUserId,mProgramId)
+        roomRedpacketDialog = RoomRedpacketDialog.Companion.newInstance(mUserId, mProgramId)
                 .setAnimStyle(R.style.dialog_scale_animation);
         roomRedpacketDialog.show(getSupportFragmentManager());
     }
@@ -2532,6 +2541,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
         tvRoomRedpacket.setText("");
         containerRoomRedpacket.setVisibility(View.GONE);
+        if (redpacketEnterControl != null) {
+            redpacketEnterControl.destroy();
+        }
     }
 
     @Override
@@ -2956,6 +2968,54 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserRedpacketEvent event) {
         mLivePresenter.roomGameRedpacket(mUserId, mProgramId);
+    }
+
+    /**
+     * 发起红包
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UserRedpacketBroadEvent event) {
+        mLivePresenter.roomGameRedpacket(mUserId, mProgramId);
+
+        Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (carEffect) {
+            if (redpacketEnterControl == null) {
+                redpacketEnterControl = new RedpacketEnterControl();
+                redpacketEnterControl.setLlEnter(llRoomRedpacket);
+                redpacketEnterControl.setTvEnter(redpacketEnterView);
+                redpacketEnterControl.setContext(this);
+                redpacketEnterControl.setListener((programId, nickname) -> {
+                    if (programId == mProgramId) {
+                        return;
+                    }
+                    showJumpLiveHouseDialog(programId, nickname);
+                });
+            }
+            redpacketEnterControl.showEnter(event);
+        }
+    }
+
+    /**
+     * 红包抽奖发奖
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(UserRedpacketAwardEvent event) {
+        Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (carEffect) {
+            if (redpacketEnterControl == null) {
+                redpacketEnterControl = new RedpacketEnterControl();
+                redpacketEnterControl.setLlEnter(llRoomRedpacket);
+                redpacketEnterControl.setTvEnter(redpacketEnterView);
+                redpacketEnterControl.setContext(this);
+                redpacketEnterControl.setListener((programId, nickname) -> {
+                    if (programId == mProgramId) {
+                        return;
+                    }
+                    showJumpLiveHouseDialog(programId, nickname);
+                });
+            }
+            redpacketEnterControl.showEnter(event);
+        }
     }
 
     public void removeAnchorWish() {

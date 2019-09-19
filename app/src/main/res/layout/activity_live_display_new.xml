@@ -695,6 +695,35 @@
                         android:scaleType="fitCenter"
                         app:autoPlay="true" />
 
+                    <LinearLayout
+                        android:id="@+id/ll_room_redpacket"
+                        android:layout_width="326dp"
+                        android:layout_height="33.5dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/bg_room_redpacket_enter"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="39.5dp"
+                            android:paddingRight="19dp">
+
+                            <com.whzl.mengbi.ui.widget.view.RedpacketEnterView
+                                android:id="@+id/redpacket_enter_view"
+                                android:layout_width="1000dp"
+                                android:layout_height="wrap_content"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:textColor="#ffffff"
+                                android:textSize="9sp" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+
                 </com.whzl.mengbi.ui.widget.view.RatioRelativeLayout>
 
                 <FrameLayout

@@ -18,7 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_room_redpacket.*
-import java.util.HashMap
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -61,16 +61,17 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
     }
 
     private fun initView(redpacketBean: RoomRedpacketBean?) {
-        tv_name_game_packet.text = redpacketBean?.list?.nickname
-        if (redpacketBean?.list?.userIsSatisfied == "T") {
+        val list = redpacketBean?.list?.get(0)
+        tv_name_game_packet.text = list?.nickname
+        if (list?.userIsSatisfied == "T") {
             tv_is_satisfied.visibility = View.VISIBLE
         } else {
             tv_is_satisfied.visibility = View.GONE
         }
 
-        val time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(redpacketBean?.list?.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000
-        val interval = (DateUtils.dateStrToMillis(redpacketBean?.list?.closeTime, "yyyy-MM-dd HH:mm:ss")
-                - DateUtils.dateStrToMillis(redpacketBean?.list?.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000
+        val time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(list?.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000
+        val interval = (DateUtils.dateStrToMillis(list?.closeTime, "yyyy-MM-dd HH:mm:ss")
+                - DateUtils.dateStrToMillis(list?.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000
         roomGameRedpackDispose = Observable.interval(0, 1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { aLong: Long ->
@@ -82,19 +83,19 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
                     tv_close_time.text = String.format("%s 后开奖", DateUtils.translateLastSecond3((interval - time - aLong).toInt()))
                 }
 
-        tv_total_valid_people.text = String.format("共%d人参与", redpacketBean?.list?.totalValidPeople)
+        tv_total_valid_people.text = String.format("共%d人参与", list?.totalValidPeople)
 
-        tv_award_people_num.text = String.format("%d人瓜分", redpacketBean?.list?.awardPeopleNum)
+        tv_award_people_num.text = String.format("%d人瓜分", list?.awardPeopleNum)
 
-        if (redpacketBean?.list?.conditionGoodsNum!! > 0) {
-            tv_condition_good.text = String.format("单笔送礼 ≥%d%s", redpacketBean?.list?.conditionGoodsNum, redpacketBean?.list?.conditionGoodsName)
+        if (list?.conditionGoodsNum!! > 0) {
+            tv_condition_good.text = String.format("单笔送礼 ≥%d%s", list?.conditionGoodsNum, list?.conditionGoodsName)
         } else {
-            tv_condition_good.text = String.format("单笔送礼 ≥%d萌币", redpacketBean?.list?.conditionPrice)
+            tv_condition_good.text = String.format("单笔送礼 ≥%d萌币", list?.conditionPrice)
         }
-        if ("COIN" == redpacketBean?.list?.awardType) {
-            tv_goods_name.text = String.format("萌币 %d", redpacketBean.list?.awardTotalPrice)
+        if ("COIN" == list?.awardType) {
+            tv_goods_name.text = String.format("萌币 %d", list?.awardTotalPrice)
         } else {
-            tv_goods_name.text = String.format("%s %d", redpacketBean?.list?.awardGoodsName, redpacketBean?.list?.awardGoodsNum)
+            tv_goods_name.text = String.format("%s %d", list?.awardGoodsName, list?.awardGoodsNum)
         }
     }
 
