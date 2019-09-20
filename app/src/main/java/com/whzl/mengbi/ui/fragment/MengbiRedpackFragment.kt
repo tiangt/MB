@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,7 +72,7 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
         }
 
         et_mengbi.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            if (et_mengbi.text.isEmpty() || et_mengbi.text.toString().toLong() < minCoinNum) {
+            if (TextUtils.isEmpty(et_mengbi.text) || et_mengbi.text.toString().toLong() < minCoinNum) {
                 et_mengbi.setText(minCoinNum.toString())
             }
             tv_amount_mengbi.text = AmountConversionUitls.amountConversionFormat(
@@ -79,10 +80,10 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
         }
 
         et_people_mengbi.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            if (et_people_mengbi.text.isEmpty() || et_people_mengbi.text.toString().toInt() < 1) {
+            if (TextUtils.isEmpty(et_people_mengbi.text) || et_people_mengbi.text.toString().toLong() < 1) {
                 et_people_mengbi.setText("1", TextView.BufferType.NORMAL)
             }
-            if (et_mengbi.text.isEmpty() || et_people_mengbi.text.isEmpty()) {
+            if (TextUtils.isEmpty(et_mengbi.text) || et_people_mengbi.text.isEmpty()) {
                 return@subscribe
             }
 //            tv_amount_mengbi.text = AmountConversionUitls.amountConversionFormat(
@@ -90,7 +91,7 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
         }
 
         et_condition_num_mengbi.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            if (et_condition_num_mengbi.text.isEmpty() || et_people_mengbi.text.toString().toInt() < 1) {
+            if (TextUtils.isEmpty(et_condition_num_mengbi.text) || et_people_mengbi.text.toString().toLong() < 1) {
                 et_condition_num_mengbi.setText("1", TextView.BufferType.NORMAL)
             }
         }
@@ -99,17 +100,17 @@ class MengbiRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             val userId = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L) as Long
             if (currentCondition?.goodsType == "GOODS") {
                 sendRedpack(userId, programId, "COIN", currentCondition?.conditionGoodsCfgId, et_mengbi.text.toString(),
-                        et_condition_num_mengbi.text.toString().toInt(),
-                        0, et_people_mengbi.text.toString().toInt())
+                        et_condition_num_mengbi.text.toString().toLong(),
+                        0, et_people_mengbi.text.toString().toLong())
             } else {
                 sendRedpack(userId, programId, "COIN", currentCondition?.conditionGoodsCfgId, et_mengbi.text.toString(),
                         0,
-                        et_condition_num_mengbi.text.toString().toInt(), et_people_mengbi.text.toString().toInt())
+                        et_condition_num_mengbi.text.toString().toLong(), et_people_mengbi.text.toString().toLong())
             }
         }
     }
 
-    private fun sendRedpack(userId: Long, programId: Int?, type: String, conditionGoodsCfgId: Int?, prizeTotalPrize: String, conditionGoodsNum: Int, conditionPrize: Int, awardPeopleNum: Int) {
+    private fun sendRedpack(userId: Long, programId: Int?, type: String, conditionGoodsCfgId: Int?, prizeTotalPrize: String, conditionGoodsNum: Long, conditionPrize: Long, awardPeopleNum: Long) {
         val params = HashMap<String, String>()
         params.put("userId", userId.toString())
         params.put("programId", programId.toString())

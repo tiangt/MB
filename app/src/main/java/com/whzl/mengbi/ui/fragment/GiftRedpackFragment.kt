@@ -1,9 +1,11 @@
 package com.whzl.mengbi.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,15 +18,21 @@ import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
+import com.whzl.mengbi.model.entity.ApiResult
 import com.whzl.mengbi.model.entity.RedpackGoodInfoBean
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.dialog.SendRedpacketListener
+import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
+import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
+import com.whzl.mengbi.ui.dialog.base.ViewConvertListener
+import com.whzl.mengbi.ui.dialog.base.ViewHolder
 import com.whzl.mengbi.ui.fragment.base.BaseFragment
 import com.whzl.mengbi.util.*
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils
+import com.whzl.mengbi.wxapi.WXPayEntryActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_gift_redpack.*
@@ -40,6 +48,7 @@ import java.util.concurrent.TimeUnit
  * @date 2019-09-09
  */
 class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
+    private var errorDialog: AwesomeDialog = AwesomeDialog()
     private lateinit var giftListener: SendRedpacketListener
     private var currentCondition: RedpackGoodInfoBean.ConditionGoodListBean? = null
     private var currentGood: RedpackGoodInfoBean.PrizeGoodsListBean? = null
@@ -87,33 +96,33 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
         }
 
         et_goods_num_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            if (et_goods_num_gift.text.isEmpty() || et_goods_num_gift.text.toString().toInt() < currentGood?.minNum!!) {
+            if (TextUtils.isEmpty(et_goods_num_gift.text) || et_goods_num_gift.text.toString().toLong() < currentGood?.minNum!!) {
                 et_goods_num_gift.setText(currentGood?.minNum.toString(), TextView.BufferType.NORMAL)
             }
-            if (et_goods_num_gift.text.toString().toInt() % currentGood?.multipleNum!! != 0) {
-                val i = et_goods_num_gift.text.toString().toInt() / currentGood?.multipleNum!!
+            if (et_goods_num_gift.text.toString().toLong() % currentGood?.multipleNum!! != 0L) {
+                val i = et_goods_num_gift.text.toString().toLong() / currentGood?.multipleNum!!
                 et_goods_num_gift.setText((i * currentGood?.multipleNum!!).toString(), TextView.BufferType.NORMAL)
             } else {
                 tv_amount_gift.text = AmountConversionUitls.amountConversionFormat(
-                        currentGood?.goodsPrice!!.times(et_goods_num_gift.text.toString().toInt()))
+                        currentGood?.goodsPrice!!.times(et_goods_num_gift.text.toString().toLong()))
             }
 
-            if (et_people_gift.text.toString().toInt() > et_goods_num_gift.text.toString().toInt()) {
+            if (et_people_gift.text.toString().toLong() > et_goods_num_gift.text.toString().toLong()) {
                 et_people_gift.setText(et_goods_num_gift.text.toString(), TextView.BufferType.NORMAL)
             }
         }
 
         et_people_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            if (et_people_gift.text.isEmpty() || et_people_gift.text.toString().toInt() < 1) {
+            if (TextUtils.isEmpty(et_people_gift.text) || et_people_gift.text.toString().toLong() < 1) {
                 et_people_gift.setText("1", TextView.BufferType.NORMAL)
             }
-            if (et_people_gift.text.toString().toInt() > et_goods_num_gift.text.toString().toInt()) {
+            if (et_people_gift.text.toString().toLong() > et_goods_num_gift.text.toString().toLong()) {
                 et_people_gift.setText(et_goods_num_gift.text.toString(), TextView.BufferType.NORMAL)
             }
         }
 
         et_condition_num_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            if (et_condition_num_gift.text.isEmpty() || et_condition_num_gift.text.toString().toInt() < 1) {
+            if (TextUtils.isEmpty(et_condition_num_gift.text) || et_condition_num_gift.text.toString().toLong() < 1) {
                 et_condition_num_gift.setText("1", TextView.BufferType.NORMAL)
             }
 
@@ -123,17 +132,17 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             val userId = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L) as Long
             if (currentCondition?.goodsType == "GOODS") {
                 sendRedpack(userId, programId, "GOODS", currentGood?.prizeGoodsCfgId, currentCondition?.conditionGoodsCfgId,
-                        et_goods_num_gift.text.toString().toInt(), et_condition_num_gift.text.toString().toInt(),
-                        0, et_people_gift.text.toString().toInt())
+                        et_goods_num_gift.text.toString().toLong(), et_condition_num_gift.text.toString().toLong(),
+                        0, et_people_gift.text.toString().toLong())
             } else {
                 sendRedpack(userId, programId, "GOODS", currentGood?.prizeGoodsCfgId, currentCondition?.conditionGoodsCfgId,
-                        et_goods_num_gift.text.toString().toInt(), 0,
-                        et_condition_num_gift.text.toString().toInt(), et_people_gift.text.toString().toInt())
+                        et_goods_num_gift.text.toString().toLong(), 0,
+                        et_condition_num_gift.text.toString().toLong(), et_people_gift.text.toString().toLong())
             }
         }
     }
 
-    private fun sendRedpack(userId: Long, programId: Int?, type: String, prizeGoodsCfgId: Int?, conditionGoodsCfgId: Int?, prizeGoodsNum: Int, conditionGoodsNum: Int, conditionPrize: Int, awardPeopleNum: Int) {
+    private fun sendRedpack(userId: Long, programId: Int?, type: String, prizeGoodsCfgId: Int?, conditionGoodsCfgId: Int?, prizeGoodsNum: Long, conditionGoodsNum: Long, conditionPrize: Long, awardPeopleNum: Long) {
         val params = HashMap<String, String>()
         params.put("userId", userId.toString())
         params.put("programId", programId.toString())
@@ -153,6 +162,68 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
                     override fun onSuccess(t: JsonElement?) {
                         toast(activity, "发起成功")
                         giftListener.sendRedpacketSuccess()
+                    }
+
+                    override fun onError(body: ApiResult<JsonElement>?) {
+                        when (body?.code) {
+                            //余额不足
+                            -1211 -> {
+                                if (errorDialog.isAdded) {
+                                    return
+                                }
+                                errorDialog = AwesomeDialog.init()
+                                errorDialog.setLayoutId(R.layout.dialog_simple).setConvertListener(object : ViewConvertListener() {
+                                    override fun convertView(holder: ViewHolder, dialog: BaseAwesomeDialog) {
+                                        holder.setText(R.id.tv_content_simple_dialog, "您的萌币余额不足，是否现在充值？")
+                                        holder.setText(R.id.btn_confirm_simple_dialog, "充值")
+                                        holder.setOnClickListener(R.id.btn_confirm_simple_dialog) {
+                                            dialog.dismissDialog()
+                                            val intent = Intent(activity, WXPayEntryActivity::class.java)
+                                            activity?.startActivity(intent)
+                                        }
+                                        holder.setOnClickListener(R.id.btn_cancel_simple_dialog) {
+                                            dialog.dismissDialog()
+                                        }
+                                    }
+                                }).setOutCancel(false).show(fragmentManager)
+                            }
+                            //节目未开播
+                            -1135 -> {
+                                if (errorDialog.isAdded) {
+                                    return
+                                }
+                                errorDialog = AwesomeDialog.init()
+                                errorDialog.setLayoutId(R.layout.dialog_simple).setConvertListener(object : ViewConvertListener() {
+                                    override fun convertView(holder: ViewHolder, dialog: BaseAwesomeDialog) {
+                                        holder.setText(R.id.tv_content_simple_dialog, "当前主播未开播，无法发起红包抽奖")
+                                        holder.setOnClickListener(R.id.btn_confirm_simple_dialog) {
+                                            dialog.dismissDialog()
+                                        }
+                                        holder.setOnClickListener(R.id.btn_cancel_simple_dialog) {
+                                            dialog.dismissDialog()
+                                        }
+                                    }
+                                }).setOutCancel(false).show(fragmentManager)
+                            }
+                            //抽奖红包存在
+                            -1282 -> {
+                                if (errorDialog.isAdded) {
+                                    return
+                                }
+                                errorDialog = AwesomeDialog.init()
+                                errorDialog.setLayoutId(R.layout.dialog_simple).setConvertListener(object : ViewConvertListener() {
+                                    override fun convertView(holder: ViewHolder, dialog: BaseAwesomeDialog) {
+                                        holder.setText(R.id.tv_content_simple_dialog, "当前房间已经有红包抽奖，等结束后再次发起")
+                                        holder.setOnClickListener(R.id.btn_confirm_simple_dialog) {
+                                            dialog.dismissDialog()
+                                        }
+                                        holder.setOnClickListener(R.id.btn_cancel_simple_dialog) {
+                                            dialog.dismissDialog()
+                                        }
+                                    }
+                                }).setOutCancel(false).show(fragmentManager)
+                            }
+                        }
                     }
                 })
     }

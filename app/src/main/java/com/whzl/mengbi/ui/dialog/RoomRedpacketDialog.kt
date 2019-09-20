@@ -64,9 +64,9 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
         val list = redpacketBean?.list?.get(0)
         tv_name_game_packet.text = list?.nickname
         if (list?.userIsSatisfied == "T") {
-            tv_is_satisfied.visibility = View.VISIBLE
-        } else {
             tv_is_satisfied.visibility = View.GONE
+        } else {
+            tv_is_satisfied.visibility = View.VISIBLE
         }
 
         val time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(list?.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000
