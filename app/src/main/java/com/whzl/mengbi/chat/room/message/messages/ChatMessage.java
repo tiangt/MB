@@ -211,9 +211,11 @@ public class ChatMessage implements FillHolderMessage {
         }
 
         String replaceFirst = contentString;
-        if (!TextUtils.isEmpty(to_nickName) && contentString.contains(to_nickName)) {
-            replaceFirst = contentString.replaceFirst("@" + to_nickName, "");
-            mholder.textView.append(LightSpanString.getLightString("@"+to_nickName, Color.parseColor("#72e6ff")));
+        if (!TextUtils.isEmpty(to_nickName)) {
+            if (replaceFirst.contains(to_nickName.trim())) {
+                replaceFirst = contentString.replaceFirst("@" + to_nickName.trim(), "");
+                mholder.textView.append(LightSpanString.getLightString("@" + to_nickName.trim(), Color.parseColor("#72e6ff")));
+            }
         }
 
         SpannableString spanString;
