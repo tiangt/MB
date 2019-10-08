@@ -1614,7 +1614,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Override
     public void onRoomGameRedpacketSuccess(RoomRedpacketBean jsonElement) {
-        if (jsonElement != null && jsonElement.list != null && !jsonElement.list.isEmpty()) {
+        if (jsonElement != null && jsonElement.list != null && !jsonElement.list.isEmpty()
+                && System.currentTimeMillis() - (DateUtils.dateStrToMillis(jsonElement.list.get(0).closeTime, "yyyy-MM-dd HH:mm:ss")) < 0) {
             containerRoomRedpacket.setVisibility(View.VISIBLE);
             long time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(jsonElement.list.get(0).startTime, "yyyy-MM-dd HH:mm:ss")) / 1000;
             long interval = (DateUtils.dateStrToMillis(jsonElement.list.get(0).closeTime, "yyyy-MM-dd HH:mm:ss") -

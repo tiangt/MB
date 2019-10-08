@@ -36,7 +36,7 @@ public class UserRedpacketAwardEvent implements RedpacketTotalEvent {
         if (json.context.gameRedpacketAwardDto.awardType.equals("COIN")) {
             textView.append(LightSpanString.getLightString(json.context.gameRedpacketAwardDto.awardPrice + "萌币", Color.rgb(191,240,61)));
         } else {
-            textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardGoodsNum + "个" + json.context.uGameRedpacketDto.awardGoodsName
+            textView.append(LightSpanString.getLightString(json.context.gameRedpacketAwardDto.awardGoodsNum + "个" + json.context.uGameRedpacketDto.awardGoodsName
                     , Color.rgb(191,240,61)));
         }
         textView.append(" 红包（共 ");
@@ -44,7 +44,7 @@ public class UserRedpacketAwardEvent implements RedpacketTotalEvent {
             textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardTotalPrice + "", Color.rgb(255, 255, 255)));
             textView.append(" 萌币)");
         } else {
-            textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardPeopleNum + ""
+            textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardGoodsNum + ""
                     , Color.rgb(255, 255, 255)));
             textView.append(" 个)");
         }

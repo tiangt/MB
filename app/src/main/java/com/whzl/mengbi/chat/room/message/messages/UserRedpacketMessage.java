@@ -41,8 +41,11 @@ public class UserRedpacketMessage implements FillHolderMessage {
         if (json.context.uGameRedpacketDto.awardType.equals("COIN")) {
             mholder.textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardTotalPrice + "萌币", Color.rgb(252, 60, 101)));
         } else {
-            mholder.textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardPeopleNum + "个" +
+            mholder.textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardGoodsNum + "个" +
                     json.context.uGameRedpacketDto.awardGoodsName, Color.rgb(252, 60, 101)));
+            mholder.textView.append("（价值");
+            mholder.textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardTotalPrice + "", Color.rgb(252, 60, 101)));
+            mholder.textView.append("萌币）");
         }
         mholder.textView.append(" 红包抽奖，");
         mholder.textView.append(LightSpanString.getLightString("赶紧围观~", Color.rgb(252, 233, 3)));

@@ -155,7 +155,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:text="1"
-                android:maxLength="6"
+                android:maxLength="9"
                 android:textColor="#757575"
                 android:textSize="12sp" />
         </LinearLayout>

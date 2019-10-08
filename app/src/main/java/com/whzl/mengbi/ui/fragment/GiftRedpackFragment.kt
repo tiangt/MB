@@ -49,7 +49,7 @@ import java.util.concurrent.TimeUnit
  */
 class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
     private var errorDialog: AwesomeDialog = AwesomeDialog()
-    private lateinit var giftListener: SendRedpacketListener
+    private var giftListener: SendRedpacketListener? = null
     private var currentCondition: RedpackGoodInfoBean.ConditionGoodListBean? = null
     private var currentGood: RedpackGoodInfoBean.PrizeGoodsListBean? = null
     //参与条件
@@ -95,40 +95,40 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
             showConditionPopWindow()
         }
 
-        et_goods_num_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            if (TextUtils.isEmpty(et_goods_num_gift.text) || et_goods_num_gift.text.toString().toLong() < currentGood?.minNum!!) {
-                et_goods_num_gift.setText(currentGood?.minNum.toString(), TextView.BufferType.NORMAL)
+        et_goods_num_gift.afterTextChangeEvents().observeOn(AndroidSchedulers.mainThread()).subscribe {
+            if (TextUtils.isEmpty(et_goods_num_gift.text)) {
+                tv_amount_gift.text = "0"
+                return@subscribe
             }
-            if (et_goods_num_gift.text.toString().toLong() % currentGood?.multipleNum!! != 0L) {
-                val i = et_goods_num_gift.text.toString().toLong() / currentGood?.multipleNum!!
-                et_goods_num_gift.setText((i * currentGood?.multipleNum!!).toString(), TextView.BufferType.NORMAL)
-            } else {
-                tv_amount_gift.text = AmountConversionUitls.amountConversionFormat(
-                        currentGood?.goodsPrice!!.times(et_goods_num_gift.text.toString().toLong()))
-            }
-
-            if (et_people_gift.text.toString().toLong() > et_goods_num_gift.text.toString().toLong()) {
-                et_people_gift.setText(et_goods_num_gift.text.toString(), TextView.BufferType.NORMAL)
-            }
+            tv_amount_gift.text = AmountConversionUitls.amountConversionFormat(
+                    currentGood?.goodsPrice!!.times(et_goods_num_gift.text.toString().toLong()))
         }
+//
+//            if (et_people_gift.text.toString().toLong() > et_goods_num_gift.text.toString().toLong()) {
+//                et_people_gift.setText(et_goods_num_gift.text.toString(), TextView.BufferType.NORMAL)
+//            }
+//        }
 
-        et_people_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            if (TextUtils.isEmpty(et_people_gift.text) || et_people_gift.text.toString().toLong() < 1) {
-                et_people_gift.setText("1", TextView.BufferType.NORMAL)
+//        et_people_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+//            if (TextUtils.isEmpty(et_people_gift.text) || et_people_gift.text.toString().toLong() < 1) {
+//                et_people_gift.setText("1", TextView.BufferType.NORMAL)
+//            }
+//            if (et_people_gift.text.toString().toLong() > et_goods_num_gift.text.toString().toLong()) {
+//                et_people_gift.setText(et_goods_num_gift.text.toString(), TextView.BufferType.NORMAL)
+//            }
+//        }
+
+//        et_condition_num_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
+//            if (TextUtils.isEmpty(et_condition_num_gift.text) || et_condition_num_gift.text.toString().toLong() < 1) {
+//                et_condition_num_gift.setText("1", TextView.BufferType.NORMAL)
+//            }
+//
+//        }
+
+        btn_gift.setOnClickListener {
+            if (checkSend()) {
+                return@setOnClickListener
             }
-            if (et_people_gift.text.toString().toLong() > et_goods_num_gift.text.toString().toLong()) {
-                et_people_gift.setText(et_goods_num_gift.text.toString(), TextView.BufferType.NORMAL)
-            }
-        }
-
-        et_condition_num_gift.afterTextChangeEvents().debounce(interval, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            if (TextUtils.isEmpty(et_condition_num_gift.text) || et_condition_num_gift.text.toString().toLong() < 1) {
-                et_condition_num_gift.setText("1", TextView.BufferType.NORMAL)
-            }
-
-        }
-
-        btn_gift.clickDelay {
             val userId = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L) as Long
             if (currentCondition?.goodsType == "GOODS") {
                 sendRedpack(userId, programId, "GOODS", currentGood?.prizeGoodsCfgId, currentCondition?.conditionGoodsCfgId,
@@ -140,6 +140,44 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
                         et_condition_num_gift.text.toString().toLong(), et_people_gift.text.toString().toLong())
             }
         }
+    }
+
+    private fun checkSend(): Boolean {
+        if (TextUtils.isEmpty(et_goods_num_gift.text) || TextUtils.isEmpty(et_people_gift.text) || TextUtils.isEmpty(et_condition_num_gift.text)
+                || et_goods_num_gift.text.toString().toLong() == 0L
+                || et_people_gift.text.toString().toLong() == 0L
+                || et_condition_num_gift.text.toString().toLong() == 0L) {
+            return true
+        }
+
+        if (TextUtils.isEmpty(et_goods_num_gift.text) || et_goods_num_gift.text.toString().toLong() < currentGood?.minNum!!) {
+//            et_goods_num_gift.setText(currentGood?.minNum.toString(), TextView.BufferType.NORMAL)
+            toast(activity, "礼物数量不能小于${currentGood?.minNum}")
+            return true
+        }
+        if (et_goods_num_gift.text.toString().toLong() % currentGood?.multipleNum!! != 0L) {
+//            val i = et_goods_num_gift.text.toString().toLong() / currentGood?.multipleNum!!
+//            et_goods_num_gift.setText((i * currentGood?.multipleNum!!).toString(), TextView.BufferType.NORMAL)
+            toast(activity, "奖品数量必须为${currentGood?.multipleNum}的整数倍")
+            return true
+        }
+
+        if (et_people_gift.text.toString().toLong() > et_goods_num_gift.text.toString().toLong()) {
+//            et_people_gift.setText(et_goods_num_gift.text.toString(), TextView.BufferType.NORMAL)
+            toast(activity, "中奖人数不能超过${et_goods_num_gift.text.toString().toLong()}")
+            return true
+        }
+
+        if (currentCondition?.goodsType == "GOODS" && et_condition_num_gift.text.toString().toLong() > 99) {
+            toast(activity, "${currentCondition?.goodsName}数量不能超过99")
+            return true
+        }
+
+        if (currentCondition?.goodsType == "COIN" && currentGood?.goodsPrice!!.times(et_goods_num_gift.text.toString().toLong()) / 5 < et_condition_num_gift.text.toString().toLong()) {
+            toast(activity, "参与资格不能大于奖品总萌币的五分之一")
+            return true
+        }
+        return false
     }
 
     private fun sendRedpack(userId: Long, programId: Int?, type: String, prizeGoodsCfgId: Int?, conditionGoodsCfgId: Int?, prizeGoodsNum: Long, conditionGoodsNum: Long, conditionPrize: Long, awardPeopleNum: Long) {
@@ -161,7 +199,9 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
                 .subscribe(object : ApiObserver<JsonElement>() {
                     override fun onSuccess(t: JsonElement?) {
                         toast(activity, "发起成功")
-                        giftListener.sendRedpacketSuccess()
+                        if (giftListener != null) {
+                            giftListener!!.sendRedpacketSuccess()
+                        }
                     }
 
                     override fun onError(body: ApiResult<JsonElement>?) {
@@ -293,7 +333,7 @@ class GiftRedpackFragment : BaseFragment<BasePresenter<BaseView>>() {
 
     inner class GoodsHolder(itemView: View) : BaseViewHolder(itemView) {
         override fun onBindViewHolder(position: Int) {
-            itemView.tv_item_goods.text = prizeGoodsList[position].goodsName
+            itemView.tv_item_goods.text =  "${prizeGoodsList[position].goodsName}（${prizeGoodsList[position].goodsPrice}萌币）"
         }
 
         override fun onItemClick(view: View?, position: Int) {

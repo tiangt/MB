@@ -36,9 +36,11 @@ public class UserRedpacketBroadEvent implements RedpacketTotalEvent {
         } else {
             textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardPeopleNum + "个" +
                     json.context.uGameRedpacketDto.awardGoodsName, Color.rgb(191, 240, 61)));
+            textView.append("（价值");
+            textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardTotalPrice + "", Color.rgb(191, 240, 61)));
+            textView.append("萌币）");
         }
-        textView.append("（价值");
-        textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardTotalPrice + "", Color.rgb(191, 240, 61)));
-        textView.append("萌币）");
+        textView.append("红包抽奖，赶紧围观~");
+
     }
 }

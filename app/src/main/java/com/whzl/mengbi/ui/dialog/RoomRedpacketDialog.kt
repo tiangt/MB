@@ -83,7 +83,7 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
                     tv_close_time.text = String.format("%s 后开奖", DateUtils.translateLastSecond3((interval - time - aLong).toInt()))
                 }
 
-        tv_total_valid_people.text = String.format("共%d人参与", list?.totalValidPeople)
+        tv_total_valid_people.text = String.format("共%d人", list?.totalValidPeople)
 
         tv_award_people_num.text = String.format("%d人瓜分", list?.awardPeopleNum)
 
@@ -95,7 +95,7 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
         if ("COIN" == list?.awardType) {
             tv_goods_name.text = String.format("萌币 %d", list?.awardTotalPrice)
         } else {
-            tv_goods_name.text = String.format("%s %d", list?.awardGoodsName, list?.awardGoodsNum)
+            tv_goods_name.text = String.format("%s %d个", list?.awardGoodsName, list?.awardGoodsNum)
         }
     }
 

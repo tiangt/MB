@@ -47,6 +47,8 @@ import com.whzl.mengbi.chat.room.message.messagesActions.UpdateProgramAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UserLevelChangeAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UserRedpacketAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UserRedpacketAwardAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.UserRedpacketAwardBroadAction;
+import com.whzl.mengbi.chat.room.message.messagesActions.UserRedpacketBackAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.UserRedpacketBroadAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WeekStarAction;
 import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
@@ -127,6 +129,8 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("USER_REDPACKET", new UserRedpacketAction());
         actionsMap.put("USER_REDPACKET_AWARD", new UserRedpacketAwardAction());
         actionsMap.put("USER_REDPACKET_BROADCAST", new UserRedpacketBroadAction());
+        actionsMap.put("USER_REDPACKET_AWARD_BROADCAST", new UserRedpacketAwardBroadAction());
+        actionsMap.put("USER_REDPACKET_BACK", new UserRedpacketBackAction());
     }
 
     private void initChatAction() {

@@ -39,7 +39,7 @@ public class UserRedpacketAwardMessage implements FillHolderMessage {
         if (json.context.gameRedpacketAwardDto.awardType.equals("COIN")) {
             mholder.textView.append(LightSpanString.getLightString(json.context.gameRedpacketAwardDto.awardPrice + "萌币", Color.rgb(252, 60, 101)));
         } else {
-            mholder.textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardGoodsNum + "个" + json.context.uGameRedpacketDto.awardGoodsName
+            mholder.textView.append(LightSpanString.getLightString(json.context.gameRedpacketAwardDto.awardGoodsNum + "个" + json.context.uGameRedpacketDto.awardGoodsName
                     , Color.rgb(252, 60, 101)));
         }
         mholder.textView.append(" 红包（共 ");
@@ -47,7 +47,7 @@ public class UserRedpacketAwardMessage implements FillHolderMessage {
             mholder.textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardTotalPrice + "", Color.rgb(252, 60, 101)));
             mholder.textView.append(" 萌币)");
         } else {
-            mholder.textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardPeopleNum + ""
+            mholder.textView.append(LightSpanString.getLightString(json.context.uGameRedpacketDto.awardGoodsNum + ""
                     , Color.rgb(252, 60, 101)));
             mholder.textView.append(" 个)");
         }
