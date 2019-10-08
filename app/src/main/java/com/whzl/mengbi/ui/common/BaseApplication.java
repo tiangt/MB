@@ -211,7 +211,7 @@ public class BaseApplication extends Application {
     private void initBaiduStatistic() {
         StatService.setDebugOn(true);
         StatService.setAppChannel(this, channel, true);
-//        StatService.autoTrace(this, true, false);
+        StatService.autoTrace(this, true, false);
 //        StatService.start(this);
     }
 

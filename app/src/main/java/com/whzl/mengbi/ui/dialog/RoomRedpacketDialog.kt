@@ -1,7 +1,6 @@
 package com.whzl.mengbi.ui.dialog
 
 import android.os.Bundle
-import android.view.View
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.model.entity.ApiResult
@@ -64,9 +63,9 @@ class RoomRedpacketDialog : BaseAwesomeDialog() {
         val list = redpacketBean?.list?.get(0)
         tv_name_game_packet.text = list?.nickname
         if (list?.userIsSatisfied == "T") {
-            tv_is_satisfied.visibility = View.GONE
+            tv_is_satisfied.text = "您已符合抽奖条件"
         } else {
-            tv_is_satisfied.visibility = View.VISIBLE
+            tv_is_satisfied.text = "您还未满足抽奖条件"
         }
 
         val time = (System.currentTimeMillis() - DateUtils.dateStrToMillis(list?.startTime, "yyyy-MM-dd HH:mm:ss")) / 1000

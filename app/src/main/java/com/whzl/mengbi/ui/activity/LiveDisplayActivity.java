@@ -2576,7 +2576,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
-    private void showJumpLiveHouseDialog(int programId, String nickName) {
+    public void showJumpLiveHouseDialog(int programId, String nickName) {
         if (programId == mProgramId) {
             return;
         }

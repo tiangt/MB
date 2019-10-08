@@ -2,8 +2,11 @@ package com.whzl.mengbi.chat.room.message.messagesActions;
 
 import android.content.Context;
 
+import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserRedpacketBroadEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.UserRedpacketJson;
+import com.whzl.mengbi.chat.room.message.messages.UserRedpacketBroadMessage;
+import com.whzl.mengbi.chat.room.message.messages.UserRedpacketMessage;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 
@@ -23,6 +26,7 @@ public class UserRedpacketBroadAction implements Actions {
                 && userRedpacketJson.context.userInfo != null) {
             //发起红包抽奖
             EventBus.getDefault().post(new UserRedpacketBroadEvent(context,userRedpacketJson));
+            EventBus.getDefault().post(new UpdatePubChatEvent(new UserRedpacketBroadMessage(context, userRedpacketJson)));
         }
     }
 }
