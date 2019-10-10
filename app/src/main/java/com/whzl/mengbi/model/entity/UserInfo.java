@@ -4,7 +4,6 @@ package com.whzl.mengbi.model.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -52,7 +51,7 @@ public class UserInfo extends ResponseInfo implements Parcelable {
 
         private long userId;
         private String nickname;
-        private String avatar;
+        private String avatar = "";
         private String userType;
         private String province;
         private String city;
@@ -103,6 +102,7 @@ public class UserInfo extends ResponseInfo implements Parcelable {
         }
 
         private String lastRechargeTime;
+
         public String getCreateTime() {
             return createTime;
         }
@@ -207,11 +207,11 @@ public class UserInfo extends ResponseInfo implements Parcelable {
             this.levelList = levelList;
         }
 
-        public void setBindMobile(String bindMobile){
+        public void setBindMobile(String bindMobile) {
             this.bindMobile = bindMobile;
         }
 
-        public String getBindMobile(){
+        public String getBindMobile() {
             return bindMobile;
         }
 
@@ -290,7 +290,7 @@ public class UserInfo extends ResponseInfo implements Parcelable {
                 return chengPonit;
             }
 
-            public long getMengDou(){
+            public long getMengDou() {
                 return mengDou;
             }
 

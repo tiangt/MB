@@ -454,7 +454,7 @@ public class GoodnumFragment extends BaseFragment {
         buyDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_preety_shop).setConvertListener(new ViewConvertListener() {
             @Override
             protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-                if (currentUser.getAvatar()!=null) {
+                if (currentUser != null && currentUser.getAvatar() != null && !TextUtils.isEmpty(currentUser.getAvatar())) {
                     GlideImageLoader.getInstace().displayImage(getMyActivity(), currentUser.getAvatar()
                             , holder.getView(R.id.iv_avatar));
                 }
