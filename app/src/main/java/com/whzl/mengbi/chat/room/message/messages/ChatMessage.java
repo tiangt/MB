@@ -212,7 +212,7 @@ public class ChatMessage implements FillHolderMessage {
 
         String replaceFirst = contentString;
         if (!TextUtils.isEmpty(to_nickName)) {
-            if (replaceFirst.contains(to_nickName.trim())) {
+            if (replaceFirst.contains("@" + to_nickName.trim())) {
                 replaceFirst = contentString.replaceFirst("@" + to_nickName.trim(), "");
                 mholder.textView.append(LightSpanString.getLightString("@" + to_nickName.trim(), Color.parseColor("#72e6ff")));
             }
