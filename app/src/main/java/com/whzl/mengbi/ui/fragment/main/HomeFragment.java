@@ -40,13 +40,13 @@ import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.ui.view.HomeView;
 import com.whzl.mengbi.ui.widget.recyclerview.SpacesItemDecoration;
+import com.whzl.mengbi.ui.widget.view.Banner;
 import com.whzl.mengbi.ui.widget.view.CircleImageView;
 import com.whzl.mengbi.ui.widget.view.HomeSortTab;
 import com.whzl.mengbi.util.SPUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 import com.whzl.mengbi.util.glide.RoundImageLoader;
 import com.whzl.mengbi.wxapi.WXPayEntryActivity;
-import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 
@@ -414,7 +414,7 @@ public class HomeFragment extends BaseFragment implements HomeView {
         //设置轮播时间
         banner.setDelayTime(3000);
         //设置指示器位置（当banner模式中有指示器时）
-        banner.setIndicatorGravity(BannerConfig.CENTER);
+        banner.setIndicatorGravity(BannerConfig.RIGHT);
         banner.setOnBannerListener(position -> {
             if (mBannerInfoList != null && mBannerInfoList.size() > 0) {
                 BannerInfo.DataBean.ListBean listBean = mBannerInfoList.get(position);
