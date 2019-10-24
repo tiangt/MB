@@ -9,37 +9,46 @@
 
     <ImageView
         android:id="@+id/iv_rank_pk_rank"
-        android:layout_width="24dp"
-        android:layout_height="26dp"
-        android:layout_marginLeft="16dp" />
+        android:layout_width="26.5dp"
+        android:layout_height="28dp"
+        android:layout_marginLeft="12.5dp" />
 
     <com.whzl.mengbi.ui.widget.view.CircleImageView
         android:id="@+id/iv_avatar_pk_rank"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="19dp"
+        android:layout_width="43.5dp"
+        android:layout_height="43.5dp"
+        android:layout_marginLeft="13dp"
         app:civ_border_color="#ffcc9e"
         app:civ_border_width="1dp" />
 
-    <TextView
-        android:id="@+id/tv_nick_pk_rank"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/tv_num_pk_rank"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        android:ellipsize="end"
-        android:gravity="end"
-        android:singleLine="true"
-        android:textColor="#edff55"
-        android:textSize="14sp" />
+        android:layout_marginLeft="10.5dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_nick_pk_rank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:textColor="#333333"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_num_pk_rank"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.5dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:textColor="#fb4708"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </LinearLayout>

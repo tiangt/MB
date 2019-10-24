@@ -207,7 +207,7 @@
     <color name="text_true_forget_psw">#010101</color>
     <color name="text_false_forget_psw">#ffffff</color>
 
-    <color name="text_checked_pk_rank">#edff55</color>
+    <color name="text_checked_pk_rank">#ffae00</color>
     <color name="text_normal_pk_rank">#aaaaaa</color>
 
 </resources>

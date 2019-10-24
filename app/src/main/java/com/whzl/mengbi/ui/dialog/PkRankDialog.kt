@@ -103,22 +103,10 @@ class PkRankDialog : BaseAwesomeDialog() {
                     override fun onSuccess(t: PKResultBean?) {
                         if (programId == t?.launchPkUserProgramId) {
                             pkRankSortFragment.setData(t.launchPkUserFans)
-                            if (t.launchUserFirstBloodUser != null) {
-                                pkRankSortFragment.setFirstUser(t.launchUserFirstBloodUser)
-                            }
                             pkRankSortFragment2.setData(t.pkUserFans)
-                            if (t.pkUserFirstBloodUser != null) {
-                                pkRankSortFragment2.setFirstUser(t.pkUserFirstBloodUser)
-                            }
                         } else {
                             pkRankSortFragment.setData(t?.pkUserFans!!)
-                            if (t.pkUserFirstBloodUser != null) {
-                                pkRankSortFragment.setFirstUser(t.pkUserFirstBloodUser)
-                            }
                             pkRankSortFragment2.setData(t.launchPkUserFans)
-                            if (t.launchUserFirstBloodUser != null) {
-                                pkRankSortFragment2.setFirstUser(t.launchUserFirstBloodUser)
-                            }
                         }
 
                     }

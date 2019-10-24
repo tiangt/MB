@@ -8,7 +8,6 @@ import com.whzl.mengbi.R
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.model.entity.PKFansBean
-import com.whzl.mengbi.model.entity.PKResultBean
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.common.BaseApplication
@@ -83,11 +82,5 @@ class PkRankSortFragment : BaseFragment<BasePresenter<BaseView>>() {
         list.addAll(launchPkUserFans)
         adapter.notifyDataSetChanged()
     }
-
-    fun setFirstUser(launchPkUserFans: PKResultBean.FirstBloodBean) {
-        GlideImageLoader.getInstace().displayImage(activity, launchPkUserFans.avatar, iv_avatar_pk_rank)
-        tv_nick_pk_rank.text = launchPkUserFans.nickname
-    }
-
 
 }
