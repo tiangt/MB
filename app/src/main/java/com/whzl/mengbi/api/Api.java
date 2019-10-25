@@ -46,6 +46,7 @@ import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.ImgUploadBean;
 import com.whzl.mengbi.model.entity.IsSubProgramBean;
 import com.whzl.mengbi.model.entity.JumpRandomRoomBean;
+import com.whzl.mengbi.model.entity.JumpRandomRoomListBean;
 import com.whzl.mengbi.model.entity.ModifyNameCardBean;
 import com.whzl.mengbi.model.entity.MyCouponBean;
 import com.whzl.mengbi.model.entity.NewTaskBean;
@@ -491,6 +492,16 @@ public interface Api {
     @POST("v1/anchor/random")
     @FormUrlEncoded
     Observable<ApiResult<JumpRandomRoomBean>> random(@FieldMap Map<String, String> params);
+
+    /**
+     * 随机获取节目列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/anchor/random-list")
+    @FormUrlEncoded
+    Observable<ApiResult<JumpRandomRoomListBean>> randomList(@FieldMap Map<String, String> params);
 
     /**
      * 我的消费记录

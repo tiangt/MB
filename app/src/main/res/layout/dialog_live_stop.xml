@@ -8,8 +8,8 @@
 
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="315dp"
+        android:layout_height="375.5dp"
         android:layout_marginLeft="33dp"
         android:layout_marginRight="33dp"
         android:background="@drawable/bg_dialog_common">
@@ -30,8 +30,8 @@
             android:id="@+id/ib_close_live_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
             android:layout_marginTop="12dp"
+            android:layout_marginRight="12dp"
             android:background="@null"
             android:src="@drawable/close_icon"
             app:layout_constraintRight_toRightOf="parent"
@@ -41,7 +41,7 @@
             android:id="@+id/iv_avatar_from"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="17.5dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_stop_tip" />
@@ -51,6 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="7.5dp"
+            android:includeFontPadding="false"
             android:text="主播昵称主播昵称"
             android:textColor="#70000000"
             android:textSize="12sp"
@@ -63,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6.5dp"
+            android:includeFontPadding="false"
             android:textColor="#40000000"
             android:textSize="9sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -73,7 +75,8 @@
             android:id="@+id/tv_recommend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="15dp"
+            android:includeFontPadding="false"
             android:text="为您推荐其他精彩直播"
             android:textColor="#000000"
             android:textSize="12sp"
@@ -99,75 +102,88 @@
             app:layout_constraintLeft_toRightOf="@id/tv_recommend"
             app:layout_constraintTop_toTopOf="@id/tv_recommend" />
 
-        <ImageView
-            android:id="@+id/iv_cover_to"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ll_cover_to"
             android:layout_width="match_parent"
-            android:layout_height="176dp"
+            android:layout_height="140dp"
             android:layout_marginLeft="12dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="12dp"
-            android:layout_marginTop="14dp"
+            android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_recommend" />
+            app:layout_constraintTop_toBottomOf="@id/tv_recommend">
+
+            <ImageView
+                android:id="@+id/iv_cover_to"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/iv_cover_to_2" />
+
+            <ImageView
+                android:id="@+id/iv_cover_to_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="11dp"
+                android:layout_weight="1"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toRightOf="@id/iv_cover_to"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/shape_state_stop_dialog"
+                android:includeFontPadding="false"
+                android:text="直播中"
+                android:textColor="@color/white"
+                android:textSize="8sp"
+                app:layout_constraintRight_toRightOf="@id/iv_cover_to"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/shape_state_stop_dialog"
+                android:includeFontPadding="false"
+                android:text="直播中"
+                android:textColor="@color/white"
+                android:textSize="8sp"
+                app:layout_constraintRight_toRightOf="@id/iv_cover_to_2"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
 
         <TextView
             android:id="@+id/tv_change_live_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="14dp"
             android:text="换一个"
             android:textColor="#70000000"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_cover_to" />
+            app:layout_constraintTop_toBottomOf="@id/ll_cover_to" />
 
         <ImageView
             android:id="@+id/iv_change_live_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="14dp"
-            android:layout_marginRight="5dp"
             android:layout_marginTop="15dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="14dp"
             android:src="@drawable/ic_play_stop_refresh"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@id/tv_change_live_stop"
-            app:layout_constraintTop_toBottomOf="@id/iv_cover_to" />
+            app:layout_constraintTop_toBottomOf="@id/ll_cover_to" />
 
-        <RelativeLayout
-            android:layout_width="72dp"
-            android:layout_height="25dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/iv_cover_to">
-
-
-            <TextView
-                android:id="@+id/tv_nick_to"
-                android:layout_width="59dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="#70000000"
-                android:drawableEnd="@drawable/ic_play_stop_arrow"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:paddingLeft="12dp"
-                android:paddingRight="2dp"
-                android:singleLine="true"
-                android:text="主播昵称"
-                android:textColor="@color/white"
-                android:textSize="9sp" />
-
-            <ImageView
-                android:id="@+id/iv_avatar_to"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/view_space_white" />
-        </RelativeLayout>
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>
