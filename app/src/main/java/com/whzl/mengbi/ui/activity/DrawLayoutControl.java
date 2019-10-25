@@ -195,7 +195,7 @@ public class DrawLayoutControl {
         baseListAdapter = new BaseListAdapter() {
             @Override
             protected int getDataCount() {
-                return bannerInfoList == null ? 2 : bannerInfoList.size() + 2;
+                return bannerInfoList == null ? 1 : bannerInfoList.size() + 1;
             }
 
             @Override
@@ -231,11 +231,11 @@ public class DrawLayoutControl {
 
         @Override
         public void onBindViewHolder(int position) {
-            if (position == bannerInfoList.size() + 1) {
-                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_wait_draw_layout_live, ivActivity);
-                tvActivity.setText("敬请期待");
-                return;
-            }
+//            if (position == bannerInfoList.size() + 1) {
+//                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_wait_draw_layout_live, ivActivity);
+//                tvActivity.setText("敬请期待");
+//                return;
+//            }
             if (position == bannerInfoList.size()) {
                 GlideImageLoader.getInstace().displayImageNoCache(activity, R.drawable.ic_redpacket_draw_layout_live, ivActivity);
                 tvActivity.setText("红包");
@@ -249,9 +249,9 @@ public class DrawLayoutControl {
         @Override
         public void onItemClick(View view, int position) {
             super.onItemClick(view, position);
-            if (position == bannerInfoList.size() + 1) {
-                return;
-            }
+//            if (position == bannerInfoList.size() + 1) {
+//                return;
+//            }
 
             if (position == bannerInfoList.size()) {
                 //红包

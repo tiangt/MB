@@ -291,6 +291,7 @@ public class BaseApplication extends Application {
                         SPUtils.put(instance, SpConfig.REDPACKETHELPURL, appDataBean.redpacketHelpUrl);
                         SPUtils.put(instance, SpConfig.GUESSHELP_URL, appDataBean.guessHelpUrl);
                         SPUtils.put(instance, SpConfig.PKQUALIFYINGHELPURL, appDataBean.pkQualifyingHelpUrl);
+                        SPUtils.put(instance, SpConfig.LUCKDRAWURL, appDataBean.luckdrawUrl);
                         if (appDataBean.newUserAward != null) {
                             if (!TextUtils.isEmpty(appDataBean.newUserAward.guestUserAward)) {
                                 SPUtils.put(instance, SpConfig.AWARD_SHOW_TIME, System.currentTimeMillis());

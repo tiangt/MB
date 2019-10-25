@@ -47,6 +47,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     private long lastClickTime;
     protected Toolbar toolbar;
     private TextView tvToolbarMenuText;
+    private TextView tvToolbarTitle;
 
     /**
      * 输出日志
@@ -122,7 +123,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void setContentView(int layoutId, String title, String rightMenu, boolean isShowBack) {
         super.setContentView(layoutId);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        TextView tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
+        tvToolbarTitle = findViewById(R.id.tv_toolbar_title);
         tvToolbarTitle.setText(title);
         tvToolbarMenuText = findViewById(R.id.tv_toolbar_menu_text);
         setSupportActionBar(toolbar);
@@ -135,6 +136,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if (tvToolbarMenuText != null) {
             tvToolbarMenuText.setText(rightMenu);
             tvToolbarMenuText.setOnClickListener(v -> onToolbarMenuClick());
+        }
+    }
+
+    protected void setTitle(String title) {
+        if (tvToolbarTitle != null) {
+            tvToolbarTitle.setText(title);
         }
     }
 

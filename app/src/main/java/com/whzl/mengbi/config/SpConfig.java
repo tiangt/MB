@@ -42,4 +42,6 @@ public interface SpConfig {
     //启动页图片
     String START_PAGE = "start_page";
     String START_PAGE_FILE = "start_page_file";
+    //幸运转盘
+    String LUCKDRAWURL = "luckdrawUrl";
 }

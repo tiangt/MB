@@ -16,6 +16,7 @@ public class AppDataBean {
     public String redpacketHelpUrl;
     public String guessHelpUrl;
     public String pkQualifyingHelpUrl;
+    public String luckdrawUrl;
     public UserAwardBean newUserAward;
 
     public class UserAwardBean {

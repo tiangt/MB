@@ -35,6 +35,7 @@ import com.whzl.mengbi.model.entity.js.LoginStateBean;
 import com.whzl.mengbi.model.entity.js.RoomInfoBean;
 import com.whzl.mengbi.model.entity.js.UserInfoBean;
 import com.whzl.mengbi.ui.activity.base.BaseActivity;
+import com.whzl.mengbi.ui.activity.me.ChipCompositeActivity;
 import com.whzl.mengbi.ui.activity.me.ShopActivity;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
@@ -77,7 +78,7 @@ public class JsBridgeActivity extends BaseActivity {
 
     @Override
     protected void setupContentView() {
-        setContentView(R.layout.activity_jsbridge, title, true);
+        setContentView(R.layout.activity_jsbridge, "", true);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -110,8 +111,17 @@ public class JsBridgeActivity extends BaseActivity {
                     progressbar.setVisibility(View.GONE);
                 }
             }
+
+            @Override
+            public void onReceivedTitle(WebView view, String title2) {
+                super.onReceivedTitle(view, title2);
+                if (!TextUtils.isEmpty(title)) {
+                    setTitle(title);
+                } else {
+                    setTitle(title2);
+                }
+            }
         });
-//        bridgeWebView.loadUrl("file:///android_asset/test5.html");
         bridgeWebView.loadUrl(url);
         initRegisterHandler();
 
@@ -196,12 +206,21 @@ public class JsBridgeActivity extends BaseActivity {
             startQQChat(jumpRoomBean.pId);
         });
 
+        bridgeWebView.registerHandler("jumpToChipCompositeActivity", (data, function) ->
+                jumpToChipCompositeActivity());
+
     }
 
     private void jumpToShopActivity() {
         Intent intent = new Intent(this, ShopActivity.class);
         startActivity(intent);
     }
+
+    private void jumpToChipCompositeActivity() {
+        Intent intent = new Intent(this, ChipCompositeActivity.class);
+        startActivity(intent);
+    }
+
 
     private void jumpToLiveHouseByAnchorId(int i) {
         HashMap paramsMap = new HashMap();
