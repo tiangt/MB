@@ -107,6 +107,7 @@ import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.BundleConfig;
 import com.whzl.mengbi.config.SpConfig;
+import com.whzl.mengbi.eventbus.event.AnchorTaskFinishedEvent;
 import com.whzl.mengbi.eventbus.event.AudienceEvent;
 import com.whzl.mengbi.eventbus.event.LiveHouseCoinUpdateEvent;
 import com.whzl.mengbi.eventbus.event.PrivateChatSelectedEvent;
@@ -2493,25 +2494,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             pkControl.destroy();
         }
 
-        rightBottomActivityNum = 0;
-        try {
-            if (mGrandAdaper != null) {
-//                mGrandAdaper.notifyDataSetChanged();
-//                vpActivity.getAdapter().notifyDataSetChanged();
-                mActivityGrands.clear();
-//                mGrandAdaper.notifyDataSetChanged();
-                vpActivity.getAdapter().notifyDataSetChanged();
-                vpActivity.setScroll(false);
-                mGrandAdaper = null;
-            }
-        } catch (IllegalStateException e) {
-            vpActivity.setVisibility(View.GONE);
-        }
-
-        vpActivity.setScroll(false);
-        if (llPagerIndex.getChildCount() > 0) {
-            llPagerIndex.removeAllViews();
-        }
+        resetRightBottomActivity();
 
         if (headLineControl != null) {
             headLineControl.destroy();
@@ -2544,6 +2527,24 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         containerRoomRedpacket.setVisibility(View.GONE);
         if (redpacketEnterControl != null) {
             redpacketEnterControl.destroy();
+        }
+    }
+
+    private void resetRightBottomActivity() {
+        rightBottomActivityNum = 0;
+        try {
+            if (mGrandAdaper != null) {
+                mActivityGrands.clear();
+                vpActivity.getAdapter().notifyDataSetChanged();
+                vpActivity.setScroll(false);
+                mGrandAdaper = null;
+            }
+        } catch (IllegalStateException e) {
+            vpActivity.setVisibility(View.GONE);
+        }
+        vpActivity.setScroll(false);
+        if (llPagerIndex.getChildCount() > 0) {
+            llPagerIndex.removeAllViews();
         }
     }
 
@@ -2723,6 +2724,15 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             weekStarControl.setRlEnter(rlWeekstar);
         }
         weekStarControl.showEnter(weekStarEvent);
+    }
+
+    /**
+     * 主播任务完成
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(AnchorTaskFinishedEvent event) {
+        resetRightBottomActivity();
+        getRightBottomActivity(mProgramId, mAnchorId);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

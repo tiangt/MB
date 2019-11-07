@@ -2,7 +2,6 @@ package com.whzl.mengbi.ui.fragment;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.events.AnchorWeekTaskEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnchorWeekTaskJson;
+import com.whzl.mengbi.eventbus.event.AnchorTaskFinishedEvent;
 import com.whzl.mengbi.model.entity.AnchorTaskBean;
 import com.whzl.mengbi.ui.fragment.base.BaseFragment;
 import com.whzl.mengbi.util.UIUtil;
@@ -173,9 +173,10 @@ public class AnchorTaskFragment extends BaseFragment {
         AnchorWeekTaskJson anchorWeekTaskJson = event.anchorWeekTaskJson;
         if (anchorWeekTaskJson.context.actionValue >= anchorWeekTaskJson.context.actionNeedValue) {
             bean.completion = anchorWeekTaskJson.context.actionNeedValue;
+            EventBus.getDefault().post(new AnchorTaskFinishedEvent());
         } else {
             bean.completion = anchorWeekTaskJson.context.actionValue;
+            init();
         }
-        init();
     }
 }
