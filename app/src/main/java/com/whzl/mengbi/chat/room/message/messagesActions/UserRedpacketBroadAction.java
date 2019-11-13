@@ -6,7 +6,7 @@ import com.whzl.mengbi.chat.room.message.events.UpdatePubChatEvent;
 import com.whzl.mengbi.chat.room.message.events.UserRedpacketBroadEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.UserRedpacketJson;
 import com.whzl.mengbi.chat.room.message.messages.UserRedpacketBroadMessage;
-import com.whzl.mengbi.chat.room.message.messages.UserRedpacketMessage;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
 
@@ -25,8 +25,12 @@ public class UserRedpacketBroadAction implements Actions {
         if (userRedpacketJson != null && userRedpacketJson.context != null && userRedpacketJson.context.anchorInfo != null
                 && userRedpacketJson.context.userInfo != null) {
             //发起红包抽奖
-            EventBus.getDefault().post(new UserRedpacketBroadEvent(context,userRedpacketJson));
-            EventBus.getDefault().post(new UpdatePubChatEvent(new UserRedpacketBroadMessage(context, userRedpacketJson)));
+            EventBus.getDefault().post(new UserRedpacketBroadEvent(context, userRedpacketJson));
+            if (userRedpacketJson.context.uGameRedpacketDto != null
+                    && userRedpacketJson.context.uGameRedpacketDto.programId != 0
+                    && ((LiveDisplayActivity) context).mProgramId != userRedpacketJson.context.uGameRedpacketDto.programId) {
+                EventBus.getDefault().post(new UpdatePubChatEvent(new UserRedpacketBroadMessage(context, userRedpacketJson)));
+            }
         }
     }
 }

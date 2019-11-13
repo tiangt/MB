@@ -74,6 +74,7 @@ public class JsBridgeActivity extends BaseActivity {
         programId = getIntent().getStringExtra("programId");
         url = getIntent().getStringExtra("url");
         title = getIntent().getStringExtra("title");
+        LogUtils.e("url    " + url);
     }
 
     @Override

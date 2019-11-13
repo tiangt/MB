@@ -2986,7 +2986,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserRedpacketBroadEvent event) {
-        mLivePresenter.roomGameRedpacket(mUserId, mProgramId);
+//        mLivePresenter.roomGameRedpacket(mUserId, mProgramId);
 
         Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
         if (carEffect) {
