@@ -459,6 +459,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RoomInfoBean.DataBean.AnchorBean mAnchor;
     public boolean isGuard;
     private boolean isVip;
+    private boolean isSub;
     private Fragment[] fragments;
     private ObjectAnimator showGuardAnim;
     private ObjectAnimator hideGuardAnim;
@@ -532,6 +533,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private Disposable roomGameRedpackDispose;
     private BaseAwesomeDialog roomRedpacketDialog;
     private RedpacketEnterControl redpacketEnterControl;
+    private Disposable autoShowSubDisposable;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -562,6 +564,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         chatRoomPresenter = new ChatRoomPresenterImpl(mProgramId + "");
         isGuard = false;
         isVip = false;
+        isSub = false;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(fragments[0]);
 //        fragmentTransaction.remove(fragments[1]);
@@ -845,6 +848,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         mLivePresenter.getRedPackList(mProgramId, mUserId);
         mLivePresenter.getRoyalCarList();
         mLivePresenter.roomGameRedpacket(mUserId, mProgramId);
+
+        autoShowSubDialog();
     }
 
     private void getRoomToken() {
@@ -1674,15 +1679,21 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     }
 
 
+    /**
+     * 订阅房间成功
+     */
     @Override
     public void onFollowHostSuccess() {
         btnFollow.setVisibility(View.GONE);
+        ToastUtils.showToastUnify(this, "关注成功");
+        isSub = true;
     }
 
     @Override
     public void onGetRoomUserInFoSuccess(RoomUserInfo.DataBean data) {
-        btnFollow.setVisibility(data.isIsSubs() ? View.GONE : View.VISIBLE);
         if (data != null) {
+            isSub = data.isIsSubs();
+            btnFollow.setVisibility(isSub ? View.GONE : View.VISIBLE);
             mUserId = data.getUserId();
             mRoomUserInfo = data;
             if (data.getWeathMap() != null) {
@@ -1705,6 +1716,41 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 }
             }
         }
+    }
+
+    /**
+     * 关注自动弹窗
+     */
+    private void autoShowSubDialog() {
+        autoShowSubDisposable = Observable.timer(10, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                    if (isSub || mUserId == 0) {
+                        return;
+                    }
+                    AwesomeDialog.init()
+                            .setLayoutId(R.layout.dialog_auto_sub)
+                            .setConvertListener(new ViewConvertListener() {
+                                @Override
+                                protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+                                    if (!TextUtils.isEmpty(mAnchorAvatar)) {
+                                        GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, mAnchorAvatar, holder.getView(R.id.iv_avatar_auto));
+                                    }
+                                    holder.setText(R.id.tv_anchor_nick, mAnchorName);
+                                    holder.setOnClickListener(R.id.btn_sub_auto, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            mLivePresenter.followHost(mUserId, mProgramId);
+                                            dialog.dismissDialog();
+                                        }
+                                    });
+                                }
+                            })
+                            .setShowBottom(true)
+                            .show(getSupportFragmentManager());
+                });
+        compositeDisposable.add(autoShowSubDisposable);
     }
 
     @Override
@@ -2528,6 +2574,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (redpacketEnterControl != null) {
             redpacketEnterControl.destroy();
         }
+
     }
 
     private void resetRightBottomActivity() {
