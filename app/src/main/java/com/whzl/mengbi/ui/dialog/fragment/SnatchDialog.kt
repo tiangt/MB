@@ -1,12 +1,11 @@
 package com.whzl.mengbi.ui.dialog.fragment
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,6 @@ import com.whzl.mengbi.eventbus.event.MengdouChangeEvent
 import com.whzl.mengbi.model.entity.GiftBetPeriodInfo
 import com.whzl.mengbi.model.entity.GiftBetRecordsBean
 import com.whzl.mengbi.model.entity.UserInfo
-import com.whzl.mengbi.ui.activity.me.ShopActivity
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.dialog.base.AwesomeDialog
@@ -60,6 +58,7 @@ class SnatchDialog : BaseAwesomeDialog() {
     private lateinit var tvTips1: TextView
     private lateinit var tvTips2: TextView
     private lateinit var tvLimit: TextView
+    private lateinit var tvTimeLimit: TextView
     private lateinit var ivDaojishi: ImageView
     private lateinit var tvSecond: TextView
     private lateinit var tvDate: TextView
@@ -107,9 +106,9 @@ class SnatchDialog : BaseAwesomeDialog() {
         tvPrizePoolNum = holder.getView(R.id.tv_prize_pool_num)
         tvSecond = holder.getView(R.id.tv_second)
         tvDate = holder.getView(R.id.tv_date_snatch)
-        tvLimit = holder.getView(R.id.tv_limit)
+        tvLimit = holder.getView(R.id.tv_price_limit)
+        tvTimeLimit = holder.getView(R.id.tv_time_limit)
         ivGift = holder.getView(R.id.iv_gift_snatch)
-        tvHisPrize!!.paint.flags = Paint.UNDERLINE_TEXT_FLAG
         tvWant = holder.getView(R.id.tv_want_join)
         tvMengdou = holder.getView(R.id.tv_mengdou)
         ibReduce = holder.getView(R.id.ib_reduce_want)
@@ -123,7 +122,7 @@ class SnatchDialog : BaseAwesomeDialog() {
             }
             tvWant?.text = (Integer.parseInt(tvWant!!.text.toString()) - 1).toString()
         })
-        ibAdd!!.setOnClickListener(View.OnClickListener {
+        ibAdd.setOnClickListener(View.OnClickListener {
             if (Integer.parseInt(tvWant!!.text.toString()) >= 10) {
                 return@OnClickListener
             }
@@ -131,11 +130,11 @@ class SnatchDialog : BaseAwesomeDialog() {
         })
         holder.setOnClickListener(R.id.tv_five) { tvWant?.text = "5" }
         holder.setOnClickListener(R.id.tv_ten) { tvWant?.text = "10" }
-        holder.setOnClickListener(R.id.iv_mengdou_snatch) {
-            if (ClickUtil.isFastClick()) {
-                startActivity(Intent(activity, ShopActivity::class.java))
-            }
-        }
+//        holder.setOnClickListener(R.id.iv_mengdou_snatch) {
+//            if (ClickUtil.isFastClick()) {
+//                startActivity(Intent(activity, ShopActivity::class.java))
+//            }
+//        }
         tvHisPrize.setOnClickListener { showHisDialog(mUserId) }
         holder.setOnClickListener(R.id.tv_snatch) {
             if (limitTimes == 10) {
@@ -143,6 +142,8 @@ class SnatchDialog : BaseAwesomeDialog() {
             }
             snatch(mUserId.toString(), gameId.toString(), tvWant!!.text.toString())
         }
+
+        tvTips1.text = getString(R.string.snatch_tips)
     }
 
     private fun snatch(userid: String, gameid: String, tvwant: String) {
@@ -231,8 +232,7 @@ class SnatchDialog : BaseAwesomeDialog() {
             itemView.tv_date_item_snatch.text = bean.periodNumber
             itemView.tv_count_item_snatch.text = bean.robNumber.toString()
 
-            tvGood.text = bean.goodsName
-            tvGood.append(LightSpanString.getLightString(" ×${bean.prizeNumber}", Color.parseColor("#FFFF2323")))
+            tvGood.text = "${bean.goodsName}×${bean.prizeNumber}"
         }
 
     }
@@ -276,25 +276,39 @@ class SnatchDialog : BaseAwesomeDialog() {
         llStateEnd.visibility = View.GONE
         gameId = bean?.uRobGame?.id!!
         tvDate.text = "${bean.periodNumber}期"
-        tvTips1.text = "每人每期最多参与${bean.uRobGame.limit}次，每参与1次增加${bean.uRobGame.multiple}个礼物，参与次数越多中奖概率越高。"
-        tvTips2.text = "到点后系统会抽取一名萌友独得所有已累计的礼物"
+
+        tvTips2.movementMethod = LinkMovementMethod.getInstance()
+        tvTips2.text = "每个玩家每期最多可夺宝"
+        tvTips2.append(LightSpanString.getLightString("${bean.uRobGame.limit}", Color.rgb(255, 237, 37)))
+        tvTips2.append("次，夺宝次数越多中奖概率越大。")
+        tvTips2.append(LightSpanString.getClickSpan(context, "中奖概率查看", Color.rgb(255, 237, 37), true, 10) {
+            ToastUtils.showToast("sda")
+        })
+
         GlideImageLoader.getInstace().displayImage(activity, bean.goodsPic, ivGift)
+
         tvPrizePoolNum.text = bean.prizePoolNumber.toString()
-        tvLimit.text = "每次${bean?.uRobGame?.amount}萌豆，已参与 "
-        tvLimit.append(LightSpanString.getLightString(bean?.userBetCount?.toString(),
-                Color.parseColor("#FFFF416E")))
-        limitTimes = bean?.userBetCount
-        tvLimit.append(" / ${bean?.uRobGame?.limit}次")
+
+        tvLimit.text = "每次 "
+        tvLimit.append(LightSpanString.getLightString("${bean.uRobGame?.amount}",
+                Color.parseColor("#FFFFED25")))
+        tvLimit.append(" 萌豆")
+
+        tvTimeLimit.text = "已参与 "
+        tvTimeLimit.append(LightSpanString.getLightString("${bean.userBetCount}/${bean.uRobGame?.limit}",
+                Color.parseColor("#FFFFED25")))
+        tvTimeLimit.append(" 次")
+        limitTimes = bean.userBetCount
         disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
-            LogUtils.e("sssssssssss  " + t)
-            if (t == bean.surplusSecond.toLong() + 1) {
-                disposable!!.dispose()
-                prizing(bean)
-                return@subscribe
-            }
-            tvSecond.text = DateUtils.translateLastSecond(bean.surplusSecond - t!!.toInt())
-        }
+                    LogUtils.e("sssssssssss  $t")
+                    if (t == bean.surplusSecond.toLong() + 1) {
+                        disposable!!.dispose()
+                        prizing(bean)
+                        return@subscribe
+                    }
+                    tvSecond.text = DateUtils.translateLastSecond(bean.surplusSecond - t!!.toInt())
+                }
     }
 
     private fun prizing(bean: GiftBetPeriodInfo?) {
@@ -310,12 +324,12 @@ class SnatchDialog : BaseAwesomeDialog() {
         }
         disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
-            if (t == 11.toLong()) {
-                disposable!!.dispose()
-                return@subscribe
-            }
-            tvDaojishi.text = DateUtils.translateLastSecond(10 - t!!.toInt())
-        }
+                    if (t == 11.toLong()) {
+                        disposable!!.dispose()
+                        return@subscribe
+                    }
+                    tvDaojishi.text = DateUtils.translateLastSecond(10 - t!!.toInt())
+                }
     }
 
     private fun getMengdou() {
@@ -374,14 +388,14 @@ class SnatchDialog : BaseAwesomeDialog() {
         tvPrizeName.text = event.robLuckJson.context.userNickName
         disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
-            LogUtils.e("sssssssssss  " + t)
-            if (t == 4.toLong()) {
-                disposable!!.dispose()
-                getData()
-                return@subscribe
-            }
-            tvDaojishi.text = DateUtils.translateLastSecond(3 - t!!.toInt())
-        }
+                    LogUtils.e("sssssssssss  " + t)
+                    if (t == 4.toLong()) {
+                        disposable!!.dispose()
+                        getData()
+                        return@subscribe
+                    }
+                    tvDaojishi.text = DateUtils.translateLastSecond(3 - t!!.toInt())
+                }
         Glide.with(this).asGif().load(R.drawable.fangpao).into(ivFangpao)
     }
 

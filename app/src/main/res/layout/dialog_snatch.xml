@@ -7,15 +7,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="427dp"
         android:background="@drawable/bg_snatch"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@drawable/bg_snatch_top"
-            android:gravity="center_horizontal|bottom"
+            android:layout_height="60.5dp"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <ImageView
@@ -26,23 +25,26 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="140.5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/shape_snatch_normal">
 
             <LinearLayout
                 android:id="@+id/ll_state_normal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
                 android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="12dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_date_snatch"
@@ -50,20 +52,18 @@
                         android:layout_height="wrap_content"
                         android:text="sss"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/textsize_12" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tv_his_prize"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="11.5dp"
-                        android:layout_toRightOf="@id/tv_date_snatch"
+                        android:layout_alignParentRight="true"
                         android:text="往期中奖"
-                        android:textColor="#ff4161"
-                        android:textSize="@dimen/textsize_12"
-                        android:textStyle="italic" />
+                        android:textColor="#25edff"
+                        android:textSize="12sp" />
 
-                    <ImageView
+                    <!--<ImageView
                         android:id="@+id/iv_mengdou_snatch"
                         android:layout_width="22.5dp"
                         android:layout_height="22.5dp"
@@ -95,31 +95,28 @@
                             android:singleLine="true"
                             android:textColor="@color/white"
                             android:textSize="@dimen/textsize_12" />
-                    </LinearLayout>
+                    </LinearLayout>-->
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="65dp"
-                    android:layout_marginTop="6.5dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp">
+                    android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="167dp"
-                        android:layout_height="65dp"
-                        android:background="@drawable/bg_snatch_gift"
+                        android:layout_height="55dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:id="@+id/iv_gift_snatch"
                             android:layout_width="55dp"
-                            android:layout_height="48dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="16dp" />
+                            android:layout_height="55dp"
+                            android:background="@drawable/shape_gift_snatch"
+                            android:padding="2.5dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -144,9 +141,11 @@
                                     android:id="@+id/tv_prize_pool_num"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="0.5dp"
                                     android:ellipsize="middle"
+                                    android:includeFontPadding="false"
                                     android:singleLine="true"
-                                    android:textColor="#ff416e"
+                                    android:textColor="#25edff"
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
 
@@ -154,6 +153,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="6dp"
+                                    android:includeFontPadding="false"
                                     android:text="个"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/textsize_12" />
@@ -164,10 +164,10 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="187dp"
                         android:layout_height="match_parent"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="15dp"
+                        android:background="@drawable/shape_count_snatch"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -182,30 +182,19 @@
                             android:id="@+id/tv_second"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="4dp"
                             android:text="00:00:00"
-                            android:textColor="#ffb800"
+                            android:textColor="#ffed25"
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </RelativeLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginTop="12dp"
-                    android:text="我要参与"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp">
+                    android:gravity="center_vertical">
 
                     <ImageButton
                         android:id="@+id/ib_reduce_want"
@@ -217,7 +206,7 @@
 
                     <TextView
                         android:id="@+id/tv_want_join"
-                        android:layout_width="60dp"
+                        android:layout_width="35dp"
                         android:layout_height="25dp"
                         android:layout_toRightOf="@id/ib_reduce_want"
                         android:background="@drawable/bg_snatch_join"
@@ -237,9 +226,9 @@
 
                     <TextView
                         android:id="@+id/tv_five"
-                        android:layout_width="60dp"
+                        android:layout_width="35dp"
                         android:layout_height="25dp"
-                        android:layout_marginLeft="11dp"
+                        android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/ib_add_want"
                         android:background="@drawable/btn_snatch_join"
                         android:gravity="center"
@@ -249,7 +238,7 @@
 
                     <TextView
                         android:id="@+id/tv_ten"
-                        android:layout_width="60dp"
+                        android:layout_width="35dp"
                         android:layout_height="25dp"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/tv_five"
@@ -263,51 +252,39 @@
                         android:id="@+id/tv_snatch"
                         android:layout_width="71dp"
                         android:layout_height="26dp"
-                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@id/container_limit"
                         android:background="@drawable/btn_snatch"
                         android:gravity="center"
                         android:text="夺宝"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
-                </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp">
-
-                    <TextView
-                        android:id="@+id/tv_limit"
+                    <LinearLayout
+                        android:id="@+id/container_limit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="每次100萌豆，已参与 0 / 10次"
-                        android:textColor="@color/white"
-                        android:textSize="10sp" />
-                </LinearLayout>
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_price_limit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="9sp" />
 
 
-                <TextView
-                    android:id="@+id/tv_tips_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:textColor="#70ffffff"
-                    android:textSize="10sp" />
+                        <TextView
+                            android:id="@+id/tv_time_limit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/tv_tips_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:paddingLeft="12dp"
-                    android:paddingRight="12dp"
-                    android:textColor="#70ffffff"
-                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -322,8 +299,8 @@
                     android:id="@+id/iv_daojishi"
                     android:layout_width="109dp"
                     android:layout_height="83.5dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -408,5 +385,59 @@
                     android:layout_height="240dp" />
             </RelativeLayout>
         </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
+
+            <ImageView
+                android:layout_width="3dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="4.5dp"
+                android:src="@drawable/point_snatch" />
+
+            <TextView
+                android:id="@+id/tv_tips_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6.5dp"
+                android:textColor="#a19be6"
+                android:textSize="9.9sp"
+                android:visibility="gone" />
+
+            <com.whzl.mengbi.ui.widget.view.SnatchTextView
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_marginStart="6.5dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp">
+
+            <ImageView
+                android:layout_width="3dp"
+                android:layout_height="3dp"
+                android:layout_marginTop="4.5dp"
+                android:src="@drawable/point_snatch" />
+
+            <TextView
+                android:id="@+id/tv_tips_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6.5dp"
+                android:textColor="#a19be6"
+                android:textSize="9.9sp" />
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

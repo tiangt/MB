@@ -477,4 +477,6 @@
     <string name="live_gift_text">%1$d%2$s</string>
     <string name="tv_empty_guess">%1$d人正在竞猜</string>
     <string name="tv_odd_guess">赔率 %1$.2f</string>
+
+    <string name="snatch_tips">输入夺宝次数进行夺宝，满足开奖条件后会从本期夺宝用户中选中一位用户独得本轮奖励。</string>
 </resources>
