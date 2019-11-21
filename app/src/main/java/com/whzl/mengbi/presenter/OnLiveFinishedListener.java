@@ -11,6 +11,7 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.model.entity.PkGuessBean;
 import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
 import com.whzl.mengbi.model.entity.RoomRankTotalBean;
@@ -77,4 +78,6 @@ public interface OnLiveFinishedListener {
     void onQualifyingSuccess(PkQualifyingBean anchorInfoBean);
 
     void onRoomGameRedpacketSuccess(RoomRedpacketBean jsonElement);
+
+    void onPkGuessSuccess(PkGuessBean pkGuessBean);
 }

@@ -106,6 +106,7 @@ import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.PkConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.AnchorTaskFinishedEvent;
 import com.whzl.mengbi.eventbus.event.AudienceEvent;
@@ -147,6 +148,7 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.model.entity.PkGuessBean;
 import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.PunishWaysBean;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -1312,6 +1314,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setRightExpCard(llRightEffect, tvRightAddEffect, tvRightSecondEffect);
         pkControl.setBean(bean);
         pkControl.init();
+
+        if (PkConfig.PK_ACCEPT_REQUEST.equals(bean.busiCode)) {
+            mLivePresenter.pkGuess(mAnchorId);
+        }
     }
 
     private void initRunWayBroad() {
@@ -1500,6 +1506,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         compositeDisposable.add(headlineDisposable);
         mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getQualifying(mAnchorId);
+        mLivePresenter.pkGuess(mAnchorId);
     }
 
     /**
@@ -1645,6 +1652,22 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     showRoomRedpacketDialog();
                 }
             });
+        }
+    }
+
+    /**
+     * pk竞猜
+     */
+    @Override
+    public void onPkGuessSuccess(PkGuessBean pkGuessBean) {
+        if (pkLayout == null) {
+            return;
+        }
+        if (pkGuessBean == null || pkGuessBean.guessObj == null) {
+            pkLayout.setPkGuessVisibility(View.GONE);
+        } else {
+            pkLayout.setPkGuessVisibility(View.VISIBLE);
+            pkLayout.setPkGuessOdds(pkGuessBean.guessObj.userId, pkGuessBean.guessObj.squareOdds, pkGuessBean.guessObj.counterOdds);
         }
     }
 
@@ -1933,6 +1956,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
         pkControl.initNet(bean);
 
+        pkLayout.initGuessing(bean);
     }
 
     @Override
@@ -3017,6 +3041,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                         }
                     })
                     .show(getSupportFragmentManager());
+        } else if ("USER_GUESS_BET".equals(event.guessJson.context.busicode)) {
+            if (pkLayout != null) {
+                pkLayout.setPkGuessOdds(event.guessJson.context.UGameGuessDto.userId, event.guessJson.context.UGameGuessDto.squareOdds, event.guessJson.context.UGameGuessDto.counterOdds);
+            }
         }
     }
 

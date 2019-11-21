@@ -39,6 +39,7 @@ public class PKResultBean {
     public String pkStatus;
     public String punishStatus;
     public String tieStatus;
+    public String pkType;
     public int pkSurPlusSecond;
     public int punishSurPlusSecond;
     public int tieSurPlusSecond;
@@ -49,6 +50,8 @@ public class PKResultBean {
     public ArrayList<PKFansBean> pkUserFans;
     public FirstBloodBean launchUserFirstBloodUser;
     public FirstBloodBean pkUserFirstBloodUser;
+
+
     /**
      * pkEffect : {"addMultiple":120,"effSecond":248}
      * lanchPkEffect : {"addMultiple":120,"effSecond":279}
@@ -56,6 +59,17 @@ public class PKResultBean {
 
     public PkEffectBean pkEffect;
     public PkEffectBean lanchPkEffect;
+    /**
+     * launchPkUserPkRank : {"nextRankNeedValue":45,"haveValue":55,"currentRank":4,"rankPkTime":6,"victoryTime":1,"victoryRatio":0.16666666666666666,"continueVictoryTime":0,"rankName":"萌新V","rankId":1}
+     */
+
+    public LaunchPkUserPkRankBean launchPkUserPkRank;
+    /**
+     * pkUserPkRank : {"nextRankNeedValue":100,"haveValue":0,"currentRank":6,"rankPkTime":9,"victoryTime":0,"victoryRatio":0,"continueVictoryTime":0,"rankName":"萌新V","rankId":1}
+     */
+
+    public PkUserPkRankBean pkUserPkRank;
+
 
     //"userId":xxxxxxx,
     //        "nickname":"萌友xxxxx",
@@ -129,6 +143,54 @@ public class PKResultBean {
 
         public int addMultiple;
         public int effSecond;
+    }
+
+    public static class LaunchPkUserPkRankBean {
+        /**
+         * nextRankNeedValue : 45
+         * haveValue : 55
+         * currentRank : 4
+         * rankPkTime : 6
+         * victoryTime : 1
+         * victoryRatio : 0.16666666666666666
+         * continueVictoryTime : 0
+         * rankName : 萌新V
+         * rankId : 1
+         */
+
+        public long nextRankNeedValue;
+        public long haveValue;
+        public int currentRank;
+        public int rankPkTime;
+        public int victoryTime;
+        public double victoryRatio;
+        public int continueVictoryTime;
+        public String rankName;
+        public int rankId;
+    }
+
+    public static class PkUserPkRankBean {
+        /**
+         * nextRankNeedValue : 100
+         * haveValue : 0
+         * currentRank : 6
+         * rankPkTime : 9
+         * victoryTime : 0
+         * victoryRatio : 0
+         * continueVictoryTime : 0
+         * rankName : 萌新V
+         * rankId : 1
+         */
+
+        public long nextRankNeedValue;
+        public long haveValue;
+        public int currentRank;
+        public int rankPkTime;
+        public int victoryTime;
+        public double victoryRatio;
+        public int continueVictoryTime;
+        public String rankName;
+        public int rankId;
     }
 }
 

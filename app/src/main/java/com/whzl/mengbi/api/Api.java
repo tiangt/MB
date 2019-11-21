@@ -55,6 +55,7 @@ import com.whzl.mengbi.model.entity.PackPrettyBean;
 import com.whzl.mengbi.model.entity.PackcarBean;
 import com.whzl.mengbi.model.entity.PackvipBean;
 import com.whzl.mengbi.model.entity.PkComatRankListBean;
+import com.whzl.mengbi.model.entity.PkGuessBean;
 import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.PkRecordListBean;
 import com.whzl.mengbi.model.entity.PkTimeBean;
@@ -1419,4 +1420,15 @@ public interface Api {
     @POST("v1/redpacket/room-game-redpacket")
     @FormUrlEncoded
     Observable<ApiResult<RoomRedpacketBean>> roomGameRedpacket(@FieldMap Map<String, String> params);
+
+    /**
+     * 查询pk竞猜
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/guess/pk-guess")
+    @FormUrlEncoded
+    Observable<ApiResult<PkGuessBean>> pkGuess(@FieldMap Map<String, String> params);
+
 }

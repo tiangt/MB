@@ -35,6 +35,7 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.PkConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.model.entity.IsSubProgramBean;
 import com.whzl.mengbi.model.entity.PKFansBean;
@@ -198,7 +199,7 @@ public class PkControl {
     public void init() {
         LogUtils.e("sssssss  " + bean.busiCode);
         switch (bean.busiCode) {
-            case "PK_ACCEPT_REQUEST": //接收PK请求
+            case PkConfig.PK_ACCEPT_REQUEST: //接收PK请求
                 pkLayout.setVisibility(View.VISIBLE);
                 startPKAnim();
                 startCountDown(5);
@@ -220,7 +221,7 @@ public class PkControl {
                     isSubProgram((long) SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L), bean.launchUserProgramId);
                 }
                 break;
-            case "PK_SCORE"://PK分数
+            case PkConfig.PK_SCORE://PK分数
                 if (bean.launchPkUserScore == 0 && bean.pkUserScore == 0) {
                     return;
                 }
@@ -262,7 +263,7 @@ public class PkControl {
                     }
                 }
                 break;
-            case "PK_RESULT"://PK结果
+            case PkConfig.PK_RESULT://PK结果
                 maxLaunchPkScroe = 0;
                 maxAcceptPkScroe = 0;
 //                pkLayout.hidePkWindow();
@@ -288,11 +289,11 @@ public class PkControl {
                 expCardDestroy();
 
                 break;
-            case "PK_TIE_START"://平局时间开始
+            case PkConfig.PK_TIE_START://平局时间开始
                 pkLayout.setVisibility(View.VISIBLE);
                 pkLayout.timer("平局 ", bean.pkTieSurplusSecond);
                 break;
-            case "PK_PUNISH_START"://惩罚时间开始
+            case PkConfig.PK_PUNISH_START://惩罚时间开始
                 pkLayout.setVisibility(View.VISIBLE);
                 pkLayout.timer("惩罚时刻 ", bean.pkPunishSurplusSecond);
                 if (null != pkResultPop) {
@@ -314,7 +315,7 @@ public class PkControl {
                     pkLayout.setPunishWay(bean.punishWay, mvpWindow);
                 }
                 break;
-            case "PK_TIE_FINISH"://平局时间结束
+            case PkConfig.PK_TIE_FINISH://平局时间结束
                 rlOtherSideInfo.setVisibility(View.GONE);
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
@@ -324,7 +325,7 @@ public class PkControl {
                 }
                 needShow = false;
                 break;
-            case "PK_PUNISH_FINISH"://惩罚时间结束
+            case PkConfig.PK_PUNISH_FINISH://惩罚时间结束
                 rlOtherSideInfo.setVisibility(View.GONE);
                 pkLayout.reset();
 //                pkLayout.hidePkWindow();
@@ -334,14 +335,14 @@ public class PkControl {
                 }
                 needShow = false;
                 break;
-            case "PK_SCORE_PUSH"://用户分数推送
+            case PkConfig.PK_SCORE_PUSH://用户分数推送
                 if (mProgramId == bean.changeUserProgramId) {
                     pkLayout.setLeftPkFans(bean.userFans);
                 } else {
                     pkLayout.setRightPkFans(bean.userFans);
                 }
                 break;
-            case "PK_PUNISH_WAY": //惩罚方式
+            case PkConfig.PK_PUNISH_WAY: //惩罚方式
                 if (!TextUtils.isEmpty(bean.punishWay)) {
                     if (mvpWindow != null && mvpWindow.isShowing()) {
                         mvpWindow.dismiss();
@@ -351,7 +352,7 @@ public class PkControl {
                 }
                 break;
 
-            case "PK_OPEN_EXP_CARD": //PK经验卡
+            case PkConfig.PK_OPEN_EXP_CARD: //PK经验卡
                 int effSecond = bean.effSecond;
                 if (bean.openExpCardUserId == mAnchorId) {
                     if (leftCardDispose != null) {
@@ -564,6 +565,7 @@ public class PkControl {
             } else {
                 pkLayout.setPkFanRank(bean.pkUserFans, bean.launchPkUserFans);
             }
+
         }
 
         expCardDestroy();

@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,9 +22,12 @@ import android.widget.TextView;
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
+import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.PkQualifyingLevelUtils;
 import com.whzl.mengbi.util.RxTimerUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
@@ -71,6 +75,11 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private PopupWindow mvpPopupWindow;
     public TextView tvFansRank;
     private RxTimerUtil rxTimerUtil;
+    private ImageView ivMyRank;
+    private ImageView ivOtherRank;
+    private ConstraintLayout containerPkGuess;
+    private TextView tvLeftOdds;
+    private TextView tvRightOdds;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -101,11 +110,22 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         tvPkTitle = inflate.findViewById(R.id.tv_pk_title);
         rlPunishWay = inflate.findViewById(R.id.rl_punish_way);
         tvFansRank = inflate.findViewById(R.id.tv_fans_rank);
-        rlPunishWay.setOnClickListener(this::onClick);
+        rlPunishWay.setOnClickListener(this);
         myFollow = inflate.findViewById(R.id.rv_my_follow);
         oppositeSide = inflate.findViewById(R.id.rv_opposite_side);
+        ivMyRank = inflate.findViewById(R.id.iv_my_rank);
+        ivOtherRank = inflate.findViewById(R.id.iv_other_rank);
+        containerPkGuess = inflate.findViewById(R.id.container_pk_guess);
+        tvLeftOdds = inflate.findViewById(R.id.tv_left_odds);
+        tvRightOdds = inflate.findViewById(R.id.tv_right_odds);
         setProgress(initializeProgress);
         initRv(context);
+    }
+
+    public void setPkGuessVisibility(int visibility) {
+        if (containerPkGuess != null) {
+            containerPkGuess.setVisibility(visibility);
+        }
     }
 
     public void setPkFanRank(List<PKFansBean> pkUserFansBeans,
@@ -210,71 +230,39 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         oppositeSide.setAdapter(oppositeAdapter);
     }
 
-//    private void initPop(Context context) {
-//        // PopupWindow 显示PK排名
-//        View popView = LayoutInflater.from(context).inflate(R.layout.pop_window_pk_rank, null);
-//        popupWindow = new PopupWindow(popView, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, true);
-//        llPkProgress = inflate.findViewById(R.id.ll_pk_progress);
-//        llPkProgress.setOnClickListener(this::onClick);
-//        myFollow = popView.findViewById(R.id.rv_my_follow);
-//        oppositeSide = popView.findViewById(R.id.rv_opposite_side);
-//
-//        LinearLayoutManager followManager = new LinearLayoutManager(context);
-//        followManager.setOrientation(HORIZONTAL);
-//        followManager.setStackFromEnd(true);
-//        followManager.setReverseLayout(true);
-//        myFollow.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-//        myFollow.setLayoutManager(followManager);
-//        LinearLayoutManager oppositeManager = new LinearLayoutManager(context);
-//        oppositeManager.setOrientation(HORIZONTAL);
-//        oppositeSide.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-//        oppositeSide.setLayoutManager(oppositeManager);
-//
-//        myFollowAdapter = new BaseListAdapter() {
-//            @Override
-//            protected int getDataCount() {
-//                int count = 0;
-//                if (pkUserFansBeans == null) {
-//                    count = 0;
-//                } else if (pkUserFansBeans.size() < 5) {
-//                    count = pkUserFansBeans.size();
-//                } else {
-//                    count = 5;
-//                }
-//                return count;
-//            }
-//
-//            @Override
-//            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-//                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_pk_follow, parent, false);
-//                return new PKViewHolder(itemView);
-//            }
-//        };
-//        myFollow.setAdapter(myFollowAdapter);
-//        myFollow.scrollToPosition(0);
-//
-//        oppositeAdapter = new BaseListAdapter() {
-//            @Override
-//            protected int getDataCount() {
-//                int count = 0;
-//                if (launchPkUserFansBeans == null) {
-//                    count = 0;
-//                } else if (launchPkUserFansBeans.size() < 5) {
-//                    count = launchPkUserFansBeans.size();
-//                } else {
-//                    count = 5;
-//                }
-//                return count;
-//            }
-//
-//            @Override
-//            protected BaseViewHolder onCreateNormalViewHolder(ViewGroup parent, int viewType) {
-//                View itemView = LayoutInflater.from(getContext()).inflate(R.layout.item_pk_opposite, parent, false);
-//                return new PKOppoViewHolder(itemView);
-//            }
-//        };
-//        oppositeSide.setAdapter(oppositeAdapter);
-//    }
+    public void initGuessing(PKResultBean bean) {
+        if ("N".equals(bean.pkType)) {
+            ivMyRank.setVisibility(GONE);
+            ivOtherRank.setVisibility(GONE);
+        } else {
+            ivMyRank.setVisibility(VISIBLE);
+            ivOtherRank.setVisibility(VISIBLE);
+        }
+        if (((LiveDisplayActivity) context).mProgramId == bean.launchPkUserProgramId) {
+            int userLevelIcon = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(bean.launchPkUserPkRank.rankId);
+            GlideImageLoader.getInstace().displayImage(context, userLevelIcon, ivMyRank);
+            int userLevelIcon2 = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(bean.pkUserPkRank.rankId);
+            GlideImageLoader.getInstace().displayImage(context, userLevelIcon2, ivOtherRank);
+        } else {
+            int userLevelIcon = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(bean.pkUserPkRank.rankId);
+            GlideImageLoader.getInstace().displayImage(context, userLevelIcon, ivMyRank);
+            int userLevelIcon2 = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(bean.launchPkUserPkRank.rankId);
+            GlideImageLoader.getInstace().displayImage(context, userLevelIcon2, ivOtherRank);
+        }
+
+    }
+
+
+    public void setPkGuessOdds(int userId, double squareOdds, double counterOdds) {
+        if (((LiveDisplayActivity) context).mAnchorId == userId) {
+            tvLeftOdds.setText(context.getString(R.string.tv_odd_guess, squareOdds));
+            tvRightOdds.setText(context.getString(R.string.tv_odd_guess, counterOdds));
+        } else {
+            tvLeftOdds.setText(context.getString(R.string.tv_odd_guess, counterOdds));
+            tvRightOdds.setText(context.getString(R.string.tv_odd_guess, squareOdds));
+        }
+    }
+
 
 
     class PKViewHolder extends BaseViewHolder {
@@ -499,9 +487,11 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
-//        if (popupWindow != null) {
-//            popupWindow.dismiss();
-//        }
+        GlideImageLoader.getInstace().displayImage(context, null, ivMyRank);
+        GlideImageLoader.getInstace().displayImage(context, null, ivOtherRank);
+
+        tvLeftOdds.setText("赔率");
+        tvRightOdds.setText("赔率");
     }
 
     public void setListener(TimeDwonListener listener) {

@@ -34,7 +34,7 @@ public class LevelUtil {
             return -1;
         }
         for (FromJson.Level levelItem : levelList) {
-            if (levelItem.getLevelType().equals("USER_LEVEL")) {
+            if (("USER_LEVEL").equals(levelItem.getLevelType())) {
                 int levelValue = levelItem.getLevelValue();
                 return levelValue;
             }

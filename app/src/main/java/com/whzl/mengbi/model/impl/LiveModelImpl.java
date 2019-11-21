@@ -19,6 +19,7 @@ import com.whzl.mengbi.model.entity.GuardTotalBean;
 import com.whzl.mengbi.model.entity.HeadlineRankBean;
 import com.whzl.mengbi.model.entity.LiveRoomTokenInfo;
 import com.whzl.mengbi.model.entity.PKResultBean;
+import com.whzl.mengbi.model.entity.PkGuessBean;
 import com.whzl.mengbi.model.entity.PkQualifyingBean;
 import com.whzl.mengbi.model.entity.ResponseInfo;
 import com.whzl.mengbi.model.entity.RoomInfoBean;
@@ -566,6 +567,27 @@ public class LiveModelImpl implements LiveModel {
 
                     @Override
                     public void onError(ApiResult<RoomRedpacketBean> body) {
+
+                    }
+                });
+    }
+
+    @Override
+    public void pkGuess(HashMap signPramsMap, OnLiveFinishedListener listener) {
+        ApiFactory.getInstance().getApi(Api.class)
+                .pkGuess(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new ApiObserver<PkGuessBean>() {
+
+
+                    @Override
+                    public void onSuccess(PkGuessBean jsonElement) {
+                        listener.onPkGuessSuccess(jsonElement);
+                    }
+
+                    @Override
+                    public void onError(ApiResult<PkGuessBean> body) {
 
                     }
                 });

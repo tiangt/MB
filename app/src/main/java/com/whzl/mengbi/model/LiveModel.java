@@ -56,4 +56,6 @@ public interface LiveModel {
     void getQualifying(HashMap signPramsMap, OnLiveFinishedListener listener);
 
     void roomGameRedpacket(HashMap signPramsMap, OnLiveFinishedListener listener);
+
+    void pkGuess(HashMap signPramsMap, OnLiveFinishedListener listener);
 }

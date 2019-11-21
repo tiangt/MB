@@ -53,4 +53,6 @@ public interface LivePresenter {
     void getQualifying(int mAnchorId);
 
     void roomGameRedpacket(long mUserId, int mProgramId);
+
+    void pkGuess(int mAnchorId);
 }

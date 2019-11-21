@@ -136,7 +136,7 @@ public class PkProgressView extends ProgressBar {
                     mText = a.getString(attr);
                     break;
                 case R.styleable.PkProgressView_textSize:
-                    mTextSize = a.getDimensionPixelSize(attr, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16, getResources().getDisplayMetrics()));
+                    mTextSize = a.getDimensionPixelSize(attr, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 9, getResources().getDisplayMetrics()));
                     break;
                 case R.styleable.PkProgressView_textColor:
                     mTextColor = a.getColor(attr, Color.BLACK);
@@ -175,15 +175,15 @@ public class PkProgressView extends ProgressBar {
     protected void onDraw(Canvas canvas) {
         // 绘制背景
         rectF = new RectF(0, 0, width, height);
-        canvas.drawRoundRect(rectF, 50, 50, backPaint);
+        canvas.drawRoundRect(rectF, 45, 45, backPaint);
         // 测量字体
         mBound = new Rect();
         backPaint.getTextBounds(mText, 0, mText.length(), mBound);
         // 绘制已完成的进度
         Path path = new Path();
-        path.moveTo(24, 0);
+        path.moveTo(22.5f, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            path.addArc(0, 0, 48, 48, 180, 90);
+            path.addArc(0, 0, 45, 45, 180, 90);
         }
         if (mDefaultPercent < 0) {
             mDefaultPercent = 8;
@@ -214,11 +214,11 @@ public class PkProgressView extends ProgressBar {
             path.lineTo(p3_width, getHeight());
         }
         // point4
-        path.lineTo(24, getHeight());
+        path.lineTo(22.5f, getHeight());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            path.addArc(0, getHeight() - 48, 48, getHeight(), 90, 90);
+            path.addArc(0, getHeight() - 45, 45, getHeight(), 90, 90);
         }
-        path.lineTo(0, 24);
+        path.lineTo(0, 22.5f);
         canvas.drawPath(path, barPaint);
 
         Path shadow = new Path();
