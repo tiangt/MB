@@ -106,7 +106,6 @@ import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.BundleConfig;
-import com.whzl.mengbi.config.PkConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.AnchorTaskFinishedEvent;
 import com.whzl.mengbi.eventbus.event.AudienceEvent;
@@ -1315,8 +1314,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setBean(bean);
         pkControl.init();
 
-        if (PkConfig.PK_ACCEPT_REQUEST.equals(bean.busiCode)) {
-            mLivePresenter.pkGuess(mAnchorId);
+        if (pkLayout != null) {
+            pkLayout.initGuessingByEvent(bean);
         }
     }
 
@@ -1668,6 +1667,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } else {
             pkLayout.setPkGuessVisibility(View.VISIBLE);
             pkLayout.setPkGuessOdds(pkGuessBean.guessObj.userId, pkGuessBean.guessObj.squareOdds, pkGuessBean.guessObj.counterOdds);
+            pkLayout.setGuessBetArgument(mUserId,pkGuessBean.guessObj.guessId,mProgramId,mAnchorId,pkGuessBean.guessObj.userId,
+                    pkGuessBean.guessObj.squareOdds,pkGuessBean.guessObj.counterOdds);
         }
     }
 
@@ -3021,6 +3022,11 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GuessEvent event) {
         if ("USER_GUESS_SETTLEMENT".equals(event.guessJson.context.busicode)) {
+            if ("PK_GUESS".equals(event.guessJson.context.UGameGuessDto.guessType)) {
+                if (pkLayout != null) {
+                    pkLayout.setPkGuessVisibility(View.GONE);
+                }
+            }
             if (guessEndDialog != null && guessEndDialog.isAdded()) {
                 return;
             }
@@ -3042,8 +3048,23 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     })
                     .show(getSupportFragmentManager());
         } else if ("USER_GUESS_BET".equals(event.guessJson.context.busicode)) {
-            if (pkLayout != null) {
-                pkLayout.setPkGuessOdds(event.guessJson.context.UGameGuessDto.userId, event.guessJson.context.UGameGuessDto.squareOdds, event.guessJson.context.UGameGuessDto.counterOdds);
+            if ("PK_GUESS".equals(event.guessJson.context.UGameGuessDto.guessType)) {
+                if (pkLayout != null) {
+                    pkLayout.setPkGuessOdds(event.guessJson.context.UGameGuessDto.userId, event.guessJson.context.UGameGuessDto.squareOdds, event.guessJson.context.UGameGuessDto.counterOdds);
+                    pkLayout.setGuessBetArgument(mUserId,event.guessJson.context.UGameGuessDto.guessId,mProgramId,mAnchorId,event.guessJson.context.UGameGuessDto.userId,
+                            event.guessJson.context.UGameGuessDto.squareOdds,event.guessJson.context.UGameGuessDto.counterOdds);
+                }
+            }
+        } else if ("USER_GUESS".equals(event.guessJson.context.busicode)) {
+            if ("PK_GUESS".equals(event.guessJson.context.UGameGuessDto.guessType)) {
+                if (pkLayout != null) {
+                    pkLayout.setPkGuessVisibility(View.VISIBLE);
+                    pkLayout.setPkGuessOdds(event.guessJson.context.UGameGuessDto.userId,
+                            event.guessJson.context.UGameGuessDto.squareOdds,
+                            event.guessJson.context.UGameGuessDto.counterOdds);
+                    pkLayout.setGuessBetArgument(mUserId,event.guessJson.context.UGameGuessDto.guessId,mProgramId,mAnchorId,event.guessJson.context.UGameGuessDto.userId,
+                            event.guessJson.context.UGameGuessDto.squareOdds,event.guessJson.context.UGameGuessDto.counterOdds);
+                }
             }
         }
     }
@@ -3061,7 +3082,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(UserRedpacketBroadEvent event) {
-//        mLivePresenter.roomGameRedpacket(mUserId, mProgramId);
 
         Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
         if (carEffect) {

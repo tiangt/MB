@@ -20,12 +20,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.whzl.mengbi.R;
+import com.whzl.mengbi.chat.room.message.messageJson.PkJson;
 import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.PKFansBean;
 import com.whzl.mengbi.model.entity.PKResultBean;
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
+import com.whzl.mengbi.ui.dialog.GuessBetDialog;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.PkQualifyingLevelUtils;
 import com.whzl.mengbi.util.RxTimerUtil;
@@ -80,6 +82,15 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private ConstraintLayout containerPkGuess;
     private TextView tvLeftOdds;
     private TextView tvRightOdds;
+    private LinearLayout containerLeftOdds;
+    private LinearLayout containerRightOdds;
+    private long mUserId;
+    private int guessId;
+    private int mProgramId;
+    private int mAnchorId;
+    private double squareOdds;
+    private double counterOdds;
+    private int squareId;
 
     public PkLayout(Context context) {
         this(context, null);
@@ -118,6 +129,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         containerPkGuess = inflate.findViewById(R.id.container_pk_guess);
         tvLeftOdds = inflate.findViewById(R.id.tv_left_odds);
         tvRightOdds = inflate.findViewById(R.id.tv_right_odds);
+        containerLeftOdds = inflate.findViewById(R.id.container_left_odds);
+        containerRightOdds = inflate.findViewById(R.id.container_right_odds);
+        containerLeftOdds.setOnClickListener(this);
+        containerRightOdds.setOnClickListener(this);
         setProgress(initializeProgress);
         initRv(context);
     }
@@ -231,6 +246,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     }
 
     public void initGuessing(PKResultBean bean) {
+        if (bean == null) {
+            return;
+        }
         if ("N".equals(bean.pkType)) {
             ivMyRank.setVisibility(GONE);
             ivOtherRank.setVisibility(GONE);
@@ -249,7 +267,30 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
             int userLevelIcon2 = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(bean.launchPkUserPkRank.rankId);
             GlideImageLoader.getInstace().displayImage(context, userLevelIcon2, ivOtherRank);
         }
+    }
 
+    public void initGuessingByEvent(PkJson.ContextBean bean) {
+        if (bean == null || bean.pkUserRankValue <= 0 || bean.launchPkUserRankValue <= 0) {
+            return;
+        }
+        if ("N".equals(bean.pkType)) {
+            ivMyRank.setVisibility(GONE);
+            ivOtherRank.setVisibility(GONE);
+        } else {
+            ivMyRank.setVisibility(VISIBLE);
+            ivOtherRank.setVisibility(VISIBLE);
+        }
+        if (((LiveDisplayActivity) context).mProgramId == bean.launchUserProgramId) {
+            int userLevelIcon = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(bean.launchPkUserRankValue);
+            GlideImageLoader.getInstace().displayImage(context, userLevelIcon, ivMyRank);
+            int userLevelIcon2 = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(bean.pkUserRankValue);
+            GlideImageLoader.getInstace().displayImage(context, userLevelIcon2, ivOtherRank);
+        } else {
+            int userLevelIcon = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(bean.pkUserRankValue);
+            GlideImageLoader.getInstace().displayImage(context, userLevelIcon, ivMyRank);
+            int userLevelIcon2 = PkQualifyingLevelUtils.getInstance().getUserLevelIcon(bean.launchPkUserRankValue);
+            GlideImageLoader.getInstace().displayImage(context, userLevelIcon2, ivOtherRank);
+        }
     }
 
 
@@ -263,6 +304,15 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         }
     }
 
+    public void setGuessBetArgument(long mUserId, int guessId, int mProgramId, int mAnchorId, int squareId, double squareOdds, double counterOdds) {
+        this.mUserId = mUserId;
+        this.guessId = guessId;
+        this.mProgramId = mProgramId;
+        this.mAnchorId = mAnchorId;
+        this.squareId = squareId;
+        this.squareOdds = squareOdds;
+        this.counterOdds = counterOdds;
+    }
 
 
     class PKViewHolder extends BaseViewHolder {
@@ -502,21 +552,32 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.ll_pk_progress:
-//                if (popupWindow != null) {
-//                    if (popupWindow.isShowing()) {
-//                        tvFansRank.setText("点击打开助力粉丝榜");
-//                        popupWindow.dismiss();
-//                    } else {
-//                        tvFansRank.setText("点击关闭助力粉丝榜");
-//                        showPopupWindow(v);
-//                    }
-//                }
-//                break;
-
             case R.id.rl_punish_way:
                 if (clickLintener != null) {
                     clickLintener.onClick(v);
+                }
+                break;
+            case R.id.container_left_odds:
+                if (mAnchorId == squareId) {
+                    GuessBetDialog.Companion.newInstance(mUserId, guessId, mProgramId, "SQUARE_ARGUMENT", squareOdds)
+                            .setShowBottom(true)
+                            .show(((LiveDisplayActivity) context).getSupportFragmentManager());
+                } else {
+                    GuessBetDialog.Companion.newInstance(mUserId, guessId, mProgramId, "COUNTER_ARGUMENT", counterOdds)
+                            .setShowBottom(true)
+                            .show(((LiveDisplayActivity) context).getSupportFragmentManager());
+                }
+
+                break;
+            case R.id.container_right_odds:
+                if (mAnchorId == squareId) {
+                    GuessBetDialog.Companion.newInstance(mUserId, guessId, mProgramId, "COUNTER_ARGUMENT", counterOdds)
+                            .setShowBottom(true)
+                            .show(((LiveDisplayActivity) context).getSupportFragmentManager());
+                } else {
+                    GuessBetDialog.Companion.newInstance(mUserId, guessId, mProgramId, "SQUARE_ARGUMENT", squareOdds)
+                            .setShowBottom(true)
+                            .show(((LiveDisplayActivity) context).getSupportFragmentManager());
                 }
                 break;
         }
@@ -593,6 +654,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
     public interface PunishWayClick {
         void onClick(View view);
+
     }
 
     public void setPunishWayOnClick(PunishWayClick listener) {

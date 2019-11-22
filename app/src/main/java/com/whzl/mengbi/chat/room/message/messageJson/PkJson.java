@@ -170,6 +170,8 @@ public class PkJson {
         public List<PKFansBean> pkUserFans;
         public List<PKFansBean> userFans;
 
-
+        public int launchPkUserRankValue;
+        public int pkUserRankValue;
+        public String pkType;
     }
 }

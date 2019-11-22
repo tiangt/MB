@@ -62,6 +62,7 @@ public class GuessJson {
             public String successArgument;
             public int guessId;
             public String status;
+            public String guessType;
         }
     }
 }
