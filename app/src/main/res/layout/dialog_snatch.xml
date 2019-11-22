@@ -50,7 +50,6 @@
                         android:id="@+id/tv_date_snatch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="sss"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
@@ -62,40 +61,6 @@
                         android:text="往期中奖"
                         android:textColor="#25edff"
                         android:textSize="12sp" />
-
-                    <!--<ImageView
-                        android:id="@+id/iv_mengdou_snatch"
-                        android:layout_width="22.5dp"
-                        android:layout_height="22.5dp"
-                        android:layout_alignParentRight="true"
-                        android:background="@drawable/btn_snatch_mengdou"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_add_snatch" />
-
-                    <LinearLayout
-                        android:layout_width="100dp"
-                        android:layout_height="22.5dp"
-                        android:layout_toLeftOf="@id/iv_mengdou_snatch"
-                        android:background="@drawable/bg_snatch_mengdou"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingLeft="5dp">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="13dp"
-                            android:src="@drawable/ic_wallet_mengdou" />
-
-                        <TextView
-                            android:id="@+id/tv_mengdou"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="5dp"
-                            android:gravity="center_vertical"
-                            android:singleLine="true"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/textsize_12" />
-                    </LinearLayout>-->
 
                 </RelativeLayout>
 
@@ -299,15 +264,15 @@
                     android:id="@+id/iv_daojishi"
                     android:layout_width="109dp"
                     android:layout_height="83.5dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginRight="15dp" />
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/daojishi" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="开奖中"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -316,7 +281,7 @@
                     android:layout_height="wrap_content"
                     android:text="00:00:00"
                     android:textColor="#ffb800"
-                    android:textSize="42sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -335,25 +300,25 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="55dp"
+                        android:layout_marginTop="33dp"
                         android:text="恭喜"
                         android:textColor="@color/white"
-                        android:textSize="18sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_prize_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="10dp"
                         android:textColor="#ff416e"
-                        android:textSize="28sp"
+                        android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -363,7 +328,7 @@
                             android:layout_centerInParent="true"
                             android:text="夺宝成功"
                             android:textColor="@color/white"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -372,7 +337,7 @@
                             android:layout_toRightOf="@id/tv_tips_success"
                             android:text="！"
                             android:textColor="@color/white"
-                            android:textSize="18sp"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
                     </RelativeLayout>
 
@@ -382,7 +347,336 @@
                 <ImageView
                     android:id="@+id/iv_fangpao"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp" />
+                    android:layout_height="140.5dp" />
+            </RelativeLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="140.5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/shape_snatch_normal">
+
+            <LinearLayout
+                android:id="@+id/ll_state_normal_one"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_date_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_his_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="往期中奖"
+                        android:textColor="#25edff"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="167dp"
+                        android:layout_height="55dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_gift_one"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:background="@drawable/shape_gift_snatch"
+                            android:padding="2.5dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="11dp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="已夺宝"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/textsize_12" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_prize_pool_num_one"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="0.5dp"
+                                    android:ellipsize="middle"
+                                    android:includeFontPadding="false"
+                                    android:singleLine="true"
+                                    android:textColor="#25edff"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:includeFontPadding="false"
+                                    android:text="个"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/textsize_12" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="187dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/shape_count_snatch"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="开奖剩余次数"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_second_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="0"
+                            android:textColor="#ffed25"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_reduce_want_one"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/btn_snatch_join"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_snatch_join_reduce" />
+
+                    <TextView
+                        android:id="@+id/tv_want_join_one"
+                        android:layout_width="35dp"
+                        android:layout_height="25dp"
+                        android:layout_toRightOf="@id/ib_reduce_want_one"
+                        android:background="@drawable/bg_snatch_join"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_12" />
+
+                    <ImageButton
+                        android:id="@+id/ib_add_want_one"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_toRightOf="@id/tv_want_join_one"
+                        android:background="@drawable/btn_snatch_join"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_snatch_join_add" />
+
+                    <TextView
+                        android:id="@+id/tv_five_one"
+                        android:layout_width="35dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/ib_add_want_one"
+                        android:background="@drawable/btn_snatch_join"
+                        android:gravity="center"
+                        android:text="5次"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_12" />
+
+                    <TextView
+                        android:id="@+id/tv_ten_one"
+                        android:layout_width="35dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/tv_five_one"
+                        android:background="@drawable/btn_snatch_join"
+                        android:gravity="center"
+                        android:text="10次"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/textsize_12" />
+
+                    <TextView
+                        android:id="@+id/tv_snatch_one"
+                        android:layout_width="71dp"
+                        android:layout_height="26dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@id/container_limit_one"
+                        android:background="@drawable/btn_snatch"
+                        android:gravity="center"
+                        android:text="夺宝"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:id="@+id/container_limit_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_price_limit_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="9sp" />
+
+
+                        <TextView
+                            android:id="@+id/tv_time_limit_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_state_process_one"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_daojishi_one"
+                    android:layout_width="109dp"
+                    android:layout_height="83.5dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/daojishi" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开奖中"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_daojishi_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00:00"
+                    android:textColor="#ffb800"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/ll_state_end_one"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="33dp"
+                        android:text="恭喜"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_prize_name_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#ff416e"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_tips_success_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="夺宝成功"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/tv_tips_success_one"
+                            android:text="！"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_fangpao_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="140.5dp" />
             </RelativeLayout>
         </FrameLayout>
 

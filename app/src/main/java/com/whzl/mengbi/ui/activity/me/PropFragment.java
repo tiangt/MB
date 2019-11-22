@@ -16,7 +16,6 @@ import com.whzl.mengbi.api.Api;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.contract.BasePresenter;
-import com.whzl.mengbi.eventbus.event.MengdouChangeEvent;
 import com.whzl.mengbi.model.entity.GetProsListBean;
 import com.whzl.mengbi.model.entity.UserInfo;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
@@ -34,8 +33,6 @@ import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.network.retrofit.ApiFactory;
 import com.whzl.mengbi.util.network.retrofit.ApiObserver;
 import com.whzl.mengbi.util.network.retrofit.ParamsUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 
@@ -210,7 +207,6 @@ public class PropFragment extends BasePullListFragment<GetProsListBean.ListBean,
                         if (awesomeDialog != null) {
                             awesomeDialog.dismiss();
                         }
-                        EventBus.getDefault().post(new MengdouChangeEvent());
                     }
 
                     @Override

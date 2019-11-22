@@ -36,6 +36,7 @@ import com.whzl.mengbi.model.entity.GetUnReadMsgBean;
 import com.whzl.mengbi.model.entity.GetUserSetBean;
 import com.whzl.mengbi.model.entity.GetVipPriceBean;
 import com.whzl.mengbi.model.entity.GiftBetPeriodInfo;
+import com.whzl.mengbi.model.entity.GiftBetPeriodList;
 import com.whzl.mengbi.model.entity.GiftBetRecordsBean;
 import com.whzl.mengbi.model.entity.GoodNumBean;
 import com.whzl.mengbi.model.entity.GoodsPriceBatchBean;
@@ -1430,5 +1431,15 @@ public interface Api {
     @POST("v1/guess/pk-guess")
     @FormUrlEncoded
     Observable<ApiResult<PkGuessBean>> pkGuess(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取夺宝游戏中当前期的列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/game/gift-bet-period-list")
+    @FormUrlEncoded
+    Observable<ApiResult<GiftBetPeriodList>> giftBetPeriodList(@FieldMap Map<String, String> params);
 
 }
