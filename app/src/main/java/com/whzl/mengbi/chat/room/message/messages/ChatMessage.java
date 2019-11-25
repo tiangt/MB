@@ -23,6 +23,7 @@ import com.whzl.mengbi.util.SPUtils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 public class ChatMessage implements FillHolderMessage {
@@ -213,7 +214,8 @@ public class ChatMessage implements FillHolderMessage {
         String replaceFirst = contentString;
         if (!TextUtils.isEmpty(to_nickName)) {
             if (replaceFirst.contains("@" + to_nickName.trim())) {
-                replaceFirst = contentString.replaceFirst("@" + to_nickName.trim(), "");
+                String quote = Pattern.quote("@" + to_nickName.trim());
+                replaceFirst = contentString.replaceFirst(quote, "");
                 mholder.textView.append(LightSpanString.getLightString("@" + to_nickName.trim(), Color.parseColor("#72e6ff")));
             }
         }
