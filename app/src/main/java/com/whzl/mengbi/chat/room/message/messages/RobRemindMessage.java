@@ -30,9 +30,8 @@ public class RobRemindMessage implements FillHolderMessage {
         SingleTextViewHolder mholder = (SingleTextViewHolder) holder;
         mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         mholder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
-        mholder.textView.setText(LevelUtil.getImageResourceSpan(context, R.drawable.ic_rob_chat));
-        mholder.textView.append(LightSpanString.getLightString(" " + json.context.giftName,
-                ContextCompat.getColor(context, R.color.text_color_chat_orange)));
+        mholder.textView.setText(LevelUtil.getImageResourceSpan(context, R.drawable.ic_rob_live));
+        mholder.textView.append(LightSpanString.getLightString(" " + json.context.giftName, Color.parseColor("#FF4676")));
         mholder.textView.append(LightSpanString.getLightString(" 已累计到 ",
                 ContextCompat.getColor(context, R.color.text_color_chat)));
         mholder.textView.append(LightSpanString.getLightString(json.context.giftNumber + "",

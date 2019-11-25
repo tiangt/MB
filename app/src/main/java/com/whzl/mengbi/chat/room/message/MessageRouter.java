@@ -119,7 +119,6 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("COMPOSITION2", new CompositeAction());
         actionsMap.put("REDPACKET", new RedPacketAction());
         actionsMap.put("RANK_RISES_MSG", new RankRiseAction());
-        actionsMap.put("ROB_LUCKY", new RobLuckAction());
         actionsMap.put("GAME_WISH", new AnchorWishAction());
         actionsMap.put("RANK_CHANGE_MSG", new RankChangeAction());
         actionsMap.put("ONE_KEY_OFFLINE", new OneKeyOfflineAction());
@@ -132,6 +131,7 @@ public class MessageRouter implements MessageCallback {
         actionsMap.put("USER_REDPACKET_AWARD", new UserRedpacketAwardAction());
         actionsMap.put("USER_REDPACKET_AWARD_BROADCAST", new UserRedpacketAwardBroadAction());
         actionsMap.put("USER_REDPACKET_BACK", new UserRedpacketBackAction());
+        actionsMap.put("ROB_LUCKY", new RobLuckAction());
         actionsMap.put("ROB_BIG_LUCKY", new RobBigLuckyAction());
     }
 

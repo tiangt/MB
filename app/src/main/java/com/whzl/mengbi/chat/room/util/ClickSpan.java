@@ -1,7 +1,6 @@
 package com.whzl.mengbi.chat.room.util;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 

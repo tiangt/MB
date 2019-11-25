@@ -4,17 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.view.View;
 
 import com.whzl.mengbi.R;
 import com.whzl.mengbi.chat.room.message.messageJson.RobLuckJson;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.chat.room.util.LightSpanString;
-import com.whzl.mengbi.chat.room.util.RobSpan;
-import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.viewholder.SingleTextViewHolder;
 
 /**
@@ -35,7 +30,7 @@ public class RobPrizeMessage implements FillHolderMessage {
         SingleTextViewHolder mholder = (SingleTextViewHolder) holder;
         mholder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         mholder.textView.setBackgroundResource(R.drawable.bg_chat_normal);
-        mholder.textView.setText(LevelUtil.getImageResourceSpan(context, R.drawable.ic_rob_chat));
+        mholder.textView.setText(LevelUtil.getImageResourceSpan(context, R.drawable.ic_rob_live));
         mholder.textView.append(LightSpanString.getLightString(" 恭喜 ",
                 ContextCompat.getColor(context, R.color.text_color_chat)));
         mholder.textView.append(LightSpanString.getLightString(json.context.userNickName,
@@ -46,8 +41,7 @@ public class RobPrizeMessage implements FillHolderMessage {
                 ContextCompat.getColor(context, R.color.text_color_chat_yellow)));
         mholder.textView.append(LightSpanString.getLightString(" 个",
                 ContextCompat.getColor(context, R.color.text_color_chat)));
-        mholder.textView.append(LightSpanString.getLightString(json.context.giftName,
-                ContextCompat.getColor(context, R.color.text_color_chat_orange)));
+        mholder.textView.append(LightSpanString.getLightString(json.context.giftName, Color.parseColor("#FF4676")));
         mholder.textView.append(LightSpanString.getLightString("，",
                 ContextCompat.getColor(context, R.color.text_color_chat)));
         mholder.textView.append(LightSpanString.getRobSpan(context, "我也要夺宝",

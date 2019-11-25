@@ -42,7 +42,6 @@ import kotlinx.android.synthetic.main.item_snatch_his.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONObject
 import java.util.HashMap
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
@@ -101,8 +100,10 @@ class SnatchDialog : BaseAwesomeDialog() {
     private var hisDatas = ArrayList<GiftBetRecordsBean.ListBean>()
     private var gameId: Int = 0
     private var gameIdOne: Int = 0
-    private var limitTimes: Int = 0
-    private var limitTimesOne: Int = 0
+    private var userBetCount: Int = 0
+    private var userBetCountOne: Int = 0
+    private var totalLimit: Int = 0
+    private var totalLimitOne: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,7 +158,7 @@ class SnatchDialog : BaseAwesomeDialog() {
         holder.setOnClickListener(R.id.tv_ten) { tvWant.text = "10" }
         tvHisPrize.setOnClickListener { showHisDialog(LUCKBET) }
         holder.setOnClickListener(R.id.tv_snatch) {
-            if (limitTimes == 10) {
+            if (userBetCount == totalLimit) {
                 return@setOnClickListener
             }
             snatch(mUserId.toString(), gameId.toString(), tvWant.text.toString(), LUCKBET)
@@ -200,7 +201,7 @@ class SnatchDialog : BaseAwesomeDialog() {
         holder.setOnClickListener(R.id.tv_ten_one) { tvWantOne.text = "10" }
         tvHisPrizeOne.setOnClickListener { showHisDialog(ONEINHUNDRED) }
         holder.setOnClickListener(R.id.tv_snatch_one) {
-            if (limitTimes == 10) {
+            if (userBetCountOne == totalLimitOne) {
                 return@setOnClickListener
             }
             snatch(mUserId.toString(), gameIdOne.toString(), tvWantOne.text.toString(), ONEINHUNDRED)
@@ -224,12 +225,20 @@ class SnatchDialog : BaseAwesomeDialog() {
                         ToastUtils.showToastUnify(activity, "夺宝成功")
                         if (type == LUCKBET) {
                             tvWant.text = "1"
+                            val get = bean?.asJsonObject?.get("betCount")
+                            tvTimeLimit.text = "已参与 "
+                            tvTimeLimit.append(LightSpanString.getLightString("$get/$totalLimit",
+                                    Color.parseColor("#FFFFED25")))
+                            tvTimeLimit.append(" 次")
                         } else {
                             tvWantOne.text = "1"
+                            val get = bean?.asJsonObject?.get("betCount")
+                            tvTimeLimitOne.text = "已参与 "
+                            tvTimeLimitOne.append(LightSpanString.getLightString("$get/$totalLimitOne",
+                                    Color.parseColor("#FFFFED25")))
+                            tvTimeLimitOne.append(" 次")
                         }
 //                        loadData()
-
-
                     }
 
                     override fun onError(code: Int) {
@@ -312,7 +321,8 @@ class SnatchDialog : BaseAwesomeDialog() {
     }
 
     private fun getData() {
-        limitTimes = 0
+        userBetCount = 0
+        userBetCountOne = 0
         val paramsMap = HashMap<String, String>()
         paramsMap["userId"] = mUserId.toString()
         val signPramsMap = ParamsUtils.getSignPramsMap(paramsMap)
@@ -358,7 +368,8 @@ class SnatchDialog : BaseAwesomeDialog() {
         tvTimeLimitOne.append(LightSpanString.getLightString("${bean.userBetCount}/${bean.uRobGame?.limit}",
                 Color.parseColor("#FFFFED25")))
         tvTimeLimitOne.append(" 次")
-        limitTimesOne = bean.userBetCount.toInt()
+        userBetCountOne = bean.userBetCount.toInt()
+        totalLimitOne = bean.uRobGame?.limit?.toInt() ?: 0
         requireGiftNum = bean.requireGiftNum.toInt()
         tvSecondOne.text = (requireGiftNum - bean.prizePoolNumber).toString()
     }
@@ -395,7 +406,8 @@ class SnatchDialog : BaseAwesomeDialog() {
         tvTimeLimit.append(LightSpanString.getLightString("${bean.userBetCount}/${bean.uRobGame?.limit}",
                 Color.parseColor("#FFFFED25")))
         tvTimeLimit.append(" 次")
-        limitTimes = bean.userBetCount.toInt()
+        userBetCount = bean.userBetCount.toInt()
+        totalLimit = bean.uRobGame?.limit?.toInt() ?: 0
         disposable = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
                     LogUtils.e("sssssssssss  $t")

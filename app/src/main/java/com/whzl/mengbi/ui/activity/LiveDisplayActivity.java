@@ -166,6 +166,7 @@ import com.whzl.mengbi.ui.adapter.ActivityFragmentPagerAdaper;
 import com.whzl.mengbi.ui.common.BaseApplication;
 import com.whzl.mengbi.ui.control.NewRedPacketControl;
 import com.whzl.mengbi.ui.control.RedpacketEnterControl;
+import com.whzl.mengbi.ui.control.RobLuckEnterControl;
 import com.whzl.mengbi.ui.dialog.AnchorWishDialog;
 import com.whzl.mengbi.ui.dialog.AudienceInfoDialog;
 import com.whzl.mengbi.ui.dialog.FreeGiftDialog;
@@ -442,6 +443,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     LinearLayout llRoomRedpacket;
     @BindView(R.id.redpacket_enter_view)
     RedpacketEnterView redpacketEnterView;
+    @BindView(R.id.ll_rob_luck)
+    LinearLayout llRobLuck;
+    @BindView(R.id.rob_luck_view)
+    RedpacketEnterView robLuckEnterView;
 
 
     private LivePresenterImpl mLivePresenter;
@@ -535,6 +540,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private BaseAwesomeDialog roomRedpacketDialog;
     private RedpacketEnterControl redpacketEnterControl;
     private Disposable autoShowSubDisposable;
+    private RobLuckEnterControl robLuckEnterControl;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1667,8 +1673,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         } else {
             pkLayout.setPkGuessVisibility(View.VISIBLE);
             pkLayout.setPkGuessOdds(pkGuessBean.guessObj.userId, pkGuessBean.guessObj.squareOdds, pkGuessBean.guessObj.counterOdds);
-            pkLayout.setGuessBetArgument(mUserId,pkGuessBean.guessObj.guessId,mProgramId,mAnchorId,pkGuessBean.guessObj.userId,
-                    pkGuessBean.guessObj.squareOdds,pkGuessBean.guessObj.counterOdds);
+            pkLayout.setGuessBetArgument(mUserId, pkGuessBean.guessObj.guessId, mProgramId, mAnchorId, pkGuessBean.guessObj.userId,
+                    pkGuessBean.guessObj.squareOdds, pkGuessBean.guessObj.counterOdds);
         }
     }
 
@@ -2600,6 +2606,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             redpacketEnterControl.destroy();
         }
 
+        if (robLuckEnterControl != null) {
+            robLuckEnterControl.destroy();
+        }
+
     }
 
     private void resetRightBottomActivity() {
@@ -2728,32 +2738,25 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-    /**
-     * 幸运夺宝用户
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(RobPrizeEvent robPrizeEvent) {
-        if (weekStarControl == null) {
-            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
-            weekStarControl.setTvEnter(wsvWeekstar);
-            weekStarControl.setIvEnter(ivWeekstar);
-            weekStarControl.setRlEnter(rlWeekstar);
-        }
-        weekStarControl.showEnter(robPrizeEvent);
-    }
 
     /**
      * 幸运夺宝用户
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RobRemindEvent robRemindEvent) {
-        if (weekStarControl == null) {
-            weekStarControl = new WeekStarControl(LiveDisplayActivity.this);
-            weekStarControl.setTvEnter(wsvWeekstar);
-            weekStarControl.setIvEnter(ivWeekstar);
-            weekStarControl.setRlEnter(rlWeekstar);
+        Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (carEffect) {
+            if (robLuckEnterControl == null) {
+                robLuckEnterControl = new RobLuckEnterControl();
+                robLuckEnterControl.setLlEnter(llRobLuck);
+                robLuckEnterControl.setTvEnter(robLuckEnterView);
+                robLuckEnterControl.setContext(this);
+                robLuckEnterControl.setListener((programId, nickname) -> {
+
+                });
+            }
+            robLuckEnterControl.showEnter(robRemindEvent);
         }
-        weekStarControl.showEnter(robRemindEvent);
     }
 
     /**
@@ -3051,8 +3054,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             if ("PK_GUESS".equals(event.guessJson.context.UGameGuessDto.guessType)) {
                 if (pkLayout != null) {
                     pkLayout.setPkGuessOdds(event.guessJson.context.UGameGuessDto.userId, event.guessJson.context.UGameGuessDto.squareOdds, event.guessJson.context.UGameGuessDto.counterOdds);
-                    pkLayout.setGuessBetArgument(mUserId,event.guessJson.context.UGameGuessDto.guessId,mProgramId,mAnchorId,event.guessJson.context.UGameGuessDto.userId,
-                            event.guessJson.context.UGameGuessDto.squareOdds,event.guessJson.context.UGameGuessDto.counterOdds);
+                    pkLayout.setGuessBetArgument(mUserId, event.guessJson.context.UGameGuessDto.guessId, mProgramId, mAnchorId, event.guessJson.context.UGameGuessDto.userId,
+                            event.guessJson.context.UGameGuessDto.squareOdds, event.guessJson.context.UGameGuessDto.counterOdds);
                 }
             }
         } else if ("USER_GUESS".equals(event.guessJson.context.busicode)) {
@@ -3062,8 +3065,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                     pkLayout.setPkGuessOdds(event.guessJson.context.UGameGuessDto.userId,
                             event.guessJson.context.UGameGuessDto.squareOdds,
                             event.guessJson.context.UGameGuessDto.counterOdds);
-                    pkLayout.setGuessBetArgument(mUserId,event.guessJson.context.UGameGuessDto.guessId,mProgramId,mAnchorId,event.guessJson.context.UGameGuessDto.userId,
-                            event.guessJson.context.UGameGuessDto.squareOdds,event.guessJson.context.UGameGuessDto.counterOdds);
+                    pkLayout.setGuessBetArgument(mUserId, event.guessJson.context.UGameGuessDto.guessId, mProgramId, mAnchorId, event.guessJson.context.UGameGuessDto.userId,
+                            event.guessJson.context.UGameGuessDto.squareOdds, event.guessJson.context.UGameGuessDto.counterOdds);
                 }
             }
         }
@@ -3121,6 +3124,27 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                 });
             }
             redpacketEnterControl.showEnter(event);
+        }
+    }
+
+
+    /**
+     * 幸运夺宝
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RobPrizeEvent event) {
+        Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (carEffect) {
+            if (robLuckEnterControl == null) {
+                robLuckEnterControl = new RobLuckEnterControl();
+                robLuckEnterControl.setLlEnter(llRobLuck);
+                robLuckEnterControl.setTvEnter(robLuckEnterView);
+                robLuckEnterControl.setContext(this);
+                robLuckEnterControl.setListener((programId, nickname) -> {
+
+                });
+            }
+            robLuckEnterControl.showEnter(event);
         }
     }
 
