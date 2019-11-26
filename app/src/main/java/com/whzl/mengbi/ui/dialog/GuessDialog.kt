@@ -120,24 +120,72 @@ class GuessDialog : BaseAwesomeDialog() {
             guessId = listBean.guessId
             itemView.tv_theme_guess.text = listBean.guessTheme
 
-            itemView.tv_square_argument.text = listBean.squareArgument
-            itemView.tv_square_odds.text = getString(R.string.tv_odd_guess, listBean.squareOdds)
+            if (listBean.userId == anchorId) {
+                itemView.tv_square_argument.text = listBean.squareArgument
+                itemView.tv_square_odds.text = getString(R.string.tv_odd_guess, listBean.squareOdds)
 
-            itemView.tv_counter_argument.text = listBean.counterArgument
-            itemView.tv_counter_odds.text = getString(R.string.tv_odd_guess, listBean.counterOdds)
+                itemView.tv_counter_argument.text = listBean.counterArgument
+                itemView.tv_counter_odds.text = getString(R.string.tv_odd_guess, listBean.counterOdds)
 
-            val totalFee = listBean.squareArgumentFee + listBean.counterArgumentFee
-            if (totalFee.toInt() == 0) {
-                itemView.progress_guess.progress = 50
-            } else {
-                val value = listBean.squareArgumentFee / totalFee
-                val num: Double
-                num = if (value < 0.1) {
-                    Math.ceil(value * 100)
+                val totalFee = listBean.squareArgumentFee + listBean.counterArgumentFee
+                if (totalFee.toInt() == 0) {
+                    itemView.progress_guess.progress = 50
                 } else {
-                    Math.floor(value * 100)
+                    val value = listBean.squareArgumentFee / totalFee
+                    val num: Double
+                    num = if (value < 0.1) {
+                        Math.ceil(value * 100)
+                    } else {
+                        Math.floor(value * 100)
+                    }
+                    itemView.progress_guess.progress = num.toInt()
                 }
-                itemView.progress_guess.progress = num.toInt()
+                itemView.ll_square_select.setOnClickListener {
+                    GuessBetDialog.newInstance(userId, listBean.guessId, programId, "SQUARE_ARGUMENT",
+                            itemView.tv_square_odds.text.toString().substring(3).toDouble())
+                            .setShowBottom(true)
+                            .show(fragmentManager)
+                }
+
+                itemView.ll_counter_select.setOnClickListener {
+                    GuessBetDialog.newInstance(userId, listBean.guessId, programId, "COUNTER_ARGUMENT",
+                            itemView.tv_counter_odds.text.toString().substring(3).toDouble())
+                            .setShowBottom(true)
+                            .show(fragmentManager)
+                }
+            } else {
+                itemView.tv_square_argument.text = listBean.counterArgument
+                itemView.tv_square_odds.text = getString(R.string.tv_odd_guess, listBean.counterOdds)
+
+                itemView.tv_counter_argument.text = listBean.squareArgument
+                itemView.tv_counter_odds.text = getString(R.string.tv_odd_guess, listBean.squareOdds)
+
+                val totalFee = listBean.squareArgumentFee + listBean.counterArgumentFee
+                if (totalFee.toInt() == 0) {
+                    itemView.progress_guess.progress = 50
+                } else {
+                    val value = listBean.counterArgumentFee / totalFee
+                    val num: Double
+                    num = if (value < 0.1) {
+                        Math.ceil(value * 100)
+                    } else {
+                        Math.floor(value * 100)
+                    }
+                    itemView.progress_guess.progress = num.toInt()
+                }
+                itemView.ll_square_select.setOnClickListener {
+                    GuessBetDialog.newInstance(userId, listBean.guessId, programId, "COUNTER_ARGUMENT",
+                            itemView.tv_counter_odds.text.toString().substring(3).toDouble())
+                            .setShowBottom(true)
+                            .show(fragmentManager)
+                }
+
+                itemView.ll_counter_select.setOnClickListener {
+                    GuessBetDialog.newInstance(userId, listBean.guessId, programId, "SQUARE_ARGUMENT",
+                            itemView.tv_square_odds.text.toString().substring(3).toDouble())
+                            .setShowBottom(true)
+                            .show(fragmentManager)
+                }
             }
 
             when (listBean.status) {
@@ -187,20 +235,6 @@ class GuessDialog : BaseAwesomeDialog() {
                             }
                     compositeDisposable.add(disposable!!)
                 }
-            }
-
-            itemView.ll_square_select.setOnClickListener {
-                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "SQUARE_ARGUMENT",
-                        itemView.tv_square_odds.text.toString().substring(3).toDouble())
-                        .setShowBottom(true)
-                        .show(fragmentManager)
-            }
-
-            itemView.ll_counter_select.setOnClickListener {
-                GuessBetDialog.newInstance(userId, listBean.guessId, programId, "COUNTER_ARGUMENT",
-                        itemView.tv_counter_odds.text.toString().substring(3).toDouble())
-                        .setShowBottom(true)
-                        .show(fragmentManager)
             }
         }
     }
@@ -292,18 +326,34 @@ class GuessDialog : BaseAwesomeDialog() {
             "USER_GUESS_BET" -> {
                 val listBean = event.guessJson.context.UGameGuessDto
                 val childAt = findItemView(event)
-                childAt?.tv_square_argument?.text = listBean.squareArgument
-                childAt?.tv_square_odds?.text = getString(R.string.tv_odd_guess, listBean.squareOdds)
+                if (listBean.userId == anchorId) {
+                    childAt?.tv_square_argument?.text = listBean.squareArgument
+                    childAt?.tv_square_odds?.text = getString(R.string.tv_odd_guess, listBean.squareOdds)
 
-                childAt?.tv_counter_argument?.text = listBean.counterArgument
-                childAt?.tv_counter_odds?.text = getString(R.string.tv_odd_guess, listBean.counterOdds)
+                    childAt?.tv_counter_argument?.text = listBean.counterArgument
+                    childAt?.tv_counter_odds?.text = getString(R.string.tv_odd_guess, listBean.counterOdds)
 
-                val totalFee = listBean.squareArgumentFee + listBean.counterArgumentFee
-                if (totalFee.toInt() == 0) {
-                    childAt?.progress_guess?.progress = 50
+                    val totalFee = listBean.squareArgumentFee + listBean.counterArgumentFee
+                    if (totalFee.toInt() == 0) {
+                        childAt?.progress_guess?.progress = 50
+                    } else {
+                        val d = Math.ceil(listBean.squareArgumentFee / totalFee * 100)
+                        childAt?.progress_guess?.progress = d.toInt()
+                    }
                 } else {
-                    val d = Math.ceil(listBean.squareArgumentFee / totalFee * 100)
-                    childAt?.progress_guess?.progress = d.toInt()
+                    childAt?.tv_square_argument?.text = listBean.counterArgument
+                    childAt?.tv_square_odds?.text = getString(R.string.tv_odd_guess, listBean.counterOdds)
+
+                    childAt?.tv_counter_argument?.text = listBean.squareArgument
+                    childAt?.tv_counter_odds?.text = getString(R.string.tv_odd_guess, listBean.squareOdds)
+
+                    val totalFee = listBean.squareArgumentFee + listBean.counterArgumentFee
+                    if (totalFee.toInt() == 0) {
+                        childAt?.progress_guess?.progress = 50
+                    } else {
+                        val d = Math.ceil(listBean.counterArgumentFee / totalFee * 100)
+                        childAt?.progress_guess?.progress = d.toInt()
+                    }
                 }
             }
             "USER_GUESS_SEALED_DISK" -> {

@@ -448,7 +448,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="6dp"
                                     android:includeFontPadding="false"
-                                    android:text="个"
+                                    android:text="次"
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/textsize_12" />
                             </LinearLayout>
