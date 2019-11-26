@@ -12,9 +12,9 @@
         android:layout_marginRight="12dp"
         android:background="@drawable/bg_snatch_his"
         android:orientation="vertical"
-        android:paddingBottom="12dp"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp">
+        android:paddingRight="12dp"
+        android:paddingBottom="12dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -74,4 +74,12 @@
             android:layout_height="wrap_content"
             android:overScrollMode="never" />
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/ic_close_head_line"
+        android:src="@null" />
 </LinearLayout>

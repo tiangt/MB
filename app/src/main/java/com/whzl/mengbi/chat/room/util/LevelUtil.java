@@ -68,7 +68,7 @@ public class LevelUtil {
             return -1;
         }
         for (FromJson.Level levelItem : levelList) {
-            if (levelItem.getLevelType().equals("ROYAL_LEVEL")) {
+            if (levelItem.getLevelType() != null && levelItem.getLevelType().equals("ROYAL_LEVEL")) {
                 int levelValue = levelItem.getLevelValue();
                 return levelValue;
             }

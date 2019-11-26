@@ -14,11 +14,9 @@ import com.bumptech.glide.Glide
 import com.google.gson.JsonElement
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
-import com.whzl.mengbi.chat.room.message.events.RobBigLuckyEvent
-import com.whzl.mengbi.chat.room.message.events.RobLuckChangeEvent
-import com.whzl.mengbi.chat.room.message.events.RobNoPrizeEvent
-import com.whzl.mengbi.chat.room.message.events.RobPrizeEvent
+import com.whzl.mengbi.chat.room.message.events.*
 import com.whzl.mengbi.chat.room.util.LightSpanString
+import com.whzl.mengbi.model.entity.BetPrizeProbablyBean
 import com.whzl.mengbi.model.entity.GiftBetPeriodList
 import com.whzl.mengbi.model.entity.GiftBetRecordsBean
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter
@@ -39,6 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_snatch_his.view.*
+import kotlinx.android.synthetic.main.item_snatch_probably.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -53,6 +52,7 @@ import kotlin.collections.ArrayList
 class SnatchDialog : BaseAwesomeDialog() {
     private var requireGiftNum = 0
     private var disposable: Disposable? = null
+    private var disposableOne: Disposable? = null
     private val LUCKBET = "LuckBet"
     private val ONEINHUNDRED = "OneInHundred"
 
@@ -97,7 +97,9 @@ class SnatchDialog : BaseAwesomeDialog() {
 
     private var mUserId: Long = 0
     private lateinit var hisAdapter: BaseListAdapter
+    private lateinit var probablyAdapter: BaseListAdapter
     private var hisDatas = ArrayList<GiftBetRecordsBean.ListBean>()
+    private var probablyDatas = ArrayList<BetPrizeProbablyBean.ListBean>()
     private var gameId: Int = 0
     private var gameIdOne: Int = 0
     private var userBetCount: Int = 0
@@ -248,15 +250,55 @@ class SnatchDialog : BaseAwesomeDialog() {
     }
 
     private fun showHisDialog(type: String) {
-        dismiss()
         AwesomeDialog.init().setLayoutId(R.layout.dialog_snatch_his).setConvertListener(object : ViewConvertListener() {
             override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                holder?.setOnClickListener(R.id.btn_close) {
+                    dialog?.dismissDialog()
+                }
                 val recyclerView = holder?.getView<RecyclerView>(R.id.rv_snatch_his)
                 initRV(recyclerView)
                 getHisData(type)
             }
 
         }).show(fragmentManager)
+    }
+
+    private fun showProbabilityDialog() {
+        AwesomeDialog.init().setLayoutId(R.layout.dialog_snatch_probably).setConvertListener(object : ViewConvertListener() {
+            override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                holder?.setOnClickListener(R.id.btn_close_probably) {
+                    dialog?.dismissDialog()
+                }
+                val recyclerView = holder?.getView<RecyclerView>(R.id.rv_snatch_probably)
+                initProbablyRV(recyclerView)
+            }
+
+        }).show(fragmentManager)
+    }
+
+    private fun initProbablyRV(recyclerView: RecyclerView?) {
+        recyclerView!!.layoutManager = LinearLayoutManager(activity)
+        probablyAdapter = object : BaseListAdapter() {
+            override fun getDataCount(): Int {
+                return probablyDatas.size
+            }
+
+            override fun onCreateNormalViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
+                val view: View = LayoutInflater.from(parent!!.context).inflate(R.layout.item_snatch_probably, parent, false)
+                return ProbablyViewHolder(view)
+            }
+
+        }
+        recyclerView.adapter = probablyAdapter
+    }
+
+    internal inner class ProbablyViewHolder(itemView: View) : BaseViewHolder(itemView) {
+        override fun onBindViewHolder(position: Int) {
+            val listBean = probablyDatas[position]
+            itemView.tv_gift_name.text = listBean.giftName
+            itemView.tv_probably.text = listBean.probability
+        }
+
     }
 
     private fun getHisData(type: String) {
@@ -318,6 +360,25 @@ class SnatchDialog : BaseAwesomeDialog() {
 
     private fun loadData() {
         getData()
+        getProbaly()
+    }
+
+    private fun getProbaly() {
+        val paramsMap = HashMap<String, String>()
+        val signPramsMap = ParamsUtils.getSignPramsMap(paramsMap)
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .betPrizeProbably(signPramsMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<BetPrizeProbablyBean>(this) {
+                    override fun onSuccess(bean: BetPrizeProbablyBean?) {
+                        probablyDatas.clear()
+                        bean?.list?.let { probablyDatas.addAll(it) }
+                    }
+
+                    override fun onError(code: Int) {
+                    }
+                })
     }
 
     private fun getData() {
@@ -390,7 +451,7 @@ class SnatchDialog : BaseAwesomeDialog() {
         tvTips2.append(LightSpanString.getLightString("${bean.uRobGame.limit}", Color.rgb(255, 237, 37)))
         tvTips2.append("次，夺宝次数越多中奖概率越大。")
         tvTips2.append(LightSpanString.getClickSpan(context, "中奖概率查看", Color.rgb(255, 237, 37), true, 10) {
-            ToastUtils.showToast("sda")
+            showProbabilityDialog()
         })
 
         GlideImageLoader.getInstace().displayImage(activity, bean.goodsPic, ivGift)
@@ -486,8 +547,49 @@ class SnatchDialog : BaseAwesomeDialog() {
         Glide.with(this).asGif().load(R.drawable.fangpao).into(ivFangpao)
     }
 
+    fun startBigAnim(event: RobBigPrizeEvent) {
+        if (disposableOne != null) {
+            disposableOne!!.dispose()
+        }
+        llStateProcessOne.visibility = View.VISIBLE
+        llStateNormalOne.visibility = View.GONE
+        llStateEndOne.visibility = View.GONE
+        Glide.with(this).asGif().load(R.drawable.daojishi).into(ivDaojishiOne)
+
+        disposableOne = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
+                    if (t == 11.toLong()) {
+                        disposableOne!!.dispose()
+                        openBigPrize(event)
+                        return@subscribe
+                    }
+                    tvDaojishiOne.text = DateUtils.translateLastSecond(10 - t!!.toInt())
+                }
+    }
+
+    private fun openBigPrize(event: RobBigPrizeEvent) {
+        if (disposableOne != null) {
+            disposableOne!!.dispose()
+        }
+        llStateNormalOne.visibility = View.GONE
+        llStateProcessOne.visibility = View.GONE
+        llStateEndOne.visibility = View.VISIBLE
+        tvPrizeNameOne.text = event.robLuckJson.context.userNickName
+        disposableOne = Observable.interval(0, 1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
+                    LogUtils.e("sssssssssss  $t")
+                    if (t == 4.toLong()) {
+                        disposableOne!!.dispose()
+                        getData()
+                        return@subscribe
+                    }
+                    tvDaojishiOne.text = DateUtils.translateLastSecond(3 - t!!.toInt())
+                }
+        Glide.with(this).asGif().load(R.drawable.fangpao).into(ivFangpaoOne)
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onMessageEvent(event: RobBigLuckyEvent) {
+    fun onMessageEvent(event: RobBigPrizePoolChangeEvent) {
         when (event.robBigLuckyJson.context.busiCode) {
             "big_prize_pool_change" -> {
                 tvPrizePoolNumOne.text = event.robBigLuckyJson.context.prizePoolNumber.toString()
@@ -498,9 +600,8 @@ class SnatchDialog : BaseAwesomeDialog() {
 
     override fun onDestroy() {
         EventBus.getDefault().unregister(this)
-        if (disposable != null) {
-            disposable!!.dispose()
-        }
+        disposable?.dispose()
+        disposableOne?.dispose()
         super.onDestroy()
     }
 }

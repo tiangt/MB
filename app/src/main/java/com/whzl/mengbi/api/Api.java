@@ -13,6 +13,7 @@ import com.whzl.mengbi.model.entity.AnchorWishRank;
 import com.whzl.mengbi.model.entity.ApiResult;
 import com.whzl.mengbi.model.entity.AppDataBean;
 import com.whzl.mengbi.model.entity.BackpackListBean;
+import com.whzl.mengbi.model.entity.BetPrizeProbablyBean;
 import com.whzl.mengbi.model.entity.BillAwardBean;
 import com.whzl.mengbi.model.entity.BillGiftBean;
 import com.whzl.mengbi.model.entity.BillPayBean;
@@ -1441,5 +1442,15 @@ public interface Api {
     @POST("v1/game/gift-bet-period-list")
     @FormUrlEncoded
     Observable<ApiResult<GiftBetPeriodList>> giftBetPeriodList(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取夺宝的中奖概率
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/game/bet-prize-probability")
+    @FormUrlEncoded
+    Observable<ApiResult<BetPrizeProbablyBean>> betPrizeProbably(@FieldMap Map<String, String> params);
 
 }

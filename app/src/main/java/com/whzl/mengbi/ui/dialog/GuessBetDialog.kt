@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import com.google.gson.JsonElement
 import com.whzl.mengbi.R
 import com.whzl.mengbi.api.Api
+import com.whzl.mengbi.ui.activity.LiveDisplayActivity
 import com.whzl.mengbi.ui.activity.me.ShopActivity
 import com.whzl.mengbi.ui.dialog.base.BaseAwesomeDialog
 import com.whzl.mengbi.ui.dialog.base.ViewHolder
@@ -48,6 +49,11 @@ class GuessBetDialog : BaseAwesomeDialog() {
         tv_mengdou_guess_bet.paint.flags = Paint.UNDERLINE_TEXT_FLAG
 
         tv_mengdou_guess_bet.setOnClickListener {
+            if (userId == 0L) {
+                (activity as LiveDisplayActivity).login()
+                dismissDialog()
+                return@setOnClickListener
+            }
             startActivity(Intent(activity, ShopActivity::class.java))
         }
 
@@ -94,6 +100,11 @@ class GuessBetDialog : BaseAwesomeDialog() {
         }
 
         btn_guess_bet.setOnClickListener {
+            if (userId == 0L) {
+                (activity as LiveDisplayActivity).login()
+                dismissDialog()
+                return@setOnClickListener
+            }
             if (TextUtils.isEmpty(et_guess_bet.text)) {
                 return@setOnClickListener
             }

@@ -78,6 +78,9 @@ import com.whzl.mengbi.chat.room.message.events.PkEvent;
 import com.whzl.mengbi.chat.room.message.events.PrizePoolFullEvent;
 import com.whzl.mengbi.chat.room.message.events.RankSuccessEvent;
 import com.whzl.mengbi.chat.room.message.events.RedPackTreasureEvent;
+import com.whzl.mengbi.chat.room.message.events.RobBigPrizeEvent;
+import com.whzl.mengbi.chat.room.message.events.RobBigRemindEvent;
+import com.whzl.mengbi.chat.room.message.events.RobLuckTotalEvent;
 import com.whzl.mengbi.chat.room.message.events.RobPrizeEvent;
 import com.whzl.mengbi.chat.room.message.events.RobRemindEvent;
 import com.whzl.mengbi.chat.room.message.events.RoyalLevelChangeEvent;
@@ -100,6 +103,7 @@ import com.whzl.mengbi.chat.room.message.messageJson.StartStopLiveJson;
 import com.whzl.mengbi.chat.room.message.messageJson.WelcomeJson;
 import com.whzl.mengbi.chat.room.message.messages.ChatMessage;
 import com.whzl.mengbi.chat.room.message.messages.FillHolderMessage;
+import com.whzl.mengbi.chat.room.message.messages.RobBigPrizeMessage;
 import com.whzl.mengbi.chat.room.message.messages.WelcomeMsg;
 import com.whzl.mengbi.chat.room.util.ChatRoomInfo;
 import com.whzl.mengbi.chat.room.util.DownloadImageFile;
@@ -541,6 +545,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     private RedpacketEnterControl redpacketEnterControl;
     private Disposable autoShowSubDisposable;
     private RobLuckEnterControl robLuckEnterControl;
+    private Disposable robLuckDispose;
 
 //     1、vip、守护、贵族、主播、运管不受限制
 //        2、名士5以上可以私聊，包含名士5
@@ -1505,9 +1510,10 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         //头条榜单
         mLivePresenter.getHeadlineRank(mAnchorId, "F");
         mLivePresenter.getBlackRoomTime(mAnchorId);
-        headlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS).subscribe((Long aLong) -> {
-            mLivePresenter.getHeadlineRank(mAnchorId, "F");
-        });
+        headlineDisposable = Observable.interval(0, 60, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((Long aLong) -> {
+                    mLivePresenter.getHeadlineRank(mAnchorId, "F");
+                });
         compositeDisposable.add(headlineDisposable);
         mLivePresenter.getPkInfo(mProgramId);
         mLivePresenter.getQualifying(mAnchorId);
@@ -2738,27 +2744,6 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         }
     }
 
-
-    /**
-     * 幸运夺宝用户
-     */
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(RobRemindEvent robRemindEvent) {
-        Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
-        if (carEffect) {
-            if (robLuckEnterControl == null) {
-                robLuckEnterControl = new RobLuckEnterControl();
-                robLuckEnterControl.setLlEnter(llRobLuck);
-                robLuckEnterControl.setTvEnter(robLuckEnterView);
-                robLuckEnterControl.setContext(this);
-                robLuckEnterControl.setListener((programId, nickname) -> {
-
-                });
-            }
-            robLuckEnterControl.showEnter(robRemindEvent);
-        }
-    }
-
     /**
      * 奖池满用户下注消息
      */
@@ -3135,17 +3120,67 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
     public void onMessageEvent(RobPrizeEvent event) {
         Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
         if (carEffect) {
-            if (robLuckEnterControl == null) {
-                robLuckEnterControl = new RobLuckEnterControl();
-                robLuckEnterControl.setLlEnter(llRobLuck);
-                robLuckEnterControl.setTvEnter(robLuckEnterView);
-                robLuckEnterControl.setContext(this);
-                robLuckEnterControl.setListener((programId, nickname) -> {
-
-                });
-            }
-            robLuckEnterControl.showEnter(event);
+            showRobFly(event);
         }
+    }
+
+    /**
+     * 幸运夺宝用户
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RobRemindEvent robRemindEvent) {
+        Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (carEffect) {
+            showRobFly(robRemindEvent);
+        }
+    }
+
+    /**
+     * 幸运夺宝
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RobBigPrizeEvent event) {
+        Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (snatchDialog != null && snatchDialog.isAdded()) {
+            ((SnatchDialog) snatchDialog).startBigAnim(event);
+            robLuckDispose = Observable.timer(13, TimeUnit.SECONDS)
+                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((Long aLong) -> {
+                        if (carEffect) {
+                            showRobFly(event);
+                        }
+                        EventBus.getDefault().post(new UpdatePubChatEvent(new RobBigPrizeMessage(this, event.robLuckJson)));
+                    });
+            compositeDisposable.add(robLuckDispose);
+        } else {
+            if (carEffect) {
+                showRobFly(event);
+            }
+            EventBus.getDefault().post(new UpdatePubChatEvent(new RobBigPrizeMessage(this, event.robLuckJson)));
+        }
+    }
+
+    /**
+     * 幸运夺宝
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(RobBigRemindEvent event) {
+        Boolean carEffect = (Boolean) SPUtils.get(this, SpConfig.FLY_EFFECT, true);
+        if (carEffect) {
+            showRobFly(event);
+        }
+    }
+
+    private void showRobFly(RobLuckTotalEvent event) {
+        if (robLuckEnterControl == null) {
+            robLuckEnterControl = new RobLuckEnterControl();
+            robLuckEnterControl.setLlEnter(llRobLuck);
+            robLuckEnterControl.setTvEnter(robLuckEnterView);
+            robLuckEnterControl.setContext(this);
+            robLuckEnterControl.setListener((programId, nickname) -> {
+
+            });
+        }
+        robLuckEnterControl.showEnter(event);
     }
 
     public void removeAnchorWish() {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="227dp"
+        android:layout_height="180dp"
+        android:background="@drawable/bg_snatch_his"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="幸运夺宝奖品概率"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_snatch_probably"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:overScrollMode="never" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_close_probably"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/ic_close_head_line"
+        android:src="@null" />
+</LinearLayout>

@@ -18,7 +18,12 @@ public class RobBigLuckyJson {
          * busiCode : big_prize_pool_change
          */
 
-        public int prizePoolNumber;
+        public long prizePoolNumber;
+        public long robNumber;
+        public long giftNumber;
+        public long totalNumber;
         public String busiCode;
+        public String giftName;
+        public String userNickName;
     }
 }
