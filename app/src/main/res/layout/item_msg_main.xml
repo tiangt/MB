@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="10.5dp"
     android:paddingLeft="13dp"
+    android:paddingTop="13dp"
     android:paddingRight="13dp"
-    android:paddingTop="13dp">
+    android:paddingBottom="10.5dp">
 
 
     <ImageView
@@ -25,8 +25,10 @@
             android:id="@+id/tv_name_item_msg_main"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:textColor="#70010101"
+            android:textColor="#B3010101"
             android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_num_item_msg_main"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_weight="1" />
 
@@ -35,10 +37,11 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center"
-            android:textColor="#40000000"
+            android:textColor="#66000000"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name_item_msg_main"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_name_item_msg_main"
             app:layout_constraintVertical_weight="1" />
 
         <View

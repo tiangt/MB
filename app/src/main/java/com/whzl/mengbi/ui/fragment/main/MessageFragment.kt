@@ -73,7 +73,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
                 .subscribe(object : ApiObserver<GetUnReadMsgBean>(this) {
 
                     override fun onSuccess(watchHistoryListBean: GetUnReadMsgBean?) {
-                        loadSuccess(watchHistoryListBean?.list?.subList(0, 1))
+                        loadSuccess(watchHistoryListBean?.list)
                     }
 
                     override fun onError(code: Int) {
@@ -112,8 +112,12 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
             val bean = mDatas[position]
             when (bean.messageType) {
                 "EXPIRATION_MESSAGE" -> {
-                    tvName?.text = "系统消息"
+                    tvName?.text = "系统通知"
                     GlideImageLoader.getInstace().circleCropImage(activity, R.drawable.ic_system_msg, imageView)
+                }
+                "SYSTEM_MESSAGE" -> {
+                    tvName?.text = "官方通知"
+                    GlideImageLoader.getInstace().circleCropImage(activity, R.drawable.ic_office_msg, imageView)
                 }
             }
 
@@ -125,9 +129,18 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
 
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
-            startActivityForResult(Intent(activity, FrgActivity::class.java)
-                    .putExtra(FrgActivity.FRAGMENT_CLASS, MsgListFrgment::class.java)
-                    .putExtra("title", mDatas[position].messageType), CLICK)
+            val bean = mDatas[position]
+            when (bean.messageType){
+                "EXPIRATION_MESSAGE" -> {
+                    startActivityForResult(Intent(activity, FrgActivity::class.java)
+                            .putExtra(FrgActivity.FRAGMENT_CLASS, MsgListFrgment::class.java)
+                            .putExtra("title", mDatas[position].messageType), CLICK)
+                }
+                "SYSTEM_MESSAGE" -> {
+
+                }
+            }
+
         }
     }
 

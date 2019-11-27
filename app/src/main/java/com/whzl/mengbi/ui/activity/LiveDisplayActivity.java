@@ -1212,6 +1212,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         LoginDialog.newInstance()
                 .setLoginSuccessListener(() -> {
                     mUserId = (long) SPUtils.get(LiveDisplayActivity.this, "userId", 0L);
+                    if (pkLayout != null) {
+                        pkLayout.setmUserId(mUserId);
+                    }
                     mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                     btnOtherFollow.setVisibility(View.GONE);
                     mLivePresenter.getPkInfo(mProgramId);
@@ -2642,6 +2645,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (requestCode == REQUEST_LOGIN) {
             if (RESULT_OK == resultCode) {
                 mUserId = (long) SPUtils.get(this, "userId", 0L);
+                if (pkLayout != null) {
+                    pkLayout.setmUserId(mUserId);
+                }
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
                 isVip = true;
@@ -2651,6 +2657,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (requestCode == AppUtils.REQUEST_LOGIN) {
             if (resultCode == RESULT_OK) {
                 mUserId = (long) SPUtils.get(this, "userId", 0L);
+                if (pkLayout != null) {
+                    pkLayout.setmUserId(mUserId);
+                }
                 mLivePresenter.getRoomUserInfo(mUserId, mProgramId);
                 getRoomToken();
                 isVip = true;

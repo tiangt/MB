@@ -92,6 +92,10 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private double counterOdds;
     private int squareId;
 
+    public void setmUserId(long mUserId) {
+        this.mUserId = mUserId;
+    }
+
     public PkLayout(Context context) {
         this(context, null);
     }

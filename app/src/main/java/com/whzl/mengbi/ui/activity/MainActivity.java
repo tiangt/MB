@@ -200,9 +200,9 @@ public class MainActivity extends BaseActivity {
             StatusBarUtil.setLightMode(this);
             StatusBarUtil.setColor(this, colors[index], 0);
         }
-        if (index == 2) {
-            resetMessage();
-        }
+//        if (index == 2) {
+//            resetMessage();
+//        }
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.hide(fragments[currentSelectedIndex]);
