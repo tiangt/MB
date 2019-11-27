@@ -1474,4 +1474,14 @@ public interface Api {
     @FormUrlEncoded
     Observable<ApiResult<JsonElement>> updateMsgReadByType(@FieldMap Map<String, String> params);
 
+    /**
+     * 根据消息类型清空消息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/msgcenter/clear-msg-by-type")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> clearMsgByType(@FieldMap Map<String, String> params);
+
 }

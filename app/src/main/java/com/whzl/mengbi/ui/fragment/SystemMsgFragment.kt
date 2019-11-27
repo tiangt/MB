@@ -22,6 +22,7 @@ import com.whzl.mengbi.ui.common.BaseApplication
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
 import com.whzl.mengbi.ui.fragment.main.MessageFragment
 import com.whzl.mengbi.util.SPUtils
+import com.whzl.mengbi.util.clickDelay
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
 import com.whzl.mengbi.util.network.retrofit.ApiObserver
@@ -40,6 +41,23 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
         super.initEnv()
         (activity as FrgActivity).title = "官方通知"
         (activity as FrgActivity).rightText.text = "清空"
+        (activity as FrgActivity).rightText.clickDelay {
+            val userid = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L)
+            val params = mutableMapOf<String, String>()
+            params["userId"] = userid.toString()
+            params["messageType"] = MessageFragment.SYSTEM_MESSAGE
+            ApiFactory.getInstance().getApi(Api::class.java)
+                    .clearMsgByType(ParamsUtils.getSignPramsMap(params as HashMap<String, String>?))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : ApiObserver<JsonElement>() {
+                        override fun onSuccess(t: JsonElement?) {
+                            activity?.setResult(Activity.RESULT_OK)
+                            mDatas.clear()
+                            loadSuccess(mDatas)
+                        }
+                    })
+        }
     }
 
 
@@ -69,6 +87,11 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
                 .subscribe(object : ApiObserver<SysMsgListBean>(this) {
                     override fun onSuccess(bean: SysMsgListBean?) {
                         loadSuccess(bean?.list)
+                        if (bean?.list?.isEmpty()!!) {
+                            (activity as FrgActivity).rightText.visibility = View.GONE
+                        } else {
+                            (activity as FrgActivity).rightText.visibility = View.GONE
+                        }
                     }
 
                     override fun onError(code: Int) {
