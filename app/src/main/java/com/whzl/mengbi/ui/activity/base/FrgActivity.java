@@ -42,6 +42,9 @@ public class FrgActivity extends BaseActivity {
         }
     }
 
+    public TextView getRightText() {
+        return super.getTitleRightText();
+    }
 
     @Override
     protected void setupView() {

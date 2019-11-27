@@ -40,4 +40,13 @@ class MainMsgModer {
                 .updateMsgRead(ParamsUtils.getSignPramsMap(params as HashMap<String, String>?))
         return goodMsg
     }
+
+    fun updateMsgReadByType( messageType: String): Observable<ApiResult<JsonElement>> {
+        val userid = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L)
+        val params = mutableMapOf<String, String>()
+        params["userId"] = userid.toString()
+        params["messageType"] = messageType
+        return ApiFactory.getInstance().getApi(Api::class.java)
+                .updateMsgReadByType(ParamsUtils.getSignPramsMap(params as HashMap<String, String>?))
+    }
 }

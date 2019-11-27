@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/empty_expiration_msg"
+        android:text="@string/empty_system_msg"
         android:textColor="#999999"
         android:textSize="15sp" />
 </LinearLayout>

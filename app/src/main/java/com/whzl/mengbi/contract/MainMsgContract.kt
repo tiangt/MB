@@ -11,10 +11,12 @@ interface MainMsgContract {
     interface View : BaseView {
         fun onGetMsgListSuccess(getGoodMsgBean: GetGoodMsgBean)
         fun onUpdateMsgReadSuccess()
+        fun onUpdateMsgReadByTypeSuccess()
     }
 
     interface Presenter {
         fun getMsgList(page: Int)
         fun updateMsgRead(messageId:Int,messageType:String)
+        fun updateMsgReadByType(messageType:String)
     }
 }

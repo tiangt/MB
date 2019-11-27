@@ -52,4 +52,19 @@ class MainMsgPresenter : BasePresenter<MainMsgContract.View>(), MainMsgContract.
 
                 })
     }
+
+    override fun updateMsgReadByType( messageType: String) {
+        if (!isViewAttached) {
+            return
+        }
+        moder!!.updateMsgReadByType(messageType)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<JsonElement>() {
+                    override fun onSuccess(t: JsonElement?) {
+                        mView.onUpdateMsgReadSuccess()
+                    }
+
+                })
+    }
 }

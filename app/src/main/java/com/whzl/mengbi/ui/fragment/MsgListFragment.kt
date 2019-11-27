@@ -16,10 +16,10 @@ import com.whzl.mengbi.presenter.MainMsgPresenter
 import com.whzl.mengbi.ui.activity.BuySuccubusActivity
 import com.whzl.mengbi.ui.activity.LiveDisplayActivity
 import com.whzl.mengbi.ui.activity.base.FrgActivity
-import com.whzl.mengbi.ui.activity.me.GoodnumFragment
 import com.whzl.mengbi.ui.activity.me.MyChipActivity
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
+import com.whzl.mengbi.ui.fragment.main.MessageFragment
 import com.whzl.mengbi.ui.fragment.me.PackPrettyFragment
 import com.whzl.mengbi.ui.fragment.me.PackVipFragment
 import com.whzl.mengbi.ui.fragment.me.PropFragment
@@ -30,16 +30,14 @@ import com.whzl.mengbi.wxapi.WXPayEntryActivity
  * @author nobody
  * @date 2019/3/18
  */
-class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPresenter>(), MainMsgContract.View {
+class MsgListFragment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPresenter>(), MainMsgContract.View {
+
     override fun initEnv() {
         super.initEnv()
         mPresenter = MainMsgPresenter()
         mPresenter.attachView(this)
-        val title = activity?.intent?.getStringExtra("title")
         val frgActivity = activity as FrgActivity
-        when (title) {
-            "EXPIRATION_MESSAGE" -> frgActivity.setTitle("系统通知")
-        }
+        frgActivity.setTitle("系统通知")
     }
 
     override fun setLoadMoreEndShow(): Boolean {
@@ -107,9 +105,9 @@ class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPres
 
             tvMove?.clickDelay {
                 tvGood?.setTextColor(Color.parseColor("#50000000"))
-                if (listBean.isRead == "F") {
-                    mPresenter.updateMsgRead(listBean.messageId, listBean.messageType)
-                }
+//                if (listBean.isRead == "F") {
+//                    mPresenter.updateMsgRead(listBean.messageId, listBean.messageType)
+//                }
                 when (listBean.goodsType) {
                     "COUPON", "NOBILITY_EXP" ->
                         startActivity(Intent(activity, WXPayEntryActivity::class.java))
@@ -132,6 +130,15 @@ class MsgListFrgment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPres
             }
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.updateMsgReadByType(MessageFragment.EXPIRATION_MESSAGE)
+    }
+
+    override fun onUpdateMsgReadByTypeSuccess() {
+        activity?.setResult(Activity.RESULT_OK)
     }
 
     override fun onUpdateMsgReadSuccess() {

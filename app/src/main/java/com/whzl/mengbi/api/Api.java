@@ -84,6 +84,7 @@ import com.whzl.mengbi.model.entity.SearchAnchorBean;
 import com.whzl.mengbi.model.entity.SignAwardBean;
 import com.whzl.mengbi.model.entity.SignInfoBean;
 import com.whzl.mengbi.model.entity.StartPageBean;
+import com.whzl.mengbi.model.entity.SysMsgListBean;
 import com.whzl.mengbi.model.entity.SystemConfigBean;
 import com.whzl.mengbi.model.entity.TreasureBoxStatusBean;
 import com.whzl.mengbi.model.entity.UpdownAnchorBean;
@@ -1452,5 +1453,25 @@ public interface Api {
     @POST("v1/game/bet-prize-probability")
     @FormUrlEncoded
     Observable<ApiResult<BetPrizeProbablyBean>> betPrizeProbably(@FieldMap Map<String, String> params);
+
+    /**
+     * 获取官方通知消息列表
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/msgcenter/sys-msg-list")
+    @FormUrlEncoded
+    Observable<ApiResult<SysMsgListBean>> sysMsgList(@FieldMap Map<String, String> params);
+
+    /**
+     * 根据消息类型一键已读消息
+     *
+     * @param params
+     * @return
+     */
+    @POST("v1/msgcenter/update-msg-read-by-type")
+    @FormUrlEncoded
+    Observable<ApiResult<JsonElement>> updateMsgReadByType(@FieldMap Map<String, String> params);
 
 }

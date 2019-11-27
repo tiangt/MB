@@ -19,7 +19,8 @@ import com.whzl.mengbi.eventbus.event.MainMsgClickEvent
 import com.whzl.mengbi.model.entity.GetUnReadMsgBean
 import com.whzl.mengbi.ui.activity.base.FrgActivity
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
-import com.whzl.mengbi.ui.fragment.MsgListFrgment
+import com.whzl.mengbi.ui.fragment.MsgListFragment
+import com.whzl.mengbi.ui.fragment.SystemMsgFragment
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
 import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.glide.GlideImageLoader
@@ -42,7 +43,6 @@ import java.util.*
 class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePresenter<BaseView>>() {
     val CLICK = 300
     var needFresh = false
-
 
     override fun init() {
         super.init()
@@ -111,11 +111,11 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
             imageView = itemView?.findViewById(R.id.iv_item_mag_main)
             val bean = mDatas[position]
             when (bean.messageType) {
-                "EXPIRATION_MESSAGE" -> {
+                EXPIRATION_MESSAGE -> {
                     tvName?.text = "系统通知"
                     GlideImageLoader.getInstace().circleCropImage(activity, R.drawable.ic_system_msg, imageView)
                 }
-                "SYSTEM_MESSAGE" -> {
+                SYSTEM_MESSAGE -> {
                     tvName?.text = "官方通知"
                     GlideImageLoader.getInstace().circleCropImage(activity, R.drawable.ic_office_msg, imageView)
                 }
@@ -130,14 +130,14 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
             val bean = mDatas[position]
-            when (bean.messageType){
-                "EXPIRATION_MESSAGE" -> {
+            when (bean.messageType) {
+                EXPIRATION_MESSAGE -> {
                     startActivityForResult(Intent(activity, FrgActivity::class.java)
-                            .putExtra(FrgActivity.FRAGMENT_CLASS, MsgListFrgment::class.java)
-                            .putExtra("title", mDatas[position].messageType), CLICK)
+                            .putExtra(FrgActivity.FRAGMENT_CLASS, MsgListFragment::class.java), CLICK)
                 }
-                "SYSTEM_MESSAGE" -> {
-
+                SYSTEM_MESSAGE -> {
+                    startActivityForResult(Intent(activity, FrgActivity::class.java)
+                            .putExtra(FrgActivity.FRAGMENT_CLASS, SystemMsgFragment::class.java), CLICK)
                 }
             }
 
@@ -155,6 +155,9 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
 
 
     companion object {
+        const val EXPIRATION_MESSAGE: String = "EXPIRATION_MESSAGE"
+        const val SYSTEM_MESSAGE: String = "SYSTEM_MESSAGE"
+
         fun newInstance(): MessageFragment {
             val messageFragment = MessageFragment()
             val bundle = Bundle()
