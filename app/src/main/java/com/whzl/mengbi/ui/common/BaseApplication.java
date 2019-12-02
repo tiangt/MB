@@ -20,6 +20,7 @@ import com.alibaba.sdk.android.push.register.MiPushRegister;
 import com.alibaba.sdk.android.push.register.OppoRegister;
 import com.baidu.mobstat.StatService;
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
+import com.lzx.starrysky.StarrySky;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -137,7 +138,7 @@ public class BaseApplication extends Application {
             e.printStackTrace();
         }
         initCloudChannel(this);
-
+        StarrySky.init(this);
     }
 
     private void initCloudChannel(Context applicationContext) {

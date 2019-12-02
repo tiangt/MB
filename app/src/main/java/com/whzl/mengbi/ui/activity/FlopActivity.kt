@@ -146,10 +146,10 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
         val popView = layoutInflater.inflate(R.layout.popwindow_benlun_flop, null)
         val recyclerView = popView.findViewById<RecyclerView>(R.id.recycler_benlun)
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
-                super.getItemOffsets(outRect, view, parent, state)
-                outRect?.top = UIUtil.dip2px(this@FlopActivity, 4f)
-                outRect?.bottom = UIUtil.dip2px(this@FlopActivity, 4f)
+            override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
+                super.getItemOffsets(outRect, itemPosition, parent)
+                outRect.top = UIUtil.dip2px(this@FlopActivity, 4f)
+                outRect.bottom = UIUtil.dip2px(this@FlopActivity, 4f)
             }
         })
         recyclerView.layoutManager = GridLayoutManager(this, 3)
@@ -197,13 +197,14 @@ class FlopActivity : BaseActivity<FlopPresenter>(), FlopContract.View {
     private fun initRecyclerView(recycler: RecyclerView) {
         recycler.layoutManager = GridLayoutManager(this, 3)
         recycler.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
-                super.getItemOffsets(outRect, view, parent, state)
-                outRect?.bottom = UIUtil.dip2px(this@FlopActivity, 5.5f)
-                outRect?.left = UIUtil.dip2px(this@FlopActivity, 5f)
-                outRect?.right = UIUtil.dip2px(this@FlopActivity, 5f)
-                outRect?.top = UIUtil.dip2px(this@FlopActivity, 5.5f)
+            override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
+                super.getItemOffsets(outRect, itemPosition, parent)
+                outRect.bottom = UIUtil.dip2px(this@FlopActivity, 5.5f)
+                outRect.left = UIUtil.dip2px(this@FlopActivity, 5f)
+                outRect.right = UIUtil.dip2px(this@FlopActivity, 5f)
+                outRect.top = UIUtil.dip2px(this@FlopActivity, 5.5f)
             }
+
         })
         adapter = object : BaseListAdapter() {
             override fun getDataCount() = 9

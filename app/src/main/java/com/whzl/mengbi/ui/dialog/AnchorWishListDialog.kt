@@ -67,7 +67,7 @@ class AnchorWishListDialog : BaseAwesomeDialog() {
                 .subscribe(object : ApiObserver<AnchorWishRank>() {
                     override fun onSuccess(jsonElement: AnchorWishRank) {
                         mDatas.addAll(jsonElement.list)
-                        recycler.adapter.notifyDataSetChanged()
+                        recycler.adapter?.notifyDataSetChanged()
                     }
                 })
     }

@@ -4,12 +4,16 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.lzx.starrysky.StarrySky;
+import com.lzx.starrysky.control.OnPlayerEventListener;
+import com.lzx.starrysky.provider.SongInfo;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 import com.whzl.mengbi.chat.room.message.events.AnimEvent;
 import com.whzl.mengbi.chat.room.message.messageJson.AnimJson;
+import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.AnimResouseBean;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
@@ -142,6 +146,54 @@ public class GifSvgaControl {
     }
 
     public void showSVGA(AnimEvent event) {
+        for (AnimJson.ResourcesEntity resource : event.getAnimJson().getResources()) {
+            if (resource.getResType().equals("MP3")) {
+                String mp3 = ImageUrl.getImageUrl(Integer.valueOf(resource.getResValue()), "mp3");
+                //播放一首歌曲
+                SongInfo info = new SongInfo();
+                info.setSongId(resource.getResValue());
+                info.setSongUrl(mp3);
+                StarrySky.with().playMusicByInfo(info);
+                StarrySky.with().addPlayerEventListener(new OnPlayerEventListener() {
+                    @Override
+                    public void onMusicSwitch(@NotNull SongInfo songInfo) {
+                        LogUtils.e("ssssssssss   onMusicSwitch");
+                        StarrySky.with().playMusicByInfo(info);
+                    }
+
+                    @Override
+                    public void onPlayerStart() {
+                        LogUtils.e("ssssssssss   onPlayerStart");
+                    }
+
+                    @Override
+                    public void onPlayerPause() {
+                        LogUtils.e("ssssssssss   onPlayerPause");
+                    }
+
+                    @Override
+                    public void onPlayerStop() {
+                        LogUtils.e("ssssssssss   onPlayerStop");
+                    }
+
+                    @Override
+                    public void onPlayCompletion(@NotNull SongInfo songInfo) {
+                        LogUtils.e("ssssssssss   onPlayCompletion");
+                    }
+
+                    @Override
+                    public void onBuffering() {
+                        LogUtils.e("ssssssssss   onBuffering");
+                    }
+
+                    @Override
+                    public void onError(int i, @NotNull String s) {
+                        LogUtils.e("ssssssssss   onError");
+                    }
+                });
+                break;
+            }
+        }
         isShowSvga = true;
         svgaImageView.setVisibility(View.VISIBLE);
         svgaImageView.setLoops(event.times);
