@@ -28,6 +28,7 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity;
 import com.whzl.mengbi.ui.adapter.base.BaseListAdapter;
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder;
 import com.whzl.mengbi.ui.dialog.GuessBetDialog;
+import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.PkQualifyingLevelUtils;
 import com.whzl.mengbi.util.RxTimerUtil;
@@ -86,6 +87,11 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private LinearLayout containerRightOdds;
     private long mUserId;
     private int guessId;
+
+    public int getGuessId() {
+        return guessId;
+    }
+
     private int mProgramId;
     private int mAnchorId;
     private double squareOdds;
@@ -436,7 +442,8 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                     } else {
                                         tvPkTitle.setText("MVP挑选惩罚^ ");
                                     }
-                                    tvTime.setText((second - aLong - 1) + "s");
+//                                    tvTime.setText((second - aLong - 1) + "s");
+                                    tvTime.setText(DateUtils.translateLastSecond3((int) (second - aLong - 1)));
                                 } else {
                                     //惩罚倒计时60秒后
                                     if (!TextUtils.isEmpty(mvpPunishWay) || !TextUtils.isEmpty(punishWay)) {
@@ -447,26 +454,31 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                                         if (TextUtils.isEmpty(mvpPunishWay)) {
                                             if (TextUtils.isEmpty(punishWay)) {
                                                 tvPkTitle.setText("惩罚:自定义");
-                                                tvTime.setText((second - aLong - 1) + "s");
+//                                                tvTime.setText((second - aLong - 1) + "s");
+                                                tvTime.setText(DateUtils.translateLastSecond3((int) (second - aLong - 1)));
                                             } else {
                                                 tvPkTitle.setText("惩罚:" + punishWay);
-                                                tvTime.setText((second - aLong - 1) + "s");
+//                                                tvTime.setText((second - aLong - 1) + "s");
+                                                tvTime.setText(DateUtils.translateLastSecond3((int) (second - aLong - 1)));
                                             }
                                         } else {
                                             tvPkTitle.setText("惩罚:" + mvpPunishWay);
-                                            tvTime.setText((second - aLong - 1) + "s");
+//                                            tvTime.setText((second - aLong - 1) + "s");
+                                            tvTime.setText(DateUtils.translateLastSecond3((int) (second - aLong - 1)));
                                         }
                                     } else {
                                         if (mvpPopupWindow != null) {
                                             mvpPopupWindow.dismiss();
                                         }
                                         tvPkTitle.setText(state + " ^ ");
-                                        tvTime.setText((second - aLong - 1) + "s");
+//                                        tvTime.setText((second - aLong - 1) + "s");
+                                        tvTime.setText(DateUtils.translateLastSecond3((int) (second - aLong - 1)));
                                     }
                                 }
                             } else {
                                 tvPkTitle.setText(state);
-                                tvTime.setText((second - aLong - 1) + "s");
+//                                tvTime.setText((second - aLong - 1) + "s");
+                                tvTime.setText(DateUtils.translateLastSecond3((int) (second - aLong - 1)));
                             }
                         }
                         if (aLong == second - 11 && "PK倒计时 ".equals(state) && listener != null) {
@@ -476,16 +488,18 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
                         if ("PK倒计时 ".equals(state)) {
                             if (1 == second - aLong - 1) {
                                 tvPkTitle.setText(state);
-                                tvTime.setText((second - aLong - 1) + "s");
+//                                tvTime.setText((second - aLong - 1) + "s");
+                                tvTime.setText(DateUtils.translateLastSecond3((int) (second - aLong - 1)));
                                 rxTimerUtil.timer(1000, new RxTimerUtil.IRxNext() {
                                     @Override
                                     public void doNext(long number) {
-                                        tvTime.setText(0 + "s");
+                                        tvTime.setText("00:00");
                                     }
                                 });
                             } else {
                                 tvPkTitle.setText(state);
-                                tvTime.setText((second - aLong - 1) + "s");
+//                                tvTime.setText((second - aLong - 1) + "s");
+                                tvTime.setText(DateUtils.translateLastSecond3((int) (second - aLong - 1)));
                             }
 
                         }

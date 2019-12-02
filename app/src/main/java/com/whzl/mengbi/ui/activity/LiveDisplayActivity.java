@@ -110,6 +110,7 @@ import com.whzl.mengbi.chat.room.util.DownloadImageFile;
 import com.whzl.mengbi.chat.room.util.LevelUtil;
 import com.whzl.mengbi.config.AppConfig;
 import com.whzl.mengbi.config.BundleConfig;
+import com.whzl.mengbi.config.PkConfig;
 import com.whzl.mengbi.config.SpConfig;
 import com.whzl.mengbi.eventbus.event.AnchorTaskFinishedEvent;
 import com.whzl.mengbi.eventbus.event.AudienceEvent;
@@ -1328,7 +1329,7 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         pkControl.setBean(bean);
         pkControl.init();
 
-        if (pkLayout != null) {
+        if (pkLayout != null && PkConfig.PK_ACCEPT_REQUEST.equals(bean.busiCode)) {
             pkLayout.initGuessingByEvent(bean);
         }
     }
@@ -1677,7 +1678,8 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
         if (pkLayout == null) {
             return;
         }
-        if (pkGuessBean == null || pkGuessBean.guessObj == null) {
+        if (pkGuessBean == null || pkGuessBean.guessObj == null || ("SETTLEMENT").equals(pkGuessBean.guessObj.status) ||
+                ("FLOW").equals(pkGuessBean.guessObj.status) || ("FINISH").equals(pkGuessBean.guessObj.status)) {
             pkLayout.setPkGuessVisibility(View.GONE);
         } else {
             pkLayout.setPkGuessVisibility(View.VISIBLE);
@@ -3018,12 +3020,17 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(GuessEvent event) {
-        if ("USER_GUESS_SETTLEMENT".equals(event.guessJson.context.busicode)) {
+        if ("USER_GUESS_SETTLEMENT".equals(event.guessJson.context.busicode)
+                || "USER_GUESS_FLOW".equals(event.guessJson.context.busicode)
+                || "USER_GUESS_FINISH".equals(event.guessJson.context.busicode)) {
             if ("PK_GUESS".equals(event.guessJson.context.UGameGuessDto.guessType)) {
-                if (pkLayout != null) {
+                if (pkLayout != null && pkLayout.getGuessId() == event.guessJson.context.UGameGuessDto.guessId) {
                     pkLayout.setPkGuessVisibility(View.GONE);
                 }
             }
+        }
+
+        if ("USER_GUESS_SETTLEMENT".equals(event.guessJson.context.busicode)) {
             if (guessEndDialog != null && guessEndDialog.isAdded()) {
                 return;
             }

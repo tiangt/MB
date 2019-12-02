@@ -192,18 +192,35 @@ class GuessDialog : BaseAwesomeDialog() {
                 "SEALED_DISK" -> itemView.tv_status_guess.text = "已封盘"
                 "SETTLEMENT", "FINISH" -> {
                     itemView.tv_status_guess.text = "已结束"
-                    when {
-                        listBean.successArgument == "squareArgument" -> {
-                            GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_win_guess, itemView.iv_square_outcome)
-                            GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_lose_guess, itemView.iv_counter_outcome)
+                    if (listBean.userId == anchorId) {
+                        when {
+                            listBean.successArgument == "squareArgument" -> {
+                                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_win_guess, itemView.iv_square_outcome)
+                                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_lose_guess, itemView.iv_counter_outcome)
+                            }
+                            listBean.successArgument == "counterArgument" -> {
+                                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_lose_guess, itemView.iv_square_outcome)
+                                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_win_guess, itemView.iv_counter_outcome)
+                            }
+                            else -> {
+                                GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_square_outcome)
+                                GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_counter_outcome)
+                            }
                         }
-                        listBean.successArgument == "counterArgument" -> {
-                            GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_lose_guess, itemView.iv_square_outcome)
-                            GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_win_guess, itemView.iv_counter_outcome)
-                        }
-                        else -> {
-                            GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_square_outcome)
-                            GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_counter_outcome)
+                    } else {
+                        when {
+                            listBean.successArgument == "squareArgument" -> {
+                                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_win_guess, itemView.iv_counter_outcome)
+                                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_lose_guess, itemView.iv_square_outcome)
+                            }
+                            listBean.successArgument == "counterArgument" -> {
+                                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_lose_guess, itemView.iv_counter_outcome)
+                                GlideImageLoader.getInstace().displayImage(activity, R.drawable.ic_win_guess, itemView.iv_square_outcome)
+                            }
+                            else -> {
+                                GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_square_outcome)
+                                GlideImageLoader.getInstace().displayImage(activity, null, itemView.iv_counter_outcome)
+                            }
                         }
                     }
                 }

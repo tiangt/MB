@@ -24,8 +24,8 @@ android {
         minSdkVersion 18
         targetSdkVersion 27
         multiDexEnabled true
-        versionCode 30
-        versionName "2.7.2"
+        versionCode 31
+        versionName "2.8.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // 此处很重要，指定APP只使用 armeabi-v7a和arm64-v8a的库

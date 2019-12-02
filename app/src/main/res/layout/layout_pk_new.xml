@@ -14,7 +14,7 @@
 
         <com.whzl.mengbi.ui.widget.view.PkRankView
             android:id="@+id/iv_my_rank"
-            android:layout_width="27dp"
+            android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:layout_marginStart="27dp"
             android:padding="3dp"
@@ -24,7 +24,7 @@
 
         <com.whzl.mengbi.ui.widget.view.PkRankView
             android:id="@+id/iv_other_rank"
-            android:layout_width="27dp"
+            android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:layout_marginEnd="27dp"
             android:padding="3dp"

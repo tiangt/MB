@@ -29,10 +29,10 @@ public class PkRankView extends android.support.v7.widget.AppCompatImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        LinearGradient linearGradient = new LinearGradient(getWidth() / 2, 0, getWidth() / 2, getHeight(), Color.parseColor("#2DA8EE")
+        LinearGradient linearGradient = new LinearGradient(getHeight() / 2, 0, getHeight() / 2, getHeight(), Color.parseColor("#2DA8EE")
                 , Color.parseColor("#FF2B3F"), Shader.TileMode.CLAMP);
         paint.setShader(linearGradient);
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, getWidth() / 2 - UIUtil.dip2px(getContext(), 3), paint);
+        canvas.drawCircle(getWidth() / 2, getHeight() / 2, getHeight() / 2 - UIUtil.dip2px(getContext(), 3), paint);
         super.onDraw(canvas);
     }
 }
