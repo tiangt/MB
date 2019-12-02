@@ -8,9 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.gson.JsonElement
 import com.whzl.mengbi.R
+import com.whzl.mengbi.api.Api
 import com.whzl.mengbi.chat.room.util.LightSpanString
+import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.MainMsgContract
+import com.whzl.mengbi.eventbus.event.MsgCenterRefreshEvent
 import com.whzl.mengbi.model.entity.GetGoodMsgBean
 import com.whzl.mengbi.presenter.MainMsgPresenter
 import com.whzl.mengbi.ui.activity.BuySuccubusActivity
@@ -18,13 +22,22 @@ import com.whzl.mengbi.ui.activity.LiveDisplayActivity
 import com.whzl.mengbi.ui.activity.base.FrgActivity
 import com.whzl.mengbi.ui.activity.me.MyChipActivity
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
+import com.whzl.mengbi.ui.common.BaseApplication
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
 import com.whzl.mengbi.ui.fragment.main.MessageFragment
 import com.whzl.mengbi.ui.fragment.me.PackPrettyFragment
 import com.whzl.mengbi.ui.fragment.me.PackVipFragment
 import com.whzl.mengbi.ui.fragment.me.PropFragment
+import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.clickDelay
+import com.whzl.mengbi.util.network.retrofit.ApiFactory
+import com.whzl.mengbi.util.network.retrofit.ApiObserver
+import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import com.whzl.mengbi.wxapi.WXPayEntryActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import org.greenrobot.eventbus.EventBus
+import java.util.HashMap
 
 /**
  * @author nobody
@@ -134,11 +147,23 @@ class MsgListFragment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPre
 
     override fun onDestroy() {
         super.onDestroy()
-        mPresenter.updateMsgReadByType(MessageFragment.EXPIRATION_MESSAGE)
+        val userid = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L)
+        val params = mutableMapOf<String, String>()
+        params["userId"] = userid.toString()
+        params["messageType"] = MessageFragment.EXPIRATION_MESSAGE
+        ApiFactory.getInstance().getApi(Api::class.java)
+                .updateMsgReadByType(ParamsUtils.getSignPramsMap(params as HashMap<String, String>?))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : ApiObserver<JsonElement>() {
+                    override fun onSuccess(t: JsonElement?) {
+                        EventBus.getDefault().post(MsgCenterRefreshEvent())
+                    }
+                })
     }
 
     override fun onUpdateMsgReadByTypeSuccess() {
-        activity?.setResult(Activity.RESULT_OK)
+        EventBus.getDefault().post(MsgCenterRefreshEvent())
     }
 
     override fun onUpdateMsgReadSuccess() {

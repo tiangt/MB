@@ -54,9 +54,9 @@ class MainMsgPresenter : BasePresenter<MainMsgContract.View>(), MainMsgContract.
     }
 
     override fun updateMsgReadByType( messageType: String) {
-        if (!isViewAttached) {
-            return
-        }
+//        if (!isViewAttached) {
+//            return
+//        }
         moder!!.updateMsgReadByType(messageType)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

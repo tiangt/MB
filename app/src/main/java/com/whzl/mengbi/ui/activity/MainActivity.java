@@ -351,7 +351,7 @@ public class MainActivity extends BaseActivity {
         isFirst = true;
     }
 
-    private void getMsgRemind() {
+    public void getMsgRemind() {
         HashMap param = new HashMap();
         param.put("userId", SPUtils.get(MainActivity.this, SpConfig.KEY_USER_ID, (long) 0).toString());
         param.put("messageType", "EXPIRATION_MESSAGE");
@@ -364,6 +364,8 @@ public class MainActivity extends BaseActivity {
                     public void onSuccess(CheckMsgRemindBean checkMsgRemindBean) {
                         if (checkMsgRemindBean.num != 0) {
                             ((TipRadioButton) rgTab.getChildAt(2)).setTipOn(true);
+                        } else {
+                            ((TipRadioButton) rgTab.getChildAt(2)).setTipOn(false);
                         }
                     }
                 });

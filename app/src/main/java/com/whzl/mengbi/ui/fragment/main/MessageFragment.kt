@@ -16,12 +16,15 @@ import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
 import com.whzl.mengbi.eventbus.event.LoginSuccussEvent
 import com.whzl.mengbi.eventbus.event.MainMsgClickEvent
+import com.whzl.mengbi.eventbus.event.MsgCenterRefreshEvent
 import com.whzl.mengbi.model.entity.GetUnReadMsgBean
+import com.whzl.mengbi.ui.activity.MainActivity
 import com.whzl.mengbi.ui.activity.base.FrgActivity
 import com.whzl.mengbi.ui.adapter.base.BaseViewHolder
 import com.whzl.mengbi.ui.fragment.MsgListFragment
 import com.whzl.mengbi.ui.fragment.SystemMsgFragment
 import com.whzl.mengbi.ui.fragment.base.BasePullListFragment
+import com.whzl.mengbi.ui.widget.view.PullRecycler
 import com.whzl.mengbi.util.SPUtils
 import com.whzl.mengbi.util.glide.GlideImageLoader
 import com.whzl.mengbi.util.network.retrofit.ApiFactory
@@ -92,6 +95,12 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
         if (needFresh && hasLoadData) {
             refreshLayout.autoRefresh()
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: MsgCenterRefreshEvent) {
+        loadData(PullRecycler.ACTION_PULL_TO_REFRESH,mPage)
+        (activity as MainActivity).getMsgRemind()
     }
 
     override fun setViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {

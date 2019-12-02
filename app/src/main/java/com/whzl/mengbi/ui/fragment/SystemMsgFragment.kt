@@ -1,6 +1,5 @@
 package com.whzl.mengbi.ui.fragment
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
@@ -14,6 +13,7 @@ import com.whzl.mengbi.config.NetConfig
 import com.whzl.mengbi.config.SpConfig
 import com.whzl.mengbi.contract.BasePresenter
 import com.whzl.mengbi.contract.BaseView
+import com.whzl.mengbi.eventbus.event.MsgCenterRefreshEvent
 import com.whzl.mengbi.model.entity.SysMsgListBean
 import com.whzl.mengbi.ui.activity.JsBridgeActivity
 import com.whzl.mengbi.ui.activity.base.FrgActivity
@@ -30,6 +30,7 @@ import com.whzl.mengbi.util.network.retrofit.ParamsUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_system_msg.view.*
+import org.greenrobot.eventbus.EventBus
 import java.util.*
 
 /**
@@ -39,8 +40,9 @@ import java.util.*
 class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePresenter<BaseView>>() {
     override fun initEnv() {
         super.initEnv()
-        (activity as FrgActivity).title = "官方通知"
+        (activity as FrgActivity).setTitle("官方通知")
         (activity as FrgActivity).rightText.text = "清空"
+        (activity as FrgActivity).rightText.setTextColor(Color.parseColor("#333333"))
         (activity as FrgActivity).rightText.clickDelay {
             val userid = SPUtils.get(BaseApplication.getInstance(), SpConfig.KEY_USER_ID, 0L)
             val params = mutableMapOf<String, String>()
@@ -52,8 +54,8 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : ApiObserver<JsonElement>() {
                         override fun onSuccess(t: JsonElement?) {
-                            activity?.setResult(Activity.RESULT_OK)
                             mDatas.clear()
+                            (activity as FrgActivity).rightText.visibility = View.GONE
                             loadSuccess(mDatas)
                         }
                     })
@@ -67,7 +69,7 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
 
     override fun init() {
         super.init()
-        val empty = LayoutInflater.from(activity).inflate(R.layout.empty_msg_main, pullView, false)
+        val empty = LayoutInflater.from(activity).inflate(R.layout.empty_system_msg, pullView, false)
         setEmptyView(empty)
         pullView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.bgGray))
         val divider = LayoutInflater.from(activity).inflate(R.layout.divider_shawdow_gray, pullView, false)
@@ -90,7 +92,7 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
                         if (bean?.list?.isEmpty()!!) {
                             (activity as FrgActivity).rightText.visibility = View.GONE
                         } else {
-                            (activity as FrgActivity).rightText.visibility = View.GONE
+                            (activity as FrgActivity).rightText.visibility = View.VISIBLE
                         }
                     }
 
@@ -112,12 +114,14 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
             itemView.tv_title_item_msg.text = listBean.title
             itemView.tv_content_item_msg.text = listBean.content
 
-            if ("IMG" == listBean.contentType) {
-                itemView.iv_img_item_msg.visibility = View.VISIBLE
-                GlideImageLoader.getInstace().displayImage(activity, listBean.contentLink, itemView.iv_img_item_msg)
+            when {
+                "IMG" == listBean.contentType -> {
+                    itemView.iv_img_item_msg.visibility = View.VISIBLE
+                    GlideImageLoader.getInstace().displayImage(activity, listBean.content, itemView.iv_img_item_msg)
 
-            } else if ("TEXT" == listBean.contentType) {
-                itemView.iv_img_item_msg.visibility = View.GONE
+                }
+                "TEXT" == listBean.contentType -> itemView.iv_img_item_msg.visibility = View.GONE
+                else -> itemView.iv_img_item_msg.visibility = View.GONE
             }
 
             if (listBean.isRead == "T") {
@@ -132,7 +136,7 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
             val listBean = mDatas[position]
-            if ("TEXT" == listBean.contentType && listBean.contentLink.isNotEmpty()) {
+            if (listBean.contentLink.isNotEmpty()) {
                 activity?.startActivity(Intent(activity, JsBridgeActivity::class.java)
                         .putExtra("url", listBean.contentLink))
             }
@@ -151,7 +155,7 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : ApiObserver<JsonElement>() {
                     override fun onSuccess(t: JsonElement?) {
-                        activity?.setResult(Activity.RESULT_OK)
+                        EventBus.getDefault().post(MsgCenterRefreshEvent())
                     }
                 })
     }

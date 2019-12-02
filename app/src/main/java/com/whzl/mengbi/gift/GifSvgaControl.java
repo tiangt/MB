@@ -6,6 +6,8 @@ import android.widget.ImageView;
 
 import com.lzx.starrysky.StarrySky;
 import com.lzx.starrysky.control.OnPlayerEventListener;
+import com.lzx.starrysky.control.PlayerControl;
+import com.lzx.starrysky.ext.PlaybackStateCompatExtKt;
 import com.lzx.starrysky.provider.SongInfo;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGAImageView;
@@ -44,12 +46,14 @@ public class GifSvgaControl {
     private SVGAImageView svgaImageView;
     private SVGAParser parser;
     private Disposable disposable;
+    private PlayerControl playerControl;
 
     public GifSvgaControl(Context context, ImageView imageView, SVGAImageView svgaView) {
         mContext = context;
         ivGif = imageView;
         svgaImageView = svgaView;
         init();
+        playerControl = StarrySky.with();
     }
 
     public void loadAnim(AnimEvent event) {
@@ -153,12 +157,12 @@ public class GifSvgaControl {
                 SongInfo info = new SongInfo();
                 info.setSongId(resource.getResValue());
                 info.setSongUrl(mp3);
-                StarrySky.with().playMusicByInfo(info);
-                StarrySky.with().addPlayerEventListener(new OnPlayerEventListener() {
+                playerControl.setRepeatMode(PlaybackStateCompatExtKt.getSINGLE_MODE_ONE());
+                playerControl.playMusicByInfo(info);
+                playerControl.addPlayerEventListener(new OnPlayerEventListener() {
                     @Override
                     public void onMusicSwitch(@NotNull SongInfo songInfo) {
                         LogUtils.e("ssssssssss   onMusicSwitch");
-                        StarrySky.with().playMusicByInfo(info);
                     }
 
                     @Override
@@ -196,6 +200,29 @@ public class GifSvgaControl {
         }
         isShowSvga = true;
         svgaImageView.setVisibility(View.VISIBLE);
+        svgaImageView.setCallback(new SVGACallback() {
+            @Override
+            public void onPause() {
+
+            }
+
+            @Override
+            public void onFinished() {
+                if (playerControl.isPlaying()) {
+                    playerControl.stopMusic();
+                }
+            }
+
+            @Override
+            public void onRepeat() {
+
+            }
+
+            @Override
+            public void onStep(int i, double v) {
+
+            }
+        });
         svgaImageView.setLoops(event.times);
         try {
             parser.decodeFromURL(new URL(event.getAnimUrl()), new SVGAParser.ParseCompletion() {
