@@ -30,6 +30,7 @@ public class SysMsgListBean {
         public String contentLink;
         public int systemMessageId;
         public String expireTime;
+        public String createTime;
         public int remindId;
         public String messageType;
         public String isRead;

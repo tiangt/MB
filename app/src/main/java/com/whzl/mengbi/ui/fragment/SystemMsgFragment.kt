@@ -110,7 +110,7 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
         override fun onBindViewHolder(position: Int) {
             val listBean = mDatas[position]
 
-            itemView.tv_date_item_msg.text = listBean.expireTime
+            itemView.tv_date_item_msg.text = listBean.createTime
             itemView.tv_title_item_msg.text = listBean.title
             itemView.tv_content_item_msg.text = listBean.content
 
