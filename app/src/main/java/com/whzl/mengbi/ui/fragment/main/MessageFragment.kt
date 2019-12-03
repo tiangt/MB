@@ -44,7 +44,7 @@ import java.util.*
  * @date 2019.2.14
  */
 class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePresenter<BaseView>>() {
-    val CLICK = 300
+    val click = 300
     var needFresh = false
 
     override fun init() {
@@ -68,7 +68,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
         needFresh = false
         val userid = SPUtils.get(activity, SpConfig.KEY_USER_ID, 0L)
         val param = HashMap<String, String>()
-        param.put("userId", userid.toString())
+        param["userId"] = userid.toString()
         ApiFactory.getInstance().getApi(Api::class.java)
                 .getUnreadMsg(ParamsUtils.getSignPramsMap(param))
                 .subscribeOn(Schedulers.io())
@@ -83,6 +83,9 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
                         loadFail()
                     }
                 })
+        if (mPage == 1) {
+            (activity as MainActivity).getMsgRemind()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -99,8 +102,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onMessageEvent(event: MsgCenterRefreshEvent) {
-        loadData(PullRecycler.ACTION_PULL_TO_REFRESH,mPage)
-        (activity as MainActivity).getMsgRemind()
+        loadData(PullRecycler.ACTION_PULL_TO_REFRESH, mPage)
     }
 
     override fun setViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
@@ -115,9 +117,9 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
         var imageView: ImageView? = null
 
         override fun onBindViewHolder(position: Int) {
-            tvName = itemView?.findViewById(R.id.tv_name_item_msg_main)
-            tvNum = itemView?.findViewById(R.id.tv_num_item_msg_main)
-            imageView = itemView?.findViewById(R.id.iv_item_mag_main)
+            tvName = itemView.findViewById(R.id.tv_name_item_msg_main)
+            tvNum = itemView.findViewById(R.id.tv_num_item_msg_main)
+            imageView = itemView.findViewById(R.id.iv_item_mag_main)
             val bean = mDatas[position]
             when (bean.messageType) {
                 EXPIRATION_MESSAGE -> {
@@ -142,11 +144,11 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
             when (bean.messageType) {
                 EXPIRATION_MESSAGE -> {
                     startActivityForResult(Intent(activity, FrgActivity::class.java)
-                            .putExtra(FrgActivity.FRAGMENT_CLASS, MsgListFragment::class.java), CLICK)
+                            .putExtra(FrgActivity.FRAGMENT_CLASS, MsgListFragment::class.java), click)
                 }
                 SYSTEM_MESSAGE -> {
                     startActivityForResult(Intent(activity, FrgActivity::class.java)
-                            .putExtra(FrgActivity.FRAGMENT_CLASS, SystemMsgFragment::class.java), CLICK)
+                            .putExtra(FrgActivity.FRAGMENT_CLASS, SystemMsgFragment::class.java), click)
                 }
             }
 
@@ -156,7 +158,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CLICK) {
+            if (requestCode == click) {
                 refreshLayout.autoRefresh()
             }
         }
