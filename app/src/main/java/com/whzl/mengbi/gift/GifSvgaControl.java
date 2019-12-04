@@ -1,14 +1,11 @@
 package com.whzl.mengbi.gift;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.lzx.starrysky.StarrySky;
-import com.lzx.starrysky.control.OnPlayerEventListener;
-import com.lzx.starrysky.control.PlayerControl;
-import com.lzx.starrysky.ext.PlaybackStateCompatExtKt;
-import com.lzx.starrysky.provider.SongInfo;
 import com.opensource.svgaplayer.SVGACallback;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
@@ -19,6 +16,7 @@ import com.whzl.mengbi.chat.room.util.ImageUrl;
 import com.whzl.mengbi.model.entity.AnimResouseBean;
 import com.whzl.mengbi.util.GsonUtils;
 import com.whzl.mengbi.util.LogUtils;
+import com.whzl.mengbi.util.MediaPlayUtils;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,14 +44,12 @@ public class GifSvgaControl {
     private SVGAImageView svgaImageView;
     private SVGAParser parser;
     private Disposable disposable;
-    private PlayerControl playerControl;
 
     public GifSvgaControl(Context context, ImageView imageView, SVGAImageView svgaView) {
         mContext = context;
         ivGif = imageView;
         svgaImageView = svgaView;
         init();
-        playerControl = StarrySky.with();
     }
 
     public void loadAnim(AnimEvent event) {
@@ -103,7 +99,6 @@ public class GifSvgaControl {
 
     private void init() {
         parser = new SVGAParser(mContext);
-
         svgaImageView.setCallback(new SVGACallback() {
             @Override
             public void onPause() {
@@ -114,6 +109,7 @@ public class GifSvgaControl {
             @Override
             public void onFinished() {
                 LogUtils.e("sssssssss    onFinished");
+                MediaPlayUtils.getInstance().stop();
                 if (mContext == null) {
                     return;
                 }
@@ -153,76 +149,20 @@ public class GifSvgaControl {
         for (AnimJson.ResourcesEntity resource : event.getAnimJson().getResources()) {
             if (resource.getResType().equals("MP3")) {
                 String mp3 = ImageUrl.getImageUrl(Integer.valueOf(resource.getResValue()), "mp3");
-                //播放一首歌曲
-                SongInfo info = new SongInfo();
-                info.setSongId(resource.getResValue());
-                info.setSongUrl(mp3);
-                playerControl.setRepeatMode(PlaybackStateCompatExtKt.getSINGLE_MODE_ONE());
-                playerControl.playMusicByInfo(info);
-                playerControl.addPlayerEventListener(new OnPlayerEventListener() {
-                    @Override
-                    public void onMusicSwitch(@NotNull SongInfo songInfo) {
-                        LogUtils.e("ssssssssss   onMusicSwitch");
-                    }
-
-                    @Override
-                    public void onPlayerStart() {
-                        LogUtils.e("ssssssssss   onPlayerStart");
-                    }
-
-                    @Override
-                    public void onPlayerPause() {
-                        LogUtils.e("ssssssssss   onPlayerPause");
-                    }
-
-                    @Override
-                    public void onPlayerStop() {
-                        LogUtils.e("ssssssssss   onPlayerStop");
-                    }
-
-                    @Override
-                    public void onPlayCompletion(@NotNull SongInfo songInfo) {
-                        LogUtils.e("ssssssssss   onPlayCompletion");
-                    }
-
-                    @Override
-                    public void onBuffering() {
-                        LogUtils.e("ssssssssss   onBuffering");
-                    }
-
-                    @Override
-                    public void onError(int i, @NotNull String s) {
-                        LogUtils.e("ssssssssss   onError");
-                    }
-                });
+                int permission = 0;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    permission = mContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                }
+                if (permission == PackageManager.PERMISSION_GRANTED) {
+                    MediaPlayUtils.getInstance().play(mp3, resource.getResValue());
+                } else {
+                    MediaPlayUtils.getInstance().playByUrl(mp3);
+                }
                 break;
             }
         }
         isShowSvga = true;
         svgaImageView.setVisibility(View.VISIBLE);
-        svgaImageView.setCallback(new SVGACallback() {
-            @Override
-            public void onPause() {
-
-            }
-
-            @Override
-            public void onFinished() {
-                if (playerControl.isPlaying()) {
-                    playerControl.stopMusic();
-                }
-            }
-
-            @Override
-            public void onRepeat() {
-
-            }
-
-            @Override
-            public void onStep(int i, double v) {
-
-            }
-        });
         svgaImageView.setLoops(event.times);
         try {
             parser.decodeFromURL(new URL(event.getAnimUrl()), new SVGAParser.ParseCompletion() {
@@ -348,6 +288,7 @@ public class GifSvgaControl {
         if (disposable != null) {
             disposable.dispose();
         }
+        MediaPlayUtils.getInstance().destroy();
     }
 
 }

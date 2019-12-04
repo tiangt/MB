@@ -189,9 +189,6 @@ dependencies {
     implementation 'com.aliyun.ams:alicloud-android-third-push:3.0.6@aar'
 
     implementation 'me.jessyan:autosize:1.1.2'
-
-    implementation 'com.lzx:StarrySkyJava:2.2.7'
-
 }
 
 protobuf {

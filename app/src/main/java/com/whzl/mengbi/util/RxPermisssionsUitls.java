@@ -143,6 +143,37 @@ public class RxPermisssionsUitls {
                 });
     }
 
+    public static void getWrite(Activity activity, OnPermissionListener listener) {
+        RxPermissions rxPermissions = new RxPermissions(activity);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
+                            listener.onGranted();
+                        }else {
+                            listener.onDeny();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
 
     private OnPermissionListener permissionListener;
 

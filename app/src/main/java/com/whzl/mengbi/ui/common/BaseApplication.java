@@ -20,7 +20,6 @@ import com.alibaba.sdk.android.push.register.MiPushRegister;
 import com.alibaba.sdk.android.push.register.OppoRegister;
 import com.baidu.mobstat.StatService;
 import com.github.yuweiguocn.library.greendao.MigrationHelper;
-import com.lzx.starrysky.StarrySky;
 import com.meituan.android.walle.WalleChannelReader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
@@ -54,7 +53,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.Interceptor;
@@ -138,7 +136,6 @@ public class BaseApplication extends Application {
             e.printStackTrace();
         }
         initCloudChannel(this);
-        StarrySky.init(this);
     }
 
     private void initCloudChannel(Context applicationContext) {

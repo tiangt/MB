@@ -25,7 +25,7 @@ public class UserRedpacketAwardBroadAction implements Actions {
         if (userRedpacketAwardJson != null && userRedpacketAwardJson.context != null) {
             //红包抽奖发奖
             EventBus.getDefault().post(new UserRedpacketAwardEvent(context, userRedpacketAwardJson));
-            EventBus.getDefault().post(new UpdatePubChatEvent(new UserRedpacketAwardBroadMessage(context, userRedpacketAwardJson)));
+//            EventBus.getDefault().post(new UpdatePubChatEvent(new UserRedpacketAwardBroadMessage(context, userRedpacketAwardJson)));
         }
     }
 }
