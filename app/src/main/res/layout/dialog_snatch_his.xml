@@ -16,14 +16,30 @@
         android:paddingRight="12dp"
         android:paddingBottom="12dp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:text="幸运夺宝往期中奖"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:gravity="center_horizontal|bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="幸运夺宝往期中奖"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_gift_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:gravity="center"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="11sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

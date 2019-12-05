@@ -84,7 +84,7 @@ class MsgListFragment : BasePullListFragment<GetGoodMsgBean.ListBean, MainMsgPre
             tvDate = itemView.findViewById(R.id.tv_date_item_msg)
             tvGood = itemView.findViewById(R.id.tv_good_item_msg)
             tvMove = itemView.findViewById(R.id.tv_move_item_msg)
-            tvDate?.text = listBean.createTime
+            tvDate?.text = listBean?.createTime ?: ""
 
             if (listBean.isRead == "F")
                 tvGood?.setTextColor(Color.parseColor("#323232"))

@@ -76,7 +76,7 @@ class MessageFragment : BasePullListFragment<GetUnReadMsgBean.ListBean, BasePres
                 .subscribe(object : ApiObserver<GetUnReadMsgBean>(this) {
 
                     override fun onSuccess(watchHistoryListBean: GetUnReadMsgBean?) {
-                        loadSuccess(watchHistoryListBean?.list)
+                        loadSuccess(watchHistoryListBean?.list?.reversed())
                     }
 
                     override fun onError(code: Int) {

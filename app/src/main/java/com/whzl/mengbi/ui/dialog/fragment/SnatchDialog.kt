@@ -252,6 +252,11 @@ class SnatchDialog : BaseAwesomeDialog() {
     private fun showHisDialog(type: String) {
         AwesomeDialog.init().setLayoutId(R.layout.dialog_snatch_his).setConvertListener(object : ViewConvertListener() {
             override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
+                if (type == LUCKBET) {
+                    holder?.setText(R.id.tv_gift_type,"小礼物")
+                } else {
+                    holder?.setText(R.id.tv_gift_type,"大礼物")
+                }
                 holder?.setOnClickListener(R.id.btn_close) {
                     dialog?.dismissDialog()
                 }

@@ -110,9 +110,9 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
         override fun onBindViewHolder(position: Int) {
             val listBean = mDatas[position]
 
-            itemView.tv_date_item_msg.text = listBean.createTime
-            itemView.tv_title_item_msg.text = listBean.title
-            itemView.tv_content_item_msg.text = listBean.content
+            itemView.tv_date_item_msg.text = listBean?.createTime ?: ""
+            itemView.tv_title_item_msg.text = listBean?.title ?: ""
+            itemView.tv_content_item_msg.text = listBean?.content ?: ""
 
             when {
                 "IMG" == listBean.contentType -> {
@@ -136,7 +136,7 @@ class SystemMsgFragment : BasePullListFragment<SysMsgListBean.ListBean, BasePres
         override fun onItemClick(view: View?, position: Int) {
             super.onItemClick(view, position)
             val listBean = mDatas[position]
-            if (listBean.contentLink.isNotEmpty()) {
+            if (listBean?.contentLink?.isNotEmpty() ?: return) {
                 activity?.startActivity(Intent(activity, JsBridgeActivity::class.java)
                         .putExtra("url", listBean.contentLink))
             }
