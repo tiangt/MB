@@ -230,6 +230,7 @@ public class ChatRoomPresenterImpl {
         connectCallback = null;
         if (null != client) {
             client.closeSocket();
+            client = null;
         }
         if (null != messageCallback) {
             messageCallback.unregister();

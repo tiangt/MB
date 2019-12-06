@@ -56,6 +56,7 @@ import com.whzl.mengbi.chat.room.message.messagesActions.WelComeAction;
 import com.whzl.mengbi.chat.room.util.ChatCacheFaceReplace;
 import com.whzl.mengbi.chat.room.util.FaceReplace;
 import com.whzl.mengbi.util.GsonUtils;
+import com.whzl.mengbi.util.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -186,6 +187,11 @@ public class MessageRouter implements MessageCallback {
     private void parseChatMsg(ProtoStringAvg.strAvg message) {
         String type = getStrAvgString(message, 2);
         String msgInfo = getStrAvgString(message, 3);
+        String programId = getStrAvgString(message, 0);
+        int liveProgramId = (int) SPUtils.get(mContext, "programId", -1);
+        if (!programId.contains(String.valueOf(liveProgramId))) {
+            return;
+        }
         if (type == null || msgInfo == null) {
             return;
         } else if (type.equals("common")) {

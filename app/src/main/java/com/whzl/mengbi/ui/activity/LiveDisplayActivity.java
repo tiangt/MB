@@ -1779,12 +1779,9 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
                                         GlideImageLoader.getInstace().displayImage(LiveDisplayActivity.this, mAnchorAvatar, holder.getView(R.id.iv_avatar_auto));
                                     }
                                     holder.setText(R.id.tv_anchor_nick, mAnchorName);
-                                    holder.setOnClickListener(R.id.btn_sub_auto, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            mLivePresenter.followHost(mUserId, mProgramId);
-                                            dialog.dismissDialog();
-                                        }
+                                    holder.setOnClickListener(R.id.btn_sub_auto, v -> {
+                                        mLivePresenter.followHost(mUserId, mProgramId);
+                                        dialog.dismissDialog();
                                     });
                                 }
                             })
