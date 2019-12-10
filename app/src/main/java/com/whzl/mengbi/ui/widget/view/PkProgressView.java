@@ -181,7 +181,7 @@ public class PkProgressView extends ProgressBar {
         backPaint.getTextBounds(mText, 0, mText.length(), mBound);
         // 绘制已完成的进度
         Path path = new Path();
-        path.moveTo(height/2, 0);
+        path.moveTo(height / 2, 0);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             path.addArc(getLeft(), getTop(), height, height, 180, 90);
         }
@@ -214,7 +214,7 @@ public class PkProgressView extends ProgressBar {
             path.lineTo(p3_width, getHeight());
         }
         // point4
-        path.lineTo(height/2, getHeight());
+        path.lineTo(height / 2, getHeight());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             path.addArc(0, 0, height, height, 90, 90);
         }
@@ -222,10 +222,16 @@ public class PkProgressView extends ProgressBar {
         canvas.drawPath(path, barPaint);
 
         Path shadow = new Path();
-        shadow.lineTo(0, height / 2);
-        shadow.lineTo(width, height / 2);
-        shadow.lineTo(width, height);
-        shadow.lineTo(0, height);
+//        shadow.lineTo(0, height / 2);
+//        shadow.lineTo(width, height / 2);
+//        shadow.lineTo(width, height);
+//        shadow.lineTo(0, height);
+        shadow.moveTo(0, height / 2);
+        shadow.addArc(0, 0, height, height, 90, 90);
+        shadow.lineTo(getRight(), height / 2);
+        shadow.lineTo(getRight() - height / 2, height);
+        shadow.arcTo(getRight() - height, 0, getRight(), height, 0, 90, true);
+        shadow.lineTo(height / 2, height);
         canvas.drawPath(shadow, shadowPaint);
     }
 }

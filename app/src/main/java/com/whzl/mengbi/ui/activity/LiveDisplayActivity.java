@@ -2622,15 +2622,19 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
 
     private void resetRightBottomActivity() {
         rightBottomActivityNum = 0;
-        try {
-            if (mGrandAdaper != null) {
-                mActivityGrands.clear();
+
+        if (mGrandAdaper != null) {
+            mActivityGrands.clear();
+            try {
+                vpActivity.clearOnPageChangeListeners();
                 vpActivity.getAdapter().notifyDataSetChanged();
                 vpActivity.setScroll(false);
-                mGrandAdaper = null;
+            } catch (Exception e) {
+                if (vpActivity != null) {
+                    vpActivity.setVisibility(View.GONE);
+                }
             }
-        } catch (IllegalStateException e) {
-            vpActivity.setVisibility(View.GONE);
+            mGrandAdaper = null;
         }
         vpActivity.setScroll(false);
         if (llPagerIndex.getChildCount() > 0) {

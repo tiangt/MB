@@ -32,6 +32,7 @@ import com.whzl.mengbi.util.DateUtils;
 import com.whzl.mengbi.util.LogUtils;
 import com.whzl.mengbi.util.PkQualifyingLevelUtils;
 import com.whzl.mengbi.util.RxTimerUtil;
+import com.whzl.mengbi.util.UIUtil;
 import com.whzl.mengbi.util.glide.GlideImageLoader;
 
 import java.util.ArrayList;
@@ -87,6 +88,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     private LinearLayout containerRightOdds;
     private long mUserId;
     private int guessId;
+    private RelativeLayout pkContainer;
 
     public int getGuessId() {
         return guessId;
@@ -141,6 +143,7 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         tvRightOdds = inflate.findViewById(R.id.tv_right_odds);
         containerLeftOdds = inflate.findViewById(R.id.container_left_odds);
         containerRightOdds = inflate.findViewById(R.id.container_right_odds);
+        pkContainer = inflate.findViewById(R.id.rl_pk_progress);
         containerLeftOdds.setOnClickListener(this);
         containerRightOdds.setOnClickListener(this);
         setProgress(initializeProgress);
@@ -150,6 +153,16 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
     public void setPkGuessVisibility(int visibility) {
         if (containerPkGuess != null) {
             containerPkGuess.setVisibility(visibility);
+        }
+
+        if (visibility == View.VISIBLE) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) pkContainer.getLayoutParams();
+            layoutParams.topMargin = UIUtil.dip2px(context, 11f);
+            pkContainer.setLayoutParams(layoutParams);
+        } else {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) pkContainer.getLayoutParams();
+            layoutParams.topMargin = UIUtil.dip2px(context, 42.5f);
+            pkContainer.setLayoutParams(layoutParams);
         }
     }
 
@@ -560,6 +573,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
         tvLeftOdds.setText("赔率");
         tvRightOdds.setText("赔率");
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) pkContainer.getLayoutParams();
+        layoutParams.topMargin = UIUtil.dip2px(context, 11f);
+        pkContainer.setLayoutParams(layoutParams);
     }
 
     public void setListener(TimeDwonListener listener) {
@@ -626,6 +642,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
         }
+        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) pkContainer.getLayoutParams();
+        layoutParams.topMargin = UIUtil.dip2px(context, 11f);
+        pkContainer.setLayoutParams(layoutParams);
     }
 
     public void setRightClickListener(OnClickListener listener) {
