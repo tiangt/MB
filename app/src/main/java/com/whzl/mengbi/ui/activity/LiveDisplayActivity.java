@@ -3027,28 +3027,29 @@ public class LiveDisplayActivity extends BaseActivity implements LiveView {
             }
         }
 
-        if ("USER_GUESS_SETTLEMENT".equals(event.guessJson.context.busicode)) {
-            if (guessEndDialog != null && guessEndDialog.isAdded()) {
-                return;
-            }
-            guessEndDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_guess_end)
-                    .setConvertListener(new ViewConvertListener() {
-                        @Override
-                        protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
-                            holder.setText(R.id.tv_theme_guess_end, event.guessJson.context.UGameGuessDto.guessTheme);
-
-                            if ("squareArgument".equals(event.guessJson.context.UGameGuessDto.successArgument)) {
-                                holder.setText(R.id.tv_odds_guess_end, "赔率 " + event.guessJson.context.UGameGuessDto.squareOdds);
-                                holder.setText(R.id.tv_argument_guess_end, event.guessJson.context.UGameGuessDto.squareArgument);
-                            } else {
-                                holder.setText(R.id.tv_odds_guess_end, "赔率 " + event.guessJson.context.UGameGuessDto.counterOdds);
-                                holder.setText(R.id.tv_argument_guess_end, event.guessJson.context.UGameGuessDto.counterArgument);
-                            }
-
-                        }
-                    })
-                    .show(getSupportFragmentManager());
-        } else if ("USER_GUESS_BET".equals(event.guessJson.context.busicode)) {
+//        if ("USER_GUESS_SETTLEMENT".equals(event.guessJson.context.busicode)) {
+//            if (guessEndDialog != null && guessEndDialog.isAdded()) {
+//                return;
+//            }
+//            guessEndDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_guess_end)
+//                    .setConvertListener(new ViewConvertListener() {
+//                        @Override
+//                        protected void convertView(ViewHolder holder, BaseAwesomeDialog dialog) {
+//                            holder.setText(R.id.tv_theme_guess_end, event.guessJson.context.UGameGuessDto.guessTheme);
+//
+//                            if ("squareArgument".equals(event.guessJson.context.UGameGuessDto.successArgument)) {
+//                                holder.setText(R.id.tv_odds_guess_end, "赔率 " + event.guessJson.context.UGameGuessDto.squareOdds);
+//                                holder.setText(R.id.tv_argument_guess_end, event.guessJson.context.UGameGuessDto.squareArgument);
+//                            } else {
+//                                holder.setText(R.id.tv_odds_guess_end, "赔率 " + event.guessJson.context.UGameGuessDto.counterOdds);
+//                                holder.setText(R.id.tv_argument_guess_end, event.guessJson.context.UGameGuessDto.counterArgument);
+//                            }
+//
+//                        }
+//                    })
+//                    .show(getSupportFragmentManager());
+//        } else
+        if ("USER_GUESS_BET".equals(event.guessJson.context.busicode)) {
             if ("PK_GUESS".equals(event.guessJson.context.UGameGuessDto.guessType)) {
                 if (pkLayout != null) {
                     pkLayout.setPkGuessOdds(event.guessJson.context.UGameGuessDto.userId, event.guessJson.context.UGameGuessDto.squareOdds, event.guessJson.context.UGameGuessDto.counterOdds);

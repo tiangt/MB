@@ -90,7 +90,6 @@ public class RoyalEnterControl {
         showAnim.setInterpolator(new DecelerateInterpolator());
         showAnim.setDuration(1000);
         showAnim.addUpdateListener(animation -> {
-            LogUtils.e("royalenteranimator   255  " + UIUtil.dip2px(context, 255));
             float animatedValue = ((float) animation.getAnimatedValue());
             llEnter.setTranslationX(animatedValue);
             if (animatedValue == screenWidthPixels / 2 - enterWidth / 2) {

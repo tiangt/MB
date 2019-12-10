@@ -188,26 +188,26 @@ public class MessageRouter implements MessageCallback {
         String type = getStrAvgString(message, 2);
         String msgInfo = getStrAvgString(message, 3);
         String programId = getStrAvgString(message, 0);
-        int liveProgramId = (int) SPUtils.get(mContext, "programId", -1);
-        if (!programId.contains(String.valueOf(liveProgramId))) {
-            return;
-        }
         if (type == null || msgInfo == null) {
             return;
-        } else if (type.equals("common")) {
-            chatAction.performAction(msgInfo, mContext);
-        } else if (type.equals("private")) {
-            privateChatAction.performAction(msgInfo, mContext);
-        } else if (type.equals("localroom") || type.equals("broadcast") || type.equals("user")) {
-            ChatRoomEventJson eventJson = GsonUtils.GsonToBean(msgInfo, ChatRoomEventJson.class);
-            if (null == eventJson) {
-                return;
-            }
-            if (eventJson.getEventCode() != null) {
-                String eventCode = eventJson.getEventCode();
-                handleEventAction(eventJson.getEventCode(), msgInfo);
-            } else if (eventJson.getMsgType() != null) {
-                handleMsgTypeAction(eventJson.getMsgType(), msgInfo);
+        }
+        int liveProgramId = (int) SPUtils.get(mContext, "programId", -1);
+        if (programId.contains(String.valueOf(liveProgramId)) || type.equals("broadcast")) {
+            if (type.equals("common")) {
+                chatAction.performAction(msgInfo, mContext);
+            } else if (type.equals("private")) {
+                privateChatAction.performAction(msgInfo, mContext);
+            } else if (type.equals("localroom") || type.equals("broadcast") || type.equals("user")) {
+                ChatRoomEventJson eventJson = GsonUtils.GsonToBean(msgInfo, ChatRoomEventJson.class);
+                if (null == eventJson) {
+                    return;
+                }
+                if (eventJson.getEventCode() != null) {
+                    String eventCode = eventJson.getEventCode();
+                    handleEventAction(eventJson.getEventCode(), msgInfo);
+                } else if (eventJson.getMsgType() != null) {
+                    handleMsgTypeAction(eventJson.getMsgType(), msgInfo);
+                }
             }
         }
     }

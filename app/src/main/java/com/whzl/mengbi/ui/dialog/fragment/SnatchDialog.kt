@@ -50,6 +50,7 @@ import kotlin.collections.ArrayList
  * @date 2019/3/6
  */
 class SnatchDialog : BaseAwesomeDialog() {
+    private var hisDialog: BaseAwesomeDialog? = null
     private var requireGiftNum = 0
     private var disposable: Disposable? = null
     private var disposableOne: Disposable? = null
@@ -250,12 +251,15 @@ class SnatchDialog : BaseAwesomeDialog() {
     }
 
     private fun showHisDialog(type: String) {
-        AwesomeDialog.init().setLayoutId(R.layout.dialog_snatch_his).setConvertListener(object : ViewConvertListener() {
+        if (hisDialog?.isAdded == true) {
+            return
+        }
+        hisDialog = AwesomeDialog.init().setLayoutId(R.layout.dialog_snatch_his).setConvertListener(object : ViewConvertListener() {
             override fun convertView(holder: ViewHolder?, dialog: BaseAwesomeDialog?) {
                 if (type == LUCKBET) {
-                    holder?.setText(R.id.tv_gift_type,"小礼物")
+                    holder?.setText(R.id.tv_gift_type, "小礼物")
                 } else {
-                    holder?.setText(R.id.tv_gift_type,"大礼物")
+                    holder?.setText(R.id.tv_gift_type, "大礼物")
                 }
                 holder?.setOnClickListener(R.id.btn_close) {
                     dialog?.dismissDialog()
@@ -333,7 +337,8 @@ class SnatchDialog : BaseAwesomeDialog() {
         recyclerView!!.layoutManager = LinearLayoutManager(activity)
         hisAdapter = object : BaseListAdapter() {
             override fun getDataCount(): Int {
-                return 10
+                return if (hisDatas.size > 10) 10
+                else hisDatas.size
             }
 
             override fun onCreateNormalViewHolder(parent: ViewGroup?, viewType: Int): BaseViewHolder {
