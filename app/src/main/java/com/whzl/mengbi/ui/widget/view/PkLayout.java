@@ -573,6 +573,9 @@ public class PkLayout extends LinearLayout implements View.OnClickListener {
 
         tvLeftOdds.setText("赔率");
         tvRightOdds.setText("赔率");
+        tvTime.setText("");
+        tvPkTitle.setText("");
+
         ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) pkContainer.getLayoutParams();
         layoutParams.topMargin = UIUtil.dip2px(context, 11f);
         pkContainer.setLayoutParams(layoutParams);
